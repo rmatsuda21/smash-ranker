@@ -3,13 +3,13 @@
   flex-direction: column;
 
   width: 100vw;
-  height: 100vh;
+  height: 100svh;
 
-  overflow-y: scroll;
-
-  nav {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
+  main {
+    flex: 1;
   }
+}
+
+.nav {
+  padding: 10px;
 }
