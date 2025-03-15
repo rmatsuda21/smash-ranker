@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { Route, Switch } from "wouter";
+
+import { Button, Heading } from "@radix-ui/themes";
 
 import styles from "./App.module.scss";
-import { Route, Switch } from "wouter";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -9,11 +11,11 @@ function App() {
   return (
     <>
       <div className={styles.root}>
-        <h1>Vite + React</h1>
+        <Heading size="9">Vite + React</Heading>
 
-        <button onClick={() => setCount((count) => count + 1)}>
+        <Button onClick={() => setCount((count) => count + 1)}>
           count is {count}
-        </button>
+        </Button>
       </div>
 
       <Switch>
