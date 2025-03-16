@@ -1,6 +1,6 @@
 import { Container, Em, Flex, Heading, Text } from "@radix-ui/themes";
 
-import styles from "./Home.module.scss";
+import styles from "./home.module.scss";
 
 export const Home = () => {
   return (
