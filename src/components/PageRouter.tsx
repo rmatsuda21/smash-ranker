@@ -1,7 +1,7 @@
 import { Route, Switch } from "wouter";
 
-import { Home } from "@/pages/Home";
-import { Ranker } from "@/pages/Ranker";
+import { Home } from "@/pages/home";
+import { Ranker } from "@/pages/ranker";
 
 export const PageRouter = () => {
   return (

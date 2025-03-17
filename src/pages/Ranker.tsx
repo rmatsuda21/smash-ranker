@@ -1,42 +1,75 @@
-import { Container } from "@radix-ui/themes";
 import * as fabric from "fabric";
-import { useEffect, useRef } from "react";
+import { useRef, useState } from "react";
+
+import { Canvas } from "@/components/Top8/Canvas";
+import { CanvasConfig } from "@/components/Top8/CanvasConfig";
+import { Button, Heading, TextField } from "@radix-ui/themes";
 
 import styles from "./ranker.module.scss";
 
 export const Ranker = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
 
-  useEffect(() => {
-    const fabricCanvas = new fabric.Canvas(canvasRef.current!, {
-      width: canvasRef.current!.clientWidth,
-      height: canvasRef.current!.clientHeight,
-      backgroundColor: "black",
-    });
-
-    const rect = new fabric.Rect({
-      left: 100,
-      top: 100,
-      fill: "blue",
-      width: 100,
-      height: 100,
-      // selectable: false,
-    });
-    fabricCanvas.add(rect);
-
-    return () => {
-      fabricCanvas.dispose();
-    };
-  }, []);
+  const [filename, setFilename] = useState("");
 
   return (
-    <Container className={styles.root}>
+    <div className={styles.root}>
       <h1>Ranker</h1>
-      <p>Welcome to the ranker page!</p>
 
-      <Container className={styles.canvasContainer}>
-        <canvas ref={canvasRef}></canvas>
-      </Container>
-    </Container>
+      <div className={styles.canvasContainer}>
+        <Canvas ref={canvasRef} setCanvas={setCanvas} />
+      </div>
+
+      <div>
+        <Heading as="h2">Canvas Config</Heading>
+        <CanvasConfig canvas={canvas!} />
+      </div>
+
+      <label htmlFor="name">Filename:</label>
+      <TextField.Root
+        type="text"
+        name="filename"
+        value={filename}
+        onChange={(event) => {
+          setFilename(event.currentTarget.value);
+        }}
+        placeholder="ranker.png"
+      />
+
+      <Button
+        onClick={() => {
+          if (canvas) {
+            const dataURL = canvas.toDataURL({
+              format: "png",
+              quality: 10,
+              multiplier: 2,
+            });
+
+            const a = document.createElement("a");
+            a.href = dataURL;
+            a.download = `${filename || "ranker"}.png`;
+            a.click();
+          }
+        }}
+      >
+        Download
+      </Button>
+      <Button
+        onClick={() => {
+          console.log(canvas?.toJSON());
+        }}
+      >
+        See
+      </Button>
+      <Button
+        onClick={() => {
+          // TODO: Implement undo/redo
+          console.log(canvas?.toJSON());
+        }}
+      >
+        Undo
+      </Button>
+    </div>
   );
 };
