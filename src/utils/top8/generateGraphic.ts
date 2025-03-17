@@ -13,6 +13,18 @@ export const generateGraphic = async (canvas: fabric.Canvas) => {
       });
     }
   }
+
+  const img = await fabric.FabricImage.fromURL(
+    "https://ssb.wiki.gallery/images/thumb/4/44/Mario_SSBU.png/500px-Mario_SSBU.png",
+    {
+      crossOrigin: "anonymous",
+    }
+  );
+  img.set({
+    id: "image",
+  });
+
+  canvas.add(img);
 };
 
 const drawPlayer = async (
@@ -20,6 +32,7 @@ const drawPlayer = async (
   options?: Partial<fabric.GroupProps>
 ) => {
   const frame = await drawSVG("/top8/frame.svg");
+
   const rect = new fabric.Rect({
     width: 100,
     height: 100,

@@ -70,6 +70,26 @@ export const Ranker = () => {
       >
         Undo
       </Button>
+      <Button
+        onClick={() => {
+          // get all objects in canvas
+          const objects = canvas?.getObjects();
+          // search from object with id "image"
+          const img = objects?.find((obj) => obj.id === "image");
+          (img as fabric.FabricImage)
+            .setSrc(
+              "https://ssb.wiki.gallery/images/thumb/6/6a/Jigglypuff_SSBU.png/500px-Jigglypuff_SSBU.png",
+              {
+                crossOrigin: "anonymous",
+              }
+            )
+            .then(() => {
+              canvas?.requestRenderAll();
+            });
+        }}
+      >
+        Replace Img
+      </Button>
     </div>
   );
 };
