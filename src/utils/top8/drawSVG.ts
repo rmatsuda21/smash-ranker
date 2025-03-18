@@ -1,7 +1,7 @@
 import * as fabric from "fabric";
 
 const color1 = "#1d1d1d";
-const color2 = "#fa0000";
+const color2 = "#00f";
 const frame = "white";
 
 export const drawSVG = async (

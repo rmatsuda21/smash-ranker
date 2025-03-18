@@ -10,8 +10,8 @@ export const CanvasConfig = ({ canvas }: { canvas: fabric.Canvas }) => {
 
   return (
     <>
-      <Flex align="center" gap="2">
-        Snap:
+      <Flex align="center" gap="2" pt="3">
+        Angle Snap
         <Checkbox
           checked={snap}
           onClick={() => {
@@ -25,8 +25,8 @@ export const CanvasConfig = ({ canvas }: { canvas: fabric.Canvas }) => {
         />
       </Flex>
 
-      <Flex align="center" gap="2">
-        Edit:
+      <Flex align="center" gap="2" pb="5">
+        Edit
         <Checkbox
           checked={editable}
           onClick={() => {
