@@ -1,6 +1,7 @@
-import { gql, useQuery } from "urql";
+import { graphql } from "@/gql";
+import { useQuery } from "urql";
 
-const TodosQuery = gql`
+const TodosQuery = graphql(`
   query GetEventPhases($slug: String) {
     event(slug: $slug) {
       phases {
@@ -9,7 +10,7 @@ const TodosQuery = gql`
       }
     }
   }
-`;
+`);
 
 export const QueryTest = () => {
   const [result] = useQuery({
@@ -22,5 +23,7 @@ export const QueryTest = () => {
   if (fetching) return <div>Loading...</div>;
   if (error) return <div>Oh no... {error.message}</div>;
 
-  return <div style={{ width: "500px" }}>{JSON.stringify(data)}</div>;
+  return (
+    <div style={{ width: "500px" }}>{JSON.stringify(data?.event?.phases)}</div>
+  );
 };
