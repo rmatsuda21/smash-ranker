@@ -1,16 +1,23 @@
 import * as fabric from "fabric";
 
 import { drawSVG } from "@/utils/top8/drawSVG";
+import { Player, Result } from "@/types/top8/Result";
+import { defaultOptions } from "@/consts/Top8/defaultFabricOptions";
 
 const SHADOW_OFFSET = 5;
 const FRAME_WIDTH = 200;
 
-export const generateGraphic = async (canvas: fabric.Canvas) => {
+const getCharacterImage = (character: string) =>
+  `https://res.cloudinary.com/dzyfrrrcj/image/upload/smash_ranker/${character}/main/0.png`;
+
+export const generateGraphic = async (
+  canvas: fabric.Canvas,
+  result: Result
+  // onPlayerClick:
+) => {
   for (let j = 0; j < 2; j++) {
     for (let i = 0; i < 4; i++) {
-      await drawPlayer(canvas, {
-        selectable: false,
-        hoverCursor: "default",
+      await drawPlayer(canvas, result[i + j * 4], {
         left: (FRAME_WIDTH + 50) * i + 50,
         top: 300 * j + 50,
       });
@@ -20,6 +27,7 @@ export const generateGraphic = async (canvas: fabric.Canvas) => {
 
 const drawPlayer = async (
   canvas: fabric.Canvas,
+  player: Player,
   options?: Partial<fabric.GroupProps>
 ) => {
   const frame = await drawSVG("/top8/frame.svg");
@@ -30,12 +38,12 @@ const drawPlayer = async (
   });
 
   const img = await fabric.FabricImage.fromURL(
-    "https://ssb.wiki.gallery/images/thumb/6/6a/Jigglypuff_SSBU.png/500px-Jigglypuff_SSBU.png",
+    getCharacterImage(player.character),
     {
       crossOrigin: "anonymous",
     }
   );
-  img.scaleToWidth(FRAME_WIDTH);
+  img.scaleToWidth(FRAME_WIDTH - 20);
   img.set({
     id: "image",
     left: 0,
@@ -47,7 +55,7 @@ const drawPlayer = async (
   backdrop.filters = [
     new fabric.filters.BlendColor({
       color: "red",
-      mode: "multiply",
+      mode: "tint",
       alpha: 1,
     }),
   ];
@@ -57,11 +65,37 @@ const drawPlayer = async (
     top: backdrop.top + SHADOW_OFFSET,
   });
   const imageGroup = new fabric.Group([backdrop, img], {
-    selectable: false,
-    hoverCursor: "default",
     id: "image",
   });
 
-  const group = new fabric.Group([imageGroup, frame], options);
+  let group;
+
+  if (player) {
+    const text = new fabric.Textbox(player.name, {
+      fontSize: 20,
+      width: frame.getScaledWidth(),
+      fill: "white",
+      top: frame.getScaledHeight() + 10,
+      left: frame.getScaledWidth() / 2,
+      originX: "center",
+      textAlign: "center",
+    });
+
+    group = new fabric.Group([imageGroup, frame, text], {
+      ...defaultOptions,
+      ...options,
+    });
+
+    // TODO: Make player clicking let you edit the player info
+    group.on("mousedown", (e) => {
+      console.log(e.target);
+    });
+  } else {
+    group = new fabric.Group([imageGroup, frame], {
+      ...defaultOptions,
+      ...options,
+    });
+  }
+
   canvas.add(group);
 };

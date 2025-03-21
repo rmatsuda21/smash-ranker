@@ -1,15 +1,18 @@
 import * as fabric from "fabric";
 
-const EDIT_CURSOR = "pointer";
-
 export const setCanvasEditable = (canvas: fabric.Canvas, editable: boolean) => {
   canvas.forEachObject((obj) => {
     if (obj.locked) {
       return;
     }
 
-    obj.selectable = editable;
-    obj.hoverCursor = !editable ? "default" : EDIT_CURSOR;
+    obj.locked = !editable;
+    obj.lockMovementX = !editable;
+    obj.lockMovementY = !editable;
+    obj.lockScalingX = !editable;
+    obj.lockScalingY = !editable;
+    obj.lockRotation = !editable;
+    obj.hasControls = editable;
   });
 
   canvas.selection = editable;

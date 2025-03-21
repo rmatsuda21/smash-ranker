@@ -14,10 +14,10 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Learn more about it here: https://the-guild.dev/graphql/codegen/plugins/presets/preset-client#reducing-bundle-size
  */
 type Documents = {
-    "\n  query GetEventPhases($slug: String) {\n    event(slug: $slug) {\n      phases {\n        id\n        name\n      }\n    }\n  }\n": typeof types.GetEventPhasesDocument,
+    "\n  query EventStandings($slug: String!) {\n    event(slug: $slug) {\n      id\n      name\n      standings(query: { perPage: 8, page: 1 }) {\n        nodes {\n          placement\n          entrant {\n            id\n            name\n            paginatedSets(perPage: 1, page: 1) {\n              nodes {\n                games {\n                  selections {\n                    character {\n                      id\n                      name\n                    }\n                    entrant {\n                      id\n                      name\n                    }\n                  }\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n": typeof types.EventStandingsDocument,
 };
 const documents: Documents = {
-    "\n  query GetEventPhases($slug: String) {\n    event(slug: $slug) {\n      phases {\n        id\n        name\n      }\n    }\n  }\n": types.GetEventPhasesDocument,
+    "\n  query EventStandings($slug: String!) {\n    event(slug: $slug) {\n      id\n      name\n      standings(query: { perPage: 8, page: 1 }) {\n        nodes {\n          placement\n          entrant {\n            id\n            name\n            paginatedSets(perPage: 1, page: 1) {\n              nodes {\n                games {\n                  selections {\n                    character {\n                      id\n                      name\n                    }\n                    entrant {\n                      id\n                      name\n                    }\n                  }\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n": types.EventStandingsDocument,
 };
 
 /**
@@ -37,7 +37,7 @@ export function graphql(source: string): unknown;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query GetEventPhases($slug: String) {\n    event(slug: $slug) {\n      phases {\n        id\n        name\n      }\n    }\n  }\n"): (typeof documents)["\n  query GetEventPhases($slug: String) {\n    event(slug: $slug) {\n      phases {\n        id\n        name\n      }\n    }\n  }\n"];
+export function graphql(source: "\n  query EventStandings($slug: String!) {\n    event(slug: $slug) {\n      id\n      name\n      standings(query: { perPage: 8, page: 1 }) {\n        nodes {\n          placement\n          entrant {\n            id\n            name\n            paginatedSets(perPage: 1, page: 1) {\n              nodes {\n                games {\n                  selections {\n                    character {\n                      id\n                      name\n                    }\n                    entrant {\n                      id\n                      name\n                    }\n                  }\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query EventStandings($slug: String!) {\n    event(slug: $slug) {\n      id\n      name\n      standings(query: { perPage: 8, page: 1 }) {\n        nodes {\n          placement\n          entrant {\n            id\n            name\n            paginatedSets(perPage: 1, page: 1) {\n              nodes {\n                games {\n                  selections {\n                    character {\n                      id\n                      name\n                    }\n                    entrant {\n                      id\n                      name\n                    }\n                  }\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

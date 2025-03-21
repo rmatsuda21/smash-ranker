@@ -11,7 +11,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "codegen": "graphql-codegen"
+    "codegen": "graphql-codegen",
+    "codegenwatch": "graphql-codegen --watch"
   },
   "dependencies": {
     "@radix-ui/themes": "^3.2.1",
@@ -26,6 +27,7 @@
     "@eslint/js": "^9.21.0",
     "@graphql-codegen/cli": "^5.0.5",
     "@graphql-codegen/client-preset": "^4.7.0",
+    "@parcel/watcher": "^2.5.1",
     "@types/js-cookie": "^3.0.6",
     "@types/node": "^22.13.10",
     "@types/react": "^19.0.10",

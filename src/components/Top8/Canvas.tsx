@@ -3,6 +3,7 @@ import { useEffect } from "react";
 
 import { drawSVG } from "@/utils/top8/drawSVG";
 import { generateGraphic } from "@/utils/top8/generateGraphic";
+import { Result } from "@/types/top8/Result";
 
 const CANVAS_WIDTH = 1200;
 const CANVAS_HEIGHT = 675;
@@ -30,8 +31,8 @@ const configureCanvas = (canvas: fabric.Canvas) => {
 const initCanvas = async (canvas: fabric.Canvas) => {
   // Draw background
   const background = await drawSVG("/top8/background.svg", {
-    selectable: false,
     hoverCursor: "default",
+    selectable: false,
     locked: true,
   });
 
@@ -41,13 +42,14 @@ const initCanvas = async (canvas: fabric.Canvas) => {
 export const Canvas = ({
   ref: canvasRef,
   setCanvas,
+  result,
 }: {
   ref: React.RefObject<HTMLCanvasElement | null>;
   setCanvas: (canvas: fabric.Canvas) => void;
+  result: Result;
 }) => {
   useEffect(() => {
     const fabricCanvas = new fabric.Canvas(canvasRef.current!, {
-      selection: false,
       width: CANVAS_WIDTH,
       height: CANVAS_HEIGHT,
       backgroundColor: "black",
@@ -56,7 +58,7 @@ export const Canvas = ({
     configureCanvas(fabricCanvas);
     initCanvas(fabricCanvas);
 
-    generateGraphic(fabricCanvas);
+    generateGraphic(fabricCanvas, result);
 
     setCanvas(fabricCanvas);
 
