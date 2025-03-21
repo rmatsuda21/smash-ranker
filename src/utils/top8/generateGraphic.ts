@@ -7,17 +7,20 @@ import { defaultOptions } from "@/consts/Top8/defaultFabricOptions";
 const SHADOW_OFFSET = 5;
 const FRAME_WIDTH = 200;
 
-const getCharacterImage = (character: string) =>
-  `https://res.cloudinary.com/dzyfrrrcj/image/upload/smash_ranker/${character}/main/0.png`;
+const getCharacterImage = (
+  character: string,
+  alt: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 = 0
+) =>
+  `https://res.cloudinary.com/dzyfrrrcj/image/upload/smash_ranker/${character}/main/${alt}.png`;
 
 export const generateGraphic = async (
   canvas: fabric.Canvas,
-  result: Result
-  // onPlayerClick:
+  result: Result,
+  onPlayerSelected: (obj: fabric.FabricObject) => void
 ) => {
   for (let j = 0; j < 2; j++) {
     for (let i = 0; i < 4; i++) {
-      await drawPlayer(canvas, result[i + j * 4], {
+      await drawPlayer(canvas, result[i + j * 4], onPlayerSelected, {
         left: (FRAME_WIDTH + 50) * i + 50,
         top: 300 * j + 50,
       });
@@ -28,8 +31,10 @@ export const generateGraphic = async (
 const drawPlayer = async (
   canvas: fabric.Canvas,
   player: Player,
+  onPlayerSelected: (obj: fabric.FabricObject) => void,
   options?: Partial<fabric.GroupProps>
 ) => {
+  // Draw frame
   const frame = await drawSVG("/top8/frame.svg");
   frame.scaleToWidth(FRAME_WIDTH);
   frame.set({
@@ -37,6 +42,7 @@ const drawPlayer = async (
     left: 0,
   });
 
+  // Draw character
   const img = await fabric.FabricImage.fromURL(
     getCharacterImage(player.character),
     {
@@ -51,7 +57,6 @@ const drawPlayer = async (
   });
 
   const backdrop = await img.clone();
-
   backdrop.filters = [
     new fabric.filters.BlendColor({
       color: "red",
@@ -68,34 +73,32 @@ const drawPlayer = async (
     id: "image",
   });
 
-  let group;
+  // Draw name
+  const text = new fabric.Textbox(player.name, {
+    fontSize: 20,
+    width: frame.getScaledWidth(),
+    fill: "white",
+    top: frame.getScaledHeight() + 10,
+    left: frame.getScaledWidth() / 2,
+    originX: "center",
+    textAlign: "center",
+    fontStyle: "bold",
+    fontFamily: "Comic Sans MS",
+    id: "name",
+  });
 
-  if (player) {
-    const text = new fabric.Textbox(player.name, {
-      fontSize: 20,
-      width: frame.getScaledWidth(),
-      fill: "white",
-      top: frame.getScaledHeight() + 10,
-      left: frame.getScaledWidth() / 2,
-      originX: "center",
-      textAlign: "center",
-    });
+  const group = new fabric.Group([imageGroup, frame, text], {
+    id: player.id,
+    ...defaultOptions,
+    ...options,
+  });
 
-    group = new fabric.Group([imageGroup, frame, text], {
-      ...defaultOptions,
-      ...options,
-    });
+  // TODO: Make player clicking let you edit the player info
+  group.on("mousedown", (e) => {
+    if (!e.target) return;
 
-    // TODO: Make player clicking let you edit the player info
-    group.on("mousedown", (e) => {
-      console.log(e.target);
-    });
-  } else {
-    group = new fabric.Group([imageGroup, frame], {
-      ...defaultOptions,
-      ...options,
-    });
-  }
+    onPlayerSelected(e.target);
+  });
 
   canvas.add(group);
 };

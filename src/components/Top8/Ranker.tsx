@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 
 import { Canvas } from "@/components/Top8/Canvas";
 import { CanvasConfig } from "@/components/Top8/CanvasConfig";
-import { useFetchTop8 } from "@/hooks/useFetchTop8";
+import { useFetchTop8 } from "@/hooks/Top8/useFetchTop8";
 import { Button, Heading, TextField } from "@radix-ui/themes";
 
 import styles from "@/components/styles/Top8/Ranker.module.scss";
@@ -11,6 +11,9 @@ import styles from "@/components/styles/Top8/Ranker.module.scss";
 export const Ranker = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
+  const [selectedPlayer, setSelectedPlayer] =
+    useState<fabric.FabricObject | null>(null);
+
   const { top8, fetching, error } = useFetchTop8(
     "tournament/genesis-9-1/event/ultimate-singles"
   );
@@ -21,14 +24,17 @@ export const Ranker = () => {
   if (!top8 || error)
     return <div>{error ? <h1>{error.message}</h1> : <h1>Error</h1>}</div>;
 
-  console.log(top8);
-
   return (
     <div className={styles.root}>
       <h1>Ranker</h1>
 
       <div className={styles.canvasContainer}>
-        <Canvas ref={canvasRef} setCanvas={setCanvas} result={top8} />
+        <Canvas
+          ref={canvasRef}
+          setCanvas={setCanvas}
+          onPlayerSelected={setSelectedPlayer}
+          result={top8}
+        />
       </div>
 
       <div>
@@ -82,23 +88,20 @@ export const Ranker = () => {
       </Button>
       <Button
         onClick={() => {
-          // get all objects in canvas
-          const objects = canvas?.getObjects();
-          // search from object with id "image"
-          const img = objects?.find((obj) => obj.id === "image");
-          (img as fabric.FabricImage)
-            .setSrc(
-              "https://ssb.wiki.gallery/images/thumb/6/6a/Jigglypuff_SSBU.png/500px-Jigglypuff_SSBU.png",
-              {
-                crossOrigin: "anonymous",
-              }
-            )
-            .then(() => {
-              canvas?.requestRenderAll();
-            });
+          // Find object with id "name" from selectedPlayer
+          if (!selectedPlayer || !canvas) return;
+
+          const objects = selectedPlayer._objects;
+
+          const nameTxt = objects.find((obj) => obj.id === "name");
+          if (!nameTxt) return;
+
+          nameTxt.set({ text: "New Name" });
+
+          canvas.renderAll();
         }}
       >
-        Replace Img
+        Replace Name
       </Button>
     </div>
   );

@@ -14,17 +14,22 @@ createRoot(document.getElementById("root")!).render(
   </StrictMode>
 );
 
-// Setup custom properties for fabric objects
 declare module "fabric" {
+  interface Group {
+    _objects: FabricObject[];
+  }
+
   interface FabricObject {
     id?: string;
     locked?: boolean;
     name?: string;
+    _objects: FabricObject[];
   }
   interface SerializedObjectProps {
     id?: string;
     locked?: boolean;
     name?: string;
+    _objects: FabricObject[];
   }
 }
 

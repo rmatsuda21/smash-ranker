@@ -57,8 +57,6 @@ export const useFetchTop8 = (slug: string) => {
 
   const { data, fetching, error } = result;
 
-  console.log(data);
-
   const top8: Result | undefined = data?.event?.standings?.nodes?.map(
     (node) => {
       const entrant = node?.entrant;

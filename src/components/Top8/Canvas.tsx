@@ -42,10 +42,12 @@ const initCanvas = async (canvas: fabric.Canvas) => {
 export const Canvas = ({
   ref: canvasRef,
   setCanvas,
+  onPlayerSelected,
   result,
 }: {
   ref: React.RefObject<HTMLCanvasElement | null>;
   setCanvas: (canvas: fabric.Canvas) => void;
+  onPlayerSelected: (obj: fabric.FabricObject) => void;
   result: Result;
 }) => {
   useEffect(() => {
@@ -58,14 +60,14 @@ export const Canvas = ({
     configureCanvas(fabricCanvas);
     initCanvas(fabricCanvas);
 
-    generateGraphic(fabricCanvas, result);
+    generateGraphic(fabricCanvas, result, onPlayerSelected);
 
     setCanvas(fabricCanvas);
 
     return () => {
       fabricCanvas.dispose();
     };
-  }, [canvasRef, setCanvas]);
+  }, [canvasRef, setCanvas, onPlayerSelected]);
 
   return <canvas ref={canvasRef} />;
 };
