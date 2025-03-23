@@ -8,7 +8,10 @@ import { Result } from "@/types/top8/Result";
 const CANVAS_WIDTH = 1200;
 const CANVAS_HEIGHT = 675;
 
-const configureCanvas = (canvas: fabric.Canvas) => {
+const setupCanvasEvents = (
+  canvas: fabric.Canvas,
+  setSelectedPlayer: (obj: fabric.FabricObject | null) => void
+) => {
   canvas.on("object:moving", (e) => {
     const obj = e.target;
 
@@ -20,6 +23,26 @@ const configureCanvas = (canvas: fabric.Canvas) => {
 
     obj.left = Math.max(0, Math.min(obj.left, canvasWidth - objWidth));
     obj.top = Math.max(0, Math.min(obj.top, canvasHeight - objHeight));
+  });
+
+  const onSelection = (
+    e: Partial<fabric.TEvent<fabric.TPointerEvent>> & {
+      selected: fabric.FabricObject[];
+    }
+  ) => {
+    if (e.selected.length !== 1) return;
+
+    const obj = e.selected[0];
+
+    if (obj.name !== "player") return;
+
+    setSelectedPlayer(obj);
+  };
+
+  canvas.on("selection:created", onSelection);
+  canvas.on("selection:updated", onSelection);
+  canvas.on("selection:cleared", () => {
+    setSelectedPlayer(null);
   });
 
   // TODO: Implement undo/redo
@@ -47,27 +70,28 @@ export const Canvas = ({
 }: {
   ref: React.RefObject<HTMLCanvasElement | null>;
   setCanvas: (canvas: fabric.Canvas) => void;
-  onPlayerSelected: (obj: fabric.FabricObject) => void;
+  onPlayerSelected: (obj: fabric.FabricObject | null) => void;
   result: Result;
 }) => {
   useEffect(() => {
     const fabricCanvas = new fabric.Canvas(canvasRef.current!, {
+      selection: false,
       width: CANVAS_WIDTH,
       height: CANVAS_HEIGHT,
       backgroundColor: "black",
     });
 
-    configureCanvas(fabricCanvas);
+    setupCanvasEvents(fabricCanvas, onPlayerSelected);
     initCanvas(fabricCanvas);
 
-    generateGraphic(fabricCanvas, result, onPlayerSelected);
+    generateGraphic(fabricCanvas, result);
 
     setCanvas(fabricCanvas);
 
     return () => {
       fabricCanvas.dispose();
     };
-  }, [canvasRef, setCanvas, onPlayerSelected]);
+  }, [canvasRef, setCanvas]);
 
   return <canvas ref={canvasRef} />;
 };

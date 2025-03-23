@@ -1,6 +1,6 @@
 import * as fabric from "fabric";
 
-import { defaultOptions } from "@/consts/Top8/defaultFabricOptions";
+import { defaultOptions } from "@/consts/top8/defaultFabricOptions";
 
 const color1 = "#1d1d1d";
 const color2 = "#00f";

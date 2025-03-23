@@ -1,18 +1,20 @@
 import * as fabric from "fabric";
 import { useRef, useState } from "react";
 
-import { Canvas } from "@/components/Top8/Canvas";
-import { CanvasConfig } from "@/components/Top8/CanvasConfig";
-import { useFetchTop8 } from "@/hooks/Top8/useFetchTop8";
+import { Canvas } from "@/components/top8/Canvas";
+import { CanvasConfig } from "@/components/top8/CanvasConfig";
+import { useFetchTop8 } from "@/hooks/top8/useFetchTop8";
 import { Button, Heading, TextField } from "@radix-ui/themes";
 
 import styles from "@/components/styles/Top8/Ranker.module.scss";
+import { PlayerConfig } from "./PlayerConfig";
 
 export const Ranker = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
   const [selectedPlayer, setSelectedPlayer] =
     useState<fabric.FabricObject | null>(null);
+  const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
 
   const { top8, fetching, error } = useFetchTop8(
     "tournament/genesis-9-1/event/ultimate-singles"
@@ -24,15 +26,20 @@ export const Ranker = () => {
   if (!top8 || error)
     return <div>{error ? <h1>{error.message}</h1> : <h1>Error</h1>}</div>;
 
+  const onPlayerSelected = (obj: fabric.FabricObject | null) => {
+    setSelectedPlayer(obj);
+    setSelectedPlayerId(obj?.id || "");
+  };
+
   return (
     <div className={styles.root}>
-      <h1>Ranker</h1>
+      <h1>Ranker {selectedPlayerId}</h1>
 
       <div className={styles.canvasContainer}>
         <Canvas
           ref={canvasRef}
           setCanvas={setCanvas}
-          onPlayerSelected={setSelectedPlayer}
+          onPlayerSelected={onPlayerSelected}
           result={top8}
         />
       </div>
@@ -40,6 +47,7 @@ export const Ranker = () => {
       <div>
         <Heading as="h2">Canvas Config</Heading>
         <CanvasConfig canvas={canvas!} />
+        {selectedPlayer && <PlayerConfig playerObj={selectedPlayer} />}
       </div>
 
       <label htmlFor="name">Filename:</label>

@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 import { cacheExchange, Client, fetchExchange, Provider } from "urql";
 
 import { COOKIES } from "@/consts/cookies";
-import { Ranker } from "@/components/Top8/Ranker";
+import { Ranker } from "@/components/top8/Ranker";
 
 const client = new Client({
   url: "https://api.start.gg/gql/alpha",

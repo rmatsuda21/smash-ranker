@@ -72,6 +72,7 @@ export const useFetchTop8 = (slug: string) => {
         name: entrant?.name || "",
         placement: node?.placement || 0,
         character: character || "",
+        alt: 0,
       };
     }
   );
