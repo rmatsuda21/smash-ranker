@@ -29,7 +29,10 @@ export const redrawPlayer = async ({
   ) as fabric.FabricImage;
   if (!mainImage) return;
 
-  const src = getCharacterImage(player.character, player.alt);
+  const src = getCharacterImage({
+    characterId: player.character,
+    alt: player.alt,
+  });
 
   // Redraw backdrop
   const backdrop = characterObj._objects.find(

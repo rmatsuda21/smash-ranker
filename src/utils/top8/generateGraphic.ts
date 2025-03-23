@@ -8,8 +8,18 @@ import { drawSVG } from "@/utils/top8/drawSVG";
 const SHADOW_OFFSET = 5;
 const FRAME_WIDTH = 200;
 
-export const getCharacterImage = (character: string, alt: Player["alt"] = 0) =>
-  `https://res.cloudinary.com/dzyfrrrcj/image/upload/smash_ranker/${character}/main/${alt}.png`;
+export const getCharacterImage = ({
+  characterId,
+  alt = 0,
+  type = "main",
+}: {
+  characterId: string;
+  alt: Player["alt"];
+  type?: "main" | "stock";
+}) =>
+  `https://res.cloudinary.com/dzyfrrrcj/image/upload${
+    type === "stock" ? "/f_webp" : ""
+  }/smash_ranker/${characterId}/${type}/${alt}.png`;
 
 export const generateGraphic = async (
   canvas: fabric.Canvas,
@@ -42,7 +52,10 @@ const drawPlayer = async (
 
   // Draw character
   const img = await fabric.FabricImage.fromURL(
-    getCharacterImage(player.character, player.alt),
+    getCharacterImage({
+      characterId: player.character,
+      alt: player.alt,
+    }),
     {
       crossOrigin: "anonymous",
     }
