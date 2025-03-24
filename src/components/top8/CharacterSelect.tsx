@@ -14,7 +14,9 @@ export const CharacterSelect = ({
       <Select.Trigger>
         <Flex as="span" align="center" gap="2">
           <img
-            style={{ width: 24, height: 24, marginRight: 8 }}
+            style={{ marginRight: 8 }}
+            width={24}
+            height={24}
             src={getCharacterImage({
               characterId: String(characterId),
               alt: 0,
@@ -29,7 +31,9 @@ export const CharacterSelect = ({
           <Select.Item key={character.id} value={String(character.id)}>
             <Flex direction={"row"}>
               <img
-                style={{ width: 24, height: 24, marginRight: 8 }}
+                style={{ marginRight: 8 }}
+                width={24}
+                height={24}
                 src={getCharacterImage({
                   characterId: String(character.id),
                   alt: 0,

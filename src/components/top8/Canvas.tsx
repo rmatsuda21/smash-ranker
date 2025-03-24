@@ -67,17 +67,22 @@ export const Canvas = ({
   setCanvas,
   onPlayerSelected,
   result,
+  canvasConfig = { width: CANVAS_WIDTH, height: CANVAS_HEIGHT },
 }: {
   ref: React.RefObject<HTMLCanvasElement | null>;
   setCanvas: (canvas: fabric.Canvas) => void;
   onPlayerSelected: (obj: fabric.FabricObject | null) => void;
   result: Result;
+  canvasConfig?: {
+    width: number;
+    height: number;
+  };
 }) => {
   useEffect(() => {
     const fabricCanvas = new fabric.Canvas(canvasRef.current!, {
       selection: false,
-      width: CANVAS_WIDTH,
-      height: CANVAS_HEIGHT,
+      width: canvasConfig.width,
+      height: canvasConfig.height,
       backgroundColor: "black",
     });
 

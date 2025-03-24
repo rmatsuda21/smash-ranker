@@ -25,14 +25,14 @@ export const generateGraphic = async (
   canvas: fabric.Canvas,
   result: Result
 ) => {
-  for (let j = 0; j < 2; j++) {
-    for (let i = 0; i < 4; i++) {
-      await drawPlayer(canvas, result[i + j * 4], {
-        left: (FRAME_WIDTH + 50) * i + 50,
-        top: 300 * j + 50,
-      });
-    }
-  }
+  await Promise.all(
+    result.map((player, index) =>
+      drawPlayer(canvas, player, {
+        left: (FRAME_WIDTH + 50) * (index % 4) + 50,
+        top: 300 * Math.floor(index / 4) + 50,
+      })
+    )
+  );
 };
 
 const drawPlayer = async (
@@ -99,7 +99,18 @@ const drawPlayer = async (
     id: playerObjIds.name,
   });
 
-  const group = new fabric.Group([imageGroup, frame, text], {
+  // Draw placement
+  const placement = new fabric.Textbox(player.placement.toString(), {
+    fontSize: 60,
+    fill: "#FFD700",
+    backgroundColor: "rgba(0, 0, 0, 0.8)",
+    top: 0,
+    left: 0,
+    textAlign: "center",
+    fontFamily: "Rampart One",
+  });
+
+  const group = new fabric.Group([imageGroup, frame, text, placement], {
     id: player.id,
     playerInfo: player,
     name: playerObjIds.mainGroup,
