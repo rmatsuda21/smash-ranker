@@ -2,351 +2,438 @@
   "characters": [
     {
       "name": "Bayonetta",
-      "id": 1271
+      "id": 1271,
+      "alts": 8
     },
     {
       "name": "Bowser Jr.",
-      "id": 1272
+      "id": 1272,
+      "alts": 8
     },
     {
       "name": "Bowser",
-      "id": 1273
+      "id": 1273,
+      "alts": 8
     },
     {
       "name": "Captain Falcon",
-      "id": 1274
+      "id": 1274,
+      "alts": 8
     },
     {
       "name": "Cloud",
-      "id": 1275
+      "id": 1275,
+      "alts": 8
     },
     {
       "name": "Corrin",
-      "id": 1276
+      "id": 1276,
+      "alts": 8
     },
     {
       "name": "Daisy",
-      "id": 1277
+      "id": 1277,
+      "alts": 8
     },
     {
       "name": "Dark Pit",
-      "id": 1278
+      "id": 1278,
+      "alts": 8
     },
     {
       "name": "Diddy Kong",
-      "id": 1279
+      "id": 1279,
+      "alts": 8
     },
     {
       "name": "Donkey Kong",
-      "id": 1280
+      "id": 1280,
+      "alts": 8
     },
     {
       "name": "Dr. Mario",
-      "id": 1282
+      "id": 1282,
+      "alts": 8
     },
     {
       "name": "Duck Hunt",
-      "id": 1283
+      "id": 1283,
+      "alts": 8
     },
     {
       "name": "Falco",
-      "id": 1285
+      "id": 1285,
+      "alts": 8
     },
     {
       "name": "Fox",
-      "id": 1286
+      "id": 1286,
+      "alts": 8
     },
     {
       "name": "Ganondorf",
-      "id": 1287
+      "id": 1287,
+      "alts": 8
     },
     {
       "name": "Greninja",
-      "id": 1289
+      "id": 1289,
+      "alts": 8
     },
     {
       "name": "Ice Climbers",
-      "id": 1290
+      "id": 1290,
+      "alts": 8
     },
     {
       "name": "Ike",
-      "id": 1291
+      "id": 1291,
+      "alts": 8
     },
     {
       "name": "Inkling",
-      "id": 1292
+      "id": 1292,
+      "alts": 8
     },
     {
       "name": "Jigglypuff",
-      "id": 1293
+      "id": 1293,
+      "alts": 8
     },
     {
       "name": "King Dedede",
-      "id": 1294
+      "id": 1294,
+      "alts": 8
     },
     {
       "name": "Kirby",
-      "id": 1295
+      "id": 1295,
+      "alts": 8
     },
     {
       "name": "Link",
-      "id": 1296
+      "id": 1296,
+      "alts": 8
     },
     {
       "name": "Little Mac",
-      "id": 1297
+      "id": 1297,
+      "alts": 8
     },
     {
       "name": "Lucario",
-      "id": 1298
+      "id": 1298,
+      "alts": 8
     },
     {
       "name": "Lucas",
-      "id": 1299
+      "id": 1299,
+      "alts": 8
     },
     {
       "name": "Lucina",
-      "id": 1300
+      "id": 1300,
+      "alts": 8
     },
     {
       "name": "Luigi",
-      "id": 1301
+      "id": 1301,
+      "alts": 8
     },
     {
       "name": "Mario",
-      "id": 1302
+      "id": 1302,
+      "alts": 8
     },
     {
       "name": "Marth",
-      "id": 1304
+      "id": 1304,
+      "alts": 8
     },
     {
       "name": "Mega Man",
-      "id": 1305
+      "id": 1305,
+      "alts": 8
     },
     {
       "name": "Meta Knight",
-      "id": 1307
+      "id": 1307,
+      "alts": 8
     },
     {
       "name": "Mewtwo",
-      "id": 1310
+      "id": 1310,
+      "alts": 8
     },
     {
       "name": "Mii Brawler",
-      "id": 1311
+      "id": 1311,
+      "alts": 1
     },
     {
       "name": "Ness",
-      "id": 1313
+      "id": 1313,
+      "alts": 8
     },
     {
       "name": "Olimar",
-      "id": 1314
+      "id": 1314,
+      "alts": 8
     },
     {
       "name": "Pac-Man",
-      "id": 1315
+      "id": 1315,
+      "alts": 8
     },
     {
       "name": "Palutena",
-      "id": 1316
+      "id": 1316,
+      "alts": 8
     },
     {
       "name": "Peach",
-      "id": 1317
+      "id": 1317,
+      "alts": 8
     },
     {
       "name": "Pichu",
-      "id": 1318
+      "id": 1318,
+      "alts": 8
     },
     {
       "name": "Pikachu",
-      "id": 1319
+      "id": 1319,
+      "alts": 8
     },
     {
       "name": "Pit",
-      "id": 1320
+      "id": 1320,
+      "alts": 8
     },
     {
       "name": "Pokemon Trainer",
-      "id": 1321
+      "id": 1321,
+      "alts": 8
     },
     {
       "name": "Ridley",
-      "id": 1322
+      "id": 1322,
+      "alts": 8
     },
     {
       "name": "R.O.B.",
-      "id": 1323
+      "id": 1323,
+      "alts": 8
     },
     {
       "name": "Robin",
-      "id": 1324
+      "id": 1324,
+      "alts": 8
     },
     {
       "name": "Rosalina",
-      "id": 1325
+      "id": 1325,
+      "alts": 8
     },
     {
       "name": "Roy",
-      "id": 1326
+      "id": 1326,
+      "alts": 8
     },
     {
       "name": "Ryu",
-      "id": 1327
+      "id": 1327,
+      "alts": 8
     },
     {
       "name": "Samus",
-      "id": 1328
+      "id": 1328,
+      "alts": 8
     },
     {
       "name": "Sheik",
-      "id": 1329
+      "id": 1329,
+      "alts": 8
     },
     {
       "name": "Shulk",
-      "id": 1330
+      "id": 1330,
+      "alts": 8
     },
     {
       "name": "Snake",
-      "id": 1331
+      "id": 1331,
+      "alts": 8
     },
     {
       "name": "Sonic",
-      "id": 1332
+      "id": 1332,
+      "alts": 8
     },
     {
       "name": "Toon Link",
-      "id": 1333
+      "id": 1333,
+      "alts": 8
     },
     {
       "name": "Villager",
-      "id": 1334
+      "id": 1334,
+      "alts": 8
     },
     {
       "name": "Wario",
-      "id": 1335
+      "id": 1335,
+      "alts": 8
     },
     {
       "name": "Wii Fit Trainer",
-      "id": 1336
+      "id": 1336,
+      "alts": 8
     },
     {
       "name": "Wolf",
-      "id": 1337
+      "id": 1337,
+      "alts": 8
     },
     {
       "name": "Yoshi",
-      "id": 1338
+      "id": 1338,
+      "alts": 8
     },
     {
       "name": "Young Link",
-      "id": 1339
+      "id": 1339,
+      "alts": 8
     },
     {
       "name": "Zelda",
-      "id": 1340
+      "id": 1340,
+      "alts": 8
     },
     {
       "name": "Zero Suit Samus",
-      "id": 1341
+      "id": 1341,
+      "alts": 8
     },
     {
       "name": "Mr. Game & Watch",
-      "id": 1405
+      "id": 1405,
+      "alts": 8
     },
     {
       "name": "Incineroar",
-      "id": 1406
+      "id": 1406,
+      "alts": 8
     },
     {
       "name": "King K. Rool",
-      "id": 1407
+      "id": 1407,
+      "alts": 8
     },
     {
       "name": "Dark Samus",
-      "id": 1408
+      "id": 1408,
+      "alts": 8
     },
     {
       "name": "Chrom",
-      "id": 1409
+      "id": 1409,
+      "alts": 8
     },
     {
       "name": "Ken",
-      "id": 1410
+      "id": 1410,
+      "alts": 8
     },
     {
       "name": "Simon Belmont",
-      "id": 1411
+      "id": 1411,
+      "alts": 8
     },
     {
       "name": "Richter",
-      "id": 1412
+      "id": 1412,
+      "alts": 8
     },
     {
       "name": "Isabelle",
-      "id": 1413
+      "id": 1413,
+      "alts": 8
     },
     {
       "name": "Mii Swordfighter",
-      "id": 1414
+      "id": 1414,
+      "alts": 1
     },
     {
       "name": "Mii Gunner",
-      "id": 1415
+      "id": 1415,
+      "alts": 1
     },
     {
       "name": "Piranha Plant",
-      "id": 1441
+      "id": 1441,
+      "alts": 8
     },
     {
       "name": "Joker",
-      "id": 1453
+      "id": 1453,
+      "alts": 8
     },
     {
       "name": "Hero",
-      "id": 1526
+      "id": 1526,
+      "alts": 8
     },
     {
       "name": "Banjo-Kazooie",
-      "id": 1530
+      "id": 1530,
+      "alts": 8
     },
     {
       "name": "Terry",
-      "id": 1532
+      "id": 1532,
+      "alts": 8
     },
     {
       "name": "Byleth",
-      "id": 1539
+      "id": 1539,
+      "alts": 8
     },
     {
       "name": "Random",
-      "id": 1746
+      "id": 1746,
+      "alts": 1
     },
     {
       "name": "Min Min",
-      "id": 1747
+      "id": 1747,
+      "alts": 8
     },
     {
       "name": "Steve",
-      "id": 1766
+      "id": 1766,
+      "alts": 8
     },
     {
       "name": "Sephiroth",
-      "id": 1777
+      "id": 1777,
+      "alts": 8
     },
     {
       "name": "Pyra & Mythra",
-      "id": 1795
+      "id": 1795,
+      "alts": 8
     },
     {
       "name": "Kazuya",
-      "id": 1846
+      "id": 1846,
+      "alts": 8
     },
     {
       "name": "Sora",
-      "id": 1897
+      "id": 1897,
+      "alts": 8
     }
   ]
 }

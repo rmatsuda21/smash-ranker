@@ -1,5 +1,6 @@
 import * as fabric from "fabric";
 import { useRef, useState } from "react";
+import cn from "classnames";
 
 import { Canvas } from "@/components/top8/Canvas";
 import { CanvasConfig } from "@/components/top8/CanvasConfig";
@@ -33,84 +34,92 @@ export const Ranker = () => {
 
   return (
     <div className={styles.root}>
-      <h1>Ranker {selectedPlayerId}</h1>
-
-      <div className={styles.canvasContainer}>
-        <Canvas
-          ref={canvasRef}
-          setCanvas={setCanvas}
-          onPlayerSelected={onPlayerSelected}
-          result={top8}
-        />
-      </div>
-
-      <div>
-        <Heading as="h2">Canvas Config</Heading>
-        <CanvasConfig canvas={canvas!} />
+      <div
+        className={cn(styles.playerConfig, {
+          [styles.open]: Boolean(selectedPlayer),
+        })}
+      >
         {selectedPlayer && <PlayerConfig playerObj={selectedPlayer} />}
       </div>
+      <div className={styles.content}>
+        <h1>Ranker {selectedPlayerId}</h1>
 
-      <label htmlFor="name">Filename:</label>
-      <TextField.Root
-        type="text"
-        name="filename"
-        value={filename}
-        onChange={(event) => {
-          setFilename(event.currentTarget.value);
-        }}
-        placeholder="ranker.png"
-      />
+        <div className={styles.canvasContainer}>
+          <Canvas
+            ref={canvasRef}
+            setCanvas={setCanvas}
+            onPlayerSelected={onPlayerSelected}
+            result={top8}
+          />
+        </div>
 
-      <Button
-        onClick={() => {
-          if (canvas) {
-            const dataURL = canvas.toDataURL({
-              format: "png",
-              quality: 10,
-              multiplier: 2,
-            });
+        <div>
+          <Heading as="h2">Canvas Config</Heading>
+          <CanvasConfig canvas={canvas!} />
+        </div>
 
-            const a = document.createElement("a");
-            a.href = dataURL;
-            a.download = `${filename || "ranker"}.png`;
-            a.click();
-          }
-        }}
-      >
-        Download
-      </Button>
-      <Button
-        onClick={() => {
-          console.log(canvas?.toJSON());
-        }}
-      >
-        See
-      </Button>
-      <Button
-        onClick={() => {
-          // TODO: Implement undo/redo
-          console.log(canvas?.toJSON());
-        }}
-      >
-        Undo
-      </Button>
-      <Button
-        onClick={() => {
-          // Find object with id "name" from selectedPlayer
-          if (!selectedPlayer || !canvas) return;
+        <label htmlFor="name">Filename:</label>
+        <TextField.Root
+          type="text"
+          name="filename"
+          value={filename}
+          onChange={(event) => {
+            setFilename(event.currentTarget.value);
+          }}
+          placeholder="ranker.png"
+        />
 
-          const objects = selectedPlayer._objects;
+        <Button
+          onClick={() => {
+            if (canvas) {
+              const dataURL = canvas.toDataURL({
+                format: "png",
+                quality: 10,
+                multiplier: 2,
+              });
 
-          const nameTxt = objects.find((obj) => obj.id === "name");
-          if (!nameTxt) return;
+              const a = document.createElement("a");
+              a.href = dataURL;
+              a.download = `${filename || "ranker"}.png`;
+              a.click();
+            }
+          }}
+        >
+          Download
+        </Button>
+        <Button
+          onClick={() => {
+            console.log(canvas?.toJSON());
+          }}
+        >
+          See
+        </Button>
+        <Button
+          onClick={() => {
+            // TODO: Implement undo/redo
+            console.log(canvas?.toJSON());
+          }}
+        >
+          Undo
+        </Button>
+        <Button
+          onClick={() => {
+            // Find object with id "name" from selectedPlayer
+            if (!selectedPlayer || !canvas) return;
 
-          nameTxt.set({ text: "New Name" });
+            const objects = selectedPlayer._objects;
 
-          canvas.renderAll();
-        }}
-      >
-        Replace Name
-      </Button>
+            const nameTxt = objects.find((obj) => obj.id === "name");
+            if (!nameTxt) return;
+
+            nameTxt.set({ text: "New Name" });
+
+            canvas.renderAll();
+          }}
+        >
+          Replace Name
+        </Button>
+      </div>
     </div>
   );
 };

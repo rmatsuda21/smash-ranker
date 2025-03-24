@@ -13,12 +13,12 @@ export const getCharacterImage = ({
   alt = 0,
   type = "main",
 }: {
-  characterId: string;
+  characterId: Player["character"];
   alt: Player["alt"];
   type?: "main" | "stock";
 }) =>
   `https://res.cloudinary.com/dzyfrrrcj/image/upload${
-    type === "stock" ? "/f_webp" : ""
+    type === "stock" ? "/f_webp" : "/c_auto"
   }/smash_ranker/${characterId}/${type}/${alt}.png`;
 
 export const generateGraphic = async (
@@ -101,11 +101,7 @@ const drawPlayer = async (
 
   const group = new fabric.Group([imageGroup, frame, text], {
     id: player.id,
-    playerId: player.id,
-    playerName: player.name,
-    characterId: player.character,
-    placement: player.placement,
-    alt: 0,
+    playerInfo: player,
     name: playerObjIds.mainGroup,
     ...defaultOptions,
     ...options,

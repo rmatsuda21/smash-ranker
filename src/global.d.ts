@@ -1,3 +1,5 @@
+import { Player } from "@/types/top8/Result";
+
 declare module "fabric" {
   interface Group {
     _objects: FabricObject[];
@@ -5,22 +7,14 @@ declare module "fabric" {
 
   interface FabricObject {
     id?: string;
-    playerId?: string;
-    playerName?: string;
-    characterId?: string;
-    placement?: number;
-    alt?: Player["alt"];
+    playerInfo?: Player;
     locked?: boolean;
     name?: string;
     _objects: FabricObject[];
   }
   interface SerializedObjectProps {
     id?: string;
-    playerId?: string;
-    playerName?: string;
-    characterId?: string;
-    placement?: number;
-    alt?: Player["alt"];
+    playerInfo?: Player;
     locked?: boolean;
     name?: string;
     _objects: FabricObject[];
