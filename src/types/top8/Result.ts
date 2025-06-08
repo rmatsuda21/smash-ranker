@@ -1,4 +1,4 @@
-export type Player = {
+export type PlayerInfo = {
   id: string;
   name: string;
   placement: number;
@@ -8,4 +8,4 @@ export type Player = {
   twitter?: string;
 };
 
-export type Result = Player[];
+export type Result = PlayerInfo[];

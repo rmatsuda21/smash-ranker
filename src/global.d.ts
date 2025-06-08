@@ -1,4 +1,4 @@
-import { Player } from "@/types/top8/Result";
+import { PlayerInfo } from "@/types/top8/Result";
 
 declare module "fabric" {
   interface Group {
@@ -7,14 +7,15 @@ declare module "fabric" {
 
   interface FabricObject {
     id?: string;
-    playerInfo?: Player;
+    playerInfo?: PlayerInfo;
     locked?: boolean;
     name?: string;
     _objects: FabricObject[];
   }
+
   interface SerializedObjectProps {
     id?: string;
-    playerInfo?: Player;
+    playerInfo?: PlayerInfo;
     locked?: boolean;
     name?: string;
     _objects: FabricObject[];

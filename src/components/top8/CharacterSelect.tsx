@@ -1,5 +1,5 @@
 import { characters } from "@/consts/top8/ultCharacters.json";
-import { getCharacterImage } from "@/utils/top8/generateGraphic";
+import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
 import { Flex, Select } from "@radix-ui/themes";
 
 export const CharacterSelect = ({
@@ -17,7 +17,7 @@ export const CharacterSelect = ({
             style={{ marginRight: 8 }}
             width={24}
             height={24}
-            src={getCharacterImage({
+            src={getCharImgUrl({
               characterId: String(characterId),
               alt: 0,
               type: "stock",
@@ -34,7 +34,7 @@ export const CharacterSelect = ({
                 style={{ marginRight: 8 }}
                 width={24}
                 height={24}
-                src={getCharacterImage({
+                src={getCharImgUrl({
                   characterId: String(character.id),
                   alt: 0,
                   type: "stock",

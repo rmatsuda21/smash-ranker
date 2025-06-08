@@ -1,8 +1,8 @@
 <svg id="background" width="1200" height="675" viewBox="0 0 1200 675" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path fill-rule="evenodd" clip-rule="evenodd" class="color1" id="color1"
+  <path fill-rule="evenodd" clip-rule="evenodd" class="color1" id="bg-1"
     d="M469.5 0H0V144.5C0 144.5 105.643 88.3275 177.5 62.5C273 28.1745 469.5 0 469.5 0ZM0 227.5V675H1200V0H469.5C469.5 0 284.205 48.643 177.5 106.5C103.751 146.488 0 227.5 0 227.5Z"
     fill="#1D1D1D" />
-  <path id="color2"
+  <path id="bg-2"
     d="M177.5 62.5C105.643 88.3275 0 144.5 0 144.5V227.5C0 227.5 103.751 146.488 177.5 106.5C284.205 48.643 469.5 0 469.5 0C469.5 0 273 28.1745 177.5 62.5Z"
     fill="#FA0000" />
 </svg>

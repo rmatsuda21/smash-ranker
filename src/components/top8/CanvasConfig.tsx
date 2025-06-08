@@ -1,12 +1,13 @@
-import * as fabric from "fabric";
 import { useState } from "react";
 
-import { setCanvasEditable } from "@/utils/top8/setCanvasEditable";
 import { Checkbox, Flex } from "@radix-ui/themes";
+import { Graphic } from "@/js/top8/Graphic";
 
-export const CanvasConfig = ({ canvas }: { canvas: fabric.Canvas }) => {
+export const CanvasConfig = ({ graphic }: { graphic: Graphic }) => {
   const [snap, setSnap] = useState(true);
   const [editable, setEditable] = useState(false);
+
+  const canvas = graphic.canvas;
 
   return (
     <>
@@ -33,7 +34,7 @@ export const CanvasConfig = ({ canvas }: { canvas: fabric.Canvas }) => {
             setEditable((prev) => {
               const isEditable = !prev;
 
-              if (canvas) setCanvasEditable(canvas, isEditable);
+              if (canvas) graphic.setCanvasEditable(isEditable);
 
               return isEditable;
             });

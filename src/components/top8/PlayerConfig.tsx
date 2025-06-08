@@ -1,18 +1,26 @@
-import { FabricObject } from "fabric";
 import { useEffect, useState } from "react";
 
 import { Button, Flex, Slider, TextField } from "@radix-ui/themes";
-import { redrawPlayer } from "@/utils/top8/redrawPlayer";
-import { Player } from "@/types/top8/Result";
+import { PlayerInfo } from "@/types/top8/Result";
 import { CharacterSelect } from "@/components/top8/CharacterSelect";
 import { characters } from "@/consts/top8/ultCharacters.json";
+import { Player } from "@/js/top8/Player";
+import { Graphic } from "@/js/top8/Graphic";
 
-export const PlayerConfig = ({ playerObj }: { playerObj: FabricObject }) => {
-  const [name, setName] = useState(playerObj.playerInfo?.name || "");
+export const PlayerConfig = ({
+  player,
+  graphic,
+}: {
+  player: Player;
+  graphic: Graphic;
+}) => {
+  const [name, setName] = useState(player.playerInfo.name || "");
   const [characterId, setCharacterId] = useState(
-    playerObj.playerInfo?.character || ""
+    player.playerInfo?.character || ""
   );
-  const [alt, setAlt] = useState<Player["alt"]>(playerObj.playerInfo?.alt || 0);
+  const [alt, setAlt] = useState<PlayerInfo["alt"]>(
+    player.playerInfo?.alt || 0
+  );
   const [maxAlt, setMaxAlt] = useState(
     characters.find((c) => c.id === Number(characterId))?.alts || 0
   );
@@ -22,32 +30,26 @@ export const PlayerConfig = ({ playerObj }: { playerObj: FabricObject }) => {
   const onSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setLoading(true);
-
-    const player: Player = {
-      id: playerObj.id || "",
-      name: name,
+    const updatedPlayerInfo: PlayerInfo = {
+      ...player.playerInfo,
+      name,
       character: characterId,
-      alt: alt || 0,
-      placement: playerObj.playerInfo?.placement || 0,
+      alt,
     };
 
-    await redrawPlayer({
-      playerObj,
-      player,
-    });
-
+    await graphic.updatePlayer(player, updatedPlayerInfo);
     setLoading(false);
   };
 
   useEffect(() => {
-    setName(playerObj.playerInfo?.name || "");
-    setCharacterId(playerObj.playerInfo?.character || "");
-    setAlt(playerObj.playerInfo?.alt || 0);
+    setName(player.playerInfo?.name || "");
+    setCharacterId(player.playerInfo?.character || "");
+    setAlt(player.playerInfo?.alt || 0);
     setMaxAlt(
-      characters.find((c) => c.id === Number(playerObj.playerInfo?.character))
+      characters.find((c) => c.id === Number(player.playerInfo?.character))
         ?.alts || 0
     );
-  }, [playerObj]);
+  }, [player]);
 
   useEffect(() => {
     setAlt(0);
@@ -74,7 +76,7 @@ export const PlayerConfig = ({ playerObj }: { playerObj: FabricObject }) => {
           defaultValue={[alt]}
           value={[alt]}
           onValueChange={(e) => {
-            setAlt(e[0] as Player["alt"]);
+            setAlt(e[0] as PlayerInfo["alt"]);
           }}
         />
         <Flex>
