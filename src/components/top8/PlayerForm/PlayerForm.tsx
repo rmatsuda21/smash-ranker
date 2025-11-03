@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Button, TextField } from "@radix-ui/themes";
 
 import { PlayerInfo } from "@/types/top8/Result";
+import { useForm } from "react-hook-form";
 
 type Props = {
   selectedPlayer: PlayerInfo | null;
@@ -9,45 +10,30 @@ type Props = {
 };
 
 export const PlayerForm = ({ selectedPlayer, updatePlayer }: Props) => {
-  const [formData, setFormData] = useState<PlayerInfo | null>(null);
+  const { register, handleSubmit, reset } = useForm<PlayerInfo>({
+    defaultValues: selectedPlayer || undefined,
+  });
 
   useEffect(() => {
-    setFormData(selectedPlayer);
-  }, [selectedPlayer]);
-
-  const handleChange = <K extends keyof PlayerInfo>(
-    field: K,
-    value: PlayerInfo[K]
-  ) => {
-    if (formData) {
-      setFormData({
-        ...formData,
-        [field]: value,
-      });
+    if (selectedPlayer) {
+      reset(selectedPlayer);
     }
+  }, [selectedPlayer, reset]);
+
+  const onSubmit = (data: PlayerInfo) => {
+    updatePlayer(data);
   };
 
-  const handleSave = () => {
-    if (formData) {
-      updatePlayer(formData);
-    }
-  };
-
-  if (!formData) return null;
+  if (!selectedPlayer) return null;
 
   return (
-    <div>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <TextField.Root
         type="text"
-        name="name"
-        value={formData.name}
-        onChange={(event) => {
-          handleChange("name", event.currentTarget.value);
-        }}
+        {...register("name")}
         placeholder="Player Name"
       />
-
-      <Button onClick={handleSave}>Save</Button>
-    </div>
+      <Button type="submit">Save</Button>
+    </form>
   );
 };

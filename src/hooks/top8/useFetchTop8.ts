@@ -79,7 +79,7 @@ export const useFetchTop8 = (slug: string) => {
           };
         })
         .sort((a, b) => a.placement - b.placement) || [],
-    [data]
+    [result]
   );
 
   return { fetching, error, top8 };
