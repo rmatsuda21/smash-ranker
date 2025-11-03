@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "type": "module",
   "engines": {
-    "node": ">=20.0.0"
+    "node": "22.20.0"
   },
   "scripts": {
     "dev": "vite",
@@ -16,11 +16,13 @@
   },
   "dependencies": {
     "@radix-ui/themes": "^3.2.1",
-    "fabric": "^6.6.1",
     "js-cookie": "^3.0.5",
+    "konva": "^10.0.8",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-konva": "^19.2.0",
     "urql": "^4.2.2",
+    "use-image": "^1.1.4",
     "wouter": "^3.6.0"
   },
   "devDependencies": {

@@ -1,6 +1,7 @@
+import { Flex, Select } from "@radix-ui/themes";
+
 import { characters } from "@/consts/top8/ultCharacters.json";
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
-import { Flex, Select } from "@radix-ui/themes";
 
 export const CharacterSelect = ({
   characterId,
