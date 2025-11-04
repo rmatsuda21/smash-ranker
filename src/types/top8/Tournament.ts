@@ -1,8 +1,8 @@
-import { Result } from "./Result";
+import { PlayerInfo } from "@/types/top8/Result";
 
 export type Tournament = {
   name: string;
   date: string;
   location: string;
-  result: Result;
+  result: PlayerInfo[];
 };
