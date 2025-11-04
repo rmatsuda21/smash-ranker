@@ -4,13 +4,16 @@
   gap: 10px;
 
   .item {
+    user-select: none;
+    cursor: pointer;
+
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    padding: 10px;
+    padding: 6px 10px;
+
+    background-color: #222;
     border: 1px solid #ccc;
     border-radius: 5px;
-    user-select: none;
 
     .header {
       display: flex;
@@ -18,14 +21,35 @@
       align-items: center;
       gap: 10px;
     }
-  }
 
-  .dragHandle {
-    cursor: grab;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    .dragHandle {
+      cursor: grab;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
-    height: 100%;
+      height: 100%;
+      width: auto;
+      border-radius: 5px;
+
+      background-color: rgba(255, 255, 255, 0.075);
+    }
+
+    .formWrapper {
+      overflow: hidden;
+    }
+
+    .form {
+      padding-top: 10px;
+    }
+
+    &:not(.selected):hover {
+      border-color: #444;
+    }
+
+    &.selected {
+      outline: 2px solid #ccc;
+      outline-offset: -2px;
+    }
   }
 }

@@ -1,39 +1,59 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Button, TextField } from "@radix-ui/themes";
 
 import { PlayerInfo } from "@/types/top8/Result";
-import { useForm } from "react-hook-form";
+import { CharacterSelect } from "@/components/top8/CharacterSelect/CharacterSelect";
 
 type Props = {
   selectedPlayer: PlayerInfo | null;
   updatePlayer: (player: PlayerInfo) => void;
+  className?: string;
 };
 
-export const PlayerForm = ({ selectedPlayer, updatePlayer }: Props) => {
-  const { register, handleSubmit, reset } = useForm<PlayerInfo>({
-    defaultValues: selectedPlayer || undefined,
-  });
+export const PlayerForm = ({
+  selectedPlayer,
+  updatePlayer,
+  className,
+}: Props) => {
+  const [name, setName] = useState(selectedPlayer?.name || "");
+  const [character, setCharacter] = useState(selectedPlayer?.character || "");
 
   useEffect(() => {
     if (selectedPlayer) {
-      reset(selectedPlayer);
+      setName(selectedPlayer.name);
+      setCharacter(selectedPlayer.character);
+    } else {
+      setName("");
+      setCharacter("");
     }
-  }, [selectedPlayer, reset]);
-
-  const onSubmit = (data: PlayerInfo) => {
-    updatePlayer(data);
-  };
-
-  if (!selectedPlayer) return null;
+  }, [selectedPlayer]);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <div className={className}>
       <TextField.Root
         type="text"
-        {...register("name")}
+        value={name}
+        onChange={(e) => setName(e.target.value)}
         placeholder="Player Name"
+        disabled={!selectedPlayer}
       />
-      <Button type="submit">Save</Button>
-    </form>
+      <CharacterSelect
+        characterId={character}
+        onValueChange={setCharacter}
+        disabled={!selectedPlayer}
+      />
+      <Button
+        onClick={() => {
+          if (!selectedPlayer) return;
+          updatePlayer({
+            ...selectedPlayer,
+            name,
+            character,
+          });
+        }}
+      >
+        Save
+      </Button>
+    </div>
   );
 };

@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Reorder } from "framer-motion";
 import { useDragControls } from "motion/react";
 import { MdDragIndicator } from "react-icons/md";
@@ -7,7 +7,6 @@ import cn from "classnames";
 import { PlayerInfo } from "@/types/top8/Result";
 
 import styles from "./PlayerList.module.scss";
-import { PlayerForm } from "../PlayerForm/PlayerForm";
 
 type Props = {
   players: PlayerInfo[];
@@ -22,7 +21,6 @@ type PlayerItemProps = {
   player: PlayerInfo;
   containerRef: React.RefObject<any>;
   isSelected: boolean;
-  updatePlayer: (player: PlayerInfo) => void;
   setSelectedPlayerId: (playerId: string) => void;
 };
 
@@ -30,7 +28,6 @@ const PlayerItem = ({
   player,
   containerRef,
   isSelected,
-  updatePlayer,
   setSelectedPlayerId,
 }: PlayerItemProps) => {
   const controls = useDragControls();
@@ -38,26 +35,28 @@ const PlayerItem = ({
   return (
     <Reorder.Item
       as="div"
-      className={styles.item}
+      className={cn(styles.item, { [styles.selected]: isSelected })}
       key={player.id}
       value={player}
       dragConstraints={containerRef}
       dragListener={false}
       dragControls={controls}
-      onClick={() => setSelectedPlayerId(player.id)}
+      onClick={() => {
+        if (isSelected) {
+          setSelectedPlayerId("");
+        } else {
+          setSelectedPlayerId(player.id);
+        }
+      }}
+      data-id={player.id}
     >
       <div className={styles.header}>
-        <div
+        <MdDragIndicator
           className={styles.dragHandle}
           onPointerDown={(e) => controls.start(e)}
-        >
-          <MdDragIndicator color={isSelected ? "blue" : "white"} />
-        </div>
+        />
         <h3>{player.name}</h3>
       </div>
-      {isSelected && (
-        <PlayerForm selectedPlayer={player} updatePlayer={updatePlayer} />
-      )}
     </Reorder.Item>
   );
 };
@@ -67,10 +66,24 @@ export const PlayerList = ({
   players,
   setPlayers,
   selectedPlayerId,
-  updatePlayer,
   setSelectedPlayerId,
 }: Props) => {
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (selectedPlayerId) {
+      const playerItem = containerRef.current?.querySelector(
+        `[data-id="${selectedPlayerId}"]`
+      );
+
+      if (playerItem) {
+        containerRef.current?.scrollTo({
+          top: (playerItem as HTMLElement).offsetTop,
+          behavior: "smooth",
+        });
+      }
+    }
+  }, [selectedPlayerId]);
 
   return (
     <Reorder.Group
@@ -87,7 +100,6 @@ export const PlayerList = ({
           player={player}
           containerRef={containerRef}
           isSelected={selectedPlayerId === player.id}
-          updatePlayer={updatePlayer}
           setSelectedPlayerId={setSelectedPlayerId}
         />
       ))}

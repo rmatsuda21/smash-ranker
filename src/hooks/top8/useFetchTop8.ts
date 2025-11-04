@@ -68,7 +68,7 @@ export const useFetchTop8 = (slug: string) => {
           const player = selections?.find(
             (selection) => selection?.entrant?.id === entrant?.id
           );
-          const character = player?.character?.id;
+          const character = String(player?.character?.id);
 
           return {
             id: entrant?.id || "",

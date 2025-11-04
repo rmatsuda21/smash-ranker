@@ -1,3 +1,17 @@
-.canvas {
-  overflow: auto;
+.canvasContainer {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #ccc;
+
+  width: calc(var(--canvas-width) * var(--display-scale));
+  height: calc(var(--canvas-height) * var(--display-scale));
+
+  .canvasWrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    transform: scale(var(--display-scale));
+    transform-origin: top left;
+  }
 }

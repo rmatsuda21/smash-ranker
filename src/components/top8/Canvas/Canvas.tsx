@@ -1,11 +1,11 @@
 import { useEffect } from "react";
-import Konva from "konva";
 import { Stage, Layer } from "react-konva";
+import Konva from "konva";
 
 import { Player } from "@/components/top8/Canvas/Player";
 import { PlayerInfo } from "@/types/top8/Result";
 
-// import styles from "./Canvas.module.scss";
+import styles from "./Canvas.module.scss";
 
 type Props = {
   players: PlayerInfo[];
@@ -13,6 +13,7 @@ type Props = {
   selectedPlayerId?: string;
   size?: { width: number; height: number };
   displayScale?: number;
+  stageRef: React.RefObject<Konva.Stage | null>;
 };
 
 export const Canvas = ({
@@ -21,6 +22,7 @@ export const Canvas = ({
   selectedPlayerId,
   size = { width: 1920, height: 1080 },
   displayScale = 0.5,
+  stageRef,
 }: Props) => {
   const handleStageClick = (e: Konva.KonvaEventObject<MouseEvent>) => {
     if (e.target === e.target.getStage()) {
@@ -43,33 +45,37 @@ export const Canvas = ({
 
   return (
     <div
-      style={{
-        width: `${size.width * displayScale}px`,
-        height: `${size.height * displayScale}px`,
-        overflow: "hidden",
-        border: "1px solid #ccc",
-      }}
+      style={
+        {
+          "--canvas-width": `${size.width}px`,
+          "--canvas-height": `${size.height}px`,
+          "--display-scale": `${displayScale}`,
+        } as React.CSSProperties
+      }
+      className={styles.canvasContainer}
     >
-      <Stage
-        width={size.width}
-        height={size.height}
-        scaleX={displayScale}
-        scaleY={displayScale}
-        onClick={handleStageClick}
-      >
-        <Layer>
-          {players?.map((player, index) => (
-            <Player
-              placement={index + 1}
-              position={{ x: index * 100, y: index * 100 }}
-              key={player.id}
-              player={player}
-              setSelectedPlayerId={setSelectedPlayerId}
-              isSelected={selectedPlayerId === player.id}
-            />
-          ))}
-        </Layer>
-      </Stage>
+      <div className={styles.canvasWrapper}>
+        <Stage
+          width={size.width}
+          height={size.height}
+          onClick={handleStageClick}
+          ref={stageRef}
+          className={styles.canvas}
+        >
+          <Layer>
+            {players?.map((player, index) => (
+              <Player
+                key={`player-${index}`}
+                placement={index + 1}
+                position={{ x: index * 100, y: index * 100 }}
+                player={player}
+                setSelectedPlayerId={setSelectedPlayerId}
+                isSelected={selectedPlayerId === player.id}
+              />
+            ))}
+          </Layer>
+        </Stage>
+      </div>
     </div>
   );
 };
