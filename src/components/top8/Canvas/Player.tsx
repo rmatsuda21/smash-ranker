@@ -7,7 +7,7 @@ import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
 type Props = {
   player: PlayerInfo;
   position?: { x: number; y: number };
-  setSelectedPlayer: (player: PlayerInfo) => void;
+  setSelectedPlayerId: (playerId: string) => void;
   isSelected: boolean;
   placement: number;
 };
@@ -15,7 +15,7 @@ type Props = {
 export const Player = ({
   player,
   position = { x: 0, y: 0 },
-  setSelectedPlayer,
+  setSelectedPlayerId,
   isSelected = false,
   placement,
 }: Props) => {
@@ -27,7 +27,7 @@ export const Player = ({
 
   return (
     <Group
-      onClick={() => setSelectedPlayer(player)}
+      onClick={() => setSelectedPlayerId(player.id)}
       draggable={isSelected}
       x={position.x}
       y={position.y}

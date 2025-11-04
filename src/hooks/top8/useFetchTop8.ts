@@ -1,6 +1,6 @@
 import { useQuery } from "urql";
 import { graphql } from "@/gql";
-import { Result } from "@/types/top8/Result";
+import { PlayerInfo } from "@/types/top8/Result";
 import { useMemo } from "react";
 
 const Top8Query = graphql(`
@@ -58,7 +58,7 @@ export const useFetchTop8 = (slug: string) => {
 
   const { data, fetching, error } = result;
 
-  const top8: Result = useMemo(
+  const top8: PlayerInfo[] = useMemo(
     () =>
       data?.event?.standings?.nodes
         ?.map((node) => {

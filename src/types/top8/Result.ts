@@ -6,5 +6,3 @@ export type PlayerInfo = {
   country?: string;
   twitter?: string;
 };
-
-export type Result = PlayerInfo[];

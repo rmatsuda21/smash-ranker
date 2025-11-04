@@ -1,7 +1,7 @@
 import { TabNav, Theme } from "@radix-ui/themes";
-
-import styles from "./styles/Layout.module.scss";
 import { Link, useLocation } from "wouter";
+
+import styles from "./Layout.module.scss";
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {
   const [location] = useLocation();
