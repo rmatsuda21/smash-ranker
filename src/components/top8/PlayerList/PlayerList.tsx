@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 import { Reorder } from "framer-motion";
 import { useDragControls } from "motion/react";
 import { MdDragIndicator } from "react-icons/md";
@@ -55,7 +55,7 @@ const PlayerItem = ({
           className={styles.dragHandle}
           onPointerDown={(e) => controls.start(e)}
         />
-        <h3>{player.name}</h3>
+        <span>{player.name}</span>
       </div>
     </Reorder.Item>
   );
@@ -69,40 +69,42 @@ export const PlayerList = ({
   setSelectedPlayerId,
 }: Props) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (selectedPlayerId) {
-      const playerItem = containerRef.current?.querySelector(
-        `[data-id="${selectedPlayerId}"]`
-      );
-
-      if (playerItem) {
-        containerRef.current?.scrollTo({
-          top: (playerItem as HTMLElement).offsetTop,
-          behavior: "smooth",
-        });
-      }
+  useLayoutEffect(() => {
+    if (wrapperRef.current) {
+      const width = wrapperRef.current.offsetWidth;
+      document
+        .getElementById("places")
+        ?.style.setProperty("--wrapper-width", `${width}px`);
     }
-  }, [selectedPlayerId]);
+  }, []);
 
   return (
-    <Reorder.Group
-      as="div"
-      ref={containerRef}
-      className={cn(styles.wrapper, className)}
-      axis="y"
-      values={players}
-      onReorder={setPlayers}
-    >
-      {players.map((player) => (
-        <PlayerItem
-          key={player.id}
-          player={player}
-          containerRef={containerRef}
-          isSelected={selectedPlayerId === player.id}
-          setSelectedPlayerId={setSelectedPlayerId}
-        />
-      ))}
-    </Reorder.Group>
+    <div className={styles.wrapper} ref={wrapperRef}>
+      <div id="places" className={styles.places}>
+        {Array.from({ length: 8 }).map((_, index) => (
+          <span key={index}>{index + 1}</span>
+        ))}
+      </div>
+      <Reorder.Group
+        as="div"
+        ref={containerRef}
+        className={cn(styles.list, className)}
+        axis="y"
+        values={players}
+        onReorder={setPlayers}
+      >
+        {players.map((player) => (
+          <PlayerItem
+            key={player.id}
+            player={player}
+            containerRef={containerRef}
+            isSelected={selectedPlayerId === player.id}
+            setSelectedPlayerId={setSelectedPlayerId}
+          />
+        ))}
+      </Reorder.Group>
+    </div>
   );
 };

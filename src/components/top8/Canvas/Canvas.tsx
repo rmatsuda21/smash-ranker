@@ -4,6 +4,7 @@ import Konva from "konva";
 
 import { Player } from "@/components/top8/Canvas/Player";
 import { PlayerInfo } from "@/types/top8/Result";
+import { CanvasConfig } from "@/types/top8/Canvas";
 
 import styles from "./Canvas.module.scss";
 
@@ -43,6 +44,11 @@ export const Canvas = ({
     };
   }, []);
 
+  const canvasConfig: CanvasConfig = {
+    size,
+    displayScale,
+  };
+
   return (
     <div
       style={
@@ -67,10 +73,15 @@ export const Canvas = ({
               <Player
                 key={`player-${index}`}
                 placement={index + 1}
-                position={{ x: index * 100, y: index * 100 }}
+                size={{ width: 400, height: 400 }}
+                position={{
+                  x: Math.floor(index / 2) * 400,
+                  y: Math.floor(index % 2) * 400,
+                }}
                 player={player}
                 setSelectedPlayerId={setSelectedPlayerId}
                 isSelected={selectedPlayerId === player.id}
+                canvasConfig={canvasConfig}
               />
             ))}
           </Layer>
