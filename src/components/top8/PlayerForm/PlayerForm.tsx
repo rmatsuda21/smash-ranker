@@ -6,12 +6,14 @@ import { CharacterSelect } from "@/components/top8/CharacterSelect/CharacterSele
 
 type Props = {
   selectedPlayer: PlayerInfo | null;
-  updatePlayer: (player: PlayerInfo) => void;
+  updatePlayer: (index: number, player: PlayerInfo) => void;
+  index?: number;
   className?: string;
 };
 
 export const PlayerForm = ({
   selectedPlayer,
+  index,
   updatePlayer,
   className,
 }: Props) => {
@@ -46,9 +48,10 @@ export const PlayerForm = ({
       />
       <Button
         onClick={() => {
-          if (!selectedPlayer) return;
-          updatePlayer({
-            ...selectedPlayer,
+          if (!selectedPlayer || index === undefined) return;
+          updatePlayer(index, {
+            id: selectedPlayer.id,
+            alt: selectedPlayer.alt,
             name,
             characterId: characterId,
           });

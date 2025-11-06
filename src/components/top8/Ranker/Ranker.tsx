@@ -17,18 +17,30 @@ const CANVAS_DIMENSIONS = {
 
 const DISPLAY_SCALE = 0.5;
 
+const DEFAULT_PLAYER: PlayerInfo = {
+  id: `0`,
+  name: `Player Name`,
+  characterId: `1453`,
+  alt: 0,
+};
+
 export const Ranker = () => {
-  const [selectedPlayerId, setSelectedPlayerId] = useState<string>();
-  const [players, setPlayers] = useState<PlayerInfo[]>();
+  const [selectedIndex, setSelectedIndex] = useState<number>();
+  const [players, setPlayers] = useState<PlayerInfo[]>(
+    Array.from({ length: 8 }).map((_) => ({
+      ...DEFAULT_PLAYER,
+    }))
+  );
   const stageRef = useRef<Konva.Stage>(null);
 
   const { top8, fetching, error } = useFetchTop8(
     "tournament/genesis-9-1/event/ultimate-singles"
   );
 
-  const updatePlayer = useCallback((player: PlayerInfo) => {
+  const updatePlayer = useCallback((index: number, player: PlayerInfo) => {
+    console.log(index, player);
     setPlayers((prevPlayers) =>
-      prevPlayers?.map((p) => (p.id === player.id ? player : p))
+      prevPlayers?.map((p, i) => (i === index ? player : p))
     );
   }, []);
 
@@ -44,7 +56,8 @@ export const Ranker = () => {
 
   if (!players) return <div>No players</div>;
 
-  const selectedPlayer = players.find((p) => p.id === selectedPlayerId) || null;
+  const selectedPlayer =
+    selectedIndex !== undefined ? players[selectedIndex] : null;
 
   return (
     <div className={styles.root}>
@@ -66,11 +79,11 @@ export const Ranker = () => {
               className={styles.playerList}
               players={players}
               setPlayers={setPlayers}
-              selectedPlayerId={selectedPlayerId}
-              updatePlayer={updatePlayer}
-              setSelectedPlayerId={setSelectedPlayerId}
+              selectedIndex={selectedIndex}
+              setSelectedIndex={setSelectedIndex}
             />
             <PlayerForm
+              index={selectedIndex}
               selectedPlayer={selectedPlayer}
               updatePlayer={updatePlayer}
             />
@@ -78,8 +91,8 @@ export const Ranker = () => {
 
           <Canvas
             players={players}
-            setSelectedPlayerId={setSelectedPlayerId}
-            selectedPlayerId={selectedPlayerId}
+            setSelectedIndex={setSelectedIndex}
+            selectedIndex={selectedIndex}
             size={CANVAS_DIMENSIONS}
             displayScale={DISPLAY_SCALE}
             stageRef={stageRef}

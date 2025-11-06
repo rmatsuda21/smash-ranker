@@ -1,6 +1,4 @@
 import { useLayoutEffect, useRef } from "react";
-import { Reorder } from "framer-motion";
-import { useDragControls } from "motion/react";
 import { MdDragIndicator } from "react-icons/md";
 import cn from "classnames";
 
@@ -11,64 +9,52 @@ import styles from "./PlayerList.module.scss";
 type Props = {
   players: PlayerInfo[];
   setPlayers: (players: PlayerInfo[]) => void;
-  selectedPlayerId?: string;
+  selectedIndex?: number;
+  setSelectedIndex: (index: number | undefined) => void;
   className?: string;
-  updatePlayer: (player: PlayerInfo) => void;
-  setSelectedPlayerId: (playerId: string) => void;
 };
 
 type PlayerItemProps = {
   player: PlayerInfo;
-  containerRef: React.RefObject<any>;
+  index: number;
   isSelected: boolean;
-  setSelectedPlayerId: (playerId: string) => void;
+  setSelectedIndex: (index: number | undefined) => void;
 };
 
 const PlayerItem = ({
   player,
-  containerRef,
+  index,
   isSelected,
-  setSelectedPlayerId,
+  setSelectedIndex,
 }: PlayerItemProps) => {
-  const controls = useDragControls();
-
   return (
-    <Reorder.Item
-      as="div"
+    <div
       className={cn(styles.item, { [styles.selected]: isSelected })}
       key={player.id}
-      value={player}
-      dragConstraints={containerRef}
-      dragListener={false}
-      dragControls={controls}
       onClick={() => {
         if (isSelected) {
-          setSelectedPlayerId("");
+          setSelectedIndex(undefined);
         } else {
-          setSelectedPlayerId(player.id);
+          setSelectedIndex(index);
         }
       }}
       data-id={player.id}
     >
       <div className={styles.header}>
-        <MdDragIndicator
-          className={styles.dragHandle}
-          onPointerDown={(e) => controls.start(e)}
-        />
+        <MdDragIndicator className={styles.dragHandle} />
         <span>{player.name}</span>
       </div>
-    </Reorder.Item>
+    </div>
   );
 };
 
 export const PlayerList = ({
   className,
   players,
-  setPlayers,
-  selectedPlayerId,
-  setSelectedPlayerId,
+  // setPlayers,
+  selectedIndex,
+  setSelectedIndex,
 }: Props) => {
-  const containerRef = useRef<HTMLDivElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
@@ -87,24 +73,17 @@ export const PlayerList = ({
           <span key={index}>{index + 1}</span>
         ))}
       </div>
-      <Reorder.Group
-        as="div"
-        ref={containerRef}
-        className={cn(styles.list, className)}
-        axis="y"
-        values={players}
-        onReorder={setPlayers}
-      >
-        {players.map((player) => (
+      <div className={cn(styles.list, className)}>
+        {players.map((player, index) => (
           <PlayerItem
-            key={player.id}
+            key={index}
+            index={index}
             player={player}
-            containerRef={containerRef}
-            isSelected={selectedPlayerId === player.id}
-            setSelectedPlayerId={setSelectedPlayerId}
+            isSelected={selectedIndex === index}
+            setSelectedIndex={setSelectedIndex}
           />
         ))}
-      </Reorder.Group>
+      </div>
     </div>
   );
 };

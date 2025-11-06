@@ -19,7 +19,6 @@
     "js-cookie": "^3.0.5",
     "konva": "^10.0.8",
     "lodash": "^4.17.21",
-    "motion": "^12.23.24",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-dropdown-select": "^4.12.2",

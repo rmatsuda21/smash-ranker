@@ -1,10 +1,24 @@
-import { ComponentProps, useState, useEffect } from "react";
+import { ComponentProps, useState, useEffect, useRef } from "react";
 import { Image } from "react-konva";
+import Konva from "konva";
+
+const BACKDROP_OFFSET = 10;
+
+type Props = Omit<ComponentProps<typeof Image>, "image"> & {
+  width: number;
+  height: number;
+  imageSrc: string;
+  hasBackdrop?: boolean;
+  backdropColor?: string;
+  offset?: { x: number; y: number };
+  onReady?: () => void;
+  onError?: (error: Error) => void;
+};
 
 export const ContainedImage = ({
   width,
   height,
-  image,
+  imageSrc,
   hasBackdrop = false,
   backdropColor = "red",
   x = 0,
@@ -13,25 +27,34 @@ export const ContainedImage = ({
   onReady,
   onError,
   ...rest
-}: ComponentProps<typeof Image> & {
-  width: number;
-  height: number;
-  image: HTMLImageElement;
-  hasBackdrop?: boolean;
-  backdropColor?: string;
-  offset?: { x: number; y: number };
-  onReady?: () => void;
-  onError?: (error: Error) => void;
-}) => {
+}: Props) => {
   const [finalImage, setFinalImage] = useState<HTMLImageElement>();
+  const [image, setImage] = useState<HTMLImageElement>();
+  const ref = useRef<Konva.Image>(null);
 
   useEffect(() => {
-    if (!image) {
-      setFinalImage(undefined);
-      return;
+    if (ref.current) {
+      ref.current.clearCache();
     }
 
-    const backdropOffset = 10;
+    const image = new window.Image();
+    image.src = imageSrc;
+    image.crossOrigin = "anonymous";
+    image.onload = () => {
+      setImage(image);
+    };
+
+    return () => {
+      image.src = "";
+      image.onload = null;
+      image.onerror = null;
+      image.remove();
+      ref.current?.clearCache();
+    };
+  }, [imageSrc]);
+
+  useEffect(() => {
+    if (!image) return;
 
     const drawContainedImage = (
       ctx: CanvasRenderingContext2D,
@@ -74,7 +97,6 @@ export const ContainedImage = ({
       if (!ctx) return;
 
       if (hasBackdrop) {
-        // First, draw the main image to a temporary canvas to create the backdrop
         const tempCanvas = document.createElement("canvas");
         tempCanvas.width = width;
         tempCanvas.height = height;
@@ -84,17 +106,14 @@ export const ContainedImage = ({
 
         drawContainedImage(tempCtx, 0, 0);
 
-        // Draw backdrop (colored version) at offset position
-        ctx.drawImage(tempCanvas, backdropOffset, backdropOffset);
+        ctx.drawImage(tempCanvas, BACKDROP_OFFSET, BACKDROP_OFFSET);
         ctx.globalCompositeOperation = "source-in";
         ctx.fillStyle = backdropColor;
-        ctx.fillRect(backdropOffset, backdropOffset, width, height);
+        ctx.fillRect(BACKDROP_OFFSET, BACKDROP_OFFSET, width, height);
 
-        // Reset composite operation and draw main image on top
         ctx.globalCompositeOperation = "source-over";
         ctx.drawImage(tempCanvas, 0, 0);
       } else {
-        // Just draw the main image without backdrop
         drawContainedImage(ctx, 0, 0);
       }
 
@@ -102,6 +121,7 @@ export const ContainedImage = ({
       img.src = canvas.toDataURL();
       img.onload = () => {
         setFinalImage(img);
+        ref.current?.cache();
         onReady?.();
       };
       img.onerror = (error) => {
@@ -112,12 +132,13 @@ export const ContainedImage = ({
     };
 
     createImage();
-  }, [image, width, height, offset, hasBackdrop, backdropColor]);
+  }, [image, width, height, offset.x, offset.y, hasBackdrop, backdropColor]);
 
   if (!finalImage) return null;
 
   return (
     <Image
+      ref={ref}
       x={x}
       y={y}
       width={width}
