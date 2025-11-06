@@ -1,5 +1,5 @@
 import { ComponentProps, useState, useEffect } from "react";
-import { Group, Image } from "react-konva";
+import { Image } from "react-konva";
 
 export const ContainedImage = ({
   width,
@@ -9,6 +9,9 @@ export const ContainedImage = ({
   backdropColor = "red",
   x = 0,
   y = 0,
+  offset = { x: 0, y: 0 },
+  onReady,
+  onError,
   ...rest
 }: ComponentProps<typeof Image> & {
   width: number;
@@ -16,77 +19,111 @@ export const ContainedImage = ({
   image: HTMLImageElement;
   hasBackdrop?: boolean;
   backdropColor?: string;
+  offset?: { x: number; y: number };
+  onReady?: () => void;
+  onError?: (error: Error) => void;
 }) => {
-  const [imgDimensions, setImgDimensions] = useState({ width: 0, height: 0 });
-  const [imgPosition, setImgPosition] = useState({ x, y });
-  const [coloredImage, setColoredImage] = useState<HTMLImageElement>();
+  const [finalImage, setFinalImage] = useState<HTMLImageElement>();
 
   useEffect(() => {
-    const imageAspectRatio = image.width / image.height;
-    const containerAspectRatio = width / height;
-
-    let imgWidth = width;
-    let imgHeight = height;
-    let imgX = x;
-    let imgY = y;
-
-    if (imageAspectRatio > containerAspectRatio) {
-      // Image is wider than container
-      imgHeight = width / imageAspectRatio;
-    } else {
-      // Image is taller than container
-      imgWidth = height * imageAspectRatio;
-      imgX = (width - imgWidth) / 2;
+    if (!image) {
+      setFinalImage(undefined);
+      return;
     }
 
-    setImgDimensions({ width: imgWidth, height: imgHeight });
-    setImgPosition({ x: imgX, y: imgY });
-  }, [image, x, y, width, height]);
+    const backdropOffset = 10;
 
-  useEffect(() => {
-    if (!image || !hasBackdrop) return;
+    const drawContainedImage = (
+      ctx: CanvasRenderingContext2D,
+      xPos: number,
+      yPos: number
+    ) => {
+      const imageAspectRatio = image.width / image.height;
+      const containerAspectRatio = width / height;
 
-    // Create a canvas to apply the color filter
-    const canvas = document.createElement("canvas");
-    canvas.width = image.width;
-    canvas.height = image.height;
-    const ctx = canvas.getContext("2d");
+      let imgWidth = width;
+      let imgHeight = height;
+      let imgX = 0;
+      let imgY = 0;
 
-    if (!ctx) return;
+      if (imageAspectRatio > containerAspectRatio) {
+        // Image is wider than container
+        imgHeight = width / imageAspectRatio;
+        imgY = (height - imgHeight) / 2;
+      } else {
+        // Image is taller than container
+        imgWidth = height * imageAspectRatio;
+        imgX = (width - imgWidth) / 2;
+      }
 
-    // Draw the original image
-    ctx.drawImage(image, 0, 0);
+      ctx.drawImage(
+        image,
+        xPos + imgX + offset.x,
+        yPos + imgY + offset.y,
+        imgWidth,
+        imgHeight
+      );
+    };
 
-    // Apply red color overlay using composite operation
-    ctx.globalCompositeOperation = "source-in";
-    ctx.fillStyle = backdropColor;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    const createImage = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext("2d");
 
-    // Create new image from canvas
-    const img = new window.Image();
-    img.src = canvas.toDataURL();
-    img.onload = () => setColoredImage(img);
-  }, [image, hasBackdrop, backdropColor]);
+      if (!ctx) return;
+
+      if (hasBackdrop) {
+        // First, draw the main image to a temporary canvas to create the backdrop
+        const tempCanvas = document.createElement("canvas");
+        tempCanvas.width = width;
+        tempCanvas.height = height;
+        const tempCtx = tempCanvas.getContext("2d");
+
+        if (!tempCtx) return;
+
+        drawContainedImage(tempCtx, 0, 0);
+
+        // Draw backdrop (colored version) at offset position
+        ctx.drawImage(tempCanvas, backdropOffset, backdropOffset);
+        ctx.globalCompositeOperation = "source-in";
+        ctx.fillStyle = backdropColor;
+        ctx.fillRect(backdropOffset, backdropOffset, width, height);
+
+        // Reset composite operation and draw main image on top
+        ctx.globalCompositeOperation = "source-over";
+        ctx.drawImage(tempCanvas, 0, 0);
+      } else {
+        // Just draw the main image without backdrop
+        drawContainedImage(ctx, 0, 0);
+      }
+
+      const img = new window.Image();
+      img.src = canvas.toDataURL();
+      img.onload = () => {
+        setFinalImage(img);
+        onReady?.();
+      };
+      img.onerror = (error) => {
+        onError?.(
+          new Error(error instanceof Error ? error.message : "Unknown error")
+        );
+      };
+    };
+
+    createImage();
+  }, [image, width, height, offset, hasBackdrop, backdropColor]);
+
+  if (!finalImage) return null;
 
   return (
-    <Group>
-      {hasBackdrop && coloredImage && (
-        <Image
-          x={imgPosition.x + 10}
-          y={imgPosition.y + 10}
-          width={imgDimensions.width}
-          height={imgDimensions.height}
-          image={coloredImage}
-        />
-      )}
-      <Image
-        x={imgPosition.x}
-        y={imgPosition.y}
-        width={imgDimensions.width}
-        height={imgDimensions.height}
-        image={image}
-        {...rest}
-      />
-    </Group>
+    <Image
+      x={x}
+      y={y}
+      width={width}
+      height={height}
+      image={finalImage}
+      {...rest}
+    />
   );
 };

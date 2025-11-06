@@ -16,15 +16,17 @@ export const PlayerForm = ({
   className,
 }: Props) => {
   const [name, setName] = useState(selectedPlayer?.name || "");
-  const [character, setCharacter] = useState(selectedPlayer?.character || "");
+  const [characterId, setCharacterId] = useState(
+    selectedPlayer?.characterId || ""
+  );
 
   useEffect(() => {
     if (selectedPlayer) {
       setName(selectedPlayer.name);
-      setCharacter(selectedPlayer.character);
+      setCharacterId(selectedPlayer.characterId);
     } else {
       setName("");
-      setCharacter("");
+      setCharacterId("");
     }
   }, [selectedPlayer]);
 
@@ -38,8 +40,8 @@ export const PlayerForm = ({
         disabled={!selectedPlayer}
       />
       <CharacterSelect
-        characterId={character}
-        onValueChange={setCharacter}
+        selectedCharacterId={characterId}
+        onValueChange={setCharacterId}
         disabled={!selectedPlayer}
       />
       <Button
@@ -48,7 +50,7 @@ export const PlayerForm = ({
           updatePlayer({
             ...selectedPlayer,
             name,
-            character,
+            characterId: characterId,
           });
         }}
       >

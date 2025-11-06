@@ -1,0 +1,30 @@
+.container {
+  width: 100%;
+  background-color: #222;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.item {
+  cursor: pointer;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+
+  background-color: #222;
+  padding: 8px 12px;
+
+  &.selected {
+    background-color: #444;
+    outline: 1px solid #ccc;
+    outline-offset: -1px;
+  }
+
+  &:hover {
+    background-color: #444;
+  }
+}

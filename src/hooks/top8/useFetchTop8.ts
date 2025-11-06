@@ -68,13 +68,13 @@ export const useFetchTop8 = (slug: string) => {
           const player = selections?.find(
             (selection) => selection?.entrant?.id === entrant?.id
           );
-          const character = String(player?.character?.id);
+          const characterId = String(player?.character?.id);
 
           return {
             id: entrant?.id || "",
             name: entrant?.name || "",
             placement: node?.placement || 0,
-            character: character || "",
+            characterId: characterId || "",
             alt: 0 as 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7,
           };
         })

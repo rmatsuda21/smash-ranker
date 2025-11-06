@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import Konva from "konva";
-import { Group, Image, Rect, Text, Transformer } from "react-konva";
+import { Group, Rect, Text, Transformer } from "react-konva";
 import useImage from "use-image";
 
 import { PlayerInfo } from "@/types/top8/Result";
@@ -34,7 +34,7 @@ export const Player = ({
   canvasConfig,
 }: Props) => {
   const [img, status] = useImage(
-    getCharImgUrl({ characterId: player.character, alt: player.alt }),
+    getCharImgUrl({ characterId: player.characterId, alt: player.alt }),
     "anonymous"
   );
   const [frame, frameStatus] = useSvgImage(
@@ -111,16 +111,6 @@ export const Player = ({
     ctx.closePath();
   };
 
-  const boundBoxFunc = (_oldBox: any, _newBox: any) => {
-    return {
-      x: position.x,
-      y: position.y,
-      width: size.width,
-      height: size.height,
-      rotation: 0,
-    };
-  };
-
   return (
     <>
       <Group
@@ -149,13 +139,15 @@ export const Player = ({
         />
         <ContainedImage
           id="character"
-          y={100}
+          y={0}
+          x={0}
           width={size.width}
           height={size.height}
+          offset={{ x: 0, y: 100 }}
           image={img}
           hasBackdrop
         />
-        <Image
+        <ContainedImage
           id="frame"
           width={size.width}
           height={size.height}
@@ -181,11 +173,7 @@ export const Player = ({
           />
         )}
       </Group>
-      <Transformer
-        ref={trRef}
-        onTransform={handleTransform}
-        boundBoxFunc={boundBoxFunc}
-      />
+      <Transformer ref={trRef} onTransform={handleTransform} />
     </>
   );
 };
