@@ -13,9 +13,10 @@ type Props = Omit<ComponentProps<typeof Image>, "image"> & {
   offset?: { x: number; y: number };
   onReady?: () => void;
   onError?: (error: Error) => void;
+  fillMode?: "contain" | "cover";
 };
 
-export const ContainedImage = ({
+export const CustomImage = ({
   width,
   height,
   imageSrc,
@@ -26,6 +27,7 @@ export const ContainedImage = ({
   offset = { x: 0, y: 0 },
   onReady,
   onError,
+  fillMode = "contain",
   ...rest
 }: Props) => {
   const [finalImage, setFinalImage] = useState<HTMLImageElement>();
@@ -56,7 +58,7 @@ export const ContainedImage = ({
   useEffect(() => {
     if (!image) return;
 
-    const drawContainedImage = (
+    const drawImage = (
       ctx: CanvasRenderingContext2D,
       xPos: number,
       yPos: number
@@ -71,12 +73,22 @@ export const ContainedImage = ({
 
       if (imageAspectRatio > containerAspectRatio) {
         // Image is wider than container
-        imgHeight = width / imageAspectRatio;
-        imgY = (height - imgHeight) / 2;
+        if (fillMode === "contain") {
+          imgHeight = width / imageAspectRatio;
+          imgY = (height - imgHeight) / 2;
+        } else {
+          imgWidth = height * imageAspectRatio;
+          imgX = (width - imgWidth) / 2;
+        }
       } else {
         // Image is taller than container
-        imgWidth = height * imageAspectRatio;
-        imgX = (width - imgWidth) / 2;
+        if (fillMode === "contain") {
+          imgWidth = height * imageAspectRatio;
+          imgX = (width - imgWidth) / 2;
+        } else {
+          imgHeight = width / imageAspectRatio;
+          imgY = (height - imgHeight) / 2;
+        }
       }
 
       ctx.drawImage(
@@ -88,33 +100,37 @@ export const ContainedImage = ({
       );
     };
 
+    const drawImageWithBackdrop = (ctx: CanvasRenderingContext2D) => {
+      const tmpCnvs = document.createElement("canvas");
+      tmpCnvs.width = width;
+      tmpCnvs.height = height;
+      const tmpCtx = tmpCnvs.getContext("2d");
+
+      if (!tmpCtx) return;
+
+      drawImage(tmpCtx, 0, 0);
+
+      ctx.drawImage(tmpCnvs, BACKDROP_OFFSET, BACKDROP_OFFSET);
+      ctx.globalCompositeOperation = "source-in";
+      ctx.fillStyle = backdropColor;
+      ctx.fillRect(BACKDROP_OFFSET, BACKDROP_OFFSET, width, height);
+
+      ctx.globalCompositeOperation = "source-over";
+      ctx.drawImage(tmpCnvs, 0, 0);
+    };
+
     const createImage = () => {
       const canvas = document.createElement("canvas");
       canvas.width = width;
       canvas.height = height;
-      const ctx = canvas.getContext("2d");
 
+      const ctx = canvas.getContext("2d");
       if (!ctx) return;
 
       if (hasBackdrop) {
-        const tempCanvas = document.createElement("canvas");
-        tempCanvas.width = width;
-        tempCanvas.height = height;
-        const tempCtx = tempCanvas.getContext("2d");
-
-        if (!tempCtx) return;
-
-        drawContainedImage(tempCtx, 0, 0);
-
-        ctx.drawImage(tempCanvas, BACKDROP_OFFSET, BACKDROP_OFFSET);
-        ctx.globalCompositeOperation = "source-in";
-        ctx.fillStyle = backdropColor;
-        ctx.fillRect(BACKDROP_OFFSET, BACKDROP_OFFSET, width, height);
-
-        ctx.globalCompositeOperation = "source-over";
-        ctx.drawImage(tempCanvas, 0, 0);
+        drawImageWithBackdrop(ctx);
       } else {
-        drawContainedImage(ctx, 0, 0);
+        drawImage(ctx, 0, 0);
       }
 
       const img = new window.Image();

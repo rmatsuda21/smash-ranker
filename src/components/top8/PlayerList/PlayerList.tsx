@@ -3,15 +3,11 @@ import { MdDragIndicator } from "react-icons/md";
 import cn from "classnames";
 
 import { PlayerInfo } from "@/types/top8/Result";
+import { usePlayerStore } from "@/store/playerStore";
 
 import styles from "./PlayerList.module.scss";
 
 type Props = {
-  players: PlayerInfo[];
-  playerOrder: number[];
-  setPlayerOrder: (playerOrder: number[]) => void;
-  selectedIndex?: number;
-  setSelectedIndex: (index: number | undefined) => void;
   className?: string;
 };
 
@@ -19,7 +15,7 @@ type PlayerItemProps = {
   player: PlayerInfo;
   index: number;
   isSelected: boolean;
-  setSelectedIndex: (index: number | undefined) => void;
+  setSelectedIndex: (index: number) => void;
 };
 
 const PlayerItem = ({
@@ -34,7 +30,7 @@ const PlayerItem = ({
       key={player.id}
       onClick={() => {
         if (isSelected) {
-          setSelectedIndex(undefined);
+          setSelectedIndex(-1);
         } else {
           setSelectedIndex(index);
         }
@@ -49,14 +45,9 @@ const PlayerItem = ({
   );
 };
 
-export const PlayerList = ({
-  className,
-  players,
-  playerOrder,
-  // setPlayerOrder,
-  selectedIndex,
-  setSelectedIndex,
-}: Props) => {
+export const PlayerList = ({ className }: Props) => {
+  const { players, playerOrder, selectedPlayerIndex, dispatch } =
+    usePlayerStore();
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
@@ -67,6 +58,10 @@ export const PlayerList = ({
         ?.style.setProperty("--wrapper-width", `${width}px`);
     }
   }, []);
+
+  const setSelectedIndex = (index: number) => {
+    dispatch({ type: "SET_SELECTED_PLAYER_INDEX", payload: index });
+  };
 
   return (
     <div className={styles.wrapper} ref={wrapperRef}>
@@ -85,7 +80,7 @@ export const PlayerList = ({
               key={player.id}
               index={playerIndex}
               player={player}
-              isSelected={selectedIndex === playerIndex}
+              isSelected={selectedPlayerIndex === playerIndex}
               setSelectedIndex={setSelectedIndex}
             />
           );

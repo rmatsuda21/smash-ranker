@@ -5,22 +5,19 @@ import { SceneContext } from "konva/lib/Context";
 
 import { PlayerInfo } from "@/types/top8/Result";
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
-// import { useSvgImage } from "@/hooks/top8/useSvgImage";
-import { ContainedImage } from "@/components/top8/Canvas/ContainedImage";
-import { CanvasConfig } from "@/types/top8/Canvas";
+import { CustomImage } from "@/components/top8/Canvas/CustomImage";
+import { useCanvasStore } from "@/store/canvasStore";
 import { fetchAndColorSVG } from "@/utils/top8/fetchAndColorSVG";
 
 import playerFrame from "/assets/top8/theme/mini/frame.svg";
+import { usePlayerStore } from "@/store/playerStore";
 
 type Props = {
   player: PlayerInfo;
   position?: { x: number; y: number };
   size?: { width: number; height: number };
-  setSelectedIndex: (index: number | undefined) => void;
-  isSelected: boolean;
   index: number;
   placement: number;
-  canvasConfig: CanvasConfig;
   onDragStart: (e: Konva.KonvaEventObject<MouseEvent>) => void;
   onDragEnd: (e: Konva.KonvaEventObject<MouseEvent>) => void;
 };
@@ -30,19 +27,10 @@ export const Player = ({
   index,
   position: initialPosition = { x: 0, y: 0 },
   size: initialSize = { width: 100, height: 100 },
-  setSelectedIndex,
-  isSelected = false,
   placement,
-  canvasConfig,
   onDragStart,
   onDragEnd,
 }: Props) => {
-  // const [frame, frameStatus] = useSvgImage(
-  //   playerFrame,
-  //   frameColor,
-  //   "anonymous"
-  // );
-
   const [size] = useState(initialSize);
   const [scale, setScale] = useState({ x: 1, y: 1 });
   const [position, setPosition] = useState(initialPosition);
@@ -50,6 +38,10 @@ export const Player = ({
   const groupRef = useRef<Konva.Group>(null);
   const trRef = useRef<Konva.Transformer>(null);
   const [frameImageSrc, setFrameImageSrc] = useState<string>();
+
+  const { size: canvasSize } = useCanvasStore();
+  const { selectedPlayerIndex, dispatch } = usePlayerStore();
+  const isSelected = selectedPlayerIndex === index;
 
   useEffect(() => {
     const fetchFrameImageSrc = async () => {
@@ -104,9 +96,9 @@ export const Player = ({
   const handleGroupClick = useCallback(
     (e: Konva.KonvaEventObject<MouseEvent>) => {
       e.cancelBubble = true;
-      setSelectedIndex(index);
+      dispatch({ type: "SET_SELECTED_PLAYER_INDEX", payload: index });
     },
-    [index, setSelectedIndex]
+    [index, dispatch]
   );
 
   const handleTransform = useCallback(
@@ -121,17 +113,17 @@ export const Player = ({
       return {
         x: Math.max(
           0,
-          Math.min(pos.x, canvasConfig.size.width - size.width * scale.x)
+          Math.min(pos.x, canvasSize.width - size.width * scale.x)
         ),
         y: Math.max(
           0,
-          Math.min(pos.y, canvasConfig.size.height - size.height * scale.y)
+          Math.min(pos.y, canvasSize.height - size.height * scale.y)
         ),
       };
     },
     [
-      canvasConfig.size.width,
-      canvasConfig.size.height,
+      canvasSize.width,
+      canvasSize.height,
       size.width,
       size.height,
       scale.x,
@@ -181,7 +173,7 @@ export const Player = ({
           height={size.height}
           fill={isHovered ? "rgba(255, 255, 255, 0.2)" : "transparent"}
         />
-        <ContainedImage
+        <CustomImage
           id="character"
           y={0}
           x={0}
@@ -191,7 +183,7 @@ export const Player = ({
           imageSrc={characterImageSrc}
           hasBackdrop
         />
-        <ContainedImage
+        <CustomImage
           id="frame"
           width={size.width}
           height={size.height}
