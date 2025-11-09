@@ -8,7 +8,8 @@ import styles from "./PlayerList.module.scss";
 
 type Props = {
   players: PlayerInfo[];
-  setPlayers: (players: PlayerInfo[]) => void;
+  playerOrder: number[];
+  setPlayerOrder: (playerOrder: number[]) => void;
   selectedIndex?: number;
   setSelectedIndex: (index: number | undefined) => void;
   className?: string;
@@ -51,7 +52,8 @@ const PlayerItem = ({
 export const PlayerList = ({
   className,
   players,
-  // setPlayers,
+  playerOrder,
+  // setPlayerOrder,
   selectedIndex,
   setSelectedIndex,
 }: Props) => {
@@ -74,15 +76,20 @@ export const PlayerList = ({
         ))}
       </div>
       <div className={cn(styles.list, className)}>
-        {players.map((player, index) => (
-          <PlayerItem
-            key={index}
-            index={index}
-            player={player}
-            isSelected={selectedIndex === index}
-            setSelectedIndex={setSelectedIndex}
-          />
-        ))}
+        {playerOrder.map((playerIndex) => {
+          const player = players[playerIndex];
+          if (!player) return null;
+
+          return (
+            <PlayerItem
+              key={player.id}
+              index={playerIndex}
+              player={player}
+              isSelected={selectedIndex === playerIndex}
+              setSelectedIndex={setSelectedIndex}
+            />
+          );
+        })}
       </div>
     </div>
   );

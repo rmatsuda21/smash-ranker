@@ -31,6 +31,10 @@ export const Ranker = () => {
       ...DEFAULT_PLAYER,
     }))
   );
+  const [playerOrder, setPlayerOrder] = useState<number[]>(
+    Array.from({ length: 8 }).map((_, index) => index)
+  );
+
   const stageRef = useRef<Konva.Stage>(null);
 
   const { top8, fetching, error } = useFetchTop8(
@@ -38,7 +42,6 @@ export const Ranker = () => {
   );
 
   const updatePlayer = useCallback((index: number, player: PlayerInfo) => {
-    console.log(index, player);
     setPlayers((prevPlayers) =>
       prevPlayers?.map((p, i) => (i === index ? player : p))
     );
@@ -78,7 +81,8 @@ export const Ranker = () => {
             <PlayerList
               className={styles.playerList}
               players={players}
-              setPlayers={setPlayers}
+              playerOrder={playerOrder}
+              setPlayerOrder={setPlayerOrder}
               selectedIndex={selectedIndex}
               setSelectedIndex={setSelectedIndex}
             />
@@ -91,10 +95,16 @@ export const Ranker = () => {
 
           <Canvas
             players={players}
+            playerOrder={playerOrder}
             setSelectedIndex={setSelectedIndex}
             selectedIndex={selectedIndex}
-            size={CANVAS_DIMENSIONS}
-            displayScale={DISPLAY_SCALE}
+            canvasConfig={{
+              size: {
+                width: CANVAS_DIMENSIONS.width,
+                height: CANVAS_DIMENSIONS.height,
+              },
+              displayScale: DISPLAY_SCALE,
+            }}
             stageRef={stageRef}
           />
         </div>

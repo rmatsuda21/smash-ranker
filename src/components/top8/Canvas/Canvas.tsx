@@ -1,59 +1,72 @@
-import { memo, useCallback, useEffect, useMemo, useRef } from "react";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { Stage, Layer } from "react-konva";
 import Konva from "konva";
 
 import { Player } from "@/components/top8/Canvas/Player";
 import { PlayerInfo } from "@/types/top8/Result";
 import { CanvasConfig } from "@/types/top8/Canvas";
+import { fetchAndColorSVG } from "@/utils/top8/fetchAndColorSVG";
+import { ContainedImage } from "@/components/top8/Canvas/ContainedImage";
 
 import styles from "./Canvas.module.scss";
 
+import backgroundImage from "/assets/top8/theme/wtf/background.svg";
+
 type Props = {
   players: PlayerInfo[];
+  playerOrder: number[];
   setSelectedIndex: (index: number | undefined) => void;
   selectedIndex?: number;
-  size?: { width: number; height: number };
-  displayScale?: number;
+  canvasConfig: CanvasConfig;
   stageRef: React.RefObject<Konva.Stage | null>;
 };
 
-const PlayerLayer = ({
-  ref,
-  players,
-  setSelectedIndex,
-  selectedIndex,
-  canvasConfig,
-  onPlayerDragStart,
-  onPlayerDragEnd,
-}: {
+type PlayerLayerProps = {
   ref: React.RefObject<Konva.Layer | null>;
   players: PlayerInfo[];
+  playerOrder: number[];
   setSelectedIndex: (index: number | undefined) => void;
   selectedIndex?: number;
   canvasConfig: CanvasConfig;
   onPlayerDragStart: (e: Konva.KonvaEventObject<MouseEvent>) => void;
   onPlayerDragEnd: (e: Konva.KonvaEventObject<MouseEvent>) => void;
-}) => {
+};
+
+const PlayerLayer = ({
+  ref,
+  players,
+  playerOrder,
+  setSelectedIndex,
+  selectedIndex,
+  canvasConfig,
+  onPlayerDragStart,
+  onPlayerDragEnd,
+}: PlayerLayerProps) => {
   return (
     <Layer ref={ref}>
-      {players?.map((player, index) => (
-        <Player
-          key={`player-${index}`}
-          placement={index + 1}
-          size={{ width: 400, height: 400 }}
-          position={{
-            x: Math.floor(index / 2) * 400,
-            y: Math.floor(index % 2) * 400,
-          }}
-          player={player}
-          index={index}
-          setSelectedIndex={setSelectedIndex}
-          isSelected={selectedIndex === index}
-          canvasConfig={canvasConfig}
-          onDragStart={onPlayerDragStart}
-          onDragEnd={onPlayerDragEnd}
-        />
-      ))}
+      {playerOrder.map((playerIndex, index) => {
+        const player = players[playerIndex];
+        if (!player) return null;
+
+        return (
+          <Player
+            key={player.id}
+            placement={index + 1}
+            size={{ width: 400, height: 400 }}
+            position={{
+              x: Math.floor(index / 2) * 400,
+              y: Math.floor(index % 2) * 400,
+            }}
+            player={player}
+            index={index}
+            setSelectedIndex={setSelectedIndex}
+            isSelected={selectedIndex === index}
+            canvasConfig={canvasConfig}
+            onDragStart={onPlayerDragStart}
+            onDragEnd={onPlayerDragEnd}
+          />
+        );
+      })}
     </Layer>
   );
 };
@@ -62,23 +75,21 @@ const MemoizedPlayerLayer = memo(PlayerLayer);
 
 export const Canvas = ({
   players,
+  playerOrder,
   setSelectedIndex,
   selectedIndex,
-  size = { width: 1920, height: 1080 },
-  displayScale = 0.5,
+  canvasConfig,
   stageRef,
 }: Props) => {
   const dragLayerRef = useRef<Konva.Layer>(null);
   const mainLayerRef = useRef<Konva.Layer>(null);
+  const [backgroundImageSrc, setBackgroundImageSrc] = useState<string>();
 
-  const handleStageClick = useCallback(
-    (e: Konva.KonvaEventObject<MouseEvent>) => {
-      if (e.target === e.target.getStage()) {
-        setSelectedIndex(undefined);
-      }
-    },
-    [setSelectedIndex]
-  );
+  const { size, displayScale } = canvasConfig;
+
+  const handleStageClick = useCallback(() => {
+    setSelectedIndex(undefined);
+  }, [setSelectedIndex]);
 
   const onPlayerDragStart = useCallback(
     (e: Konva.KonvaEventObject<MouseEvent>) => {
@@ -115,13 +126,15 @@ export const Canvas = ({
     };
   }, []);
 
-  const canvasConfig: CanvasConfig = useMemo(
-    () => ({
-      size,
-      displayScale,
-    }),
-    [size, displayScale]
-  );
+  useEffect(() => {
+    const fetchBackgroundImageSrc = async () => {
+      const url = await fetchAndColorSVG(backgroundImage, "rgba(0, 0, 0, 0.8)");
+      if (url) {
+        setBackgroundImageSrc(url);
+      }
+    };
+    fetchBackgroundImageSrc();
+  }, []);
 
   return (
     <div
@@ -142,17 +155,24 @@ export const Canvas = ({
           ref={stageRef}
           className={styles.canvas}
         >
+          <Layer onClick={handleStageClick}>
+            <ContainedImage
+              width={size.width}
+              height={size.height}
+              imageSrc={backgroundImageSrc ?? ""}
+            />
+          </Layer>
+          <Layer ref={dragLayerRef}></Layer>
           <MemoizedPlayerLayer
             ref={mainLayerRef}
             players={players}
+            playerOrder={playerOrder}
             setSelectedIndex={setSelectedIndex}
             selectedIndex={selectedIndex}
             canvasConfig={canvasConfig}
             onPlayerDragStart={onPlayerDragStart}
             onPlayerDragEnd={onPlayerDragEnd}
           />
-
-          <Layer ref={dragLayerRef}></Layer>
         </Stage>
       </div>
     </div>
