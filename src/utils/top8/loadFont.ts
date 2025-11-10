@@ -40,7 +40,6 @@ export async function loadFont({
       document.fonts.add(fontFace);
       loadedFonts[fontFamily] = true;
     } else {
-      console.log(variants);
       await Promise.all(
         variants.map(async (variant) => {
           const file = files[variant];
