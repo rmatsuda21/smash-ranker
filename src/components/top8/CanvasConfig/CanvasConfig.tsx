@@ -2,6 +2,8 @@ import { Button, TextField } from "@radix-ui/themes";
 import { useState } from "react";
 import Konva from "konva";
 
+import { FontSelect } from "@/components/top8/FontSelect/FontSelect";
+
 type Props = {
   stageRef: React.RefObject<Konva.Stage | null>;
 };
@@ -21,13 +23,14 @@ export const CanvasConfig = ({ stageRef }: Props) => {
         }}
         placeholder="ranker.png"
       />
+      <FontSelect />
 
       <Button
         onClick={() => {
           if (!stageRef.current) return;
 
           const dataURL = stageRef.current.toDataURL({
-            pixelRatio: 2, // double resolution
+            pixelRatio: 2,
           });
 
           const link = document.createElement("a");

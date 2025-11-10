@@ -39,7 +39,7 @@ export const Player = ({
   const trRef = useRef<Konva.Transformer>(null);
   const [frameImageSrc, setFrameImageSrc] = useState<string>();
 
-  const { size: canvasSize } = useCanvasStore();
+  const { size: canvasSize, selectedFont, fonts } = useCanvasStore();
   const { selectedPlayerIndex, dispatch } = usePlayerStore();
   const isSelected = selectedPlayerIndex === index;
 
@@ -147,6 +147,10 @@ export const Player = ({
     });
   }, [player.characterId, player.alt]);
 
+  const fontFamily = useMemo(() => {
+    return fonts[selectedFont] === "loaded" ? selectedFont : "Arial";
+  }, [selectedFont, fonts]);
+
   return (
     <>
       <Group
@@ -191,13 +195,21 @@ export const Player = ({
           y={0}
           imageSrc={frameImageSrc ?? ""}
         />
-        <Text x={0} y={10} fill={"white"} text={player.name} fontSize={16} />
+        <Text
+          x={0}
+          y={10}
+          fill={"white"}
+          text={player.name}
+          fontSize={16}
+          fontFamily={fontFamily}
+        />
         <Text
           x={0}
           y={40}
           fill={"white"}
           text={String(placement)}
           fontSize={32}
+          fontFamily={fontFamily}
         />
         {player.twitter && (
           <Text
