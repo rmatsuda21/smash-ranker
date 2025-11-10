@@ -185,7 +185,7 @@ export const Player = ({
           height={size.height}
           offset={{ x: 0, y: 100 }}
           imageSrc={characterImageSrc}
-          hasBackdrop
+          hasShadow
         />
         <CustomImage
           id="frame"
@@ -200,8 +200,13 @@ export const Player = ({
           y={10}
           fill={"white"}
           text={player.name}
-          fontSize={16}
+          fontSize={50}
           fontFamily={fontFamily}
+          fontStyle="bold"
+          shadowColor={"black"}
+          shadowBlur={0}
+          shadowOffset={{ x: 6, y: 6 }}
+          shadowOpacity={1}
         />
         <Text
           x={0}

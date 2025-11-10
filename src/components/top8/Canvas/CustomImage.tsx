@@ -8,8 +8,8 @@ type Props = Omit<ComponentProps<typeof Image>, "image"> & {
   width: number;
   height: number;
   imageSrc: string;
-  hasBackdrop?: boolean;
-  backdropColor?: string;
+  hasShadow?: boolean;
+  shadowColor?: string;
   offset?: { x: number; y: number };
   onReady?: () => void;
   onError?: (error: Error) => void;
@@ -20,8 +20,8 @@ export const CustomImage = ({
   width,
   height,
   imageSrc,
-  hasBackdrop = false,
-  backdropColor = "red",
+  hasShadow = false,
+  shadowColor = "red",
   x = 0,
   y = 0,
   offset = { x: 0, y: 0 },
@@ -58,7 +58,7 @@ export const CustomImage = ({
   useEffect(() => {
     if (!image) return;
 
-    const drawImage = (
+    const fitImage = (
       ctx: CanvasRenderingContext2D,
       xPos: number,
       yPos: number
@@ -100,25 +100,6 @@ export const CustomImage = ({
       );
     };
 
-    const drawImageWithBackdrop = (ctx: CanvasRenderingContext2D) => {
-      const tmpCnvs = document.createElement("canvas");
-      tmpCnvs.width = width;
-      tmpCnvs.height = height;
-      const tmpCtx = tmpCnvs.getContext("2d");
-
-      if (!tmpCtx) return;
-
-      drawImage(tmpCtx, 0, 0);
-
-      ctx.drawImage(tmpCnvs, BACKDROP_OFFSET, BACKDROP_OFFSET);
-      ctx.globalCompositeOperation = "source-in";
-      ctx.fillStyle = backdropColor;
-      ctx.fillRect(BACKDROP_OFFSET, BACKDROP_OFFSET, width, height);
-
-      ctx.globalCompositeOperation = "source-over";
-      ctx.drawImage(tmpCnvs, 0, 0);
-    };
-
     const createImage = () => {
       const canvas = document.createElement("canvas");
       canvas.width = width;
@@ -127,11 +108,7 @@ export const CustomImage = ({
       const ctx = canvas.getContext("2d");
       if (!ctx) return;
 
-      if (hasBackdrop) {
-        drawImageWithBackdrop(ctx);
-      } else {
-        drawImage(ctx, 0, 0);
-      }
+      fitImage(ctx, 0, 0);
 
       const img = new window.Image();
       img.src = canvas.toDataURL();
@@ -148,7 +125,7 @@ export const CustomImage = ({
     };
 
     createImage();
-  }, [image, width, height, offset.x, offset.y, hasBackdrop, backdropColor]);
+  }, [image, width, height, offset.x, offset.y]);
 
   if (!finalImage) return null;
 
@@ -160,6 +137,10 @@ export const CustomImage = ({
       width={width}
       height={height}
       image={finalImage}
+      shadowColor={shadowColor}
+      shadowBlur={3}
+      shadowOffset={{ x: BACKDROP_OFFSET, y: BACKDROP_OFFSET }}
+      shadowOpacity={hasShadow ? 1 : 0}
       {...rest}
     />
   );

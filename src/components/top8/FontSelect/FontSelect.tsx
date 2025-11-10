@@ -3,37 +3,21 @@ import { useEffect, useMemo, useState } from "react";
 import { DropDownSelect } from "@/components/top8/DropDownSelect/DropDownSelect";
 import { useCanvasStore } from "@/store/canvasStore";
 import { loadFont } from "@/utils/top8/loadFont";
+import { FontList, fetchAndMapFonts } from "@/utils/top8/fetchAndMapFonts";
 
 export const FontSelect = () => {
-  const [fontList, setFontList] = useState<
-    { family: string; files: Record<string, string> }[]
-  >([]);
+  const [fontList, setFontList] = useState<FontList>({});
 
   const { selectedFont, dispatch } = useCanvasStore();
 
   useEffect(() => {
-    const fetchFontList = async () => {
-      const url = `https://www.googleapis.com/webfonts/v1/webfonts?sort=popularity&key=${
-        import.meta.env.VITE_GOOGLE_API_KEY
-      }`;
-
-      const response = await fetch(url);
-      const data = await response.json();
-
-      const limitedItems = data.items.slice(0, 100);
-      setFontList(
-        limitedItems.map((item: any) => ({
-          family: item.family,
-          files: item.files,
-        }))
-      );
-    };
-
-    fetchFontList();
+    fetchAndMapFonts({ limit: 100 }).then((fonts) => {
+      setFontList(fonts);
+    });
   }, []);
 
   const fontOptions = useMemo(() => {
-    return fontList.map((font) => {
+    return Object.entries(fontList).map(([fontFamily, font]) => {
       const fontKeys = Object.keys(font.files);
       const fontKey =
         fontKeys.find((key) => key === "regular" || key === "600") ??
@@ -41,24 +25,24 @@ export const FontSelect = () => {
       const fontUrl = font.files[fontKey];
 
       return {
-        value: font.family,
+        value: fontFamily,
         id: fontUrl,
-        display: font.family,
+        display: fontFamily,
       };
     });
   }, [fontList]);
 
   const handleChange = (values: any[]) => {
     if (values.length > 0) {
-      const url = values[0].id;
       const fontFamily = values[0].value;
+      const font = fontList[fontFamily];
 
       dispatch({ type: "LOAD_FONT", payload: fontFamily });
       loadFont({
-        fontName: fontFamily,
-        fontStyle: "normal",
-        fontWeight: "400",
-        fontUrl: url,
+        fontFamily,
+        variants: font.variants,
+        files: font.files,
+        isVariableFont: font.isVariableFont,
       })
         .then(() => {
           dispatch({ type: "FONT_LOADED", payload: fontFamily });

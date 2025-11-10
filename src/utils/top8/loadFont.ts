@@ -1,119 +1,66 @@
-function measureFont({
-  fontName,
-  fallbackFont,
-  fontStyle = "normal",
-  fontWeight = "400",
-}: {
-  fontName: string;
-  fallbackFont: string;
-  fontStyle?: string;
-  fontWeight?: string;
-}): number {
-  const canvas = document.createElement("canvas");
-  const ctx = canvas.getContext("2d");
-  const sampleText = "The quick brown fox 0123456789";
-  if (!ctx) return 0;
+import { Font } from "./fetchAndMapFonts";
 
-  ctx.font = `${fontStyle} ${fontWeight} 16px '${fontName}', ${fallbackFont}`;
-  return ctx.measureText(sampleText).width;
-}
+const loadedFonts: Record<string, boolean> = {};
 
-function delay(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+function parseVariant(variant: string): { weight: string; style: string } {
+  if (variant === "regular") {
+    return { weight: "400", style: "normal" };
+  }
+
+  if (variant === "italic") {
+    return { weight: "400", style: "italic" };
+  }
+
+  const isItalic = variant.endsWith("italic");
+  const style = isItalic ? "italic" : "normal";
+
+  const weight = isItalic ? variant.replace("italic", "") : variant;
+
+  return { weight, style };
 }
 
 export async function loadFont({
-  fontName,
-  fontStyle = "normal",
-  fontWeight = "400",
-  fontUrl = "",
-}: {
-  fontName: string;
-  fontStyle?: string;
-  fontWeight?: string;
-  fontUrl?: string;
-}): Promise<void> {
-  if (loadedFonts[fontName] || !fontUrl) return;
+  fontFamily,
+  isVariableFont,
+  variants,
+  files,
+}: Font): Promise<void> {
+  if (loadedFonts[fontFamily] || variants.length === 0) return;
 
-  const styleElement = document.createElement("style");
-  styleElement.textContent = `
-    @font-face {
-      font-family: '${fontName}';
-      font-style: ${fontStyle};
-      font-weight: ${fontWeight};
-      src: url('${fontUrl}') format('truetype');
-    }
-  `;
-  document.head.appendChild(styleElement);
-
-  const hasFontsLoadSupport = !!(document.fonts && document.fonts.load);
-  const arialWidth = measureFont({
-    fontName: "Arial",
-    fallbackFont: "Arial",
-    fontStyle,
-    fontWeight,
-  });
-
-  if (hasFontsLoadSupport) {
-    try {
-      await document.fonts.load(
-        `${fontStyle} ${fontWeight} 16px '${fontName}'`
-      );
-      const newWidth = measureFont({
-        fontName: fontName,
-        fallbackFont: "Arial",
-        fontStyle,
-        fontWeight,
+  try {
+    if (isVariableFont) {
+      const fontUrl = Object.values(files)[0];
+      const fontFace = new FontFace(fontFamily, `url(${fontUrl})`, {
+        weight: `${variants[0]} ${variants[variants.length - 1]}`,
+        style: "normal",
+        display: "swap",
       });
-      const shouldTrustChanges = arialWidth !== newWidth;
-      if (shouldTrustChanges) {
-        await delay(60);
-        loadedFonts[fontName] = true;
-        return;
-      }
-    } catch (e) {}
-  }
 
-  const timesWidth = measureFont({
-    fontName: "Times",
-    fallbackFont: "Times",
-    fontStyle,
-    fontWeight,
-  });
-  const lastWidth = measureFont({
-    fontName: fontName,
-    fallbackFont: "Arial",
-    fontStyle,
-    fontWeight,
-  });
-  const waitTime = 60;
-  const timeout = 6000;
-  const attemptsNumber = Math.ceil(timeout / waitTime);
-  for (let i = 0; i < attemptsNumber; i++) {
-    const newWidthArial = measureFont({
-      fontName: fontName,
-      fallbackFont: "Arial",
-      fontStyle,
-      fontWeight,
-    });
-    const newWidthTimes = measureFont({
-      fontName: fontName,
-      fallbackFont: "Times",
-      fontStyle,
-      fontWeight,
-    });
-    const somethingChanged =
-      newWidthArial !== lastWidth ||
-      newWidthArial !== arialWidth ||
-      newWidthTimes !== timesWidth;
-    if (somethingChanged) {
-      await delay(60);
-      loadedFonts[fontName] = true;
-      return;
+      await fontFace.load();
+      document.fonts.add(fontFace);
+      loadedFonts[fontFamily] = true;
+    } else {
+      console.log(variants);
+      await Promise.all(
+        variants.map(async (variant) => {
+          const file = files[variant];
+          if (!file) return;
+
+          const { weight, style } = parseVariant(variant);
+          const fontFace = new FontFace(fontFamily, `url(${file})`, {
+            weight,
+            style,
+            display: "swap",
+          });
+
+          await fontFace.load();
+          document.fonts.add(fontFace);
+        })
+      );
+      loadedFonts[fontFamily] = true;
     }
-    await delay(waitTime);
+  } catch (error) {
+    console.warn(`Failed to load font "${fontFamily}":`, error);
+    throw error;
   }
-  console.warn(`Timeout for loading font "${fontName}".`);
 }
-
-export const loadedFonts: Record<string, boolean> = {};
