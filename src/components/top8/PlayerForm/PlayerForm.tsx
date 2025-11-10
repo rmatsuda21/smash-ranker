@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import { Button, TextField } from "@radix-ui/themes";
 
 import { CharacterSelect } from "@/components/top8/CharacterSelect/CharacterSelect";
+import { CharacterAltRadio } from "@/components/top8/CharacterAltRadio/CharacterAltRadio";
 import { usePlayerStore } from "@/store/playerStore";
+import { PlayerInfo } from "@/types/top8/Result";
 
 type Props = {
   className?: string;
@@ -16,14 +18,17 @@ export const PlayerForm = ({ className }: Props) => {
   const [characterId, setCharacterId] = useState(
     selectedPlayer?.characterId || ""
   );
+  const [alt, setAlt] = useState<PlayerInfo["alt"]>(selectedPlayer?.alt || 0);
 
   useEffect(() => {
     if (selectedPlayer) {
       setName(selectedPlayer.name);
       setCharacterId(selectedPlayer.characterId);
+      setAlt(selectedPlayer.alt);
     } else {
       setName("");
       setCharacterId("");
+      setAlt(0);
     }
   }, [selectedPlayer]);
 
@@ -31,7 +36,7 @@ export const PlayerForm = ({ className }: Props) => {
     if (!selectedPlayer) return;
     const player = {
       id: selectedPlayer.id,
-      alt: selectedPlayer.alt,
+      alt,
       name,
       characterId,
     };
@@ -56,6 +61,13 @@ export const PlayerForm = ({ className }: Props) => {
         onValueChange={setCharacterId}
         disabled={!selectedPlayer}
       />
+      <CharacterAltRadio
+        characterId={characterId}
+        selectedAlt={alt}
+        onAltChange={setAlt}
+        disabled={!selectedPlayer}
+      />
+
       <Button onClick={handleSave}>Save</Button>
     </div>
   );

@@ -81,14 +81,16 @@ export const DropDownSelect = <T,>({
   };
 
   return (
-    <Select
-      className={styles.container}
-      options={options}
-      values={selectedValues}
-      onChange={handleChange}
-      itemRenderer={itemRenderer}
-      contentRenderer={contentRenderer}
-      disabled={disabled}
-    />
+    <div className={cn({ [styles.disabled]: disabled })}>
+      <Select
+        className={styles.container}
+        options={options}
+        values={selectedValues}
+        onChange={handleChange}
+        itemRenderer={itemRenderer}
+        contentRenderer={contentRenderer}
+        disabled={disabled}
+      />
+    </div>
   );
 };
