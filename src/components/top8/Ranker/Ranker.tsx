@@ -16,7 +16,8 @@ export const Ranker = () => {
   const stageRef = useRef<Konva.Stage>(null);
 
   const { top8, fetching, error } = useFetchTop8(
-    "tournament/genesis-9-1/event/ultimate-singles"
+    // "tournament/genesis-9-1/event/ultimate-singles"
+    "tournament/smash-sans-fronti-res-271/event/smash-ultimate-singles"
   );
 
   useEffect(() => {
@@ -27,7 +28,7 @@ export const Ranker = () => {
 
   if (fetching) return <div>Loading...</div>;
   if (!top8 || error)
-    return <div>{error ? <h1>{error.message}</h1> : <h1>Error</h1>}</div>;
+    return <div>{error ? <h1>{error}</h1> : <h1>Error</h1>}</div>;
 
   return (
     <div className={styles.root}>

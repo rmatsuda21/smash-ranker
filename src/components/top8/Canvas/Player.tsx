@@ -3,7 +3,7 @@ import Konva from "konva";
 import { Group, Rect, Text, Transformer } from "react-konva";
 import { SceneContext } from "konva/lib/Context";
 
-import { PlayerInfo } from "@/types/top8/Result";
+import { PlayerInfo } from "@/types/top8/Player";
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
 import { CustomImage } from "@/components/top8/Canvas/CustomImage";
 import { useCanvasStore } from "@/store/canvasStore";
@@ -142,10 +142,10 @@ export const Player = ({
 
   const characterImageSrc = useMemo(() => {
     return getCharImgUrl({
-      characterId: player.characterId,
-      alt: player.alt,
+      characterId: player.characters[0].id,
+      alt: player.characters[0].alt,
     });
-  }, [player.characterId, player.alt]);
+  }, [player.characters[0].id, player.characters[0].alt]);
 
   const fontFamily = useMemo(() => {
     return fonts[selectedFont] === "loaded" ? selectedFont : "Arial";
@@ -153,6 +153,7 @@ export const Player = ({
 
   return (
     <>
+      <Transformer ref={trRef} onTransform={handleTransform} />
       <Group
         ref={groupRef}
         draggable={isSelected}
@@ -196,24 +197,27 @@ export const Player = ({
           imageSrc={frameImageSrc ?? ""}
         />
         <Text
+          width={size.width}
           x={0}
-          y={10}
+          y={size.height - 80}
           fill={"white"}
           text={player.gamerTag}
-          fontSize={50}
+          fontSize={65}
           fontFamily={fontFamily}
           fontStyle="bold"
           shadowColor={"black"}
           shadowBlur={0}
           shadowOffset={{ x: 6, y: 6 }}
           shadowOpacity={1}
+          align="center"
         />
         <Text
-          x={0}
-          y={75}
+          x={20}
+          y={20}
           fill={"white"}
           text={String(placement)}
-          fontSize={32}
+          fontSize={75}
+          fontStyle="bold"
           fontFamily={fontFamily}
         />
         {player.twitter && (
@@ -226,7 +230,6 @@ export const Player = ({
           />
         )}
       </Group>
-      <Transformer ref={trRef} onTransform={handleTransform} />
     </>
   );
 };

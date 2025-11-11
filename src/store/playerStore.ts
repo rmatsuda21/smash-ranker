@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-import { PlayerInfo } from "@/types/top8/Result";
+import { PlayerInfo } from "@/types/top8/Player";
 
 interface PlayerState {
   players: PlayerInfo[];
@@ -48,8 +48,7 @@ const playerReducer = (
 const DEFAULT_PLAYER: PlayerInfo = {
   id: `0`,
   name: `Player Name`,
-  characterId: `1453`,
-  alt: 0,
+  characters: [{ id: `1453`, alt: 0 }],
   placement: 0,
   gamerTag: "Player Name",
   prefix: "",
