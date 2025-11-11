@@ -133,7 +133,7 @@ export const useFetchTop8 = (slug: string) => {
     variables: { slug },
   });
 
-  const { data, error: resultError } = result;
+  const { data, fetching: resultFetching, error: resultError } = result;
 
   const [top8, setTop8] = useState<PlayerInfo[]>([]);
   const [fetching, setFetching] = useState(true);
@@ -164,7 +164,9 @@ export const useFetchTop8 = (slug: string) => {
       }
     };
 
-    fetchTop8();
+    if (!resultFetching) {
+      fetchTop8();
+    }
   }, [client, slug, data, error]);
 
   useEffect(() => {
