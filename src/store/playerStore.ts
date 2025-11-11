@@ -25,7 +25,6 @@ const playerReducer = (
       return { ...state, players: action.payload };
     case "UPDATE_PLAYER":
       const playerIndex = state.playerOrder[action.payload.index];
-      console.log(playerIndex, state.players);
       return {
         ...state,
         players: state.players.map((p, i) =>

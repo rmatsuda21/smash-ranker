@@ -152,6 +152,7 @@ export const useFetchTop8 = (slug: string) => {
             id: character,
             alt: 0,
           }));
+          player.id = player.id.toString();
         })
       );
 
