@@ -170,6 +170,7 @@ export const Player = ({
         onDragStart={onDragStart}
         dragBoundFunc={dragBoundFunc}
         clipFunc={clipFunc}
+        name={player.id}
       >
         <Rect
           x={0}
