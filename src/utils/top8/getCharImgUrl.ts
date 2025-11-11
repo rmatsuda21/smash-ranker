@@ -1,4 +1,4 @@
-import { PlayerInfo } from "@/types/top8/Result";
+import { CharacerData } from "@/types/top8/Player";
 
 export const getCharImgUrl = ({
   characterId,
@@ -6,7 +6,7 @@ export const getCharImgUrl = ({
   type = "main",
 }: {
   characterId: string | number;
-  alt?: PlayerInfo["alt"];
+  alt?: CharacerData["alt"];
   type?: "main" | "stock";
 }) =>
   `https://raw.githubusercontent.com/rmatsuda21/SmashRankerAssets/main/${type}/${characterId}/${alt}.png`;

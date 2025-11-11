@@ -2,25 +2,25 @@ import cn from "classnames";
 
 import { characters } from "@/consts/top8/ultCharacters.json";
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
-import { PlayerInfo } from "@/types/top8/Result";
+import { CharacerData } from "@/types/top8/Player";
 
 import styles from "./CharacterAltRadio.module.scss";
 import { useMemo } from "react";
 
 type Props = {
   characterId: string;
-  selectedAlt: PlayerInfo["alt"];
-  onAltChange: (alt: PlayerInfo["alt"]) => void;
+  selectedAlt: CharacerData["alt"];
+  onAltChange: (alt: CharacerData["alt"]) => void;
   disabled?: boolean;
 };
 
 const getAltsAndIcons = (characterId: string) => {
   const character = characters.find((c) => c.id === characterId);
   return Array.from({ length: character?.alts || 8 }, (_, i) => ({
-    alt: i as PlayerInfo["alt"],
+    alt: i as CharacerData["alt"],
     icon: getCharImgUrl({
       characterId,
-      alt: i as PlayerInfo["alt"],
+      alt: i as CharacerData["alt"],
       type: "stock",
     }),
   }));
@@ -37,7 +37,7 @@ export const CharacterAltRadio = ({
     [characterId]
   );
 
-  const handleAltClick = (alt: PlayerInfo["alt"]) => {
+  const handleAltClick = (alt: CharacerData["alt"]) => {
     if (!disabled) {
       onAltChange(alt);
     }

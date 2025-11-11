@@ -2,7 +2,7 @@ import { useLayoutEffect, useRef } from "react";
 import { MdDragIndicator } from "react-icons/md";
 import cn from "classnames";
 
-import { PlayerInfo } from "@/types/top8/Result";
+import { PlayerInfo } from "@/types/top8/Player";
 import { usePlayerStore } from "@/store/playerStore";
 
 import styles from "./PlayerList.module.scss";
