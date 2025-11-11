@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
+import type { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -32,22 +32,21 @@ export type ActionSet = {
 };
 
 /** Represents the state of an activity */
-export enum ActivityState {
+export type ActivityState =
   /** Activity is active or in progress */
-  Active = 'ACTIVE',
+  | 'ACTIVE'
   /** Activity, like a set, has been called to start */
-  Called = 'CALLED',
+  | 'CALLED'
   /** Activity is done */
-  Completed = 'COMPLETED',
+  | 'COMPLETED'
   /** Activity is created */
-  Created = 'CREATED',
+  | 'CREATED'
   /** Activity is invalid */
-  Invalid = 'INVALID',
+  | 'INVALID'
   /** Activity is queued to run */
-  Queued = 'QUEUED',
+  | 'QUEUED'
   /** Activity is ready to be started */
-  Ready = 'READY'
-}
+  | 'READY';
 
 /** A user's address */
 export type Address = {
@@ -61,16 +60,16 @@ export type Address = {
 };
 
 /** Represents the name of the third-party service (e.g Twitter) for OAuth */
-export enum AuthorizationType {
-  Battlenet = 'BATTLENET',
-  Discord = 'DISCORD',
-  Epic = 'EPIC',
-  Mixer = 'MIXER',
-  Steam = 'STEAM',
-  Twitch = 'TWITCH',
-  Twitter = 'TWITTER',
-  Xbox = 'XBOX'
-}
+export type AuthorizationType =
+  | 'BATTLENET'
+  | 'DISCORD'
+  | 'EPIC'
+  | 'MIXER'
+  | 'RIOT'
+  | 'STEAM'
+  | 'TWITCH'
+  | 'TWITTER'
+  | 'XBOX';
 
 /** Bracket-specific configuration */
 export type BracketConfig = {
@@ -103,18 +102,17 @@ export type BracketSetGameSelectionInput = {
 };
 
 /** The type of Bracket format that a Phase is configured with. */
-export enum BracketType {
-  Circuit = 'CIRCUIT',
-  CustomSchedule = 'CUSTOM_SCHEDULE',
-  DoubleElimination = 'DOUBLE_ELIMINATION',
-  EliminationRounds = 'ELIMINATION_ROUNDS',
-  Exhibition = 'EXHIBITION',
-  Matchmaking = 'MATCHMAKING',
-  Race = 'RACE',
-  RoundRobin = 'ROUND_ROBIN',
-  SingleElimination = 'SINGLE_ELIMINATION',
-  Swiss = 'SWISS'
-}
+export type BracketType =
+  | 'CIRCUIT'
+  | 'CUSTOM_SCHEDULE'
+  | 'DOUBLE_ELIMINATION'
+  | 'ELIMINATION_ROUNDS'
+  | 'EXHIBITION'
+  | 'MATCHMAKING'
+  | 'RACE'
+  | 'ROUND_ROBIN'
+  | 'SINGLE_ELIMINATION'
+  | 'SWISS';
 
 /** A character in a videogame */
 export type Character = {
@@ -132,13 +130,12 @@ export type CharacterImagesArgs = {
 };
 
 /** Comparison operator */
-export enum Comparator {
-  Equal = 'EQUAL',
-  GreaterThan = 'GREATER_THAN',
-  GreaterThanOrEqual = 'GREATER_THAN_OR_EQUAL',
-  LessThan = 'LESS_THAN',
-  LessThanOrEqual = 'LESS_THAN_OR_EQUAL'
-}
+export type Comparator =
+  | 'EQUAL'
+  | 'GREATER_THAN'
+  | 'GREATER_THAN_OR_EQUAL'
+  | 'LESS_THAN'
+  | 'LESS_THAN_OR_EQUAL';
 
 /** Name, address, etc */
 export type ContactInfo = {
@@ -229,6 +226,8 @@ export type Event = {
   entrantSizeMin?: Maybe<Scalars['Int']['output']>;
   /** The entrants that belong to an event, paginated by filter criteria */
   entrants?: Maybe<EntrantConnection>;
+  /** How much it costs to enter this event */
+  entryFee?: Maybe<Scalars['Float']['output']>;
   /** Whether the event has decks */
   hasDecks?: Maybe<Scalars['Boolean']['output']>;
   /** Are player tasks enabled for this event */
@@ -388,7 +387,7 @@ export type EventOwnerConnection = {
 
 export type EventOwnersQuery = {
   page?: InputMaybe<Scalars['Int']['input']>;
-  /** How many nodes to return for the page. Maximum value of 500 */
+  /** How many nodes to return for the page. Maximum value of 512 */
   perPage?: InputMaybe<Scalars['Int']['input']>;
   sortBy?: InputMaybe<Scalars['String']['input']>;
 };
@@ -478,10 +477,9 @@ export type GameSelection = {
 };
 
 /** The type of selection i.e. is it for a character or something else */
-export enum GameSelectionType {
+export type GameSelectionType =
   /** Character selection */
-  Character = 'CHARACTER'
-}
+  | 'CHARACTER';
 
 /** Global Team */
 export type GlobalTeam = Team & {
@@ -662,7 +660,7 @@ export type LeagueEventsFilter = {
 export type LeagueEventsQuery = {
   filter?: InputMaybe<LeagueEventsFilter>;
   page?: InputMaybe<Scalars['Int']['input']>;
-  /** How many nodes to return for the page. Maximum value of 500 */
+  /** How many nodes to return for the page. Maximum value of 512 */
   perPage?: InputMaybe<Scalars['Int']['input']>;
   sortBy?: InputMaybe<Scalars['String']['input']>;
 };
@@ -689,7 +687,7 @@ export type LeaguePageFilter = {
 export type LeagueQuery = {
   filter?: InputMaybe<LeaguePageFilter>;
   page?: InputMaybe<Scalars['Int']['input']>;
-  /** How many nodes to return for the page. Maximum value of 500 */
+  /** How many nodes to return for the page. Maximum value of 512 */
   perPage?: InputMaybe<Scalars['Int']['input']>;
   sort?: InputMaybe<TournamentPaginationSort>;
   sortBy?: InputMaybe<Scalars['String']['input']>;
@@ -708,16 +706,19 @@ export type MatchConfig = {
 };
 
 /** Different options available for verifying player-reported match results */
-export enum MatchConfigVerificationMethod {
-  Any = 'ANY',
-  Mixer = 'MIXER',
-  StreamMe = 'STREAM_ME',
-  Twitch = 'TWITCH',
-  Youtube = 'YOUTUBE'
-}
+export type MatchConfigVerificationMethod =
+  | 'ANY'
+  | 'MIXER'
+  | 'STREAM_ME'
+  | 'TWITCH'
+  | 'YOUTUBE';
 
 export type Mutation = {
   __typename?: 'Mutation';
+  /** Assign a station to a set. If there is a stream attached to the station, the set will be assigned to the stream as well. */
+  assignStation?: Maybe<Set>;
+  /** Assign a stream to a set */
+  assignStream?: Maybe<Set>;
   /** Delete a phase by id */
   deletePhase?: Maybe<Scalars['Boolean']['output']>;
   /** Delete a station by id */
@@ -753,12 +754,26 @@ export type Mutation = {
   updatePhaseGroups?: Maybe<Array<Maybe<PhaseGroup>>>;
   /** Update the seeding for a phase */
   updatePhaseSeeding?: Maybe<Phase>;
+  /** Update a set's vodUrl */
+  updateVodUrl?: Maybe<Set>;
   /** Create or update a Phase */
   upsertPhase?: Maybe<Phase>;
   /** Add or update a station by id */
   upsertStation?: Maybe<Stations>;
   /** Add or update a wave by id */
   upsertWave?: Maybe<Wave>;
+};
+
+
+export type MutationAssignStationArgs = {
+  setId: Scalars['ID']['input'];
+  stationId: Scalars['ID']['input'];
+};
+
+
+export type MutationAssignStreamArgs = {
+  setId: Scalars['ID']['input'];
+  streamId: Scalars['ID']['input'];
 };
 
 
@@ -843,6 +858,12 @@ export type MutationUpdatePhaseSeedingArgs = {
   options?: InputMaybe<UpdatePhaseSeedingOptions>;
   phaseId: Scalars['ID']['input'];
   seedMapping: Array<InputMaybe<UpdatePhaseSeedInfo>>;
+};
+
+
+export type MutationUpdateVodUrlArgs = {
+  setId: Scalars['ID']['input'];
+  vodUrl?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -946,7 +967,7 @@ export type ParticipantPageFilter = {
 export type ParticipantPaginationQuery = {
   filter?: InputMaybe<ParticipantPageFilter>;
   page?: InputMaybe<Scalars['Int']['input']>;
-  /** How many nodes to return for the page. Maximum value of 500 */
+  /** How many nodes to return for the page. Maximum value of 512 */
   perPage?: InputMaybe<Scalars['Int']['input']>;
   sortBy?: InputMaybe<Scalars['String']['input']>;
 };
@@ -973,6 +994,10 @@ export type Phase = {
   phaseGroups?: Maybe<PhaseGroupConnection>;
   /** The relative order of this phase within an event */
   phaseOrder?: Maybe<Scalars['Int']['output']>;
+  /** Information about the progressions into this phase */
+  progressingInData?: Maybe<Array<Maybe<ProgressionData>>>;
+  /** Information about the progressions out of this phase */
+  progressions?: Maybe<Array<Maybe<Progression>>>;
   /** Paginated seeds for this phase */
   seeds?: Maybe<SeedConnection>;
   /** Paginated sets for this Phase */
@@ -1200,6 +1225,16 @@ export type Progression = {
   originPhase?: Maybe<Phase>;
   originPhaseGroup?: Maybe<PhaseGroup>;
   originPlacement?: Maybe<Scalars['Int']['output']>;
+  placeholderName?: Maybe<Scalars['String']['output']>;
+};
+
+/** Data on phase progression, keyed on destination PhaseId */
+export type ProgressionData = {
+  __typename?: 'ProgressionData';
+  /** Amount of seeds per phase group that are progressing. */
+  numProgressing?: Maybe<Scalars['Int']['output']>;
+  /** Origin phase ID that is the source of this progression. */
+  origin?: Maybe<Scalars['Int']['output']>;
 };
 
 export type Query = {
@@ -1366,11 +1401,10 @@ export type RaceBracketConfig = BracketConfig & {
 };
 
 /** Enforces limits on the amount of allowable Race submissions */
-export enum RaceLimitMode {
-  BestAll = 'BEST_ALL',
-  FirstAll = 'FIRST_ALL',
-  Playtime = 'PLAYTIME'
-}
+export type RaceLimitMode =
+  | 'BEST_ALL'
+  | 'FIRST_ALL'
+  | 'PLAYTIME';
 
 /** Race specific match configuration */
 export type RaceMatchConfig = MatchConfig & {
@@ -1386,10 +1420,9 @@ export type RaceMatchConfig = MatchConfig & {
 };
 
 /** Race type */
-export enum RaceType {
-  Goals = 'GOALS',
-  Timed = 'TIMED'
-}
+export type RaceType =
+  | 'GOALS'
+  | 'TIMED';
 
 export type ResetAffectedData = {
   __typename?: 'ResetAffectedData';
@@ -1492,7 +1525,7 @@ export type SeedPageFilter = {
 export type SeedPaginationQuery = {
   filter?: InputMaybe<SeedPageFilter>;
   page?: InputMaybe<Scalars['Int']['input']>;
-  /** How many nodes to return for the page. Maximum value of 500 */
+  /** How many nodes to return for the page. Maximum value of 512 */
   perPage?: InputMaybe<Scalars['Int']['input']>;
   sortBy?: InputMaybe<Scalars['String']['input']>;
 };
@@ -1505,6 +1538,10 @@ export type Set = {
   /** The time this set was created */
   createdAt?: Maybe<Scalars['Timestamp']['output']>;
   displayScore?: Maybe<Scalars['String']['output']>;
+  /** The source of the first entrant in this set */
+  entrant1Source?: Maybe<SetEntrantSource>;
+  /** The source of the second entrant in this set */
+  entrant2Source?: Maybe<SetEntrantSource>;
   /** Event that this set belongs to. */
   event?: Maybe<Event>;
   /** Full round text of this set. */
@@ -1518,6 +1555,8 @@ export type Set = {
   identifier?: Maybe<Scalars['String']['output']>;
   images?: Maybe<Array<Maybe<Image>>>;
   lPlacement?: Maybe<Scalars['Int']['output']>;
+  /** The progression seed that the loser of this set will be placed into (if applicable) */
+  loserProgressionSeed?: Maybe<Seed>;
   /** Phase group that this Set belongs to. */
   phaseGroup?: Maybe<PhaseGroup>;
   /** The sets that are affected from resetting this set */
@@ -1541,10 +1580,14 @@ export type Set = {
   stream?: Maybe<Streams>;
   /** If setGamesType is in total games mode, this defined the number of games in the set. */
   totalGames?: Maybe<Scalars['Int']['output']>;
+  /** The time this set was last updated */
+  updatedAt?: Maybe<Scalars['Timestamp']['output']>;
   /** Url of a VOD for this set */
   vodUrl?: Maybe<Scalars['String']['output']>;
   wPlacement?: Maybe<Scalars['Int']['output']>;
   winnerId?: Maybe<Scalars['Int']['output']>;
+  /** The progression seed that the winner of this set will be placed into (if applicable) */
+  winnerProgressionSeed?: Maybe<Seed>;
 };
 
 
@@ -1575,6 +1618,22 @@ export type SetConnection = {
   __typename?: 'SetConnection';
   nodes?: Maybe<Array<Maybe<Set>>>;
   pageInfo?: Maybe<PageInfo>;
+};
+
+/**
+ * Describes a source for an entrant in a set. Generally the source is either from
+ * a winner/loser of a set in this phase group, or a seed if this is a progression
+ */
+export type SetEntrantSource = {
+  __typename?: 'SetEntrantSource';
+  /** The condition of this source. e.g. winner, loser, etc. */
+  condition?: Maybe<Scalars['String']['output']>;
+  /** Human readable string for the condition. e.g. "Winner of Set #1234" or "Seed #1" */
+  conditionString?: Maybe<Scalars['String']['output']>;
+  /** The type of this source. e.g. set, seed */
+  type: Scalars['String']['output'];
+  /** The ID of the type of this source. e.g. set ID, seed ID, etc. */
+  typeId?: Maybe<Scalars['ID']['output']>;
 };
 
 /** Filter Sets by geographical constraints. */
@@ -1657,20 +1716,19 @@ export type SetSlot = {
 };
 
 /** Different sort type configurations used when displaying multiple sets */
-export enum SetSortType {
+export type SetSortType =
   /** Sets are sorted in the suggested order that they be called to be played. The order of completed sets is reversed. */
-  CallOrder = 'CALL_ORDER',
+  | 'CALL_ORDER'
   /** Sets are sorted by relevancy dependent on the state and progress of the event. */
-  Magic = 'MAGIC',
+  | 'MAGIC'
   /** Sets will not be sorted. */
-  None = 'NONE',
+  | 'NONE'
   /** Sets are sorted in the order that they were started. */
-  Recent = 'RECENT',
+  | 'RECENT'
   /** Sets sorted by round and identifier */
-  Round = 'ROUND',
+  | 'ROUND'
   /** Deprecated. This is equivalent to CALL_ORDER */
-  Standard = 'STANDARD'
-}
+  | 'STANDARD';
 
 /** A shop */
 export type Shop = {
@@ -1720,7 +1778,7 @@ export type ShopLevelConnection = {
 
 export type ShopLevelsQuery = {
   page?: InputMaybe<Scalars['Int']['input']>;
-  /** How many nodes to return for the page. Maximum value of 500 */
+  /** How many nodes to return for the page. Maximum value of 512 */
   perPage?: InputMaybe<Scalars['Int']['input']>;
   sortBy?: InputMaybe<Scalars['String']['input']>;
 };
@@ -1749,19 +1807,18 @@ export type ShopOrderMessageConnection = {
 
 export type ShopOrderMessagesQuery = {
   page?: InputMaybe<Scalars['Int']['input']>;
-  /** How many nodes to return for the page. Maximum value of 500 */
+  /** How many nodes to return for the page. Maximum value of 512 */
   perPage?: InputMaybe<Scalars['Int']['input']>;
   sortBy?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** Represents the name of the third-party social service (e.g Twitter) for OAuth */
-export enum SocialConnectionType {
-  Discord = 'DISCORD',
-  Mixer = 'MIXER',
-  Twitch = 'TWITCH',
-  Twitter = 'TWITTER',
-  Xbox = 'XBOX'
-}
+export type SocialConnectionType =
+  | 'DISCORD'
+  | 'MIXER'
+  | 'TWITCH'
+  | 'TWITTER'
+  | 'XBOX';
 
 /** Video Stage */
 export type Stage = {
@@ -1819,7 +1876,7 @@ export type StandingPageFilter = {
 export type StandingPaginationQuery = {
   filter?: InputMaybe<StandingPageFilter>;
   page?: InputMaybe<Scalars['Int']['input']>;
-  /** How many nodes to return for the page. Maximum value of 500 */
+  /** How many nodes to return for the page. Maximum value of 512 */
   perPage?: InputMaybe<Scalars['Int']['input']>;
   sortBy?: InputMaybe<Scalars['String']['input']>;
 };
@@ -1855,6 +1912,8 @@ export type Stations = {
   queue?: Maybe<Scalars['JSON']['output']>;
   queueDepth?: Maybe<Scalars['Int']['output']>;
   state?: Maybe<Scalars['Int']['output']>;
+  /** Tournament event stream for a station */
+  stream?: Maybe<Streams>;
   updatedAt?: Maybe<Scalars['Timestamp']['output']>;
 };
 
@@ -1887,25 +1946,23 @@ export type StreamQueue = {
 };
 
 /** Represents the source of a stream */
-export enum StreamSource {
+export type StreamSource =
   /** Stream is on smashcast.tv channel */
-  Hitbox = 'HITBOX',
+  | 'HITBOX'
   /** Stream is on a mixer.com channel */
-  Mixer = 'MIXER',
+  | 'MIXER'
   /** Stream is on a stream.me channel */
-  Streamme = 'STREAMME',
+  | 'STREAMME'
   /** Stream is on twitch.tv channel */
-  Twitch = 'TWITCH',
+  | 'TWITCH'
   /** Stream is on a youtube.com channel */
-  Youtube = 'YOUTUBE'
-}
+  | 'YOUTUBE';
 
 /** Represents the type of stream service */
-export enum StreamType {
-  Mixer = 'MIXER',
-  Twitch = 'TWITCH',
-  Youtube = 'YOUTUBE'
-}
+export type StreamType =
+  | 'MIXER'
+  | 'TWITCH'
+  | 'YOUTUBE';
 
 /** Tournament Stream */
 export type Streams = {
@@ -1916,6 +1973,7 @@ export type Streams = {
   isOnline?: Maybe<Scalars['Boolean']['output']>;
   numSetups?: Maybe<Scalars['Int']['output']>;
   parentStreamId?: Maybe<Scalars['Int']['output']>;
+  shortName?: Maybe<Scalars['String']['output']>;
   streamGame?: Maybe<Scalars['String']['output']>;
   streamId?: Maybe<Scalars['String']['output']>;
   streamLogo?: Maybe<Scalars['String']['output']>;
@@ -1979,21 +2037,19 @@ export type TeamMember = {
 };
 
 /** Membership status of a team member */
-export enum TeamMemberStatus {
-  Accepted = 'ACCEPTED',
-  Alum = 'ALUM',
-  Hiatus = 'HIATUS',
-  Invited = 'INVITED',
-  OpenSpot = 'OPEN_SPOT',
-  Request = 'REQUEST',
-  Unknown = 'UNKNOWN'
-}
+export type TeamMemberStatus =
+  | 'ACCEPTED'
+  | 'ALUM'
+  | 'HIATUS'
+  | 'INVITED'
+  | 'OPEN_SPOT'
+  | 'REQUEST'
+  | 'UNKNOWN';
 
 /** Membership type of a team member */
-export enum TeamMemberType {
-  Player = 'PLAYER',
-  Staff = 'STAFF'
-}
+export type TeamMemberType =
+  | 'PLAYER'
+  | 'STAFF';
 
 export type TeamPaginationFilter = {
   eventId?: InputMaybe<Scalars['ID']['input']>;
@@ -2017,7 +2073,7 @@ export type TeamPaginationFilter = {
 export type TeamPaginationQuery = {
   filter?: InputMaybe<TeamPaginationFilter>;
   page?: InputMaybe<Scalars['Int']['input']>;
-  /** How many nodes to return for the page. Maximum value of 500 */
+  /** How many nodes to return for the page. Maximum value of 512 */
   perPage?: InputMaybe<Scalars['Int']['input']>;
   sortBy?: InputMaybe<Scalars['String']['input']>;
 };
@@ -2207,17 +2263,16 @@ export type TournamentPageFilter = {
   videogameIds?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
 };
 
-export enum TournamentPaginationSort {
-  ComputedUpdatedAt = 'computedUpdatedAt',
-  EndAt = 'endAt',
-  EventRegistrationClosesAt = 'eventRegistrationClosesAt',
-  StartAt = 'startAt'
-}
+export type TournamentPaginationSort =
+  | 'computedUpdatedAt'
+  | 'endAt'
+  | 'eventRegistrationClosesAt'
+  | 'startAt';
 
 export type TournamentQuery = {
   filter?: InputMaybe<TournamentPageFilter>;
   page?: InputMaybe<Scalars['Int']['input']>;
-  /** How many nodes to return for the page. Maximum value of 500 */
+  /** How many nodes to return for the page. Maximum value of 512 */
   perPage?: InputMaybe<Scalars['Int']['input']>;
   sort?: InputMaybe<TournamentPaginationSort>;
   sortBy?: InputMaybe<Scalars['String']['input']>;
@@ -2309,7 +2364,7 @@ export type UserEventsPaginationFilter = {
 export type UserEventsPaginationQuery = {
   filter?: InputMaybe<UserEventsPaginationFilter>;
   page?: InputMaybe<Scalars['Int']['input']>;
-  /** How many nodes to return for the page. Maximum value of 500 */
+  /** How many nodes to return for the page. Maximum value of 512 */
   perPage?: InputMaybe<Scalars['Int']['input']>;
   sortBy?: InputMaybe<Scalars['String']['input']>;
 };
@@ -2324,7 +2379,7 @@ export type UserLeaguesPaginationFilter = {
 export type UserLeaguesPaginationQuery = {
   filter?: InputMaybe<UserLeaguesPaginationFilter>;
   page?: InputMaybe<Scalars['Int']['input']>;
-  /** How many nodes to return for the page. Maximum value of 500 */
+  /** How many nodes to return for the page. Maximum value of 512 */
   perPage?: InputMaybe<Scalars['Int']['input']>;
   sortBy?: InputMaybe<Scalars['String']['input']>;
 };
@@ -2341,7 +2396,7 @@ export type UserTournamentsPaginationFilter = {
 export type UserTournamentsPaginationQuery = {
   filter?: InputMaybe<UserTournamentsPaginationFilter>;
   page?: InputMaybe<Scalars['Int']['input']>;
-  /** How many nodes to return for the page. Maximum value of 500 */
+  /** How many nodes to return for the page. Maximum value of 512 */
   perPage?: InputMaybe<Scalars['Int']['input']>;
   sortBy?: InputMaybe<Scalars['String']['input']>;
 };
@@ -2381,7 +2436,7 @@ export type VideogamePageFilter = {
 export type VideogameQuery = {
   filter?: InputMaybe<VideogamePageFilter>;
   page?: InputMaybe<Scalars['Int']['input']>;
-  /** How many nodes to return for the page. Maximum value of 500 */
+  /** How many nodes to return for the page. Maximum value of 512 */
   perPage?: InputMaybe<Scalars['Int']['input']>;
   sortBy?: InputMaybe<Scalars['String']['input']>;
 };
@@ -2407,7 +2462,7 @@ export type EventStandingsQueryVariables = Exact<{
 }>;
 
 
-export type EventStandingsQuery = { __typename?: 'Query', event?: { __typename?: 'Event', id?: string | null, name?: string | null, standings?: { __typename?: 'StandingConnection', nodes?: Array<{ __typename?: 'Standing', placement?: number | null, entrant?: { __typename?: 'Entrant', id?: string | null, name?: string | null, paginatedSets?: { __typename?: 'SetConnection', nodes?: Array<{ __typename?: 'Set', games?: Array<{ __typename?: 'Game', selections?: Array<{ __typename?: 'GameSelection', character?: { __typename?: 'Character', id?: string | null, name?: string | null } | null, entrant?: { __typename?: 'Entrant', id?: string | null, name?: string | null } | null } | null> | null } | null> | null } | null> | null } | null } | null } | null> | null } | null } | null };
+export type EventStandingsQuery = { __typename?: 'Query', event?: { __typename?: 'Event', id?: string | null, name?: string | null, standings?: { __typename?: 'StandingConnection', nodes?: Array<{ __typename?: 'Standing', placement?: number | null, player?: { __typename?: 'Player', gamerTag?: string | null, prefix?: string | null } | null, entrant?: { __typename?: 'Entrant', id?: string | null, name?: string | null, paginatedSets?: { __typename?: 'SetConnection', nodes?: Array<{ __typename?: 'Set', games?: Array<{ __typename?: 'Game', selections?: Array<{ __typename?: 'GameSelection', character?: { __typename?: 'Character', id?: string | null, name?: string | null } | null, entrant?: { __typename?: 'Entrant', id?: string | null, name?: string | null } | null } | null> | null } | null> | null } | null> | null } | null } | null } | null> | null } | null } | null };
 
 
-export const EventStandingsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"EventStandings"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"slug"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"event"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"slug"},"value":{"kind":"Variable","name":{"kind":"Name","value":"slug"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"standings"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"query"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"perPage"},"value":{"kind":"IntValue","value":"8"}},{"kind":"ObjectField","name":{"kind":"Name","value":"page"},"value":{"kind":"IntValue","value":"1"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"placement"}},{"kind":"Field","name":{"kind":"Name","value":"entrant"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"paginatedSets"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"perPage"},"value":{"kind":"IntValue","value":"1"}},{"kind":"Argument","name":{"kind":"Name","value":"page"},"value":{"kind":"IntValue","value":"1"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"games"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"selections"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"character"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"entrant"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<EventStandingsQuery, EventStandingsQueryVariables>;
+export const EventStandingsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"EventStandings"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"slug"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"event"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"slug"},"value":{"kind":"Variable","name":{"kind":"Name","value":"slug"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"standings"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"query"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"perPage"},"value":{"kind":"IntValue","value":"8"}},{"kind":"ObjectField","name":{"kind":"Name","value":"page"},"value":{"kind":"IntValue","value":"1"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"placement"}},{"kind":"Field","name":{"kind":"Name","value":"player"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"gamerTag"}},{"kind":"Field","name":{"kind":"Name","value":"prefix"}}]}},{"kind":"Field","name":{"kind":"Name","value":"entrant"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"paginatedSets"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"perPage"},"value":{"kind":"IntValue","value":"1"}},{"kind":"Argument","name":{"kind":"Name","value":"page"},"value":{"kind":"IntValue","value":"1"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"games"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"selections"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"character"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"entrant"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<EventStandingsQuery, EventStandingsQueryVariables>;

@@ -24,5 +24,4 @@ dist-ssr
 *.sln
 *.sw?
 
-codegen.ts
 .env

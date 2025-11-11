@@ -5,4 +5,7 @@ export type PlayerInfo = {
   alt: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7;
   country?: string;
   twitter?: string;
+  placement: number;
+  gamerTag: string;
+  prefix?: string;
 };

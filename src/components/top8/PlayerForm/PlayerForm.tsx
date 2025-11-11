@@ -14,7 +14,8 @@ export const PlayerForm = ({ className }: Props) => {
   const { players, selectedPlayerIndex, dispatch } = usePlayerStore();
   const selectedPlayer = players[selectedPlayerIndex];
 
-  const [name, setName] = useState(selectedPlayer?.name || "");
+  const [gamerTag, setGamerTag] = useState(selectedPlayer?.gamerTag || "");
+  const [prefix, setPrefix] = useState(selectedPlayer?.prefix || "");
   const [characterId, setCharacterId] = useState(
     selectedPlayer?.characterId || ""
   );
@@ -22,11 +23,13 @@ export const PlayerForm = ({ className }: Props) => {
 
   useEffect(() => {
     if (selectedPlayer) {
-      setName(selectedPlayer.name);
+      setGamerTag(selectedPlayer.gamerTag);
+      setPrefix(selectedPlayer.prefix || "");
       setCharacterId(selectedPlayer.characterId);
       setAlt(selectedPlayer.alt);
     } else {
-      setName("");
+      setGamerTag("");
+      setPrefix("");
       setCharacterId("");
       setAlt(0);
     }
@@ -35,9 +38,10 @@ export const PlayerForm = ({ className }: Props) => {
   const handleSave = () => {
     if (!selectedPlayer) return;
     const player = {
-      id: selectedPlayer.id,
+      ...selectedPlayer,
       alt,
-      name,
+      gamerTag,
+      prefix,
       characterId,
     };
 
@@ -51,9 +55,16 @@ export const PlayerForm = ({ className }: Props) => {
     <div className={className}>
       <TextField.Root
         type="text"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        placeholder="Player Name"
+        value={prefix}
+        onChange={(e) => setPrefix(e.target.value)}
+        placeholder="Prefix"
+        disabled={!selectedPlayer}
+      />
+      <TextField.Root
+        type="text"
+        value={gamerTag}
+        onChange={(e) => setGamerTag(e.target.value)}
+        placeholder="Gamer Tag"
         disabled={!selectedPlayer}
       />
       <CharacterSelect

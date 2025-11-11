@@ -199,7 +199,7 @@ export const Player = ({
           x={0}
           y={10}
           fill={"white"}
-          text={player.name}
+          text={player.gamerTag}
           fontSize={50}
           fontFamily={fontFamily}
           fontStyle="bold"
@@ -210,7 +210,7 @@ export const Player = ({
         />
         <Text
           x={0}
-          y={40}
+          y={75}
           fill={"white"}
           text={String(placement)}
           fontSize={32}
