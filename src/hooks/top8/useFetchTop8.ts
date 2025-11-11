@@ -168,7 +168,7 @@ export const useFetchTop8 = (slug: string) => {
     if (!resultFetching) {
       fetchTop8();
     }
-  }, [client, slug, data, error]);
+  }, [client, slug, data, resultFetching]);
 
   useEffect(() => {
     if (resultError) {

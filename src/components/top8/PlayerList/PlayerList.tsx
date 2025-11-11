@@ -46,8 +46,13 @@ const PlayerItem = ({
 };
 
 export const PlayerList = ({ className }: Props) => {
-  const { players, playerOrder, selectedPlayerIndex, dispatch } =
-    usePlayerStore();
+  const players = usePlayerStore((state) => state.players);
+  const playerOrder = usePlayerStore((state) => state.playerOrder);
+  const selectedPlayerIndex = usePlayerStore(
+    (state) => state.selectedPlayerIndex
+  );
+  const dispatch = usePlayerStore((state) => state.dispatch);
+
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {

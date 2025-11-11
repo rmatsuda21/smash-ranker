@@ -11,7 +11,7 @@ import { PlayerForm } from "@/components/top8/PlayerForm/PlayerForm";
 import styles from "./Ranker.module.scss";
 
 export const Ranker = () => {
-  const { dispatch } = usePlayerStore();
+  const dispatch = usePlayerStore((state) => state.dispatch);
 
   const stageRef = useRef<Konva.Stage>(null);
 

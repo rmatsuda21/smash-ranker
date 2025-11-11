@@ -35,7 +35,8 @@ export const FontSelect = () => {
   const [isLoadingFonts, setIsLoadingFonts] = useState(true);
   const [fetchError, setFetchError] = useState<string | null>(null);
 
-  const { selectedFont, dispatch } = useCanvasStore();
+  const selectedFont = useCanvasStore((state) => state.selectedFont);
+  const dispatch = useCanvasStore((state) => state.dispatch);
 
   const loadAndDispatchFont = useCallback(
     (font: FontData) => {

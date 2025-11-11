@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, memo } from "react";
 import { Stage, Layer } from "react-konva";
 import Konva from "konva";
 
@@ -21,47 +21,72 @@ type PlayerLayerProps = {
   onPlayerDragEnd: (e: Konva.KonvaEventObject<MouseEvent>) => void;
 };
 
-const PlayerLayer = ({
-  ref,
-  onPlayerDragStart,
-  onPlayerDragEnd,
-}: PlayerLayerProps) => {
-  const { players, playerOrder } = usePlayerStore();
+// Memoize background layer to prevent unnecessary re-renders
+const BackgroundLayer = memo(
+  ({
+    width,
+    height,
+    imageSrc,
+    onClick,
+  }: {
+    width: number;
+    height: number;
+    imageSrc: string;
+    onClick: () => void;
+  }) => {
+    return (
+      <Layer onClick={onClick} listening={false}>
+        <CustomImage width={width} height={height} imageSrc={imageSrc} />
+      </Layer>
+    );
+  }
+);
 
-  return (
-    <Layer ref={ref}>
-      {playerOrder.map((playerIndex, index) => {
-        const player = players[playerIndex];
-        if (!player) return null;
+// Memoize PlayerLayer to prevent unnecessary re-renders
+const PlayerLayer = memo(
+  ({ ref, onPlayerDragStart, onPlayerDragEnd }: PlayerLayerProps) => {
+    // Selective subscription - only subscribe to players and playerOrder
+    const players = usePlayerStore((state) => state.players);
+    const playerOrder = usePlayerStore((state) => state.playerOrder);
 
-        return (
-          <Player
-            key={player.id}
-            placement={index + 1}
-            size={{ width: 400, height: 400 }}
-            position={{
-              x: Math.floor(index / 2) * 400,
-              y: Math.floor(index % 2) * 400,
-            }}
-            player={player}
-            index={index}
-            onDragStart={onPlayerDragStart}
-            onDragEnd={onPlayerDragEnd}
-          />
-        );
-      })}
-    </Layer>
-  );
-};
+    return (
+      <Layer ref={ref}>
+        {playerOrder.map((playerIndex, index) => {
+          const player = players[playerIndex];
+          if (!player) return null;
+
+          return (
+            <Player
+              key={player.id}
+              placement={index + 1}
+              size={{ width: 400, height: 400 }}
+              position={{
+                x: Math.floor(index / 2) * 400,
+                y: Math.floor(index % 2) * 400,
+              }}
+              player={player}
+              index={index}
+              onDragStart={onPlayerDragStart}
+              onDragEnd={onPlayerDragEnd}
+            />
+          );
+        })}
+      </Layer>
+    );
+  }
+);
 
 export const Canvas = ({ stageRef }: Props) => {
-  const { dispatch } = usePlayerStore();
+  // Selective subscriptions - only subscribe to what we need
+  const dispatch = usePlayerStore((state) => state.dispatch);
 
   const dragLayerRef = useRef<Konva.Layer>(null);
   const mainLayerRef = useRef<Konva.Layer>(null);
   const [backgroundImageSrc, setBackgroundImageSrc] = useState<string>();
 
-  const { size: canvasSize, displayScale } = useCanvasStore();
+  // Selective subscription - only subscribe to size and displayScale
+  const canvasSize = useCanvasStore((state) => state.size);
+  const displayScale = useCanvasStore((state) => state.displayScale);
 
   const handleStageClick = useCallback(() => {
     dispatch({ type: "CLEAR_SELECTED_PLAYER" });
@@ -141,13 +166,12 @@ export const Canvas = ({ stageRef }: Props) => {
           ref={stageRef}
           className={styles.canvas}
         >
-          <Layer onClick={handleStageClick}>
-            <CustomImage
-              width={canvasSize.width}
-              height={canvasSize.height}
-              imageSrc={backgroundImageSrc ?? ""}
-            />
-          </Layer>
+          <BackgroundLayer
+            width={canvasSize.width}
+            height={canvasSize.height}
+            imageSrc={backgroundImageSrc ?? ""}
+            onClick={handleStageClick}
+          />
 
           <PlayerLayer
             ref={mainLayerRef}
