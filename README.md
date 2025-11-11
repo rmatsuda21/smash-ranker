@@ -2,12 +2,12 @@
 The place for all of your Smash Bros. graphic generation tools.
 
 # Planned features
-- Top 8 graphic generation
-- Tierlist generator
+- Top 8 graphic generation (WIP)
+- Tierlist generator (WIP)
 
 ## Powered By:
 - React
 - Vite
-- Fabricjs
+- konva
 - urql
 - wouter
