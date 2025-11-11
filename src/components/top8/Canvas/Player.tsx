@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState, memo } from "react";
 import Konva from "konva";
 import { Group, Rect, Text, Transformer } from "react-konva";
 import { SceneContext } from "konva/lib/Context";
+import isEqual from "lodash/isEqual";
 
 import { PlayerInfo } from "@/types/top8/Player";
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
@@ -17,7 +18,6 @@ type Props = {
   position?: { x: number; y: number };
   size?: { width: number; height: number };
   index: number;
-  placement: number;
   onDragStart: (e: Konva.KonvaEventObject<MouseEvent>) => void;
   onDragEnd: (e: Konva.KonvaEventObject<MouseEvent>) => void;
 };
@@ -27,7 +27,6 @@ const PlayerComponent = ({
   index,
   position: initialPosition = { x: 0, y: 0 },
   size: initialSize = { width: 100, height: 100 },
-  placement,
   onDragStart,
   onDragEnd,
 }: Props) => {
@@ -251,11 +250,8 @@ export const Player = memo(PlayerComponent, (prevProps, nextProps) => {
     prevProps.player.id === nextProps.player.id &&
     prevProps.player.gamerTag === nextProps.player.gamerTag &&
     prevProps.player.twitter === nextProps.player.twitter &&
-    prevProps.player.characters[0]?.id === nextProps.player.characters[0]?.id &&
-    prevProps.player.characters[0]?.alt ===
-      nextProps.player.characters[0]?.alt &&
+    isEqual(prevProps.player.characters, nextProps.player.characters) &&
     prevProps.index === nextProps.index &&
-    prevProps.placement === nextProps.placement &&
     prevProps.position?.x === nextProps.position?.x &&
     prevProps.position?.y === nextProps.position?.y &&
     prevProps.size?.width === nextProps.size?.width &&

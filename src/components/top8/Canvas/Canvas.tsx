@@ -58,7 +58,6 @@ const PlayerLayer = memo(
           return (
             <Player
               key={player.id}
-              placement={index + 1}
               size={{ width: 400, height: 400 }}
               position={{
                 x: Math.floor(index / 2) * 400,
