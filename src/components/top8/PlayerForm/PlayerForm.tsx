@@ -21,7 +21,12 @@ const DEFAULT_PLAYER: PlayerInfo = {
 };
 
 export const PlayerForm = ({ className }: Props) => {
-  const { players, selectedPlayerIndex, dispatch } = usePlayerStore();
+  const players = usePlayerStore((state) => state.players);
+  const selectedPlayerIndex = usePlayerStore(
+    (state) => state.selectedPlayerIndex
+  );
+  const dispatch = usePlayerStore((state) => state.dispatch);
+
   const selectedPlayer = players[selectedPlayerIndex];
 
   const [player, setPlayer] = useState<PlayerInfo>(

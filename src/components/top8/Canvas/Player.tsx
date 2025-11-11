@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, memo } from "react";
 import Konva from "konva";
 import { Group, Rect, Text, Transformer } from "react-konva";
 import { SceneContext } from "konva/lib/Context";
@@ -22,7 +22,7 @@ type Props = {
   onDragEnd: (e: Konva.KonvaEventObject<MouseEvent>) => void;
 };
 
-export const Player = ({
+const PlayerComponent = ({
   player,
   index,
   position: initialPosition = { x: 0, y: 0 },
@@ -39,8 +39,13 @@ export const Player = ({
   const trRef = useRef<Konva.Transformer>(null);
   const [frameImageSrc, setFrameImageSrc] = useState<string>();
 
-  const { size: canvasSize, selectedFont, fonts } = useCanvasStore();
-  const { selectedPlayerIndex, dispatch } = usePlayerStore();
+  const canvasSize = useCanvasStore((state) => state.size);
+  const selectedFont = useCanvasStore((state) => state.selectedFont);
+  const fonts = useCanvasStore((state) => state.fonts);
+  const selectedPlayerIndex = usePlayerStore(
+    (state) => state.selectedPlayerIndex
+  );
+  const dispatch = usePlayerStore((state) => state.dispatch);
   const isSelected = selectedPlayerIndex === index;
 
   useEffect(() => {
@@ -220,7 +225,7 @@ export const Player = ({
           x={20}
           y={20}
           fill={"white"}
-          text={String(placement)}
+          text={String(player.placement)}
           fontSize={75}
           fontStyle="bold"
           fontFamily={fontFamily}
@@ -238,3 +243,22 @@ export const Player = ({
     </>
   );
 };
+
+// Memoize Player component to prevent unnecessary re-renders
+// Only re-render when player data, index, placement, or selection state actually changes
+export const Player = memo(PlayerComponent, (prevProps, nextProps) => {
+  return (
+    prevProps.player.id === nextProps.player.id &&
+    prevProps.player.gamerTag === nextProps.player.gamerTag &&
+    prevProps.player.twitter === nextProps.player.twitter &&
+    prevProps.player.characters[0]?.id === nextProps.player.characters[0]?.id &&
+    prevProps.player.characters[0]?.alt ===
+      nextProps.player.characters[0]?.alt &&
+    prevProps.index === nextProps.index &&
+    prevProps.placement === nextProps.placement &&
+    prevProps.position?.x === nextProps.position?.x &&
+    prevProps.position?.y === nextProps.position?.y &&
+    prevProps.size?.width === nextProps.size?.width &&
+    prevProps.size?.height === nextProps.size?.height
+  );
+});

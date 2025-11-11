@@ -1,4 +1,4 @@
-import { ComponentProps, useState, useEffect, useRef } from "react";
+import { ComponentProps, useState, useEffect, useRef, memo } from "react";
 import { Image } from "react-konva";
 import Konva from "konva";
 
@@ -16,7 +16,7 @@ type Props = Omit<ComponentProps<typeof Image>, "image"> & {
   fillMode?: "contain" | "cover";
 };
 
-export const CustomImage = ({
+const CustomImageComponent = ({
   width,
   height,
   imageSrc,
@@ -145,3 +145,6 @@ export const CustomImage = ({
     />
   );
 };
+
+// Memoize CustomImage to prevent unnecessary re-renders
+export const CustomImage = memo(CustomImageComponent);
