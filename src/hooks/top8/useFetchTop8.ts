@@ -136,7 +136,7 @@ export const useFetchTop8 = (slug: string) => {
   const { data, error: resultError } = result;
 
   const [top8, setTop8] = useState<PlayerInfo[]>([]);
-  const [fetching, setFetching] = useState(false);
+  const [fetching, setFetching] = useState(true);
   const [error, setError] = useState<string>("");
 
   useEffect(() => {
