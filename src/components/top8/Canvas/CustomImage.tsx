@@ -146,5 +146,4 @@ const CustomImageComponent = ({
   );
 };
 
-// Memoize CustomImage to prevent unnecessary re-renders
 export const CustomImage = memo(CustomImageComponent);

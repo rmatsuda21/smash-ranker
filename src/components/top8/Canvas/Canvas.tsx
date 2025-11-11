@@ -21,7 +21,6 @@ type PlayerLayerProps = {
   onPlayerDragEnd: (e: Konva.KonvaEventObject<MouseEvent>) => void;
 };
 
-// Memoize background layer to prevent unnecessary re-renders
 const BackgroundLayer = memo(
   ({
     width,
@@ -42,10 +41,8 @@ const BackgroundLayer = memo(
   }
 );
 
-// Memoize PlayerLayer to prevent unnecessary re-renders
 const PlayerLayer = memo(
   ({ ref, onPlayerDragStart, onPlayerDragEnd }: PlayerLayerProps) => {
-    // Selective subscription - only subscribe to players and playerOrder
     const players = usePlayerStore((state) => state.players);
     const playerOrder = usePlayerStore((state) => state.playerOrder);
 
@@ -76,14 +73,12 @@ const PlayerLayer = memo(
 );
 
 export const Canvas = ({ stageRef }: Props) => {
-  // Selective subscriptions - only subscribe to what we need
   const dispatch = usePlayerStore((state) => state.dispatch);
 
   const dragLayerRef = useRef<Konva.Layer>(null);
   const mainLayerRef = useRef<Konva.Layer>(null);
   const [backgroundImageSrc, setBackgroundImageSrc] = useState<string>();
 
-  // Selective subscription - only subscribe to size and displayScale
   const canvasSize = useCanvasStore((state) => state.size);
   const displayScale = useCanvasStore((state) => state.displayScale);
 
