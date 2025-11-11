@@ -70,6 +70,11 @@ export const Canvas = ({ stageRef }: Props) => {
   const onPlayerDragStart = useCallback(
     (e: Konva.KonvaEventObject<MouseEvent>) => {
       const player = e.target;
+      const playerId = player.name();
+      const transformer = player.parent?.findOne(`.transformer-${playerId}`);
+      if (transformer) {
+        transformer.moveTo(dragLayerRef.current);
+      }
 
       if (player) {
         player.moveTo(dragLayerRef.current);
@@ -81,6 +86,11 @@ export const Canvas = ({ stageRef }: Props) => {
   const onPlayerDragEnd = useCallback(
     (e: Konva.KonvaEventObject<MouseEvent>) => {
       const player = e.target;
+      const playerId = player.name();
+      const transformer = player.parent?.findOne(`.transformer-${playerId}`);
+      if (transformer) {
+        transformer.moveTo(mainLayerRef.current);
+      }
 
       if (player) {
         player.moveTo(mainLayerRef.current);
@@ -138,12 +148,14 @@ export const Canvas = ({ stageRef }: Props) => {
               imageSrc={backgroundImageSrc ?? ""}
             />
           </Layer>
-          <Layer ref={dragLayerRef}></Layer>
+
           <PlayerLayer
             ref={mainLayerRef}
             onPlayerDragStart={onPlayerDragStart}
             onPlayerDragEnd={onPlayerDragEnd}
           />
+
+          <Layer ref={dragLayerRef}></Layer>
         </Stage>
       </div>
     </div>

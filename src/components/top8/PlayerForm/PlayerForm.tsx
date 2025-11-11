@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
-import { Button, TextField } from "@radix-ui/themes";
+import { useEffect, useRef, useState } from "react";
+import { TextField } from "@radix-ui/themes";
+import debounce from "lodash/debounce";
 
 import { CharacterSelect } from "@/components/top8/CharacterSelect/CharacterSelect";
 import { CharacterAltRadio } from "@/components/top8/CharacterAltRadio/CharacterAltRadio";
@@ -37,43 +38,55 @@ export const PlayerForm = ({ className }: Props) => {
         placement: selectedPlayerIndex + 1,
       });
     }
-  }, [selectedPlayer]);
+  }, [selectedPlayer, selectedPlayerIndex]);
 
-  const handleSave = () => {
-    if (!selectedPlayer) return;
+  const debouncedUpdatePlayer = useRef(
+    debounce((player: PlayerInfo, index: number) => {
+      dispatch({
+        type: "UPDATE_PLAYER",
+        payload: { index, player },
+      });
+    }, 100)
+  ).current;
 
-    dispatch({
-      type: "UPDATE_PLAYER",
-      payload: { index: selectedPlayerIndex, player },
-    });
-  };
+  useEffect(() => {
+    return () => {
+      debouncedUpdatePlayer.cancel();
+    };
+  }, [debouncedUpdatePlayer]);
+
+  useEffect(() => {
+    if (selectedPlayer) {
+      debouncedUpdatePlayer(player, selectedPlayerIndex);
+    }
+  }, [player, selectedPlayerIndex, debouncedUpdatePlayer, selectedPlayer]);
 
   return (
     <div className={className}>
       <TextField.Root
         type="text"
-        value={player.prefix}
+        value={player.prefix ?? ""}
         onChange={(e) => setPlayer({ ...player, prefix: e.target.value })}
         placeholder="Prefix"
         disabled={!selectedPlayer}
       />
       <TextField.Root
         type="text"
-        value={player.gamerTag}
+        value={player.gamerTag ?? ""}
         onChange={(e) => setPlayer({ ...player, gamerTag: e.target.value })}
         placeholder="Gamer Tag"
         disabled={!selectedPlayer}
       />
       <CharacterSelect
-        selectedCharacterId={player.characters[0].id}
+        selectedCharacterId={player.characters[0]?.id ?? ""}
         onValueChange={(id) =>
           setPlayer({ ...player, characters: [{ id, alt: 0 }] })
         }
         disabled={!selectedPlayer}
       />
       <CharacterAltRadio
-        characterId={player.characters[0].id}
-        selectedAlt={player.characters[0].alt}
+        characterId={player.characters[0]?.id ?? ""}
+        selectedAlt={player.characters[0]?.alt ?? 0}
         onAltChange={(alt) =>
           setPlayer({
             ...player,
@@ -85,8 +98,6 @@ export const PlayerForm = ({ className }: Props) => {
         }
         disabled={!selectedPlayer}
       />
-
-      <Button onClick={handleSave}>Save</Button>
     </div>
   );
 };

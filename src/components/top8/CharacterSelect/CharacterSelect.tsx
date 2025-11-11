@@ -1,6 +1,6 @@
 import { characters } from "@/consts/top8/ultCharacters.json";
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
-import { DropDownSelect } from "../DropDownSelect/DropDownSelect";
+import { DropDownSelect } from "@/components/top8/DropDownSelect/DropDownSelect";
 
 type CharacterOption = {
   id: string;
@@ -29,6 +29,8 @@ const characterOptions = new Map(
   ])
 );
 
+const options = Array.from(characterOptions.values());
+
 export const CharacterSelect = ({
   selectedCharacterId,
   onValueChange,
@@ -44,7 +46,7 @@ export const CharacterSelect = ({
 
   return (
     <DropDownSelect
-      options={Array.from(characterOptions.values())}
+      options={options}
       selectedValue={selectedCharacter?.value}
       onChange={handleChange}
       disabled={disabled}

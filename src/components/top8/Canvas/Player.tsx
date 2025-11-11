@@ -153,7 +153,11 @@ export const Player = ({
 
   return (
     <>
-      <Transformer ref={trRef} onTransform={handleTransform} />
+      <Transformer
+        name={`transformer-${player.id}`}
+        ref={trRef}
+        onTransform={handleTransform}
+      />
       <Group
         ref={groupRef}
         draggable={isSelected}
