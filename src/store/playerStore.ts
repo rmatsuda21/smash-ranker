@@ -50,12 +50,16 @@ const DEFAULT_PLAYER: PlayerInfo = {
   name: `Player Name`,
   characterId: `1453`,
   alt: 0,
+  placement: 0,
+  gamerTag: "Player Name",
+  prefix: "",
 };
 
 const initialState: PlayerState = {
   players: Array.from({ length: 8 }).map((_, index) => ({
     ...DEFAULT_PLAYER,
     id: index.toString(),
+    placement: index + 1,
   })),
   playerOrder: Array.from({ length: 8 }).map((_, index) => index),
   selectedPlayerIndex: -1,

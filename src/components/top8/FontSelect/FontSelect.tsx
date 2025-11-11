@@ -21,6 +21,15 @@ type FontData = {
   isVariableFont: boolean;
 };
 
+const selectFontUrl = (fontFiles: Record<string, string>) => {
+  const availableVariants = Object.keys(fontFiles);
+  const preferredVariant = PREFERRED_FONT_VARIANTS.find((variant) =>
+    availableVariants.includes(variant)
+  );
+  const selectedVariant = preferredVariant ?? availableVariants[0];
+  return fontFiles[selectedVariant];
+};
+
 export const FontSelect = () => {
   const [fontList, setFontList] = useState<FontList>({});
   const [isLoadingFonts, setIsLoadingFonts] = useState(true);
@@ -79,15 +88,6 @@ export const FontSelect = () => {
     };
 
     initializeFonts();
-  }, []);
-
-  const selectFontUrl = useCallback((fontFiles: Record<string, string>) => {
-    const availableVariants = Object.keys(fontFiles);
-    const preferredVariant = PREFERRED_FONT_VARIANTS.find((variant) =>
-      availableVariants.includes(variant)
-    );
-    const selectedVariant = preferredVariant ?? availableVariants[0];
-    return fontFiles[selectedVariant];
   }, []);
 
   const fontOptions = useMemo<FontOption[]>(() => {
