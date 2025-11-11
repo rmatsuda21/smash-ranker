@@ -9,9 +9,10 @@ import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
 import { CustomImage } from "@/components/top8/Canvas/CustomImage";
 import { useCanvasStore } from "@/store/canvasStore";
 import { fetchAndColorSVG } from "@/utils/top8/fetchAndColorSVG";
+import { usePlayerStore } from "@/store/playerStore";
+import { SmartText } from "@/components/top8/SmartText/SmartText";
 
 import playerFrame from "/assets/top8/theme/mini/frame.svg";
-import { usePlayerStore } from "@/store/playerStore";
 
 type Props = {
   player: PlayerInfo;
@@ -155,6 +156,11 @@ const PlayerComponent = ({
     return fonts[selectedFont] === "loaded" ? selectedFont : "Arial";
   }, [selectedFont, fonts]);
 
+  const name = useMemo(
+    () => `${player.prefix ? `${player.prefix} | ` : ""}${player.gamerTag}`,
+    [player.prefix, player.gamerTag]
+  );
+
   return (
     <>
       <Transformer
@@ -205,12 +211,14 @@ const PlayerComponent = ({
           y={0}
           imageSrc={frameImageSrc ?? ""}
         />
-        <Text
+        <SmartText
           width={size.width}
+          height={80}
+          verticalAlign="middle"
           x={0}
           y={size.height - 80}
           fill={"white"}
-          text={player.gamerTag}
+          text={name}
           fontSize={65}
           fontFamily={fontFamily}
           fontStyle="bold"
@@ -221,6 +229,10 @@ const PlayerComponent = ({
           align="center"
         />
         <Text
+          width={75}
+          height={75}
+          align="left"
+          verticalAlign="top"
           x={20}
           y={20}
           fill={"white"}
@@ -243,12 +255,11 @@ const PlayerComponent = ({
   );
 };
 
-// Memoize Player component to prevent unnecessary re-renders
-// Only re-render when player data, index, placement, or selection state actually changes
 export const Player = memo(PlayerComponent, (prevProps, nextProps) => {
   return (
     prevProps.player.id === nextProps.player.id &&
     prevProps.player.gamerTag === nextProps.player.gamerTag &&
+    prevProps.player.prefix === nextProps.player.prefix &&
     prevProps.player.twitter === nextProps.player.twitter &&
     isEqual(prevProps.player.characters, nextProps.player.characters) &&
     prevProps.index === nextProps.index &&
