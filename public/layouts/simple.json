@@ -1,0 +1,50 @@
+{
+  "canvasSize": {
+    "width": 1920,
+    "height": 1080
+  },
+  "players": [
+    {
+
+      "position": { "x": 25, "y": 190 },
+      "size": { "width": 700, "height": 700 },
+      "scale": { "x": 1, "y": 1 }
+    },
+    {
+      "position": { "x": 740, "y": 190 },
+      "size": { "width": 350, "height": 350 },
+      "scale": { "x": 1, "y": 1 }
+    },
+    {
+      "position": { "x": 1105, "y": 190 },
+      "size": { "width": 350, "height": 350 },
+      "scale": { "x": 1, "y": 1 }
+    },
+    {
+      "position": { "x": 1470, "y": 190 },
+      "size": { "width": 350, "height": 350 },
+      "scale": { "x": 1, "y": 1 }
+    },
+    {
+      "position": { "x": 740, "y": 555 },
+      "size": { "width": 250, "height": 250 },
+      "scale": { "x": 1, "y": 1 }
+    },
+    {
+      "position": { "x": 1000, "y": 555 },
+      "size": { "width": 250, "height": 250 },
+      "scale": { "x": 1, "y": 1 }
+    },
+    {
+      "position": { "x": 1260, "y": 555 },
+      "size": { "width": 250, "height": 250 },
+      "scale": { "x": 1, "y": 1 }
+    },
+    {
+      "position": { "x": 1520, "y": 555 },
+      "size": { "width": 250, "height": 250 },
+      "scale": { "x": 1, "y": 1 }
+    }
+  ]
+}
+

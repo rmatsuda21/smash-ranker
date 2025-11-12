@@ -18,6 +18,7 @@ type Props = {
   player: PlayerInfo;
   position?: { x: number; y: number };
   size?: { width: number; height: number };
+  scale?: { x: number; y: number };
   index: number;
   onDragStart: (e: Konva.KonvaEventObject<MouseEvent>) => void;
   onDragEnd: (e: Konva.KonvaEventObject<MouseEvent>) => void;
@@ -28,11 +29,12 @@ const PlayerComponent = ({
   index,
   position: initialPosition = { x: 0, y: 0 },
   size: initialSize = { width: 100, height: 100 },
+  scale: initialScale = { x: 1, y: 1 },
   onDragStart,
   onDragEnd,
 }: Props) => {
   const [size] = useState(initialSize);
-  const [scale, setScale] = useState({ x: 1, y: 1 });
+  const [scale, setScale] = useState(initialScale);
   const [position, setPosition] = useState(initialPosition);
   const [isHovered, setIsHovered] = useState(false);
   const groupRef = useRef<Konva.Group>(null);
@@ -266,6 +268,8 @@ export const Player = memo(PlayerComponent, (prevProps, nextProps) => {
     prevProps.position?.x === nextProps.position?.x &&
     prevProps.position?.y === nextProps.position?.y &&
     prevProps.size?.width === nextProps.size?.width &&
-    prevProps.size?.height === nextProps.size?.height
+    prevProps.size?.height === nextProps.size?.height &&
+    prevProps.scale?.x === nextProps.scale?.x &&
+    prevProps.scale?.y === nextProps.scale?.y
   );
 });

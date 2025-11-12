@@ -7,6 +7,7 @@ import { fetchAndColorSVG } from "@/utils/top8/fetchAndColorSVG";
 import { CustomImage } from "@/components/top8/Canvas/CustomImage";
 import { useCanvasStore } from "@/store/canvasStore";
 import backgroundImage from "/assets/top8/theme/wtf/background.svg";
+import { LayoutConfig } from "@/types/top8/Layout";
 import { usePlayerStore } from "@/store/playerStore";
 
 import styles from "./Canvas.module.scss";
@@ -19,6 +20,7 @@ type PlayerLayerProps = {
   ref: React.RefObject<Konva.Layer | null>;
   onPlayerDragStart: (e: Konva.KonvaEventObject<MouseEvent>) => void;
   onPlayerDragEnd: (e: Konva.KonvaEventObject<MouseEvent>) => void;
+  layout: LayoutConfig | null;
 };
 
 const BackgroundLayer = memo(
@@ -35,16 +37,23 @@ const BackgroundLayer = memo(
   }) => {
     return (
       <Layer onClick={onClick} listening={false}>
-        <CustomImage width={width} height={height} imageSrc={imageSrc} />
+        <CustomImage
+          width={width}
+          height={height}
+          imageSrc={imageSrc}
+          fillMode="cover"
+        />
       </Layer>
     );
   }
 );
 
 const PlayerLayer = memo(
-  ({ ref, onPlayerDragStart, onPlayerDragEnd }: PlayerLayerProps) => {
+  ({ ref, onPlayerDragStart, onPlayerDragEnd, layout }: PlayerLayerProps) => {
     const players = usePlayerStore((state) => state.players);
     const playerOrder = usePlayerStore((state) => state.playerOrder);
+
+    if (!layout) return <Layer ref={ref} />;
 
     return (
       <Layer ref={ref}>
@@ -52,14 +61,15 @@ const PlayerLayer = memo(
           const player = players[playerIndex];
           if (!player) return null;
 
+          const layoutConfig = layout.players[index];
+          if (!layoutConfig) return null;
+
           return (
             <Player
               key={player.id}
-              size={{ width: 400, height: 400 }}
-              position={{
-                x: Math.floor(index / 2) * 400,
-                y: Math.floor(index % 2) * 400,
-              }}
+              size={layoutConfig.size}
+              position={layoutConfig.position}
+              scale={layoutConfig.scale}
               player={player}
               index={index}
               onDragStart={onPlayerDragStart}
@@ -73,14 +83,16 @@ const PlayerLayer = memo(
 );
 
 export const Canvas = ({ stageRef }: Props) => {
-  const dispatch = usePlayerStore((state) => state.dispatch);
-
   const dragLayerRef = useRef<Konva.Layer>(null);
   const mainLayerRef = useRef<Konva.Layer>(null);
   const [backgroundImageSrc, setBackgroundImageSrc] = useState<string>();
+  const [layout, setLayout] = useState<LayoutConfig | null>(null);
 
   const canvasSize = useCanvasStore((state) => state.size);
   const displayScale = useCanvasStore((state) => state.displayScale);
+  const canvasDispatch = useCanvasStore((state) => state.dispatch);
+
+  const dispatch = usePlayerStore((state) => state.dispatch);
 
   const handleStageClick = useCallback(() => {
     dispatch({ type: "CLEAR_SELECTED_PLAYER" });
@@ -141,6 +153,22 @@ export const Canvas = ({ stageRef }: Props) => {
     fetchBackgroundImageSrc();
   }, []);
 
+  useEffect(() => {
+    const loadLayout = async () => {
+      try {
+        const response = await fetch("/layouts/simple.json");
+        if (response.ok) {
+          const layoutData: LayoutConfig = await response.json();
+          setLayout(layoutData);
+          canvasDispatch({ type: "SET_SIZE", payload: layoutData.canvasSize });
+        }
+      } catch (error) {
+        console.error("Failed to load layout:", error);
+      }
+    };
+    loadLayout();
+  }, []);
+
   return (
     <div
       style={
@@ -171,6 +199,7 @@ export const Canvas = ({ stageRef }: Props) => {
             ref={mainLayerRef}
             onPlayerDragStart={onPlayerDragStart}
             onPlayerDragEnd={onPlayerDragEnd}
+            layout={layout}
           />
 
           <Layer ref={dragLayerRef}></Layer>
