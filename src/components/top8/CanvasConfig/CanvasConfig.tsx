@@ -4,11 +4,7 @@ import Konva from "konva";
 
 import { FontSelect } from "@/components/top8/FontSelect/FontSelect";
 
-type Props = {
-  stageRef: React.RefObject<Konva.Stage | null>;
-};
-
-export const CanvasConfig = ({ stageRef }: Props) => {
+export const CanvasConfig = () => {
   const [filename, setFilename] = useState("");
 
   return (
@@ -27,14 +23,20 @@ export const CanvasConfig = ({ stageRef }: Props) => {
 
       <Button
         onClick={() => {
-          if (!stageRef.current) return;
+          const stageElement = document.getElementById("top8-canvas-stage");
+          if (!stageElement) return;
 
-          const dataURL = stageRef.current.toDataURL({
-            pixelRatio: 2,
+          const stage = Konva.stages.find(
+            (s) => s.container().id === "top8-canvas-stage"
+          );
+          if (!stage) return;
+
+          const dataURL = stage.toDataURL({
+            pixelRatio: 1,
           });
 
           const link = document.createElement("a");
-          link.download = filename;
+          link.download = filename || "ranker.png";
           link.href = dataURL;
           document.body.appendChild(link);
           link.click();
