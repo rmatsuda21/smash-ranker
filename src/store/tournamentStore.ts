@@ -4,12 +4,14 @@ interface TournamentState {
   name: string;
   date: string;
   location: string;
+  entrants: number;
 }
 
 type TournamentAction =
   | { type: "SET_NAME"; payload: string }
   | { type: "SET_DATE"; payload: string }
   | { type: "SET_LOCATION"; payload: string }
+  | { type: "SET_ENTRANTS"; payload: number }
   | { type: "SET_TOURNAMENT"; payload: TournamentState }
   | { type: "RESET" };
 
@@ -24,6 +26,8 @@ const tournamentReducer = (
       return { ...state, date: action.payload };
     case "SET_LOCATION":
       return { ...state, location: action.payload };
+    case "SET_ENTRANTS":
+      return { ...state, entrants: action.payload };
     case "SET_TOURNAMENT":
       return { ...state, ...action.payload };
     case "RESET":
@@ -35,8 +39,9 @@ const tournamentReducer = (
 
 const initialState: TournamentState = {
   name: `Tournament Name`,
-  date: `2025-01-01`,
-  location: `Location`,
+  date: `1999-11-07`,
+  location: `Somewhere, World`,
+  entrants: 69,
 };
 
 interface TournamentStore extends TournamentState {
