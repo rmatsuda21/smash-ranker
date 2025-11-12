@@ -52,8 +52,17 @@ function computeFittedFontSize(
 }
 
 export const SmartText = (props: SmartTextProps) => {
-  const { fontSize = 16, width, text = "", ...restProps } = props;
+  const {
+    fontSize = 16,
+    width,
+    text = "",
+    shadowOffset: initialShadowOffset = { x: 0, y: 0 },
+    ...restProps
+  } = props;
+
   const [adjustedFontSize, setAdjustedFontSize] = useState(fontSize);
+  const [offsetY, setOffsetY] = useState(0);
+  const [shadowOffset, setShadowOffset] = useState(initialShadowOffset);
   const textRef = useRef<Konva.Text>(null);
 
   const isCalculatingRef = useRef(false);
@@ -73,12 +82,38 @@ export const SmartText = (props: SmartTextProps) => {
       isCalculatingRef.current = true;
       const fitted = computeFittedFontSize(node, text, width, fontSize, props);
       isCalculatingRef.current = false;
+
       return fitted;
     };
 
+    const calculateShadowOffset = () => {
+      const node = textRef.current;
+      if (!node) return initialShadowOffset;
+
+      const fitted = computeFittedFontSize(node, text, width, fontSize, props);
+      return {
+        x: (initialShadowOffset.x * fitted) / fontSize,
+        y: (initialShadowOffset.y * fitted) / fontSize,
+      };
+    };
+
+    const calculateOffsetY = () => {
+      const node = textRef.current;
+      if (!node) return 0;
+
+      if (props.verticalAlign === "bottom") {
+        return node.height();
+      } else if (props.verticalAlign === "middle") {
+        return (node.height() - node.fontSize()) / 2;
+      } else {
+        return 0;
+      }
+    };
+
     const timeoutId = setTimeout(() => {
-      const newFontSize = calculateFontSize();
-      setAdjustedFontSize(newFontSize);
+      setAdjustedFontSize(calculateFontSize());
+      setOffsetY(calculateOffsetY());
+      setShadowOffset(calculateShadowOffset());
     }, 0);
 
     return () => {
@@ -96,12 +131,16 @@ export const SmartText = (props: SmartTextProps) => {
     props.letterSpacing,
   ]);
 
+  console.log(offsetY);
+
   return (
     <Text
       ref={textRef}
       fontSize={adjustedFontSize}
+      offsetY={offsetY}
       width={width}
       text={text}
+      shadowOffset={shadowOffset}
       {...restProps}
     />
   );

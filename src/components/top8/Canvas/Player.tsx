@@ -52,7 +52,7 @@ const PlayerComponent = ({
 
   useEffect(() => {
     const fetchFrameImageSrc = async () => {
-      const url = await fetchAndColorSVG(playerFrame, "rgba(0, 0, 0, 0.8)");
+      const url = await fetchAndColorSVG(playerFrame, "rgba(255, 0, 0, 0.8)");
       if (url) {
         setFrameImageSrc(url);
       }
@@ -165,11 +165,6 @@ const PlayerComponent = ({
 
   return (
     <>
-      <Transformer
-        name={`transformer-${player.id}`}
-        ref={trRef}
-        onTransform={handleTransform}
-      />
       <Group
         ref={groupRef}
         draggable={isSelected}
@@ -185,7 +180,6 @@ const PlayerComponent = ({
         onDragEnd={handleDragEnd}
         onDragStart={onDragStart}
         dragBoundFunc={dragBoundFunc}
-        clipFunc={clipFunc}
         name={player.id}
       >
         <Rect
@@ -193,18 +187,27 @@ const PlayerComponent = ({
           y={0}
           width={size.width}
           height={size.height}
-          fill={isHovered ? "rgba(255, 255, 255, 0.2)" : "transparent"}
+          fill={"black"}
         />
-        <CustomImage
-          id="character"
-          y={0}
+        <Rect
           x={0}
+          y={0}
           width={size.width}
           height={size.height}
-          offset={{ x: 0, y: 100 }}
-          imageSrc={characterImageSrc}
-          hasShadow
+          fill={isHovered ? "rgba(255, 255, 255, 0.2)" : "transparent"}
         />
+        <Group clipFunc={clipFunc}>
+          <CustomImage
+            id="character"
+            y={0}
+            x={0}
+            width={size.width}
+            height={size.height}
+            offset={{ x: 0, y: 100 }}
+            imageSrc={characterImageSrc}
+            hasShadow
+          />
+        </Group>
         <CustomImage
           id="frame"
           width={size.width}
@@ -215,10 +218,9 @@ const PlayerComponent = ({
         />
         <SmartText
           width={size.width}
-          height={80}
-          verticalAlign="middle"
+          verticalAlign="bottom"
           x={0}
-          y={size.height - 85}
+          y={size.height}
           fill={"white"}
           text={name}
           fontSize={65}
@@ -253,6 +255,11 @@ const PlayerComponent = ({
           />
         )}
       </Group>
+      <Transformer
+        name={`transformer-${player.id}`}
+        ref={trRef}
+        onTransform={handleTransform}
+      />
     </>
   );
 };
