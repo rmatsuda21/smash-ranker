@@ -1,5 +1,4 @@
-import { useEffect, useRef } from "react";
-import Konva from "konva";
+import { useEffect } from "react";
 
 import { useFetchTop8 } from "@/hooks/top8/useFetchTop8";
 import { Canvas } from "@/components/top8/Canvas/Canvas";
@@ -12,8 +11,6 @@ import styles from "./Ranker.module.scss";
 
 export const Ranker = () => {
   const dispatch = usePlayerStore((state) => state.dispatch);
-
-  const stageRef = useRef<Konva.Stage>(null);
 
   const { top8, fetching, error } = useFetchTop8(
     // "tournament/genesis-9-1/event/ultimate-singles"
@@ -41,10 +38,10 @@ export const Ranker = () => {
             <PlayerForm />
           </div>
 
-          <Canvas stageRef={stageRef} />
+          <Canvas />
         </div>
 
-        <CanvasConfig stageRef={stageRef} />
+        <CanvasConfig />
       </div>
     </div>
   );

@@ -5,17 +5,13 @@ import Konva from "konva";
 import { useCanvasStore } from "@/store/canvasStore";
 import { LayoutConfig } from "@/types/top8/Layout";
 import { usePlayerStore } from "@/store/playerStore";
+import { BackgroundLayer } from "@/components/top8/Canvas/BackgroundLayer";
+import { PlayerLayer } from "@/components/top8/Canvas/PlayerLayer";
+import { TournamentLayer } from "@/components/top8/Canvas/TournamentLayer";
 
 import styles from "./Canvas.module.scss";
-import { BackgroundLayer } from "./BackgroundLayer";
-import { PlayerLayer } from "./PlayerLayer";
-import { TournamentLayer } from "./TournamentLayer";
 
-type Props = {
-  stageRef: React.RefObject<Konva.Stage | null>;
-};
-
-export const Canvas = ({ stageRef }: Props) => {
+export const Canvas = () => {
   const dragLayerRef = useRef<Konva.Layer>(null);
   const mainLayerRef = useRef<Konva.Layer>(null);
   const [layout, setLayout] = useState<LayoutConfig | null>(null);
@@ -104,10 +100,10 @@ export const Canvas = ({ stageRef }: Props) => {
     >
       <div className={styles.canvasWrapper}>
         <Stage
+          id="top8-canvas-stage"
           width={canvasSize.width}
           height={canvasSize.height}
           onClick={handleStageClick}
-          ref={stageRef}
           className={styles.canvas}
         >
           <BackgroundLayer onClick={handleStageClick} />
