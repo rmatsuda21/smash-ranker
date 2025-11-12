@@ -1,91 +1,23 @@
-import { useCallback, useEffect, useRef, useState, memo } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Stage, Layer } from "react-konva";
 import Konva from "konva";
 
-import { Player } from "@/components/top8/Canvas/Player";
-import { fetchAndColorSVG } from "@/utils/top8/fetchAndColorSVG";
-import { CustomImage } from "@/components/top8/Canvas/CustomImage";
 import { useCanvasStore } from "@/store/canvasStore";
-import backgroundImage from "/assets/top8/theme/wtf/background.svg";
 import { LayoutConfig } from "@/types/top8/Layout";
 import { usePlayerStore } from "@/store/playerStore";
 
 import styles from "./Canvas.module.scss";
+import { BackgroundLayer } from "./BackgroundLayer";
+import { PlayerLayer } from "./PlayerLayer";
+import { TournamentLayer } from "./TournamentLayer";
 
 type Props = {
   stageRef: React.RefObject<Konva.Stage | null>;
 };
 
-type PlayerLayerProps = {
-  ref: React.RefObject<Konva.Layer | null>;
-  onPlayerDragStart: (e: Konva.KonvaEventObject<MouseEvent>) => void;
-  onPlayerDragEnd: (e: Konva.KonvaEventObject<MouseEvent>) => void;
-  layout: LayoutConfig | null;
-};
-
-const BackgroundLayer = memo(
-  ({
-    width,
-    height,
-    imageSrc,
-    onClick,
-  }: {
-    width: number;
-    height: number;
-    imageSrc: string;
-    onClick: () => void;
-  }) => {
-    return (
-      <Layer onClick={onClick} listening={false}>
-        <CustomImage
-          width={width}
-          height={height}
-          imageSrc={imageSrc}
-          fillMode="cover"
-        />
-      </Layer>
-    );
-  }
-);
-
-const PlayerLayer = memo(
-  ({ ref, onPlayerDragStart, onPlayerDragEnd, layout }: PlayerLayerProps) => {
-    const players = usePlayerStore((state) => state.players);
-    const playerOrder = usePlayerStore((state) => state.playerOrder);
-
-    if (!layout) return <Layer ref={ref} />;
-
-    return (
-      <Layer ref={ref}>
-        {playerOrder.map((playerIndex, index) => {
-          const player = players[playerIndex];
-          if (!player) return null;
-
-          const layoutConfig = layout.players[index];
-          if (!layoutConfig) return null;
-
-          return (
-            <Player
-              key={player.id}
-              size={layoutConfig.size}
-              position={layoutConfig.position}
-              scale={layoutConfig.scale}
-              player={player}
-              index={index}
-              onDragStart={onPlayerDragStart}
-              onDragEnd={onPlayerDragEnd}
-            />
-          );
-        })}
-      </Layer>
-    );
-  }
-);
-
 export const Canvas = ({ stageRef }: Props) => {
   const dragLayerRef = useRef<Konva.Layer>(null);
   const mainLayerRef = useRef<Konva.Layer>(null);
-  const [backgroundImageSrc, setBackgroundImageSrc] = useState<string>();
   const [layout, setLayout] = useState<LayoutConfig | null>(null);
 
   const canvasSize = useCanvasStore((state) => state.size);
@@ -144,16 +76,6 @@ export const Canvas = ({ stageRef }: Props) => {
   }, []);
 
   useEffect(() => {
-    const fetchBackgroundImageSrc = async () => {
-      const url = await fetchAndColorSVG(backgroundImage, "rgba(0, 0, 0, 0.8)");
-      if (url) {
-        setBackgroundImageSrc(url);
-      }
-    };
-    fetchBackgroundImageSrc();
-  }, []);
-
-  useEffect(() => {
     const loadLayout = async () => {
       try {
         const response = await fetch("/layouts/simple.json");
@@ -188,12 +110,7 @@ export const Canvas = ({ stageRef }: Props) => {
           ref={stageRef}
           className={styles.canvas}
         >
-          <BackgroundLayer
-            width={canvasSize.width}
-            height={canvasSize.height}
-            imageSrc={backgroundImageSrc ?? ""}
-            onClick={handleStageClick}
-          />
+          <BackgroundLayer onClick={handleStageClick} />
 
           <PlayerLayer
             ref={mainLayerRef}
@@ -201,6 +118,8 @@ export const Canvas = ({ stageRef }: Props) => {
             onPlayerDragEnd={onPlayerDragEnd}
             layout={layout}
           />
+
+          <TournamentLayer />
 
           <Layer ref={dragLayerRef}></Layer>
         </Stage>
