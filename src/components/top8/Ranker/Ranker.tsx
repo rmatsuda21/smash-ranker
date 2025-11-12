@@ -6,6 +6,7 @@ import { CanvasConfig } from "@/components/top8/CanvasConfig/CanvasConfig";
 import { PlayerList } from "@/components/top8/PlayerList/PlayerList";
 import { usePlayerStore } from "@/store/playerStore";
 import { PlayerForm } from "@/components/top8/PlayerForm/PlayerForm";
+import { preloadCharacterImages } from "@/utils/top8/preloadCharacterImages";
 
 import styles from "./Ranker.module.scss";
 
@@ -23,6 +24,11 @@ export const Ranker = () => {
     }
   }, [top8, dispatch]);
 
+  // Preload all character images on mount
+  useEffect(() => {
+    preloadCharacterImages();
+  }, []);
+
   if (fetching) return <div>Loading...</div>;
   if (!top8 || error)
     return <div>{error ? <h1>{error}</h1> : <h1>Error</h1>}</div>;
@@ -37,7 +43,6 @@ export const Ranker = () => {
             <PlayerList className={styles.playerList} />
             <PlayerForm />
           </div>
-
           <Canvas />
         </div>
 
