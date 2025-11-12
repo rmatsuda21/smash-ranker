@@ -2,6 +2,7 @@ import { create } from "zustand";
 
 type FontStatus = "loading" | "loaded" | "failed";
 
+// TODO: Add layout to config
 interface CanvasState {
   size: { width: number; height: number };
   displayScale: number;
