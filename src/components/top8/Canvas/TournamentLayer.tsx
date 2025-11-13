@@ -1,4 +1,4 @@
-import { Layer, Text } from "react-konva";
+import { Group, Layer, Text } from "react-konva";
 
 import { useCanvasStore } from "@/store/canvasStore";
 import { useTournamentStore } from "@/store/tournamentStore";
@@ -7,16 +7,47 @@ export const TournamentLayer = () => {
   const canvasSize = useCanvasStore((state) => state.size);
   const selectedFont = useCanvasStore((state) => state.selectedFont);
 
-  const tournamentName = useTournamentStore((state) => state.name);
+  const info = useTournamentStore((state) => state.info);
 
   return (
-    <Layer width={canvasSize.width} height={canvasSize.height}>
-      <Text
-        fill="white"
-        fontSize={100}
-        fontFamily={selectedFont}
-        text={tournamentName}
-      />
+    <Layer>
+      <Group width={canvasSize.width} height={canvasSize.height}>
+        <Text
+          x={0}
+          y={0}
+          fill="white"
+          fontSize={50}
+          fontStyle="bold"
+          fontFamily={selectedFont}
+          text={info.tournamentName}
+        />
+        <Text
+          x={0}
+          y={50}
+          fill="white"
+          fontSize={50}
+          fontStyle="bold"
+          fontFamily={selectedFont}
+          text={info.eventName}
+        />
+        <Text
+          x={0}
+          y={100}
+          fill="white"
+          fontSize={50}
+          fontStyle="bold"
+          fontFamily={selectedFont}
+          text={
+            info.date
+              ? info.date.toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })
+              : ""
+          }
+        />
+      </Group>
     </Layer>
   );
 };

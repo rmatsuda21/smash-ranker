@@ -1,10 +1,14 @@
-import { useEffect, useState } from "react";
-import { useQuery, useClient } from "urql";
+import { useEffect } from "react";
+import { useClient } from "urql";
+import type { Client } from "urql";
 
 import { graphql } from "@/gql";
-import { PlayerInfo } from "@/types/top8/Player";
 import type { EventStandingsQuery, PlayerSetsQuery } from "@/gql/graphql";
-import type { Client } from "urql";
+
+import { PlayerInfo } from "@/types/top8/Player";
+import { usePlayerStore } from "@/store/playerStore";
+import { useTournamentStore } from "@/store/tournamentStore";
+import { TournamentInfo } from "@/types/top8/Tournament";
 
 // const UltimateCharacterQuery = graphql(`
 //   query UltimateCharacters {
@@ -22,6 +26,15 @@ const Top8Query = graphql(`
     event(slug: $slug) {
       id
       name
+      startAt
+      tournament {
+        name
+        venueAddress
+      }
+      teamRosterSize {
+        maxPlayers
+        minPlayers
+      }
       standings(query: { perPage: 8, page: 1 }) {
         nodes {
           placement
@@ -128,21 +141,47 @@ const getPlayerCharacters = async (
 
 export const useFetchTop8 = (slug: string) => {
   const client = useClient();
-  const [result] = useQuery({
-    query: Top8Query,
-    variables: { slug },
-  });
-
-  const { data, fetching: resultFetching, error: resultError } = result;
-
-  const [top8, setTop8] = useState<PlayerInfo[]>([]);
-  const [fetching, setFetching] = useState(true);
-  const [error, setError] = useState<string>("");
+  const playerDispatch = usePlayerStore((state) => state.dispatch);
+  const tournamentDispatch = useTournamentStore((state) => state.dispatch);
 
   useEffect(() => {
     const fetchTop8 = async () => {
-      setFetching(true);
+      playerDispatch({ type: "FETCH_PLAYERS" });
+
+      const result = await client.query(Top8Query, { slug }).toPromise();
+
+      if (result.error || !result.data) {
+        playerDispatch({
+          type: "FETCH_PLAYERS_FAIL",
+          payload: result.error?.message || "Failed to fetch top 8 data",
+        });
+        return;
+      }
+
+      const data = result.data;
       const standings = data?.event?.standings?.nodes;
+      const tournamentName = data?.event?.tournament?.name;
+      const eventName = data?.event?.name;
+      const venueAddress = data?.event?.tournament?.venueAddress;
+      const teamRosterSize = data?.event?.teamRosterSize;
+
+      const date = data?.event?.startAt
+        ? new Date(data.event.startAt * 1000)
+        : null;
+
+      const tournamentInfo: TournamentInfo = {
+        tournamentName: tournamentName || "",
+        eventName: eventName || "",
+        location: venueAddress || "",
+        date: date || new Date(),
+        entrants: teamRosterSize?.maxPlayers || 0,
+      };
+
+      tournamentDispatch({
+        type: "SET_TOURNAMENT_INFO",
+        payload: tournamentInfo,
+      });
+
       const players = getTop8Players(standings);
 
       const results = await Promise.allSettled(
@@ -157,25 +196,15 @@ export const useFetchTop8 = (slug: string) => {
       );
 
       if (results.every((result) => result.status === "fulfilled")) {
-        setTop8(players);
-        setFetching(false);
+        playerDispatch({ type: "FETCH_PLAYERS_SUCCESS", payload: players });
       } else {
-        setFetching(false);
-        setError("Failed to fetch characters for all players");
+        playerDispatch({
+          type: "FETCH_PLAYERS_FAIL",
+          payload: "Failed to fetch characters for all players",
+        });
       }
     };
 
-    if (!resultFetching) {
-      fetchTop8();
-    }
-  }, [client, slug, data, resultFetching]);
-
-  useEffect(() => {
-    if (resultError) {
-      setError(resultError.message);
-      setFetching(false);
-    }
-  }, [resultError]);
-
-  return { fetching, error, top8 };
+    fetchTop8();
+  }, [client, slug, playerDispatch, tournamentDispatch]);
 };
