@@ -31,6 +31,7 @@ const playerReducer = (
     case "SET_PLAYERS":
       return { ...state, players: action.payload };
     case "UPDATE_PLAYER":
+      console.log("UPDATE_PLAYER", action.payload);
       const playerIndex = state.playerOrder[action.payload.index];
       return {
         ...state,

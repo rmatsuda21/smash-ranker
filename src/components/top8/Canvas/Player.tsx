@@ -24,6 +24,43 @@ type Props = {
   onDragEnd: (e: Konva.KonvaEventObject<MouseEvent>) => void;
 };
 
+const AltGroup = memo(
+  ({
+    playerId,
+    characters,
+    size = 40,
+    gap = 5,
+    x,
+    y,
+  }: {
+    playerId: string;
+    characters: string[];
+    x: number;
+    y: number;
+    size?: number;
+    gap?: number;
+  }) => {
+    return (
+      <Group x={x} y={y}>
+        {characters.map((character, index) => (
+          <CustomImage
+            key={`${playerId}-alt-${index}`}
+            id="alternate-character"
+            x={0}
+            y={index * (size + gap)}
+            width={size}
+            height={size}
+            imageSrc={character}
+          />
+        ))}
+      </Group>
+    );
+  },
+  (prevProps, nextProps) => {
+    return isEqual(prevProps.characters, nextProps.characters);
+  }
+);
+
 const PlayerComponent = ({
   player,
   index,
@@ -37,6 +74,7 @@ const PlayerComponent = ({
   const [scale, setScale] = useState(initialScale);
   const [position, setPosition] = useState(initialPosition);
   const [isHovered, setIsHovered] = useState(false);
+
   const groupRef = useRef<Konva.Group>(null);
   const trRef = useRef<Konva.Transformer>(null);
   const [frameImageSrc, setFrameImageSrc] = useState<string>();
@@ -163,6 +201,16 @@ const PlayerComponent = ({
     [player.prefix, player.gamerTag]
   );
 
+  const alternateCharacters = useMemo(() => {
+    return player.characters.slice(1).map((character) => {
+      return getCharImgUrl({
+        characterId: character.id,
+        alt: character.alt,
+        type: "stock",
+      });
+    });
+  }, [player.characters]);
+
   return (
     <>
       <Group
@@ -208,6 +256,14 @@ const PlayerComponent = ({
             hasShadow
           />
         </Group>
+        <AltGroup
+          playerId={player.id}
+          characters={alternateCharacters}
+          x={size.width - 65}
+          y={15}
+          size={50}
+          gap={5}
+        />
         <CustomImage
           id="frame"
           width={size.width}
@@ -225,7 +281,7 @@ const PlayerComponent = ({
           text={name}
           fontSize={65}
           fontFamily={fontFamily}
-          fontStyle="bold"
+          fontStyle="900"
           shadowColor={"black"}
           shadowBlur={0}
           shadowOffset={{ x: 6, y: 6 }}
@@ -242,7 +298,10 @@ const PlayerComponent = ({
           fontSize={75}
           fontStyle="bold"
           fontFamily={fontFamily}
+          stroke={"white"}
+          strokeWidth={7}
         />
+
         {player.twitter && (
           <Text
             x={0}
