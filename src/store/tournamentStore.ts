@@ -1,18 +1,21 @@
 import { create } from "zustand";
 
+import { TournamentInfo } from "@/types/top8/Tournament";
 interface TournamentState {
-  name: string;
-  date: string;
-  location: string;
-  entrants: number;
+  info: TournamentInfo;
+  fetching: boolean;
+  error: string;
 }
 
 type TournamentAction =
-  | { type: "SET_NAME"; payload: string }
-  | { type: "SET_DATE"; payload: string }
+  | { type: "SET_TOURNAMENT_NAME"; payload: string }
+  | { type: "SET_EVENT_NAME"; payload: string }
+  | { type: "SET_DATE"; payload: Date }
   | { type: "SET_LOCATION"; payload: string }
   | { type: "SET_ENTRANTS"; payload: number }
-  | { type: "SET_TOURNAMENT"; payload: TournamentState }
+  | { type: "SET_TOURNAMENT_INFO"; payload: TournamentInfo }
+  | { type: "SET_FETCHING"; payload: boolean }
+  | { type: "SET_ERROR"; payload: string }
   | { type: "RESET" };
 
 const tournamentReducer = (
@@ -20,16 +23,25 @@ const tournamentReducer = (
   action: TournamentAction
 ): TournamentState => {
   switch (action.type) {
-    case "SET_NAME":
-      return { ...state, name: action.payload };
+    case "SET_TOURNAMENT_NAME":
+      return {
+        ...state,
+        info: { ...state.info, tournamentName: action.payload },
+      };
+    case "SET_EVENT_NAME":
+      return { ...state, info: { ...state.info, eventName: action.payload } };
     case "SET_DATE":
-      return { ...state, date: action.payload };
+      return { ...state, info: { ...state.info, date: action.payload } };
     case "SET_LOCATION":
-      return { ...state, location: action.payload };
+      return { ...state, info: { ...state.info, location: action.payload } };
     case "SET_ENTRANTS":
-      return { ...state, entrants: action.payload };
-    case "SET_TOURNAMENT":
-      return { ...state, ...action.payload };
+      return { ...state, info: { ...state.info, entrants: action.payload } };
+    case "SET_TOURNAMENT_INFO":
+      return { ...state, info: action.payload };
+    case "SET_FETCHING":
+      return { ...state, fetching: action.payload };
+    case "SET_ERROR":
+      return { ...state, error: action.payload };
     case "RESET":
       return initialState;
     default:
@@ -38,10 +50,15 @@ const tournamentReducer = (
 };
 
 const initialState: TournamentState = {
-  name: `Tournament Name`,
-  date: `1999-11-07`,
-  location: `Somewhere, World`,
-  entrants: 69,
+  info: {
+    tournamentName: `Tournament Name`,
+    eventName: `Event Name`,
+    date: new Date("1999-11-07"),
+    location: `Somewhere, World`,
+    entrants: 69,
+  },
+  fetching: false,
+  error: "",
 };
 
 interface TournamentStore extends TournamentState {

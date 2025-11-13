@@ -1,8 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, lazy, Suspense } from "react";
 
 import { useFetchTop8 } from "@/hooks/top8/useFetchTop8";
-import { Canvas } from "@/components/top8/Canvas/Canvas";
-import { CanvasConfig } from "@/components/top8/CanvasConfig/CanvasConfig";
 import { PlayerList } from "@/components/top8/PlayerList/PlayerList";
 import { usePlayerStore } from "@/store/playerStore";
 import { PlayerForm } from "@/components/top8/PlayerForm/PlayerForm";
@@ -10,27 +8,34 @@ import { preloadCharacterImages } from "@/utils/top8/preloadCharacterImages";
 
 import styles from "./Ranker.module.scss";
 
-export const Ranker = () => {
-  const dispatch = usePlayerStore((state) => state.dispatch);
+const Canvas = lazy(() =>
+  import("@/components/top8/Canvas/Canvas").then((module) => ({
+    default: module.Canvas,
+  }))
+);
 
-  const { top8, fetching, error } = useFetchTop8(
+const CanvasConfig = lazy(() =>
+  import("@/components/top8/CanvasConfig/CanvasConfig").then((module) => ({
+    default: module.CanvasConfig,
+  }))
+);
+
+export const Ranker = () => {
+  const players = usePlayerStore((state) => state.players);
+  const fetching = usePlayerStore((state) => state.fetching);
+  const error = usePlayerStore((state) => state.error);
+
+  useFetchTop8(
     // "tournament/genesis-9-1/event/ultimate-singles"
     "tournament/smash-sans-fronti-res-271/event/smash-ultimate-singles"
   );
 
   useEffect(() => {
-    if (top8 && !error) {
-      dispatch({ type: "SET_PLAYERS", payload: top8 });
-    }
-  }, [top8, dispatch]);
-
-  // Preload all character images on mount
-  useEffect(() => {
     preloadCharacterImages();
   }, []);
 
   if (fetching) return <div>Loading...</div>;
-  if (!top8 || error)
+  if (!players || error)
     return <div>{error ? <h1>{error}</h1> : <h1>Error</h1>}</div>;
 
   return (
@@ -43,10 +48,14 @@ export const Ranker = () => {
             <PlayerList className={styles.playerList} />
             <PlayerForm />
           </div>
-          <Canvas />
+          <Suspense fallback={<div>Loading Canvas...</div>}>
+            <Canvas />
+          </Suspense>
         </div>
 
-        <CanvasConfig />
+        <Suspense fallback={<div>Loading Config...</div>}>
+          <CanvasConfig />
+        </Suspense>
       </div>
     </div>
   );

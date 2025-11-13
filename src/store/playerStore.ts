@@ -6,6 +6,8 @@ interface PlayerState {
   players: PlayerInfo[];
   playerOrder: number[];
   selectedPlayerIndex: number;
+  fetching: boolean;
+  error: string;
 }
 
 type PlayerAction =
@@ -14,6 +16,11 @@ type PlayerAction =
   | { type: "SET_PLAYER_ORDER"; payload: number[] }
   | { type: "SET_SELECTED_PLAYER_INDEX"; payload: number }
   | { type: "CLEAR_SELECTED_PLAYER" }
+  | { type: "SET_FETCHING"; payload: boolean }
+  | { type: "SET_ERROR"; payload: string }
+  | { type: "FETCH_PLAYERS" }
+  | { type: "FETCH_PLAYERS_SUCCESS"; payload: PlayerInfo[] }
+  | { type: "FETCH_PLAYERS_FAIL"; payload: string }
   | { type: "RESET" };
 
 const playerReducer = (
@@ -37,6 +44,16 @@ const playerReducer = (
       return { ...state, selectedPlayerIndex: action.payload };
     case "CLEAR_SELECTED_PLAYER":
       return { ...state, selectedPlayerIndex: -1 };
+    case "SET_FETCHING":
+      return { ...state, fetching: action.payload };
+    case "SET_ERROR":
+      return { ...state, error: action.payload };
+    case "FETCH_PLAYERS":
+      return { ...state, fetching: true, error: "" };
+    case "FETCH_PLAYERS_SUCCESS":
+      return { ...state, fetching: false, players: action.payload, error: "" };
+    case "FETCH_PLAYERS_FAIL":
+      return { ...state, fetching: false, error: action.payload };
     case "RESET":
       return initialState;
     default:
@@ -61,6 +78,8 @@ const initialState: PlayerState = {
   })),
   playerOrder: Array.from({ length: 8 }).map((_, index) => index),
   selectedPlayerIndex: -1,
+  fetching: false,
+  error: "",
 };
 
 interface PlayerStore extends PlayerState {

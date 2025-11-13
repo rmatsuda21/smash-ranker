@@ -131,8 +131,6 @@ export const SmartText = (props: SmartTextProps) => {
     props.letterSpacing,
   ]);
 
-  console.log(offsetY);
-
   return (
     <Text
       ref={textRef}
