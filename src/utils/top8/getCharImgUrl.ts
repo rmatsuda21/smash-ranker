@@ -9,4 +9,6 @@ export const getCharImgUrl = ({
   alt?: CharacerData["alt"];
   type?: "main" | "stock";
 }) =>
-  `https://raw.githubusercontent.com/rmatsuda21/SmashRankerAssets/main/${type}/${characterId}/${alt}.png`;
+  `https://raw.githubusercontent.com/rmatsuda21/SmashRankerAssets/main/${type}/${characterId}/${alt}.${
+    type === "main" ? "webp" : "png"
+  }`;
