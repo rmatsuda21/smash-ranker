@@ -33,7 +33,15 @@ export const PlayerForm = ({ className }: Props) => {
     selectedPlayer || DEFAULT_PLAYER
   );
 
+  const editingPlayerIndexRef = useRef<number>(selectedPlayerIndex);
+  const isLoadingPlayerRef = useRef<boolean>(false);
+
   useEffect(() => {
+    debouncedUpdatePlayer.cancel();
+
+    editingPlayerIndexRef.current = selectedPlayerIndex;
+    isLoadingPlayerRef.current = true;
+
     if (selectedPlayer) {
       setPlayer(selectedPlayer);
     } else {
@@ -43,6 +51,10 @@ export const PlayerForm = ({ className }: Props) => {
         placement: selectedPlayerIndex + 1,
       });
     }
+
+    setTimeout(() => {
+      isLoadingPlayerRef.current = false;
+    }, 0);
   }, [selectedPlayer, selectedPlayerIndex]);
 
   const debouncedUpdatePlayer = useRef(
@@ -60,32 +72,44 @@ export const PlayerForm = ({ className }: Props) => {
     };
   }, [debouncedUpdatePlayer]);
 
-  useEffect(() => {
-    if (selectedPlayer) {
-      debouncedUpdatePlayer(player, selectedPlayerIndex);
+  const updatePlayer = (updatedPlayer: PlayerInfo) => {
+    setPlayer(updatedPlayer);
+
+    if (
+      selectedPlayer &&
+      !isLoadingPlayerRef.current &&
+      editingPlayerIndexRef.current === selectedPlayerIndex
+    ) {
+      debouncedUpdatePlayer(updatedPlayer, selectedPlayerIndex);
     }
-  }, [player, selectedPlayerIndex, debouncedUpdatePlayer, selectedPlayer]);
+  };
 
   return (
     <div className={className}>
       <TextField.Root
         type="text"
         value={player.prefix ?? ""}
-        onChange={(e) => setPlayer({ ...player, prefix: e.target.value })}
+        onChange={(e) => updatePlayer({ ...player, prefix: e.target.value })}
         placeholder="Prefix"
         disabled={!selectedPlayer}
       />
       <TextField.Root
         type="text"
         value={player.gamerTag ?? ""}
-        onChange={(e) => setPlayer({ ...player, gamerTag: e.target.value })}
+        onChange={(e) => updatePlayer({ ...player, gamerTag: e.target.value })}
         placeholder="Gamer Tag"
         disabled={!selectedPlayer}
       />
       <CharacterSelect
         selectedCharacterId={player.characters[0]?.id ?? ""}
         onValueChange={(id) =>
-          setPlayer({ ...player, characters: [{ id, alt: 0 }] })
+          updatePlayer({
+            ...player,
+            characters: [
+              { id, alt: player.characters[0]?.alt ?? 0 },
+              ...player.characters.slice(1),
+            ],
+          })
         }
         disabled={!selectedPlayer}
       />
@@ -93,7 +117,7 @@ export const PlayerForm = ({ className }: Props) => {
         characterId={player.characters[0]?.id ?? ""}
         selectedAlt={player.characters[0]?.alt ?? 0}
         onAltChange={(alt) =>
-          setPlayer({
+          updatePlayer({
             ...player,
             characters: [
               { id: player.characters[0].id, alt },
