@@ -8,6 +8,7 @@ import {
   useLayoutEffect,
 } from "react";
 import { LuChevronsUpDown } from "react-icons/lu";
+import cn from "classnames";
 
 import styles from "./DropDownSelect.module.scss";
 
@@ -222,7 +223,6 @@ export const DropDownSelect = <T,>({
         className={styles.trigger}
         onClick={toggleDropdown}
         disabled={disabled}
-        data-disabled={disabled ? "" : undefined}
         aria-haspopup="listbox"
         aria-expanded={isOpen}
         type="button"
@@ -250,26 +250,29 @@ export const DropDownSelect = <T,>({
         </span>
       </button>
 
-      {isOpen && (
-        <div
-          className={styles.content_dropdown}
-          data-state="open"
-          data-show-above={showAbove ? "" : undefined}
-          role="listbox"
-        >
-          <div className={styles.viewport} ref={dropdownRef}>
-            {options.map((option) => (
-              <SelectItemComponent
-                key={option.id}
-                display={option.display}
-                imageSrc={option.imageSrc}
-                isSelected={option.value === selectedValue}
-                onClick={() => handleValueChange(option.id)}
-              />
-            ))}
-          </div>
+      <div
+        className={cn(styles.content_dropdown, {
+          [styles.open]: isOpen,
+          [styles.closed]: !isOpen,
+          [styles.showAbove]: showAbove,
+        })}
+        aria-hidden={!isOpen}
+        aria-expanded={isOpen}
+        role="listbox"
+        aria-label="Select an option"
+      >
+        <div className={styles.viewport} ref={dropdownRef}>
+          {options.map((option) => (
+            <SelectItemComponent
+              key={option.id}
+              display={option.display}
+              imageSrc={option.imageSrc}
+              isSelected={option.value === selectedValue}
+              onClick={() => handleValueChange(option.id)}
+            />
+          ))}
         </div>
-      )}
+      </div>
     </div>
   );
 };
