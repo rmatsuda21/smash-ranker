@@ -45,6 +45,7 @@ const SelectItemComponent = memo(
         onClick={onClick}
         role="option"
         aria-selected={isSelected}
+        tabIndex={0}
       >
         <div className={styles.itemContent}>
           {imageSrc && (
@@ -77,6 +78,7 @@ export const DropDownSelect = <T,>({
   const triggerRef = useRef<HTMLButtonElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const focusedItemRef = useRef<HTMLDivElement>(null);
 
   const selectedOption = useMemo(() => {
     return options.find((option) => option.value === selectedValue);
@@ -138,11 +140,53 @@ export const DropDownSelect = <T,>({
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
+      const focusPreviousItem = () => {
+        if (focusedItemRef.current) {
+          const previousItem = focusedItemRef.current
+            .previousElementSibling as HTMLDivElement;
+          if (previousItem) {
+            previousItem.focus();
+            focusedItemRef.current = previousItem;
+          }
+        }
+      };
+
+      const focusNextItem = () => {
+        if (focusedItemRef.current) {
+          const nextItem = focusedItemRef.current
+            .nextElementSibling as HTMLDivElement;
+          if (nextItem) {
+            nextItem.focus();
+            focusedItemRef.current = nextItem;
+          }
+        }
+      };
+
       switch (event.key) {
         case "Escape":
           event.preventDefault();
           setIsOpen(false);
           triggerRef.current?.focus();
+          break;
+        case "ArrowUp":
+          event.preventDefault();
+          focusPreviousItem();
+          break;
+        case "ArrowDown":
+          event.preventDefault();
+          focusNextItem();
+          break;
+        case "Tab":
+          event.preventDefault();
+          if (event.shiftKey) {
+            focusPreviousItem();
+          } else {
+            focusNextItem();
+          }
+          break;
+        case "Enter":
+          event.preventDefault();
+          focusedItemRef.current?.click();
           break;
       }
     };
@@ -160,10 +204,15 @@ export const DropDownSelect = <T,>({
       );
       if (checkedElement) {
         (checkedElement as HTMLElement).scrollIntoView({ block: "nearest" });
-      } else {
-        dropdownRef.current?.scrollIntoView({ block: "nearest" });
+        focusedItemRef.current = checkedElement as HTMLDivElement;
       }
+    } else {
+      focusedItemRef.current = null;
     }
+
+    return () => {
+      focusedItemRef.current = null;
+    };
   }, [isOpen, dropdownRef]);
 
   return (

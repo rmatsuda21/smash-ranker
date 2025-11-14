@@ -162,6 +162,15 @@
     outline: 1px solid #ccc;
     outline-offset: -1px;
   }
+
+  &:hover {
+    background-color: #444;
+  }
+
+  &:focus {
+    outline: 1px solid #ccc;
+    outline-offset: -1px;
+  }
 }
 
 .itemContent {
