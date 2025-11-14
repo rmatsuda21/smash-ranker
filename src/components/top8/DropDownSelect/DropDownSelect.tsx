@@ -119,7 +119,6 @@ export const DropDownSelect = <T,>({
 
     const handleResize = () => {
       const shouldShowAbove = calculateShowAbove();
-      console.log("shouldShowAbove", shouldShowAbove);
       setShowAbove(shouldShowAbove);
     };
 
@@ -219,10 +218,6 @@ export const DropDownSelect = <T,>({
     } else {
       focusedItemRef.current = null;
     }
-
-    return () => {
-      focusedItemRef.current = null;
-    };
   }, [isOpen, dropdownRef]);
 
   return (
@@ -235,6 +230,7 @@ export const DropDownSelect = <T,>({
         aria-haspopup="listbox"
         aria-expanded={isOpen}
         type="button"
+        tabIndex={0}
       >
         {selectedOption ? (
           <div className={styles.content}>
