@@ -107,19 +107,28 @@ export const DropDownSelect = <T,>({
   }, [disabled, isOpen]);
 
   useEffect(() => {
-    if (!isOpen || !triggerRef.current || !dropdownRef.current) return;
+    const calculateShowAbove = () => {
+      if (!triggerRef.current || !dropdownRef.current) return false;
+      const triggerRect = triggerRef.current.getBoundingClientRect();
+      const dropdownHeight = dropdownRef.current.offsetHeight;
+      const viewportHeight = window.innerHeight;
 
-    const triggerRect = triggerRef.current.getBoundingClientRect();
-    const dropdownHeight = dropdownRef.current.offsetHeight;
-    const viewportHeight = window.innerHeight;
-    const buffer = 16;
-    const spaceBelow = viewportHeight - triggerRect.bottom - buffer;
-    const spaceAbove = triggerRect.top - buffer;
+      // Show above if dropdown would extend beyond viewport bottom
+      return triggerRect.bottom + dropdownHeight > viewportHeight;
+    };
 
-    const shouldShowAbove =
-      spaceBelow < dropdownHeight && spaceAbove > dropdownHeight;
-    setShowAbove(shouldShowAbove);
-  }, [isOpen, options.length]);
+    const handleResize = () => {
+      const shouldShowAbove = calculateShowAbove();
+      console.log("shouldShowAbove", shouldShowAbove);
+      setShowAbove(shouldShowAbove);
+    };
+
+    setShowAbove(calculateShowAbove());
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [options.length]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -251,7 +260,7 @@ export const DropDownSelect = <T,>({
       </button>
 
       <div
-        className={cn(styles.content_dropdown, {
+        className={cn(styles.dropdown, {
           [styles.open]: isOpen,
           [styles.closed]: !isOpen,
           [styles.showAbove]: showAbove,
