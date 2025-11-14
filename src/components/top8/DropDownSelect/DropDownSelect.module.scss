@@ -53,7 +53,7 @@
   }
 }
 
-.content_dropdown {
+.dropdown {
   position: absolute;
   top: calc(100% + 4px);
   left: 0;
@@ -71,28 +71,26 @@
   transform-origin: top center;
   will-change: transform, opacity;
 
-  &[data-show-above] {
+  &.showAbove {
     top: auto;
     bottom: calc(100% + 4px);
     transform-origin: bottom center;
   }
 
   &.open {
-    display: block;
+    visibility: visible;
+    pointer-events: auto;
     animation: slideDown 0.15s cubic-bezier(0.16, 1, 0.3, 1);
 
-    &[data-show-above] {
+    &.showAbove {
       animation: slideUp 0.15s cubic-bezier(0.16, 1, 0.3, 1);
     }
   }
 
-  &:not(.open) {
-    display: none;
-    animation: slideDownClose 0.1s cubic-bezier(0.16, 1, 0.3, 1);
-
-    &[data-show-above] {
-      animation: slideUpClose 0.1s cubic-bezier(0.16, 1, 0.3, 1);
-    }
+  &.closed {
+    visibility: hidden;
+    pointer-events: none;
+    opacity: 0;
   }
 }
 
