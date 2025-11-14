@@ -1,6 +1,7 @@
 import { characters } from "@/consts/top8/ultCharacters.json";
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
 import { DropDownSelect } from "@/components/top8/DropDownSelect/DropDownSelect";
+import { useCallback } from "react";
 
 type CharacterOption = {
   id: string;
@@ -38,11 +39,14 @@ export const CharacterSelect = ({
 }: Props) => {
   const selectedCharacter = characterOptions.get(selectedCharacterId);
 
-  const handleChange = (values: CharacterOption[]) => {
-    if (values.length > 0) {
-      onValueChange(String(values[0].id));
-    }
-  };
+  const handleChange = useCallback(
+    (values: CharacterOption[]) => {
+      if (values.length > 0) {
+        onValueChange(String(values[0].id));
+      }
+    },
+    [onValueChange]
+  );
 
   return (
     <DropDownSelect
@@ -50,6 +54,7 @@ export const CharacterSelect = ({
       selectedValue={selectedCharacter?.value}
       onChange={handleChange}
       disabled={disabled}
+      placeholder="Select Character"
     />
   );
 };

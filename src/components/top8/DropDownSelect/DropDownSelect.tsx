@@ -1,9 +1,13 @@
-import Select, {
-  SelectItemRenderer,
-  SelectRenderer,
-} from "react-dropdown-select";
-import cn from "classnames";
-import { useMemo } from "react";
+import {
+  memo,
+  useCallback,
+  useMemo,
+  useState,
+  useRef,
+  useEffect,
+  useLayoutEffect,
+} from "react";
+import { LuChevronsUpDown } from "react-icons/lu";
 
 import styles from "./DropDownSelect.module.scss";
 
@@ -19,78 +23,204 @@ type Props<T> = {
   selectedValue: T;
   onChange: (values: any[]) => void;
   disabled?: boolean;
+  placeholder?: string;
 };
 
-const itemRenderer = <T,>({
-  item,
-  state,
-  methods,
-}: SelectItemRenderer<Item<T>>) => {
-  const isSelected = state.values[0]?.id === item.id;
-  return (
-    <div
-      className={cn(styles.item, {
-        [styles.selected]: isSelected,
-      })}
-      key={item.id}
-      onClick={() => methods.addItem(item)}
-    >
-      {item.imageSrc && (
-        <img
-          width={24}
-          height={24}
-          src={item.imageSrc}
-          alt={item.display ?? ""}
-        />
-      )}
-      {item.display}
-    </div>
-  );
-};
-
-const contentRenderer = <T,>({ state }: SelectRenderer<Item<T>>) => {
-  if (state.values.length === 0) return null;
-  const item = state.values[0];
-  return (
-    <div className={styles.content}>
-      {item.imageSrc && (
-        <img
-          width={24}
-          height={24}
-          src={item.imageSrc}
-          alt={item.display ?? ""}
-        />
-      )}
-      {item.display}
-    </div>
-  );
-};
+const SelectItemComponent = memo(
+  ({
+    display,
+    imageSrc,
+    isSelected,
+    onClick,
+  }: {
+    display: string;
+    imageSrc?: string;
+    isSelected: boolean;
+    onClick: () => void;
+  }) => {
+    return (
+      <div
+        className={styles.item}
+        data-state={isSelected ? "checked" : undefined}
+        onClick={onClick}
+        role="option"
+        aria-selected={isSelected}
+      >
+        <div className={styles.itemContent}>
+          {imageSrc && (
+            <img
+              width={24}
+              height={24}
+              src={imageSrc}
+              alt={display ?? ""}
+              loading="lazy"
+            />
+          )}
+          {display}
+        </div>
+      </div>
+    );
+  }
+);
+SelectItemComponent.displayName = "SelectItemComponent";
 
 export const DropDownSelect = <T,>({
   options,
   selectedValue,
   onChange,
+  placeholder,
   disabled = false,
 }: Props<T>) => {
-  const selectedValues = useMemo(() => {
-    return options.filter((option) => option.value === selectedValue);
+  const [isOpen, setIsOpen] = useState(false);
+  const [showAbove, setShowAbove] = useState(false);
+
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const selectedOption = useMemo(() => {
+    return options.find((option) => option.value === selectedValue);
   }, [options, selectedValue]);
 
-  const handleChange = (values: any[]) => {
-    onChange(values);
-  };
+  const optionsMap = useMemo(() => {
+    return new Map(options.map((option) => [option.id, option]));
+  }, [options]);
+
+  const handleValueChange = useCallback(
+    (value: string) => {
+      const selectedItem = optionsMap.get(value);
+      if (selectedItem) {
+        onChange([selectedItem]);
+      }
+      setIsOpen(false);
+    },
+    [optionsMap, onChange]
+  );
+
+  const toggleDropdown = useCallback(() => {
+    if (!disabled) {
+      setIsOpen((prev) => !prev);
+    }
+  }, [disabled, isOpen]);
+
+  useEffect(() => {
+    if (!isOpen || !triggerRef.current || !dropdownRef.current) return;
+
+    const triggerRect = triggerRef.current.getBoundingClientRect();
+    const dropdownHeight = dropdownRef.current.offsetHeight;
+    const viewportHeight = window.innerHeight;
+    const buffer = 16;
+    const spaceBelow = viewportHeight - triggerRect.bottom - buffer;
+    const spaceAbove = triggerRect.top - buffer;
+
+    const shouldShowAbove =
+      spaceBelow < dropdownHeight && spaceAbove > dropdownHeight;
+    setShowAbove(shouldShowAbove);
+  }, [isOpen, options.length]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      switch (event.key) {
+        case "Escape":
+          event.preventDefault();
+          setIsOpen(false);
+          triggerRef.current?.focus();
+          break;
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
+  useLayoutEffect(() => {
+    if (isOpen && dropdownRef.current) {
+      const checkedElement = dropdownRef.current?.querySelector(
+        '[data-state="checked"]'
+      );
+      if (checkedElement) {
+        (checkedElement as HTMLElement).scrollIntoView({ block: "nearest" });
+      } else {
+        dropdownRef.current?.scrollIntoView({ block: "nearest" });
+      }
+    }
+  }, [isOpen, dropdownRef]);
 
   return (
-    <div className={cn({ [styles.disabled]: disabled })}>
-      <Select
-        className={styles.container}
-        options={options}
-        values={selectedValues}
-        onChange={handleChange}
-        itemRenderer={itemRenderer}
-        contentRenderer={contentRenderer}
+    <div className={styles.container} ref={containerRef}>
+      <button
+        ref={triggerRef}
+        className={styles.trigger}
+        onClick={toggleDropdown}
         disabled={disabled}
-      />
+        data-disabled={disabled ? "" : undefined}
+        aria-haspopup="listbox"
+        aria-expanded={isOpen}
+        type="button"
+      >
+        {selectedOption ? (
+          <div className={styles.content}>
+            {selectedOption.imageSrc && (
+              <img
+                width={24}
+                height={24}
+                src={selectedOption.imageSrc}
+                alt={selectedOption.display ?? ""}
+                loading="eager"
+              />
+            )}
+            {selectedOption.display}
+          </div>
+        ) : (
+          <div className={styles.content}>
+            <span className={styles.placeholder}>{placeholder}</span>
+          </div>
+        )}
+        <span className={styles.icon}>
+          <LuChevronsUpDown />
+        </span>
+      </button>
+
+      {isOpen && (
+        <div
+          className={styles.content_dropdown}
+          data-state="open"
+          data-show-above={showAbove ? "" : undefined}
+          role="listbox"
+        >
+          <div className={styles.viewport} ref={dropdownRef}>
+            {options.map((option) => (
+              <SelectItemComponent
+                key={option.id}
+                display={option.display}
+                imageSrc={option.imageSrc}
+                isSelected={option.value === selectedValue}
+                onClick={() => handleValueChange(option.id)}
+              />
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
