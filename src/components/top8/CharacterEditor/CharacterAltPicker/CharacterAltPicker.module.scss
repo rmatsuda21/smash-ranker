@@ -39,6 +39,8 @@
 
 .label {
   flex: 1;
+
+  max-height: 40px;
   aspect-ratio: 1 / 1;
   position: relative;
   cursor: pointer;
@@ -56,6 +58,7 @@
 
   img {
     object-fit: contain;
+    height: 100%;
   }
 
   &:has(input:disabled) {

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { CharacterSelect } from "@/components/top8/CharacterEditor/CharacterSelect/CharacterSelect";
 import { CharacterAltPicker } from "@/components/top8/CharacterEditor/CharacterAltPicker/CharacterAltPicker";
@@ -19,6 +19,10 @@ export const CharacterEditor = ({
 }: Props) => {
   const [characterIndex, setCharacterIndex] = useState(0);
   const selectedCharacter = player?.characters[characterIndex];
+
+  useEffect(() => {
+    setCharacterIndex(0);
+  }, [player?.characters]);
 
   const onCharacterChange = (characterId: string) => {
     if (!player) return;

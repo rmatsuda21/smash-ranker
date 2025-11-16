@@ -1,5 +1,4 @@
-import { useMemo, useRef } from "react";
-import cn from "classnames";
+import { useEffect, useMemo, useRef } from "react";
 
 import { characters } from "@/consts/top8/ultCharacters.json";
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
@@ -53,7 +52,16 @@ export const CharacterAltPicker = ({
     }
 
     return alts;
-  }, [selectedCharacter]);
+  }, [selectedCharacter?.id]);
+
+  useEffect(() => {
+    if (wrapperRef.current) {
+      wrapperRef.current.style.setProperty(
+        "--selected-alt",
+        String(selectedCharacter?.alt || 0)
+      );
+    }
+  }, [selectedCharacter?.alt]);
 
   const handleAltClick = (alt: CharacerData["alt"]) => {
     if (!disabled) {
@@ -73,10 +81,7 @@ export const CharacterAltPicker = ({
           alt === selectedCharacter?.alt && !!selectedCharacter;
 
         return (
-          <label
-            key={id}
-            className={cn(styles.label, { [styles.selected]: isSelected })}
-          >
+          <label key={id} className={styles.label}>
             <input
               type="radio"
               name="character-alt"
