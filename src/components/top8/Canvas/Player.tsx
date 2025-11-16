@@ -251,7 +251,7 @@ const PlayerComponent = ({
             x={0}
             width={size.width}
             height={size.height}
-            offset={{ x: 0, y: 100 }}
+            offset={{ x: 0, y: 0 }}
             imageSrc={characterImageSrc}
             hasShadow
           />
