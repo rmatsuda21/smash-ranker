@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 import cn from "classnames";
 
 import { characters } from "@/consts/top8/ultCharacters.json";
@@ -40,10 +40,20 @@ export const CharacterAltPicker = ({
   onAltChange,
   disabled = false,
 }: Props) => {
-  const altsAndIcons = useMemo(
-    () => getAltsAndIcons(selectedCharacter?.id),
-    [selectedCharacter]
-  );
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const altsAndIcons = useMemo(() => {
+    const alts = getAltsAndIcons(selectedCharacter?.id);
+
+    if (wrapperRef.current) {
+      wrapperRef.current.style.setProperty("--num-alts", String(alts.length));
+      wrapperRef.current.style.setProperty(
+        "--selected-alt",
+        String(selectedCharacter?.alt)
+      );
+    }
+
+    return alts;
+  }, [selectedCharacter]);
 
   const handleAltClick = (alt: CharacerData["alt"]) => {
     if (!disabled) {
@@ -53,6 +63,7 @@ export const CharacterAltPicker = ({
 
   return (
     <div
+      ref={wrapperRef}
       className={styles.container}
       role="radiogroup"
       aria-label="Character alternate costume"
