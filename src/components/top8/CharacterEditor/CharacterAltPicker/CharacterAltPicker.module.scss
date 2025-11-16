@@ -1,8 +1,43 @@
 .container {
+  --selected-alt: 0;
+  --num-alts: 8;
+  --alt-gap: 4px;
+
   display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-  align-items: center;
+  gap: var(--alt-gap);
+
+  border-radius: 8px;
+
+  width: fit-content;
+  position: relative;
+
+  border: 2px solid rgba(255, 255, 255, 0.3);
+
+  &:before {
+    content: "";
+    position: absolute;
+    height: 100%;
+    width: calc(
+      (100% - (var(--num-alts) - 1) * var(--alt-gap)) / var(--num-alts)
+    );
+    top: 0;
+    left: 0;
+
+    outline: 2px solid var(--accent-9);
+    border-radius: 8px;
+
+    transform: translateX(calc(var(--selected-alt) * (100% + var(--alt-gap))));
+    transition: transform 0.15s ease-in-out;
+  }
+
+  &:has(input:disabled) {
+    cursor: not-allowed;
+    opacity: 0.5;
+
+    &:before {
+      content: none;
+    }
+  }
 }
 
 .label {
@@ -12,11 +47,9 @@
   align-items: center;
   justify-content: center;
 
-  padding: 5px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
   border-radius: 8px;
-  transition: border-color 0.2s ease, background-color 0.2s ease,
-    transform 0.2s ease;
+
+  padding: 5px;
 
   width: 40px;
   height: 40px;
@@ -29,20 +62,12 @@
     object-fit: contain;
   }
 
-  &.selected {
-    border-color: var(--accent-9);
-    background-color: var(--accent-4);
-  }
-
   &:has(input:disabled) {
     cursor: not-allowed;
     opacity: 0.5;
   }
 
   &:hover:not(:has(input:disabled)) {
-    border-color: var(--accent-9);
     background-color: var(--accent-3);
-    transform: scale(0.95);
   }
 }
-
