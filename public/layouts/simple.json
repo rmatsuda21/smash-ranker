@@ -7,8 +7,8 @@
     {
 
       "position": { "x": 25, "y": 190 },
-      "size": { "width": 350, "height": 350 },
-      "scale": { "x": 2, "y": 2 }
+      "size": { "width": 700, "height": 700 },
+      "scale": { "x": 1, "y": 1 }
     },
     {
       "position": { "x": 740, "y": 190 },

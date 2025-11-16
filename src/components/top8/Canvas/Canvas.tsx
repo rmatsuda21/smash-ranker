@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Stage, Layer } from "react-konva";
 import Konva from "konva";
+import cn from "classnames";
 
 import { useCanvasStore } from "@/store/canvasStore";
 import { LayoutConfig } from "@/types/top8/Layout";
@@ -11,7 +12,11 @@ import { TournamentLayer } from "@/components/top8/Canvas/TournamentLayer";
 
 import styles from "./Canvas.module.scss";
 
-export const Canvas = () => {
+type Props = {
+  className?: string;
+};
+
+export const Canvas = ({ className }: Props) => {
   const dragLayerRef = useRef<Konva.Layer>(null);
   const mainLayerRef = useRef<Konva.Layer>(null);
   const [layout, setLayout] = useState<LayoutConfig | null>(null);
@@ -96,7 +101,7 @@ export const Canvas = () => {
           "--display-scale": `${displayScale}`,
         } as React.CSSProperties
       }
-      className={styles.canvasContainer}
+      className={cn(className, styles.canvasContainer)}
     >
       <div className={styles.canvasWrapper}>
         <Stage

@@ -45,12 +45,12 @@ export const Ranker = () => {
         <h1>Ranker</h1>
 
         <div className={styles.body}>
-          <div>
-            <PlayerList className={styles.playerList} />
+          <div className={styles.playerConfig}>
+            <PlayerList />
             <PlayerForm />
           </div>
           <Suspense fallback={<div>Loading Canvas...</div>}>
-            <Canvas />
+            <Canvas className={styles.canvas} />
           </Suspense>
         </div>
 

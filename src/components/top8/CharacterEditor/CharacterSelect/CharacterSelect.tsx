@@ -1,7 +1,9 @@
+import { useCallback } from "react";
+
 import { characters } from "@/consts/top8/ultCharacters.json";
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
 import { DropDownSelect } from "@/components/top8/DropDownSelect/DropDownSelect";
-import { useCallback } from "react";
+import { CharacerData } from "@/types/top8/Player";
 
 type CharacterOption = {
   id: string;
@@ -12,33 +14,33 @@ type CharacterOption = {
 };
 
 type Props = {
-  selectedCharacterId: string;
+  selectedCharacter?: CharacerData;
   onValueChange: (value: string) => void;
   disabled?: boolean;
 };
 
 const characterOptions = new Map(
-  characters.map((c) => [
-    c.id,
-    {
-      id: c.id,
-      name: c.name,
-      imageSrc: getCharImgUrl({ characterId: c.id, alt: 0, type: "stock" }),
-      value: c.id,
-      display: c.name,
-    },
-  ])
+  characters
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .map((c) => [
+      c.id,
+      {
+        id: c.id,
+        name: c.name,
+        imageSrc: getCharImgUrl({ characterId: c.id, alt: 0, type: "stock" }),
+        value: c.id,
+        display: c.name,
+      },
+    ])
 );
 
 const options = Array.from(characterOptions.values());
 
 export const CharacterSelect = ({
-  selectedCharacterId,
+  selectedCharacter,
   onValueChange,
   disabled = false,
 }: Props) => {
-  const selectedCharacter = characterOptions.get(selectedCharacterId);
-
   const handleChange = useCallback(
     (values: CharacterOption[]) => {
       if (values.length > 0) {
@@ -51,7 +53,7 @@ export const CharacterSelect = ({
   return (
     <DropDownSelect
       options={options}
-      selectedValue={selectedCharacter?.value}
+      selectedValue={selectedCharacter?.id}
       onChange={handleChange}
       disabled={disabled}
       placeholder="Select Character"

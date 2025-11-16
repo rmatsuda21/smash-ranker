@@ -2,22 +2,12 @@ import { useEffect, useRef, useState } from "react";
 import { TextField } from "@radix-ui/themes";
 import debounce from "lodash/debounce";
 
-import { CharacterSelect } from "@/components/top8/CharacterSelect/CharacterSelect";
-import { CharacterAltRadio } from "@/components/top8/CharacterAltRadio/CharacterAltRadio";
 import { usePlayerStore } from "@/store/playerStore";
 import { PlayerInfo } from "@/types/top8/Player";
+import { CharacterEditor } from "@/components/top8/CharacterEditor/CharacterEditor";
 
 type Props = {
   className?: string;
-};
-
-const DEFAULT_PLAYER: PlayerInfo = {
-  id: `0`,
-  name: "",
-  characters: [{ id: "", alt: 0 }],
-  placement: 0,
-  gamerTag: "",
-  prefix: "",
 };
 
 export const PlayerForm = ({ className }: Props) => {
@@ -27,11 +17,11 @@ export const PlayerForm = ({ className }: Props) => {
   );
   const dispatch = usePlayerStore((state) => state.dispatch);
 
-  const selectedPlayer = players[selectedPlayerIndex];
-
-  const [player, setPlayer] = useState<PlayerInfo>(
-    selectedPlayer || DEFAULT_PLAYER
+  const [tempPlayer, setTempPlayer] = useState<PlayerInfo | undefined>(
+    players[selectedPlayerIndex]
   );
+
+  const selectedPlayer = players[selectedPlayerIndex];
 
   const editingPlayerIndexRef = useRef<number>(selectedPlayerIndex);
   const isLoadingPlayerRef = useRef<boolean>(false);
@@ -43,13 +33,9 @@ export const PlayerForm = ({ className }: Props) => {
     isLoadingPlayerRef.current = true;
 
     if (selectedPlayer) {
-      setPlayer(selectedPlayer);
+      setTempPlayer(selectedPlayer);
     } else {
-      setPlayer({
-        ...DEFAULT_PLAYER,
-        id: selectedPlayerIndex.toString(),
-        placement: selectedPlayerIndex + 1,
-      });
+      setTempPlayer(undefined);
     }
 
     setTimeout(() => {
@@ -70,10 +56,10 @@ export const PlayerForm = ({ className }: Props) => {
     return () => {
       debouncedUpdatePlayer.cancel();
     };
-  }, [debouncedUpdatePlayer]);
+  }, []);
 
   const updatePlayer = (updatedPlayer: PlayerInfo) => {
-    setPlayer(updatedPlayer);
+    setTempPlayer(updatedPlayer);
 
     if (
       selectedPlayer &&
@@ -84,47 +70,35 @@ export const PlayerForm = ({ className }: Props) => {
     }
   };
 
+  const handlePrefixChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!tempPlayer) return;
+    updatePlayer({ ...tempPlayer, prefix: e.target.value });
+  };
+
+  const handleGamerTagChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!tempPlayer) return;
+    updatePlayer({ ...tempPlayer, gamerTag: e.target.value });
+  };
+
   return (
     <div className={className}>
       <TextField.Root
         type="text"
-        value={player.prefix ?? ""}
-        onChange={(e) => updatePlayer({ ...player, prefix: e.target.value })}
+        value={tempPlayer?.prefix ?? ""}
+        onChange={handlePrefixChange}
         placeholder="Prefix"
         disabled={!selectedPlayer}
       />
       <TextField.Root
         type="text"
-        value={player.gamerTag ?? ""}
-        onChange={(e) => updatePlayer({ ...player, gamerTag: e.target.value })}
+        value={tempPlayer?.gamerTag ?? ""}
+        onChange={handleGamerTagChange}
         placeholder="Gamer Tag"
         disabled={!selectedPlayer}
       />
-      <CharacterSelect
-        selectedCharacterId={player.characters[0]?.id ?? ""}
-        onValueChange={(id) =>
-          updatePlayer({
-            ...player,
-            characters: [
-              { id, alt: player.characters[0]?.alt ?? 0 },
-              ...player.characters.slice(1),
-            ],
-          })
-        }
-        disabled={!selectedPlayer}
-      />
-      <CharacterAltRadio
-        characterId={player.characters[0]?.id ?? ""}
-        selectedAlt={player.characters[0]?.alt ?? 0}
-        onAltChange={(alt) =>
-          updatePlayer({
-            ...player,
-            characters: [
-              { id: player.characters[0].id, alt },
-              ...player.characters.slice(1),
-            ],
-          })
-        }
+      <CharacterEditor
+        player={tempPlayer}
+        updatePlayer={updatePlayer}
         disabled={!selectedPlayer}
       />
     </div>

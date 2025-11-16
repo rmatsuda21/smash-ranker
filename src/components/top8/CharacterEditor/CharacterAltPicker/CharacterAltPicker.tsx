@@ -1,22 +1,31 @@
+import { useMemo } from "react";
 import cn from "classnames";
 
 import { characters } from "@/consts/top8/ultCharacters.json";
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
 import { CharacerData } from "@/types/top8/Player";
 
-import styles from "./CharacterAltRadio.module.scss";
-import { useMemo } from "react";
+import styles from "./CharacterAltPicker.module.scss";
 
 type Props = {
-  characterId: string;
-  selectedAlt: CharacerData["alt"];
+  selectedCharacter?: CharacerData;
   onAltChange: (alt: CharacerData["alt"]) => void;
   disabled?: boolean;
 };
 
-const getAltsAndIcons = (characterId: string) => {
+const getAltsAndIcons = (characterId?: string) => {
   const character = characters.find((c) => c.id === characterId);
+
+  if (!character || !characterId) {
+    return Array.from({ length: 8 }, (_, i) => ({
+      alt: 0 as CharacerData["alt"],
+      id: `alt-icon-${i}`,
+      icon: null,
+    }));
+  }
+
   return Array.from({ length: character?.alts || 8 }, (_, i) => ({
+    id: `${character?.id}-${i}`,
     alt: i as CharacerData["alt"],
     icon: getCharImgUrl({
       characterId,
@@ -26,15 +35,14 @@ const getAltsAndIcons = (characterId: string) => {
   }));
 };
 
-export const CharacterAltRadio = ({
-  characterId,
-  selectedAlt,
+export const CharacterAltPicker = ({
+  selectedCharacter,
   onAltChange,
   disabled = false,
 }: Props) => {
   const altsAndIcons = useMemo(
-    () => getAltsAndIcons(characterId),
-    [characterId]
+    () => getAltsAndIcons(selectedCharacter?.id),
+    [selectedCharacter]
   );
 
   const handleAltClick = (alt: CharacerData["alt"]) => {
@@ -44,13 +52,18 @@ export const CharacterAltRadio = ({
   };
 
   return (
-    <div className={styles.container}>
-      {altsAndIcons.map(({ alt, icon }) => {
-        const isSelected = alt === selectedAlt && !!characterId;
+    <div
+      className={styles.container}
+      role="radiogroup"
+      aria-label="Character alternate costume"
+    >
+      {altsAndIcons.map(({ alt, icon, id }) => {
+        const isSelected =
+          alt === selectedCharacter?.alt && !!selectedCharacter;
 
         return (
           <label
-            key={`${characterId}-${alt}`}
+            key={id}
             className={cn(styles.label, { [styles.selected]: isSelected })}
           >
             <input
@@ -62,7 +75,7 @@ export const CharacterAltRadio = ({
               disabled={disabled}
             />
 
-            {characterId && <img src={icon} alt={`Alt ${alt}`} />}
+            {icon && <img src={icon} alt={`Alt ${alt}`} />}
           </label>
         );
       })}
