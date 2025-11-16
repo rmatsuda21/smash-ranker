@@ -1,7 +1,7 @@
 .container {
   --selected-alt: 0;
   --num-alts: 8;
-  --alt-gap: 4px;
+  --alt-gap: 5px;
 
   display: flex;
   gap: var(--alt-gap);
@@ -48,11 +48,7 @@
   justify-content: center;
 
   border-radius: 8px;
-
   padding: 5px;
-
-  width: 40px;
-  height: 40px;
 
   input {
     display: none;
