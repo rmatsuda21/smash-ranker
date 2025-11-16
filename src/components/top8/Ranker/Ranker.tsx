@@ -28,7 +28,8 @@ export const Ranker = () => {
   useFetchTop8(
     // "tournament/genesis-9-1/event/ultimate-singles"
     // "tournament/smash-sans-fronti-res-271/event/smash-ultimate-singles"
-    "tournament/the-buddbuds-local-15/event/ultimate-singles"
+    // "tournament/the-buddbuds-local-15/event/ultimate-singles"
+    "tournament/coffee-break-11-0/event/ultimate-singles"
   );
 
   useEffect(() => {
