@@ -22,7 +22,7 @@ export const CharacterEditor = ({
 
   useEffect(() => {
     setCharacterIndex(0);
-  }, [player?.characters]);
+  }, [player?.id]);
 
   const onCharacterChange = (characterId: string) => {
     if (!player) return;

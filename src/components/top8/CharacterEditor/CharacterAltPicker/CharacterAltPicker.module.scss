@@ -8,7 +8,6 @@
   gap: var(--alt-gap);
 
   border: 2px solid rgba(255, 255, 255, 0.3);
-  border-radius: 8px;
 
   &:before {
     content: "";
@@ -21,8 +20,6 @@
     left: 0;
 
     outline: 2px solid var(--accent-9);
-    border-radius: 8px;
-
     transform: translateX(calc(var(--selected-alt) * (100% + var(--alt-gap))));
     transition: transform 0.15s ease-in-out;
   }
@@ -49,7 +46,6 @@
   align-items: center;
   justify-content: center;
 
-  border-radius: 8px;
   padding: 5px;
 
   input {
@@ -69,4 +65,10 @@
   &:hover:not(:has(input:disabled)) {
     background-color: var(--accent-3);
   }
+}
+
+.container,
+.container:before,
+.label {
+  border-radius: 8px;
 }
