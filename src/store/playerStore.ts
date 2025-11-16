@@ -63,9 +63,9 @@ const playerReducer = (
 };
 
 const DEFAULT_PLAYER: PlayerInfo = {
-  id: `0`,
-  name: `Player Name`,
-  characters: [{ id: `1453`, alt: 0 }],
+  id: "0",
+  name: "Player Name",
+  characters: [{ id: "1293", alt: 0 }],
   placement: 0,
   gamerTag: "Player Name",
   prefix: "",
@@ -74,6 +74,8 @@ const DEFAULT_PLAYER: PlayerInfo = {
 const initialState: PlayerState = {
   players: Array.from({ length: 8 }).map((_, index) => ({
     ...DEFAULT_PLAYER,
+    name: `Player ${index + 1}`,
+    gamerTag: `Player ${index + 1}`,
     id: index.toString(),
     placement: index + 1,
   })),
