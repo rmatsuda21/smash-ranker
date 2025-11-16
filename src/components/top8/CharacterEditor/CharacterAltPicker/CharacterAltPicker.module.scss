@@ -3,15 +3,12 @@
   --num-alts: 8;
   --alt-gap: 5px;
 
+  position: relative;
   display: flex;
   gap: var(--alt-gap);
 
-  border-radius: 8px;
-
-  width: fit-content;
-  position: relative;
-
   border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
 
   &:before {
     content: "";
@@ -41,8 +38,11 @@
 }
 
 .label {
+  flex: 1;
+  aspect-ratio: 1 / 1;
   position: relative;
   cursor: pointer;
+
   display: flex;
   align-items: center;
   justify-content: center;
