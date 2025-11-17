@@ -2,7 +2,7 @@ import { Button, TextField } from "@radix-ui/themes";
 import { useState } from "react";
 import Konva from "konva";
 
-import { FontSelect } from "@/components/top8/FontSelect/FontSelect";
+import { FontSelect } from "@/components/top8/CanvasConfig/FontSelect/FontSelect";
 
 export const CanvasConfig = () => {
   const [filename, setFilename] = useState("");
