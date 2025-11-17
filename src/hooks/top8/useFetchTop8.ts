@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useClient } from "urql";
 import type { Client } from "urql";
 
@@ -139,72 +138,70 @@ const getPlayerCharacters = async (
     .map(([id]) => String(id));
 };
 
-export const useFetchTop8 = (slug: string) => {
+export const useFetchTop8 = () => {
   const client = useClient();
   const playerDispatch = usePlayerStore((state) => state.dispatch);
   const tournamentDispatch = useTournamentStore((state) => state.dispatch);
 
-  useEffect(() => {
-    const fetchTop8 = async () => {
-      playerDispatch({ type: "FETCH_PLAYERS" });
+  const fetchTop8 = async (slug: string) => {
+    playerDispatch({ type: "FETCH_PLAYERS" });
 
-      const result = await client.query(Top8Query, { slug }).toPromise();
+    const result = await client.query(Top8Query, { slug }).toPromise();
 
-      if (result.error || !result.data) {
-        playerDispatch({
-          type: "FETCH_PLAYERS_FAIL",
-          payload: result.error?.message || "Failed to fetch top 8 data",
-        });
-        return;
-      }
-
-      const data = result.data;
-      const standings = data?.event?.standings?.nodes;
-      const tournamentName = data?.event?.tournament?.name;
-      const eventName = data?.event?.name;
-      const venueAddress = data?.event?.tournament?.venueAddress;
-      const teamRosterSize = data?.event?.teamRosterSize;
-
-      const date = data?.event?.startAt
-        ? new Date(data.event.startAt * 1000)
-        : null;
-
-      const tournamentInfo: TournamentInfo = {
-        tournamentName: tournamentName || "",
-        eventName: eventName || "",
-        location: venueAddress || "",
-        date: date || new Date(),
-        entrants: teamRosterSize?.maxPlayers || 0,
-      };
-
-      tournamentDispatch({
-        type: "SET_TOURNAMENT_INFO",
-        payload: tournamentInfo,
+    if (result.error || !result.data) {
+      playerDispatch({
+        type: "FETCH_PLAYERS_FAIL",
+        payload: result.error?.message || "Failed to fetch top 8 data",
       });
+      return;
+    }
 
-      const players = getTop8Players(standings);
+    const data = result.data;
+    const standings = data?.event?.standings?.nodes;
+    const tournamentName = data?.event?.tournament?.name;
+    const eventName = data?.event?.name;
+    const venueAddress = data?.event?.tournament?.venueAddress;
+    const teamRosterSize = data?.event?.teamRosterSize;
 
-      const results = await Promise.allSettled(
-        players.map(async (player) => {
-          const characters = await getPlayerCharacters(client, slug, player.id);
-          player.characters = characters.map((character) => ({
-            id: character,
-            alt: 0,
-          }));
-          player.id = player.id.toString();
-        })
-      );
+    const date = data?.event?.startAt
+      ? new Date(data.event.startAt * 1000)
+      : null;
 
-      if (results.every((result) => result.status === "fulfilled")) {
-        playerDispatch({ type: "FETCH_PLAYERS_SUCCESS", payload: players });
-      } else {
-        playerDispatch({
-          type: "FETCH_PLAYERS_FAIL",
-          payload: "Failed to fetch characters for all players",
-        });
-      }
+    const tournamentInfo: TournamentInfo = {
+      tournamentName: tournamentName || "",
+      eventName: eventName || "",
+      location: venueAddress || "",
+      date: date || new Date(),
+      entrants: teamRosterSize?.maxPlayers || 0,
     };
 
-    fetchTop8();
-  }, [client, slug, playerDispatch, tournamentDispatch]);
+    tournamentDispatch({
+      type: "SET_TOURNAMENT_INFO",
+      payload: tournamentInfo,
+    });
+
+    const players = getTop8Players(standings);
+
+    const results = await Promise.allSettled(
+      players.map(async (player) => {
+        const characters = await getPlayerCharacters(client, slug, player.id);
+        player.characters = characters.map((character) => ({
+          id: character,
+          alt: 0,
+        }));
+        player.id = player.id.toString();
+      })
+    );
+
+    if (results.every((result) => result.status === "fulfilled")) {
+      playerDispatch({ type: "FETCH_PLAYERS_SUCCESS", payload: players });
+    } else {
+      playerDispatch({
+        type: "FETCH_PLAYERS_FAIL",
+        payload: "Failed to fetch characters for all players",
+      });
+    }
+  };
+
+  return { fetchTop8 };
 };
