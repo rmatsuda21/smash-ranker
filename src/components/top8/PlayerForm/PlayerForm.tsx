@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { TextField } from "@radix-ui/themes";
 import debounce from "lodash/debounce";
 
@@ -21,7 +21,10 @@ export const PlayerForm = ({ className }: Props) => {
     players[selectedPlayerIndex]
   );
 
-  const selectedPlayer = players[selectedPlayerIndex];
+  const selectedPlayer = useMemo(
+    () => players[selectedPlayerIndex],
+    [players, selectedPlayerIndex]
+  );
 
   const editingPlayerIndexRef = useRef<number>(selectedPlayerIndex);
   const isLoadingPlayerRef = useRef<boolean>(false);
@@ -58,17 +61,20 @@ export const PlayerForm = ({ className }: Props) => {
     };
   }, []);
 
-  const updatePlayer = (updatedPlayer: PlayerInfo) => {
-    setTempPlayer(updatedPlayer);
+  const updatePlayer = useCallback(
+    (updatedPlayer: PlayerInfo) => {
+      setTempPlayer(updatedPlayer);
 
-    if (
-      selectedPlayer &&
-      !isLoadingPlayerRef.current &&
-      editingPlayerIndexRef.current === selectedPlayerIndex
-    ) {
-      debouncedUpdatePlayer(updatedPlayer, selectedPlayerIndex);
-    }
-  };
+      if (
+        selectedPlayer &&
+        !isLoadingPlayerRef.current &&
+        editingPlayerIndexRef.current === selectedPlayerIndex
+      ) {
+        debouncedUpdatePlayer(updatedPlayer, selectedPlayerIndex);
+      }
+    },
+    [setTempPlayer, selectedPlayer]
+  );
 
   const handlePrefixChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!tempPlayer) return;
