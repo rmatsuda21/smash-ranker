@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { memo } from "react";
 
 import { characters } from "@/consts/top8/ultCharacters.json";
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
@@ -36,19 +36,16 @@ const characterOptions = new Map(
 
 const options = Array.from(characterOptions.values());
 
-export const CharacterSelect = ({
+const CharacterSelectComponent = ({
   selectedCharacter,
   onValueChange,
   disabled = false,
 }: Props) => {
-  const handleChange = useCallback(
-    (values: CharacterOption[]) => {
-      if (values.length > 0) {
-        onValueChange(String(values[0].id));
-      }
-    },
-    [onValueChange]
-  );
+  const handleChange = (values: CharacterOption[]) => {
+    if (values.length > 0) {
+      onValueChange(String(values[0].id));
+    }
+  };
 
   return (
     <DropDownSelect
@@ -60,3 +57,14 @@ export const CharacterSelect = ({
     />
   );
 };
+
+export const CharacterSelect = memo(
+  CharacterSelectComponent,
+  (prevProps, nextProps) => {
+    return (
+      prevProps.selectedCharacter?.id === nextProps.selectedCharacter?.id &&
+      prevProps.disabled === nextProps.disabled &&
+      prevProps.onValueChange === nextProps.onValueChange
+    );
+  }
+);

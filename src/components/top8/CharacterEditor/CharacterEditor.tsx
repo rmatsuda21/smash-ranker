@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 
 import { CharacterSelect } from "@/components/top8/CharacterEditor/CharacterSelect/CharacterSelect";
 import { CharacterAltPicker } from "@/components/top8/CharacterEditor/CharacterAltPicker/CharacterAltPicker";
 import { CharacterList } from "@/components/top8/CharacterEditor/CharacterList/CharacterList";
 import { CharacerData, PlayerInfo } from "@/types/top8/Player";
+import { isEqual } from "lodash";
 
 type Props = {
   className?: string;
@@ -12,13 +13,16 @@ type Props = {
   disabled?: boolean;
 };
 
-export const CharacterEditor = ({
+const CharacterEditorComponent = ({
   player,
   updatePlayer,
   disabled = false,
 }: Props) => {
   const [characterIndex, setCharacterIndex] = useState(0);
-  const selectedCharacter = player?.characters[characterIndex];
+  const selectedCharacter = useMemo(
+    () => player?.characters[characterIndex],
+    [player?.characters]
+  );
 
   useEffect(() => {
     setCharacterIndex(0);
@@ -66,3 +70,15 @@ export const CharacterEditor = ({
     </>
   );
 };
+
+export const CharacterEditor = memo(
+  CharacterEditorComponent,
+  (prevProps, nextProps) => {
+    return (
+      isEqual(prevProps.player?.characters, nextProps.player?.characters) &&
+      prevProps.disabled === nextProps.disabled &&
+      prevProps.updatePlayer === nextProps.updatePlayer &&
+      prevProps.className === nextProps.className
+    );
+  }
+);
