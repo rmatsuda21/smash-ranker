@@ -53,7 +53,7 @@ const initialState: TournamentState = {
   info: {
     tournamentName: `Tournament Name`,
     eventName: `Event Name`,
-    date: new Date("1999-11-07"),
+    date: new Date(1999, 10, 7),
     location: `Somewhere, World`,
     entrants: 69,
   },

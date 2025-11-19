@@ -32,10 +32,10 @@ const selectFontUrl = (fontFiles: Record<string, string>) => {
 
 export const FontSelect = () => {
   const [fontList, setFontList] = useState<FontList>({});
-  const [isLoadingFonts, setIsLoadingFonts] = useState(true);
   const [fetchError, setFetchError] = useState<string | null>(null);
 
   const selectedFont = useCanvasStore((state) => state.selectedFont);
+  const fetchingFont = useCanvasStore((state) => state.fetchingFont);
   const dispatch = useCanvasStore((state) => state.dispatch);
 
   const loadAndDispatchFont = useCallback(
@@ -62,7 +62,7 @@ export const FontSelect = () => {
   useEffect(() => {
     const fetchFonts = async () => {
       try {
-        setIsLoadingFonts(true);
+        dispatch({ type: "SET_FETCHING_FONT", payload: true });
         setFetchError(null);
         const fonts = await fetchAndMapFonts({ limit: FONT_FETCH_LIMIT });
         setFontList(fonts);
@@ -74,7 +74,7 @@ export const FontSelect = () => {
         console.error("Error fetching fonts:", error);
         return null;
       } finally {
-        setIsLoadingFonts(false);
+        dispatch({ type: "SET_FETCHING_FONT", payload: false });
       }
     };
 
@@ -130,7 +130,8 @@ export const FontSelect = () => {
       options={fontOptions}
       selectedValue={selectedFontValue}
       onChange={handleChange}
-      disabled={isLoadingFonts}
+      disabled={fetchingFont}
+      loading={fetchingFont}
     />
   );
 };

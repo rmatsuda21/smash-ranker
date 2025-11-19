@@ -37,15 +37,7 @@ export const TournamentLayer = () => {
           fontSize={50}
           fontStyle="bold"
           fontFamily={selectedFont}
-          text={
-            info.date
-              ? info.date.toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })
-              : ""
-          }
+          text={info.date.toLocaleString()}
         />
       </Group>
     </Layer>

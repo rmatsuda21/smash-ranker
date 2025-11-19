@@ -11,6 +11,7 @@ import { LuChevronsUpDown } from "react-icons/lu";
 import cn from "classnames";
 
 import styles from "./DropDownSelect.module.scss";
+import { Spinner } from "@radix-ui/themes";
 
 type Item<T> = {
   value: T;
@@ -25,6 +26,7 @@ type Props<T> = {
   onChange: (values: any[]) => void;
   disabled?: boolean;
   placeholder?: string;
+  loading?: boolean;
 };
 
 const SelectItemComponent = memo(
@@ -72,6 +74,7 @@ export const DropDownSelect = <T,>({
   onChange,
   placeholder,
   disabled = false,
+  loading = false,
 }: Props<T>) => {
   const [isOpen, setIsOpen] = useState(false);
   const [showAbove, setShowAbove] = useState(false);
@@ -220,6 +223,26 @@ export const DropDownSelect = <T,>({
     }
   }, [isOpen, dropdownRef]);
 
+  const content = useMemo(() => {
+    if (loading) return <Spinner size="3" />;
+    if (selectedOption)
+      return (
+        <div className={styles.content}>
+          {selectedOption.imageSrc && (
+            <img
+              width={24}
+              height={24}
+              src={selectedOption.imageSrc}
+              alt={selectedOption.display ?? ""}
+              loading="eager"
+            />
+          )}
+          {selectedOption.display}
+        </div>
+      );
+    return placeholder;
+  }, [loading, selectedOption, placeholder]);
+
   return (
     <div className={styles.container} ref={containerRef}>
       <button
@@ -232,33 +255,14 @@ export const DropDownSelect = <T,>({
         type="button"
         tabIndex={0}
       >
-        {selectedOption ? (
-          <div className={styles.content}>
-            {selectedOption.imageSrc && (
-              <img
-                width={24}
-                height={24}
-                src={selectedOption.imageSrc}
-                alt={selectedOption.display ?? ""}
-                loading="eager"
-              />
-            )}
-            {selectedOption.display}
-          </div>
-        ) : (
-          <div className={styles.content}>
-            <span className={styles.placeholder}>{placeholder}</span>
-          </div>
-        )}
-        <span className={styles.icon}>
-          <LuChevronsUpDown />
-        </span>
+        {content}
+
+        <LuChevronsUpDown className={styles.icon} />
       </button>
 
       <div
         className={cn(styles.dropdown, {
           [styles.open]: isOpen,
-          [styles.closed]: !isOpen,
           [styles.showAbove]: showAbove,
         })}
         aria-hidden={!isOpen}
@@ -266,7 +270,7 @@ export const DropDownSelect = <T,>({
         role="listbox"
         aria-label="Select an option"
       >
-        <div className={styles.viewport} ref={dropdownRef}>
+        <div className={styles.window} ref={dropdownRef}>
           {options.map((option) => (
             <SelectItemComponent
               key={option.id}
