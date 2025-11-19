@@ -1,5 +1,4 @@
 import {
-  memo,
   useCallback,
   useMemo,
   useState,
@@ -29,44 +28,41 @@ type Props<T> = {
   loading?: boolean;
 };
 
-const SelectItemComponent = memo(
-  ({
-    display,
-    imageSrc,
-    isSelected,
-    onClick,
-  }: {
-    display: string;
-    imageSrc?: string;
-    isSelected: boolean;
-    onClick: () => void;
-  }) => {
-    return (
-      <div
-        className={styles.item}
-        data-state={isSelected ? "checked" : undefined}
-        onClick={onClick}
-        role="option"
-        aria-selected={isSelected}
-        tabIndex={0}
-      >
-        <div className={styles.itemContent}>
-          {imageSrc && (
-            <img
-              width={24}
-              height={24}
-              src={imageSrc}
-              alt={display ?? ""}
-              loading="lazy"
-            />
-          )}
-          {display}
-        </div>
+const SelectItemComponent = ({
+  display,
+  imageSrc,
+  isSelected,
+  onClick,
+}: {
+  display: string;
+  imageSrc?: string;
+  isSelected: boolean;
+  onClick: () => void;
+}) => {
+  return (
+    <div
+      className={styles.item}
+      data-state={isSelected ? "checked" : undefined}
+      onClick={onClick}
+      role="option"
+      aria-selected={isSelected}
+      tabIndex={0}
+    >
+      <div className={styles.itemContent}>
+        {imageSrc && (
+          <img
+            width={24}
+            height={24}
+            src={imageSrc}
+            alt={display ?? ""}
+            loading="lazy"
+          />
+        )}
+        {display}
       </div>
-    );
-  }
-);
-SelectItemComponent.displayName = "SelectItemComponent";
+    </div>
+  );
+};
 
 export const DropDownSelect = <T,>({
   options,
@@ -256,7 +252,6 @@ export const DropDownSelect = <T,>({
         tabIndex={0}
       >
         {content}
-
         <LuChevronsUpDown className={styles.icon} />
       </button>
 

@@ -21,7 +21,7 @@ const CharacterEditorComponent = ({
   const [characterIndex, setCharacterIndex] = useState(0);
   const selectedCharacter = useMemo(
     () => player?.characters[characterIndex],
-    [player?.characters]
+    [player?.characters, characterIndex]
   );
 
   useEffect(() => {
