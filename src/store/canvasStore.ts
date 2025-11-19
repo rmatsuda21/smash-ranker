@@ -8,6 +8,7 @@ interface CanvasState {
   displayScale: number;
   fonts: Record<string, FontStatus>;
   selectedFont: string;
+  fetchingFont: boolean;
 }
 
 type CanvasAction =
@@ -16,13 +17,15 @@ type CanvasAction =
   | { type: "LOAD_FONT"; payload: string }
   | { type: "FONT_LOADED"; payload: string }
   | { type: "FONT_FAILED"; payload: string }
-  | { type: "SET_SELECTED_FONT"; payload: string };
+  | { type: "SET_SELECTED_FONT"; payload: string }
+  | { type: "SET_FETCHING_FONT"; payload: boolean };
 
 const initialState: CanvasState = {
   size: { width: 1920, height: 1080 },
   displayScale: 0.5,
   fonts: {},
   selectedFont: "Roboto",
+  fetchingFont: false,
 };
 
 const canvasReducer = (
@@ -37,18 +40,23 @@ const canvasReducer = (
     case "LOAD_FONT":
       return {
         ...state,
+        fetchingFont: true,
         fonts: { ...state.fonts, [action.payload]: "loading" },
       };
     case "FONT_LOADED":
       return {
         ...state,
         fonts: { ...state.fonts, [action.payload]: "loaded" },
+        fetchingFont: false,
       };
     case "FONT_FAILED":
       return {
         ...state,
         fonts: { ...state.fonts, [action.payload]: "failed" },
+        fetchingFont: false,
       };
+    case "SET_FETCHING_FONT":
+      return { ...state, fetchingFont: action.payload };
     case "SET_SELECTED_FONT":
       return { ...state, selectedFont: action.payload };
     default:
