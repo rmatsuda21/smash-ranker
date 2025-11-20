@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { Group, Layer, Text } from "react-konva";
 
 import { useCanvasStore } from "@/store/canvasStore";
@@ -14,8 +15,10 @@ export const TournamentLayer = ({ config }: Props) => {
   const selectedFont = useCanvasStore((state) => state.selectedFont);
   const info = useTournamentStore((state) => state.info);
 
-  // Get processed elements with placeholders replaced
-  const elements = getTournamentElements(config, info);
+  const elements = useMemo(
+    () => getTournamentElements(config, info),
+    [config, info]
+  );
 
   return (
     <Layer>
