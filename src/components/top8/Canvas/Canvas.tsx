@@ -78,7 +78,6 @@ export const Canvas = ({ className }: Props) => {
   }, []);
 
   useEffect(() => {
-    // Load layout from TypeScript config
     setLayout(simpleLayout);
     canvasDispatch({ type: "SET_SIZE", payload: simpleLayout.canvas.size });
   }, [canvasDispatch]);
