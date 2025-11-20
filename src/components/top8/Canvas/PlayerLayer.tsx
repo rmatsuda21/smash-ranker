@@ -30,15 +30,13 @@ const PlayerLayerComponent = ({
         const player = players[playerIndex];
         if (!player) return null;
 
-        const layoutConfig = layout.players[index];
-        if (!layoutConfig) return null;
+        const playerConfig = layout.players[index];
+        if (!playerConfig) return null;
 
         return (
           <Player
             key={player.id}
-            size={layoutConfig.size}
-            position={layoutConfig.position}
-            scale={layoutConfig.scale}
+            config={playerConfig}
             player={player}
             index={index}
             onDragStart={onPlayerDragStart}

@@ -9,6 +9,7 @@ import { usePlayerStore } from "@/store/playerStore";
 import { BackgroundLayer } from "@/components/top8/Canvas/BackgroundLayer";
 import { PlayerLayer } from "@/components/top8/Canvas/PlayerLayer";
 import { TournamentLayer } from "@/components/top8/Canvas/TournamentLayer";
+import { simpleLayout } from "@/layouts/simple";
 
 import styles from "./Canvas.module.scss";
 
@@ -77,20 +78,10 @@ export const Canvas = ({ className }: Props) => {
   }, []);
 
   useEffect(() => {
-    const loadLayout = async () => {
-      try {
-        const response = await fetch("/layouts/simple.json");
-        if (response.ok) {
-          const layoutData: LayoutConfig = await response.json();
-          setLayout(layoutData);
-          canvasDispatch({ type: "SET_SIZE", payload: layoutData.canvasSize });
-        }
-      } catch (error) {
-        console.error("Failed to load layout:", error);
-      }
-    };
-    loadLayout();
-  }, []);
+    // Load layout from TypeScript config
+    setLayout(simpleLayout);
+    canvasDispatch({ type: "SET_SIZE", payload: simpleLayout.canvas.size });
+  }, [canvasDispatch]);
 
   return (
     <div
@@ -111,7 +102,10 @@ export const Canvas = ({ className }: Props) => {
           onClick={handleStageClick}
           className={styles.canvas}
         >
-          <BackgroundLayer onClick={handleStageClick} />
+          <BackgroundLayer
+            onClick={handleStageClick}
+            config={layout?.background}
+          />
 
           <PlayerLayer
             ref={mainLayerRef}
@@ -120,7 +114,7 @@ export const Canvas = ({ className }: Props) => {
             layout={layout}
           />
 
-          <TournamentLayer />
+          <TournamentLayer config={layout?.tournament} />
 
           <Layer ref={dragLayerRef}></Layer>
         </Stage>
