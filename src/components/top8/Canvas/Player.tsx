@@ -11,14 +11,13 @@ import { useCanvasStore } from "@/store/canvasStore";
 import { fetchAndColorSVG } from "@/utils/top8/fetchAndColorSVG";
 import { usePlayerStore } from "@/store/playerStore";
 import { SmartText } from "@/components/top8/SmartText/SmartText";
+import { PlayerLayoutConfig } from "@/types/top8/Layout";
 
 import playerFrame from "/assets/top8/theme/mini/frame.svg";
 
 type Props = {
   player: PlayerInfo;
-  position?: { x: number; y: number };
-  size?: { width: number; height: number };
-  scale?: { x: number; y: number };
+  config: PlayerLayoutConfig;
   index: number;
   onDragStart: (e: Konva.KonvaEventObject<MouseEvent>) => void;
   onDragEnd: (e: Konva.KonvaEventObject<MouseEvent>) => void;
@@ -64,15 +63,13 @@ const AltGroup = memo(
 const PlayerComponent = ({
   player,
   index,
-  position: initialPosition = { x: 0, y: 0 },
-  size: initialSize = { width: 100, height: 100 },
-  scale: initialScale = { x: 1, y: 1 },
+  config,
   onDragStart,
   onDragEnd,
 }: Props) => {
-  const [size] = useState(initialSize);
-  const [scale, setScale] = useState(initialScale);
-  const [position, setPosition] = useState(initialPosition);
+  const [size] = useState(config.size);
+  const [position, setPosition] = useState(config.position ?? { x: 0, y: 0 });
+  const [scale, setScale] = useState({ x: 1, y: 1 });
   const [isHovered, setIsHovered] = useState(false);
 
   const groupRef = useRef<Konva.Group>(null);
@@ -256,14 +253,16 @@ const PlayerComponent = ({
             hasShadow
           />
         </Group>
-        <AltGroup
-          playerId={player.id}
-          characters={alternateCharacters}
-          x={size.width - 65}
-          y={15}
-          size={50}
-          gap={5}
-        />
+        <Group clipFunc={clipFunc}>
+          <AltGroup
+            playerId={player.id}
+            characters={alternateCharacters}
+            x={size.width - 65}
+            y={15}
+            size={50}
+            gap={5}
+          />
+        </Group>
         <CustomImage
           id="frame"
           width={size.width}
@@ -273,20 +272,20 @@ const PlayerComponent = ({
           imageSrc={frameImageSrc ?? ""}
         />
         <SmartText
-          width={size.width}
+          width={config.name.width ?? size.width}
           verticalAlign="bottom"
-          x={0}
-          y={size.height - 10}
-          fill={"white"}
+          align="center"
+          x={config.name.x}
+          y={config.name.y}
+          fill={config.name.fill ?? "white"}
           text={name}
-          fontSize={65}
+          fontSize={config.name.fontSize ?? 65}
           fontFamily={fontFamily}
           fontStyle="900"
           shadowColor={"black"}
           shadowBlur={0}
           shadowOffset={{ x: 6, y: 6 }}
           shadowOpacity={1}
-          align="center"
         />
         <Text
           width={75}
@@ -329,11 +328,6 @@ export const Player = memo(PlayerComponent, (prevProps, nextProps) => {
     prevProps.player.twitter === nextProps.player.twitter &&
     isEqual(prevProps.player.characters, nextProps.player.characters) &&
     prevProps.index === nextProps.index &&
-    prevProps.position?.x === nextProps.position?.x &&
-    prevProps.position?.y === nextProps.position?.y &&
-    prevProps.size?.width === nextProps.size?.width &&
-    prevProps.size?.height === nextProps.size?.height &&
-    prevProps.scale?.x === nextProps.scale?.x &&
-    prevProps.scale?.y === nextProps.scale?.y
+    isEqual(prevProps.config, nextProps.config)
   );
 });

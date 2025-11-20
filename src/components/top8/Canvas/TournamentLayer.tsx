@@ -2,43 +2,45 @@ import { Group, Layer, Text } from "react-konva";
 
 import { useCanvasStore } from "@/store/canvasStore";
 import { useTournamentStore } from "@/store/tournamentStore";
+import { TextElementConfig, TournamentConfig } from "@/types/top8/Layout";
+import { getTournamentElements } from "@/utils/layoutHelpers";
 
-export const TournamentLayer = () => {
+type Props = {
+  config?: TournamentConfig;
+};
+
+export const TournamentLayer = ({ config }: Props) => {
   const canvasSize = useCanvasStore((state) => state.size);
   const selectedFont = useCanvasStore((state) => state.selectedFont);
-
   const info = useTournamentStore((state) => state.info);
+
+  // Get processed elements with placeholders replaced
+  const elements = getTournamentElements(config, info);
 
   return (
     <Layer>
       <Group width={canvasSize.width} height={canvasSize.height}>
-        <Text
-          x={0}
-          y={0}
-          fill="white"
-          fontSize={50}
-          fontStyle="bold"
-          fontFamily={selectedFont}
-          text={info.tournamentName}
-        />
-        <Text
-          x={0}
-          y={50}
-          fill="white"
-          fontSize={50}
-          fontStyle="bold"
-          fontFamily={selectedFont}
-          text={info.eventName}
-        />
-        <Text
-          x={0}
-          y={100}
-          fill="white"
-          fontSize={50}
-          fontStyle="bold"
-          fontFamily={selectedFont}
-          text={info.date.toLocaleDateString()}
-        />
+        {elements
+          .filter(
+            (element): element is TextElementConfig =>
+              element && "type" in element && element.type === "text"
+          )
+          .map((element, index) => (
+            <Text
+              key={`text-${index}`}
+              x={element.x}
+              y={element.y}
+              fill={element.fill || "white"}
+              fontSize={element.fontSize || 20}
+              fontStyle={
+                element.fontStyle || String(element.fontWeight || "normal")
+              }
+              fontFamily={selectedFont}
+              text={element.text}
+              align={element.align || "left"}
+              width={element.width}
+            />
+          ))}
       </Group>
     </Layer>
   );

@@ -1,13 +1,11 @@
 import { useEffect, lazy, Suspense } from "react";
 
-import { PlayerList } from "@/components/top8/PlayerList/PlayerList";
-import { usePlayerStore } from "@/store/playerStore";
-import { PlayerForm } from "@/components/top8/PlayerForm/PlayerForm";
-import { preloadCharacterImages } from "@/utils/top8/preloadCharacterImages";
 import { TournamentConfig } from "@/components/top8/TournamentConfig/TournamentConfig";
+import { preloadCharacterImages } from "@/utils/top8/preloadCharacterImages";
+import { usePlayerStore } from "@/store/playerStore";
+import { useCanvasStore } from "@/store/canvasStore";
 
 import styles from "./Ranker.module.scss";
-import { useCanvasStore } from "@/store/canvasStore";
 
 const Canvas = lazy(() =>
   import("@/components/top8/Canvas/Canvas").then((module) => ({
@@ -18,6 +16,17 @@ const Canvas = lazy(() =>
 const CanvasConfig = lazy(() =>
   import("@/components/top8/CanvasConfig/CanvasConfig").then((module) => ({
     default: module.CanvasConfig,
+  }))
+);
+
+const PlayerList = lazy(() =>
+  import("@/components/top8/PlayerList/PlayerList").then((module) => ({
+    default: module.PlayerList,
+  }))
+);
+const PlayerForm = lazy(() =>
+  import("@/components/top8/PlayerForm/PlayerForm").then((module) => ({
+    default: module.PlayerForm,
   }))
 );
 
@@ -41,8 +50,12 @@ export const Ranker = () => {
 
         <div className={styles.body}>
           <div className={styles.playerConfig}>
-            <PlayerList />
-            <PlayerForm />
+            <Suspense fallback={<div>Loading Player List...</div>}>
+              <PlayerList />
+            </Suspense>
+            <Suspense fallback={<div>Loading Player Form...</div>}>
+              <PlayerForm />
+            </Suspense>
           </div>
           <Suspense
             fallback={
