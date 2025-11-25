@@ -3,26 +3,25 @@ import { Group, Layer, Text } from "react-konva";
 
 import { useCanvasStore } from "@/store/canvasStore";
 import { useTournamentStore } from "@/store/tournamentStore";
-import { TextElementConfig, TournamentConfig } from "@/types/top8/Layout";
+import { TextElementConfig } from "@/types/top8/Layout";
 import { getTournamentElements } from "@/utils/layoutHelpers";
 
-type Props = {
-  config?: TournamentConfig;
-};
-
-export const TournamentLayer = ({ config }: Props) => {
-  const canvasSize = useCanvasStore((state) => state.size);
+export const TournamentLayer = () => {
   const selectedFont = useCanvasStore((state) => state.selectedFont);
   const info = useTournamentStore((state) => state.info);
+  const layout = useCanvasStore((state) => state.layout);
 
   const elements = useMemo(
-    () => getTournamentElements(config, info),
-    [config, info]
+    () => getTournamentElements(layout.tournament, info),
+    [layout?.tournament, info]
   );
 
   return (
     <Layer>
-      <Group width={canvasSize.width} height={canvasSize.height}>
+      <Group
+        width={layout?.canvas.size.width}
+        height={layout?.canvas.size.height}
+      >
         {elements
           .filter(
             (element): element is TextElementConfig =>

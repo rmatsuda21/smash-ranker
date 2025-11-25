@@ -17,7 +17,6 @@ const client = new Client({
   },
 });
 
-// TODO: Add prefetch to images?
 export const RankerPage = () => {
   return (
     <Provider value={client}>

@@ -76,7 +76,7 @@ const PlayerComponent = ({
   const trRef = useRef<Konva.Transformer>(null);
   const [frameImageSrc, setFrameImageSrc] = useState<string>();
 
-  const canvasSize = useCanvasStore((state) => state.size);
+  const layout = useCanvasStore((state) => state.layout);
   const selectedFont = useCanvasStore((state) => state.selectedFont);
   const fonts = useCanvasStore((state) => state.fonts);
   const selectedPlayerIndex = usePlayerStore(
@@ -155,17 +155,17 @@ const PlayerComponent = ({
       return {
         x: Math.max(
           0,
-          Math.min(pos.x, canvasSize.width - size.width * scale.x)
+          Math.min(pos.x, layout?.canvas.size.width - size.width * scale.x)
         ),
         y: Math.max(
           0,
-          Math.min(pos.y, canvasSize.height - size.height * scale.y)
+          Math.min(pos.y, layout?.canvas.size.height - size.height * scale.y)
         ),
       };
     },
     [
-      canvasSize.width,
-      canvasSize.height,
+      layout?.canvas.size.width,
+      layout?.canvas.size.height,
       size.width,
       size.height,
       scale.x,
@@ -287,19 +287,21 @@ const PlayerComponent = ({
           shadowOffset={{ x: 6, y: 6 }}
           shadowOpacity={1}
         />
-        <Text
-          width={75}
-          height={75}
-          x={20}
-          y={10}
-          fill={"white"}
-          text={String(player.placement)}
-          fontSize={75}
-          fontStyle="bold"
-          fontFamily={fontFamily}
-          stroke={"white"}
-          strokeWidth={7}
-        />
+        {config.placement && (
+          <Text
+            x={config.placement.x ?? 20}
+            y={config.placement.y ?? 10}
+            fill={config.placement.fill ?? "white"}
+            text={String(index + 1)}
+            fontSize={config.placement.fontSize ?? 75}
+            fontStyle={config.placement.fontStyle ?? "bold"}
+            fontFamily={fontFamily}
+            shadowColor={"black"}
+            shadowBlur={0}
+            shadowOffset={{ x: 6, y: 6 }}
+            shadowOpacity={1}
+          />
+        )}
 
         {player.twitter && (
           <Text

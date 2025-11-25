@@ -1,10 +1,9 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { Stage, Layer } from "react-konva";
 import Konva from "konva";
 import cn from "classnames";
 
 import { useCanvasStore } from "@/store/canvasStore";
-import { LayoutConfig } from "@/types/top8/Layout";
 import { usePlayerStore } from "@/store/playerStore";
 import { BackgroundLayer } from "@/components/top8/Canvas/BackgroundLayer";
 import { PlayerLayer } from "@/components/top8/Canvas/PlayerLayer";
@@ -20,10 +19,8 @@ type Props = {
 export const Canvas = ({ className }: Props) => {
   const dragLayerRef = useRef<Konva.Layer>(null);
   const mainLayerRef = useRef<Konva.Layer>(null);
-  const [layout, setLayout] = useState<LayoutConfig | null>(null);
 
-  const canvasSize = useCanvasStore((state) => state.size);
-  const displayScale = useCanvasStore((state) => state.displayScale);
+  const layout = useCanvasStore((state) => state.layout);
   const canvasDispatch = useCanvasStore((state) => state.dispatch);
 
   const dispatch = usePlayerStore((state) => state.dispatch);
@@ -78,17 +75,16 @@ export const Canvas = ({ className }: Props) => {
   }, []);
 
   useEffect(() => {
-    setLayout(simpleLayout);
-    canvasDispatch({ type: "SET_SIZE", payload: simpleLayout.canvas.size });
+    canvasDispatch({ type: "SET_LAYOUT", payload: simpleLayout });
   }, [canvasDispatch]);
 
   return (
     <div
       style={
         {
-          "--canvas-width": `${canvasSize.width}px`,
-          "--canvas-height": `${canvasSize.height}px`,
-          "--display-scale": `${displayScale}`,
+          "--canvas-width": `${layout?.canvas.size.width}px`,
+          "--canvas-height": `${layout?.canvas.size.height}px`,
+          "--display-scale": `${layout?.canvas.displayScale ?? 0.5}`,
         } as React.CSSProperties
       }
       className={cn(className, styles.canvasContainer)}
@@ -96,24 +92,20 @@ export const Canvas = ({ className }: Props) => {
       <div className={styles.canvasWrapper}>
         <Stage
           id="top8-canvas-stage"
-          width={canvasSize.width}
-          height={canvasSize.height}
+          width={layout?.canvas.size.width}
+          height={layout?.canvas.size.height}
           onClick={handleStageClick}
           className={styles.canvas}
         >
-          <BackgroundLayer
-            onClick={handleStageClick}
-            config={layout?.background}
-          />
+          <BackgroundLayer onClick={handleStageClick} />
 
           <PlayerLayer
             ref={mainLayerRef}
             onPlayerDragStart={onPlayerDragStart}
             onPlayerDragEnd={onPlayerDragEnd}
-            layout={layout}
           />
 
-          <TournamentLayer config={layout?.tournament} />
+          <TournamentLayer />
 
           <Layer ref={dragLayerRef}></Layer>
         </Stage>

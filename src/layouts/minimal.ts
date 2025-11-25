@@ -1,4 +1,5 @@
 import { LayoutConfig } from "@/types/top8/Layout";
+import { LayoutPlaceholder } from "@/consts/top8/placeholders";
 
 export const minimalLayout: LayoutConfig = {
   canvas: {
@@ -6,6 +7,7 @@ export const minimalLayout: LayoutConfig = {
       width: 1920,
       height: 1080,
     },
+    displayScale: 0.5,
     background: {
       type: "color",
       color: "#1a1a1a",
@@ -21,7 +23,7 @@ export const minimalLayout: LayoutConfig = {
         fontWeight: "900",
         fill: "white",
         align: "center",
-        text: "<tournamentName>",
+        text: LayoutPlaceholder.TOURNAMENT_NAME,
       },
       {
         type: "text",
@@ -31,7 +33,7 @@ export const minimalLayout: LayoutConfig = {
         fontWeight: "600",
         fill: "#e0e0e0",
         align: "center",
-        text: "<eventName>",
+        text: LayoutPlaceholder.EVENT_NAME,
       },
     ],
   },
@@ -49,7 +51,7 @@ export const minimalLayout: LayoutConfig = {
       },
       name: {
         type: "text",
-        text: "<name>",
+        text: LayoutPlaceholder.PLAYER_NAME,
         fontSize: 100,
         x: 0,
         y: 0,
@@ -68,7 +70,7 @@ export const minimalLayout: LayoutConfig = {
       },
       name: {
         type: "text",
-        text: "<name>",
+        text: LayoutPlaceholder.PLAYER_NAME,
         x: 0,
         y: 0,
       },
@@ -86,7 +88,7 @@ export const minimalLayout: LayoutConfig = {
       },
       name: {
         type: "text",
-        text: "<name>",
+        text: LayoutPlaceholder.PLAYER_NAME,
         x: 0,
         y: 0,
       },
@@ -104,7 +106,7 @@ export const minimalLayout: LayoutConfig = {
       },
       name: {
         type: "text",
-        text: "<name>",
+        text: LayoutPlaceholder.PLAYER_NAME,
         x: 0,
         y: 0,
       },
@@ -122,7 +124,7 @@ export const minimalLayout: LayoutConfig = {
       },
       name: {
         type: "text",
-        text: "<name>",
+        text: LayoutPlaceholder.PLAYER_NAME,
         x: 0,
         y: 0,
       },
@@ -140,7 +142,7 @@ export const minimalLayout: LayoutConfig = {
       },
       name: {
         type: "text",
-        text: "<name>",
+        text: LayoutPlaceholder.PLAYER_NAME,
         x: 0,
         y: 0,
       },
@@ -158,7 +160,7 @@ export const minimalLayout: LayoutConfig = {
       },
       name: {
         type: "text",
-        text: "<name>",
+        text: LayoutPlaceholder.PLAYER_NAME,
         x: 0,
         y: 0,
       },
@@ -176,7 +178,7 @@ export const minimalLayout: LayoutConfig = {
       },
       name: {
         type: "text",
-        text: "<name>",
+        text: LayoutPlaceholder.PLAYER_NAME,
         x: 0,
         y: 0,
       },

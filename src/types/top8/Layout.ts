@@ -2,11 +2,11 @@ export type ElementType = "text" | "image" | "group";
 
 export type CanvasConfig = {
   size: { width: number; height: number };
+  displayScale: number;
   background: BackgroundConfig;
   frame?: BackgroundConfig;
 };
 
-// Base properties shared by all elements
 type BaseElementConfig = {
   x: number;
   y: number;
@@ -34,7 +34,6 @@ export type GroupElementConfig = BaseElementConfig & {
   type: "group";
 };
 
-// Discriminated union type - TypeScript can narrow based on 'type' property
 export type ElementConfig =
   | TextElementConfig
   | ImageElementConfig
@@ -56,8 +55,9 @@ export type TournamentConfig = {
 };
 
 export type PlayerLayoutConfig = {
-  character: BaseElementConfig;
-  alternateCharacters: BaseElementConfig;
+  character?: BaseElementConfig;
+  alternateCharacters?: BaseElementConfig;
+  placement?: TextElementConfig;
   name: TextElementConfig;
   position: { x: number; y: number };
   size: { width: number; height: number };
