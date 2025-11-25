@@ -3,6 +3,7 @@ import {
   ElementConfig,
   PlayerLayoutConfig,
 } from "@/types/top8/Layout";
+import { LayoutPlaceholder } from "@/consts/top8/placeholders";
 
 type TournamentInfo = {
   tournamentName: string;
@@ -18,12 +19,18 @@ type PlayerData = {
 };
 
 const replacePlaceholders = (text: string, info: TournamentInfo): string => {
-  return text
-    .replace(/<tournamentName>/g, info.tournamentName)
-    .replace(/<eventName>/g, info.eventName)
-    .replace(/<date>/g, info.date.toLocaleDateString())
-    .replace(/<location>/g, info.location)
-    .replace(/<entrants>/g, `${info.entrants} Entrants`);
+  const replacements: Record<string, string> = {
+    [LayoutPlaceholder.TOURNAMENT_NAME]: info.tournamentName,
+    [LayoutPlaceholder.EVENT_NAME]: info.eventName,
+    [LayoutPlaceholder.TOURNAMENT_DATE]: info.date.toLocaleDateString(),
+    [LayoutPlaceholder.TOURNAMENT_LOCATION]: info.location,
+    [LayoutPlaceholder.ENTRANTS]: `${info.entrants} Entrants`,
+  };
+
+  return Object.entries(replacements).reduce(
+    (result, [placeholder, value]) => result.split(placeholder).join(value),
+    text
+  );
 };
 
 export const processTournamentElements = (
@@ -50,7 +57,7 @@ export const getTournamentElements = (
       type: "text",
       x: 0,
       y: 0,
-      text: "<tournamentName>",
+      text: LayoutPlaceholder.TOURNAMENT_NAME,
       fontSize: 50,
       fontWeight: "bold",
       fill: "white",
@@ -59,7 +66,7 @@ export const getTournamentElements = (
       type: "text",
       x: 0,
       y: 50,
-      text: "<eventName>",
+      text: LayoutPlaceholder.EVENT_NAME,
       fontSize: 50,
       fontWeight: "bold",
       fill: "white",
@@ -68,7 +75,7 @@ export const getTournamentElements = (
       type: "text",
       x: 0,
       y: 100,
-      text: "<date>",
+      text: LayoutPlaceholder.TOURNAMENT_DATE,
       fontSize: 50,
       fontWeight: "bold",
       fill: "white",
@@ -83,9 +90,15 @@ const replacePlayerPlaceholders = (
   text: string,
   player: PlayerData
 ): string => {
-  return text
-    .replace(/<name>/g, player.name)
-    .replace(/<tag>/g, player.tag || "");
+  const replacements: Record<string, string> = {
+    [LayoutPlaceholder.PLAYER_NAME]: player.name,
+    [LayoutPlaceholder.PLAYER_TAG]: player.tag || "",
+  };
+
+  return Object.entries(replacements).reduce(
+    (result, [placeholder, value]) => result.split(placeholder).join(value),
+    text
+  );
 };
 
 export const getPlayerElements = (

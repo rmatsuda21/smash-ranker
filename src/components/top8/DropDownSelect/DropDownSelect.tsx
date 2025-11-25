@@ -112,7 +112,6 @@ export const DropDownSelect = <T,>({
       const dropdownHeight = dropdownRef.current.offsetHeight;
       const viewportHeight = window.innerHeight;
 
-      // Show above if dropdown would extend beyond viewport bottom
       return triggerRect.bottom + dropdownHeight > viewportHeight;
     };
 

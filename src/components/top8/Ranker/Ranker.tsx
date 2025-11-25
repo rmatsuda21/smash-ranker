@@ -33,8 +33,7 @@ const PlayerForm = lazy(() =>
 export const Ranker = () => {
   const players = usePlayerStore((state) => state.players);
   const error = usePlayerStore((state) => state.error);
-  const canvasSize = useCanvasStore((state) => state.size);
-  const canvasDisplayScale = useCanvasStore((state) => state.displayScale);
+  const layout = useCanvasStore((state) => state.layout);
 
   useEffect(() => {
     preloadCharacterImages();
@@ -61,10 +60,10 @@ export const Ranker = () => {
             fallback={
               <div
                 style={{
-                  width: `calc(${canvasSize.width}px * ${canvasDisplayScale})`,
-                  height: `calc(${canvasSize.height}px * ${canvasDisplayScale})`,
-                  maxWidth: `calc(${canvasSize.width}px * ${canvasDisplayScale})`,
-                  maxHeight: `calc(${canvasSize.height}px * ${canvasDisplayScale})`,
+                  width: `calc(${layout?.canvas.size.width}px * ${layout?.canvas.displayScale})`,
+                  height: `calc(${layout?.canvas.size.height}px * ${layout?.canvas.displayScale})`,
+                  maxWidth: `calc(${layout?.canvas.size.width}px * ${layout?.canvas.displayScale})`,
+                  maxHeight: `calc(${layout?.canvas.size.height}px * ${layout?.canvas.displayScale})`,
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",

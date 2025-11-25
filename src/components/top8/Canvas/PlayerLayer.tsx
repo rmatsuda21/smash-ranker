@@ -3,24 +3,23 @@ import { Layer } from "react-konva";
 import Konva from "konva";
 
 import { Player } from "@/components/top8/Canvas/Player";
-import { LayoutConfig } from "@/types/top8/Layout";
 import { usePlayerStore } from "@/store/playerStore";
+import { useCanvasStore } from "@/store/canvasStore";
 
 type PlayerLayerProps = {
   ref: React.RefObject<Konva.Layer | null>;
   onPlayerDragStart: (e: Konva.KonvaEventObject<MouseEvent>) => void;
   onPlayerDragEnd: (e: Konva.KonvaEventObject<MouseEvent>) => void;
-  layout: LayoutConfig | null;
 };
 
 const PlayerLayerComponent = ({
   ref,
   onPlayerDragStart,
   onPlayerDragEnd,
-  layout,
 }: PlayerLayerProps) => {
   const players = usePlayerStore((state) => state.players);
   const playerOrder = usePlayerStore((state) => state.playerOrder);
+  const layout = useCanvasStore((state) => state.layout);
 
   if (!layout) return <Layer ref={ref} />;
 

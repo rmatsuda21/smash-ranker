@@ -8,21 +8,19 @@ import { BackgroundConfig } from "@/types/top8/Layout";
 
 type Props = {
   onClick: () => void;
-  config?: BackgroundConfig;
 };
 
-const BackgroundLayerComponent = ({ onClick, config }: Props) => {
+const BackgroundLayerComponent = ({ onClick }: Props) => {
   const [backgroundImageSrc, setBackgroundImageSrc] = useState<string>();
 
-  const canvasSize = useCanvasStore((state) => state.size);
+  const layout = useCanvasStore((state) => state.layout);
 
-  // Default config if none provided
   const defaultConfig: BackgroundConfig = {
     type: "image",
     imgSrc: "/assets/top8/theme/wtf/background.svg",
   };
 
-  const backgroundConfig = config || defaultConfig;
+  const backgroundConfig = layout?.canvas.background || defaultConfig;
 
   useEffect(() => {
     if (backgroundConfig.type === "image" && backgroundConfig.imgSrc) {
@@ -45,21 +43,22 @@ const BackgroundLayerComponent = ({ onClick, config }: Props) => {
         <Rect
           x={0}
           y={0}
-          width={canvasSize.width}
-          height={canvasSize.height}
+          width={layout?.canvas.size.width}
+          height={layout?.canvas.size.height}
           fill={backgroundConfig.color || "black"}
         />
       </Layer>
     );
   }
 
-  if (!backgroundImageSrc) return <Layer onClick={onClick} listening={false} />;
+  if (!backgroundImageSrc || !layout?.canvas)
+    return <Layer onClick={onClick} listening={false} />;
 
   return (
     <Layer onClick={onClick} listening={false}>
       <CustomImage
-        width={canvasSize.width}
-        height={canvasSize.height}
+        width={layout?.canvas.size.width}
+        height={layout?.canvas.size.height}
         imageSrc={backgroundImageSrc}
         fillMode="cover"
       />

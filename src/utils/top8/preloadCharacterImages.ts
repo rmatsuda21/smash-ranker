@@ -13,13 +13,13 @@ export const preloadCharacterImages = () => {
         type: "stock",
       });
 
-      const mainUrl = getCharImgUrl({
-        characterId: character.id,
-        alt: alt as CharacerData["alt"],
-        type: "main",
-      });
+      // const mainUrl = getCharImgUrl({
+      //   characterId: character.id,
+      //   alt: alt as CharacerData["alt"],
+      //   type: "main",
+      // });
 
-      [stockUrl, mainUrl].forEach((url) => {
+      [stockUrl].forEach((url) => {
         const promise = new Promise<void>((resolve) => {
           const img = new Image();
           img.onload = () => resolve();
