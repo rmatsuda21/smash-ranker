@@ -4,7 +4,6 @@ import { PlayerInfo } from "@/types/top8/Player";
 
 interface PlayerState {
   players: PlayerInfo[];
-  playerOrder: number[];
   selectedPlayerIndex: number;
   fetching: boolean;
   error: string;
@@ -13,7 +12,6 @@ interface PlayerState {
 type PlayerAction =
   | { type: "SET_PLAYERS"; payload: PlayerInfo[] }
   | { type: "UPDATE_PLAYER"; payload: { index: number; player: PlayerInfo } }
-  | { type: "SET_PLAYER_ORDER"; payload: number[] }
   | { type: "SET_SELECTED_PLAYER_INDEX"; payload: number }
   | { type: "CLEAR_SELECTED_PLAYER" }
   | { type: "SET_FETCHING"; payload: boolean }
@@ -31,15 +29,12 @@ const playerReducer = (
     case "SET_PLAYERS":
       return { ...state, players: action.payload };
     case "UPDATE_PLAYER":
-      const playerIndex = state.playerOrder[action.payload.index];
       return {
         ...state,
         players: state.players.map((p, i) =>
-          i === playerIndex ? action.payload.player : p
+          i === action.payload.index ? action.payload.player : p
         ),
       };
-    case "SET_PLAYER_ORDER":
-      return { ...state, playerOrder: action.payload };
     case "SET_SELECTED_PLAYER_INDEX":
       return { ...state, selectedPlayerIndex: action.payload };
     case "CLEAR_SELECTED_PLAYER":
@@ -71,14 +66,13 @@ const DEFAULT_PLAYER: PlayerInfo = {
 };
 
 const initialState: PlayerState = {
-  players: Array.from({ length: 8 }).map((_, index) => ({
+  players: new Array(8).fill(null).map((_, index) => ({
     ...DEFAULT_PLAYER,
     name: `Player ${index + 1}`,
     gamerTag: `Player ${index + 1}`,
     id: index.toString(),
     placement: index + 1,
   })),
-  playerOrder: Array.from({ length: 8 }).map((_, index) => index),
   selectedPlayerIndex: -1,
   fetching: false,
   error: "",

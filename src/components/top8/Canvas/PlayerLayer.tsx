@@ -18,24 +18,17 @@ const PlayerLayerComponent = ({
   onPlayerDragEnd,
 }: PlayerLayerProps) => {
   const players = usePlayerStore((state) => state.players);
-  const playerOrder = usePlayerStore((state) => state.playerOrder);
   const layout = useCanvasStore((state) => state.layout);
 
   if (!layout) return <Layer ref={ref} />;
 
   return (
     <Layer ref={ref}>
-      {playerOrder.map((playerIndex, index) => {
-        const player = players[playerIndex];
-        if (!player) return null;
-
-        const playerConfig = layout.players[index];
-        if (!playerConfig) return null;
-
+      {players.map((player, index) => {
         return (
           <Player
             key={player.id}
-            config={playerConfig}
+            config={layout.players[index]}
             player={player}
             index={index}
             onDragStart={onPlayerDragStart}
