@@ -29,6 +29,15 @@ export const PlayerForm = ({ className }: Props) => {
   const editingPlayerIndexRef = useRef<number>(selectedPlayerIndex);
   const isLoadingPlayerRef = useRef<boolean>(false);
 
+  const debouncedUpdatePlayer = useRef(
+    debounce((player: PlayerInfo, index: number) => {
+      dispatch({
+        type: "UPDATE_PLAYER",
+        payload: { index, player },
+      });
+    }, 100)
+  ).current;
+
   useEffect(() => {
     debouncedUpdatePlayer.cancel();
 
@@ -44,22 +53,11 @@ export const PlayerForm = ({ className }: Props) => {
     setTimeout(() => {
       isLoadingPlayerRef.current = false;
     }, 0);
-  }, [selectedPlayer, selectedPlayerIndex]);
 
-  const debouncedUpdatePlayer = useRef(
-    debounce((player: PlayerInfo, index: number) => {
-      dispatch({
-        type: "UPDATE_PLAYER",
-        payload: { index, player },
-      });
-    }, 100)
-  ).current;
-
-  useEffect(() => {
     return () => {
       debouncedUpdatePlayer.cancel();
     };
-  }, []);
+  }, [selectedPlayer, selectedPlayerIndex, dispatch, debouncedUpdatePlayer]);
 
   const updatePlayer = useCallback(
     (updatedPlayer: PlayerInfo) => {
@@ -73,7 +71,7 @@ export const PlayerForm = ({ className }: Props) => {
         debouncedUpdatePlayer(updatedPlayer, selectedPlayerIndex);
       }
     },
-    [setTempPlayer, selectedPlayer]
+    [setTempPlayer, selectedPlayer, debouncedUpdatePlayer, selectedPlayerIndex]
   );
 
   const handlePrefixChange = (e: React.ChangeEvent<HTMLInputElement>) => {

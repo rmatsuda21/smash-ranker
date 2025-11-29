@@ -1,10 +1,11 @@
-import { memo } from "react";
+import { memo, useMemo } from "react";
 import { Layer } from "react-konva";
 import Konva from "konva";
 
 import { Player } from "@/components/top8/Canvas/Player";
 import { usePlayerStore } from "@/store/playerStore";
 import { useCanvasStore } from "@/store/canvasStore";
+import { PlayerLayoutConfig } from "@/types/top8/Layout";
 
 type PlayerLayerProps = {
   ref: React.RefObject<Konva.Layer | null>;
@@ -20,6 +21,13 @@ const PlayerLayerComponent = ({
   const players = usePlayerStore((state) => state.players);
   const layout = useCanvasStore((state) => state.layout);
 
+  const playerConfigs: PlayerLayoutConfig[] = useMemo(() => {
+    return layout.players.map((player) => ({
+      ...layout.basePlayer,
+      ...player,
+    }));
+  }, [layout.basePlayer, layout.players]);
+
   if (!layout) return <Layer ref={ref} />;
 
   return (
@@ -28,7 +36,7 @@ const PlayerLayerComponent = ({
         return (
           <Player
             key={player.id}
-            config={layout.players[index]}
+            config={playerConfigs[index]}
             player={player}
             index={index}
             onDragStart={onPlayerDragStart}

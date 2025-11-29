@@ -103,7 +103,7 @@ export const DropDownSelect = <T,>({
     if (!disabled) {
       setIsOpen((prev) => !prev);
     }
-  }, [disabled, isOpen]);
+  }, [disabled]);
 
   useEffect(() => {
     const calculateShowAbove = () => {

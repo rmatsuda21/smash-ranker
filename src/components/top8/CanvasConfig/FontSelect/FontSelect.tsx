@@ -89,7 +89,7 @@ export const FontSelect = () => {
     };
 
     initializeFonts();
-  }, []);
+  }, [dispatch, loadAndDispatchFont]);
 
   const fontOptions = useMemo<FontOption[]>(() => {
     return Object.entries(fontList).map(([fontFamily, font]) => ({
@@ -97,7 +97,7 @@ export const FontSelect = () => {
       id: selectFontUrl(font.files),
       display: fontFamily,
     }));
-  }, [fontList, selectFontUrl]);
+  }, [fontList]);
 
   const selectedFontValue = useMemo(() => {
     if (!selectedFont || fontOptions.length === 0) return undefined;

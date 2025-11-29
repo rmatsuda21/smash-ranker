@@ -67,13 +67,13 @@ const PlayerComponent = ({
   onDragStart,
   onDragEnd,
 }: Props) => {
-  const [size] = useState(config.size);
-  const [position, setPosition] = useState(config.position ?? { x: 0, y: 0 });
-  const [scale, setScale] = useState({ x: 1, y: 1 });
-  const [isHovered, setIsHovered] = useState(false);
-
   const groupRef = useRef<Konva.Group>(null);
   const trRef = useRef<Konva.Transformer>(null);
+
+  const [size] = useState(config.size);
+  const [position, setPosition] = useState(config.position ?? { x: 0, y: 0 });
+  const [scale, setScale] = useState(config.scale ?? { x: 1, y: 1 });
+  const [isHovered, setIsHovered] = useState(false);
   const [frameImageSrc, setFrameImageSrc] = useState<string>();
 
   const layout = useCanvasStore((state) => state.layout);
@@ -187,7 +187,7 @@ const PlayerComponent = ({
       characterId: player.characters[0].id,
       alt: player.characters[0].alt,
     });
-  }, [player.characters[0].id, player.characters[0].alt]);
+  }, [player.characters]);
 
   const fontFamily = useMemo(() => {
     return fonts[selectedFont] === "loaded" ? selectedFont : "Arial";
@@ -272,11 +272,11 @@ const PlayerComponent = ({
           imageSrc={frameImageSrc ?? ""}
         />
         <SmartText
-          width={config.name.width ?? size.width}
+          width={config.name.size?.width ?? size.width}
           verticalAlign="bottom"
           align="center"
-          x={config.name.x}
-          y={config.name.y}
+          x={config.name.position.x}
+          y={config.name.position.y}
           fill={config.name.fill ?? "white"}
           text={name}
           fontSize={config.name.fontSize ?? 65}
@@ -289,8 +289,8 @@ const PlayerComponent = ({
         />
         {config.placement && (
           <Text
-            x={config.placement.x ?? 20}
-            y={config.placement.y ?? 10}
+            x={config.placement.position.x ?? 20}
+            y={config.placement.position.y ?? 10}
             fill={config.placement.fill ?? "white"}
             text={String(index + 1)}
             fontSize={config.placement.fontSize ?? 75}

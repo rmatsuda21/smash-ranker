@@ -35,8 +35,10 @@ const CustomImageComponent = ({
   const ref = useRef<Konva.Image>(null);
 
   useEffect(() => {
-    if (ref.current) {
-      ref.current.clearCache();
+    const imgRef = ref.current;
+
+    if (imgRef) {
+      imgRef.clearCache();
     }
 
     const image = new window.Image();
@@ -51,7 +53,7 @@ const CustomImageComponent = ({
       image.onload = null;
       image.onerror = null;
       image.remove();
-      ref.current?.clearCache();
+      imgRef?.clearCache();
     };
   }, [imageSrc]);
 
@@ -125,7 +127,7 @@ const CustomImageComponent = ({
     };
 
     createImage();
-  }, [image, width, height, offset.x, offset.y]);
+  }, [image, width, height, offset.x, offset.y, fillMode, onReady, onError]);
 
   if (!finalImage) return null;
 

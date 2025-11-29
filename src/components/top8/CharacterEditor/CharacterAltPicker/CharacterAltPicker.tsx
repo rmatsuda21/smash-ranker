@@ -52,7 +52,7 @@ export const CharacterAltPicker = ({
     }
 
     return alts;
-  }, [selectedCharacter?.id]);
+  }, [selectedCharacter?.id, selectedCharacter?.alt]);
 
   useEffect(() => {
     if (wrapperRef.current) {
