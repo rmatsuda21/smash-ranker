@@ -55,8 +55,7 @@ export const getTournamentElements = (
   const defaultElements: ElementConfig[] = [
     {
       type: "text",
-      x: 0,
-      y: 0,
+      position: { x: 0, y: 0 },
       text: LayoutPlaceholder.TOURNAMENT_NAME,
       fontSize: 50,
       fontWeight: "bold",
@@ -64,8 +63,7 @@ export const getTournamentElements = (
     },
     {
       type: "text",
-      x: 0,
-      y: 50,
+      position: { x: 0, y: 50 },
       text: LayoutPlaceholder.EVENT_NAME,
       fontSize: 50,
       fontWeight: "bold",
@@ -73,8 +71,7 @@ export const getTournamentElements = (
     },
     {
       type: "text",
-      x: 0,
-      y: 100,
+      position: { x: 0, y: 100 },
       text: LayoutPlaceholder.TOURNAMENT_DATE,
       fontSize: 50,
       fontWeight: "bold",

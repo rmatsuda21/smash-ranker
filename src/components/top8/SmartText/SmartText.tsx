@@ -120,16 +120,7 @@ export const SmartText = (props: SmartTextProps) => {
       clearTimeout(timeoutId);
       isCalculatingRef.current = false;
     };
-  }, [
-    fontSize,
-    width,
-    text,
-    props.fontFamily,
-    props.fontStyle,
-    props.padding,
-    props.lineHeight,
-    props.letterSpacing,
-  ]);
+  }, [fontSize, width, text, initialShadowOffset, props]);
 
   return (
     <Text

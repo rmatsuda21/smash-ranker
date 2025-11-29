@@ -30,8 +30,8 @@ export const TournamentLayer = () => {
           .map((element, index) => (
             <Text
               key={`text-${index}`}
-              x={element.x}
-              y={element.y}
+              x={element.position.x}
+              y={element.position.y}
               fill={element.fill || "white"}
               fontSize={element.fontSize || 20}
               fontStyle={
@@ -40,7 +40,7 @@ export const TournamentLayer = () => {
               fontFamily={selectedFont}
               text={element.text}
               align={element.align || "left"}
-              width={element.width}
+              width={element.size?.width}
             />
           ))}
       </Group>

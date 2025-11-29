@@ -9,7 +9,9 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "build:analyze": "ANALYZE=true npm run build",
     "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "preview": "vite preview",
     "codegen": "graphql-codegen",
     "codegenwatch": "graphql-codegen --watch"

@@ -72,7 +72,7 @@ export const Canvas = ({ className }: Props) => {
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     canvasDispatch({ type: "SET_LAYOUT", payload: simpleLayout });

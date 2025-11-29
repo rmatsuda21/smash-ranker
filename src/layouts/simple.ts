@@ -1,16 +1,69 @@
 import { LayoutConfig, PlayerLayoutConfig } from "@/types/top8/Layout";
 import { LayoutPlaceholder } from "@/consts/top8/placeholders";
 
-const playerBase: Partial<PlayerLayoutConfig> = {
+const basePlayer: PlayerLayoutConfig = {
+  frame: {
+    type: "image",
+    imgSrc: "/assets/top8/theme/wtf/frame.svg",
+  },
   character: {
-    x: 0,
-    y: 0,
+    position: { x: 0, y: 0 },
   },
   alternateCharacters: {
-    x: 0,
-    y: 0,
+    position: { x: 0, y: 0 },
+  },
+  position: { x: 25, y: 190 },
+  size: { width: 700, height: 700 },
+  name: {
+    type: "text",
+    text: LayoutPlaceholder.PLAYER_NAME,
+    fontSize: 110,
+    position: { x: 0, y: 690 },
+  },
+  placement: {
+    type: "text",
+    text: LayoutPlaceholder.PLAYER_PLACEMENT,
+    fontSize: 160,
+    fontWeight: "black",
+    position: { x: 45, y: 20 },
   },
 };
+
+const getScale = (size: number) => ({ x: size / 700, y: size / 700 });
+
+const players: Partial<PlayerLayoutConfig>[] = [
+  {
+    position: { x: 25, y: 190 },
+  },
+  {
+    position: { x: 740, y: 190 },
+    scale: getScale(350),
+  },
+  {
+    position: { x: 1105, y: 190 },
+    scale: getScale(350),
+  },
+  {
+    position: { x: 1470, y: 190 },
+    scale: getScale(350),
+  },
+  {
+    position: { x: 740, y: 555 },
+    scale: getScale(250),
+  },
+  {
+    position: { x: 1000, y: 555 },
+    scale: getScale(250),
+  },
+  {
+    position: { x: 1260, y: 555 },
+    scale: getScale(250),
+  },
+  {
+    position: { x: 1520, y: 555 },
+    scale: getScale(250),
+  },
+];
 
 export const simpleLayout: LayoutConfig = {
   canvas: {
@@ -23,17 +76,12 @@ export const simpleLayout: LayoutConfig = {
       type: "image",
       imgSrc: "/assets/top8/theme/wtf/background.svg",
     },
-    frame: {
-      type: "image",
-      imgSrc: "/assets/top8/theme/wtf/frame.svg",
-    },
   },
   tournament: {
     elements: [
       {
         type: "text",
-        x: 0,
-        y: 0,
+        position: { x: 0, y: 0 },
         text: `${LayoutPlaceholder.TOURNAMENT_NAME} - ${LayoutPlaceholder.EVENT_NAME}`,
         fontSize: 50,
         fontStyle: "bold",
@@ -42,8 +90,7 @@ export const simpleLayout: LayoutConfig = {
       },
       {
         type: "text",
-        x: 0,
-        y: 50,
+        position: { x: 0, y: 50 },
         text: LayoutPlaceholder.TOURNAMENT_DATE,
         fontSize: 50,
         fontStyle: "bold",
@@ -52,166 +99,6 @@ export const simpleLayout: LayoutConfig = {
       },
     ],
   },
-  players: [
-    {
-      ...playerBase,
-      position: { x: 25, y: 190 },
-      size: { width: 700, height: 700 },
-      name: {
-        type: "text",
-        text: LayoutPlaceholder.PLAYER_NAME,
-        fontSize: 110,
-        x: 0,
-        y: 690,
-      },
-      placement: {
-        type: "text",
-        text: LayoutPlaceholder.PLAYER_PLACEMENT,
-        fontSize: 160,
-        fontWeight: "black",
-        x: 45,
-        y: 20,
-      },
-    },
-    {
-      ...playerBase,
-      position: { x: 740, y: 190 },
-      size: { width: 350, height: 350 },
-      name: {
-        type: "text",
-        text: LayoutPlaceholder.PLAYER_NAME,
-        fontSize: 70,
-        x: 0,
-        y: 340,
-      },
-      placement: {
-        type: "text",
-        text: LayoutPlaceholder.PLAYER_PLACEMENT,
-        fontSize: 80,
-        fontWeight: "black",
-        x: 25,
-        y: 10,
-      },
-    },
-    {
-      ...playerBase,
-      position: { x: 1105, y: 190 },
-      size: { width: 350, height: 350 },
-      name: {
-        type: "text",
-        text: LayoutPlaceholder.PLAYER_NAME,
-        fontSize: 70,
-        x: 0,
-        y: 340,
-      },
-      placement: {
-        type: "text",
-        text: LayoutPlaceholder.PLAYER_PLACEMENT,
-        fontSize: 80,
-        fontWeight: "black",
-        x: 25,
-        y: 10,
-      },
-    },
-    {
-      ...playerBase,
-      position: { x: 1470, y: 190 },
-      size: { width: 350, height: 350 },
-      name: {
-        type: "text",
-        text: LayoutPlaceholder.PLAYER_NAME,
-        fontSize: 70,
-        x: 0,
-        y: 340,
-      },
-      placement: {
-        type: "text",
-        text: LayoutPlaceholder.PLAYER_PLACEMENT,
-        fontSize: 80,
-        fontWeight: "black",
-        x: 25,
-        y: 10,
-      },
-    },
-    {
-      ...playerBase,
-      position: { x: 740, y: 555 },
-      size: { width: 250, height: 250 },
-      name: {
-        type: "text",
-        text: LayoutPlaceholder.PLAYER_NAME,
-        fontSize: 50,
-        x: 0,
-        y: 240,
-      },
-      placement: {
-        type: "text",
-        text: LayoutPlaceholder.PLAYER_PLACEMENT,
-        fontSize: 60,
-        fontWeight: "black",
-        x: 18,
-        y: 10,
-      },
-    },
-    {
-      ...playerBase,
-      position: { x: 1000, y: 555 },
-      size: { width: 250, height: 250 },
-      name: {
-        type: "text",
-        text: LayoutPlaceholder.PLAYER_NAME,
-        fontSize: 50,
-        x: 0,
-        y: 240,
-      },
-      placement: {
-        type: "text",
-        text: LayoutPlaceholder.PLAYER_PLACEMENT,
-        fontSize: 60,
-        fontWeight: "black",
-        x: 18,
-        y: 10,
-      },
-    },
-    {
-      ...playerBase,
-      position: { x: 1260, y: 555 },
-      size: { width: 250, height: 250 },
-      name: {
-        type: "text",
-        text: LayoutPlaceholder.PLAYER_NAME,
-        fontSize: 50,
-        x: 0,
-        y: 240,
-      },
-      placement: {
-        type: "text",
-        text: LayoutPlaceholder.PLAYER_PLACEMENT,
-        fontSize: 60,
-        fontWeight: "black",
-        x: 18,
-        y: 10,
-      },
-    },
-    {
-      ...playerBase,
-      position: { x: 1520, y: 555 },
-      size: { width: 250, height: 250 },
-      name: {
-        type: "text",
-        text: LayoutPlaceholder.PLAYER_NAME,
-        fontSize: 50,
-        x: 0,
-        y: 240,
-      },
-      placement: {
-        type: "text",
-        text: LayoutPlaceholder.PLAYER_PLACEMENT,
-        fontSize: 60,
-        fontWeight: "black",
-        x: 18,
-        y: 10,
-      },
-    },
-  ],
+  basePlayer,
+  players,
 };

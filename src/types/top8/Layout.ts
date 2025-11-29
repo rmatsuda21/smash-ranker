@@ -4,14 +4,11 @@ export type CanvasConfig = {
   size: { width: number; height: number };
   displayScale: number;
   background: BackgroundConfig;
-  frame?: BackgroundConfig;
 };
 
 type BaseElementConfig = {
-  x: number;
-  y: number;
-  width?: number;
-  height?: number;
+  position: { x: number; y: number };
+  size?: { width: number; height: number };
   scale?: { x: number; y: number };
 };
 
@@ -55,17 +52,18 @@ export type TournamentConfig = {
 };
 
 export type PlayerLayoutConfig = {
+  frame?: BackgroundConfig;
   character?: BaseElementConfig;
   alternateCharacters?: BaseElementConfig;
   placement?: TextElementConfig;
   name: TextElementConfig;
-  position: { x: number; y: number };
   size: { width: number; height: number };
-};
+} & BaseElementConfig;
 
 export type LayoutConfig = {
   canvas: CanvasConfig;
   background?: BackgroundConfig;
   tournament?: TournamentConfig;
-  players: PlayerLayoutConfig[];
+  basePlayer: PlayerLayoutConfig;
+  players: Partial<PlayerLayoutConfig>[];
 };

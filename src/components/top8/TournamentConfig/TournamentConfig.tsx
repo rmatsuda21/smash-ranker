@@ -4,10 +4,8 @@ import { Button, TextField } from "@radix-ui/themes";
 import { useFetchTop8 } from "@/hooks/top8/useFetchTop8";
 import { usePlayerStore } from "@/store/playerStore";
 
-type Props = {};
-
 // TODO: Eventually make a tournament searcher here
-export const TournamentConfig = ({}: Props) => {
+export const TournamentConfig = () => {
   const [url, setUrl] = useState("");
 
   const { fetchTop8 } = useFetchTop8();

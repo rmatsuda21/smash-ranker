@@ -6,8 +6,10 @@ import { analyzer } from "vite-bundle-analyzer";
 
 // https://vite.dev/config/
 export default defineConfig(() => {
+  const shouldAnalyze = process.env.ANALYZE === "true";
+
   return {
-    plugins: [react(), analyzer()],
+    plugins: [react(), shouldAnalyze && analyzer()].filter(Boolean),
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "./src"),
