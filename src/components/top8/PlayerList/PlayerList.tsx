@@ -47,7 +47,6 @@ const PlayerItem = ({
 
 export const PlayerList = ({ className }: Props) => {
   const players = usePlayerStore((state) => state.players);
-  const playerOrder = usePlayerStore((state) => state.playerOrder);
   const selectedPlayerIndex = usePlayerStore(
     (state) => state.selectedPlayerIndex
   );
@@ -76,20 +75,15 @@ export const PlayerList = ({ className }: Props) => {
         ))}
       </div>
       <div className={cn(styles.list, className)}>
-        {playerOrder.map((playerIndex) => {
-          const player = players[playerIndex];
-          if (!player) return null;
-
-          return (
-            <PlayerItem
-              key={player.id}
-              index={playerIndex}
-              player={player}
-              isSelected={selectedPlayerIndex === playerIndex}
-              setSelectedIndex={setSelectedIndex}
-            />
-          );
-        })}
+        {players.map((player, index) => (
+          <PlayerItem
+            key={player.id}
+            index={index}
+            player={player}
+            isSelected={selectedPlayerIndex === index}
+            setSelectedIndex={setSelectedIndex}
+          />
+        ))}
       </div>
     </div>
   );
