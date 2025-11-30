@@ -3,8 +3,7 @@ import { Stage } from "konva/lib/Stage";
 
 import { LayoutConfig } from "@/types/top8/Layout";
 import { simpleLayout } from "@/layouts/simple";
-
-type FontStatus = "loading" | "loaded" | "failed";
+import { FontStatus } from "@/types/top8/Canvas";
 
 interface CanvasState {
   layout: LayoutConfig;
@@ -34,34 +33,31 @@ const initialState: CanvasState = {
 const canvasReducer = (
   state: CanvasState,
   action: CanvasAction
-): CanvasState => {
+): Partial<CanvasState> => {
   switch (action.type) {
     case "LOAD_FONT":
       return {
-        ...state,
         fetchingFont: true,
         fonts: { ...state.fonts, [action.payload]: "loading" },
       };
     case "FONT_LOADED":
       return {
-        ...state,
         fonts: { ...state.fonts, [action.payload]: "loaded" },
         fetchingFont: false,
       };
     case "FONT_FAILED":
       return {
-        ...state,
         fonts: { ...state.fonts, [action.payload]: "failed" },
         fetchingFont: false,
       };
     case "SET_FETCHING_FONT":
-      return { ...state, fetchingFont: action.payload };
+      return { fetchingFont: action.payload };
     case "SET_SELECTED_FONT":
-      return { ...state, selectedFont: action.payload };
+      return { selectedFont: action.payload };
     case "SET_LAYOUT":
-      return { ...state, layout: action.payload };
+      return { layout: action.payload };
     case "SET_STAGE_REF":
-      return { ...state, stageRef: action.payload };
+      return { stageRef: action.payload };
     default:
       return state;
   }

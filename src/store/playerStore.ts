@@ -24,31 +24,30 @@ type PlayerAction =
 const playerReducer = (
   state: PlayerState,
   action: PlayerAction
-): PlayerState => {
+): Partial<PlayerState> => {
   switch (action.type) {
     case "SET_PLAYERS":
-      return { ...state, players: action.payload };
+      return { players: action.payload };
     case "UPDATE_PLAYER":
       return {
-        ...state,
         players: state.players.map((p, i) =>
           i === action.payload.index ? action.payload.player : p
         ),
       };
     case "SET_SELECTED_PLAYER_INDEX":
-      return { ...state, selectedPlayerIndex: action.payload };
+      return { selectedPlayerIndex: action.payload };
     case "CLEAR_SELECTED_PLAYER":
-      return { ...state, selectedPlayerIndex: -1 };
+      return { selectedPlayerIndex: -1 };
     case "SET_FETCHING":
-      return { ...state, fetching: action.payload };
+      return { fetching: action.payload };
     case "SET_ERROR":
-      return { ...state, error: action.payload };
+      return { error: action.payload };
     case "FETCH_PLAYERS":
-      return { ...state, fetching: true, error: "" };
+      return { fetching: true, error: "" };
     case "FETCH_PLAYERS_SUCCESS":
-      return { ...state, fetching: false, players: action.payload, error: "" };
+      return { fetching: false, players: action.payload, error: "" };
     case "FETCH_PLAYERS_FAIL":
-      return { ...state, fetching: false, error: action.payload };
+      return { fetching: false, error: action.payload };
     case "RESET":
       return initialState;
     default:

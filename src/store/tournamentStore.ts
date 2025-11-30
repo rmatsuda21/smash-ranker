@@ -21,27 +21,26 @@ type TournamentAction =
 const tournamentReducer = (
   state: TournamentState,
   action: TournamentAction
-): TournamentState => {
+): Partial<TournamentState> => {
   switch (action.type) {
     case "SET_TOURNAMENT_NAME":
       return {
-        ...state,
         info: { ...state.info, tournamentName: action.payload },
       };
     case "SET_EVENT_NAME":
-      return { ...state, info: { ...state.info, eventName: action.payload } };
+      return { info: { ...state.info, eventName: action.payload } };
     case "SET_DATE":
-      return { ...state, info: { ...state.info, date: action.payload } };
+      return { info: { ...state.info, date: action.payload } };
     case "SET_LOCATION":
-      return { ...state, info: { ...state.info, location: action.payload } };
+      return { info: { ...state.info, location: action.payload } };
     case "SET_ENTRANTS":
-      return { ...state, info: { ...state.info, entrants: action.payload } };
+      return { info: { ...state.info, entrants: action.payload } };
     case "SET_TOURNAMENT_INFO":
-      return { ...state, info: action.payload };
+      return { info: action.payload };
     case "SET_FETCHING":
-      return { ...state, fetching: action.payload };
+      return { fetching: action.payload };
     case "SET_ERROR":
-      return { ...state, error: action.payload };
+      return { error: action.payload };
     case "RESET":
       return initialState;
     default:
