@@ -39,6 +39,19 @@ export const Ranker = () => {
     preloadCharacterImages();
   }, []);
 
+  // Page refresh safe check
+  useEffect(() => {
+    if (import.meta.env.DEV) return;
+
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = "";
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, []);
+
   if (!players || error)
     return <div>{error ? <h1>{error}</h1> : <h1>Error</h1>}</div>;
 
