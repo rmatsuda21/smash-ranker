@@ -70,6 +70,7 @@ export type CustomImageElementConfig = BaseElementConfig & {
 
 export type CharacterImageElementConfig = BaseElementConfig & {
   type: "characterImage";
+  customImgSrc?: string;
 };
 
 export type AltCharacterImageElementConfig = BaseElementConfig & {

@@ -48,11 +48,7 @@ export const useCustomImage = ({
   useEffect(() => {
     if (!image) return;
 
-    const fitImage = (
-      ctx: CanvasRenderingContext2D,
-      xPos: number,
-      yPos: number
-    ) => {
+    const fitImage = (ctx: CanvasRenderingContext2D) => {
       const imageAspectRatio = image.width / image.height;
       const containerAspectRatio = width / height;
 
@@ -83,8 +79,8 @@ export const useCustomImage = ({
 
       ctx.drawImage(
         image,
-        xPos + imgX + offset.x,
-        yPos + imgY + offset.y,
+        imgX + offset.x,
+        imgY + offset.y,
         imgWidth,
         imgHeight
       );
@@ -98,7 +94,7 @@ export const useCustomImage = ({
       const ctx = canvas.getContext("2d");
       if (!ctx) return;
 
-      fitImage(ctx, 0, 0);
+      fitImage(ctx);
 
       const img = new window.Image();
       img.src = canvas.toDataURL();
