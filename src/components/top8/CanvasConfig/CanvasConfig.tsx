@@ -1,11 +1,12 @@
 import { Button, TextField } from "@radix-ui/themes";
 import { useState } from "react";
-import Konva from "konva";
 
 import { FontSelect } from "@/components/top8/CanvasConfig/FontSelect/FontSelect";
+import { useCanvasStore } from "@/store/canvasStore";
 
 export const CanvasConfig = () => {
   const [filename, setFilename] = useState("");
+  const stageRef = useCanvasStore((state) => state.stageRef);
 
   return (
     <div>
@@ -22,16 +23,11 @@ export const CanvasConfig = () => {
       <FontSelect />
 
       <Button
+        disabled={!stageRef}
         onClick={() => {
-          const stageElement = document.getElementById("top8-canvas-stage");
-          if (!stageElement) return;
+          if (!stageRef) return;
 
-          const stage = Konva.stages.find(
-            (s) => s.container().id === "top8-canvas-stage"
-          );
-          if (!stage) return;
-
-          const dataURL = stage.toDataURL({
+          const dataURL = stageRef.toDataURL({
             pixelRatio: 1,
           });
 

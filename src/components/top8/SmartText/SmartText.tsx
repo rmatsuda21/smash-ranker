@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Text } from "react-konva";
-import Konva from "konva";
-import { type TextConfig } from "konva/lib/shapes/Text";
+import { Text as KonvaText, type TextConfig } from "konva/lib/shapes/Text";
 
 const MIN_FONT_SIZE = 8;
 const MAX_MEASURE_ITERATIONS = 10;
@@ -9,7 +8,7 @@ const SAFETY_MARGIN_RATIO = 0.95;
 
 type SmartTextProps = TextConfig;
 
-function applyNodeTypography(node: Konva.Text, props: SmartTextProps) {
+function applyNodeTypography(node: KonvaText, props: SmartTextProps) {
   if (props.fontFamily) node.fontFamily(props.fontFamily);
   if (props.fontStyle) node.fontStyle(props.fontStyle);
   if (props.padding !== undefined) node.padding(props.padding);
@@ -19,7 +18,7 @@ function applyNodeTypography(node: Konva.Text, props: SmartTextProps) {
 }
 
 function computeFittedFontSize(
-  node: Konva.Text,
+  node: KonvaText,
   content: string,
   targetWidth: number,
   baseFontSize: number,
@@ -63,7 +62,7 @@ export const SmartText = (props: SmartTextProps) => {
   const [adjustedFontSize, setAdjustedFontSize] = useState(fontSize);
   const [offsetY, setOffsetY] = useState(0);
   const [shadowOffset, setShadowOffset] = useState(initialShadowOffset);
-  const textRef = useRef<Konva.Text>(null);
+  const textRef = useRef<KonvaText>(null);
 
   const isCalculatingRef = useRef(false);
 

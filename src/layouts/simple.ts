@@ -6,27 +6,54 @@ const basePlayer: PlayerLayoutConfig = {
     type: "image",
     imgSrc: "/assets/top8/theme/wtf/frame.svg",
   },
-  character: {
-    position: { x: 0, y: 0 },
-  },
-  alternateCharacters: {
-    position: { x: 0, y: 0 },
-  },
   position: { x: 25, y: 190 },
   size: { width: 700, height: 700 },
-  name: {
-    type: "text",
-    text: LayoutPlaceholder.PLAYER_NAME,
-    fontSize: 110,
-    position: { x: 0, y: 690 },
-  },
-  placement: {
-    type: "text",
-    text: LayoutPlaceholder.PLAYER_PLACEMENT,
-    fontSize: 160,
-    fontWeight: "black",
-    position: { x: 45, y: 20 },
-  },
+  elements: [
+    {
+      type: "rect",
+      fill: "black",
+      position: { x: 0, y: 0 },
+      size: { width: 700, height: 700 },
+    },
+    {
+      type: "characterImage",
+      position: { x: 0, y: 0 },
+      size: { width: 700, height: 700 },
+      clip: true,
+    },
+    {
+      type: "svg",
+      src: "/assets/top8/theme/mini/frame.svg",
+      position: { x: 0, y: 0 },
+      size: { width: 700, height: 700 },
+    },
+    {
+      type: "altCharacterImage",
+      position: { x: 610, y: 30 },
+      size: { width: 60, height: undefined },
+    },
+    {
+      type: "smartText",
+      text: LayoutPlaceholder.PLAYER_NAME,
+      fontSize: 110,
+      fontWeight: "bold",
+      verticalAlign: "bottom",
+      align: "center",
+      size: { width: 700, height: 150 },
+      position: { x: 0, y: 690 },
+      shadowColor: "black",
+      shadowOffset: { x: 7, y: 7 },
+      shadowOpacity: 1,
+    },
+    {
+      type: "text",
+      text: LayoutPlaceholder.PLAYER_PLACEMENT,
+      fontSize: 120,
+      fontWeight: "bold",
+      fill: "white",
+      position: { x: 45, y: 20 },
+    },
+  ],
 };
 
 const getScale = (size: number) => ({ x: size / 700, y: size / 700 });

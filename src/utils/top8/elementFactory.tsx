@@ -1,0 +1,328 @@
+import { Group, Rect, Text } from "react-konva";
+import { ReactNode } from "react";
+import { SceneContext } from "konva/lib/Context";
+
+import {
+  ElementConfig,
+  ElementType,
+  TextElementConfig,
+  SmartTextElementConfig,
+  ImageElementConfig,
+  CharacterImageElementConfig,
+  AltCharacterImageElementConfig,
+  GroupElementConfig,
+  RectElementConfig,
+  CustomImageElementConfig,
+  SvgElementConfig,
+} from "@/types/top8/Layout";
+import { CustomImage } from "@/components/top8/Canvas/CustomImage";
+import { SmartText } from "@/components/top8/SmartText/SmartText";
+import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
+import { PlayerInfo } from "@/types/top8/Player";
+import { TournamentInfo } from "@/types/top8/Tournament";
+import { LayoutPlaceholder } from "@/consts/top8/placeholders";
+import { CustomSVG } from "@/components/top8/Canvas/CustomSVG";
+
+type ElementFactoryContext = {
+  fontFamily?: string;
+  player?: PlayerInfo;
+  tournament?: TournamentInfo;
+  containerSize?: { width: number; height: number };
+};
+
+type ElementCreator<T extends ElementConfig = ElementConfig> = ({
+  element,
+  index,
+  context,
+}: {
+  element: T;
+  index: number;
+  context: ElementFactoryContext;
+}) => ReactNode;
+
+type ElementCreatorMap = {
+  [K in ElementType]:
+    | ElementCreator<Extract<ElementConfig, { type: K }>>
+    | undefined;
+};
+
+const getPlaceholderMap = (
+  context: ElementFactoryContext
+): Record<LayoutPlaceholder, string | undefined> => {
+  const { player, tournament } = context;
+  return {
+    [LayoutPlaceholder.PLAYER_PLACEMENT]: player?.placement?.toString(),
+    [LayoutPlaceholder.PLAYER_NAME]: player?.name,
+    [LayoutPlaceholder.PLAYER_TAG]: player?.gamerTag,
+    [LayoutPlaceholder.TOURNAMENT_NAME]: tournament?.tournamentName,
+    [LayoutPlaceholder.EVENT_NAME]: tournament?.eventName,
+    [LayoutPlaceholder.TOURNAMENT_DATE]: tournament?.date?.toLocaleDateString(),
+    [LayoutPlaceholder.TOURNAMENT_LOCATION]: tournament?.location,
+    [LayoutPlaceholder.ENTRANTS]: tournament?.entrants
+      ? `${tournament.entrants} Entrants`
+      : undefined,
+  };
+};
+
+const replacePlaceholders = (
+  text: string,
+  context: ElementFactoryContext
+): string => {
+  const map = getPlaceholderMap(context);
+  return text.replace(
+    /<[^>]+>/g,
+    (match) => map[match as LayoutPlaceholder] ?? match
+  );
+};
+
+const createTextElement: ElementCreator<TextElementConfig> = ({
+  element,
+  index,
+  context,
+}) => {
+  const { fontFamily = "Arial" } = context;
+  const text = replacePlaceholders(element.text, context);
+
+  return (
+    <Text
+      key={`text-${index}`}
+      x={element.position.x}
+      y={element.position.y}
+      fill={element.fill ?? "white"}
+      fontSize={element.fontSize ?? 20}
+      fontStyle={element.fontStyle ?? String(element.fontWeight ?? "normal")}
+      fontFamily={fontFamily}
+      text={text}
+      align={element.align ?? "left"}
+      width={element.size?.width}
+    />
+  );
+};
+
+const createSmartTextElement: ElementCreator<SmartTextElementConfig> = ({
+  element,
+  index,
+  context,
+}) => {
+  const { fontFamily = "Arial" } = context;
+  const text = replacePlaceholders(element.text, context);
+
+  return (
+    <SmartText
+      key={`smartText-${index}`}
+      x={element.position.x}
+      y={element.position.y}
+      width={element.size?.width}
+      fill={element.fill ?? "white"}
+      fontSize={element.fontSize ?? 20}
+      fontStyle={element.fontStyle ?? String(element.fontWeight ?? "normal")}
+      fontFamily={fontFamily}
+      text={text}
+      align={element.align ?? "left"}
+      verticalAlign={element.verticalAlign}
+      shadowColor={element.shadowColor}
+      shadowBlur={element.shadowBlur}
+      shadowOffset={element.shadowOffset}
+      shadowOpacity={element.shadowOpacity}
+    />
+  );
+};
+
+const createImageElement: ElementCreator<ImageElementConfig> = ({
+  element,
+  index,
+}) => {
+  return (
+    <CustomImage
+      key={`image-${index}`}
+      id={`image-${index}`}
+      x={element.position.x}
+      y={element.position.y}
+      width={element.size?.width ?? 100}
+      height={element.size?.height ?? 100}
+      imageSrc={element.imgSrc}
+    />
+  );
+};
+
+const createGroupElement: ElementCreator<GroupElementConfig> = ({
+  element,
+  index,
+}) => {
+  return (
+    <Group
+      key={`group-${index}`}
+      x={element.position.x}
+      y={element.position.y}
+      width={element.size?.width}
+      height={element.size?.height}
+    />
+  );
+};
+
+const createCharacterImageElement: ElementCreator<
+  CharacterImageElementConfig
+> = ({ element, index, context }) => {
+  const { player } = context;
+
+  if (!player || player.characters.length === 0) {
+    return null;
+  }
+
+  const mainCharacter = player.characters[0];
+  const imageSrc = getCharImgUrl({
+    characterId: mainCharacter.id,
+    alt: mainCharacter.alt,
+  });
+
+  return (
+    <CustomImage
+      key={`character-${index}`}
+      id="character"
+      x={element.position.x}
+      y={element.position.y}
+      width={element.size?.width ?? 100}
+      height={element.size?.height ?? 100}
+      imageSrc={imageSrc}
+      hasShadow
+    />
+  );
+};
+
+const createAltCharacterImageElement: ElementCreator<
+  AltCharacterImageElementConfig
+> = ({ element, index, context }) => {
+  const { player } = context;
+
+  if (!player || player.characters.length <= 1) {
+    return null;
+  }
+
+  const altCharacters = player.characters.slice(1);
+  const size = element.size?.width ?? 50;
+  const gap = 5;
+
+  return (
+    <Group
+      key={`alt-group-${index}`}
+      x={element.position.x}
+      y={element.position.y}
+    >
+      {altCharacters.map((character, altIndex) => {
+        const imageSrc = getCharImgUrl({
+          characterId: character.id,
+          alt: character.alt,
+          type: "stock",
+        });
+
+        return (
+          <CustomImage
+            key={`alt-${player.id}-${altIndex}`}
+            id={`alternate-character-${altIndex}`}
+            x={0}
+            y={altIndex * (size + gap)}
+            width={size}
+            height={size}
+            imageSrc={imageSrc}
+          />
+        );
+      })}
+    </Group>
+  );
+};
+
+const createRectElement: ElementCreator<RectElementConfig> = ({
+  element,
+  index,
+}) => {
+  return (
+    <Rect
+      key={`rect-${index}`}
+      x={element.position.x}
+      y={element.position.y}
+      width={element.size?.width}
+      height={element.size?.height}
+      fill={element.fill ?? "black"}
+    />
+  );
+};
+
+const createCustomImageElement: ElementCreator<CustomImageElementConfig> = ({
+  element,
+  index,
+  context,
+}) => {
+  const { containerSize } = context;
+
+  const width = element.size?.width ?? containerSize?.width ?? 100;
+  const height = element.size?.height ?? containerSize?.height ?? 100;
+
+  return (
+    <CustomImage
+      key={`customImage-${index}`}
+      x={element.position.x}
+      y={element.position.y}
+      width={width}
+      height={height}
+      imageSrc={element.imgSrc}
+    />
+  );
+};
+
+const createSvgElement: ElementCreator<SvgElementConfig> = ({ element }) => {
+  return (
+    <CustomSVG
+      x={element.position.x}
+      y={element.position.y}
+      width={element.size?.width ?? 100}
+      height={element.size?.height ?? 100}
+      src={element.src}
+    />
+  );
+};
+
+const elementCreators: ElementCreatorMap = {
+  text: createTextElement,
+  smartText: createSmartTextElement,
+  image: createImageElement,
+  group: createGroupElement,
+  characterImage: createCharacterImageElement,
+  altCharacterImage: createAltCharacterImageElement,
+  rect: createRectElement,
+  customImage: createCustomImageElement,
+  svg: createSvgElement,
+};
+
+export const createKonvaElements = (
+  elements: ElementConfig[],
+  context: ElementFactoryContext = {}
+): ReactNode[] => {
+  return elements
+    .map((element, index) => {
+      const creator = elementCreators[element.type] as ElementCreator<
+        typeof element
+      >;
+
+      const el = creator?.({ element, index, context });
+      if (!el) {
+        return null;
+      }
+
+      if (element.clip) {
+        const size = context.containerSize ?? { width: 100, height: 100 };
+        const clipFunc = (ctx: SceneContext) => {
+          ctx.beginPath();
+          ctx.rect(0, 0, size.width, size.height);
+          ctx.closePath();
+        };
+
+        return (
+          <Group key={`clip-${index}`} clipFunc={clipFunc}>
+            {el}
+          </Group>
+        ) as ReactNode;
+      }
+      return el;
+    })
+    .filter(Boolean);
+};

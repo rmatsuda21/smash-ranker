@@ -1,6 +1,7 @@
 import { memo, useMemo } from "react";
 import { Layer } from "react-konva";
-import Konva from "konva";
+import { Layer as KonvaLayer } from "konva/lib/Layer";
+import { KonvaEventObject } from "konva/lib/Node";
 
 import { Player } from "@/components/top8/Canvas/Player";
 import { usePlayerStore } from "@/store/playerStore";
@@ -8,9 +9,9 @@ import { useCanvasStore } from "@/store/canvasStore";
 import { PlayerLayoutConfig } from "@/types/top8/Layout";
 
 type PlayerLayerProps = {
-  ref: React.RefObject<Konva.Layer | null>;
-  onPlayerDragStart: (e: Konva.KonvaEventObject<MouseEvent>) => void;
-  onPlayerDragEnd: (e: Konva.KonvaEventObject<MouseEvent>) => void;
+  ref: React.RefObject<KonvaLayer | null>;
+  onPlayerDragStart: (e: KonvaEventObject<MouseEvent>) => void;
+  onPlayerDragEnd: (e: KonvaEventObject<MouseEvent>) => void;
 };
 
 const PlayerLayerComponent = ({
