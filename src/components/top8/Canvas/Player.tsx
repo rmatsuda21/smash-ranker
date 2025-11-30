@@ -1,64 +1,25 @@
 import { useCallback, useEffect, useMemo, useRef, useState, memo } from "react";
-import Konva from "konva";
-import { Group, Rect, Text, Transformer } from "react-konva";
-import { SceneContext } from "konva/lib/Context";
+import { Vector2d } from "konva/lib/types";
+import { Group, Rect, Transformer } from "react-konva";
+// import { SceneContext } from "konva/lib/Context";
+import { Group as KonvaGroup } from "konva/lib/Group";
+import { KonvaEventObject } from "konva/lib/Node";
+import { Transformer as KonvaTransformer } from "konva/lib/shapes/Transformer";
 import isEqual from "lodash/isEqual";
 
 import { PlayerInfo } from "@/types/top8/Player";
-import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
-import { CustomImage } from "@/components/top8/Canvas/CustomImage";
 import { useCanvasStore } from "@/store/canvasStore";
-import { fetchAndColorSVG } from "@/utils/top8/fetchAndColorSVG";
 import { usePlayerStore } from "@/store/playerStore";
-import { SmartText } from "@/components/top8/SmartText/SmartText";
 import { PlayerLayoutConfig } from "@/types/top8/Layout";
-
-import playerFrame from "/assets/top8/theme/mini/frame.svg";
+import { createKonvaElements } from "@/utils/top8/elementFactory";
 
 type Props = {
   player: PlayerInfo;
   config: PlayerLayoutConfig;
   index: number;
-  onDragStart: (e: Konva.KonvaEventObject<MouseEvent>) => void;
-  onDragEnd: (e: Konva.KonvaEventObject<MouseEvent>) => void;
+  onDragStart: (e: KonvaEventObject<MouseEvent>) => void;
+  onDragEnd: (e: KonvaEventObject<MouseEvent>) => void;
 };
-
-const AltGroup = memo(
-  ({
-    playerId,
-    characters,
-    size = 40,
-    gap = 5,
-    x,
-    y,
-  }: {
-    playerId: string;
-    characters: string[];
-    x: number;
-    y: number;
-    size?: number;
-    gap?: number;
-  }) => {
-    return (
-      <Group x={x} y={y}>
-        {characters.map((character, index) => (
-          <CustomImage
-            key={`${playerId}-alt-${index}`}
-            id="alternate-character"
-            x={0}
-            y={index * (size + gap)}
-            width={size}
-            height={size}
-            imageSrc={character}
-          />
-        ))}
-      </Group>
-    );
-  },
-  (prevProps, nextProps) => {
-    return isEqual(prevProps.characters, nextProps.characters);
-  }
-);
 
 const PlayerComponent = ({
   player,
@@ -67,14 +28,13 @@ const PlayerComponent = ({
   onDragStart,
   onDragEnd,
 }: Props) => {
-  const groupRef = useRef<Konva.Group>(null);
-  const trRef = useRef<Konva.Transformer>(null);
+  const groupRef = useRef<KonvaGroup>(null);
+  const trRef = useRef<KonvaTransformer>(null);
 
-  const [size] = useState(config.size);
+  const [size] = useState(config.size ?? { width: 700, height: 700 });
   const [position, setPosition] = useState(config.position ?? { x: 0, y: 0 });
   const [scale, setScale] = useState(config.scale ?? { x: 1, y: 1 });
   const [isHovered, setIsHovered] = useState(false);
-  const [frameImageSrc, setFrameImageSrc] = useState<string>();
 
   const layout = useCanvasStore((state) => state.layout);
   const selectedFont = useCanvasStore((state) => state.selectedFont);
@@ -86,49 +46,33 @@ const PlayerComponent = ({
   const isSelected = selectedPlayerIndex === index;
 
   useEffect(() => {
-    const fetchFrameImageSrc = async () => {
-      const url = await fetchAndColorSVG(playerFrame, "rgba(255, 0, 0, 0.8)");
-      if (url) {
-        setFrameImageSrc(url);
-      }
-    };
-    fetchFrameImageSrc();
-  }, []);
-
-  useEffect(() => {
     if (isSelected && trRef.current && groupRef.current) {
-      trRef.current.nodes([groupRef.current as Konva.Node]);
+      trRef.current.nodes([groupRef.current]);
     } else if (!isSelected && trRef.current) {
       trRef.current.nodes([]);
     }
   }, [isSelected]);
 
-  const handleMouseOver = useCallback(
-    (e: Konva.KonvaEventObject<MouseEvent>) => {
-      const container = e.target.getStage()?.container();
-      if (container) {
-        container.style.cursor = "pointer";
-      }
+  const handleMouseOver = useCallback((e: KonvaEventObject<MouseEvent>) => {
+    const container = e.target.getStage()?.container();
+    if (container) {
+      container.style.cursor = "pointer";
+    }
 
-      setIsHovered(true);
-    },
-    []
-  );
+    setIsHovered(true);
+  }, []);
 
-  const handleMouseOut = useCallback(
-    (e: Konva.KonvaEventObject<MouseEvent>) => {
-      const container = e.target.getStage()?.container();
-      if (container) {
-        container.style.cursor = "default";
-      }
+  const handleMouseOut = useCallback((e: KonvaEventObject<MouseEvent>) => {
+    const container = e.target.getStage()?.container();
+    if (container) {
+      container.style.cursor = "default";
+    }
 
-      setIsHovered(false);
-    },
-    []
-  );
+    setIsHovered(false);
+  }, []);
 
   const handleDragEnd = useCallback(
-    (e: Konva.KonvaEventObject<MouseEvent>) => {
+    (e: KonvaEventObject<MouseEvent>) => {
       setPosition({ x: e.target.x(), y: e.target.y() });
       onDragEnd(e);
     },
@@ -136,30 +80,33 @@ const PlayerComponent = ({
   );
 
   const handleGroupClick = useCallback(
-    (e: Konva.KonvaEventObject<MouseEvent>) => {
+    (e: KonvaEventObject<MouseEvent>) => {
       e.cancelBubble = true;
       dispatch({ type: "SET_SELECTED_PLAYER_INDEX", payload: index });
     },
     [index, dispatch]
   );
 
-  const handleTransform = useCallback(
-    (e: Konva.KonvaEventObject<MouseEvent>) => {
-      setScale({ x: e.target.scaleX(), y: e.target.scaleY() });
-    },
-    []
-  );
+  const handleTransform = useCallback((e: KonvaEventObject<MouseEvent>) => {
+    setScale({ x: e.target.scaleX(), y: e.target.scaleY() });
+  }, []);
 
   const dragBoundFunc = useCallback(
-    (pos: Konva.Vector2d) => {
+    (pos: Vector2d) => {
       return {
         x: Math.max(
           0,
-          Math.min(pos.x, layout?.canvas.size.width - size.width * scale.x)
+          Math.min(
+            pos.x,
+            layout?.canvas.size.width - (size.width ?? 0) * scale.x
+          )
         ),
         y: Math.max(
           0,
-          Math.min(pos.y, layout?.canvas.size.height - size.height * scale.y)
+          Math.min(
+            pos.y,
+            layout?.canvas.size.height - (size.height ?? 0) * scale.y
+          )
         ),
       };
     },
@@ -173,40 +120,24 @@ const PlayerComponent = ({
     ]
   );
 
-  const clipFunc = useCallback(
-    (ctx: SceneContext) => {
-      ctx.beginPath();
-      ctx.rect(0, 0, size.width, size.height);
-      ctx.closePath();
-    },
-    [size.width, size.height]
-  );
-
-  const characterImageSrc = useMemo(() => {
-    return getCharImgUrl({
-      characterId: player.characters[0].id,
-      alt: player.characters[0].alt,
-    });
-  }, [player.characters]);
-
   const fontFamily = useMemo(() => {
     return fonts[selectedFont] === "loaded" ? selectedFont : "Arial";
   }, [selectedFont, fonts]);
 
-  const name = useMemo(
-    () => `${player.prefix ? `${player.prefix} | ` : ""}${player.gamerTag}`,
-    [player.prefix, player.gamerTag]
+  const playerWithPlacement = useMemo(
+    () => ({ ...player, placement: index + 1 }),
+    [player, index]
   );
 
-  const alternateCharacters = useMemo(() => {
-    return player.characters.slice(1).map((character) => {
-      return getCharImgUrl({
-        characterId: character.id,
-        alt: character.alt,
-        type: "stock",
-      });
-    });
-  }, [player.characters]);
+  const konvaElements = useMemo(
+    () =>
+      createKonvaElements(config.elements ?? [], {
+        fontFamily,
+        player: playerWithPlacement,
+        containerSize: { width: size.width ?? 0, height: size.height ?? 0 },
+      }),
+    [config.elements, fontFamily, playerWithPlacement, size]
+  );
 
   return (
     <>
@@ -227,91 +158,14 @@ const PlayerComponent = ({
         dragBoundFunc={dragBoundFunc}
         name={player.id}
       >
+        {konvaElements}
         <Rect
           x={0}
           y={0}
           width={size.width}
           height={size.height}
-          fill={"black"}
+          fill={isHovered ? "rgba(0, 0, 0, 0.2)" : "transparent"}
         />
-        <Rect
-          x={0}
-          y={0}
-          width={size.width}
-          height={size.height}
-          fill={isHovered ? "rgba(255, 255, 255, 0.2)" : "transparent"}
-        />
-        <Group clipFunc={clipFunc}>
-          <CustomImage
-            id="character"
-            y={0}
-            x={0}
-            width={size.width}
-            height={size.height}
-            offset={{ x: 0, y: 0 }}
-            imageSrc={characterImageSrc}
-            hasShadow
-          />
-        </Group>
-        <Group clipFunc={clipFunc}>
-          <AltGroup
-            playerId={player.id}
-            characters={alternateCharacters}
-            x={size.width - 65}
-            y={15}
-            size={50}
-            gap={5}
-          />
-        </Group>
-        <CustomImage
-          id="frame"
-          width={size.width}
-          height={size.height}
-          x={0}
-          y={0}
-          imageSrc={frameImageSrc ?? ""}
-        />
-        <SmartText
-          width={config.name.size?.width ?? size.width}
-          verticalAlign="bottom"
-          align="center"
-          x={config.name.position.x}
-          y={config.name.position.y}
-          fill={config.name.fill ?? "white"}
-          text={name}
-          fontSize={config.name.fontSize ?? 65}
-          fontFamily={fontFamily}
-          fontStyle="900"
-          shadowColor={"black"}
-          shadowBlur={0}
-          shadowOffset={{ x: 6, y: 6 }}
-          shadowOpacity={1}
-        />
-        {config.placement && (
-          <Text
-            x={config.placement.position.x ?? 20}
-            y={config.placement.position.y ?? 10}
-            fill={config.placement.fill ?? "white"}
-            text={String(index + 1)}
-            fontSize={config.placement.fontSize ?? 75}
-            fontStyle={config.placement.fontStyle ?? "bold"}
-            fontFamily={fontFamily}
-            shadowColor={"black"}
-            shadowBlur={0}
-            shadowOffset={{ x: 6, y: 6 }}
-            shadowOpacity={1}
-          />
-        )}
-
-        {player.twitter && (
-          <Text
-            x={0}
-            y={70}
-            fill={"white"}
-            text={player.twitter}
-            fontSize={24}
-          />
-        )}
       </Group>
       <Transformer
         name={`transformer-${player.id}`}

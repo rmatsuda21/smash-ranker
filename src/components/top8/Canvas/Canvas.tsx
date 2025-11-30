@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef } from "react";
 import { Stage, Layer } from "react-konva";
-import Konva from "konva";
+import { Stage as KonvaStage } from "konva/lib/Stage";
+import { Layer as KonvaLayer } from "konva/lib/Layer";
 import cn from "classnames";
 
 import { useCanvasStore } from "@/store/canvasStore";
@@ -11,14 +12,16 @@ import { TournamentLayer } from "@/components/top8/Canvas/TournamentLayer";
 import { simpleLayout } from "@/layouts/simple";
 
 import styles from "./Canvas.module.scss";
+import { KonvaEventObject } from "konva/lib/Node";
 
 type Props = {
   className?: string;
 };
 
 export const Canvas = ({ className }: Props) => {
-  const dragLayerRef = useRef<Konva.Layer>(null);
-  const mainLayerRef = useRef<Konva.Layer>(null);
+  const stageRef = useRef<KonvaStage>(null);
+  const dragLayerRef = useRef<KonvaLayer>(null);
+  const mainLayerRef = useRef<KonvaLayer>(null);
 
   const layout = useCanvasStore((state) => state.layout);
   const canvasDispatch = useCanvasStore((state) => state.dispatch);
@@ -29,37 +32,31 @@ export const Canvas = ({ className }: Props) => {
     dispatch({ type: "CLEAR_SELECTED_PLAYER" });
   }, [dispatch]);
 
-  const onPlayerDragStart = useCallback(
-    (e: Konva.KonvaEventObject<MouseEvent>) => {
-      const player = e.target;
-      const playerId = player.name();
-      const transformer = player.parent?.findOne(`.transformer-${playerId}`);
-      if (transformer) {
-        transformer.moveTo(dragLayerRef.current);
-      }
+  const onPlayerDragStart = useCallback((e: KonvaEventObject<MouseEvent>) => {
+    const player = e.target;
+    const playerId = player.name();
+    const transformer = player.parent?.findOne(`.transformer-${playerId}`);
+    if (transformer) {
+      transformer.moveTo(dragLayerRef.current);
+    }
 
-      if (player) {
-        player.moveTo(dragLayerRef.current);
-      }
-    },
-    []
-  );
+    if (player) {
+      player.moveTo(dragLayerRef.current);
+    }
+  }, []);
 
-  const onPlayerDragEnd = useCallback(
-    (e: Konva.KonvaEventObject<MouseEvent>) => {
-      const player = e.target;
-      const playerId = player.name();
-      const transformer = player.parent?.findOne(`.transformer-${playerId}`);
-      if (transformer) {
-        transformer.moveTo(mainLayerRef.current);
-      }
+  const onPlayerDragEnd = useCallback((e: KonvaEventObject<MouseEvent>) => {
+    const player = e.target;
+    const playerId = player.name();
+    const transformer = player.parent?.findOne(`.transformer-${playerId}`);
+    if (transformer) {
+      transformer.moveTo(mainLayerRef.current);
+    }
 
-      if (player) {
-        player.moveTo(mainLayerRef.current);
-      }
-    },
-    []
-  );
+    if (player) {
+      player.moveTo(mainLayerRef.current);
+    }
+  }, []);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -78,6 +75,15 @@ export const Canvas = ({ className }: Props) => {
     canvasDispatch({ type: "SET_LAYOUT", payload: simpleLayout });
   }, [canvasDispatch]);
 
+  useEffect(() => {
+    if (stageRef.current) {
+      canvasDispatch({ type: "SET_STAGE_REF", payload: stageRef.current });
+    }
+    return () => {
+      canvasDispatch({ type: "SET_STAGE_REF", payload: null });
+    };
+  }, [canvasDispatch]);
+
   return (
     <div
       style={
@@ -91,6 +97,7 @@ export const Canvas = ({ className }: Props) => {
     >
       <div className={styles.canvasWrapper}>
         <Stage
+          ref={stageRef}
           id="top8-canvas-stage"
           width={layout?.canvas.size.width}
           height={layout?.canvas.size.height}

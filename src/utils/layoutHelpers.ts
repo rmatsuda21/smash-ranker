@@ -1,51 +1,74 @@
-import {
-  TextElementConfig,
-  ElementConfig,
-  PlayerLayoutConfig,
-} from "@/types/top8/Layout";
+import { ElementConfig } from "@/types/top8/Layout";
 import { LayoutPlaceholder } from "@/consts/top8/placeholders";
+import { TournamentInfo } from "@/types/top8/Tournament";
+import { PlayerInfo } from "@/types/top8/Player";
 
-type TournamentInfo = {
-  tournamentName: string;
-  eventName: string;
-  date: Date;
-  location: string;
-  entrants: number;
-};
-
-type PlayerData = {
-  name: string;
-  tag?: string;
-};
-
-const replacePlaceholders = (text: string, info: TournamentInfo): string => {
-  const replacements: Record<string, string> = {
-    [LayoutPlaceholder.TOURNAMENT_NAME]: info.tournamentName,
-    [LayoutPlaceholder.EVENT_NAME]: info.eventName,
-    [LayoutPlaceholder.TOURNAMENT_DATE]: info.date.toLocaleDateString(),
-    [LayoutPlaceholder.TOURNAMENT_LOCATION]: info.location,
-    [LayoutPlaceholder.ENTRANTS]: `${info.entrants} Entrants`,
+const getPlaceholderMap = ({
+  tournament,
+  player,
+}: {
+  tournament?: TournamentInfo;
+  player?: PlayerInfo;
+}): Record<LayoutPlaceholder, string | undefined> => {
+  return {
+    [LayoutPlaceholder.PLAYER_PLACEMENT]: player?.placement?.toString(),
+    [LayoutPlaceholder.PLAYER_NAME]: player?.name,
+    [LayoutPlaceholder.PLAYER_TAG]: player?.gamerTag,
+    [LayoutPlaceholder.TOURNAMENT_NAME]: tournament?.tournamentName,
+    [LayoutPlaceholder.EVENT_NAME]: tournament?.eventName,
+    [LayoutPlaceholder.TOURNAMENT_DATE]: tournament?.date.toLocaleDateString(),
+    [LayoutPlaceholder.TOURNAMENT_LOCATION]: tournament?.location,
+    [LayoutPlaceholder.ENTRANTS]: `${tournament?.entrants} Entrants`,
   };
+};
 
-  return Object.entries(replacements).reduce(
-    (result, [placeholder, value]) => result.split(placeholder).join(value),
-    text
+const replacePlaceholders = ({
+  text,
+  tournament,
+  player,
+}: {
+  text: string;
+  tournament?: TournamentInfo;
+  player?: PlayerInfo;
+}): string => {
+  const map = getPlaceholderMap({ tournament, player });
+  return text.replace(
+    /<[^>]+>/g,
+    (match) => map[match as LayoutPlaceholder] || match
   );
 };
 
-export const processTournamentElements = (
+export const processElements = (
   elements: ElementConfig[],
-  info: TournamentInfo
+  context: { tournament?: TournamentInfo; player?: PlayerInfo }
 ): ElementConfig[] => {
   return elements.map((element) => {
     if (element && "type" in element && element.type === "text") {
       return {
         ...element,
-        text: replacePlaceholders(element.text, info),
+        text: replacePlaceholders({
+          text: element.text,
+          tournament: context.tournament,
+          player: context.player,
+        }),
       };
     }
     return element;
   });
+};
+
+export const processTournamentElements = (
+  elements: ElementConfig[],
+  tournament: TournamentInfo
+): ElementConfig[] => {
+  return processElements(elements, { tournament });
+};
+
+export const processPlayerElements = (
+  elements: ElementConfig[],
+  player: PlayerInfo
+): ElementConfig[] => {
+  return processElements(elements, { player });
 };
 
 export const getTournamentElements = (
@@ -81,70 +104,4 @@ export const getTournamentElements = (
 
   const elements = config?.elements || defaultElements;
   return processTournamentElements(elements, info);
-};
-
-const replacePlayerPlaceholders = (
-  text: string,
-  player: PlayerData
-): string => {
-  const replacements: Record<string, string> = {
-    [LayoutPlaceholder.PLAYER_NAME]: player.name,
-    [LayoutPlaceholder.PLAYER_TAG]: player.tag || "",
-  };
-
-  return Object.entries(replacements).reduce(
-    (result, [placeholder, value]) => result.split(placeholder).join(value),
-    text
-  );
-};
-
-export const getPlayerElements = (
-  layoutConfig: PlayerLayoutConfig,
-  player: PlayerData
-): ElementConfig[] => {
-  const elements: ElementConfig[] = [];
-
-  if (layoutConfig.character) {
-    elements.push(layoutConfig.character);
-  }
-
-  if (layoutConfig.alternateCharacters) {
-    elements.push(layoutConfig.alternateCharacters);
-  }
-
-  if (layoutConfig.name) {
-    const processedName: TextElementConfig = {
-      ...layoutConfig.name,
-      text: replacePlayerPlaceholders(layoutConfig.name.text, player),
-    };
-    elements.push(processedName);
-  }
-
-  return elements;
-};
-
-export const getAllPlayerElements = (
-  layoutConfigs: PlayerLayoutConfig[],
-  players: PlayerData[]
-): Array<{
-  layoutConfig: PlayerLayoutConfig;
-  player: PlayerData;
-  elements: ElementConfig[];
-}> => {
-  return layoutConfigs.map((layoutConfig, index) => {
-    const player = players[index];
-    if (!player) {
-      return {
-        layoutConfig,
-        player: { name: "" },
-        elements: [],
-      };
-    }
-
-    return {
-      layoutConfig,
-      player,
-      elements: getPlayerElements(layoutConfig, player),
-    };
-  });
 };

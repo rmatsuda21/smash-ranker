@@ -1,4 +1,13 @@
-export type ElementType = "text" | "image" | "group";
+export type ElementType =
+  | "text"
+  | "smartText"
+  | "image"
+  | "group"
+  | "rect"
+  | "svg"
+  | "customImage"
+  | "characterImage"
+  | "altCharacterImage";
 
 export type CanvasConfig = {
   size: { width: number; height: number };
@@ -8,8 +17,11 @@ export type CanvasConfig = {
 
 type BaseElementConfig = {
   position: { x: number; y: number };
-  size?: { width: number; height: number };
+  size?: { width?: number; height?: number };
   scale?: { x: number; y: number };
+  rotation?: number;
+  offset?: { x: number; y: number };
+  clip?: boolean;
 };
 
 export type TextElementConfig = BaseElementConfig & {
@@ -22,6 +34,21 @@ export type TextElementConfig = BaseElementConfig & {
   align?: "left" | "center" | "right";
 };
 
+export type SmartTextElementConfig = BaseElementConfig & {
+  type: "smartText";
+  text: string;
+  fontSize?: number;
+  fontWeight?: string | number;
+  fontStyle?: string;
+  fill?: string;
+  align?: "left" | "center" | "right";
+  verticalAlign?: "top" | "middle" | "bottom";
+  shadowColor?: string;
+  shadowBlur?: number;
+  shadowOffset?: { x: number; y: number };
+  shadowOpacity?: number;
+};
+
 export type ImageElementConfig = BaseElementConfig & {
   type: "image";
   imgSrc: string;
@@ -31,11 +58,39 @@ export type GroupElementConfig = BaseElementConfig & {
   type: "group";
 };
 
+export type RectElementConfig = BaseElementConfig & {
+  type: "rect";
+  fill?: string;
+};
+
+export type CustomImageElementConfig = BaseElementConfig & {
+  type: "customImage";
+  imgSrc: string;
+};
+
+export type CharacterImageElementConfig = BaseElementConfig & {
+  type: "characterImage";
+};
+
+export type AltCharacterImageElementConfig = BaseElementConfig & {
+  type: "altCharacterImage";
+};
+
+export type SvgElementConfig = BaseElementConfig & {
+  type: "svg";
+  src: string;
+};
+
 export type ElementConfig =
   | TextElementConfig
+  | SmartTextElementConfig
   | ImageElementConfig
   | GroupElementConfig
-  | BaseElementConfig;
+  | CharacterImageElementConfig
+  | AltCharacterImageElementConfig
+  | RectElementConfig
+  | CustomImageElementConfig
+  | SvgElementConfig;
 
 export type BackgroundConfig =
   | {
@@ -48,16 +103,12 @@ export type BackgroundConfig =
     };
 
 export type TournamentConfig = {
-  elements: (TextElementConfig | ImageElementConfig)[];
+  elements: ElementConfig[];
 };
 
 export type PlayerLayoutConfig = {
   frame?: BackgroundConfig;
-  character?: BaseElementConfig;
-  alternateCharacters?: BaseElementConfig;
-  placement?: TextElementConfig;
-  name: TextElementConfig;
-  size: { width: number; height: number };
+  elements: ElementConfig[];
 } & BaseElementConfig;
 
 export type LayoutConfig = {

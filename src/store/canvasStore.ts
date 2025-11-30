@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { Stage } from "konva/lib/Stage";
 
 import { LayoutConfig } from "@/types/top8/Layout";
 import { simpleLayout } from "@/layouts/simple";
@@ -10,6 +11,7 @@ interface CanvasState {
   fonts: Record<string, FontStatus>;
   selectedFont: string;
   fetchingFont: boolean;
+  stageRef: Stage | null;
 }
 
 type CanvasAction =
@@ -18,13 +20,15 @@ type CanvasAction =
   | { type: "FONT_FAILED"; payload: string }
   | { type: "SET_SELECTED_FONT"; payload: string }
   | { type: "SET_FETCHING_FONT"; payload: boolean }
-  | { type: "SET_LAYOUT"; payload: LayoutConfig };
+  | { type: "SET_LAYOUT"; payload: LayoutConfig }
+  | { type: "SET_STAGE_REF"; payload: Stage | null };
 
 const initialState: CanvasState = {
   fonts: {},
   selectedFont: "Arial",
   fetchingFont: false,
   layout: simpleLayout,
+  stageRef: null,
 };
 
 const canvasReducer = (
@@ -56,6 +60,8 @@ const canvasReducer = (
       return { ...state, selectedFont: action.payload };
     case "SET_LAYOUT":
       return { ...state, layout: action.payload };
+    case "SET_STAGE_REF":
+      return { ...state, stageRef: action.payload };
     default:
       return state;
   }
