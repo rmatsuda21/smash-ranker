@@ -5,6 +5,7 @@ interface TournamentState {
   info: TournamentInfo;
   fetching: boolean;
   error: string;
+  selectedElementIndex: number;
 }
 
 type TournamentAction =
@@ -16,6 +17,7 @@ type TournamentAction =
   | { type: "SET_TOURNAMENT_INFO"; payload: TournamentInfo }
   | { type: "SET_FETCHING"; payload: boolean }
   | { type: "SET_ERROR"; payload: string }
+  | { type: "SET_SELECTED_ELEMENT_INDEX"; payload: number }
   | { type: "RESET" };
 
 const tournamentReducer = (
@@ -41,6 +43,8 @@ const tournamentReducer = (
       return { fetching: action.payload };
     case "SET_ERROR":
       return { error: action.payload };
+    case "SET_SELECTED_ELEMENT_INDEX":
+      return { selectedElementIndex: action.payload };
     case "RESET":
       return initialState;
     default:
@@ -58,6 +62,7 @@ const initialState: TournamentState = {
   },
   fetching: false,
   error: "",
+  selectedElementIndex: -1,
 };
 
 interface TournamentStore extends TournamentState {

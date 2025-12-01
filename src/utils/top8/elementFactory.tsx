@@ -264,21 +264,22 @@ export const createKonvaElements = (
         return null;
       }
 
-      if (element.clip) {
-        const size = context.containerSize ?? { width: 100, height: 100 };
-        const clipFunc = (ctx: SceneContext) => {
-          ctx.beginPath();
-          ctx.rect(0, 0, size.width, size.height);
-          ctx.closePath();
-        };
+      const size = context.containerSize ?? { width: 100, height: 100 };
+      const clipFunc = (ctx: SceneContext) => {
+        ctx.beginPath();
+        ctx.rect(0, 0, size.width, size.height);
+        ctx.closePath();
+      };
 
-        return (
-          <Group key={`clip-${index}`} clipFunc={clipFunc}>
-            {el}
-          </Group>
-        ) as ReactNode;
-      }
-      return el;
+      return (
+        <Group
+          draggable
+          key={`group-${index}`}
+          clipFunc={element.clip ? clipFunc : undefined}
+        >
+          {el}
+        </Group>
+      );
     })
     .filter(Boolean);
 };

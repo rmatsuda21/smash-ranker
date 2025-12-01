@@ -35,6 +35,13 @@ export const useCustomImage = ({
     image.onload = () => {
       setImage(image);
     };
+    image.onerror = (error) => {
+      onError?.(
+        new Error(error instanceof Error ? error.message : "Unknown error")
+      );
+      setImage(undefined);
+      setFinalImage(undefined);
+    };
 
     return () => {
       image.src = "";
@@ -43,7 +50,7 @@ export const useCustomImage = ({
       image.remove();
       imgRef?.clearCache();
     };
-  }, [imageSrc]);
+  }, [imageSrc, onError]);
 
   useEffect(() => {
     if (!image) return;
