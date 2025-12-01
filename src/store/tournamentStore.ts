@@ -18,6 +18,7 @@ type TournamentAction =
   | { type: "SET_FETCHING"; payload: boolean }
   | { type: "SET_ERROR"; payload: string }
   | { type: "SET_SELECTED_ELEMENT_INDEX"; payload: number }
+  | { type: "CLEAR_SELECTED_ELEMENT" }
   | { type: "RESET" };
 
 const tournamentReducer = (
@@ -45,6 +46,8 @@ const tournamentReducer = (
       return { error: action.payload };
     case "SET_SELECTED_ELEMENT_INDEX":
       return { selectedElementIndex: action.payload };
+    case "CLEAR_SELECTED_ELEMENT":
+      return { selectedElementIndex: -1 };
     case "RESET":
       return initialState;
     default:

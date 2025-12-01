@@ -4,11 +4,13 @@ import { useState } from "react";
 import { FontSelect } from "@/components/top8/CanvasConfig/FontSelect/FontSelect";
 import { useCanvasStore } from "@/store/canvasStore";
 import { usePlayerStore } from "@/store/playerStore";
+import { useTournamentStore } from "@/store/tournamentStore";
 
 export const CanvasConfig = () => {
   const [filename, setFilename] = useState("");
   const stageRef = useCanvasStore((state) => state.stageRef);
   const dispatch = usePlayerStore((state) => state.dispatch);
+  const tournamentDispatch = useTournamentStore((state) => state.dispatch);
 
   return (
     <div>
@@ -29,6 +31,7 @@ export const CanvasConfig = () => {
         onClick={() => {
           if (!stageRef) return;
           dispatch({ type: "CLEAR_SELECTED_PLAYER" });
+          tournamentDispatch({ type: "CLEAR_SELECTED_ELEMENT" });
 
           const downloadImage = () => {
             const dataURL = stageRef.toDataURL({

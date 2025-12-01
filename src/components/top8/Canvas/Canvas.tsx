@@ -13,6 +13,7 @@ import { simpleLayout } from "@/layouts/simple";
 
 import styles from "./Canvas.module.scss";
 import { KonvaEventObject } from "konva/lib/Node";
+import { useTournamentStore } from "@/store/tournamentStore";
 
 type Props = {
   className?: string;
@@ -25,12 +26,13 @@ export const Canvas = ({ className }: Props) => {
 
   const layout = useCanvasStore((state) => state.layout);
   const canvasDispatch = useCanvasStore((state) => state.dispatch);
-
+  const tournamentDispatch = useTournamentStore((state) => state.dispatch);
   const dispatch = usePlayerStore((state) => state.dispatch);
 
   const handleStageClick = useCallback(() => {
     dispatch({ type: "CLEAR_SELECTED_PLAYER" });
-  }, [dispatch]);
+    tournamentDispatch({ type: "CLEAR_SELECTED_ELEMENT" });
+  }, [dispatch, tournamentDispatch]);
 
   const onPlayerDragStart = useCallback((e: KonvaEventObject<MouseEvent>) => {
     const player = e.target;

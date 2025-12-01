@@ -8,6 +8,7 @@ const basePlayer: PlayerLayoutConfig = {
   },
   position: { x: 25, y: 190 },
   size: { width: 700, height: 700 },
+  scale: { x: 1, y: 1 },
   elements: [
     {
       type: "rect",
@@ -34,7 +35,7 @@ const basePlayer: PlayerLayoutConfig = {
     },
     {
       type: "smartText",
-      text: LayoutPlaceholder.PLAYER_NAME,
+      text: LayoutPlaceholder.PLAYER_TAG,
       fontSize: 110,
       fontWeight: "900",
       verticalAlign: "bottom",

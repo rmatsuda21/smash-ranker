@@ -29,6 +29,7 @@ const playerReducer = (
     case "SET_PLAYERS":
       return { players: action.payload };
     case "UPDATE_PLAYER":
+      console.log("UPDATE_PLAYER", action.payload);
       return {
         players: state.players.map((p, i) =>
           i === action.payload.index ? action.payload.player : p
