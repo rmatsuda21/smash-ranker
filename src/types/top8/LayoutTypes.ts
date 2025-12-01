@@ -129,6 +129,9 @@ export interface TournamentConfig {
 export interface PlayerLayoutConfig extends BaseElementConfig {
   frame?: BackgroundConfig;
   elements: ElementConfig[];
+  size: { width: number; height: number };
+  scale: { x: number; y: number };
+  position: { x: number; y: number };
 }
 
 export interface LayoutConfig {

@@ -1,7 +1,11 @@
 import { create } from "zustand";
 import { Stage } from "konva/lib/Stage";
 
-import { ElementConfig, LayoutConfig } from "@/types/top8/LayoutTypes";
+import {
+  ElementConfig,
+  LayoutConfig,
+  PlayerLayoutConfig,
+} from "@/types/top8/LayoutTypes";
 import { simpleLayout } from "@/layouts/simple";
 import { FontStatus } from "@/types/top8/CanvasTypes";
 
@@ -25,6 +29,10 @@ type CanvasAction =
   | {
       type: "EDIT_TOURNAMENT_ELEMENT";
       payload: { index: number; element: ElementConfig };
+    }
+  | {
+      type: "UPDATE_PLAYER_CONFIG";
+      payload: { index: number; config: PlayerLayoutConfig };
     };
 
 const initialState: CanvasState = {
@@ -77,7 +85,6 @@ const canvasReducer = (
         },
       };
     case "EDIT_TOURNAMENT_ELEMENT":
-      console.log("EDIT_TOURNAMENT_ELEMENT", action.payload);
       return {
         layout: {
           ...state.layout,
@@ -90,6 +97,15 @@ const canvasReducer = (
                   : element
               ) ?? [],
           },
+        },
+      };
+    case "UPDATE_PLAYER_CONFIG":
+      return {
+        layout: {
+          ...state.layout,
+          players: state.layout.players.map((player, index) =>
+            index === action.payload.index ? action.payload.config : player
+          ),
         },
       };
     default:

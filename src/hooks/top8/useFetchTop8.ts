@@ -183,8 +183,6 @@ export const useFetchTop8 = () => {
         0,
     };
 
-    console.log("tournamentInfo", data?.event);
-
     tournamentDispatch({
       type: "SET_TOURNAMENT_INFO",
       payload: tournamentInfo,

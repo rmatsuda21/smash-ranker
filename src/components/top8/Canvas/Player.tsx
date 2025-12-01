@@ -1,10 +1,7 @@
-import { useCallback, useEffect, useMemo, useRef, useState, memo } from "react";
+import { useCallback, useMemo, useState, memo } from "react";
 import { Vector2d } from "konva/lib/types";
-import { Group, Rect, Transformer } from "react-konva";
-// import { SceneContext } from "konva/lib/Context";
-import { Group as KonvaGroup } from "konva/lib/Group";
+import { Group, Rect } from "react-konva";
 import { KonvaEventObject } from "konva/lib/Node";
-import { Transformer as KonvaTransformer } from "konva/lib/shapes/Transformer";
 import isEqual from "lodash/isEqual";
 
 import { PlayerInfo } from "@/types/top8/PlayerTypes";
@@ -19,6 +16,7 @@ type Props = {
   index: number;
   onDragStart: (e: KonvaEventObject<MouseEvent>) => void;
   onDragEnd: (e: KonvaEventObject<MouseEvent>) => void;
+  isSelected: boolean;
 };
 
 const PlayerComponent = ({
@@ -27,31 +25,20 @@ const PlayerComponent = ({
   config,
   onDragStart,
   onDragEnd,
+  isSelected,
 }: Props) => {
-  const groupRef = useRef<KonvaGroup>(null);
-  const trRef = useRef<KonvaTransformer>(null);
-
-  const [size] = useState(config.size ?? { width: 700, height: 700 });
-  const [position, setPosition] = useState(config.position ?? { x: 0, y: 0 });
-  const [scale, setScale] = useState(config.scale ?? { x: 1, y: 1 });
   const [isHovered, setIsHovered] = useState(false);
 
   const layout = useCanvasStore((state) => state.layout);
   const selectedFont = useCanvasStore((state) => state.selectedFont);
   const fonts = useCanvasStore((state) => state.fonts);
-  const selectedPlayerIndex = usePlayerStore(
-    (state) => state.selectedPlayerIndex
-  );
+  const canvasDispatch = useCanvasStore((state) => state.dispatch);
   const dispatch = usePlayerStore((state) => state.dispatch);
-  const isSelected = selectedPlayerIndex === index;
 
-  useEffect(() => {
-    if (isSelected && trRef.current && groupRef.current) {
-      trRef.current.nodes([groupRef.current]);
-    } else if (!isSelected && trRef.current) {
-      trRef.current.nodes([]);
-    }
-  }, [isSelected]);
+  const playerConfig = {
+    ...layout.basePlayer,
+    ...(layout.players[index] ?? {}),
+  };
 
   const handleMouseOver = useCallback((e: KonvaEventObject<MouseEvent>) => {
     const container = e.target.getStage()?.container();
@@ -73,10 +60,19 @@ const PlayerComponent = ({
 
   const handleDragEnd = useCallback(
     (e: KonvaEventObject<MouseEvent>) => {
-      setPosition({ x: e.target.x(), y: e.target.y() });
+      canvasDispatch({
+        type: "UPDATE_PLAYER_CONFIG",
+        payload: {
+          index,
+          config: {
+            ...config,
+            position: { x: e.target.x(), y: e.target.y() },
+          },
+        },
+      });
       onDragEnd(e);
     },
-    [onDragEnd]
+    [onDragEnd, index, config, canvasDispatch]
   );
 
   const handleGroupClick = useCallback(
@@ -87,10 +83,6 @@ const PlayerComponent = ({
     [index, dispatch]
   );
 
-  const handleTransform = useCallback((e: KonvaEventObject<MouseEvent>) => {
-    setScale({ x: e.target.scaleX(), y: e.target.scaleY() });
-  }, []);
-
   const dragBoundFunc = useCallback(
     (pos: Vector2d) => {
       return {
@@ -98,14 +90,16 @@ const PlayerComponent = ({
           0,
           Math.min(
             pos.x,
-            layout?.canvas.size.width - (size.width ?? 0) * scale.x
+            layout?.canvas.size.width -
+              (playerConfig.size?.width ?? 0) * (playerConfig.scale?.x ?? 1)
           )
         ),
         y: Math.max(
           0,
           Math.min(
             pos.y,
-            layout?.canvas.size.height - (size.height ?? 0) * scale.y
+            layout?.canvas.size.height -
+              (playerConfig.size?.height ?? 0) * (playerConfig.scale?.y ?? 1)
           )
         ),
       };
@@ -113,77 +107,63 @@ const PlayerComponent = ({
     [
       layout?.canvas.size.width,
       layout?.canvas.size.height,
-      size.width,
-      size.height,
-      scale.x,
-      scale.y,
+      playerConfig.size?.width,
+      playerConfig.size?.height,
+      playerConfig.scale?.x,
+      playerConfig.scale?.y,
     ]
   );
 
-  const fontFamily = useMemo(() => {
-    return fonts[selectedFont] === "loaded" ? selectedFont : "Arial";
-  }, [selectedFont, fonts]);
-
-  const playerWithPlacement = useMemo(
-    () => ({ ...player, placement: index + 1 }),
-    [player, index]
-  );
+  const fontFamily = fonts[selectedFont] === "loaded" ? selectedFont : "Arial";
 
   const konvaElements = useMemo(
     () =>
       createKonvaElements(config.elements ?? [], {
         fontFamily,
-        player: playerWithPlacement,
-        containerSize: { width: size.width ?? 0, height: size.height ?? 0 },
+        player: { ...player, placement: index + 1 },
+        containerSize: {
+          width: playerConfig.size?.width,
+          height: playerConfig.size?.height,
+        },
       }),
-    [config.elements, fontFamily, playerWithPlacement, size]
+    [config.elements, fontFamily, player, index, playerConfig.size]
   );
 
   return (
-    <>
-      <Group
-        ref={groupRef}
-        draggable={isSelected}
-        x={position.x ?? 0}
-        y={position.y ?? 0}
-        width={size.width}
-        height={size.height}
-        scaleX={scale.x}
-        scaleY={scale.y}
-        onClick={handleGroupClick}
-        onMouseOver={handleMouseOver}
-        onMouseOut={handleMouseOut}
-        onDragEnd={handleDragEnd}
-        onDragStart={onDragStart}
-        dragBoundFunc={dragBoundFunc}
-        name={player.id}
-      >
-        {konvaElements}
-        <Rect
-          x={0}
-          y={0}
-          width={size.width}
-          height={size.height}
-          fill={isHovered ? "rgba(0, 0, 0, 0.2)" : "transparent"}
-        />
-      </Group>
-      <Transformer
-        name={`transformer-${player.id}`}
-        ref={trRef}
-        onTransform={handleTransform}
+    <Group
+      draggable={isSelected}
+      x={playerConfig.position?.x}
+      y={playerConfig.position?.y}
+      width={playerConfig.size?.width}
+      height={playerConfig.size?.height}
+      scaleX={playerConfig.scale?.x}
+      scaleY={playerConfig.scale?.y}
+      rotation={playerConfig.rotation ?? 0}
+      onClick={handleGroupClick}
+      onMouseOver={handleMouseOver}
+      onMouseOut={handleMouseOut}
+      onDragEnd={handleDragEnd}
+      onDragStart={onDragStart}
+      dragBoundFunc={dragBoundFunc}
+      name={player.id}
+    >
+      {konvaElements}
+      <Rect
+        x={0}
+        y={0}
+        width={playerConfig.size?.width ?? 0}
+        height={playerConfig.size?.height ?? 0}
+        fill={isHovered ? "rgba(0, 0, 0, 0.2)" : "transparent"}
       />
-    </>
+    </Group>
   );
 };
 
 export const Player = memo(PlayerComponent, (prevProps, nextProps) => {
   return (
-    prevProps.player.id === nextProps.player.id &&
-    prevProps.player.gamerTag === nextProps.player.gamerTag &&
-    prevProps.player.prefix === nextProps.player.prefix &&
-    prevProps.player.twitter === nextProps.player.twitter &&
-    isEqual(prevProps.player.characters, nextProps.player.characters) &&
     prevProps.index === nextProps.index &&
-    isEqual(prevProps.config, nextProps.config)
+    isEqual(prevProps.player, nextProps.player) &&
+    isEqual(prevProps.config, nextProps.config) &&
+    prevProps.isSelected === nextProps.isSelected
   );
 });

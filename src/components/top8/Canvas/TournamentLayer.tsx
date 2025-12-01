@@ -13,6 +13,7 @@ export const TournamentLayer = () => {
   const tournamentLayout = useCanvasStore((state) => state.layout.tournament);
   const cavnasConfig = useCanvasStore((state) => state.layout.canvas);
   const tournament = useTournamentStore((state) => state.info);
+  const tournamentDispatch = useTournamentStore((state) => state.dispatch);
   const selectedElementIndex = useTournamentStore(
     (state) => state.selectedElementIndex
   );
@@ -44,12 +45,20 @@ export const TournamentLayer = () => {
     }
   }, [selectedElementIndex, konvaElements]);
 
+  const handleLayerClick = useCallback(
+    (e: KonvaEventObject<MouseEvent>) => {
+      e.cancelBubble = true;
+      tournamentDispatch({ type: "SET_SELECTED_ELEMENT_INDEX", payload: -1 });
+    },
+    [tournamentDispatch]
+  );
+
   const handleTransform = useCallback((e: KonvaEventObject<MouseEvent>) => {
     console.log("handleTransform", e);
   }, []);
 
   return (
-    <Layer>
+    <Layer onClick={handleLayerClick}>
       <Group
         ref={groupRef}
         width={cavnasConfig.size.width}
