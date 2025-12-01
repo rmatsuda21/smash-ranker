@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { Stage } from "konva/lib/Stage";
 
-import { LayoutConfig } from "@/types/top8/LayoutTypes";
+import { ElementConfig, LayoutConfig } from "@/types/top8/LayoutTypes";
 import { simpleLayout } from "@/layouts/simple";
 import { FontStatus } from "@/types/top8/CanvasTypes";
 
@@ -20,7 +20,12 @@ type CanvasAction =
   | { type: "SET_SELECTED_FONT"; payload: string }
   | { type: "SET_FETCHING_FONT"; payload: boolean }
   | { type: "SET_LAYOUT"; payload: LayoutConfig }
-  | { type: "SET_STAGE_REF"; payload: Stage | null };
+  | { type: "SET_STAGE_REF"; payload: Stage | null }
+  | { type: "ADD_TOURNAMENT_ELEMENT"; payload: ElementConfig }
+  | {
+      type: "EDIT_TOURNAMENT_ELEMENT";
+      payload: { index: number; element: ElementConfig };
+    };
 
 const initialState: CanvasState = {
   fonts: {},
@@ -58,6 +63,35 @@ const canvasReducer = (
       return { layout: action.payload };
     case "SET_STAGE_REF":
       return { stageRef: action.payload };
+    case "ADD_TOURNAMENT_ELEMENT":
+      return {
+        layout: {
+          ...state.layout,
+          tournament: {
+            ...state.layout.tournament,
+            elements: [
+              ...(state.layout.tournament?.elements ?? []),
+              action.payload,
+            ],
+          },
+        },
+      };
+    case "EDIT_TOURNAMENT_ELEMENT":
+      console.log("EDIT_TOURNAMENT_ELEMENT", action.payload);
+      return {
+        layout: {
+          ...state.layout,
+          tournament: {
+            ...state.layout.tournament,
+            elements:
+              state.layout.tournament?.elements?.map((element, index) =>
+                index === action.payload.index
+                  ? action.payload.element
+                  : element
+              ) ?? [],
+          },
+        },
+      };
     default:
       return state;
   }

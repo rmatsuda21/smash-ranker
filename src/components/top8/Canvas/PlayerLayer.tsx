@@ -8,7 +8,7 @@ import { usePlayerStore } from "@/store/playerStore";
 import { useCanvasStore } from "@/store/canvasStore";
 import { PlayerLayoutConfig } from "@/types/top8/LayoutTypes";
 
-type PlayerLayerProps = {
+type Props = {
   ref: React.RefObject<KonvaLayer | null>;
   onPlayerDragStart: (e: KonvaEventObject<MouseEvent>) => void;
   onPlayerDragEnd: (e: KonvaEventObject<MouseEvent>) => void;
@@ -18,7 +18,7 @@ const PlayerLayerComponent = ({
   ref,
   onPlayerDragStart,
   onPlayerDragEnd,
-}: PlayerLayerProps) => {
+}: Props) => {
   const players = usePlayerStore((state) => state.players);
   const layout = useCanvasStore((state) => state.layout);
 

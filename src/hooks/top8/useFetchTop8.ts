@@ -34,6 +34,11 @@ const Top8Query = graphql(`
         maxPlayers
         minPlayers
       }
+      entrants(query: {}) {
+        pageInfo {
+          total
+        }
+      }
       standings(query: { perPage: 8, page: 1 }) {
         nodes {
           placement
@@ -172,8 +177,13 @@ export const useFetchTop8 = () => {
       eventName: eventName || "",
       location: venueAddress || "",
       date: date || new Date(),
-      entrants: teamRosterSize?.maxPlayers || 0,
+      entrants:
+        data?.event?.entrants?.pageInfo?.total ||
+        teamRosterSize?.maxPlayers ||
+        0,
     };
+
+    console.log("tournamentInfo", data?.event);
 
     tournamentDispatch({
       type: "SET_TOURNAMENT_INFO",

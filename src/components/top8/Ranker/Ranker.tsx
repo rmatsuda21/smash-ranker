@@ -4,6 +4,7 @@ import { TournamentConfig } from "@/components/top8/TournamentConfig/TournamentC
 import { preloadCharacterImages } from "@/utils/top8/preloadCharacterImages";
 import { usePlayerStore } from "@/store/playerStore";
 import { useCanvasStore } from "@/store/canvasStore";
+import { ElementEditor } from "@/components/top8/ElementEditor/ElementEditor";
 
 import styles from "./Ranker.module.scss";
 
@@ -19,11 +20,12 @@ const CanvasConfig = lazy(() =>
   }))
 );
 
-const PlayerList = lazy(() =>
-  import("@/components/top8/PlayerList/PlayerList").then((module) => ({
-    default: module.PlayerList,
-  }))
-);
+// const PlayerList = lazy(() =>
+//   import("@/components/top8/PlayerList/PlayerList").then((module) => ({
+//     default: module.PlayerList,
+//   }))
+// );
+
 const PlayerForm = lazy(() =>
   import("@/components/top8/PlayerForm/PlayerForm").then((module) => ({
     default: module.PlayerForm,
@@ -62,12 +64,10 @@ export const Ranker = () => {
 
         <div className={styles.body}>
           <div className={styles.playerConfig}>
-            <Suspense fallback={<div>Loading Player List...</div>}>
-              <PlayerList />
-            </Suspense>
             <Suspense fallback={<div>Loading Player Form...</div>}>
               <PlayerForm />
             </Suspense>
+            <ElementEditor />
           </div>
           <Suspense
             fallback={

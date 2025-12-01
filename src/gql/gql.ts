@@ -1,6 +1,6 @@
- 
-import * as types from "./graphql";
-import type { TypedDocumentNode as DocumentNode } from "@graphql-typed-document-node/core";
+/* eslint-disable */
+import * as types from './graphql';
+import type { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
 
 /**
  * Map of all GraphQL operations in the project.
@@ -14,14 +14,12 @@ import type { TypedDocumentNode as DocumentNode } from "@graphql-typed-document-
  * Learn more about it here: https://the-guild.dev/graphql/codegen/plugins/presets/preset-client#reducing-bundle-size
  */
 type Documents = {
-  "\n  query EventStandings($slug: String!) {\n    event(slug: $slug) {\n      id\n      name\n      startAt\n      tournament {\n        name\n        venueAddress\n      }\n      teamRosterSize {\n        maxPlayers\n        minPlayers\n      }\n      standings(query: { perPage: 8, page: 1 }) {\n        nodes {\n          placement\n          entrant {\n            id\n            name\n          }\n          player {\n            gamerTag\n            prefix\n          }\n        }\n      }\n    }\n  }\n": typeof types.EventStandingsDocument;
-  "\n  query PlayerSets($slug: String!, $entrantId: ID!) {\n    event(slug: $slug) {\n      sets(perPage: 50, page: 1, filters: { entrantIds: [$entrantId] }) {\n        nodes {\n          games {\n            selections {\n              character {\n                id\n              }\n              entrant {\n                id\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n": typeof types.PlayerSetsDocument;
+    "\n  query EventStandings($slug: String!) {\n    event(slug: $slug) {\n      id\n      name\n      startAt\n      tournament {\n        name\n        venueAddress\n      }\n      teamRosterSize {\n        maxPlayers\n        minPlayers\n      }\n      entrants(query: {}) {\n        pageInfo {\n          total\n        }\n      }\n      standings(query: { perPage: 8, page: 1 }) {\n        nodes {\n          placement\n          entrant {\n            id\n            name\n          }\n          player {\n            gamerTag\n            prefix\n          }\n        }\n      }\n    }\n  }\n": typeof types.EventStandingsDocument,
+    "\n  query PlayerSets($slug: String!, $entrantId: ID!) {\n    event(slug: $slug) {\n      sets(perPage: 50, page: 1, filters: { entrantIds: [$entrantId] }) {\n        nodes {\n          games {\n            selections {\n              character {\n                id\n              }\n              entrant {\n                id\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n": typeof types.PlayerSetsDocument,
 };
 const documents: Documents = {
-  "\n  query EventStandings($slug: String!) {\n    event(slug: $slug) {\n      id\n      name\n      startAt\n      tournament {\n        name\n        venueAddress\n      }\n      teamRosterSize {\n        maxPlayers\n        minPlayers\n      }\n      standings(query: { perPage: 8, page: 1 }) {\n        nodes {\n          placement\n          entrant {\n            id\n            name\n          }\n          player {\n            gamerTag\n            prefix\n          }\n        }\n      }\n    }\n  }\n":
-    types.EventStandingsDocument,
-  "\n  query PlayerSets($slug: String!, $entrantId: ID!) {\n    event(slug: $slug) {\n      sets(perPage: 50, page: 1, filters: { entrantIds: [$entrantId] }) {\n        nodes {\n          games {\n            selections {\n              character {\n                id\n              }\n              entrant {\n                id\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n":
-    types.PlayerSetsDocument,
+    "\n  query EventStandings($slug: String!) {\n    event(slug: $slug) {\n      id\n      name\n      startAt\n      tournament {\n        name\n        venueAddress\n      }\n      teamRosterSize {\n        maxPlayers\n        minPlayers\n      }\n      entrants(query: {}) {\n        pageInfo {\n          total\n        }\n      }\n      standings(query: { perPage: 8, page: 1 }) {\n        nodes {\n          placement\n          entrant {\n            id\n            name\n          }\n          player {\n            gamerTag\n            prefix\n          }\n        }\n      }\n    }\n  }\n": types.EventStandingsDocument,
+    "\n  query PlayerSets($slug: String!, $entrantId: ID!) {\n    event(slug: $slug) {\n      sets(perPage: 50, page: 1, filters: { entrantIds: [$entrantId] }) {\n        nodes {\n          games {\n            selections {\n              character {\n                id\n              }\n              entrant {\n                id\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n": types.PlayerSetsDocument,
 };
 
 /**
@@ -41,19 +39,14 @@ export function graphql(source: string): unknown;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(
-  source: "\n  query EventStandings($slug: String!) {\n    event(slug: $slug) {\n      id\n      name\n      startAt\n      tournament {\n        name\n        venueAddress\n      }\n      teamRosterSize {\n        maxPlayers\n        minPlayers\n      }\n      standings(query: { perPage: 8, page: 1 }) {\n        nodes {\n          placement\n          entrant {\n            id\n            name\n          }\n          player {\n            gamerTag\n            prefix\n          }\n        }\n      }\n    }\n  }\n"
-): (typeof documents)["\n  query EventStandings($slug: String!) {\n    event(slug: $slug) {\n      id\n      name\n      startAt\n      tournament {\n        name\n        venueAddress\n      }\n      teamRosterSize {\n        maxPlayers\n        minPlayers\n      }\n      standings(query: { perPage: 8, page: 1 }) {\n        nodes {\n          placement\n          entrant {\n            id\n            name\n          }\n          player {\n            gamerTag\n            prefix\n          }\n        }\n      }\n    }\n  }\n"];
+export function graphql(source: "\n  query EventStandings($slug: String!) {\n    event(slug: $slug) {\n      id\n      name\n      startAt\n      tournament {\n        name\n        venueAddress\n      }\n      teamRosterSize {\n        maxPlayers\n        minPlayers\n      }\n      entrants(query: {}) {\n        pageInfo {\n          total\n        }\n      }\n      standings(query: { perPage: 8, page: 1 }) {\n        nodes {\n          placement\n          entrant {\n            id\n            name\n          }\n          player {\n            gamerTag\n            prefix\n          }\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query EventStandings($slug: String!) {\n    event(slug: $slug) {\n      id\n      name\n      startAt\n      tournament {\n        name\n        venueAddress\n      }\n      teamRosterSize {\n        maxPlayers\n        minPlayers\n      }\n      entrants(query: {}) {\n        pageInfo {\n          total\n        }\n      }\n      standings(query: { perPage: 8, page: 1 }) {\n        nodes {\n          placement\n          entrant {\n            id\n            name\n          }\n          player {\n            gamerTag\n            prefix\n          }\n        }\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(
-  source: "\n  query PlayerSets($slug: String!, $entrantId: ID!) {\n    event(slug: $slug) {\n      sets(perPage: 50, page: 1, filters: { entrantIds: [$entrantId] }) {\n        nodes {\n          games {\n            selections {\n              character {\n                id\n              }\n              entrant {\n                id\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n"
-): (typeof documents)["\n  query PlayerSets($slug: String!, $entrantId: ID!) {\n    event(slug: $slug) {\n      sets(perPage: 50, page: 1, filters: { entrantIds: [$entrantId] }) {\n        nodes {\n          games {\n            selections {\n              character {\n                id\n              }\n              entrant {\n                id\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n"];
+export function graphql(source: "\n  query PlayerSets($slug: String!, $entrantId: ID!) {\n    event(slug: $slug) {\n      sets(perPage: 50, page: 1, filters: { entrantIds: [$entrantId] }) {\n        nodes {\n          games {\n            selections {\n              character {\n                id\n              }\n              entrant {\n                id\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query PlayerSets($slug: String!, $entrantId: ID!) {\n    event(slug: $slug) {\n      sets(perPage: 50, page: 1, filters: { entrantIds: [$entrantId] }) {\n        nodes {\n          games {\n            selections {\n              character {\n                id\n              }\n              entrant {\n                id\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};
 }
 
-export type DocumentType<TDocumentNode extends DocumentNode<any, any>> =
-  TDocumentNode extends DocumentNode<infer TType, any> ? TType : never;
+export type DocumentType<TDocumentNode extends DocumentNode<any, any>> = TDocumentNode extends DocumentNode<  infer TType,  any>  ? TType  : never;
