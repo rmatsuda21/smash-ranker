@@ -1,3 +1,6 @@
+import { ComponentProps } from "react";
+import { Group, Image, Rect, Text } from "react-konva";
+
 export type ElementType =
   | "text"
   | "smartText"
@@ -9,22 +12,24 @@ export type ElementType =
   | "characterImage"
   | "altCharacterImage";
 
-export type CanvasConfig = {
+export interface CanvasConfig {
   size: { width: number; height: number };
   displayScale: number;
   background: BackgroundConfig;
-};
+}
 
-type BaseElementConfig = {
+interface BaseElementConfig {
   position: { x: number; y: number };
   size?: { width?: number; height?: number };
   scale?: { x: number; y: number };
   rotation?: number;
   offset?: { x: number; y: number };
   clip?: boolean;
-};
+}
 
-export type TextElementConfig = BaseElementConfig & {
+export interface TextElementConfig
+  extends BaseElementConfig,
+    Partial<ComponentProps<typeof Text>> {
   type: "text";
   text: string;
   fontSize?: number;
@@ -32,9 +37,11 @@ export type TextElementConfig = BaseElementConfig & {
   fontStyle?: string;
   fill?: string;
   align?: "left" | "center" | "right";
-};
+}
 
-export type SmartTextElementConfig = BaseElementConfig & {
+export interface SmartTextElementConfig
+  extends BaseElementConfig,
+    Partial<ComponentProps<typeof Text>> {
   type: "smartText";
   text: string;
   fontSize?: number;
@@ -47,40 +54,52 @@ export type SmartTextElementConfig = BaseElementConfig & {
   shadowBlur?: number;
   shadowOffset?: { x: number; y: number };
   shadowOpacity?: number;
-};
+}
 
-export type ImageElementConfig = BaseElementConfig & {
+export interface ImageElementConfig
+  extends BaseElementConfig,
+    Partial<ComponentProps<typeof Image>> {
   type: "image";
-  imgSrc: string;
-};
+  src: string;
+}
 
-export type GroupElementConfig = BaseElementConfig & {
+export interface GroupElementConfig
+  extends BaseElementConfig,
+    Partial<ComponentProps<typeof Group>> {
   type: "group";
-};
+}
 
-export type RectElementConfig = BaseElementConfig & {
+export interface RectElementConfig
+  extends BaseElementConfig,
+    Partial<ComponentProps<typeof Rect>> {
   type: "rect";
   fill?: string;
-};
+}
 
-export type CustomImageElementConfig = BaseElementConfig & {
+export interface CustomImageElementConfig
+  extends BaseElementConfig,
+    Partial<ComponentProps<typeof Image>> {
   type: "customImage";
-  imgSrc: string;
-};
+  src: string;
+}
 
-export type CharacterImageElementConfig = BaseElementConfig & {
+export interface CharacterImageElementConfig
+  extends BaseElementConfig,
+    Partial<ComponentProps<typeof Image>> {
   type: "characterImage";
-  customImgSrc?: string;
-};
+  src?: string;
+}
 
-export type AltCharacterImageElementConfig = BaseElementConfig & {
+export interface AltCharacterImageElementConfig extends BaseElementConfig {
   type: "altCharacterImage";
-};
+}
 
-export type SvgElementConfig = BaseElementConfig & {
+export interface SvgElementConfig
+  extends BaseElementConfig,
+    Partial<ComponentProps<typeof Image>> {
   type: "svg";
   src: string;
-};
+}
 
 export type ElementConfig =
   | TextElementConfig
@@ -103,19 +122,19 @@ export type BackgroundConfig =
       imgSrc: string;
     };
 
-export type TournamentConfig = {
+export interface TournamentConfig {
   elements: ElementConfig[];
-};
+}
 
-export type PlayerLayoutConfig = {
+export interface PlayerLayoutConfig extends BaseElementConfig {
   frame?: BackgroundConfig;
   elements: ElementConfig[];
-} & BaseElementConfig;
+}
 
-export type LayoutConfig = {
+export interface LayoutConfig {
   canvas: CanvasConfig;
   background?: BackgroundConfig;
   tournament?: TournamentConfig;
   basePlayer: PlayerLayoutConfig;
   players: Partial<PlayerLayoutConfig>[];
-};
+}

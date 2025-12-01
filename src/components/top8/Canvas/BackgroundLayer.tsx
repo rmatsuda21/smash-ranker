@@ -4,7 +4,7 @@ import { memo, useEffect, useState } from "react";
 import { CustomImage } from "./CustomImage";
 import { fetchAndColorSVG } from "@/utils/top8/fetchAndColorSVG";
 import { useCanvasStore } from "@/store/canvasStore";
-import { BackgroundConfig } from "@/types/top8/Layout";
+import { BackgroundConfig } from "@/types/top8/LayoutTypes";
 
 type Props = {
   onClick: () => void;

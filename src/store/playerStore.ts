@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-import { PlayerInfo } from "@/types/top8/Player";
+import { PlayerInfo } from "@/types/top8/PlayerTypes";
 
 interface PlayerState {
   players: PlayerInfo[];

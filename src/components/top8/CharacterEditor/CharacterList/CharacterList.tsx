@@ -1,6 +1,6 @@
 import cn from "classnames";
 
-import { PlayerInfo } from "@/types/top8/Player";
+import { PlayerInfo } from "@/types/top8/PlayerTypes";
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
 
 import styles from "./CharacterList.module.scss";

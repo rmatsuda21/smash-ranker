@@ -1,5 +1,6 @@
 import { ComponentProps, memo } from "react";
 import { Image } from "react-konva";
+
 import { useCustomImage } from "@/hooks/top8/useCustomImage";
 
 const BACKDROP_OFFSET = 10;
@@ -22,6 +23,8 @@ const CustomImageComponent = ({
   imageSrc,
   hasShadow = false,
   shadowColor = "red",
+  shadowBlur = 3,
+  shadowOffset = { x: BACKDROP_OFFSET, y: BACKDROP_OFFSET },
   x = 0,
   y = 0,
   offset = { x: 0, y: 0 },
@@ -51,8 +54,8 @@ const CustomImageComponent = ({
       height={height}
       image={finalImage}
       shadowColor={shadowColor}
-      shadowBlur={3}
-      shadowOffset={{ x: BACKDROP_OFFSET, y: BACKDROP_OFFSET }}
+      shadowBlur={shadowBlur}
+      shadowOffset={shadowOffset}
       shadowOpacity={hasShadow ? 1 : 0}
       {...rest}
     />

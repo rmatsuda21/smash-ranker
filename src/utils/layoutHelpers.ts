@@ -1,7 +1,7 @@
-import { ElementConfig } from "@/types/top8/Layout";
+import { ElementConfig } from "@/types/top8/LayoutTypes";
 import { LayoutPlaceholder } from "@/consts/top8/placeholders";
-import { TournamentInfo } from "@/types/top8/Tournament";
-import { PlayerInfo } from "@/types/top8/Player";
+import { TournamentInfo } from "@/types/top8/TournamentTypes";
+import { PlayerInfo } from "@/types/top8/PlayerTypes";
 
 const getPlaceholderMap = ({
   tournament,

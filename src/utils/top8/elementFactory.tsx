@@ -4,7 +4,6 @@ import { SceneContext } from "konva/lib/Context";
 
 import {
   ElementConfig,
-  ElementType,
   TextElementConfig,
   SmartTextElementConfig,
   ImageElementConfig,
@@ -14,66 +13,17 @@ import {
   RectElementConfig,
   CustomImageElementConfig,
   SvgElementConfig,
-} from "@/types/top8/Layout";
+} from "@/types/top8/LayoutTypes";
+import {
+  ElementFactoryContext,
+  ElementCreator,
+  ElementCreatorMap,
+} from "@/types/top8/ElementFactoryTypes";
 import { CustomImage } from "@/components/top8/Canvas/CustomImage";
 import { SmartText } from "@/components/top8/SmartText/SmartText";
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
-import { PlayerInfo } from "@/types/top8/Player";
-import { TournamentInfo } from "@/types/top8/Tournament";
-import { LayoutPlaceholder } from "@/consts/top8/placeholders";
 import { CustomSVG } from "@/components/top8/Canvas/CustomSVG";
-
-type ElementFactoryContext = {
-  fontFamily?: string;
-  player?: PlayerInfo;
-  tournament?: TournamentInfo;
-  containerSize?: { width: number; height: number };
-};
-
-type ElementCreator<T extends ElementConfig = ElementConfig> = ({
-  element,
-  index,
-  context,
-}: {
-  element: T;
-  index: number;
-  context: ElementFactoryContext;
-}) => ReactNode;
-
-type ElementCreatorMap = {
-  [K in ElementType]:
-    | ElementCreator<Extract<ElementConfig, { type: K }>>
-    | undefined;
-};
-
-const getPlaceholderMap = (
-  context: ElementFactoryContext
-): Record<LayoutPlaceholder, string | undefined> => {
-  const { player, tournament } = context;
-  return {
-    [LayoutPlaceholder.PLAYER_PLACEMENT]: player?.placement?.toString(),
-    [LayoutPlaceholder.PLAYER_NAME]: player?.name,
-    [LayoutPlaceholder.PLAYER_TAG]: player?.gamerTag,
-    [LayoutPlaceholder.TOURNAMENT_NAME]: tournament?.tournamentName,
-    [LayoutPlaceholder.EVENT_NAME]: tournament?.eventName,
-    [LayoutPlaceholder.TOURNAMENT_DATE]: tournament?.date?.toLocaleDateString(),
-    [LayoutPlaceholder.TOURNAMENT_LOCATION]: tournament?.location,
-    [LayoutPlaceholder.ENTRANTS]: tournament?.entrants
-      ? `${tournament.entrants} Entrants`
-      : undefined,
-  };
-};
-
-const replacePlaceholders = (
-  text: string,
-  context: ElementFactoryContext
-): string => {
-  const map = getPlaceholderMap(context);
-  return text.replace(
-    /<[^>]+>/g,
-    (match) => map[match as LayoutPlaceholder] ?? match
-  );
-};
+import { replacePlaceholders } from "@/utils/top8/replacePlaceholderString";
 
 const createTextElement: ElementCreator<TextElementConfig> = ({
   element,
@@ -140,7 +90,7 @@ const createImageElement: ElementCreator<ImageElementConfig> = ({
       y={element.position.y}
       width={element.size?.width ?? 100}
       height={element.size?.height ?? 100}
-      imageSrc={element.imgSrc}
+      imageSrc={element.src}
     />
   );
 };
@@ -171,7 +121,7 @@ const createCharacterImageElement: ElementCreator<
 
   const mainCharacter = player.characters[0];
   const imageSrc =
-    element.customImgSrc ??
+    element.src ??
     getCharImgUrl({
       characterId: mainCharacter.id,
       alt: mainCharacter.alt,
@@ -266,14 +216,18 @@ const createCustomImageElement: ElementCreator<CustomImageElementConfig> = ({
       y={element.position.y}
       width={width}
       height={height}
-      imageSrc={element.imgSrc}
+      imageSrc={element.src}
     />
   );
 };
 
-const createSvgElement: ElementCreator<SvgElementConfig> = ({ element }) => {
+const createSvgElement: ElementCreator<SvgElementConfig> = ({
+  element,
+  index,
+}) => {
   return (
     <CustomSVG
+      key={`svg-${index}`}
       x={element.position.x}
       y={element.position.y}
       width={element.size?.width ?? 100}

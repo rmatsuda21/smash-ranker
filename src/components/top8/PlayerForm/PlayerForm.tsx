@@ -3,7 +3,7 @@ import { TextField } from "@radix-ui/themes";
 import debounce from "lodash/debounce";
 
 import { usePlayerStore } from "@/store/playerStore";
-import { PlayerInfo } from "@/types/top8/Player";
+import { PlayerInfo } from "@/types/top8/PlayerTypes";
 import { CharacterEditor } from "@/components/top8/CharacterEditor/CharacterEditor";
 
 type Props = {
