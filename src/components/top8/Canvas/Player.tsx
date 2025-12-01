@@ -7,10 +7,10 @@ import { KonvaEventObject } from "konva/lib/Node";
 import { Transformer as KonvaTransformer } from "konva/lib/shapes/Transformer";
 import isEqual from "lodash/isEqual";
 
-import { PlayerInfo } from "@/types/top8/Player";
+import { PlayerInfo } from "@/types/top8/PlayerTypes";
 import { useCanvasStore } from "@/store/canvasStore";
 import { usePlayerStore } from "@/store/playerStore";
-import { PlayerLayoutConfig } from "@/types/top8/Layout";
+import { PlayerLayoutConfig } from "@/types/top8/LayoutTypes";
 import { createKonvaElements } from "@/utils/top8/elementFactory";
 
 type Props = {

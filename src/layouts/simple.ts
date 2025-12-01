@@ -1,4 +1,4 @@
-import { LayoutConfig, PlayerLayoutConfig } from "@/types/top8/Layout";
+import { LayoutConfig, PlayerLayoutConfig } from "@/types/top8/LayoutTypes";
 import { LayoutPlaceholder } from "@/consts/top8/placeholders";
 
 const basePlayer: PlayerLayoutConfig = {
@@ -108,7 +108,7 @@ export const simpleLayout: LayoutConfig = {
     elements: [
       {
         type: "text",
-        position: { x: 0, y: 0 },
+        position: { x: 20, y: 20 },
         text: `${LayoutPlaceholder.TOURNAMENT_NAME} - ${LayoutPlaceholder.EVENT_NAME}`,
         fontSize: 50,
         fontStyle: "bold",
@@ -117,7 +117,7 @@ export const simpleLayout: LayoutConfig = {
       },
       {
         type: "text",
-        position: { x: 0, y: 50 },
+        position: { x: 20, y: 70 },
         text: LayoutPlaceholder.TOURNAMENT_DATE,
         fontSize: 50,
         fontStyle: "bold",

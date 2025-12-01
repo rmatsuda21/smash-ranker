@@ -3,7 +3,7 @@ import { memo } from "react";
 import { characters } from "@/consts/top8/ultCharacters.json";
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
 import { DropDownSelect } from "@/components/top8/DropDownSelect/DropDownSelect";
-import { CharacerData } from "@/types/top8/Player";
+import { CharacerData } from "@/types/top8/PlayerTypes";
 
 type CharacterOption = {
   id: string;

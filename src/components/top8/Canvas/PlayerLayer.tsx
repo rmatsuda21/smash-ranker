@@ -6,7 +6,7 @@ import { KonvaEventObject } from "konva/lib/Node";
 import { Player } from "@/components/top8/Canvas/Player";
 import { usePlayerStore } from "@/store/playerStore";
 import { useCanvasStore } from "@/store/canvasStore";
-import { PlayerLayoutConfig } from "@/types/top8/Layout";
+import { PlayerLayoutConfig } from "@/types/top8/LayoutTypes";
 
 type PlayerLayerProps = {
   ref: React.RefObject<KonvaLayer | null>;

@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-import { TournamentInfo } from "@/types/top8/Tournament";
+import { TournamentInfo } from "@/types/top8/TournamentTypes";
 interface TournamentState {
   info: TournamentInfo;
   fetching: boolean;

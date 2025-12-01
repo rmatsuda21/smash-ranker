@@ -4,10 +4,10 @@ import type { Client } from "urql";
 import { graphql } from "@/gql";
 import type { EventStandingsQuery, PlayerSetsQuery } from "@/gql/graphql";
 
-import { PlayerInfo } from "@/types/top8/Player";
+import { PlayerInfo } from "@/types/top8/PlayerTypes";
 import { usePlayerStore } from "@/store/playerStore";
 import { useTournamentStore } from "@/store/tournamentStore";
-import { TournamentInfo } from "@/types/top8/Tournament";
+import { TournamentInfo } from "@/types/top8/TournamentTypes";
 
 // const UltimateCharacterQuery = graphql(`
 //   query UltimateCharacters {

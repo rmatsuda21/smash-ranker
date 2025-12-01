@@ -3,7 +3,7 @@ import { memo, useEffect, useMemo, useState } from "react";
 import { CharacterSelect } from "@/components/top8/CharacterEditor/CharacterSelect/CharacterSelect";
 import { CharacterAltPicker } from "@/components/top8/CharacterEditor/CharacterAltPicker/CharacterAltPicker";
 import { CharacterList } from "@/components/top8/CharacterEditor/CharacterList/CharacterList";
-import { CharacerData, PlayerInfo } from "@/types/top8/Player";
+import { CharacerData, PlayerInfo } from "@/types/top8/PlayerTypes";
 import { isEqual } from "lodash";
 
 type Props = {

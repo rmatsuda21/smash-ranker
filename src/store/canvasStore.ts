@@ -1,9 +1,9 @@
 import { create } from "zustand";
 import { Stage } from "konva/lib/Stage";
 
-import { LayoutConfig } from "@/types/top8/Layout";
+import { LayoutConfig } from "@/types/top8/LayoutTypes";
 import { simpleLayout } from "@/layouts/simple";
-import { FontStatus } from "@/types/top8/Canvas";
+import { FontStatus } from "@/types/top8/CanvasTypes";
 
 interface CanvasState {
   layout: LayoutConfig;
