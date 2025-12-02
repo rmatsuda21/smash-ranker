@@ -38,7 +38,7 @@ const PlayerLayerComponent = ({
 
   useEffect(() => {
     if (selectedPlayerIndex !== -1 && trRef.current) {
-      const node = ref.current?.children[selectedPlayerIndex];
+      const node = ref.current?.findOne(`#${players[selectedPlayerIndex].id}`);
       if (node) {
         trRef.current.nodes([node]);
       }

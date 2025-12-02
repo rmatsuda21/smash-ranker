@@ -3,6 +3,7 @@ import { Button, TextField } from "@radix-ui/themes";
 
 import { useFetchTop8 } from "@/hooks/top8/useFetchTop8";
 import { usePlayerStore } from "@/store/playerStore";
+import { useTournamentStore } from "@/store/tournamentStore";
 
 // TODO: Eventually make a tournament searcher here
 export const TournamentConfig = () => {
@@ -10,10 +11,16 @@ export const TournamentConfig = () => {
 
   const { fetchTop8 } = useFetchTop8();
   const isFetching = usePlayerStore((state) => state.fetching);
+  const playerDispatch = usePlayerStore((state) => state.dispatch);
+  const tournamentDispatch = useTournamentStore((state) => state.dispatch);
 
   const handleLoadClick = () => {
+    playerDispatch({ type: "CLEAR_SELECTED_PLAYER" });
+    tournamentDispatch({ type: "CLEAR_SELECTED_ELEMENT" });
+
     fetchTop8(
-      "tournament/genesis-9-1/event/ultimate-singles"
+      // "tournament/genesis-9-1/event/ultimate-singles"
+      "tournament/sp12-umeburasp12/event/singles"
       // "tournament/smash-sans-fronti-res-271/event/smash-ultimate-singles"
       // "tournament/the-buddbuds-local-15/event/ultimate-singles"
       // "tournament/coffee-break-11-0/event/ultimate-singles"

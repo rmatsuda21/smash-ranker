@@ -35,7 +35,7 @@ export const CanvasConfig = () => {
 
           const downloadImage = () => {
             const dataURL = stageRef.toDataURL({
-              pixelRatio: 1,
+              pixelRatio: 2,
             });
 
             const link = document.createElement("a");
