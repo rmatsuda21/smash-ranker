@@ -87,7 +87,7 @@ export interface CharacterImageElementConfig
   extends BaseElementConfig,
     Partial<ComponentProps<typeof Image>> {
   type: "characterImage";
-  src?: string;
+  customSrc?: string;
 }
 
 export interface AltCharacterImageElementConfig extends BaseElementConfig {
