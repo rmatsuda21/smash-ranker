@@ -121,7 +121,7 @@ const createCharacterImageElement: ElementCreator<
 
   const mainCharacter = player.characters[0];
   const imageSrc =
-    element.src ??
+    element.customSrc ??
     getCharImgUrl({
       characterId: mainCharacter.id,
       alt: mainCharacter.alt,

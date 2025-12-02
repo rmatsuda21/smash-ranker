@@ -36,7 +36,7 @@ const basePlayer: PlayerLayoutConfig = {
     {
       type: "smartText",
       text: LayoutPlaceholder.PLAYER_TAG,
-      fontSize: 110,
+      fontSize: 140,
       fontWeight: "900",
       verticalAlign: "bottom",
       align: "center",
