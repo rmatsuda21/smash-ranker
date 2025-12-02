@@ -39,7 +39,6 @@ export const FileUploader = ({ value, disabled, onChange }: Props) => {
 
     const handleDrop = (e: DragEvent) => {
       e.preventDefault();
-      console.log("handleDrop");
       if (!e.dataTransfer) return;
       const file = e.dataTransfer.files[0];
       if (!file || !file.type.startsWith("image/")) return;
