@@ -1,0 +1,35 @@
+.wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #222;
+  cursor: pointer;
+
+  &:hover:not(.disabled) {
+    background-color: #333;
+  }
+
+  &.isFileOver {
+    border-color: var(--accent-9);
+    background-color: #333;
+  }
+
+  &.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  input {
+    display: none;
+  }
+
+  span {
+    pointer-events: none;
+  }
+}

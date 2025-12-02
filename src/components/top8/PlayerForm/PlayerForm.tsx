@@ -5,6 +5,7 @@ import debounce from "lodash/debounce";
 import { usePlayerStore } from "@/store/playerStore";
 import { PlayerInfo } from "@/types/top8/PlayerTypes";
 import { CharacterEditor } from "@/components/top8/CharacterEditor/CharacterEditor";
+import { FileUploader } from "@/components/top8/PlayerForm/FileUploader/FileUploader";
 
 type Props = {
   className?: string;
@@ -19,6 +20,10 @@ export const PlayerForm = ({ className }: Props) => {
 
   const [tempPlayer, setTempPlayer] = useState<PlayerInfo | undefined>(
     players[selectedPlayerIndex]
+  );
+
+  const [customImgSrc, setCustomImgSrc] = useState<string | undefined>(
+    tempPlayer?.customImgSrc
   );
 
   const selectedPlayer = useMemo(
@@ -46,8 +51,10 @@ export const PlayerForm = ({ className }: Props) => {
 
     if (selectedPlayer) {
       setTempPlayer(selectedPlayer);
+      setCustomImgSrc(selectedPlayer.customImgSrc);
     } else {
       setTempPlayer(undefined);
+      setCustomImgSrc(undefined);
     }
 
     setTimeout(() => {
@@ -84,6 +91,13 @@ export const PlayerForm = ({ className }: Props) => {
     updatePlayer({ ...tempPlayer, gamerTag: e.target.value });
   };
 
+  const handleCustomImgSrcChange = (file?: File) => {
+    if (!tempPlayer || !file) return;
+    const url = URL.createObjectURL(file);
+    updatePlayer({ ...tempPlayer, customImgSrc: url });
+    setCustomImgSrc(url);
+  };
+
   return (
     <div className={className}>
       <TextField.Root
@@ -99,6 +113,11 @@ export const PlayerForm = ({ className }: Props) => {
         onChange={handleGamerTagChange}
         placeholder="Gamer Tag"
         disabled={!selectedPlayer}
+      />
+      <FileUploader
+        value={customImgSrc}
+        disabled={!selectedPlayer}
+        onChange={handleCustomImgSrcChange}
       />
       <CharacterEditor
         player={tempPlayer}
