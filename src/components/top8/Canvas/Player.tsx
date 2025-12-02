@@ -1,6 +1,5 @@
-import { useCallback, useMemo, useState, memo } from "react";
+import { useCallback, useMemo, memo } from "react";
 import { Vector2d } from "konva/lib/types";
-import { Group, Rect } from "react-konva";
 import { KonvaEventObject } from "konva/lib/Node";
 import isEqual from "lodash/isEqual";
 
@@ -9,6 +8,7 @@ import { useCanvasStore } from "@/store/canvasStore";
 import { usePlayerStore } from "@/store/playerStore";
 import { PlayerLayoutConfig } from "@/types/top8/LayoutTypes";
 import { createKonvaElements } from "@/utils/top8/elementFactory";
+import { SelectableElement } from "./SelectableElement";
 
 type Props = {
   player: PlayerInfo;
@@ -27,8 +27,6 @@ const PlayerComponent = ({
   onDragEnd,
   isSelected,
 }: Props) => {
-  const [isHovered, setIsHovered] = useState(false);
-
   const layout = useCanvasStore((state) => state.layout);
   const selectedFont = useCanvasStore((state) => state.selectedFont);
   const fonts = useCanvasStore((state) => state.fonts);
@@ -39,24 +37,6 @@ const PlayerComponent = ({
     ...layout.basePlayer,
     ...(layout.players[index] ?? {}),
   };
-
-  const handleMouseOver = useCallback((e: KonvaEventObject<MouseEvent>) => {
-    const container = e.target.getStage()?.container();
-    if (container) {
-      container.style.cursor = "pointer";
-    }
-
-    setIsHovered(true);
-  }, []);
-
-  const handleMouseOut = useCallback((e: KonvaEventObject<MouseEvent>) => {
-    const container = e.target.getStage()?.container();
-    if (container) {
-      container.style.cursor = "default";
-    }
-
-    setIsHovered(false);
-  }, []);
 
   const handleDragEnd = useCallback(
     (e: KonvaEventObject<MouseEvent>) => {
@@ -130,7 +110,8 @@ const PlayerComponent = ({
   );
 
   return (
-    <Group
+    <SelectableElement
+      id={player.id}
       draggable={isSelected}
       x={playerConfig.position?.x}
       y={playerConfig.position?.y}
@@ -140,22 +121,13 @@ const PlayerComponent = ({
       scaleY={playerConfig.scale?.y}
       rotation={playerConfig.rotation ?? 0}
       onClick={handleGroupClick}
-      onMouseOver={handleMouseOver}
-      onMouseOut={handleMouseOut}
       onDragEnd={handleDragEnd}
       onDragStart={onDragStart}
       dragBoundFunc={dragBoundFunc}
       name={player.id}
     >
       {konvaElements}
-      <Rect
-        x={0}
-        y={0}
-        width={playerConfig.size?.width ?? 0}
-        height={playerConfig.size?.height ?? 0}
-        fill={isHovered ? "rgba(0, 0, 0, 0.2)" : "transparent"}
-      />
-    </Group>
+    </SelectableElement>
   );
 };
 
