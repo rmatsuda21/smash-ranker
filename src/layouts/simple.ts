@@ -8,11 +8,9 @@ const MAIN_PL_SIZE = 665;
 const CANVAS_WIDTH = 1920;
 const CANVAS_HEIGHT = 1080;
 
+const SMASH_BALL_SIZE = 1600;
+
 const basePlayer: PlayerLayoutConfig = {
-  frame: {
-    type: "image",
-    imgSrc: "/assets/top8/theme/wtf/frame.svg",
-  },
   position: { x: 25, y: 190 },
   size: { width: BASE_PL_SIZE, height: BASE_PL_SIZE },
   scale: { x: 1, y: 1 },
@@ -34,6 +32,7 @@ const basePlayer: PlayerLayoutConfig = {
       src: "/assets/top8/theme/mini/frame.svg",
       position: { x: 0, y: 0 },
       size: { width: BASE_PL_SIZE, height: BASE_PL_SIZE },
+      fillColorMain: "rgb(203, 65, 65)",
     },
     {
       type: "altCharacterImage",
@@ -177,10 +176,28 @@ export const simpleLayout: LayoutConfig = {
       height: 1080,
     },
     displayScale: 0.5,
-    background: {
-      type: "image",
-      imgSrc: "/assets/top8/theme/mini/bg.svg",
-    },
+  },
+  background: {
+    elements: [
+      {
+        type: "svg",
+        src: "/assets/top8/theme/mini/bg.svg",
+        position: { x: 0, y: 0 },
+        size: { width: CANVAS_WIDTH, height: CANVAS_HEIGHT },
+        fillColorMain: "rgb(179, 0, 0)",
+        fillColorSecondary: "rgb(235, 171, 64)",
+      },
+      {
+        type: "svg",
+        src: "/assets/top8/theme/mini/smash_ball.svg",
+        position: {
+          x: (CANVAS_WIDTH - SMASH_BALL_SIZE) / 2 + 390,
+          y: (CANVAS_HEIGHT - SMASH_BALL_SIZE) / 2 - 300,
+        },
+        size: { width: SMASH_BALL_SIZE, height: SMASH_BALL_SIZE },
+        fillColorMain: "rgba(255, 255, 255, 0.2)",
+      },
+    ],
   },
   tournament: {
     elements: [

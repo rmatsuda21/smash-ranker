@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
-  <rect class="color-1" x="0" y="0" width="1920" height="1080" style="fill: rgb(203, 65, 65);"/>
-  <ellipse class="color-2" style="transform-box: fill-box; transform-origin: 50% 50%; fill: rgb(235, 171, 64);" cx="933.45" cy="674" rx="1359.36" ry="624.218" transform="matrix(0.969432, -0.24536, 0.24536, 0.969432, 50.57334, -169.721477)"/>
-  <ellipse class="color-3" style="stroke-width: 1; transform-origin: 933.449px 674px;" cx="933.45" cy="674" rx="1365.9" ry="592.521" transform="matrix(0.978608, -0.205733, 0.205733, 0.978608, 35.86136, -160.768867)"/>
+  <rect class="color" id="outer" x="0" y="0" width="1920" height="1080" fill="red"/>
+  <ellipse class="color" id="inner" transform-box="fill-box" transform-origin="50% 50%" cx="933.45" cy="674" rx="1359.36" ry="624.218" transform="matrix(0.969432, -0.24536, 0.24536, 0.969432, 50.57334, -169.721477)" fill="orange"/>
+  <ellipse class="color" id="center" stroke-width="1" transform-origin="933.449px 674px" cx="933.45" cy="674" rx="1365.9" ry="592.521" transform="matrix(0.978608, -0.205733, 0.205733, 0.978608, 35.86136, -160.768867)" fill="#000000"/>
 </svg>

@@ -233,6 +233,8 @@ const createSvgElement: ElementCreator<SvgElementConfig> = ({
       width={element.size?.width ?? 100}
       height={element.size?.height ?? 100}
       src={element.src}
+      fillColorMain={element.fillColorMain}
+      fillColorSecondary={element.fillColorSecondary}
     />
   );
 };
