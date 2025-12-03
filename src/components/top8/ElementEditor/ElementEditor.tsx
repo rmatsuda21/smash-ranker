@@ -23,9 +23,10 @@ export const ElementEditor = () => {
     dispatch({
       type: "ADD_TOURNAMENT_ELEMENT",
       payload: {
+        name: "New Element",
         type: "text",
         text: "Hello",
-        fill: "yellow",
+        fill: "#ffff00",
         fontSize: 200,
         fontWeight: "bold",
         position: { x: 0, y: 0 },
@@ -46,7 +47,7 @@ export const ElementEditor = () => {
             onClick={() => handleClick(index)}
             variant={index === selectedElementIndex ? "solid" : "outline"}
           >
-            {element.type}
+            {element.name || element.type}
           </Button>
         ))}
       </div>

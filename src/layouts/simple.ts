@@ -191,6 +191,7 @@ export const simpleLayout: LayoutConfig = {
         fontSize: 50,
         fontWeight: "900",
         fill: "#ffffff",
+        name: "Name",
       },
       {
         type: "text",
@@ -199,6 +200,7 @@ export const simpleLayout: LayoutConfig = {
         fontSize: 50,
         fontWeight: "900",
         fill: "#ffffff",
+        name: "Date",
       },
     ],
   },
