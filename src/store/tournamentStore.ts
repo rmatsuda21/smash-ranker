@@ -8,6 +8,7 @@ interface TournamentState {
   selectedElementIndex: number;
 }
 
+// TODO: Pull out element selection to its own store & combine w/ players
 type TournamentAction =
   | { type: "SET_TOURNAMENT_NAME"; payload: string }
   | { type: "SET_EVENT_NAME"; payload: string }
