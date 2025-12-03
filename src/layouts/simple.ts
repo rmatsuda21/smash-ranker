@@ -4,7 +4,7 @@ import { LayoutPlaceholder } from "@/consts/top8/placeholders";
 const PADDING = 40;
 const PLAYER_SPACING = 15;
 const BASE_PL_SIZE = 700;
-const MAIN_PL_SIZE = 670;
+const MAIN_PL_SIZE = 665;
 const CANVAS_WIDTH = 1920;
 const CANVAS_HEIGHT = 1080;
 
@@ -179,7 +179,7 @@ export const simpleLayout: LayoutConfig = {
     displayScale: 0.5,
     background: {
       type: "image",
-      imgSrc: "/assets/top8/theme/wtf/background.svg",
+      imgSrc: "/assets/top8/theme/mini/bg.svg",
     },
   },
   tournament: {
