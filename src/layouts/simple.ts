@@ -3,7 +3,8 @@ import { LayoutPlaceholder } from "@/consts/top8/placeholders";
 
 const PADDING = 40;
 const PLAYER_SPACING = 15;
-const MAIN_PLAYER_SIZE = 700;
+const BASE_PL_SIZE = 700;
+const MAIN_PL_SIZE = 670;
 const CANVAS_WIDTH = 1920;
 const CANVAS_HEIGHT = 1080;
 
@@ -13,31 +14,31 @@ const basePlayer: PlayerLayoutConfig = {
     imgSrc: "/assets/top8/theme/wtf/frame.svg",
   },
   position: { x: 25, y: 190 },
-  size: { width: MAIN_PLAYER_SIZE, height: MAIN_PLAYER_SIZE },
+  size: { width: BASE_PL_SIZE, height: BASE_PL_SIZE },
   scale: { x: 1, y: 1 },
   elements: [
     {
       type: "rect",
       fill: "#000000",
       position: { x: 0, y: 0 },
-      size: { width: MAIN_PLAYER_SIZE, height: MAIN_PLAYER_SIZE },
+      size: { width: BASE_PL_SIZE, height: BASE_PL_SIZE },
     },
     {
       type: "characterImage",
       position: { x: 0, y: 0 },
-      size: { width: MAIN_PLAYER_SIZE, height: MAIN_PLAYER_SIZE },
+      size: { width: BASE_PL_SIZE, height: BASE_PL_SIZE },
       clip: true,
     },
     {
       type: "svg",
       src: "/assets/top8/theme/mini/frame.svg",
       position: { x: 0, y: 0 },
-      size: { width: MAIN_PLAYER_SIZE, height: MAIN_PLAYER_SIZE },
+      size: { width: BASE_PL_SIZE, height: BASE_PL_SIZE },
     },
     {
       type: "altCharacterImage",
-      position: { x: 595, y: 30 },
-      size: { width: 70, height: undefined },
+      position: { x: 575, y: 30 },
+      size: { width: 90, height: undefined },
     },
     {
       type: "smartText",
@@ -46,7 +47,7 @@ const basePlayer: PlayerLayoutConfig = {
       fontWeight: "900",
       verticalAlign: "bottom",
       align: "center",
-      size: { width: MAIN_PLAYER_SIZE, height: 150 },
+      size: { width: BASE_PL_SIZE, height: 150 },
       position: { x: 0, y: 690 },
       shadowColor: "black",
       shadowOffset: { x: 7, y: 7 },
@@ -63,7 +64,10 @@ const basePlayer: PlayerLayoutConfig = {
   ],
 };
 
-const getScale = (size: number) => ({ x: size / 700, y: size / 700 });
+const getScale = (size: number) => ({
+  x: size / BASE_PL_SIZE,
+  y: size / BASE_PL_SIZE,
+});
 
 const getFirstRowPositions = () => {
   const row: {
@@ -71,7 +75,7 @@ const getFirstRowPositions = () => {
     scale: { x: number; y: number };
   }[] = [];
   const remainingWidth =
-    CANVAS_WIDTH - PADDING * 2 - MAIN_PLAYER_SIZE - PLAYER_SPACING;
+    CANVAS_WIDTH - PADDING * 2 - MAIN_PL_SIZE - PLAYER_SPACING;
 
   const playerWidth = (remainingWidth - PLAYER_SPACING * 2) / 3;
 
@@ -80,10 +84,10 @@ const getFirstRowPositions = () => {
       position: {
         x:
           PADDING +
-          MAIN_PLAYER_SIZE +
+          MAIN_PL_SIZE +
           PLAYER_SPACING +
           i * (playerWidth + PLAYER_SPACING),
-        y: PADDING + (CANVAS_HEIGHT - MAIN_PLAYER_SIZE - PADDING * 2) / 2,
+        y: PADDING + (CANVAS_HEIGHT - MAIN_PL_SIZE - PADDING * 2) / 2,
       },
       scale: getScale(playerWidth),
     });
@@ -98,14 +102,14 @@ const getSecondRowPositions = () => {
     scale: { x: number; y: number };
   }[] = [];
   const remainingWidth =
-    CANVAS_WIDTH - PADDING * 2 - MAIN_PLAYER_SIZE - PLAYER_SPACING;
+    CANVAS_WIDTH - PADDING * 2 - MAIN_PL_SIZE - PLAYER_SPACING;
 
   const playerWidth = (remainingWidth - PLAYER_SPACING * 3) / 4;
 
   const y =
     PADDING +
-    (CANVAS_HEIGHT - MAIN_PLAYER_SIZE - PADDING * 2) / 2 +
-    MAIN_PLAYER_SIZE -
+    (CANVAS_HEIGHT - MAIN_PL_SIZE - PADDING * 2) / 2 +
+    MAIN_PL_SIZE -
     playerWidth;
 
   for (let i = 0; i < 4; i++) {
@@ -113,7 +117,7 @@ const getSecondRowPositions = () => {
       position: {
         x:
           PADDING +
-          MAIN_PLAYER_SIZE +
+          MAIN_PL_SIZE +
           PLAYER_SPACING +
           i * (playerWidth + PLAYER_SPACING),
         y,
@@ -139,8 +143,9 @@ const players: Partial<PlayerLayoutConfig>[] = [
   {
     position: {
       x: PADDING,
-      y: PADDING + (CANVAS_HEIGHT - MAIN_PLAYER_SIZE - PADDING * 2) / 2,
+      y: PADDING + (CANVAS_HEIGHT - MAIN_PL_SIZE - PADDING * 2) / 2,
     },
+    scale: getScale(MAIN_PL_SIZE),
   },
   {
     ...firstRow[0],
