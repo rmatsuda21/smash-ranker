@@ -15,7 +15,6 @@ export type ElementType =
 export interface CanvasConfig {
   size: { width: number; height: number };
   displayScale: number;
-  background: BackgroundConfig;
 }
 
 interface BaseElementConfig {
@@ -100,6 +99,8 @@ export interface SvgElementConfig
     Partial<ComponentProps<typeof Image>> {
   type: "svg";
   src: string;
+  fillColorMain?: string;
+  fillColorSecondary?: string;
 }
 
 export type ElementConfig =
@@ -112,23 +113,12 @@ export type ElementConfig =
   | RectElementConfig
   | CustomImageElementConfig
   | SvgElementConfig;
-
-export type BackgroundConfig =
-  | {
-      type: "color";
-      color: string;
-    }
-  | {
-      type: "image";
-      imgSrc: string;
-    };
-
-export interface TournamentConfig {
+export interface LayerConfig {
   elements: ElementConfig[];
 }
 
 export interface PlayerLayoutConfig extends BaseElementConfig {
-  frame?: BackgroundConfig;
+  frame?: ImageElementConfig | SvgElementConfig | CustomImageElementConfig;
   elements: ElementConfig[];
   size: { width: number; height: number };
   scale: { x: number; y: number };
@@ -137,8 +127,8 @@ export interface PlayerLayoutConfig extends BaseElementConfig {
 
 export interface LayoutConfig {
   canvas: CanvasConfig;
-  background?: BackgroundConfig;
-  tournament?: TournamentConfig;
+  background: LayerConfig;
+  tournament: LayerConfig;
   basePlayer: PlayerLayoutConfig;
   players: Partial<PlayerLayoutConfig>[];
 }

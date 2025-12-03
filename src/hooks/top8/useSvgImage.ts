@@ -1,11 +1,17 @@
 import { useState, useEffect } from "react";
 
 type Status = "loading" | "loaded" | "failed";
-export const useSvgImage = (
-  svgUrl: string,
-  fillColor?: string,
-  crossOrigin?: string
-): [HTMLImageElement | undefined, Status] => {
+export const useSvgImage = ({
+  svgUrl,
+  fillColorMain,
+  fillColorSecondary,
+  crossOrigin,
+}: {
+  svgUrl: string;
+  fillColorMain?: string;
+  fillColorSecondary?: string;
+  crossOrigin?: string;
+}): [HTMLImageElement | undefined, Status] => {
   const [image, setImage] = useState<HTMLImageElement>();
   const [status, setStatus] = useState<Status>("loading");
 
@@ -27,18 +33,28 @@ export const useSvgImage = (
           throw new Error(`Failed to fetch SVG: ${response.statusText}`);
         }
 
-        let svgText = await response.text();
+        const svgText = await response.text();
 
-        if (fillColor) {
-          svgText = svgText.replace(
-            /fill=["'][^"']*["']/gi,
-            `fill="${fillColor}"`
-          );
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(svgText, "image/svg+xml");
 
-          svgText = svgText.replace(/fill:\s*[^;"}]+/gi, `fill: ${fillColor}`);
+        if (fillColorMain) {
+          const colorElements = doc.querySelectorAll(".color");
+          colorElements.forEach((el) => {
+            if (el.id === "outer") {
+              el.setAttribute("fill", fillColorMain);
+            } else if (el.id === "inner") {
+              el.setAttribute("fill", fillColorSecondary ?? fillColorMain);
+            } else if (el.id !== "center") {
+              el.setAttribute("fill", fillColorMain);
+            }
+          });
         }
 
-        const blob = new Blob([svgText], { type: "image/svg+xml" });
+        const serializer = new XMLSerializer();
+        const modifiedSvgText = serializer.serializeToString(doc);
+
+        const blob = new Blob([modifiedSvgText], { type: "image/svg+xml" });
         const url = URL.createObjectURL(blob);
 
         const img = new Image();
@@ -75,7 +91,7 @@ export const useSvgImage = (
     return () => {
       cancelled = true;
     };
-  }, [svgUrl, fillColor, crossOrigin]);
+  }, [svgUrl, fillColorMain, fillColorSecondary, crossOrigin]);
 
   return [image, status];
 };
