@@ -1,32 +1,38 @@
 import { LayoutConfig, PlayerLayoutConfig } from "@/types/top8/LayoutTypes";
 import { LayoutPlaceholder } from "@/consts/top8/placeholders";
 
+const PADDING = 40;
+const PLAYER_SPACING = 15;
+const MAIN_PLAYER_SIZE = 700;
+const CANVAS_WIDTH = 1920;
+const CANVAS_HEIGHT = 1080;
+
 const basePlayer: PlayerLayoutConfig = {
   frame: {
     type: "image",
     imgSrc: "/assets/top8/theme/wtf/frame.svg",
   },
   position: { x: 25, y: 190 },
-  size: { width: 700, height: 700 },
+  size: { width: MAIN_PLAYER_SIZE, height: MAIN_PLAYER_SIZE },
   scale: { x: 1, y: 1 },
   elements: [
     {
       type: "rect",
       fill: "#000000",
       position: { x: 0, y: 0 },
-      size: { width: 700, height: 700 },
+      size: { width: MAIN_PLAYER_SIZE, height: MAIN_PLAYER_SIZE },
     },
     {
       type: "characterImage",
       position: { x: 0, y: 0 },
-      size: { width: 700, height: 700 },
+      size: { width: MAIN_PLAYER_SIZE, height: MAIN_PLAYER_SIZE },
       clip: true,
     },
     {
       type: "svg",
       src: "/assets/top8/theme/mini/frame.svg",
       position: { x: 0, y: 0 },
-      size: { width: 700, height: 700 },
+      size: { width: MAIN_PLAYER_SIZE, height: MAIN_PLAYER_SIZE },
     },
     {
       type: "altCharacterImage",
@@ -40,7 +46,7 @@ const basePlayer: PlayerLayoutConfig = {
       fontWeight: "900",
       verticalAlign: "bottom",
       align: "center",
-      size: { width: 700, height: 150 },
+      size: { width: MAIN_PLAYER_SIZE, height: 150 },
       position: { x: 0, y: 690 },
       shadowColor: "black",
       shadowOffset: { x: 7, y: 7 },
@@ -59,37 +65,103 @@ const basePlayer: PlayerLayoutConfig = {
 
 const getScale = (size: number) => ({ x: size / 700, y: size / 700 });
 
+const getFirstRowPositions = () => {
+  const row: {
+    position: { x: number; y: number };
+    scale: { x: number; y: number };
+  }[] = [];
+  const remainingWidth =
+    CANVAS_WIDTH - PADDING * 2 - MAIN_PLAYER_SIZE - PLAYER_SPACING;
+
+  const playerWidth = (remainingWidth - PLAYER_SPACING * 2) / 3;
+
+  for (let i = 0; i < 3; i++) {
+    row.push({
+      position: {
+        x:
+          PADDING +
+          MAIN_PLAYER_SIZE +
+          PLAYER_SPACING +
+          i * (playerWidth + PLAYER_SPACING),
+        y: PADDING + (CANVAS_HEIGHT - MAIN_PLAYER_SIZE - PADDING * 2) / 2,
+      },
+      scale: getScale(playerWidth),
+    });
+  }
+
+  return row;
+};
+
+const getSecondRowPositions = () => {
+  const row: {
+    position: { x: number; y: number };
+    scale: { x: number; y: number };
+  }[] = [];
+  const remainingWidth =
+    CANVAS_WIDTH - PADDING * 2 - MAIN_PLAYER_SIZE - PLAYER_SPACING;
+
+  const playerWidth = (remainingWidth - PLAYER_SPACING * 3) / 4;
+
+  const y =
+    PADDING +
+    (CANVAS_HEIGHT - MAIN_PLAYER_SIZE - PADDING * 2) / 2 +
+    MAIN_PLAYER_SIZE -
+    playerWidth;
+
+  for (let i = 0; i < 4; i++) {
+    row.push({
+      position: {
+        x:
+          PADDING +
+          MAIN_PLAYER_SIZE +
+          PLAYER_SPACING +
+          i * (playerWidth + PLAYER_SPACING),
+        y,
+      },
+      scale: getScale(playerWidth),
+    });
+  }
+
+  return row;
+};
+
+const firstRow: {
+  position: { x: number; y: number };
+  scale: { x: number; y: number };
+}[] = getFirstRowPositions();
+
+const secondRow: {
+  position: { x: number; y: number };
+  scale: { x: number; y: number };
+}[] = getSecondRowPositions();
+
 const players: Partial<PlayerLayoutConfig>[] = [
   {
-    position: { x: 25, y: 190 },
+    position: {
+      x: PADDING,
+      y: PADDING + (CANVAS_HEIGHT - MAIN_PLAYER_SIZE - PADDING * 2) / 2,
+    },
   },
   {
-    position: { x: 740, y: 190 },
-    scale: getScale(350),
+    ...firstRow[0],
   },
   {
-    position: { x: 1105, y: 190 },
-    scale: getScale(350),
+    ...firstRow[1],
   },
   {
-    position: { x: 1470, y: 190 },
-    scale: getScale(350),
+    ...firstRow[2],
   },
   {
-    position: { x: 740, y: 555 },
-    scale: getScale(250),
+    ...secondRow[0],
   },
   {
-    position: { x: 1000, y: 555 },
-    scale: getScale(250),
+    ...secondRow[1],
   },
   {
-    position: { x: 1260, y: 555 },
-    scale: getScale(250),
+    ...secondRow[2],
   },
   {
-    position: { x: 1520, y: 555 },
-    scale: getScale(250),
+    ...secondRow[3],
   },
 ];
 
@@ -109,7 +181,7 @@ export const simpleLayout: LayoutConfig = {
     elements: [
       {
         type: "text",
-        position: { x: 20, y: 20 },
+        position: { x: PADDING, y: PADDING },
         text: `${LayoutPlaceholder.TOURNAMENT_NAME} - ${LayoutPlaceholder.EVENT_NAME}`,
         fontSize: 50,
         fontWeight: "900",
@@ -117,17 +189,11 @@ export const simpleLayout: LayoutConfig = {
       },
       {
         type: "text",
-        position: { x: 20, y: 70 },
+        position: { x: PADDING, y: PADDING + 60 },
         text: LayoutPlaceholder.TOURNAMENT_DATE,
         fontSize: 50,
         fontWeight: "900",
         fill: "#ffffff",
-      },
-      {
-        type: "image",
-        src: "/favicon.png",
-        position: { x: 1800, y: 950 },
-        size: { width: 100, height: 100 },
       },
     ],
   },
