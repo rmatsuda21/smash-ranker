@@ -25,6 +25,7 @@ interface BaseElementConfig {
   rotation?: number;
   offset?: { x: number; y: number };
   clip?: boolean;
+  name?: string;
 }
 
 export interface TextElementConfig
