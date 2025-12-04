@@ -12,10 +12,12 @@ const getPlaceholderMap = (
     [LayoutPlaceholder.TOURNAMENT_NAME]: tournament?.tournamentName,
     [LayoutPlaceholder.EVENT_NAME]: tournament?.eventName,
     [LayoutPlaceholder.TOURNAMENT_DATE]: tournament?.date?.toLocaleDateString(),
-    [LayoutPlaceholder.TOURNAMENT_LOCATION]: tournament?.location,
-    [LayoutPlaceholder.ENTRANTS]: tournament?.entrants
-      ? `${tournament.entrants} Entrants`
-      : undefined,
+    [LayoutPlaceholder.TOURNAMENT_LOCATION]: `${tournament?.location.city}, ${
+      tournament?.location.state
+    }${
+      tournament?.location.country ? `, ${tournament?.location.country}` : ""
+    }`,
+    [LayoutPlaceholder.ENTRANTS]: tournament?.entrants?.toString(),
   };
 };
 

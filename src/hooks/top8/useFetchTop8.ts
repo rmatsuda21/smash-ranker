@@ -28,7 +28,9 @@ const Top8Query = graphql(`
       startAt
       tournament {
         name
-        venueAddress
+        addrState
+        city
+        countryCode
       }
       teamRosterSize {
         maxPlayers
@@ -165,7 +167,9 @@ export const useFetchTop8 = () => {
     const standings = data?.event?.standings?.nodes;
     const tournamentName = data?.event?.tournament?.name;
     const eventName = data?.event?.name;
-    const venueAddress = data?.event?.tournament?.venueAddress;
+    const location = data?.event?.tournament?.addrState;
+    const city = data?.event?.tournament?.city;
+    const country = data?.event?.tournament?.countryCode;
     const teamRosterSize = data?.event?.teamRosterSize;
 
     const date = data?.event?.startAt
@@ -175,7 +179,11 @@ export const useFetchTop8 = () => {
     const tournamentInfo: TournamentInfo = {
       tournamentName: tournamentName || "",
       eventName: eventName || "",
-      location: venueAddress || "",
+      location: {
+        state: location || "",
+        city: city || "",
+        country: country || "",
+      },
       date: date || new Date(),
       entrants:
         data?.event?.entrants?.pageInfo?.total ||
@@ -193,10 +201,15 @@ export const useFetchTop8 = () => {
     const results = await Promise.allSettled(
       players.map(async (player) => {
         const characters = await getPlayerCharacters(client, slug, player.id);
-        player.characters = characters.map((character) => ({
-          id: character,
-          alt: 0,
-        }));
+
+        if (characters.length > 0) {
+          player.characters = characters.map((character) => ({
+            id: character,
+            alt: 0,
+          }));
+        } else {
+          player.characters = [{ id: "1293", alt: 0 }];
+        }
         player.id = player.id.toString();
       })
     );

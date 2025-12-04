@@ -13,7 +13,10 @@ type TournamentAction =
   | { type: "SET_TOURNAMENT_NAME"; payload: string }
   | { type: "SET_EVENT_NAME"; payload: string }
   | { type: "SET_DATE"; payload: Date }
-  | { type: "SET_LOCATION"; payload: string }
+  | {
+      type: "SET_LOCATION";
+      payload: { city?: string; state?: string; country?: string };
+    }
   | { type: "SET_ENTRANTS"; payload: number }
   | { type: "SET_TOURNAMENT_INFO"; payload: TournamentInfo }
   | { type: "SET_FETCHING"; payload: boolean }
@@ -36,7 +39,12 @@ const tournamentReducer = (
     case "SET_DATE":
       return { info: { ...state.info, date: action.payload } };
     case "SET_LOCATION":
-      return { info: { ...state.info, location: action.payload } };
+      return {
+        info: {
+          ...state.info,
+          location: { ...state.info.location, ...action.payload },
+        },
+      };
     case "SET_ENTRANTS":
       return { info: { ...state.info, entrants: action.payload } };
     case "SET_TOURNAMENT_INFO":
@@ -61,7 +69,7 @@ const initialState: TournamentState = {
     tournamentName: `Tournament Name`,
     eventName: `Event Name`,
     date: new Date(1999, 10, 7),
-    location: `Somewhere, World`,
+    location: { city: "Somewhere", state: "World", country: "Japan" },
     entrants: 69,
   },
   fetching: false,
