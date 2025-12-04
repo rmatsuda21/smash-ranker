@@ -5,6 +5,21 @@ import { useFetchTop8 } from "@/hooks/top8/useFetchTop8";
 import { usePlayerStore } from "@/store/playerStore";
 import { useTournamentStore } from "@/store/tournamentStore";
 
+const urlToSlug = (url: string) => {
+  const match = url.match(/tournament\/([^/]+)\/event\/([^/]+)/);
+  if (match) {
+    return `tournament/${match[1]}/event/${match[2]}`;
+  }
+  return (
+    // "tournament/genesis-9-1/event/ultimate-singles"
+    // "tournament/sp12-umeburasp12/event/singles"
+    "tournament/no-caps-115-msc-1400/event/ultimate-singles"
+    // "tournament/smash-sans-fronti-res-271/event/smash-ultimate-singles"
+    // "tournament/the-buddbuds-local-15/event/ultimate-singles"
+    // "tournament/coffee-break-11-0/event/ultimate-singles"
+  );
+};
+
 // TODO: Eventually make a tournament searcher here
 export const TournamentConfig = () => {
   const [url, setUrl] = useState("");
@@ -18,13 +33,7 @@ export const TournamentConfig = () => {
     playerDispatch({ type: "CLEAR_SELECTED_PLAYER" });
     tournamentDispatch({ type: "CLEAR_SELECTED_ELEMENT" });
 
-    fetchTop8(
-      // "tournament/genesis-9-1/event/ultimate-singles"
-      "tournament/sp12-umeburasp12/event/singles"
-      // "tournament/smash-sans-fronti-res-271/event/smash-ultimate-singles"
-      // "tournament/the-buddbuds-local-15/event/ultimate-singles"
-      // "tournament/coffee-break-11-0/event/ultimate-singles"
-    );
+    fetchTop8(urlToSlug(url));
   };
 
   return (

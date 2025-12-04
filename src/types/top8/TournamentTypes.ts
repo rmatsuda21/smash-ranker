@@ -4,7 +4,11 @@ export type TournamentInfo = {
   tournamentName: string;
   eventName: string;
   date: Date;
-  location: string;
+  location: {
+    city?: string;
+    state?: string;
+    country?: string;
+  };
   entrants: number;
 };
 

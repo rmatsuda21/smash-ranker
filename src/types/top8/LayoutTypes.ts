@@ -37,6 +37,10 @@ export interface TextElementConfig
   fontStyle?: string;
   fill?: string;
   align?: "left" | "center" | "right";
+  shadowColor?: string;
+  shadowBlur?: number;
+  shadowOffset?: { x: number; y: number };
+  shadowOpacity?: number;
 }
 
 export interface SmartTextElementConfig

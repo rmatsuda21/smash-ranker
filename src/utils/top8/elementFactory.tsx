@@ -45,6 +45,10 @@ const createTextElement: ElementCreator<TextElementConfig> = ({
       text={text}
       align={element.align ?? "left"}
       width={element.size?.width}
+      shadowColor={element.shadowColor}
+      shadowBlur={element.shadowBlur}
+      shadowOffset={element.shadowOffset}
+      shadowOpacity={element.shadowOpacity}
     />
   );
 };
@@ -137,6 +141,10 @@ const createCharacterImageElement: ElementCreator<
       height={element.size?.height ?? 100}
       imageSrc={imageSrc}
       hasShadow
+      shadowColor={element.shadowColor}
+      shadowOffset={{ x: 15, y: 15 }}
+      shadowBlur={element.shadowBlur}
+      shadowOpacity={element.shadowOpacity}
     />
   );
 };
