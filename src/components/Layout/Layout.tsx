@@ -5,6 +5,7 @@ import { IoIosMenu } from "react-icons/io";
 import cn from "classnames";
 
 import styles from "./Layout.module.scss";
+import { MdClose } from "react-icons/md";
 
 const NAV_ITEMS = [
   {
@@ -22,6 +23,10 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const drawerRef = useRef<HTMLDivElement>(null);
+
+  const closeDrawer = () => {
+    setIsDrawerOpen(false);
+  };
 
   const onMenuClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -50,17 +55,19 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
     >
       <nav className={styles.nav}>
         <img src="/favicon.png" alt="Smash Ranker" />
-        <IoIosMenu onClick={onMenuClick} />
+        <IoIosMenu className={styles.icon} onClick={onMenuClick} />
       </nav>
       <div
         ref={drawerRef}
         className={cn(styles.drawer, { [styles.open]: isDrawerOpen })}
       >
+        <MdClose className={styles.icon} onClick={closeDrawer} />
         {NAV_ITEMS.map((item) => (
           <Link
             key={item.href}
             className={cn({ [styles.active]: location === item.href })}
             href={item.href}
+            onClick={closeDrawer}
           >
             {item.label}
           </Link>
