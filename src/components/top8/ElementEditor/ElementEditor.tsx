@@ -5,7 +5,11 @@ import { useCanvasStore } from "@/store/canvasStore";
 import { ConfigEditor } from "@/components/top8/ElementEditor/ConfigEditor";
 import { useTournamentStore } from "@/store/tournamentStore";
 
-export const ElementEditor = () => {
+type Props = {
+  className?: string;
+};
+
+export const ElementEditor = ({ className }: Props) => {
   const selectedElementIndex = useTournamentStore(
     (state) => state.selectedElementIndex
   );
@@ -35,7 +39,7 @@ export const ElementEditor = () => {
   };
 
   return (
-    <div>
+    <div className={className}>
       <Button variant="outline" size="2" onClick={addElement}>
         <LuPlus />
         Add Element
