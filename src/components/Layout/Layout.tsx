@@ -21,7 +21,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
           </TabNav.Link>
           <TabNav.Link asChild active={location === "/ranker"}>
             <Link href="/ranker">Ranker</Link>
-          </TabNav.Link>{" "}
+          </TabNav.Link>
         </TabNav.Root>
       </div>
       <main>{children}</main>
