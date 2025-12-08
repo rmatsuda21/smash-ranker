@@ -1,7 +1,14 @@
+@import url("https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap");
+
 :root {
   --nav-height: 60px;
 }
 
 body {
   margin: 0;
+}
+
+.radix-themes {
+  --default-font-family: "Lexend", sans-serif;
+  --default-font-optical-sizing: auto;
 }
