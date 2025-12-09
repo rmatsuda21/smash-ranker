@@ -9,6 +9,7 @@ const getPlaceholderMap = (
     [LayoutPlaceholder.PLAYER_PLACEMENT]: player?.placement?.toString(),
     [LayoutPlaceholder.PLAYER_NAME]: player?.name,
     [LayoutPlaceholder.PLAYER_TAG]: player?.gamerTag,
+    [LayoutPlaceholder.PLAYER_PREFIX]: player?.prefix,
     [LayoutPlaceholder.TOURNAMENT_NAME]: tournament?.tournamentName,
     [LayoutPlaceholder.EVENT_NAME]: tournament?.eventName,
     [LayoutPlaceholder.TOURNAMENT_DATE]: tournament?.date?.toLocaleDateString(),

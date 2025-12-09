@@ -48,6 +48,7 @@ export const TournamentConfig = ({ className }: Props) => {
         onChange={(e) => {
           setUrl(e.currentTarget.value);
         }}
+        placeholder="https://smash.gg/tournament/no-caps-115-msc-1400/event/ultimate-singles"
       ></TextField.Root>
       <Button loading={isFetching} onClick={handleLoadClick}>
         Load

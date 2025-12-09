@@ -46,6 +46,11 @@ const TABS: {
   Component: React.ComponentType<{ className?: string }>;
 }[] = [
   {
+    label: "Tournament Config",
+    value: "tournament-config",
+    Component: TournamentConfig,
+  },
+  {
     label: "Player Form",
     value: "player-form",
     Component: PlayerForm,
@@ -56,11 +61,6 @@ const TABS: {
     Component: ElementEditor,
   },
   {
-    label: "Tournament Config",
-    value: "tournament-config",
-    Component: TournamentConfig,
-  },
-  {
     label: "Canvas Config",
     value: "canvas-config",
     Component: CanvasConfig,
@@ -68,7 +68,7 @@ const TABS: {
 ];
 
 export const SidePanel = ({ className }: Props) => {
-  const [activeTab, setActiveTab] = useState<TabValue>("player-form");
+  const [activeTab, setActiveTab] = useState<TabValue>("tournament-config");
 
   const handleTabChange = (tab: TabValue) => {
     setActiveTab(tab);
