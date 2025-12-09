@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
-import { TextField, Slider } from "@radix-ui/themes";
+import { Slider } from "@radix-ui/themes";
 import debounce from "lodash/debounce";
 
 import { TextElementConfig } from "@/types/top8/LayoutTypes";
 import { useCanvasStore } from "@/store/canvasStore";
+import { Input } from "@/components/shared/Input/Input";
 
 type Props = {
   element: TextElementConfig;
@@ -39,8 +40,8 @@ export const TextConfigEditor = ({ element, index }: Props) => {
 
   return (
     <div>
-      <label htmlFor="text">Text</label>
-      <TextField.Root
+      <Input
+        label="Text"
         type="text"
         id="text"
         value={elementConfig.text}
@@ -51,8 +52,8 @@ export const TextConfigEditor = ({ element, index }: Props) => {
           });
         }}
       />
-      <label htmlFor="fontSize">Font Size</label>
-      <TextField.Root
+      <Input
+        label="Font Size"
         type="number"
         id="fontSize"
         value={elementConfig.fontSize}
@@ -90,8 +91,8 @@ export const TextConfigEditor = ({ element, index }: Props) => {
           });
         }}
       />
-      <label htmlFor="align">Align</label>
-      <TextField.Root
+      <Input
+        label="Align"
         type="text"
         id="align"
         value={elementConfig.align}
@@ -102,8 +103,8 @@ export const TextConfigEditor = ({ element, index }: Props) => {
           });
         }}
       />
-      <label htmlFor="verticalAlign">Vertical Align</label>
-      <TextField.Root
+      <Input
+        label="Vertical Align"
         type="text"
         id="verticalAlign"
         value={elementConfig.verticalAlign}

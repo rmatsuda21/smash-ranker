@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { Button, TextField } from "@radix-ui/themes";
+import { Button } from "@radix-ui/themes";
 
 import { useFetchTop8 } from "@/hooks/top8/useFetchTop8";
 import { usePlayerStore } from "@/store/playerStore";
 import { useTournamentStore } from "@/store/tournamentStore";
 import { TournamentEditor } from "@/components/top8/TournamentConfig/TournamentEditor/TournamentEditor";
+import { Input } from "@/components/shared/Input/Input";
 
 const urlToSlug = (url: string) => {
   const match = url.match(/tournament\/([^/]+)\/event\/([^/]+)/);
@@ -46,13 +47,15 @@ export const TournamentConfig = ({ className }: Props) => {
 
   return (
     <div className={className}>
-      <TextField.Root
+      <Input
+        label="URL"
+        id="url"
         type="text"
         value={url}
         onChange={(e) => {
           setUrl(e.currentTarget.value);
         }}
-      ></TextField.Root>
+      />
       <Button loading={isFetching} onClick={handleLoadClick}>
         Load
       </Button>

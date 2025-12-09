@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { TextField } from "@radix-ui/themes";
 import debounce from "lodash/debounce";
 
 import { usePlayerStore } from "@/store/playerStore";
 import { PlayerInfo } from "@/types/top8/PlayerTypes";
 import { CharacterEditor } from "@/components/top8/CharacterEditor/CharacterEditor";
 import { FileUploader } from "@/components/top8/PlayerForm/FileUploader/FileUploader";
+import { Input } from "@/components/shared/Input/Input";
 
 type Props = {
   className?: string;
@@ -100,14 +100,16 @@ export const PlayerForm = ({ className }: Props) => {
 
   return (
     <div className={className}>
-      <TextField.Root
+      <Input
+        id="prefix"
         type="text"
         value={tempPlayer?.prefix ?? ""}
         onChange={handlePrefixChange}
         placeholder="Prefix"
         disabled={!selectedPlayer}
       />
-      <TextField.Root
+      <Input
+        id="gamerTag"
         type="text"
         value={tempPlayer?.gamerTag ?? ""}
         onChange={handleGamerTagChange}
