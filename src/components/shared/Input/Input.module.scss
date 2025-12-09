@@ -1,0 +1,38 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+
+  label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--accent-9);
+  }
+
+  input {
+    color: white;
+    padding: 3px 6px;
+    border-radius: 5px;
+    border: 1px solid var(--gray-6);
+    background-color: var(--gray-1);
+
+    &:focus {
+      outline: 1px solid var(--accent-9);
+      border-color: var(--accent-9);
+    }
+  }
+
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    cursor: pointer;
+  }
+
+  input:disabled {
+    cursor: not-allowed;
+  }
+
+  &:has(input:disabled) {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}

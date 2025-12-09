@@ -1,10 +1,11 @@
-import { Button, TextField } from "@radix-ui/themes";
+import { Button } from "@radix-ui/themes";
 import { useState } from "react";
 
 import { FontSelect } from "@/components/top8/CanvasConfig/FontSelect/FontSelect";
 import { useCanvasStore } from "@/store/canvasStore";
 import { usePlayerStore } from "@/store/playerStore";
 import { useTournamentStore } from "@/store/tournamentStore";
+import { Input } from "@/components/shared/Input/Input";
 
 type Props = {
   className?: string;
@@ -18,8 +19,9 @@ export const CanvasConfig = ({ className }: Props) => {
 
   return (
     <div className={className}>
-      <label htmlFor="name">Filename:</label>
-      <TextField.Root
+      <Input
+        label="Filename"
+        id="filename"
         type="text"
         name="filename"
         value={filename}
