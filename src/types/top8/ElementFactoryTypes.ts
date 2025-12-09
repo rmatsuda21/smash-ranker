@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 
-import { ElementConfig, ElementType } from "@/types/top8/LayoutTypes";
+import { ElementConfig } from "@/types/top8/LayoutTypes";
 import { PlayerInfo } from "@/types/top8/PlayerTypes";
 import { TournamentInfo } from "@/types/top8/TournamentTypes";
 
@@ -9,6 +9,9 @@ export interface ElementFactoryContext {
   player?: PlayerInfo;
   tournament?: TournamentInfo;
   containerSize?: { width: number; height: number };
+  options?: {
+    editable?: boolean;
+  };
 }
 
 export type ElementCreator<T extends ElementConfig = ElementConfig> = ({
@@ -20,9 +23,3 @@ export type ElementCreator<T extends ElementConfig = ElementConfig> = ({
   index: number;
   context: ElementFactoryContext;
 }) => ReactNode;
-
-export type ElementCreatorMap = {
-  [K in ElementType]:
-    | ElementCreator<Extract<ElementConfig, { type: K }>>
-    | undefined;
-};

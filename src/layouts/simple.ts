@@ -180,6 +180,7 @@ export const simpleLayout: LayoutConfig = {
   background: {
     elements: [
       {
+        id: "bg",
         type: "svg",
         src: "/assets/top8/theme/mini/bg.svg",
         position: { x: 0, y: 0 },
@@ -188,6 +189,7 @@ export const simpleLayout: LayoutConfig = {
         fillColorSecondary: "rgb(235, 171, 64)",
       },
       {
+        id: "smashBall",
         type: "svg",
         src: "/assets/top8/theme/mini/smash_ball.svg",
         position: {
@@ -202,6 +204,7 @@ export const simpleLayout: LayoutConfig = {
   tournament: {
     elements: [
       {
+        id: "topText",
         type: "text",
         position: { x: PADDING, y: PADDING },
         text: `${LayoutPlaceholder.TOURNAMENT_NAME} - ${LayoutPlaceholder.EVENT_NAME}`,
@@ -211,6 +214,7 @@ export const simpleLayout: LayoutConfig = {
         name: "Top Text",
       },
       {
+        id: "bottomText",
         type: "text",
         position: { x: PADDING, y: CANVAS_HEIGHT - PADDING - 40 },
         text: `${LayoutPlaceholder.TOURNAMENT_DATE} - ${LayoutPlaceholder.TOURNAMENT_LOCATION} - ${LayoutPlaceholder.ENTRANTS} Entrants`,
