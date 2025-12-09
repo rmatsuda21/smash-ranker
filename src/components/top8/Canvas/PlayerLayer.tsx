@@ -9,49 +9,44 @@ import { usePlayerStore } from "@/store/playerStore";
 import { useCanvasStore } from "@/store/canvasStore";
 import { PlayerLayoutConfig } from "@/types/top8/LayoutTypes";
 
-type Props = {
-  ref: React.RefObject<KonvaLayer | null>;
-  onPlayerDragStart: (e: KonvaEventObject<MouseEvent>) => void;
-  onPlayerDragEnd: (e: KonvaEventObject<MouseEvent>) => void;
-};
-
-const PlayerLayerComponent = ({
-  ref,
-  onPlayerDragStart,
-  onPlayerDragEnd,
-}: Props) => {
+const PlayerLayerComponent = () => {
   const trRef = useRef<KonvaTransformer>(null);
+  const mainLayerRef = useRef<KonvaLayer>(null);
+  const dragLayerRef = useRef<KonvaLayer>(null);
 
   const players = usePlayerStore((state) => state.players);
-  const layout = useCanvasStore((state) => state.layout);
+  const playerLayouts = useCanvasStore((state) => state.layout.players);
+  const basePlayer = useCanvasStore((state) => state.layout.basePlayer);
   const dispatch = useCanvasStore((state) => state.dispatch);
   const selectedPlayerIndex = usePlayerStore(
     (state) => state.selectedPlayerIndex
   );
 
   const playerConfigs: PlayerLayoutConfig[] = useMemo(() => {
-    return layout.players.map((player) => ({
-      ...layout.basePlayer,
+    return playerLayouts.map((player) => ({
+      ...basePlayer,
       ...player,
     }));
-  }, [layout.basePlayer, layout.players]);
+  }, [basePlayer, playerLayouts]);
 
   useEffect(() => {
     if (selectedPlayerIndex !== -1 && trRef.current) {
-      const node = ref.current?.findOne(`#${players[selectedPlayerIndex].id}`);
+      const node = mainLayerRef.current?.findOne(
+        `#${players[selectedPlayerIndex].id}`
+      );
       if (node) {
         trRef.current.nodes([node]);
       }
     } else if (trRef.current) {
       trRef.current.nodes([]);
     }
-  }, [selectedPlayerIndex, ref, players]);
+  }, [selectedPlayerIndex, mainLayerRef, players]);
 
   const handleTransform = useCallback(
     (e: KonvaEventObject<MouseEvent>) => {
       const config = {
-        ...layout.basePlayer,
-        ...layout.players[selectedPlayerIndex],
+        ...basePlayer,
+        ...playerLayouts[selectedPlayerIndex],
       };
       dispatch({
         type: "UPDATE_PLAYER_CONFIG",
@@ -65,32 +60,52 @@ const PlayerLayerComponent = ({
         },
       });
     },
-    [selectedPlayerIndex, layout.basePlayer, layout.players, dispatch]
+    [selectedPlayerIndex, basePlayer, playerLayouts, dispatch]
   );
 
-  if (!layout) return <Layer ref={ref} />;
+  const onPlayerDragStart = useCallback((e: KonvaEventObject<MouseEvent>) => {
+    const player = e.target;
+    if (!player) return;
+
+    trRef.current?.moveTo(dragLayerRef.current);
+    player.moveTo(dragLayerRef.current);
+  }, []);
+
+  const onPlayerDragEnd = useCallback((e: KonvaEventObject<MouseEvent>) => {
+    const player = e.target;
+    if (!player) return;
+
+    trRef.current?.moveTo(mainLayerRef.current);
+    player.moveTo(mainLayerRef.current);
+  }, []);
+
+  if (!playerLayouts) return <Layer ref={mainLayerRef} />;
 
   return (
-    <Layer ref={ref}>
-      {players.map((player, index) => {
-        return (
-          <Player
-            key={player.id}
-            config={playerConfigs[index]}
-            player={player}
-            index={index}
-            onDragStart={onPlayerDragStart}
-            onDragEnd={onPlayerDragEnd}
-            isSelected={selectedPlayerIndex === index}
-          />
-        );
-      })}
-      <Transformer
-        name="player-transformer"
-        ref={trRef}
-        onTransform={handleTransform}
-      />
-    </Layer>
+    <>
+      <Layer ref={mainLayerRef}>
+        {players.map((player, index) => {
+          return (
+            <Player
+              key={player.id}
+              config={playerConfigs[index]}
+              player={player}
+              index={index}
+              onDragStart={onPlayerDragStart}
+              onDragEnd={onPlayerDragEnd}
+              isSelected={selectedPlayerIndex === index}
+            />
+          );
+        })}
+        <Transformer
+          name="player-transformer"
+          ref={trRef}
+          onTransform={handleTransform}
+        />
+      </Layer>
+
+      <Layer ref={dragLayerRef}></Layer>
+    </>
   );
 };
 

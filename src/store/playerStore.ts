@@ -14,8 +14,6 @@ type PlayerAction =
   | { type: "UPDATE_PLAYER"; payload: { index: number; player: PlayerInfo } }
   | { type: "SET_SELECTED_PLAYER_INDEX"; payload: number }
   | { type: "CLEAR_SELECTED_PLAYER" }
-  | { type: "SET_FETCHING"; payload: boolean }
-  | { type: "SET_ERROR"; payload: string }
   | { type: "FETCH_PLAYERS" }
   | { type: "FETCH_PLAYERS_SUCCESS"; payload: PlayerInfo[] }
   | { type: "FETCH_PLAYERS_FAIL"; payload: string }
@@ -29,7 +27,6 @@ const playerReducer = (
     case "SET_PLAYERS":
       return { players: action.payload };
     case "UPDATE_PLAYER":
-      console.log("UPDATE_PLAYER", action.payload);
       return {
         players: state.players.map((p, i) =>
           i === action.payload.index ? action.payload.player : p
@@ -39,10 +36,6 @@ const playerReducer = (
       return { selectedPlayerIndex: action.payload };
     case "CLEAR_SELECTED_PLAYER":
       return { selectedPlayerIndex: -1 };
-    case "SET_FETCHING":
-      return { fetching: action.payload };
-    case "SET_ERROR":
-      return { error: action.payload };
     case "FETCH_PLAYERS":
       return { fetching: true, error: "" };
     case "FETCH_PLAYERS_SUCCESS":

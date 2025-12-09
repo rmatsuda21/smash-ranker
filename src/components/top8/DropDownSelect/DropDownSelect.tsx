@@ -259,8 +259,7 @@ export const DropDownSelect = <T,>({
           [styles.open]: isOpen,
           [styles.showAbove]: showAbove,
         })}
-        aria-hidden={!isOpen}
-        aria-expanded={isOpen}
+        inert={!isOpen ? true : undefined}
         role="listbox"
         aria-label="Select an option"
       >

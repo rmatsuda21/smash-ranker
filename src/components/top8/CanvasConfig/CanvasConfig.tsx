@@ -6,14 +6,18 @@ import { useCanvasStore } from "@/store/canvasStore";
 import { usePlayerStore } from "@/store/playerStore";
 import { useTournamentStore } from "@/store/tournamentStore";
 
-export const CanvasConfig = () => {
+type Props = {
+  className?: string;
+};
+
+export const CanvasConfig = ({ className }: Props) => {
   const [filename, setFilename] = useState("");
   const stageRef = useCanvasStore((state) => state.stageRef);
   const dispatch = usePlayerStore((state) => state.dispatch);
   const tournamentDispatch = useTournamentStore((state) => state.dispatch);
 
   return (
-    <div>
+    <div className={className}>
       <label htmlFor="name">Filename:</label>
       <TextField.Root
         type="text"

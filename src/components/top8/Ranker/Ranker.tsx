@@ -1,22 +1,16 @@
 import { useEffect, lazy, Suspense } from "react";
 
-import { TournamentConfig } from "@/components/top8/TournamentConfig/TournamentConfig";
 import { preloadCharacterImages } from "@/utils/top8/preloadCharacterImages";
 import { usePlayerStore } from "@/store/playerStore";
 import { useCanvasStore } from "@/store/canvasStore";
 import { SidePanel } from "@/components/top8/SidePanel/SidePanel";
 
 import styles from "./Ranker.module.scss";
+import { Skeleton } from "@radix-ui/themes";
 
 const Canvas = lazy(() =>
   import("@/components/top8/Canvas/Canvas").then((module) => ({
     default: module.Canvas,
-  }))
-);
-
-const CanvasConfig = lazy(() =>
-  import("@/components/top8/CanvasConfig/CanvasConfig").then((module) => ({
-    default: module.CanvasConfig,
   }))
 );
 
@@ -47,39 +41,28 @@ export const Ranker = () => {
 
   return (
     <div className={styles.root}>
-      <div className={styles.content}>
-        <h1>Ranker</h1>
+      <h1>Ranker</h1>
 
-        <div className={styles.body}>
-          <div className={styles.playerConfig}>
-            <SidePanel />
-          </div>
-          <Suspense
-            fallback={
-              <div
-                style={{
-                  width: `calc(${layout?.canvas.size.width}px * ${layout?.canvas.displayScale})`,
-                  height: `calc(${layout?.canvas.size.height}px * ${layout?.canvas.displayScale})`,
-                  maxWidth: `calc(${layout?.canvas.size.width}px * ${layout?.canvas.displayScale})`,
-                  maxHeight: `calc(${layout?.canvas.size.height}px * ${layout?.canvas.displayScale})`,
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                Loading Canvas...
-              </div>
-            }
-          >
-            <Canvas />
-          </Suspense>
-        </div>
+      <div className={styles.body}>
+        <SidePanel className={styles.sidePanel} />
 
-        <Suspense fallback={<div>Loading Config...</div>}>
-          <CanvasConfig />
+        <Suspense
+          fallback={
+            <Skeleton
+              style={{
+                width: `calc(${layout?.canvas.size.width}px * ${layout?.canvas.displayScale})`,
+                height: `calc(${layout?.canvas.size.height}px * ${layout?.canvas.displayScale})`,
+                maxWidth: `calc(${layout?.canvas.size.width}px * ${layout?.canvas.displayScale})`,
+                maxHeight: `calc(${layout?.canvas.size.height}px * ${layout?.canvas.displayScale})`,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            />
+          }
+        >
+          <Canvas />
         </Suspense>
-
-        <TournamentConfig />
       </div>
     </div>
   );

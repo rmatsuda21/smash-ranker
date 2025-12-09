@@ -17,7 +17,6 @@ import {
 import {
   ElementFactoryContext,
   ElementCreator,
-  ElementCreatorMap,
 } from "@/types/top8/ElementFactoryTypes";
 import { CustomImage } from "@/components/top8/Canvas/CustomImage";
 import { SmartText } from "@/components/top8/SmartText/SmartText";
@@ -247,7 +246,7 @@ const createSvgElement: ElementCreator<SvgElementConfig> = ({
   );
 };
 
-const elementCreators: ElementCreatorMap = {
+const elementCreators = {
   text: createTextElement,
   smartText: createSmartTextElement,
   image: createImageElement,
@@ -265,15 +264,15 @@ export const createKonvaElements = (
 ): ReactNode[] => {
   return elements
     .map((element, index) => {
+      if (!(element.type in elementCreators)) {
+        return null;
+      }
+
       const creator = elementCreators[element.type] as ElementCreator<
         typeof element
       >;
 
-      const el = creator?.({ element, index, context });
-      if (!el) {
-        return null;
-      }
-
+      const el = creator({ element, index, context });
       const size = context.containerSize ?? { width: 100, height: 100 };
       const clipFunc = (ctx: SceneContext) => {
         ctx.beginPath();
@@ -283,7 +282,8 @@ export const createKonvaElements = (
 
       return (
         <Group
-          draggable
+          id={element.id}
+          draggable={context.options?.editable ?? false}
           key={`group-${index}`}
           clipFunc={element.clip ? clipFunc : undefined}
         >

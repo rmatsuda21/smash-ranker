@@ -20,8 +20,12 @@ const urlToSlug = (url: string) => {
   );
 };
 
+type Props = {
+  className?: string;
+};
+
 // TODO: Eventually make a tournament searcher here
-export const TournamentConfig = () => {
+export const TournamentConfig = ({ className }: Props) => {
   const [url, setUrl] = useState("");
 
   const { fetchTop8 } = useFetchTop8();
@@ -37,7 +41,7 @@ export const TournamentConfig = () => {
   };
 
   return (
-    <div>
+    <div className={className}>
       <TextField.Root
         type="text"
         value={url}

@@ -18,6 +18,7 @@ export interface CanvasConfig {
 }
 
 interface BaseElementConfig {
+  id?: string;
   position: { x: number; y: number };
   size?: { width?: number; height?: number };
   scale?: { x: number; y: number };
@@ -25,6 +26,7 @@ interface BaseElementConfig {
   offset?: { x: number; y: number };
   clip?: boolean;
   name?: string;
+  disabled?: boolean;
 }
 
 export interface TextElementConfig
