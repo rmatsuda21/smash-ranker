@@ -4,6 +4,7 @@ import { Button, TextField } from "@radix-ui/themes";
 import { useFetchTop8 } from "@/hooks/top8/useFetchTop8";
 import { usePlayerStore } from "@/store/playerStore";
 import { useTournamentStore } from "@/store/tournamentStore";
+import { TournamentEditor } from "@/components/top8/TournamentConfig/TournamentEditor/TournamentEditor";
 
 const urlToSlug = (url: string) => {
   const match = url.match(/tournament\/([^/]+)\/event\/([^/]+)/);
@@ -26,12 +27,15 @@ type Props = {
 
 // TODO: Eventually make a tournament searcher here
 export const TournamentConfig = ({ className }: Props) => {
-  const [url, setUrl] = useState("");
+  const [url, setUrl] = useState(
+    "https://smash.gg/tournament/no-caps-115-msc-1400/event/ultimate-singles"
+  );
 
-  const { fetchTop8 } = useFetchTop8();
   const isFetching = usePlayerStore((state) => state.fetching);
   const playerDispatch = usePlayerStore((state) => state.dispatch);
   const tournamentDispatch = useTournamentStore((state) => state.dispatch);
+
+  const { fetchTop8 } = useFetchTop8();
 
   const handleLoadClick = () => {
     playerDispatch({ type: "CLEAR_SELECTED_PLAYER" });
@@ -48,11 +52,11 @@ export const TournamentConfig = ({ className }: Props) => {
         onChange={(e) => {
           setUrl(e.currentTarget.value);
         }}
-        placeholder="https://smash.gg/tournament/no-caps-115-msc-1400/event/ultimate-singles"
       ></TextField.Root>
       <Button loading={isFetching} onClick={handleLoadClick}>
         Load
       </Button>
+      <TournamentEditor />
     </div>
   );
 };
