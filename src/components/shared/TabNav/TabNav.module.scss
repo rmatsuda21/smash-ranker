@@ -1,0 +1,64 @@
+.wrapper {
+  --border-width: 2px;
+
+  display: flex;
+  flex-direction: row;
+
+  border-bottom: var(--border-width) solid var(--gray-6);
+
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    flex: 1;
+    position: relative;
+    padding: 5px 10px;
+
+    border: none;
+    background-color: transparent;
+    color: var(--accent-9);
+    font-size: 12px;
+    font-weight: 900;
+    cursor: pointer;
+
+    > div {
+      width: min-content;
+      height: min-content;
+    }
+
+    // transition: background-color 0.1s ease-in-out, color 0.3s ease-in-out;
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      margin-bottom: calc(-1 * var(--border-width));
+      width: 100%;
+      height: var(--border-width);
+      background-color: transparent;
+      transition: background-color 0.1s ease-in-out;
+    }
+
+    &:hover {
+      div {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+
+      &::after {
+        background-color: var(--gray-3);
+      }
+    }
+
+    &.active {
+      // background-color: var(--accent-9);
+      // color: white;
+
+      &::after {
+        background-color: var(--accent-9);
+      }
+    }
+  }
+}

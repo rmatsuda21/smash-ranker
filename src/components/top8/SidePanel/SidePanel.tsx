@@ -1,11 +1,13 @@
 import { Suspense, lazy } from "react";
-import { TabNav } from "@radix-ui/themes";
 import cn from "classnames";
 
 import { EditorTab, EditorTabs } from "@/types/top8/EditorTypes";
 
 import styles from "./SidePanel.module.scss";
 import { useEditorStore } from "@/store/editorStore";
+import { useCanvasStore } from "@/store/canvasStore";
+import { useTournamentStore } from "@/store/tournamentStore";
+import { TabNav } from "@/components/shared/TabNav/TabNav";
 
 const PlayerForm = lazy(() =>
   import("@/components/top8/PlayerForm/PlayerForm").then((module) => ({
@@ -40,59 +42,68 @@ type Props = {
 const TABS: {
   label: string;
   value: EditorTab;
-  Component: React.ComponentType<{ className?: string }>;
 }[] = [
   {
     label: "Tournament Config",
     value: EditorTabs.TOURNAMENT_CONFIG,
-    Component: TournamentConfig,
   },
   {
     label: "Player Form",
     value: EditorTabs.PLAYER_FORM,
-    Component: PlayerForm,
   },
   {
     label: "Element Editor",
     value: EditorTabs.ELEMENT_EDITOR,
-    Component: ElementEditor,
   },
   {
     label: "Canvas Config",
     value: EditorTabs.CANVAS_CONFIG,
-    Component: CanvasConfig,
   },
 ];
 
 export const SidePanel = ({ className }: Props) => {
   const activeTab = useEditorStore((state) => state.activeTab);
   const dispatch = useEditorStore((state) => state.dispatch);
-
+  const tournamentLayout = useCanvasStore((state) => state.layout.tournament);
+  const selectedElementIndex = useTournamentStore(
+    (state) => state.selectedElementIndex
+  );
   const handleTabChange = (tab: EditorTab) => {
     dispatch({ type: "SET_ACTIVE_TAB", payload: tab });
   };
 
   return (
     <div className={cn(styles.wrapper, className)}>
-      <TabNav.Root size="1">
-        {TABS.map((tab) => (
-          <TabNav.Link
-            key={tab.value}
-            active={activeTab === tab.value}
-            onClick={() => handleTabChange(tab.value)}
-          >
-            {tab.label}
-          </TabNav.Link>
-        ))}
-      </TabNav.Root>
+      <TabNav
+        className={styles.tabNav}
+        tabs={TABS}
+        activeTab={activeTab}
+        onTabChange={handleTabChange}
+      />
 
       <Suspense fallback={<div>Loading Configs...</div>}>
-        {TABS.map(({ Component, value }) => (
-          <Component
-            key={value}
-            className={cn({ [styles.hidden]: activeTab !== value })}
-          />
-        ))}
+        <TournamentConfig
+          className={cn({
+            [styles.hidden]: activeTab !== EditorTabs.TOURNAMENT_CONFIG,
+          })}
+        />
+        <PlayerForm
+          className={cn({
+            [styles.hidden]: activeTab !== EditorTabs.PLAYER_FORM,
+          })}
+        />
+        <ElementEditor
+          elements={tournamentLayout?.elements ?? []}
+          selectedElementIndex={selectedElementIndex}
+          className={cn({
+            [styles.hidden]: activeTab !== EditorTabs.ELEMENT_EDITOR,
+          })}
+        />
+        <CanvasConfig
+          className={cn({
+            [styles.hidden]: activeTab !== EditorTabs.CANVAS_CONFIG,
+          })}
+        />
       </Suspense>
     </div>
   );
