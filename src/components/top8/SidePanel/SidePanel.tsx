@@ -1,8 +1,11 @@
-import { Suspense, lazy, useState } from "react";
+import { Suspense, lazy } from "react";
 import { TabNav } from "@radix-ui/themes";
 import cn from "classnames";
 
+import { EditorTab, EditorTabs } from "@/types/top8/EditorTypes";
+
 import styles from "./SidePanel.module.scss";
+import { useEditorStore } from "@/store/editorStore";
 
 const PlayerForm = lazy(() =>
   import("@/components/top8/PlayerForm/PlayerForm").then((module) => ({
@@ -34,44 +37,39 @@ type Props = {
   className?: string;
 };
 
-type TabValue =
-  | "player-form"
-  | "element-editor"
-  | "canvas-config"
-  | "tournament-config";
-
 const TABS: {
   label: string;
-  value: TabValue;
+  value: EditorTab;
   Component: React.ComponentType<{ className?: string }>;
 }[] = [
   {
     label: "Tournament Config",
-    value: "tournament-config",
+    value: EditorTabs.TOURNAMENT_CONFIG,
     Component: TournamentConfig,
   },
   {
     label: "Player Form",
-    value: "player-form",
+    value: EditorTabs.PLAYER_FORM,
     Component: PlayerForm,
   },
   {
     label: "Element Editor",
-    value: "element-editor",
+    value: EditorTabs.ELEMENT_EDITOR,
     Component: ElementEditor,
   },
   {
     label: "Canvas Config",
-    value: "canvas-config",
+    value: EditorTabs.CANVAS_CONFIG,
     Component: CanvasConfig,
   },
 ];
 
 export const SidePanel = ({ className }: Props) => {
-  const [activeTab, setActiveTab] = useState<TabValue>("tournament-config");
+  const activeTab = useEditorStore((state) => state.activeTab);
+  const dispatch = useEditorStore((state) => state.dispatch);
 
-  const handleTabChange = (tab: TabValue) => {
-    setActiveTab(tab);
+  const handleTabChange = (tab: EditorTab) => {
+    dispatch({ type: "SET_ACTIVE_TAB", payload: tab });
   };
 
   return (

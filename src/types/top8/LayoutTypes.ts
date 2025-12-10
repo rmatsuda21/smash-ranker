@@ -93,7 +93,7 @@ export interface CharacterImageElementConfig
   extends BaseElementConfig,
     Partial<ComponentProps<typeof Image>> {
   type: "characterImage";
-  customSrc?: string;
+  usePlayerAvatar?: boolean;
 }
 
 export interface AltCharacterImageElementConfig extends BaseElementConfig {
