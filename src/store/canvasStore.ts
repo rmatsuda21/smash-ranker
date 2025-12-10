@@ -15,6 +15,7 @@ interface CanvasState {
   selectedFont: string;
   fetchingFont: boolean;
   stageRef: Stage | null;
+  editable: boolean;
 }
 
 type CanvasAction =
@@ -32,8 +33,9 @@ type CanvasAction =
     }
   | {
       type: "UPDATE_PLAYER_CONFIG";
-      payload: { index: number; config: PlayerLayoutConfig };
-    };
+      payload: { index: number; config: Partial<PlayerLayoutConfig> };
+    }
+  | { type: "SET_EDITABLE"; payload: boolean };
 
 const initialState: CanvasState = {
   fonts: {},
@@ -41,6 +43,7 @@ const initialState: CanvasState = {
   fetchingFont: false,
   layout: simpleLayout,
   stageRef: null,
+  editable: false,
 };
 
 const canvasReducer = (
@@ -100,6 +103,7 @@ const canvasReducer = (
         },
       };
     case "UPDATE_PLAYER_CONFIG":
+      console.log("UPDATE_PLAYER_CONFIG", action.payload);
       return {
         layout: {
           ...state.layout,
@@ -108,6 +112,8 @@ const canvasReducer = (
           ),
         },
       };
+    case "SET_EDITABLE":
+      return { editable: action.payload };
     default:
       return state;
   }

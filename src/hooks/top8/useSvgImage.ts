@@ -3,13 +3,11 @@ import { useState, useEffect } from "react";
 type Status = "loading" | "loaded" | "failed";
 export const useSvgImage = ({
   svgUrl,
-  fillColorMain,
-  fillColorSecondary,
+  palette,
   crossOrigin,
 }: {
   svgUrl: string;
-  fillColorMain?: string;
-  fillColorSecondary?: string;
+  palette: Record<string, string>;
   crossOrigin?: string;
 }): [HTMLImageElement | undefined, Status] => {
   const [image, setImage] = useState<HTMLImageElement>();
@@ -38,16 +36,18 @@ export const useSvgImage = ({
         const parser = new DOMParser();
         const doc = parser.parseFromString(svgText, "image/svg+xml");
 
-        if (fillColorMain) {
-          const colorElements = doc.querySelectorAll(".color");
-          colorElements.forEach((el) => {
-            if (el.id === "outer") {
-              el.setAttribute("fill", fillColorMain);
-            } else if (el.id === "inner") {
-              el.setAttribute("fill", fillColorSecondary ?? fillColorMain);
-            } else if (el.id !== "center") {
-              el.setAttribute("fill", fillColorMain);
-            }
+        const svgEl = doc.querySelector("svg");
+
+        if (!svgEl) {
+          throw new Error("SVG not found");
+        }
+
+        if (palette) {
+          Object.entries(palette).forEach(([key, value]) => {
+            const colorElements = svgEl.querySelectorAll(`.${key}`);
+            colorElements.forEach((el) => {
+              el.setAttribute("fill", value);
+            });
           });
         }
 
@@ -91,7 +91,7 @@ export const useSvgImage = ({
     return () => {
       cancelled = true;
     };
-  }, [svgUrl, fillColorMain, fillColorSecondary, crossOrigin]);
+  }, [svgUrl, palette, crossOrigin]);
 
   return [image, status];
 };

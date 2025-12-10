@@ -3,5 +3,5 @@
   <clipPath id="c">
   <path d="m0,0h54v155H0m0,25h54v92H0M115,0h160v155H115m0,25h160v92H115"/>
   </clipPath>
-  <circle class="color" clip-path="url(#c)" cx="137" cy="137" r="130"/>
+  <circle class="color_1" clip-path="url(#c)" cx="137" cy="137" r="130"/>
 </svg>

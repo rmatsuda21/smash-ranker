@@ -124,7 +124,7 @@ const createCharacterImageElement: ElementCreator<
 
   const mainCharacter = player.characters[0];
   const imageSrc =
-    player.customImgSrc ??
+    player.customCharImgSrc ??
     getCharImgUrl({
       characterId: mainCharacter.id,
       alt: mainCharacter.alt,
@@ -240,8 +240,7 @@ const createSvgElement: ElementCreator<SvgElementConfig> = ({
       width={element.size?.width ?? 100}
       height={element.size?.height ?? 100}
       src={element.src}
-      fillColorMain={element.fillColorMain}
-      fillColorSecondary={element.fillColorSecondary}
+      palette={element.palette}
     />
   );
 };

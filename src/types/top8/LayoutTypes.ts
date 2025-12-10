@@ -105,8 +105,7 @@ export interface SvgElementConfig
     Partial<ComponentProps<typeof Image>> {
   type: "svg";
   src: string;
-  fillColorMain?: string;
-  fillColorSecondary?: string;
+  palette: Record<string, string>;
 }
 
 export type ElementConfig =

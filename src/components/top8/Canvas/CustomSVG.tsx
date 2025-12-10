@@ -10,8 +10,7 @@ type Props = Omit<ComponentProps<typeof Image>, "image" | "src"> & {
   src: string;
   onReady?: () => void;
   onError?: (error: Error) => void;
-  fillColorMain?: string;
-  fillColorSecondary?: string;
+  palette: Record<string, string>;
 };
 
 const CustomSVGComponent = ({
@@ -22,14 +21,12 @@ const CustomSVGComponent = ({
   shadowColor = "red",
   x = 0,
   y = 0,
-  fillColorMain = "red",
-  fillColorSecondary = "blue",
+  palette,
   ...rest
 }: Props) => {
   const [image, status] = useSvgImage({
     svgUrl: src,
-    fillColorMain,
-    fillColorSecondary,
+    palette,
   });
 
   if (status === "loading") return null;

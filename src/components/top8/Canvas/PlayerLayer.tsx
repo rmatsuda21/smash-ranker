@@ -15,6 +15,7 @@ const PlayerLayerComponent = () => {
   const dragLayerRef = useRef<KonvaLayer>(null);
 
   const players = usePlayerStore((state) => state.players);
+  const editable = useCanvasStore((state) => state.editable);
   const playerLayouts = useCanvasStore((state) => state.layout.players);
   const basePlayer = useCanvasStore((state) => state.layout.basePlayer);
   const dispatch = useCanvasStore((state) => state.dispatch);
@@ -89,19 +90,21 @@ const PlayerLayerComponent = () => {
             <Player
               key={player.id}
               config={playerConfigs[index]}
+              isSelected={selectedPlayerIndex === index}
               player={player}
               index={index}
               onDragStart={onPlayerDragStart}
               onDragEnd={onPlayerDragEnd}
-              isSelected={selectedPlayerIndex === index}
             />
           );
         })}
-        <Transformer
-          name="player-transformer"
-          ref={trRef}
-          onTransform={handleTransform}
-        />
+        {editable && (
+          <Transformer
+            name="player-transformer"
+            ref={trRef}
+            onTransform={handleTransform}
+          />
+        )}
       </Layer>
 
       <Layer ref={dragLayerRef}></Layer>

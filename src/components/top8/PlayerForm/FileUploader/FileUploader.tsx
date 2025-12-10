@@ -96,6 +96,7 @@ export const FileUploader = ({ value, disabled, onChange }: Props) => {
         Upload
       </Button>
       <span>Or drag and drop</span>
+      {value && <img src={value} alt="Preview" width={100} />}
     </label>
   );
 };

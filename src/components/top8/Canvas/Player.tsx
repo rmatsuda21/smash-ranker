@@ -28,6 +28,7 @@ const PlayerComponent = ({
   isSelected,
 }: Props) => {
   const layout = useCanvasStore((state) => state.layout);
+  const editable = useCanvasStore((state) => state.editable);
   const selectedFont = useCanvasStore((state) => state.selectedFont);
   const fonts = useCanvasStore((state) => state.fonts);
   const canvasDispatch = useCanvasStore((state) => state.dispatch);
@@ -112,7 +113,8 @@ const PlayerComponent = ({
   return (
     <SelectableElement
       id={player.id}
-      draggable={isSelected}
+      isSelected={isSelected}
+      draggable={editable}
       x={playerConfig.position?.x}
       y={playerConfig.position?.y}
       width={playerConfig.size?.width}
