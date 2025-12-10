@@ -88,7 +88,7 @@ export const PlayerForm = ({ className }: Props) => {
   const handleCustomImgSrcChange = (file?: File) => {
     if (!tempPlayer || !file) return;
     const url = URL.createObjectURL(file);
-    updatePlayer({ ...tempPlayer, customCharImgSrc: url });
+    updatePlayer({ ...tempPlayer, avatarSrc: url });
   };
 
   return (
@@ -110,7 +110,7 @@ export const PlayerForm = ({ className }: Props) => {
         disabled={!selectedPlayer}
       />
       <FileUploader
-        value={tempPlayer?.customCharImgSrc}
+        value={tempPlayer?.avatarSrc}
         disabled={!selectedPlayer}
         onChange={handleCustomImgSrcChange}
       />
