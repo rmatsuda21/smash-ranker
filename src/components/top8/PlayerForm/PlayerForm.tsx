@@ -22,10 +22,6 @@ export const PlayerForm = ({ className }: Props) => {
     players[selectedPlayerIndex]
   );
 
-  const [customImgSrc, setCustomImgSrc] = useState<string | undefined>(
-    tempPlayer?.customImgSrc
-  );
-
   const selectedPlayer = useMemo(
     () => players[selectedPlayerIndex],
     [players, selectedPlayerIndex]
@@ -51,10 +47,8 @@ export const PlayerForm = ({ className }: Props) => {
 
     if (selectedPlayer) {
       setTempPlayer(selectedPlayer);
-      setCustomImgSrc(selectedPlayer.customImgSrc);
     } else {
       setTempPlayer(undefined);
-      setCustomImgSrc(undefined);
     }
 
     setTimeout(() => {
@@ -94,8 +88,7 @@ export const PlayerForm = ({ className }: Props) => {
   const handleCustomImgSrcChange = (file?: File) => {
     if (!tempPlayer || !file) return;
     const url = URL.createObjectURL(file);
-    updatePlayer({ ...tempPlayer, customImgSrc: url });
-    setCustomImgSrc(url);
+    updatePlayer({ ...tempPlayer, customCharImgSrc: url });
   };
 
   return (
@@ -117,7 +110,7 @@ export const PlayerForm = ({ className }: Props) => {
         disabled={!selectedPlayer}
       />
       <FileUploader
-        value={customImgSrc}
+        value={tempPlayer?.customCharImgSrc}
         disabled={!selectedPlayer}
         onChange={handleCustomImgSrcChange}
       />

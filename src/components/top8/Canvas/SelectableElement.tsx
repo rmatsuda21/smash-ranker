@@ -5,9 +5,11 @@ import { Group, Rect } from "react-konva";
 
 type Props = Partial<GroupConfig> & {
   onClick: (e: KonvaEventObject<MouseEvent>) => void;
+  isSelected: boolean;
 };
 
 export const SelectableElement = ({
+  isSelected,
   onClick,
   children,
   ...rest
@@ -50,6 +52,8 @@ export const SelectableElement = ({
         width={rest.width ?? 0}
         height={rest.height ?? 0}
         fill={isHovered ? "rgba(0, 0, 0, 0.2)" : "transparent"}
+        stroke={isSelected ? "rgba(0, 0, 255, 0.7)" : "transparent"}
+        strokeWidth={15}
       />
     </Group>
   );

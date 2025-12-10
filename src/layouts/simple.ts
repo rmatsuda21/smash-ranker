@@ -33,7 +33,9 @@ const basePlayer: PlayerLayoutConfig = {
       src: "/assets/top8/theme/mini/frame.svg",
       position: { x: 0, y: 0 },
       size: { width: BASE_PL_SIZE, height: BASE_PL_SIZE },
-      fillColorMain: "rgb(203, 65, 65)",
+      palette: {
+        color_1: "rgb(203, 65, 65)",
+      },
     },
     {
       type: "altCharacterImage",
@@ -148,6 +150,19 @@ const players: Partial<PlayerLayoutConfig>[] = [
   },
   {
     ...firstRow[0],
+    elements: [
+      ...basePlayer.elements.slice(0, 3),
+      {
+        type: "svg",
+        src: "/assets/top8/theme/mini/smash_ball.svg",
+        position: { x: 0, y: 0 },
+        size: { width: BASE_PL_SIZE, height: BASE_PL_SIZE },
+        palette: {
+          color_1: "rgba(255, 255, 255, 0.2)",
+        },
+      },
+      ...basePlayer.elements.slice(3),
+    ],
   },
   {
     ...firstRow[1],
@@ -185,8 +200,10 @@ export const simpleLayout: LayoutConfig = {
         src: "/assets/top8/theme/mini/bg.svg",
         position: { x: 0, y: 0 },
         size: { width: CANVAS_WIDTH, height: CANVAS_HEIGHT },
-        fillColorMain: "rgb(179, 0, 0)",
-        fillColorSecondary: "rgb(235, 171, 64)",
+        palette: {
+          color_1: "rgb(179, 0, 0)",
+          color_2: "rgb(235, 171, 64)",
+        },
       },
       {
         id: "smashBall",
@@ -197,7 +214,9 @@ export const simpleLayout: LayoutConfig = {
           y: (CANVAS_HEIGHT - SMASH_BALL_SIZE) / 2 - 300,
         },
         size: { width: SMASH_BALL_SIZE, height: SMASH_BALL_SIZE },
-        fillColorMain: "rgba(255, 255, 255, 0.2)",
+        palette: {
+          color_1: "rgba(255, 255, 255, 0.2)",
+        },
       },
     ],
   },
