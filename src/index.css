@@ -2,6 +2,14 @@
 
 :root {
   --nav-height: 60px;
+
+  @media (prefers-reduced-motion: reduce) {
+    --transition-duration: 0s;
+    --transition-delay: 0s;
+    * {
+      transition: none !important;
+    }
+  }
 }
 
 body {

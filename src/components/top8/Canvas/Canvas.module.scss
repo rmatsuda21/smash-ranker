@@ -4,8 +4,10 @@
   border: 1px solid #ccc;
 
   width: calc(var(--canvas-width) * var(--display-scale));
-  height: calc(var(--canvas-height) * var(--display-scale));
+  min-width: calc(var(--canvas-width) * var(--display-scale));
   max-width: calc(var(--canvas-width) * var(--display-scale));
+  height: calc(var(--canvas-height) * var(--display-scale));
+  min-height: calc(var(--canvas-height) * var(--display-scale));
   max-height: calc(var(--canvas-height) * var(--display-scale));
 
   .canvasWrapper {

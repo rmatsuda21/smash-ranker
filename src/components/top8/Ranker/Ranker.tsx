@@ -52,8 +52,8 @@ export const Ranker = () => {
               style={{
                 width: `calc(${layout?.canvas.size.width}px * ${layout?.canvas.displayScale})`,
                 height: `calc(${layout?.canvas.size.height}px * ${layout?.canvas.displayScale})`,
-                maxWidth: `calc(${layout?.canvas.size.width}px * ${layout?.canvas.displayScale})`,
-                maxHeight: `calc(${layout?.canvas.size.height}px * ${layout?.canvas.displayScale})`,
+                minWidth: `calc(${layout?.canvas.size.width}px * ${layout?.canvas.displayScale})`,
+                minHeight: `calc(${layout?.canvas.size.height}px * ${layout?.canvas.displayScale})`,
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",

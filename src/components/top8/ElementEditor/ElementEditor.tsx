@@ -4,20 +4,21 @@ import { LuPlus } from "react-icons/lu";
 import { useCanvasStore } from "@/store/canvasStore";
 import { ConfigEditor } from "@/components/top8/ElementEditor/ConfigEditor";
 import { useTournamentStore } from "@/store/tournamentStore";
+import { ElementConfig } from "@/types/top8/LayoutTypes";
 
 type Props = {
   className?: string;
+  elements: ElementConfig[];
+  selectedElementIndex: number;
 };
 
-export const ElementEditor = ({ className }: Props) => {
-  const selectedElementIndex = useTournamentStore(
-    (state) => state.selectedElementIndex
-  );
+export const ElementEditor = ({
+  className,
+  elements,
+  selectedElementIndex,
+}: Props) => {
   const tournamentDispatch = useTournamentStore((state) => state.dispatch);
   const dispatch = useCanvasStore((state) => state.dispatch);
-  const tournamentElements = useCanvasStore(
-    (state) => state.layout.tournament?.elements
-  );
 
   const handleClick = (index: number) => {
     tournamentDispatch({ type: "SET_SELECTED_ELEMENT_INDEX", payload: index });
@@ -45,7 +46,7 @@ export const ElementEditor = ({ className }: Props) => {
         Add Element
       </Button>
       <div>
-        {tournamentElements?.map((element, index) => (
+        {elements?.map((element, index) => (
           <Button
             key={`${element.type}-${index}`}
             onClick={() => handleClick(index)}
@@ -55,13 +56,12 @@ export const ElementEditor = ({ className }: Props) => {
           </Button>
         ))}
       </div>
-      {selectedElementIndex !== -1 &&
-        tournamentElements?.[selectedElementIndex] && (
-          <ConfigEditor
-            index={selectedElementIndex}
-            element={tournamentElements?.[selectedElementIndex]}
-          />
-        )}
+      {selectedElementIndex !== -1 && elements?.[selectedElementIndex] && (
+        <ConfigEditor
+          index={selectedElementIndex}
+          element={elements?.[selectedElementIndex]}
+        />
+      )}
     </div>
   );
 };
