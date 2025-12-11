@@ -4,15 +4,22 @@ import { ImageConfigEditor } from "@/components/top8/ElementEditor/ImageConfigEd
 
 type Props = {
   element: ElementConfig;
-  index: number;
+  onUpdateElement: (element: ElementConfig) => void;
 };
 
-export const ConfigEditor = ({ element, index }: Props) => {
+export const ConfigEditor = ({ element, onUpdateElement }: Props) => {
   switch (element.type) {
     case "text":
-      return <TextConfigEditor element={element} index={index} />;
+      return (
+        <TextConfigEditor element={element} onUpdateElement={onUpdateElement} />
+      );
     case "image":
-      return <ImageConfigEditor element={element} index={index} />;
+      return (
+        <ImageConfigEditor
+          element={element}
+          onUpdateElement={onUpdateElement}
+        />
+      );
     default:
       return null;
   }

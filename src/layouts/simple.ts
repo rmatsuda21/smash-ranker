@@ -62,6 +62,15 @@ const basePlayer: PlayerLayoutConfig = {
       fill: "#ffffff",
       position: { x: 45, y: 20 },
     },
+    // {
+    //   type: "text",
+    //   text: LayoutPlaceholder.PLAYER_TWITTER,
+    //   fontSize: 100,
+    //   fontWeight: "900",
+    //   fill: "#ffffff",
+    //   position: { x: 45, y: 20 },
+    //   condition: LayoutPlaceholder.PLAYER_TWITTER,
+    // },
   ],
 };
 
@@ -151,7 +160,12 @@ const players: Partial<PlayerLayoutConfig>[] = [
   {
     ...firstRow[0],
     elements: [
-      ...basePlayer.elements.slice(0, 3),
+      {
+        type: "rect",
+        fill: "#000000",
+        position: { x: 0, y: 0 },
+        size: { width: BASE_PL_SIZE, height: BASE_PL_SIZE },
+      },
       {
         type: "svg",
         src: "/assets/top8/theme/mini/smash_ball.svg",
@@ -161,7 +175,47 @@ const players: Partial<PlayerLayoutConfig>[] = [
           color_1: "rgba(255, 255, 255, 0.2)",
         },
       },
-      ...basePlayer.elements.slice(3),
+      {
+        type: "characterImage",
+        position: { x: 0, y: 0 },
+        size: { width: BASE_PL_SIZE, height: BASE_PL_SIZE },
+        clip: true,
+        shadowBlur: 2,
+      },
+      {
+        type: "svg",
+        src: "/assets/top8/theme/mini/frame.svg",
+        position: { x: 0, y: 0 },
+        size: { width: BASE_PL_SIZE, height: BASE_PL_SIZE },
+        palette: {
+          color_1: "rgb(97, 233, 24)",
+        },
+      },
+      {
+        type: "altCharacterImage",
+        position: { x: 575, y: 30 },
+        size: { width: 90, height: undefined },
+      },
+      {
+        type: "smartText",
+        text: LayoutPlaceholder.PLAYER_TAG,
+        fontSize: 140,
+        fontWeight: "900",
+        verticalAlign: "bottom",
+        align: "center",
+        size: { width: BASE_PL_SIZE, height: 150 },
+        position: { x: 0, y: 690 },
+        shadowColor: "black",
+        shadowOffset: { x: 10, y: 10 },
+      },
+      {
+        type: "text",
+        text: LayoutPlaceholder.PLAYER_PLACEMENT,
+        fontSize: 120,
+        fontWeight: "900",
+        fill: "#ffffff",
+        position: { x: 45, y: 20 },
+      },
     ],
   },
   {

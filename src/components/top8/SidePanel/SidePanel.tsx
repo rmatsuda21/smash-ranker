@@ -1,13 +1,23 @@
 import { Suspense, lazy } from "react";
 import cn from "classnames";
 
-import { EditorTab, EditorTabs } from "@/types/top8/EditorTypes";
+import {
+  EditorTab,
+  EditorTabLabels,
+  EditorTabs,
+} from "@/types/top8/EditorTypes";
+import { useEditorStore } from "@/store/editorStore";
+import { TabNav } from "@/components/shared/TabNav/TabNav";
 
 import styles from "./SidePanel.module.scss";
-import { useEditorStore } from "@/store/editorStore";
-import { useCanvasStore } from "@/store/canvasStore";
-import { useTournamentStore } from "@/store/tournamentStore";
-import { TabNav } from "@/components/shared/TabNav/TabNav";
+
+const PlayerElementEditor = lazy(() =>
+  import(
+    "@/components/top8/ElementEditor/PlayerElementEditor/PlayerElementEditor"
+  ).then((module) => ({
+    default: module.PlayerElementEditor,
+  }))
+);
 
 const PlayerForm = lazy(() =>
   import("@/components/top8/PlayerForm/PlayerForm").then((module) => ({
@@ -15,9 +25,9 @@ const PlayerForm = lazy(() =>
   }))
 );
 
-const ElementEditor = lazy(() =>
-  import("@/components/top8/ElementEditor/ElementEditor").then((module) => ({
-    default: module.ElementEditor,
+const ElementPanel = lazy(() =>
+  import("@/components/top8/SidePanel/ElementPanel").then((module) => ({
+    default: module.ElementPanel,
   }))
 );
 
@@ -39,35 +49,10 @@ type Props = {
   className?: string;
 };
 
-const TABS: {
-  label: string;
-  value: EditorTab;
-}[] = [
-  {
-    label: "Tournament Config",
-    value: EditorTabs.TOURNAMENT_CONFIG,
-  },
-  {
-    label: "Player Form",
-    value: EditorTabs.PLAYER_FORM,
-  },
-  {
-    label: "Element Editor",
-    value: EditorTabs.ELEMENT_EDITOR,
-  },
-  {
-    label: "Canvas Config",
-    value: EditorTabs.CANVAS_CONFIG,
-  },
-];
-
 export const SidePanel = ({ className }: Props) => {
   const activeTab = useEditorStore((state) => state.activeTab);
   const dispatch = useEditorStore((state) => state.dispatch);
-  const tournamentLayout = useCanvasStore((state) => state.layout.tournament);
-  const selectedElementIndex = useTournamentStore(
-    (state) => state.selectedElementIndex
-  );
+
   const handleTabChange = (tab: EditorTab) => {
     dispatch({ type: "SET_ACTIVE_TAB", payload: tab });
   };
@@ -76,7 +61,7 @@ export const SidePanel = ({ className }: Props) => {
     <div className={cn(styles.wrapper, className)}>
       <TabNav
         className={styles.tabNav}
-        tabs={TABS}
+        tabs={EditorTabLabels}
         activeTab={activeTab}
         onTabChange={handleTabChange}
       />
@@ -92,9 +77,12 @@ export const SidePanel = ({ className }: Props) => {
             [styles.hidden]: activeTab !== EditorTabs.PLAYER_FORM,
           })}
         />
-        <ElementEditor
-          elements={tournamentLayout?.elements ?? []}
-          selectedElementIndex={selectedElementIndex}
+        <PlayerElementEditor
+          className={cn({
+            [styles.hidden]: activeTab !== EditorTabs.PLAYER_EDITOR,
+          })}
+        />
+        <ElementPanel
           className={cn({
             [styles.hidden]: activeTab !== EditorTabs.ELEMENT_EDITOR,
           })}

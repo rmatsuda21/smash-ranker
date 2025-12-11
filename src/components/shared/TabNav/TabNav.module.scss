@@ -18,7 +18,7 @@
 
     border: none;
     background-color: transparent;
-    color: var(--accent-9);
+    color: white;
     font-size: 12px;
     font-weight: 900;
     cursor: pointer;
@@ -26,9 +26,8 @@
     > div {
       width: min-content;
       height: min-content;
+      transition: background-color 0.1s ease-in-out;
     }
-
-    // transition: background-color 0.1s ease-in-out, color 0.3s ease-in-out;
 
     &::after {
       content: "";

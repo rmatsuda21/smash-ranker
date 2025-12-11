@@ -1,42 +1,44 @@
 import { Button } from "@radix-ui/themes";
 import { LuPlus } from "react-icons/lu";
 
-import { useCanvasStore } from "@/store/canvasStore";
 import { ConfigEditor } from "@/components/top8/ElementEditor/ConfigEditor";
-import { useTournamentStore } from "@/store/tournamentStore";
 import { ElementConfig } from "@/types/top8/LayoutTypes";
 
 type Props = {
   className?: string;
   elements: ElementConfig[];
   selectedElementIndex: number;
+  onAddElement: (element: ElementConfig) => void;
+  onElementSelect: (index: number) => void;
+  onUpdateElement: (element: ElementConfig) => void;
 };
 
 export const ElementEditor = ({
   className,
   elements,
   selectedElementIndex,
+  onAddElement,
+  onElementSelect,
+  onUpdateElement,
 }: Props) => {
-  const tournamentDispatch = useTournamentStore((state) => state.dispatch);
-  const dispatch = useCanvasStore((state) => state.dispatch);
-
   const handleClick = (index: number) => {
-    tournamentDispatch({ type: "SET_SELECTED_ELEMENT_INDEX", payload: index });
+    onElementSelect(index);
   };
 
   const addElement = () => {
-    dispatch({
-      type: "ADD_TOURNAMENT_ELEMENT",
-      payload: {
-        name: "New Element",
-        type: "text",
-        text: "Hello",
-        fill: "#ffff00",
-        fontSize: 200,
-        fontWeight: "bold",
-        position: { x: 0, y: 0 },
-      },
+    onAddElement({
+      name: "New Element",
+      type: "text",
+      text: "Hello",
+      fill: "#ffff00",
+      fontSize: 200,
+      fontWeight: "bold",
+      position: { x: 0, y: 0 },
     });
+  };
+
+  const handleUpdateElement = (element: ElementConfig) => {
+    onUpdateElement(element);
   };
 
   return (
@@ -58,8 +60,8 @@ export const ElementEditor = ({
       </div>
       {selectedElementIndex !== -1 && elements?.[selectedElementIndex] && (
         <ConfigEditor
-          index={selectedElementIndex}
           element={elements?.[selectedElementIndex]}
+          onUpdateElement={handleUpdateElement}
         />
       )}
     </div>

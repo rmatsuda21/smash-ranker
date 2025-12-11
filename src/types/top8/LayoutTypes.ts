@@ -27,6 +27,7 @@ interface BaseElementConfig {
   clip?: boolean;
   name?: string;
   disabled?: boolean;
+  condition?: string;
 }
 
 export interface TextElementConfig
@@ -73,6 +74,7 @@ export interface GroupElementConfig
   extends BaseElementConfig,
     Partial<ComponentProps<typeof Group>> {
   type: "group";
+  elements: ElementConfig[];
 }
 
 export interface RectElementConfig

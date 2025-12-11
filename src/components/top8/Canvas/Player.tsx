@@ -8,7 +8,7 @@ import { useCanvasStore } from "@/store/canvasStore";
 import { usePlayerStore } from "@/store/playerStore";
 import { PlayerLayoutConfig } from "@/types/top8/LayoutTypes";
 import { createKonvaElements } from "@/utils/top8/elementFactory";
-import { SelectableElement } from "./SelectableElement";
+import { SelectableElement } from "@/components/top8/Canvas/SelectableElement";
 
 type Props = {
   player: PlayerInfo;
@@ -33,6 +33,8 @@ const PlayerComponent = ({
   const fonts = useCanvasStore((state) => state.fonts);
   const canvasDispatch = useCanvasStore((state) => state.dispatch);
   const dispatch = usePlayerStore((state) => state.dispatch);
+
+  // const isUsingBaseElements = !!layout.players[index]?.elements;
 
   const playerConfig = {
     ...layout.basePlayer,

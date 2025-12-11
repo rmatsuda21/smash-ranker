@@ -35,6 +35,11 @@ type CanvasAction =
       type: "UPDATE_PLAYER_CONFIG";
       payload: { index: number; config: Partial<PlayerLayoutConfig> };
     }
+  | { type: "UPDATE_BASE_PLAYER_CONFIG"; payload: Partial<PlayerLayoutConfig> }
+  | {
+      type: "UPDATE_BASE_ELEMENT_CONFIG";
+      payload: { index: number; element: ElementConfig };
+    }
   | { type: "SET_EDITABLE"; payload: boolean };
 
 const initialState: CanvasState = {
@@ -103,13 +108,31 @@ const canvasReducer = (
         },
       };
     case "UPDATE_PLAYER_CONFIG":
-      console.log("UPDATE_PLAYER_CONFIG", action.payload);
       return {
         layout: {
           ...state.layout,
           players: state.layout.players.map((player, index) =>
             index === action.payload.index ? action.payload.config : player
           ),
+        },
+      };
+    case "UPDATE_BASE_PLAYER_CONFIG":
+      return {
+        layout: {
+          ...state.layout,
+          basePlayer: { ...state.layout.basePlayer, ...action.payload },
+        },
+      };
+    case "UPDATE_BASE_ELEMENT_CONFIG":
+      return {
+        layout: {
+          ...state.layout,
+          basePlayer: {
+            ...state.layout.basePlayer,
+            elements: state.layout.basePlayer.elements.map((element, index) =>
+              index === action.payload.index ? action.payload.element : element
+            ),
+          },
         },
       };
     case "SET_EDITABLE":
