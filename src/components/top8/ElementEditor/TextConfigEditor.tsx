@@ -2,12 +2,17 @@ import { useEffect, useMemo, useState } from "react";
 import { Slider } from "@radix-ui/themes";
 import debounce from "lodash/debounce";
 
-import { TextElementConfig } from "@/types/top8/LayoutTypes";
+import {
+  SmartTextElementConfig,
+  TextElementConfig,
+} from "@/types/top8/LayoutTypes";
 import { Input } from "@/components/shared/Input/Input";
 
 type Props = {
-  element: TextElementConfig;
-  onUpdateElement: (element: TextElementConfig) => void;
+  element: TextElementConfig | SmartTextElementConfig;
+  onUpdateElement: (
+    element: TextElementConfig | SmartTextElementConfig
+  ) => void;
 };
 
 export const TextConfigEditor = ({ element, onUpdateElement }: Props) => {
@@ -19,7 +24,7 @@ export const TextConfigEditor = ({ element, onUpdateElement }: Props) => {
 
   const debouncedUpdateElementConfig = useMemo(
     () =>
-      debounce((elementConfig: TextElementConfig) => {
+      debounce((elementConfig: TextElementConfig | SmartTextElementConfig) => {
         onUpdateElement(elementConfig);
       }, 100),
     [onUpdateElement]

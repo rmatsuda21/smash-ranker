@@ -10,6 +10,7 @@ type Props = {
 export const ElementConfigEditor = ({ element, onUpdateElement }: Props) => {
   switch (element.type) {
     case "text":
+    case "smartText":
       return (
         <TextConfigEditor element={element} onUpdateElement={onUpdateElement} />
       );
