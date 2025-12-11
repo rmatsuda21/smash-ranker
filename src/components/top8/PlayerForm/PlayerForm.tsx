@@ -85,6 +85,11 @@ export const PlayerForm = ({ className }: Props) => {
     updatePlayer({ ...tempPlayer, gamerTag: e.target.value });
   };
 
+  const handleTwitterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!tempPlayer) return;
+    updatePlayer({ ...tempPlayer, twitter: e.target.value });
+  };
+
   const handleCustomImgSrcChange = (file?: File) => {
     if (!tempPlayer || !file) return;
     const url = URL.createObjectURL(file);
@@ -107,6 +112,14 @@ export const PlayerForm = ({ className }: Props) => {
         value={tempPlayer?.gamerTag ?? ""}
         onChange={handleGamerTagChange}
         placeholder="Gamer Tag"
+        disabled={!selectedPlayer}
+      />
+      <Input
+        id="twitter"
+        type="text"
+        value={tempPlayer?.twitter ?? ""}
+        onChange={handleTwitterChange}
+        placeholder="Twitter"
         disabled={!selectedPlayer}
       />
       <FileUploader

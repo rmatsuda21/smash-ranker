@@ -7,6 +7,7 @@ const BASE_PL_SIZE = 700;
 const MAIN_PL_SIZE = 665;
 const CANVAS_WIDTH = 1920;
 const CANVAS_HEIGHT = 1080;
+const SECOND_ROW_Y_OFFSET = 42;
 
 const SMASH_BALL_SIZE = 1600;
 
@@ -62,15 +63,31 @@ const basePlayer: PlayerLayoutConfig = {
       fill: "#ffffff",
       position: { x: 45, y: 20 },
     },
-    // {
-    //   type: "text",
-    //   text: LayoutPlaceholder.PLAYER_TWITTER,
-    //   fontSize: 100,
-    //   fontWeight: "900",
-    //   fill: "#ffffff",
-    //   position: { x: 45, y: 20 },
-    //   condition: LayoutPlaceholder.PLAYER_TWITTER,
-    // },
+    {
+      type: "group",
+      condition: LayoutPlaceholder.PLAYER_TWITTER,
+      position: { x: 0, y: BASE_PL_SIZE + 15 },
+      size: { width: BASE_PL_SIZE, height: 50 },
+      elements: [
+        {
+          type: "rect",
+          fill: "rgb(203, 65, 65)",
+          position: { x: 0, y: 0 },
+          size: { width: BASE_PL_SIZE, height: 60 },
+        },
+        {
+          type: "text",
+          text: `@${LayoutPlaceholder.PLAYER_TWITTER}`,
+          fontSize: 45,
+          align: "center",
+          verticalAlign: "middle",
+          fontWeight: "600",
+          fill: "#ffffff",
+          position: { x: 0, y: 0 },
+          size: { width: BASE_PL_SIZE, height: 60 },
+        },
+      ],
+    },
   ],
 };
 
@@ -120,7 +137,8 @@ const getSecondRowPositions = () => {
     PADDING +
     (CANVAS_HEIGHT - MAIN_PL_SIZE - PADDING * 2) / 2 +
     MAIN_PL_SIZE -
-    playerWidth;
+    playerWidth +
+    SECOND_ROW_Y_OFFSET;
 
   for (let i = 0; i < 4; i++) {
     row.push({

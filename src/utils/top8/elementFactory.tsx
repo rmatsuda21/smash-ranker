@@ -23,6 +23,7 @@ import { SmartText } from "@/components/top8/SmartText/SmartText";
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
 import { CustomSVG } from "@/components/top8/Canvas/CustomSVG";
 import { replacePlaceholders } from "@/utils/top8/replacePlaceholderString";
+import { evaluateElementCondition } from "@/utils/top8/evaluateElementCondition";
 
 const createTextElement: ElementCreator<TextElementConfig> = ({
   element,
@@ -101,7 +102,10 @@ const createImageElement: ElementCreator<ImageElementConfig> = ({
 const createGroupElement: ElementCreator<GroupElementConfig> = ({
   element,
   index,
+  context,
 }) => {
+  const konvaElements = createKonvaElements(element.elements, context);
+
   return (
     <Group
       key={`group-${index}`}
@@ -109,7 +113,9 @@ const createGroupElement: ElementCreator<GroupElementConfig> = ({
       y={element.position.y}
       width={element.size?.width}
       height={element.size?.height}
-    />
+    >
+      {konvaElements}
+    </Group>
   );
 };
 
@@ -264,6 +270,13 @@ export const createKonvaElements = (
   return elements
     .map((element, index) => {
       if (!(element.type in elementCreators)) {
+        return null;
+      }
+
+      if (
+        element.condition &&
+        !evaluateElementCondition(element.condition, context)
+      ) {
         return null;
       }
 

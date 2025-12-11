@@ -19,6 +19,7 @@ const getPlaceholderMap = (
       tournament?.location.country ? `, ${tournament?.location.country}` : ""
     }`,
     [LayoutPlaceholder.ENTRANTS]: tournament?.entrants?.toString(),
+    [LayoutPlaceholder.PLAYER_TWITTER]: player?.twitter,
   };
 };
 

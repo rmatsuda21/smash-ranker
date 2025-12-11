@@ -1,3 +1,4 @@
+import { LayoutPlaceholder } from "@/consts/top8/placeholders";
 import { ComponentProps } from "react";
 import { Group, Image, Rect, Text } from "react-konva";
 
@@ -27,7 +28,7 @@ interface BaseElementConfig {
   clip?: boolean;
   name?: string;
   disabled?: boolean;
-  condition?: string;
+  condition?: LayoutPlaceholder;
 }
 
 export interface TextElementConfig
