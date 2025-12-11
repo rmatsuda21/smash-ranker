@@ -51,6 +51,13 @@ const Top8Query = graphql(`
           player {
             gamerTag
             prefix
+            user {
+              authorizations(types: [TWITTER]) {
+                id
+                externalId
+                externalUsername
+              }
+            }
           }
         }
       }
@@ -98,6 +105,9 @@ const getTop8Players = (standings: StandingNode): PlayerInfo[] => {
       placement: standing.placement || 0,
       gamerTag: standing.player?.gamerTag || "Unknown",
       prefix: standing.player?.prefix || undefined,
+      twitter:
+        standing.player?.user?.authorizations?.[0]?.externalUsername ||
+        undefined,
     });
   }
 
