@@ -16,7 +16,7 @@ export const SelectableElement = ({
 }: React.PropsWithChildren<Props>) => {
   const [isHovered, setIsHovered] = useState(false);
 
-  const handleMouseOver = useCallback((e: KonvaEventObject<MouseEvent>) => {
+  const handleMouseEnter = useCallback((e: KonvaEventObject<MouseEvent>) => {
     e.cancelBubble = true;
 
     const container = e.target.getStage()?.container();
@@ -27,7 +27,7 @@ export const SelectableElement = ({
     setIsHovered(true);
   }, []);
 
-  const handleMouseOut = useCallback((e: KonvaEventObject<MouseEvent>) => {
+  const handleMouseLeave = useCallback((e: KonvaEventObject<MouseEvent>) => {
     e.cancelBubble = true;
 
     const container = e.target.getStage()?.container();
@@ -42,9 +42,16 @@ export const SelectableElement = ({
     <Group
       {...rest}
       onClick={onClick}
-      onMouseOver={handleMouseOver}
-      onMouseOut={handleMouseOut}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
+      <Rect
+        x={0}
+        y={0}
+        width={rest.width ?? 0}
+        height={rest.height ?? 0}
+        fill="transparent"
+      />
       {children}
       <Rect
         x={0}
@@ -54,6 +61,7 @@ export const SelectableElement = ({
         fill={isHovered ? "rgba(0, 0, 0, 0.2)" : "transparent"}
         stroke={isSelected ? "rgba(0, 0, 255, 0.7)" : "transparent"}
         strokeWidth={15}
+        listening={false}
       />
     </Group>
   );

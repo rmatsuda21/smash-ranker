@@ -7,7 +7,7 @@ const BASE_PL_SIZE = 700;
 const MAIN_PL_SIZE = 665;
 const CANVAS_WIDTH = 1920;
 const CANVAS_HEIGHT = 1080;
-const SECOND_ROW_Y_OFFSET = 42;
+const SECOND_ROW_Y_OFFSET = 27;
 
 const SMASH_BALL_SIZE = 1600;
 
@@ -17,6 +17,7 @@ const basePlayer: PlayerLayoutConfig = {
   scale: { x: 1, y: 1 },
   elements: [
     {
+      id: "player-bg",
       type: "rect",
       fill: "#000000",
       position: { x: 0, y: 0 },
@@ -65,26 +66,37 @@ const basePlayer: PlayerLayoutConfig = {
     },
     {
       type: "group",
-      condition: LayoutPlaceholder.PLAYER_TWITTER,
-      position: { x: 0, y: BASE_PL_SIZE + 15 },
+      position: { x: 0, y: BASE_PL_SIZE + 10 },
       size: { width: BASE_PL_SIZE, height: 50 },
       elements: [
         {
           type: "rect",
           fill: "rgb(203, 65, 65)",
           position: { x: 0, y: 0 },
-          size: { width: BASE_PL_SIZE, height: 60 },
+          size: { width: BASE_PL_SIZE, height: 40 },
         },
         {
           type: "text",
+          text: "𝕏",
+          fontSize: 40,
+          align: "left",
+          verticalAlign: "top",
+          fontWeight: "900",
+          fill: "#ffffff",
+          position: { x: 10, y: -5 },
+          size: { width: BASE_PL_SIZE, height: 40 },
+        },
+        {
+          type: "text",
+          condition: LayoutPlaceholder.PLAYER_TWITTER,
           text: `@${LayoutPlaceholder.PLAYER_TWITTER}`,
-          fontSize: 45,
+          fontSize: 30,
           align: "center",
           verticalAlign: "middle",
           fontWeight: "600",
           fill: "#ffffff",
           position: { x: 0, y: 0 },
-          size: { width: BASE_PL_SIZE, height: 60 },
+          size: { width: BASE_PL_SIZE, height: 40 },
         },
       ],
     },
@@ -177,64 +189,40 @@ const players: Partial<PlayerLayoutConfig>[] = [
   },
   {
     ...firstRow[0],
-    elements: [
-      {
-        type: "rect",
-        fill: "#000000",
-        position: { x: 0, y: 0 },
-        size: { width: BASE_PL_SIZE, height: BASE_PL_SIZE },
-      },
-      {
-        type: "svg",
-        src: "/assets/top8/theme/mini/smash_ball.svg",
-        position: { x: 0, y: 0 },
-        size: { width: BASE_PL_SIZE, height: BASE_PL_SIZE },
-        palette: {
-          color_1: "rgba(255, 255, 255, 0.2)",
-        },
-      },
-      {
-        type: "characterImage",
-        position: { x: 0, y: 0 },
-        size: { width: BASE_PL_SIZE, height: BASE_PL_SIZE },
-        clip: true,
-        shadowBlur: 2,
-      },
-      {
-        type: "svg",
-        src: "/assets/top8/theme/mini/frame.svg",
-        position: { x: 0, y: 0 },
-        size: { width: BASE_PL_SIZE, height: BASE_PL_SIZE },
-        palette: {
-          color_1: "rgb(97, 233, 24)",
-        },
-      },
-      {
-        type: "altCharacterImage",
-        position: { x: 575, y: 30 },
-        size: { width: 90, height: undefined },
-      },
-      {
-        type: "smartText",
-        text: LayoutPlaceholder.PLAYER_TAG,
-        fontSize: 140,
-        fontWeight: "900",
-        verticalAlign: "bottom",
-        align: "center",
-        size: { width: BASE_PL_SIZE, height: 150 },
-        position: { x: 0, y: 690 },
-        shadowColor: "black",
-        shadowOffset: { x: 10, y: 10 },
-      },
-      {
-        type: "text",
-        text: LayoutPlaceholder.PLAYER_PLACEMENT,
-        fontSize: 120,
-        fontWeight: "900",
-        fill: "#ffffff",
-        position: { x: 45, y: 20 },
-      },
-    ],
+    // elements: [
+    //   {
+    //     type: "rect",
+    //     fill: "#000000",
+    //     position: { x: 0, y: 0 },
+    //     size: { width: BASE_PL_SIZE, height: BASE_PL_SIZE },
+    //   },
+    //   {
+    //     type: "svg",
+    //     src: "/assets/top8/theme/mini/smash_ball.svg",
+    //     position: { x: 0, y: 0 },
+    //     size: { width: BASE_PL_SIZE, height: BASE_PL_SIZE },
+    //     palette: {
+    //       color_1: "rgba(255, 255, 255, 0.2)",
+    //     },
+    //   },
+    //   {
+    //     type: "characterImage",
+    //     position: { x: 0, y: 0 },
+    //     size: { width: BASE_PL_SIZE, height: BASE_PL_SIZE },
+    //     clip: true,
+    //     shadowBlur: 2,
+    //   },
+    //   {
+    //     type: "svg",
+    //     src: "/assets/top8/theme/mini/frame.svg",
+    //     position: { x: 0, y: 0 },
+    //     size: { width: BASE_PL_SIZE, height: BASE_PL_SIZE },
+    //     palette: {
+    //       color_1: "rgb(97, 233, 24)",
+    //     },
+    //   },
+    //   ...basePlayer.elements.slice(4),
+    // ],
   },
   {
     ...firstRow[1],

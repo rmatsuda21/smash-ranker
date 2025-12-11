@@ -7,7 +7,7 @@ type Props = {
   onUpdateElement: (element: ElementConfig) => void;
 };
 
-export const ConfigEditor = ({ element, onUpdateElement }: Props) => {
+export const ElementConfigEditor = ({ element, onUpdateElement }: Props) => {
   switch (element.type) {
     case "text":
       return (

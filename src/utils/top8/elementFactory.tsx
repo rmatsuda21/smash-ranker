@@ -298,6 +298,7 @@ export const createKonvaElements = (
           draggable={context.options?.editable ?? false}
           key={`group-${index}`}
           clipFunc={element.clip ? clipFunc : undefined}
+          listening={false}
         >
           {el}
         </Group>
