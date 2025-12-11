@@ -1,7 +1,6 @@
 import { useCanvasStore } from "@/store/canvasStore";
 import { useTournamentStore } from "@/store/tournamentStore";
 import { ElementEditor } from "@/components/top8/ElementEditor/ElementEditor";
-import { PlayerElementEditor } from "@/components/top8/ElementEditor/PlayerElementEditor/PlayerElementEditor";
 import { ElementConfig } from "@/types/top8/LayoutTypes";
 
 type Props = {
@@ -36,7 +35,6 @@ export const ElementPanel = ({ className }: Props) => {
 
   return (
     <div className={className}>
-      <PlayerElementEditor />
       <ElementEditor
         elements={tournamentLayout?.elements ?? []}
         selectedElementIndex={selectedElementIndex}

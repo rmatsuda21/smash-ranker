@@ -1,7 +1,7 @@
 import { Button } from "@radix-ui/themes";
 import { LuPlus } from "react-icons/lu";
 
-import { ConfigEditor } from "@/components/top8/ElementEditor/ConfigEditor";
+import { ElementConfigEditor } from "@/components/top8/ElementEditor/ElementConfigEditor";
 import { ElementConfig } from "@/types/top8/LayoutTypes";
 
 type Props = {
@@ -59,7 +59,7 @@ export const ElementEditor = ({
         ))}
       </div>
       {selectedElementIndex !== -1 && elements?.[selectedElementIndex] && (
-        <ConfigEditor
+        <ElementConfigEditor
           element={elements?.[selectedElementIndex]}
           onUpdateElement={handleUpdateElement}
         />

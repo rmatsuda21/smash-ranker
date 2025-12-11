@@ -12,11 +12,11 @@ import { TabNav } from "@/components/shared/TabNav/TabNav";
 import styles from "./SidePanel.module.scss";
 
 const PlayerElementEditor = lazy(() =>
-  import(
-    "@/components/top8/ElementEditor/PlayerElementEditor/PlayerElementEditor"
-  ).then((module) => ({
-    default: module.PlayerElementEditor,
-  }))
+  import("@/components/top8/PlayerElementEditor/PlayerElementEditor").then(
+    (module) => ({
+      default: module.PlayerElementEditor,
+    })
+  )
 );
 
 const PlayerForm = lazy(() =>
