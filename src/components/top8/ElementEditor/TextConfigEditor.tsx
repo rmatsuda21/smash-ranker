@@ -3,17 +3,15 @@ import { Slider } from "@radix-ui/themes";
 import debounce from "lodash/debounce";
 
 import { TextElementConfig } from "@/types/top8/LayoutTypes";
-import { useCanvasStore } from "@/store/canvasStore";
 import { Input } from "@/components/shared/Input/Input";
 
 type Props = {
   element: TextElementConfig;
-  index: number;
+  onUpdateElement: (element: TextElementConfig) => void;
 };
 
-export const TextConfigEditor = ({ element, index }: Props) => {
+export const TextConfigEditor = ({ element, onUpdateElement }: Props) => {
   const [elementConfig, setElementConfig] = useState(element);
-  const dispatch = useCanvasStore((state) => state.dispatch);
 
   useEffect(() => {
     setElementConfig(element);
@@ -22,12 +20,9 @@ export const TextConfigEditor = ({ element, index }: Props) => {
   const debouncedUpdateElementConfig = useMemo(
     () =>
       debounce((elementConfig: TextElementConfig) => {
-        dispatch({
-          type: "EDIT_TOURNAMENT_ELEMENT",
-          payload: { index, element: elementConfig },
-        });
+        onUpdateElement(elementConfig);
       }, 100),
-    [dispatch, index]
+    [onUpdateElement]
   );
 
   useEffect(() => {
@@ -36,7 +31,7 @@ export const TextConfigEditor = ({ element, index }: Props) => {
     return () => {
       debouncedUpdateElementConfig.cancel();
     };
-  }, [elementConfig, index, debouncedUpdateElementConfig]);
+  }, [elementConfig, debouncedUpdateElementConfig]);
 
   return (
     <div>

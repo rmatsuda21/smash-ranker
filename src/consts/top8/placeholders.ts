@@ -8,4 +8,5 @@ export enum LayoutPlaceholder {
   PLAYER_NAME = "<👤>",
   PLAYER_TAG = "<🏷️>",
   PLAYER_PREFIX = "<🎭>",
+  PLAYER_TWITTER = "<🐦>",
 }

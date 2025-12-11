@@ -4,10 +4,7 @@ import styles from "./TabNav.module.scss";
 
 type Props<T extends string> = {
   className?: string;
-  tabs: {
-    label: string;
-    value: T;
-  }[];
+  tabs: Record<T, string>;
   activeTab?: T;
   onTabChange: (value: T) => void;
 };
@@ -20,15 +17,15 @@ export const TabNav = <T extends string>({
 }: Props<T>) => {
   return (
     <div className={cn(styles.wrapper, className)}>
-      {tabs.map((tab) => (
+      {Object.entries(tabs).map(([key, value]) => (
         <button
-          key={tab.value}
+          key={key}
           className={cn(styles.tab, {
-            [styles.active]: activeTab === tab.value,
+            [styles.active]: activeTab === key,
           })}
-          onClick={() => onTabChange(tab.value)}
+          onClick={() => onTabChange(key as T)}
         >
-          <div>{tab.label}</div>
+          <div>{value as string}</div>
         </button>
       ))}
     </div>

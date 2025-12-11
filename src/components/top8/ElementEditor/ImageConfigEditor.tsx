@@ -2,16 +2,14 @@ import { useEffect, useMemo, useState } from "react";
 import debounce from "lodash/debounce";
 
 import { ImageElementConfig } from "@/types/top8/LayoutTypes";
-import { useCanvasStore } from "@/store/canvasStore";
 
 type Props = {
   element: ImageElementConfig;
-  index: number;
+  onUpdateElement: (element: ImageElementConfig) => void;
 };
 
-export const ImageConfigEditor = ({ element, index }: Props) => {
+export const ImageConfigEditor = ({ element, onUpdateElement }: Props) => {
   const [elementConfig, setElementConfig] = useState(element);
-  const dispatch = useCanvasStore((state) => state.dispatch);
   useEffect(() => {
     setElementConfig(element);
   }, [element]);
@@ -19,12 +17,9 @@ export const ImageConfigEditor = ({ element, index }: Props) => {
   const debouncedUpdateElementConfig = useMemo(
     () =>
       debounce((elementConfig: ImageElementConfig) => {
-        dispatch({
-          type: "EDIT_TOURNAMENT_ELEMENT",
-          payload: { index, element: elementConfig },
-        });
+        onUpdateElement(elementConfig);
       }, 100),
-    [dispatch, index]
+    [onUpdateElement]
   );
 
   useEffect(() => {
@@ -33,7 +28,7 @@ export const ImageConfigEditor = ({ element, index }: Props) => {
     return () => {
       debouncedUpdateElementConfig.cancel();
     };
-  }, [elementConfig, index, debouncedUpdateElementConfig]);
+  }, [elementConfig, debouncedUpdateElementConfig]);
 
   return (
     <div>
