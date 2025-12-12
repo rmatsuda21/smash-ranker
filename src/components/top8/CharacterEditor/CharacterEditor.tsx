@@ -1,58 +1,56 @@
 import { memo, useEffect, useMemo, useState } from "react";
+import isEqual from "lodash/isEqual";
 
 import { CharacterSelect } from "@/components/top8/CharacterEditor/CharacterSelect/CharacterSelect";
 import { CharacterAltPicker } from "@/components/top8/CharacterEditor/CharacterAltPicker/CharacterAltPicker";
 import { CharacterList } from "@/components/top8/CharacterEditor/CharacterList/CharacterList";
-import { CharacerData, PlayerInfo } from "@/types/top8/PlayerTypes";
-import { isEqual } from "lodash";
+import { CharacerData } from "@/types/top8/PlayerTypes";
 
 type Props = {
   className?: string;
-  player?: PlayerInfo;
-  updatePlayer: (player: PlayerInfo) => void;
+  characters: CharacerData[];
+  onCharactersChange: (characters: CharacerData[]) => void;
   disabled?: boolean;
 };
 
 const CharacterEditorComponent = ({
-  player,
-  updatePlayer,
+  characters,
+  onCharactersChange,
   disabled = false,
 }: Props) => {
   const [characterIndex, setCharacterIndex] = useState(0);
   const selectedCharacter = useMemo(
-    () => player?.characters[characterIndex],
-    [player?.characters, characterIndex]
+    () => characters[characterIndex],
+    [characters, characterIndex]
   );
 
   useEffect(() => {
-    setCharacterIndex(0);
-  }, [player?.id]);
+    if (characterIndex >= characters.length) {
+      setCharacterIndex(0);
+    }
+  }, [characters, characterIndex]);
 
   const onCharacterChange = (characterId: string) => {
-    if (!player) return;
-    updatePlayer({
-      ...player,
-      characters: player.characters.map((char, i) =>
+    onCharactersChange(
+      characters.map((char, i) =>
         i === characterIndex ? { id: characterId, alt: 0 } : char
-      ),
-    });
+      )
+    );
   };
 
   const onAltChange = (alt: CharacerData["alt"]) => {
-    if (!player || !selectedCharacter) return;
-    updatePlayer({
-      ...player,
-      characters: player.characters.map((char, i) =>
+    onCharactersChange(
+      characters.map((char, i) =>
         i === characterIndex ? { id: selectedCharacter.id, alt } : char
-      ),
-    });
+      )
+    );
   };
 
   return (
     <>
       <CharacterList
-        player={player}
-        updatePlayer={updatePlayer}
+        characters={characters}
+        onCharactersChange={onCharactersChange}
         selectedIndex={characterIndex}
         setSelectedIndex={setCharacterIndex}
         disabled={disabled}
@@ -75,9 +73,9 @@ export const CharacterEditor = memo(
   CharacterEditorComponent,
   (prevProps, nextProps) => {
     return (
-      isEqual(prevProps.player?.characters, nextProps.player?.characters) &&
+      isEqual(prevProps.characters, nextProps.characters) &&
       prevProps.disabled === nextProps.disabled &&
-      prevProps.updatePlayer === nextProps.updatePlayer &&
+      prevProps.onCharactersChange === nextProps.onCharactersChange &&
       prevProps.className === nextProps.className
     );
   }

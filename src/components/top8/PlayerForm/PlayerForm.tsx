@@ -1,11 +1,12 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import debounce from "lodash/debounce";
 
 import { usePlayerStore } from "@/store/playerStore";
-import { PlayerInfo } from "@/types/top8/PlayerTypes";
+import { CharacerData, PlayerInfo } from "@/types/top8/PlayerTypes";
 import { CharacterEditor } from "@/components/top8/CharacterEditor/CharacterEditor";
-import { FileUploader } from "@/components/top8/PlayerForm/FileUploader/FileUploader";
+import { FileUploader } from "@/components/shared/FileUploader/FileUploader";
 import { Input } from "@/components/shared/Input/Input";
+import { PlayerSelector } from "@/components/top8/PlayerForm/PlayerSelector";
 
 type Props = {
   className?: string;
@@ -60,65 +61,75 @@ export const PlayerForm = ({ className }: Props) => {
     };
   }, [selectedPlayer, selectedPlayerIndex, dispatch, debouncedUpdatePlayer]);
 
-  const updatePlayer = useCallback(
-    (updatedPlayer: PlayerInfo) => {
-      setTempPlayer(updatedPlayer);
-
-      if (
-        selectedPlayer &&
-        !isLoadingPlayerRef.current &&
-        editingPlayerIndexRef.current === selectedPlayerIndex
-      ) {
-        debouncedUpdatePlayer(updatedPlayer, selectedPlayerIndex);
-      }
-    },
-    [setTempPlayer, selectedPlayer, debouncedUpdatePlayer, selectedPlayerIndex]
-  );
-
-  const handlePrefixChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!tempPlayer) return;
-    updatePlayer({ ...tempPlayer, prefix: e.target.value });
-  };
-
-  const handleGamerTagChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!tempPlayer) return;
-    updatePlayer({ ...tempPlayer, gamerTag: e.target.value });
-  };
-
-  const handleTwitterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!tempPlayer) return;
-    updatePlayer({ ...tempPlayer, twitter: e.target.value });
+    const newPlayer: PlayerInfo = {
+      ...tempPlayer,
+      [e.target.name]: e.target.value,
+    };
+    setTempPlayer(newPlayer);
+    debouncedUpdatePlayer(newPlayer, selectedPlayerIndex);
   };
 
   const handleCustomImgSrcChange = (file?: File) => {
-    if (!tempPlayer || !file) return;
+    if (!tempPlayer) return;
+
+    if (!file) {
+      const newPlayer: PlayerInfo = {
+        ...tempPlayer,
+        avatarSrc: undefined,
+      };
+      setTempPlayer(newPlayer);
+      debouncedUpdatePlayer(newPlayer, selectedPlayerIndex);
+      return;
+    }
+
     const url = URL.createObjectURL(file);
-    updatePlayer({ ...tempPlayer, avatarSrc: url });
+    const newPlayer: PlayerInfo = {
+      ...tempPlayer,
+      avatarSrc: url,
+    };
+    setTempPlayer(newPlayer);
+    debouncedUpdatePlayer(newPlayer, selectedPlayerIndex);
+  };
+
+  const handleCharactersChange = (characters: CharacerData[]) => {
+    if (!tempPlayer) return;
+    const newPlayer: PlayerInfo = {
+      ...tempPlayer,
+      characters,
+    };
+    setTempPlayer(newPlayer);
+    debouncedUpdatePlayer(newPlayer, selectedPlayerIndex);
   };
 
   return (
     <div className={className}>
+      <PlayerSelector />
       <Input
         id="prefix"
+        name="prefix"
         type="text"
         value={tempPlayer?.prefix ?? ""}
-        onChange={handlePrefixChange}
+        onChange={handleChange}
         placeholder="Prefix"
         disabled={!selectedPlayer}
       />
       <Input
         id="gamerTag"
+        name="gamerTag"
         type="text"
         value={tempPlayer?.gamerTag ?? ""}
-        onChange={handleGamerTagChange}
+        onChange={handleChange}
         placeholder="Gamer Tag"
         disabled={!selectedPlayer}
       />
       <Input
         id="twitter"
+        name="twitter"
         type="text"
         value={tempPlayer?.twitter ?? ""}
-        onChange={handleTwitterChange}
+        onChange={handleChange}
         placeholder="Twitter"
         disabled={!selectedPlayer}
       />
@@ -128,8 +139,8 @@ export const PlayerForm = ({ className }: Props) => {
         onChange={handleCustomImgSrcChange}
       />
       <CharacterEditor
-        player={tempPlayer}
-        updatePlayer={updatePlayer}
+        characters={tempPlayer?.characters ?? []}
+        onCharactersChange={handleCharactersChange}
         disabled={!selectedPlayer}
       />
     </div>
