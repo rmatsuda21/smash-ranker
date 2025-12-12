@@ -14,6 +14,15 @@ export const ImageConfigEditor = ({ element, onUpdateElement }: Props) => {
     setElementConfig(element);
   }, [element]);
 
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newConfig = {
+      ...elementConfig,
+      src: event.target.value,
+    };
+    setElementConfig(newConfig);
+    debouncedUpdateElementConfig(newConfig);
+  };
+
   const debouncedUpdateElementConfig = useMemo(
     () =>
       debounce((elementConfig: ImageElementConfig) => {
@@ -22,14 +31,6 @@ export const ImageConfigEditor = ({ element, onUpdateElement }: Props) => {
     [onUpdateElement]
   );
 
-  useEffect(() => {
-    debouncedUpdateElementConfig(elementConfig);
-
-    return () => {
-      debouncedUpdateElementConfig.cancel();
-    };
-  }, [elementConfig, debouncedUpdateElementConfig]);
-
   return (
     <div>
       <label htmlFor="src">Image Source</label>
@@ -37,12 +38,7 @@ export const ImageConfigEditor = ({ element, onUpdateElement }: Props) => {
         id="src"
         type="text"
         value={elementConfig.src}
-        onChange={(event) => {
-          setElementConfig({
-            ...elementConfig,
-            src: event.currentTarget.value,
-          });
-        }}
+        onChange={handleChange}
       />
     </div>
   );

@@ -23,17 +23,21 @@ export const TextConfigEditor = ({ element, onUpdateElement }: Props) => {
   }, [element]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setElementConfig({
+    const newConfig = {
       ...elementConfig,
       [event.target.name]: event.target.value,
-    });
+    };
+    setElementConfig(newConfig);
+    debouncedUpdateElementConfig(newConfig);
   };
 
   const handleFontWeightChange = (value: number) => {
-    setElementConfig({
+    const newConfig = {
       ...elementConfig,
       fontWeight: value,
-    });
+    };
+    setElementConfig(newConfig);
+    debouncedUpdateElementConfig(newConfig);
   };
 
   const debouncedUpdateElementConfig = useMemo(
@@ -43,14 +47,6 @@ export const TextConfigEditor = ({ element, onUpdateElement }: Props) => {
       }, 100),
     [onUpdateElement]
   );
-
-  useEffect(() => {
-    debouncedUpdateElementConfig(elementConfig);
-
-    return () => {
-      debouncedUpdateElementConfig.cancel();
-    };
-  }, [elementConfig, debouncedUpdateElementConfig]);
 
   return (
     <div>

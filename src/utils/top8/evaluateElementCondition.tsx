@@ -14,12 +14,7 @@ const getConditionMap = (
     [LayoutPlaceholder.PLAYER_PREFIX]: Boolean(player?.prefix),
     [LayoutPlaceholder.TOURNAMENT_NAME]: Boolean(tournament?.tournamentName),
     [LayoutPlaceholder.EVENT_NAME]: Boolean(tournament?.eventName),
-    [LayoutPlaceholder.TOURNAMENT_DATE]: Boolean(
-      tournament?.date &&
-        (typeof tournament.date === "string"
-          ? new Date(tournament.date).toLocaleDateString()
-          : tournament.date.toLocaleDateString())
-    ),
+    [LayoutPlaceholder.TOURNAMENT_DATE]: Boolean(tournament?.date),
     [LayoutPlaceholder.TOURNAMENT_LOCATION]:
       Boolean(tournament?.location.city) &&
       Boolean(tournament?.location.state) &&

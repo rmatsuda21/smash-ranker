@@ -52,36 +52,34 @@ export const TournamentConfigEditor = () => {
     [dispatch]
   );
 
-  useEffect(() => {
-    debouncedUpdateTournament(tempTournament);
-
-    return () => {
-      debouncedUpdateTournament.cancel();
-    };
-  }, [tempTournament, debouncedUpdateTournament]);
-
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTempTournament({
+    const newTournament = {
       ...tempTournament,
       [event.target.name]: event.target.value,
-    });
+    };
+    setTempTournament(newTournament);
+    debouncedUpdateTournament(newTournament);
   };
 
   const handleLocationChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTempTournament({
+    const newTournament = {
       ...tempTournament,
       location: {
         ...tempTournament.location,
         [event.target.name]: event.target.value,
       },
-    });
+    };
+    setTempTournament(newTournament);
+    debouncedUpdateTournament(newTournament);
   };
 
   const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTempTournament({
+    const newTournament = {
       ...tempTournament,
       date: parseDateForInput(event.target.value),
-    });
+    };
+    setTempTournament(newTournament);
+    debouncedUpdateTournament(newTournament);
   };
 
   const handleIconChange = (file?: File) => {
