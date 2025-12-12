@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Layer, Stage } from "react-konva";
 import cn from "classnames";
 
@@ -43,25 +43,34 @@ export const PlayerElementEditor = ({ className }: Props) => {
     });
   }, [basePlayer.elements, selectedFont, basePlayer.size, tournament]);
 
-  const handleAddElement = (element: ElementConfig) => {
-    canvasDispatch({
-      type: "UPDATE_BASE_PLAYER_CONFIG",
-      payload: {
-        elements: [...basePlayer.elements, element],
-      },
-    });
-  };
+  const handleAddElement = useCallback(
+    (element: ElementConfig) => {
+      canvasDispatch({
+        type: "UPDATE_BASE_PLAYER_CONFIG",
+        payload: {
+          elements: [...basePlayer.elements, element],
+        },
+      });
+    },
+    [canvasDispatch, basePlayer.elements]
+  );
 
-  const handleElementSelect = (index: number) => {
-    setSelectedElementIndex(index);
-  };
+  const handleElementSelect = useCallback(
+    (index: number) => {
+      setSelectedElementIndex(index);
+    },
+    [setSelectedElementIndex]
+  );
 
-  const handleUpdateElement = (element: ElementConfig) => {
-    canvasDispatch({
-      type: "UPDATE_BASE_ELEMENT_CONFIG",
-      payload: { index: selectedElementIndex, element },
-    });
-  };
+  const handleUpdateElement = useCallback(
+    (element: ElementConfig) => {
+      canvasDispatch({
+        type: "UPDATE_BASE_ELEMENT_CONFIG",
+        payload: { index: selectedElementIndex, element },
+      });
+    },
+    [canvasDispatch, selectedElementIndex]
+  );
 
   return (
     <div className={cn(styles.wrapper, className)}>
