@@ -65,6 +65,7 @@ const canvasReducer = (
     case "FONT_LOADED":
       return {
         fonts: { ...state.fonts, [action.payload]: "loaded" },
+        selectedFont: action.payload,
         fetchingFont: false,
       };
     case "FONT_FAILED":
