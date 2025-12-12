@@ -50,6 +50,8 @@ const createTextElement: ElementCreator<TextElementConfig> = ({
       shadowBlur={element.shadowBlur}
       shadowOffset={element.shadowOffset}
       shadowOpacity={element.shadowOpacity}
+      stroke={element.stroke}
+      strokeWidth={element.strokeWidth}
     />
   );
 };
@@ -75,10 +77,13 @@ const createSmartTextElement: ElementCreator<SmartTextElementConfig> = ({
       text={text}
       align={element.align ?? "left"}
       verticalAlign={element.verticalAlign}
+      anchor={element.anchor}
       shadowColor={element.shadowColor}
       shadowBlur={element.shadowBlur}
       shadowOffset={element.shadowOffset}
       shadowOpacity={element.shadowOpacity}
+      stroke={element.stroke}
+      strokeWidth={element.strokeWidth}
     />
   );
 };

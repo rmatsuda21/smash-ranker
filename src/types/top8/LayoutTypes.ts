@@ -63,6 +63,16 @@ export interface SmartTextElementConfig
   fill?: string;
   align?: "left" | "center" | "right";
   verticalAlign?: "top" | "middle" | "bottom";
+  anchor?:
+    | "topLeft"
+    | "topRight"
+    | "bottomLeft"
+    | "bottomRight"
+    | "bottomMiddle"
+    | "topMiddle"
+    | "leftMiddle"
+    | "rightMiddle"
+    | "center";
   shadowColor?: string;
   shadowBlur?: number;
   shadowOffset?: { x: number; y: number };

@@ -41,7 +41,6 @@ export const CanvasConfig = ({ className }: Props) => {
     dispatch({ type: "CLEAR_SELECTED_PLAYER" });
     tournamentDispatch({ type: "CLEAR_SELECTED_ELEMENT" });
 
-    // Small delay to ensure selections are cleared before capturing
     await new Promise((resolve) => setTimeout(resolve, 50));
 
     const dataURL = stageRef.toDataURL({
@@ -50,7 +49,6 @@ export const CanvasConfig = ({ className }: Props) => {
 
     const finalFilename = filename || "ranker.png";
 
-    // Try Web Share API first (works well on iOS/iPad)
     if (navigator.share && isIOS()) {
       try {
         const blob = dataURLtoBlob(dataURL);
@@ -62,30 +60,25 @@ export const CanvasConfig = ({ className }: Props) => {
         });
         return;
       } catch (err) {
-        // User cancelled or share failed, fall through to alternative
         if ((err as Error).name === "AbortError") return;
       }
     }
 
-    // Fallback for iOS: open in new tab for long-press save
     if (isIOS()) {
       const blob = dataURLtoBlob(dataURL);
       const blobURL = URL.createObjectURL(blob);
       const newWindow = window.open(blobURL, "_blank");
 
       if (newWindow) {
-        // Clean up blob URL after window loads
         newWindow.onload = () => {
           setTimeout(() => URL.revokeObjectURL(blobURL), 100);
         };
       } else {
-        // If popup blocked, try direct navigation
         window.location.href = blobURL;
       }
       return;
     }
 
-    // Standard download for desktop browsers
     const link = document.createElement("a");
     link.download = finalFilename;
     link.href = dataURL;

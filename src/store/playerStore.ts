@@ -59,14 +59,19 @@ const DEFAULT_PLAYER: PlayerInfo = {
   prefix: "",
 };
 
-const initialState: PlayerState = {
-  players: new Array(8).fill(null).map((_, index) => ({
-    ...DEFAULT_PLAYER,
+const defaultPlayers: PlayerInfo[] = new Array(8)
+  .fill(DEFAULT_PLAYER)
+  .map((player, index) => ({
+    ...player,
     name: `Player ${index + 1}`,
     gamerTag: `Player ${index + 1}`,
     id: index.toString(),
     placement: index + 1,
-  })),
+    twitter: index === 0 ? "chikyunojin" : undefined,
+  }));
+
+const initialState: PlayerState = {
+  players: defaultPlayers,
   selectedPlayerIndex: -1,
   fetching: false,
   error: "",
