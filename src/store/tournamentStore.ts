@@ -23,6 +23,8 @@ type TournamentAction =
   | { type: "SET_ERROR"; payload: string }
   | { type: "SET_SELECTED_ELEMENT_INDEX"; payload: number }
   | { type: "CLEAR_SELECTED_ELEMENT" }
+  | { type: "SET_ICON_SRC"; payload: string }
+  | { type: "CLEAR_ICON_SRC" }
   | { type: "RESET" };
 
 const tournamentReducer = (
@@ -57,6 +59,10 @@ const tournamentReducer = (
       return { selectedElementIndex: action.payload };
     case "CLEAR_SELECTED_ELEMENT":
       return { selectedElementIndex: -1 };
+    case "SET_ICON_SRC":
+      return { info: { ...state.info, iconSrc: action.payload } };
+    case "CLEAR_ICON_SRC":
+      return { info: { ...state.info, iconSrc: undefined } };
     case "RESET":
       return initialState;
     default:

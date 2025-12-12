@@ -9,6 +9,7 @@ import { usePlayerStore } from "@/store/playerStore";
 import { PlayerLayoutConfig } from "@/types/top8/LayoutTypes";
 import { createKonvaElements } from "@/utils/top8/elementFactory";
 import { SelectableElement } from "@/components/top8/Canvas/SelectableElement";
+import { useTournamentStore } from "@/store/tournamentStore";
 
 type Props = {
   player: PlayerInfo;
@@ -33,6 +34,7 @@ const PlayerComponent = ({
   const fonts = useCanvasStore((state) => state.fonts);
   const canvasDispatch = useCanvasStore((state) => state.dispatch);
   const dispatch = usePlayerStore((state) => state.dispatch);
+  const tournamentInfo = useTournamentStore((state) => state.info);
 
   // const isUsingBaseElements = !!layout.players[index]?.elements;
 
@@ -104,12 +106,20 @@ const PlayerComponent = ({
       createKonvaElements(config.elements ?? [], {
         fontFamily,
         player: { ...player, placement: index + 1 },
+        tournament: tournamentInfo,
         containerSize: {
           width: playerConfig.size?.width,
           height: playerConfig.size?.height,
         },
       }),
-    [config.elements, fontFamily, player, index, playerConfig.size]
+    [
+      config.elements,
+      fontFamily,
+      player,
+      index,
+      playerConfig.size,
+      tournamentInfo,
+    ]
   );
 
   return (

@@ -18,6 +18,9 @@ const getPlaceholderMap = (
     }${
       tournament?.location.country ? `, ${tournament?.location.country}` : ""
     }`,
+    [LayoutPlaceholder.TOURNAMENT_CITY]: tournament?.location.city,
+    [LayoutPlaceholder.TOURNAMENT_STATE]: tournament?.location.state,
+    [LayoutPlaceholder.TOURNAMENT_COUNTRY]: tournament?.location.country,
     [LayoutPlaceholder.ENTRANTS]: tournament?.entrants?.toString(),
     [LayoutPlaceholder.PLAYER_TWITTER]: player?.twitter,
   };
@@ -30,6 +33,6 @@ export const replacePlaceholders = (
   const map = getPlaceholderMap(context);
   return text.replace(
     /<[^>]+>/g,
-    (match) => map[match as LayoutPlaceholder] ?? match
+    (match) => map[match as LayoutPlaceholder] ?? ""
   );
 };

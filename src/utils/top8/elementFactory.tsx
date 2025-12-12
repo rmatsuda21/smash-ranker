@@ -273,10 +273,7 @@ export const createKonvaElements = (
         return null;
       }
 
-      if (
-        element.condition &&
-        !evaluateElementCondition(element.condition, context)
-      ) {
+      if (!evaluateElementCondition(element.condition, context)) {
         return null;
       }
 

@@ -4,7 +4,7 @@ import { Button } from "@radix-ui/themes";
 import { useFetchTop8 } from "@/hooks/top8/useFetchTop8";
 import { usePlayerStore } from "@/store/playerStore";
 import { useTournamentStore } from "@/store/tournamentStore";
-import { TournamentEditor } from "@/components/top8/TournamentConfig/TournamentEditor/TournamentEditor";
+import { TournamentConfigEditor } from "@/components/top8/TournamentConfig/TournamentConfigEditor/TournamentConfigEditor";
 import { Input } from "@/components/shared/Input/Input";
 
 const urlToSlug = (url: string) => {
@@ -59,7 +59,7 @@ export const TournamentConfig = ({ className }: Props) => {
       <Button loading={isFetching} onClick={handleLoadClick}>
         Load
       </Button>
-      <TournamentEditor />
+      <TournamentConfigEditor />
     </div>
   );
 };
