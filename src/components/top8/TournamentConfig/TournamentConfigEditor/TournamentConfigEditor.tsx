@@ -83,7 +83,11 @@ export const TournamentConfigEditor = () => {
   };
 
   const handleIconChange = (file?: File) => {
-    if (!file) return;
+    if (!file) {
+      dispatch({ type: "CLEAR_ICON_SRC" });
+      return;
+    }
+
     const url = URL.createObjectURL(file);
     dispatch({ type: "SET_ICON_SRC", payload: url });
   };

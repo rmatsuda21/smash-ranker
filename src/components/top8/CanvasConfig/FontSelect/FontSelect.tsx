@@ -51,9 +51,6 @@ export const FontSelect = () => {
         .catch((error) => {
           console.error(`Failed to load font "${fontFamily}":`, error);
           dispatch({ type: "FONT_FAILED", payload: fontFamily });
-        })
-        .finally(() => {
-          dispatch({ type: "SET_SELECTED_FONT", payload: fontFamily });
         });
     },
     [dispatch]

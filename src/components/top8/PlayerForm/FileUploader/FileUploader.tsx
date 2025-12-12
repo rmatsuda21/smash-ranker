@@ -1,5 +1,6 @@
 import { Button } from "@radix-ui/themes";
 import { useEffect, useRef, useState } from "react";
+import { IoIosRemoveCircle } from "react-icons/io";
 import cn from "classnames";
 
 import styles from "./FileUploader.module.scss";
@@ -31,6 +32,13 @@ export const FileUploader = ({ value, disabled, onChange }: Props) => {
 
   const handleButtonClick = () => {
     inputRef.current?.click();
+  };
+
+  const handleRemoveClick = () => {
+    onChange(undefined);
+    if (inputRef.current) {
+      inputRef.current.value = "";
+    }
   };
 
   useEffect(() => {
@@ -97,6 +105,11 @@ export const FileUploader = ({ value, disabled, onChange }: Props) => {
       </Button>
       <span>Or drag and drop</span>
       {value && <img src={value} alt="Preview" width={100} />}
+      {value && (
+        <Button onClick={handleRemoveClick} size="1">
+          <IoIosRemoveCircle />
+        </Button>
+      )}
     </label>
   );
 };

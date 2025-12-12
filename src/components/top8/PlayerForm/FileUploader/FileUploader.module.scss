@@ -11,7 +11,7 @@
   background-color: #222;
   cursor: pointer;
 
-  &:hover:not(.disabled) {
+  &:hover:not(.disabled):not(:has(button:hover)) {
     background-color: #333;
   }
 
