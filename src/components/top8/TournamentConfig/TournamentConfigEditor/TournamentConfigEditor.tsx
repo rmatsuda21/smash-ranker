@@ -4,7 +4,7 @@ import { debounce, isEqual } from "lodash";
 import { useTournamentStore } from "@/store/tournamentStore";
 import { TournamentInfo } from "@/types/top8/TournamentTypes";
 import { Input } from "@/components/shared/Input/Input";
-import { FileUploader } from "@/components/top8/PlayerForm/FileUploader/FileUploader";
+import { FileUploader } from "@/components/shared/FileUploader/FileUploader";
 
 import styles from "./TournamentEditor.module.scss";
 

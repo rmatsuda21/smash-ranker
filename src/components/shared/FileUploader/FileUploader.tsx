@@ -34,7 +34,10 @@ export const FileUploader = ({ value, disabled, onChange }: Props) => {
     inputRef.current?.click();
   };
 
-  const handleRemoveClick = () => {
+  const handleRemoveClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+
     onChange(undefined);
     if (inputRef.current) {
       inputRef.current.value = "";

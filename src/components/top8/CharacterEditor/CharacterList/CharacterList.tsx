@@ -1,46 +1,33 @@
 import cn from "classnames";
 
-import { PlayerInfo } from "@/types/top8/PlayerTypes";
+import { CharacerData } from "@/types/top8/PlayerTypes";
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
 
 import styles from "./CharacterList.module.scss";
 
 type Props = {
-  player?: PlayerInfo;
-  updatePlayer: (player: PlayerInfo) => void;
+  characters?: CharacerData[];
+  onCharactersChange: (characters: CharacerData[]) => void;
   selectedIndex: number;
   setSelectedIndex: (index: number) => void;
   disabled?: boolean;
 };
 
 export const CharacterList = ({
-  player,
-  updatePlayer,
+  characters,
+  onCharactersChange,
   selectedIndex,
   setSelectedIndex,
   disabled = false,
 }: Props) => {
   const addCharacter = () => {
-    if (!player) return;
-    updatePlayer({
-      ...player,
-      characters: [...player.characters, { id: "1293", alt: 0 }],
-    });
+    if (!characters) return;
+    onCharactersChange([...characters, { id: "1293", alt: 0 }]);
   };
 
   const removeCharacter = (index: number) => {
-    if (!player || player.characters.length <= 1) return;
-
-    const newPlayer = {
-      ...player,
-      characters: player.characters.filter((_, i) => i !== index),
-    };
-
-    if (selectedIndex >= newPlayer.characters.length) {
-      setSelectedIndex(newPlayer.characters.length - 1);
-    }
-
-    updatePlayer(newPlayer);
+    if (!characters || characters.length <= 1) return;
+    onCharactersChange(characters.filter((_, i) => i !== index));
   };
 
   const handleSelect = (index: number) => {
@@ -53,12 +40,12 @@ export const CharacterList = ({
 
   return (
     <div className={styles.wrapper}>
-      {player?.characters.map((char, i) => (
+      {characters?.map((char, i) => (
         <button
           key={`${char.id}-${i}`}
           className={cn(styles.button, {
             [styles.selected]: selectedIndex === i,
-            [styles.only]: player?.characters.length === 1,
+            [styles.only]: characters?.length === 1,
           })}
           onClick={() => handleSelect(i)}
         >
