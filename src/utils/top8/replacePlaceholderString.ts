@@ -1,6 +1,13 @@
 import { LayoutPlaceholder } from "@/consts/top8/placeholders";
 import { ElementFactoryContext } from "@/types/top8/ElementFactoryTypes";
 
+const formatDate = (date: Date | string | undefined): string | undefined => {
+  if (!date) return undefined;
+  const dateObj = typeof date === "string" ? new Date(date) : date;
+  if (isNaN(dateObj.getTime())) return undefined;
+  return dateObj.toLocaleDateString();
+};
+
 const getPlaceholderMap = (
   context: ElementFactoryContext
 ): Record<LayoutPlaceholder, string | undefined> => {
@@ -12,7 +19,7 @@ const getPlaceholderMap = (
     [LayoutPlaceholder.PLAYER_PREFIX]: player?.prefix,
     [LayoutPlaceholder.TOURNAMENT_NAME]: tournament?.tournamentName,
     [LayoutPlaceholder.EVENT_NAME]: tournament?.eventName,
-    [LayoutPlaceholder.TOURNAMENT_DATE]: tournament?.date?.toLocaleDateString(),
+    [LayoutPlaceholder.TOURNAMENT_DATE]: formatDate(tournament?.date),
     [LayoutPlaceholder.TOURNAMENT_LOCATION]: `${tournament?.location.city}, ${
       tournament?.location.state
     }${

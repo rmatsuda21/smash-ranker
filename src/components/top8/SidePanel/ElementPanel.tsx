@@ -1,3 +1,5 @@
+import { useCallback } from "react";
+
 import { useCanvasStore } from "@/store/canvasStore";
 import { useTournamentStore } from "@/store/tournamentStore";
 import { ElementEditor } from "@/components/top8/ElementEditor/ElementEditor";
@@ -15,23 +17,35 @@ export const ElementPanel = ({ className }: Props) => {
   const canvasDispatch = useCanvasStore((state) => state.dispatch);
   const tournamentDispatch = useTournamentStore((state) => state.dispatch);
 
-  const handleAddElement = (element: ElementConfig) => {
-    canvasDispatch({
-      type: "ADD_TOURNAMENT_ELEMENT",
-      payload: element,
-    });
-  };
+  const handleAddElement = useCallback(
+    (element: ElementConfig) => {
+      canvasDispatch({
+        type: "ADD_TOURNAMENT_ELEMENT",
+        payload: element,
+      });
+    },
+    [canvasDispatch]
+  );
 
-  const handleElementSelect = (index: number) => {
-    tournamentDispatch({ type: "SET_SELECTED_ELEMENT_INDEX", payload: index });
-  };
+  const handleElementSelect = useCallback(
+    (index: number) => {
+      tournamentDispatch({
+        type: "SET_SELECTED_ELEMENT_INDEX",
+        payload: index,
+      });
+    },
+    [tournamentDispatch]
+  );
 
-  const handleUpdateElement = (element: ElementConfig) => {
-    canvasDispatch({
-      type: "EDIT_TOURNAMENT_ELEMENT",
-      payload: { index: selectedElementIndex, element },
-    });
-  };
+  const handleUpdateElement = useCallback(
+    (element: ElementConfig) => {
+      canvasDispatch({
+        type: "EDIT_TOURNAMENT_ELEMENT",
+        payload: { index: selectedElementIndex, element },
+      });
+    },
+    [canvasDispatch, selectedElementIndex]
+  );
 
   return (
     <div className={className}>

@@ -2,11 +2,11 @@ import { useCallback, useEffect, useMemo, useRef } from "react";
 import { Group, Layer, Transformer } from "react-konva";
 import { Transformer as KonvaTransformer } from "konva/lib/shapes/Transformer";
 import { Group as KonvaGroup } from "konva/lib/Group";
+import { KonvaEventObject } from "konva/lib/Node";
 
 import { useCanvasStore } from "@/store/canvasStore";
 import { useTournamentStore } from "@/store/tournamentStore";
 import { createKonvaElements } from "@/utils/top8/elementFactory";
-import { KonvaEventObject } from "konva/lib/Node";
 
 export const TournamentLayer = () => {
   const selectedFont = useCanvasStore((state) => state.selectedFont);
@@ -37,8 +37,13 @@ export const TournamentLayer = () => {
       groupRef.current
     ) {
       const node = groupRef.current.children[selectedElementIndex];
+      const visible = node?.attrs.visible;
       if (node) {
-        transformerRef.current.nodes([node]);
+        if (visible) {
+          transformerRef.current.nodes([node]);
+        } else {
+          transformerRef.current.nodes([]);
+        }
       }
     } else if (transformerRef.current) {
       transformerRef.current.nodes([]);

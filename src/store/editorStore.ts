@@ -1,4 +1,6 @@
 import { create } from "zustand";
+import { devtools } from "zustand/middleware";
+
 import { EditorTab, EditorTabs } from "@/types/top8/EditorTypes";
 
 interface EditorState {
@@ -29,8 +31,13 @@ interface EditorStore extends EditorState {
   dispatch: (action: EditorAction) => void;
 }
 
-export const useEditorStore = create<EditorStore>((set) => ({
-  ...initialState,
-  dispatch: (action: EditorAction) =>
-    set((state) => editorReducer(state, action)),
-}));
+export const useEditorStore = create<EditorStore>()(
+  devtools(
+    (set) => ({
+      ...initialState,
+      dispatch: (action: EditorAction) =>
+        set((state) => editorReducer(state, action), false, action),
+    }),
+    { name: "EditorStore" }
+  )
+);

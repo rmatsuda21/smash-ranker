@@ -1,6 +1,10 @@
-import { LayoutPlaceholder } from "@/consts/top8/placeholders";
-import { ComponentProps } from "react";
+import { type ComponentProps } from "react";
 import { Group, Image, Rect, Text } from "react-konva";
+
+import { LayoutPlaceholder } from "@/consts/top8/placeholders";
+import { RenderCondition } from "@/consts/top8/renderConditions";
+
+export type CustomImageFillMode = "contain" | "cover";
 
 export type ElementType =
   | "text"
@@ -11,7 +15,8 @@ export type ElementType =
   | "svg"
   | "customImage"
   | "characterImage"
-  | "altCharacterImage";
+  | "altCharacterImage"
+  | "tournamentIcon";
 
 export interface CanvasConfig {
   size: { width: number; height: number };
@@ -28,7 +33,7 @@ interface BaseElementConfig {
   clip?: boolean;
   name?: string;
   disabled?: boolean;
-  condition?: LayoutPlaceholder;
+  conditions?: (LayoutPlaceholder | RenderCondition)[];
 }
 
 export interface TextElementConfig
@@ -90,6 +95,8 @@ export interface CustomImageElementConfig
     Partial<ComponentProps<typeof Image>> {
   type: "customImage";
   src: string;
+  fillMode?: CustomImageFillMode;
+  align?: "center" | "left" | "right" | "top" | "bottom";
 }
 
 export interface CharacterImageElementConfig
@@ -111,6 +118,14 @@ export interface SvgElementConfig
   palette: Record<string, string>;
 }
 
+export interface TournamentIconElementConfig
+  extends BaseElementConfig,
+    Partial<ComponentProps<typeof Image>> {
+  type: "tournamentIcon";
+  fillMode?: CustomImageFillMode;
+  align?: "center" | "left" | "right" | "top" | "bottom";
+}
+
 export type ElementConfig =
   | TextElementConfig
   | SmartTextElementConfig
@@ -120,7 +135,8 @@ export type ElementConfig =
   | AltCharacterImageElementConfig
   | RectElementConfig
   | CustomImageElementConfig
-  | SvgElementConfig;
+  | SvgElementConfig
+  | TournamentIconElementConfig;
 export interface LayerConfig {
   elements: ElementConfig[];
 }

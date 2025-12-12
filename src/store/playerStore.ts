@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { devtools } from "zustand/middleware";
 
 import { PlayerInfo } from "@/types/top8/PlayerTypes";
 
@@ -75,8 +76,13 @@ interface PlayerStore extends PlayerState {
   dispatch: (action: PlayerAction) => void;
 }
 
-export const usePlayerStore = create<PlayerStore>((set) => ({
-  ...initialState,
-  dispatch: (action: PlayerAction) =>
-    set((state) => playerReducer(state, action)),
-}));
+export const usePlayerStore = create<PlayerStore>()(
+  devtools(
+    (set) => ({
+      ...initialState,
+      dispatch: (action: PlayerAction) =>
+        set((state) => playerReducer(state, action), false, action),
+    }),
+    { name: "PlayerStore" }
+  )
+);

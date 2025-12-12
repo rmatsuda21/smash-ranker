@@ -6,6 +6,7 @@ export const useCustomImage = ({
   width,
   height,
   fillMode = "contain",
+  align = "center",
   offset = { x: 0, y: 0 },
   onReady,
   onError,
@@ -14,6 +15,7 @@ export const useCustomImage = ({
   width: number;
   height: number;
   fillMode: "contain" | "cover";
+  align?: "center" | "left" | "right" | "top" | "bottom";
   offset: { x: number; y: number };
   onReady?: () => void;
   onError?: (error: Error) => void;
@@ -68,7 +70,14 @@ export const useCustomImage = ({
         // Image is wider than container
         if (fillMode === "contain") {
           imgHeight = width / imageAspectRatio;
-          imgY = (height - imgHeight) / 2;
+          const remainingHeight = height - imgHeight;
+          if (align === "top") {
+            imgY = 0;
+          } else if (align === "bottom") {
+            imgY = remainingHeight;
+          } else {
+            imgY = remainingHeight / 2;
+          }
         } else {
           imgWidth = height * imageAspectRatio;
           imgX = (width - imgWidth) / 2;
@@ -77,7 +86,14 @@ export const useCustomImage = ({
         // Image is taller than container
         if (fillMode === "contain") {
           imgWidth = height * imageAspectRatio;
-          imgX = (width - imgWidth) / 2;
+          const remainingWidth = width - imgWidth;
+          if (align === "left") {
+            imgX = 0;
+          } else if (align === "right") {
+            imgX = remainingWidth;
+          } else {
+            imgX = remainingWidth / 2;
+          }
         } else {
           imgHeight = width / imageAspectRatio;
           imgY = (height - imgHeight) / 2;
@@ -118,7 +134,17 @@ export const useCustomImage = ({
     };
 
     createImage();
-  }, [image, width, height, offset.x, offset.y, fillMode, onReady, onError]);
+  }, [
+    image,
+    width,
+    height,
+    offset.x,
+    offset.y,
+    fillMode,
+    align,
+    onReady,
+    onError,
+  ]);
 
   return {
     finalImage,

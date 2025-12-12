@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { devtools } from "zustand/middleware";
 
 import { TournamentInfo } from "@/types/top8/TournamentTypes";
 interface TournamentState {
@@ -12,7 +13,7 @@ interface TournamentState {
 type TournamentAction =
   | { type: "SET_TOURNAMENT_NAME"; payload: string }
   | { type: "SET_EVENT_NAME"; payload: string }
-  | { type: "SET_DATE"; payload: Date }
+  | { type: "SET_DATE"; payload: string }
   | {
       type: "SET_LOCATION";
       payload: { city?: string; state?: string; country?: string };
@@ -39,7 +40,12 @@ const tournamentReducer = (
     case "SET_EVENT_NAME":
       return { info: { ...state.info, eventName: action.payload } };
     case "SET_DATE":
-      return { info: { ...state.info, date: action.payload } };
+      return {
+        info: {
+          ...state.info,
+          date: action.payload,
+        },
+      };
     case "SET_LOCATION":
       return {
         info: {
@@ -50,7 +56,12 @@ const tournamentReducer = (
     case "SET_ENTRANTS":
       return { info: { ...state.info, entrants: action.payload } };
     case "SET_TOURNAMENT_INFO":
-      return { info: action.payload };
+      return {
+        info: {
+          ...state.info,
+          ...action.payload,
+        },
+      };
     case "SET_FETCHING":
       return { fetching: action.payload };
     case "SET_ERROR":
@@ -74,7 +85,7 @@ const initialState: TournamentState = {
   info: {
     tournamentName: `Tournament Name`,
     eventName: `Event Name`,
-    date: new Date(1999, 10, 7),
+    date: new Date(1999, 10, 7).toISOString(),
     location: { city: "Somewhere", state: "World", country: "Japan" },
     entrants: 69,
   },
@@ -87,8 +98,13 @@ interface TournamentStore extends TournamentState {
   dispatch: (action: TournamentAction) => void;
 }
 
-export const useTournamentStore = create<TournamentStore>((set) => ({
-  ...initialState,
-  dispatch: (action: TournamentAction) =>
-    set((state) => tournamentReducer(state, action)),
-}));
+export const useTournamentStore = create<TournamentStore>()(
+  devtools(
+    (set) => ({
+      ...initialState,
+      dispatch: (action: TournamentAction) =>
+        set((state) => tournamentReducer(state, action), false, action),
+    }),
+    { name: "TournamentStore" }
+  )
+);

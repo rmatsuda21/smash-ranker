@@ -1,7 +1,10 @@
 import { LayoutPlaceholder } from "@/consts/top8/placeholders";
+import { RenderCondition } from "@/consts/top8/renderConditions";
 import { ElementFactoryContext } from "@/types/top8/ElementFactoryTypes";
 
-const getConditionMap = (context: ElementFactoryContext) => {
+const getConditionMap = (
+  context: ElementFactoryContext
+): Record<LayoutPlaceholder | RenderCondition, boolean> => {
   const { player, tournament } = context;
   return {
     [LayoutPlaceholder.PLAYER_TWITTER]: Boolean(player?.twitter),
@@ -12,7 +15,10 @@ const getConditionMap = (context: ElementFactoryContext) => {
     [LayoutPlaceholder.TOURNAMENT_NAME]: Boolean(tournament?.tournamentName),
     [LayoutPlaceholder.EVENT_NAME]: Boolean(tournament?.eventName),
     [LayoutPlaceholder.TOURNAMENT_DATE]: Boolean(
-      tournament?.date?.toLocaleDateString()
+      tournament?.date &&
+        (typeof tournament.date === "string"
+          ? new Date(tournament.date).toLocaleDateString()
+          : tournament.date.toLocaleDateString())
     ),
     [LayoutPlaceholder.TOURNAMENT_LOCATION]:
       Boolean(tournament?.location.city) &&
@@ -24,13 +30,32 @@ const getConditionMap = (context: ElementFactoryContext) => {
     [LayoutPlaceholder.TOURNAMENT_COUNTRY]: Boolean(
       tournament?.location.country
     ),
+    [RenderCondition.TOURNAMENT_ICON]: Boolean(tournament?.iconSrc),
+    [RenderCondition.NOT]: true,
   };
 };
 
 export const evaluateElementCondition = (
-  condition: LayoutPlaceholder | undefined,
+  conditions: (LayoutPlaceholder | RenderCondition)[] | undefined,
   context: ElementFactoryContext
 ) => {
-  if (!condition) return true;
-  return getConditionMap(context)[condition];
+  if (!conditions) return true;
+
+  let shouldRender = true;
+  let negate = false;
+  for (const condition of conditions) {
+    if (condition === RenderCondition.NOT) {
+      negate = true;
+      continue;
+    }
+
+    const conditionValue = getConditionMap(context)[condition];
+    if (negate) {
+      shouldRender = !conditionValue;
+    } else {
+      shouldRender = conditionValue;
+    }
+    negate = false;
+  }
+  return shouldRender;
 };

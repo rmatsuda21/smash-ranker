@@ -183,8 +183,8 @@ export const useFetchTop8 = () => {
     const teamRosterSize = data?.event?.teamRosterSize;
 
     const date = data?.event?.startAt
-      ? new Date(data.event.startAt * 1000)
-      : null;
+      ? new Date(data.event.startAt * 1000).toISOString()
+      : new Date().toISOString();
 
     const tournamentInfo: TournamentInfo = {
       tournamentName: tournamentName || "",
@@ -194,7 +194,7 @@ export const useFetchTop8 = () => {
         city: city || "",
         country: country || "",
       },
-      date: date || new Date(),
+      date: date,
       entrants:
         data?.event?.entrants?.pageInfo?.total ||
         teamRosterSize?.maxPlayers ||

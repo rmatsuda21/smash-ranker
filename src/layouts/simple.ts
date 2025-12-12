@@ -1,5 +1,6 @@
 import { LayoutConfig, PlayerLayoutConfig } from "@/types/top8/LayoutTypes";
 import { LayoutPlaceholder } from "@/consts/top8/placeholders";
+import { RenderCondition } from "@/consts/top8/renderConditions";
 
 const PADDING = 40;
 const PLAYER_SPACING = 15;
@@ -41,7 +42,7 @@ const basePlayer: PlayerLayoutConfig = {
         },
         {
           type: "text",
-          condition: LayoutPlaceholder.PLAYER_TWITTER,
+          conditions: [LayoutPlaceholder.PLAYER_TWITTER],
           text: `@${LayoutPlaceholder.PLAYER_TWITTER}`,
           fontSize: 30,
           align: "center",
@@ -298,6 +299,16 @@ export const simpleLayout: LayoutConfig = {
         fontWeight: 900,
         fill: "#ffffff",
         name: "Top Text",
+        conditions: [RenderCondition.NOT, RenderCondition.TOURNAMENT_ICON],
+      },
+      {
+        id: "tournamentIcon",
+        type: "tournamentIcon",
+        position: { x: PADDING, y: PADDING },
+        size: { width: 150, height: 150 },
+        conditions: [RenderCondition.TOURNAMENT_ICON],
+        fillMode: "contain",
+        align: "top",
       },
       {
         id: "bottomText",
