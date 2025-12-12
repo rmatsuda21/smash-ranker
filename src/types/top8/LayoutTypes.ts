@@ -37,7 +37,7 @@ export interface TextElementConfig
   type: "text";
   text: string;
   fontSize?: number;
-  fontWeight?: string | number;
+  fontWeight?: number;
   fontStyle?: string;
   fill?: string;
   align?: "left" | "center" | "right";

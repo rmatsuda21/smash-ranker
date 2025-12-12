@@ -32,7 +32,7 @@ export const ElementEditor = ({
       text: "Hello",
       fill: "#ffff00",
       fontSize: 200,
-      fontWeight: "bold",
+      fontWeight: 900,
       position: { x: 0, y: 0 },
     });
   };

@@ -19,12 +19,18 @@ const getConditionMap = (context: ElementFactoryContext) => {
       Boolean(tournament?.location.state) &&
       Boolean(tournament?.location.country),
     [LayoutPlaceholder.ENTRANTS]: Boolean(tournament?.entrants),
+    [LayoutPlaceholder.TOURNAMENT_CITY]: Boolean(tournament?.location.city),
+    [LayoutPlaceholder.TOURNAMENT_STATE]: Boolean(tournament?.location.state),
+    [LayoutPlaceholder.TOURNAMENT_COUNTRY]: Boolean(
+      tournament?.location.country
+    ),
   };
 };
 
 export const evaluateElementCondition = (
-  condition: LayoutPlaceholder,
+  condition: LayoutPlaceholder | undefined,
   context: ElementFactoryContext
 ) => {
+  if (!condition) return true;
   return getConditionMap(context)[condition];
 };

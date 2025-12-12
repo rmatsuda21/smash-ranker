@@ -22,6 +22,20 @@ export const TextConfigEditor = ({ element, onUpdateElement }: Props) => {
     setElementConfig(element);
   }, [element]);
 
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setElementConfig({
+      ...elementConfig,
+      [event.target.name]: event.target.value,
+    });
+  };
+
+  const handleFontWeightChange = (value: number) => {
+    setElementConfig({
+      ...elementConfig,
+      fontWeight: value,
+    });
+  };
+
   const debouncedUpdateElementConfig = useMemo(
     () =>
       debounce((elementConfig: TextElementConfig | SmartTextElementConfig) => {
@@ -44,79 +58,54 @@ export const TextConfigEditor = ({ element, onUpdateElement }: Props) => {
         label="Text"
         type="text"
         id="text"
+        name="text"
         value={elementConfig.text}
-        onChange={(event) => {
-          setElementConfig({
-            ...elementConfig,
-            text: event.currentTarget.value,
-          });
-        }}
+        onChange={handleChange}
       />
       <Input
         label="Font Size"
         type="number"
         id="fontSize"
-        value={elementConfig.fontSize}
-        onChange={(event) => {
-          setElementConfig({
-            ...elementConfig,
-            fontSize: Number(event.currentTarget.value),
-          });
-        }}
+        name="fontSize"
+        value={elementConfig.fontSize ?? ""}
+        onChange={handleChange}
       />
       <label htmlFor="fontWeight">Font Weight</label>
       <Slider
         id="fontWeight"
+        name="fontWeight"
         value={[Number(elementConfig.fontWeight?.toString() ?? 0)]}
         min={100}
         max={900}
         step={100}
         onValueChange={(value) => {
-          setElementConfig({
-            ...elementConfig,
-            fontWeight: String(value[0]),
-          });
+          handleFontWeightChange(value[0]);
         }}
       />
       <label htmlFor="fill">Fill</label>
       <input
         id="fill"
+        name="fill"
         aria-label="Fill"
         type="color"
-        value={elementConfig.fill}
-        onChange={(event) => {
-          setElementConfig({
-            ...elementConfig,
-            fill: event.currentTarget.value,
-          });
-        }}
+        value={elementConfig.fill ?? "#ffffff"}
+        onChange={handleChange}
       />
       <Input
         label="Align"
         type="text"
         id="align"
-        value={elementConfig.align}
-        onChange={(event) => {
-          setElementConfig({
-            ...elementConfig,
-            align: event.currentTarget.value as "left" | "center" | "right",
-          });
-        }}
+        name="align"
+        value={elementConfig.align ?? ""}
+        onChange={handleChange}
       />
       <Input
         label="Vertical Align"
         type="text"
         id="verticalAlign"
-        value={elementConfig.verticalAlign}
-        onChange={(event) => {
-          setElementConfig({
-            ...elementConfig,
-            verticalAlign: event.currentTarget.value as
-              | "top"
-              | "middle"
-              | "bottom",
-          });
-        }}
+        name="verticalAlign"
+        value={elementConfig.verticalAlign ?? ""}
+        onChange={handleChange}
       />
     </div>
   );

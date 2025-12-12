@@ -22,7 +22,7 @@ const parseDateForInput = (date: string): Date => {
   return new Date(year, month - 1, day);
 };
 
-export const TournamentEditor = () => {
+export const TournamentConfigEditor = () => {
   const tournament = useTournamentStore((state) => state.info);
   const dispatch = useTournamentStore((state) => state.dispatch);
 
