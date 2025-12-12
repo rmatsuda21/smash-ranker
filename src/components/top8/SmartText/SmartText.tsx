@@ -6,7 +6,50 @@ const MIN_FONT_SIZE = 8;
 const MAX_MEASURE_ITERATIONS = 10;
 const SAFETY_MARGIN_RATIO = 0.95;
 
-type SmartTextProps = TextConfig;
+type Anchor =
+  | "topLeft"
+  | "topRight"
+  | "bottomLeft"
+  | "bottomRight"
+  | "bottomMiddle"
+  | "topMiddle"
+  | "leftMiddle"
+  | "rightMiddle"
+  | "center";
+
+type SmartTextProps = TextConfig & {
+  anchor?: Anchor;
+};
+
+function calculateAnchorOffsets(
+  node: KonvaText,
+  anchor: Anchor
+): { offsetX: number; offsetY: number } {
+  const textWidth = node.width();
+  const textHeight = node.height();
+
+  switch (anchor) {
+    case "topRight":
+      return { offsetX: textWidth, offsetY: 0 };
+    case "bottomLeft":
+      return { offsetX: 0, offsetY: textHeight };
+    case "bottomRight":
+      return { offsetX: textWidth, offsetY: textHeight };
+    case "bottomMiddle":
+      return { offsetX: 0, offsetY: textHeight };
+    case "topMiddle":
+      return { offsetX: textWidth / 2, offsetY: 0 };
+    case "leftMiddle":
+      return { offsetX: 0, offsetY: textHeight / 2 };
+    case "rightMiddle":
+      return { offsetX: textWidth, offsetY: textHeight / 2 };
+    case "center":
+      return { offsetX: textWidth / 2, offsetY: textHeight / 2 };
+    case "topLeft":
+    default:
+      return { offsetX: 0, offsetY: 0 };
+  }
+}
 
 function applyNodeTypography(node: KonvaText, props: SmartTextProps) {
   if (props.fontFamily) node.fontFamily(props.fontFamily);
@@ -55,11 +98,18 @@ export const SmartText = (props: SmartTextProps) => {
     fontSize = 16,
     width,
     text = "",
-    shadowOffset: initialShadowOffset = { x: 0, y: 0 },
+    shadowOffset: initialShadowOffset,
+    anchor = "topLeft",
+    fontFamily,
+    fontStyle,
+    padding,
+    lineHeight,
+    letterSpacing,
     ...restProps
   } = props;
 
   const [adjustedFontSize, setAdjustedFontSize] = useState(fontSize);
+  const [offsetX, setOffsetX] = useState(0);
   const [offsetY, setOffsetY] = useState(0);
   const [shadowOffset, setShadowOffset] = useState(initialShadowOffset);
   const textRef = useRef<KonvaText>(null);
@@ -67,19 +117,33 @@ export const SmartText = (props: SmartTextProps) => {
   const isCalculatingRef = useRef(false);
 
   useEffect(() => {
-    if (!width || !text) {
+    if (!text) {
       setAdjustedFontSize(fontSize);
       return;
     }
 
-    if (isCalculatingRef.current) return;
+    if (isCalculatingRef.current || !textRef.current) return;
+
+    const typographyProps = {
+      fontFamily,
+      fontStyle,
+      padding,
+      lineHeight,
+      letterSpacing,
+    };
 
     const calculateFontSize = () => {
       const node = textRef.current;
-      if (!node) return fontSize;
+      if (!node || !width) return fontSize;
 
       isCalculatingRef.current = true;
-      const fitted = computeFittedFontSize(node, text, width, fontSize, props);
+      const fitted = computeFittedFontSize(
+        node,
+        text,
+        width,
+        fontSize,
+        typographyProps
+      );
       isCalculatingRef.current = false;
 
       return fitted;
@@ -87,31 +151,34 @@ export const SmartText = (props: SmartTextProps) => {
 
     const calculateShadowOffset = () => {
       const node = textRef.current;
-      if (!node) return initialShadowOffset;
+      if (!node || !initialShadowOffset) return initialShadowOffset;
 
-      const fitted = computeFittedFontSize(node, text, width, fontSize, props);
+      const _width = width ?? node.measureSize(text).width;
+      const fitted = computeFittedFontSize(
+        node,
+        text,
+        _width,
+        fontSize,
+        typographyProps
+      );
       return {
         x: (initialShadowOffset.x * fitted) / fontSize,
         y: (initialShadowOffset.y * fitted) / fontSize,
       };
     };
 
-    const calculateOffsetY = () => {
+    const calculateAnchorOffset = () => {
       const node = textRef.current;
-      if (!node) return 0;
+      if (!node) return { offsetX: 0, offsetY: 0 };
 
-      if (props.verticalAlign === "bottom") {
-        return node.height();
-      } else if (props.verticalAlign === "middle") {
-        return (node.height() - node.fontSize()) / 2;
-      } else {
-        return 0;
-      }
+      return calculateAnchorOffsets(node, anchor);
     };
 
     const timeoutId = setTimeout(() => {
       setAdjustedFontSize(calculateFontSize());
-      setOffsetY(calculateOffsetY());
+      const anchorOffset = calculateAnchorOffset();
+      setOffsetX(anchorOffset.offsetX);
+      setOffsetY(anchorOffset.offsetY);
       setShadowOffset(calculateShadowOffset());
     }, 0);
 
@@ -119,16 +186,30 @@ export const SmartText = (props: SmartTextProps) => {
       clearTimeout(timeoutId);
       isCalculatingRef.current = false;
     };
-  }, [fontSize, width, text, initialShadowOffset, props]);
+  }, [
+    fontSize,
+    width,
+    text,
+    initialShadowOffset,
+    anchor,
+    fontFamily,
+    fontStyle,
+    padding,
+    lineHeight,
+    letterSpacing,
+  ]);
 
   return (
     <Text
       ref={textRef}
       fontSize={adjustedFontSize}
+      offsetX={offsetX}
       offsetY={offsetY}
       width={width}
       text={text}
       shadowOffset={shadowOffset}
+      fontFamily={fontFamily}
+      fontStyle={fontStyle}
       {...restProps}
     />
   );
