@@ -118,7 +118,7 @@ const basePlayer: PlayerLayoutConfig = {
       name: "Placement",
       type: "text",
       text: LayoutPlaceholder.PLAYER_PLACEMENT,
-      fontSize: 120,
+      fontSize: 150,
       fontWeight: 900,
       fill: "#ffffff",
       position: { x: 45, y: 20 },
