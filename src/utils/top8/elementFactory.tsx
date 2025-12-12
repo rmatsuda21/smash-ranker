@@ -13,6 +13,7 @@ import {
   RectElementConfig,
   CustomImageElementConfig,
   SvgElementConfig,
+  TournamentIconElementConfig,
 } from "@/types/top8/LayoutTypes";
 import {
   ElementFactoryContext,
@@ -125,16 +126,25 @@ const createCharacterImageElement: ElementCreator<
   const { player } = context;
 
   if (!player || player.characters.length === 0) {
-    return null;
+    return (
+      <Rect
+        key={`character-${index}`}
+        x={element.position.x}
+        y={element.position.y}
+        width={element.size?.width ?? 100}
+        height={element.size?.height ?? 100}
+        fill="#000000"
+      />
+    );
   }
 
   const mainCharacter = player.characters[0];
-  const imageSrc = element.usePlayerAvatar
-    ? player.avatarSrc ?? ""
-    : getCharImgUrl({
-        characterId: mainCharacter.id,
-        alt: mainCharacter.alt,
-      });
+  const imageSrc =
+    player.avatarSrc ??
+    getCharImgUrl({
+      characterId: mainCharacter.id,
+      alt: mainCharacter.alt,
+    });
 
   return (
     <CustomImage
@@ -230,6 +240,8 @@ const createCustomImageElement: ElementCreator<CustomImageElementConfig> = ({
       width={width}
       height={height}
       imageSrc={element.src}
+      fillMode={element.fillMode ?? "contain"}
+      align={element.align ?? "center"}
     />
   );
 };
@@ -251,6 +263,39 @@ const createSvgElement: ElementCreator<SvgElementConfig> = ({
   );
 };
 
+const createTournamentIconElement: ElementCreator<
+  TournamentIconElementConfig
+> = ({ element, index, context }) => {
+  const { tournament } = context;
+
+  if (!tournament?.iconSrc) {
+    return (
+      <Rect
+        key={`tournamentIcon-${index}`}
+        x={element.position.x}
+        y={element.position.y}
+        width={element.size?.width ?? 100}
+        height={element.size?.height ?? 100}
+        fill="#000000"
+      />
+    );
+  }
+
+  return (
+    <CustomImage
+      key={`tournamentIcon-${index}`}
+      x={element.position.x}
+      y={element.position.y}
+      width={element.size?.width ?? 100}
+      height={element.size?.height ?? 100}
+      imageSrc={tournament.iconSrc}
+      fillMode={element.fillMode ?? "contain"}
+      align={element.align ?? "center"}
+      offset={element.offset ?? { x: 0, y: 0 }}
+    />
+  );
+};
+
 const elementCreators = {
   text: createTextElement,
   smartText: createSmartTextElement,
@@ -261,6 +306,7 @@ const elementCreators = {
   rect: createRectElement,
   customImage: createCustomImageElement,
   svg: createSvgElement,
+  tournamentIcon: createTournamentIconElement,
 };
 
 export const createKonvaElements = (
@@ -273,9 +319,10 @@ export const createKonvaElements = (
         return null;
       }
 
-      if (!evaluateElementCondition(element.condition, context)) {
-        return null;
-      }
+      const shouldRender = evaluateElementCondition(
+        element.conditions,
+        context
+      );
 
       const creator = elementCreators[element.type] as ElementCreator<
         typeof element
@@ -296,6 +343,7 @@ export const createKonvaElements = (
           key={`group-${index}`}
           clipFunc={element.clip ? clipFunc : undefined}
           listening={false}
+          visible={shouldRender}
         >
           {el}
         </Group>

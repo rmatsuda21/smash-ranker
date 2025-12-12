@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { Stage } from "react-konva";
 import { Stage as KonvaStage } from "konva/lib/Stage";
 import cn from "classnames";
@@ -22,13 +22,7 @@ export const Canvas = ({ className }: Props) => {
   const canvasDispatch = useCanvasStore((state) => state.dispatch);
   const tournamentDispatch = useTournamentStore((state) => state.dispatch);
   const dispatch = usePlayerStore((state) => state.dispatch);
-
-  const setStageRef = useCallback(
-    (stage: KonvaStage | null) => {
-      canvasDispatch({ type: "SET_STAGE_REF", payload: stage });
-    },
-    [canvasDispatch]
-  );
+  const stageRef = useRef<KonvaStage>(null);
 
   const handleStageClick = useCallback(() => {
     dispatch({ type: "CLEAR_SELECTED_PLAYER" });
@@ -52,6 +46,12 @@ export const Canvas = ({ className }: Props) => {
     canvasDispatch({ type: "SET_LAYOUT", payload: simpleLayout });
   }, [canvasDispatch]);
 
+  useEffect(() => {
+    if (stageRef.current) {
+      canvasDispatch({ type: "SET_STAGE_REF", payload: stageRef.current });
+    }
+  }, [canvasDispatch, stageRef]);
+
   return (
     <div
       style={
@@ -65,7 +65,7 @@ export const Canvas = ({ className }: Props) => {
     >
       <div className={styles.canvasWrapper}>
         <Stage
-          ref={setStageRef}
+          ref={stageRef}
           width={layout?.canvas.size.width}
           height={layout?.canvas.size.height}
           onClick={handleStageClick}

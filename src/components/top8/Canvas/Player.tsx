@@ -10,6 +10,7 @@ import { PlayerLayoutConfig } from "@/types/top8/LayoutTypes";
 import { createKonvaElements } from "@/utils/top8/elementFactory";
 import { SelectableElement } from "@/components/top8/Canvas/SelectableElement";
 import { useTournamentStore } from "@/store/tournamentStore";
+import { useEditorStore } from "@/store/editorStore";
 
 type Props = {
   player: PlayerInfo;
@@ -35,6 +36,7 @@ const PlayerComponent = ({
   const canvasDispatch = useCanvasStore((state) => state.dispatch);
   const dispatch = usePlayerStore((state) => state.dispatch);
   const tournamentInfo = useTournamentStore((state) => state.info);
+  const editorDispatch = useEditorStore((state) => state.dispatch);
 
   // const isUsingBaseElements = !!layout.players[index]?.elements;
 
@@ -64,8 +66,9 @@ const PlayerComponent = ({
     (e: KonvaEventObject<MouseEvent>) => {
       e.cancelBubble = true;
       dispatch({ type: "SET_SELECTED_PLAYER_INDEX", payload: index });
+      editorDispatch({ type: "SET_ACTIVE_TAB", payload: "player-form" });
     },
-    [index, dispatch]
+    [index, dispatch, editorDispatch]
   );
 
   const dragBoundFunc = useCallback(

@@ -37,10 +37,6 @@ export const ElementEditor = ({
     });
   };
 
-  const handleUpdateElement = (element: ElementConfig) => {
-    onUpdateElement(element);
-  };
-
   return (
     <div className={className}>
       <Button variant="outline" size="2" onClick={addElement}>
@@ -61,7 +57,7 @@ export const ElementEditor = ({
       {selectedElementIndex !== -1 && elements?.[selectedElementIndex] && (
         <ElementConfigEditor
           element={elements?.[selectedElementIndex]}
-          onUpdateElement={handleUpdateElement}
+          onUpdateElement={onUpdateElement}
         />
       )}
     </div>

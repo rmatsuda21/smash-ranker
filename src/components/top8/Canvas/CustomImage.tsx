@@ -15,6 +15,7 @@ type Props = Omit<ComponentProps<typeof Image>, "image"> & {
   onReady?: () => void;
   onError?: (error: Error) => void;
   fillMode?: "contain" | "cover";
+  align?: "center" | "left" | "right" | "top" | "bottom";
 };
 
 const CustomImageComponent = ({
@@ -31,6 +32,7 @@ const CustomImageComponent = ({
   onReady,
   onError,
   fillMode = "contain",
+  align = "center",
   ...rest
 }: Props) => {
   const { finalImage, ref } = useCustomImage({
@@ -38,6 +40,7 @@ const CustomImageComponent = ({
     width,
     height,
     fillMode,
+    align,
     offset,
     onReady,
     onError,

@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { devtools } from "zustand/middleware";
 import { Stage } from "konva/lib/Stage";
 
 import {
@@ -146,8 +147,13 @@ interface CanvasStore extends CanvasState {
   dispatch: (action: CanvasAction) => void;
 }
 
-export const useCanvasStore = create<CanvasStore>()((set) => ({
-  ...initialState,
-  dispatch: (action: CanvasAction) =>
-    set((state) => canvasReducer(state, action)),
-}));
+export const useCanvasStore = create<CanvasStore>()(
+  devtools(
+    (set) => ({
+      ...initialState,
+      dispatch: (action: CanvasAction) =>
+        set((state) => canvasReducer(state, action), false, action),
+    }),
+    { name: "CanvasStore" }
+  )
+);

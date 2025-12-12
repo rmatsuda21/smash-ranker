@@ -1,25 +1,27 @@
-import { useEffect, useState } from "react";
-import { debounce } from "lodash";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { debounce, isEqual } from "lodash";
 
 import { useTournamentStore } from "@/store/tournamentStore";
 import { TournamentInfo } from "@/types/top8/TournamentTypes";
+import { Input } from "@/components/shared/Input/Input";
+import { FileUploader } from "@/components/top8/PlayerForm/FileUploader/FileUploader";
 
 import styles from "./TournamentEditor.module.scss";
-import { Input } from "@/components/shared/Input/Input";
 
 const DEBOUNCE_TIME = 100;
 
-const formatDateForInput = (date: Date | undefined): string => {
-  if (!date) return "";
+const formatDateForInput = (dateStr: string): string => {
+  if (!dateStr) return "";
+  const date = new Date(dateStr);
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const day = String(date.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
 };
 
-const parseDateForInput = (date: string): Date => {
+const parseDateForInput = (date: string): string => {
   const [year, month, day] = date.split("-").map(Number);
-  return new Date(year, month - 1, day);
+  return new Date(year, month - 1, day).toISOString();
 };
 
 export const TournamentConfigEditor = () => {
@@ -29,16 +31,26 @@ export const TournamentConfigEditor = () => {
   const [tempTournament, setTempTournament] =
     useState<TournamentInfo>(tournament);
 
+  const lastSyncedTournament = useRef<TournamentInfo>(tournament);
+
   useEffect(() => {
-    setTempTournament(tournament);
+    if (!isEqual(tournament, lastSyncedTournament.current)) {
+      setTempTournament(tournament);
+      lastSyncedTournament.current = tournament;
+    }
   }, [tournament]);
 
-  const debouncedUpdateTournament = debounce((tournament: TournamentInfo) => {
-    dispatch({
-      type: "SET_TOURNAMENT_INFO",
-      payload: tournament,
-    });
-  }, DEBOUNCE_TIME);
+  const debouncedUpdateTournament = useMemo(
+    () =>
+      debounce((tournament: TournamentInfo) => {
+        lastSyncedTournament.current = tournament;
+        dispatch({
+          type: "SET_TOURNAMENT_INFO",
+          payload: tournament,
+        });
+      }, DEBOUNCE_TIME),
+    [dispatch]
+  );
 
   useEffect(() => {
     debouncedUpdateTournament(tempTournament);
@@ -72,8 +84,18 @@ export const TournamentConfigEditor = () => {
     });
   };
 
+  const handleIconChange = (file?: File) => {
+    if (!file) return;
+    const url = URL.createObjectURL(file);
+    dispatch({ type: "SET_ICON_SRC", payload: url });
+  };
+
   return (
     <div className={styles.wrapper}>
+      <FileUploader
+        value={tempTournament?.iconSrc}
+        onChange={handleIconChange}
+      />
       <Input
         label="Tournament Name"
         name="tournamentName"
