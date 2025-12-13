@@ -11,7 +11,7 @@ import { createKonvaElements } from "@/utils/top8/elementFactory";
 export const TournamentLayer = () => {
   const selectedFont = useCanvasStore((state) => state.selectedFont);
   const tournamentLayout = useCanvasStore((state) => state.layout.tournament);
-  const cavnasConfig = useCanvasStore((state) => state.layout.canvas);
+  const canvasConfig = useCanvasStore((state) => state.layout.canvas);
   const tournament = useTournamentStore((state) => state.info);
   const tournamentDispatch = useTournamentStore((state) => state.dispatch);
   const selectedElementIndex = useTournamentStore(
@@ -25,9 +25,16 @@ export const TournamentLayer = () => {
       createKonvaElements(tournamentLayout?.elements ?? [], {
         fontFamily: selectedFont,
         tournament,
-        containerSize: cavnasConfig.size,
+        containerSize: canvasConfig.size,
+        colorPalette: canvasConfig.colorPalette,
       }),
-    [tournamentLayout?.elements, selectedFont, tournament, cavnasConfig.size]
+    [
+      tournamentLayout?.elements,
+      selectedFont,
+      tournament,
+      canvasConfig.size,
+      canvasConfig.colorPalette,
+    ]
   );
 
   useEffect(() => {
@@ -66,8 +73,8 @@ export const TournamentLayer = () => {
     <Layer onClick={handleLayerClick}>
       <Group
         ref={groupRef}
-        width={cavnasConfig.size.width}
-        height={cavnasConfig.size.height}
+        width={canvasConfig.size.width}
+        height={canvasConfig.size.height}
       >
         {konvaElements}
         <Transformer
