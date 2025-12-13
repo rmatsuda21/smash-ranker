@@ -278,16 +278,23 @@ export const simpleLayout: LayoutConfig = {
     },
     displayScale: 0.5,
     colorPalette: {
-      primary: "rgb(179, 0, 0)",
-      secondary: "rgb(235, 171, 64)",
-      accent: "rgb(255, 255, 255)",
-      text: "rgb(255, 255, 255)",
-      textShadow: "rgb(0, 0, 0)",
-      characterShadow: "rgb(255, 0, 0)",
+      primary: { color: "rgb(179, 0, 0)", name: "Primary" },
+      secondary: { color: "rgb(235, 171, 64)", name: "Secondary" },
+      background: { color: "rgb(0, 0, 0)", name: "Background" },
+      accent: { color: "rgba(255, 255, 255, 0.2)", name: "Accent" },
+      text: { color: "rgb(255, 255, 255)", name: "Text" },
+      textShadow: { color: "rgb(0, 0, 0)", name: "Text Shadow" },
+      characterShadow: { color: "rgb(255, 0, 0)", name: "Character Shadow" },
     },
   },
   background: {
     elements: [
+      {
+        type: "rect",
+        fill: "background",
+        position: { x: 0, y: 0 },
+        size: { width: CANVAS_WIDTH, height: CANVAS_HEIGHT },
+      },
       {
         id: "smashBall",
         type: "svg",
@@ -298,7 +305,7 @@ export const simpleLayout: LayoutConfig = {
         },
         size: { width: SMASH_BALL_SIZE, height: SMASH_BALL_SIZE },
         palette: {
-          color_1: "rgba(255, 255, 255, 0.2)",
+          color_1: "accent",
         },
       },
       {
