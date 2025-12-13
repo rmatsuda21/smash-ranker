@@ -285,27 +285,35 @@ export const simpleLayout: LayoutConfig = {
   background: {
     elements: [
       {
+        id: "smashBall",
+        type: "svg",
+        src: "/assets/top8/theme/mini/smash_ball.svg",
+        position: {
+          x: (CANVAS_WIDTH - SMASH_BALL_SIZE) / 2 + 510,
+          y: (CANVAS_HEIGHT - SMASH_BALL_SIZE) / 2 - 200,
+        },
+        size: { width: SMASH_BALL_SIZE, height: SMASH_BALL_SIZE },
+        palette: {
+          color_1: "rgba(255, 255, 255, 0.2)",
+        },
+      },
+      {
+        id: "backgroundImage",
+        type: "backgroundImage",
+        conditions: [RenderCondition.BACKGROUND_IMG],
+        position: { x: 0, y: 0 },
+        size: { width: CANVAS_WIDTH, height: CANVAS_HEIGHT },
+        fillMode: "cover",
+      },
+      {
         id: "bg",
         type: "svg",
-        src: "/assets/top8/theme/mini/bg.svg",
+        src: "/assets/top8/theme/mini/bg_frame.svg",
         position: { x: 0, y: 0 },
         size: { width: CANVAS_WIDTH, height: CANVAS_HEIGHT },
         palette: {
           color_1: "primary",
           color_2: "secondary",
-        },
-      },
-      {
-        id: "smashBall",
-        type: "svg",
-        src: "/assets/top8/theme/mini/smash_ball.svg",
-        position: {
-          x: (CANVAS_WIDTH - SMASH_BALL_SIZE) / 2 + 390,
-          y: (CANVAS_HEIGHT - SMASH_BALL_SIZE) / 2 - 300,
-        },
-        size: { width: SMASH_BALL_SIZE, height: SMASH_BALL_SIZE },
-        palette: {
-          color_1: "accent",
         },
       },
     ],

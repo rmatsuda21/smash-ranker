@@ -14,6 +14,7 @@ import {
   CustomImageElementConfig,
   SvgElementConfig,
   TournamentIconElementConfig,
+  BackgroundImageElementConfig,
 } from "@/types/top8/LayoutTypes";
 import {
   ElementFactoryContext,
@@ -32,7 +33,7 @@ const createTextElement: ElementCreator<TextElementConfig> = ({
   index,
   context,
 }) => {
-  const { fontFamily = "Arial", colorPalette } = context;
+  const { fontFamily = "Arial", canvas } = context;
   const text = replacePlaceholders(element.text, context);
 
   return (
@@ -40,18 +41,21 @@ const createTextElement: ElementCreator<TextElementConfig> = ({
       key={`text-${index}`}
       x={element.position.x}
       y={element.position.y}
-      fill={resolveColor(element.fill, colorPalette) ?? "white"}
+      fill={resolveColor(element.fill, canvas?.colorPalette) ?? "white"}
       fontSize={element.fontSize ?? 20}
       fontStyle={element.fontStyle ?? String(element.fontWeight ?? "normal")}
       fontFamily={fontFamily}
       text={text}
       align={element.align ?? "left"}
       width={element.size?.width}
-      shadowColor={resolveColor(element.shadowColor, colorPalette)}
+      shadowColor={resolveColor(element.shadowColor, canvas?.colorPalette)}
       shadowBlur={element.shadowBlur}
       shadowOffset={element.shadowOffset}
       shadowOpacity={element.shadowOpacity}
-      stroke={resolveColor(element.stroke as string | undefined, colorPalette)}
+      stroke={resolveColor(
+        element.stroke as string | undefined,
+        canvas?.colorPalette
+      )}
       strokeWidth={element.strokeWidth}
     />
   );
@@ -62,7 +66,7 @@ const createSmartTextElement: ElementCreator<SmartTextElementConfig> = ({
   index,
   context,
 }) => {
-  const { fontFamily = "Arial", colorPalette } = context;
+  const { fontFamily = "Arial", canvas } = context;
   const text = replacePlaceholders(element.text, context);
 
   return (
@@ -71,7 +75,7 @@ const createSmartTextElement: ElementCreator<SmartTextElementConfig> = ({
       x={element.position.x}
       y={element.position.y}
       width={element.size?.width}
-      fill={resolveColor(element.fill, colorPalette) ?? "white"}
+      fill={resolveColor(element.fill, canvas?.colorPalette) ?? "white"}
       fontSize={element.fontSize ?? 20}
       fontStyle={element.fontStyle ?? String(element.fontWeight ?? "normal")}
       fontFamily={fontFamily}
@@ -79,11 +83,14 @@ const createSmartTextElement: ElementCreator<SmartTextElementConfig> = ({
       align={element.align ?? "left"}
       verticalAlign={element.verticalAlign}
       anchor={element.anchor}
-      shadowColor={resolveColor(element.shadowColor, colorPalette)}
+      shadowColor={resolveColor(element.shadowColor, canvas?.colorPalette)}
       shadowBlur={element.shadowBlur}
       shadowOffset={element.shadowOffset}
       shadowOpacity={element.shadowOpacity}
-      stroke={resolveColor(element.stroke as string | undefined, colorPalette)}
+      stroke={resolveColor(
+        element.stroke as string | undefined,
+        canvas?.colorPalette
+      )}
       strokeWidth={element.strokeWidth}
     />
   );
@@ -129,7 +136,7 @@ const createGroupElement: ElementCreator<GroupElementConfig> = ({
 const createCharacterImageElement: ElementCreator<
   CharacterImageElementConfig
 > = ({ element, index, context }) => {
-  const { player, colorPalette } = context;
+  const { player, canvas } = context;
 
   if (!player || player.characters.length === 0) {
     return (
@@ -162,7 +169,7 @@ const createCharacterImageElement: ElementCreator<
       height={element.size?.height ?? 100}
       imageSrc={imageSrc}
       hasShadow
-      shadowColor={resolveColor(element.shadowColor, colorPalette)}
+      shadowColor={resolveColor(element.shadowColor, canvas?.colorPalette)}
       shadowOffset={{ x: 15, y: 15 }}
       shadowBlur={element.shadowBlur}
       shadowOpacity={element.shadowOpacity}
@@ -217,7 +224,7 @@ const createRectElement: ElementCreator<RectElementConfig> = ({
   index,
   context,
 }) => {
-  const { colorPalette } = context;
+  const { canvas } = context;
 
   return (
     <Rect
@@ -226,7 +233,7 @@ const createRectElement: ElementCreator<RectElementConfig> = ({
       y={element.position.y}
       width={element.size?.width}
       height={element.size?.height}
-      fill={resolveColor(element.fill, colorPalette) ?? "black"}
+      fill={resolveColor(element.fill, canvas?.colorPalette) ?? "black"}
     />
   );
 };
@@ -260,10 +267,12 @@ const createSvgElement: ElementCreator<SvgElementConfig> = ({
   index,
   context,
 }) => {
-  const { colorPalette } = context;
+  const { canvas } = context;
 
-  // Resolve palette references in the SVG palette (e.g., "primary" -> "#ff0000")
-  const resolvedPalette = resolvePaletteColors(element.palette, colorPalette);
+  const resolvedPalette = resolvePaletteColors(
+    element.palette,
+    canvas?.colorPalette
+  );
 
   return (
     <CustomSVG
@@ -311,6 +320,24 @@ const createTournamentIconElement: ElementCreator<
   );
 };
 
+const createBackgroundImageElement: ElementCreator<
+  BackgroundImageElementConfig
+> = ({ element, index, context }) => {
+  const backgroundImgSrc = context.canvas?.backgroundImgSrc ?? "";
+  return (
+    <CustomImage
+      key={`backgroundImage-${index}`}
+      x={element.position.x}
+      y={element.position.y}
+      width={element.size?.width ?? 100}
+      height={element.size?.height ?? 100}
+      imageSrc={backgroundImgSrc}
+      fillMode={element.fillMode ?? "contain"}
+      align={element.align ?? "center"}
+    />
+  );
+};
+
 const elementCreators = {
   text: createTextElement,
   smartText: createSmartTextElement,
@@ -322,6 +349,7 @@ const elementCreators = {
   customImage: createCustomImageElement,
   svg: createSvgElement,
   tournamentIcon: createTournamentIconElement,
+  backgroundImage: createBackgroundImageElement,
 };
 
 export const createKonvaElements = (

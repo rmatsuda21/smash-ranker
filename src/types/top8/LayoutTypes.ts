@@ -22,6 +22,7 @@ export interface CanvasConfig {
   size: { width: number; height: number };
   displayScale: number;
   colorPalette?: Record<string, string>;
+  backgroundImgSrc?: string;
 }
 
 interface BaseElementConfig {
@@ -137,6 +138,14 @@ export interface TournamentIconElementConfig
   align?: "center" | "left" | "right" | "top" | "bottom";
 }
 
+export interface BackgroundImageElementConfig
+  extends BaseElementConfig,
+    Partial<ComponentProps<typeof Image>> {
+  type: "backgroundImage";
+  fillMode?: CustomImageFillMode;
+  align?: "center" | "left" | "right" | "top" | "bottom";
+}
+
 export type ElementConfig =
   | TextElementConfig
   | SmartTextElementConfig
@@ -147,7 +156,8 @@ export type ElementConfig =
   | RectElementConfig
   | CustomImageElementConfig
   | SvgElementConfig
-  | TournamentIconElementConfig;
+  | TournamentIconElementConfig
+  | BackgroundImageElementConfig;
 export interface LayerConfig {
   elements: ElementConfig[];
 }

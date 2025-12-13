@@ -41,7 +41,8 @@ type CanvasAction =
       type: "UPDATE_BASE_ELEMENT_CONFIG";
       payload: { index: number; element: ElementConfig };
     }
-  | { type: "SET_EDITABLE"; payload: boolean };
+  | { type: "SET_EDITABLE"; payload: boolean }
+  | { type: "SET_BACKGROUND_IMG_SRC"; payload: string };
 
 const initialState: CanvasState = {
   fonts: {},
@@ -139,6 +140,13 @@ const canvasReducer = (
       };
     case "SET_EDITABLE":
       return { editable: action.payload };
+    case "SET_BACKGROUND_IMG_SRC":
+      return {
+        layout: {
+          ...state.layout,
+          canvas: { ...state.layout.canvas, backgroundImgSrc: action.payload },
+        },
+      };
     default:
       return state;
   }
