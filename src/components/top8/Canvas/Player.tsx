@@ -6,7 +6,7 @@ import isEqual from "lodash/isEqual";
 import { PlayerInfo } from "@/types/top8/PlayerTypes";
 import { useCanvasStore } from "@/store/canvasStore";
 import { usePlayerStore } from "@/store/playerStore";
-import { PlayerLayoutConfig } from "@/types/top8/LayoutTypes";
+import { CanvasConfig, PlayerLayoutConfig } from "@/types/top8/LayoutTypes";
 import { createKonvaElements } from "@/utils/top8/elementFactory";
 import { SelectableElement } from "@/components/top8/Canvas/SelectableElement";
 import { useTournamentStore } from "@/store/tournamentStore";
@@ -14,6 +14,7 @@ import { useEditorStore } from "@/store/editorStore";
 
 type Props = {
   player: PlayerInfo;
+  canvasConfig: CanvasConfig;
   config: PlayerLayoutConfig;
   index: number;
   onDragStart: (e: KonvaEventObject<MouseEvent>) => void;
@@ -23,6 +24,7 @@ type Props = {
 
 const PlayerComponent = ({
   player,
+  canvasConfig,
   index,
   config,
   onDragStart,
@@ -37,7 +39,6 @@ const PlayerComponent = ({
   const dispatch = usePlayerStore((state) => state.dispatch);
   const tournamentInfo = useTournamentStore((state) => state.info);
   const editorDispatch = useEditorStore((state) => state.dispatch);
-  const canvasConfig = useCanvasStore((state) => state.layout.canvas);
 
   // const isUsingBaseElements = !!layout.players[index]?.elements;
 
@@ -155,6 +156,11 @@ export const Player = memo(PlayerComponent, (prevProps, nextProps) => {
     prevProps.index === nextProps.index &&
     isEqual(prevProps.player, nextProps.player) &&
     isEqual(prevProps.config, nextProps.config) &&
-    prevProps.isSelected === nextProps.isSelected
+    prevProps.isSelected === nextProps.isSelected &&
+    isEqual(prevProps.config.elements, nextProps.config.elements) &&
+    isEqual(
+      prevProps.canvasConfig.colorPalette,
+      nextProps.canvasConfig.colorPalette
+    )
   );
 });

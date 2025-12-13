@@ -42,7 +42,8 @@ type CanvasAction =
       payload: { index: number; element: ElementConfig };
     }
   | { type: "SET_EDITABLE"; payload: boolean }
-  | { type: "SET_BACKGROUND_IMG_SRC"; payload: string };
+  | { type: "SET_BACKGROUND_IMG_SRC"; payload: string }
+  | { type: "UPDATE_COLOR_PALETTE"; payload: { key: string; color: string } };
 
 const initialState: CanvasState = {
   fonts: {},
@@ -145,6 +146,19 @@ const canvasReducer = (
         layout: {
           ...state.layout,
           canvas: { ...state.layout.canvas, backgroundImgSrc: action.payload },
+        },
+      };
+    case "UPDATE_COLOR_PALETTE":
+      return {
+        layout: {
+          ...state.layout,
+          canvas: {
+            ...state.layout.canvas,
+            colorPalette: {
+              ...state.layout.canvas.colorPalette,
+              [action.payload.key]: action.payload.color,
+            },
+          },
         },
       };
     default:
