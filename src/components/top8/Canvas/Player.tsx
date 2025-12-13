@@ -108,21 +108,14 @@ const PlayerComponent = ({
     () =>
       createKonvaElements(config.elements ?? [], {
         fontFamily,
-        player: { ...player, placement: index + 1 },
+        player,
         tournament: tournamentInfo,
         containerSize: {
           width: playerConfig.size?.width,
           height: playerConfig.size?.height,
         },
       }),
-    [
-      config.elements,
-      fontFamily,
-      player,
-      index,
-      playerConfig.size,
-      tournamentInfo,
-    ]
+    [config.elements, fontFamily, player, playerConfig.size, tournamentInfo]
   );
 
   return (
