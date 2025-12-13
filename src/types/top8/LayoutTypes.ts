@@ -21,6 +21,7 @@ export type ElementType =
 export interface CanvasConfig {
   size: { width: number; height: number };
   displayScale: number;
+  colorPalette?: Record<string, string>;
 }
 
 interface BaseElementConfig {

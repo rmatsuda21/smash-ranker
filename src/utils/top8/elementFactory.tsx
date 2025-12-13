@@ -25,13 +25,14 @@ import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
 import { CustomSVG } from "@/components/top8/Canvas/CustomSVG";
 import { replacePlaceholders } from "@/utils/top8/replacePlaceholderString";
 import { evaluateElementCondition } from "@/utils/top8/evaluateElementCondition";
+import { resolveColor, resolvePaletteColors } from "@/utils/top8/resolveColor";
 
 const createTextElement: ElementCreator<TextElementConfig> = ({
   element,
   index,
   context,
 }) => {
-  const { fontFamily = "Arial" } = context;
+  const { fontFamily = "Arial", colorPalette } = context;
   const text = replacePlaceholders(element.text, context);
 
   return (
@@ -39,18 +40,18 @@ const createTextElement: ElementCreator<TextElementConfig> = ({
       key={`text-${index}`}
       x={element.position.x}
       y={element.position.y}
-      fill={element.fill ?? "white"}
+      fill={resolveColor(element.fill, colorPalette) ?? "white"}
       fontSize={element.fontSize ?? 20}
       fontStyle={element.fontStyle ?? String(element.fontWeight ?? "normal")}
       fontFamily={fontFamily}
       text={text}
       align={element.align ?? "left"}
       width={element.size?.width}
-      shadowColor={element.shadowColor}
+      shadowColor={resolveColor(element.shadowColor, colorPalette)}
       shadowBlur={element.shadowBlur}
       shadowOffset={element.shadowOffset}
       shadowOpacity={element.shadowOpacity}
-      stroke={element.stroke}
+      stroke={resolveColor(element.stroke as string | undefined, colorPalette)}
       strokeWidth={element.strokeWidth}
     />
   );
@@ -61,7 +62,7 @@ const createSmartTextElement: ElementCreator<SmartTextElementConfig> = ({
   index,
   context,
 }) => {
-  const { fontFamily = "Arial" } = context;
+  const { fontFamily = "Arial", colorPalette } = context;
   const text = replacePlaceholders(element.text, context);
 
   return (
@@ -70,7 +71,7 @@ const createSmartTextElement: ElementCreator<SmartTextElementConfig> = ({
       x={element.position.x}
       y={element.position.y}
       width={element.size?.width}
-      fill={element.fill ?? "white"}
+      fill={resolveColor(element.fill, colorPalette) ?? "white"}
       fontSize={element.fontSize ?? 20}
       fontStyle={element.fontStyle ?? String(element.fontWeight ?? "normal")}
       fontFamily={fontFamily}
@@ -78,11 +79,11 @@ const createSmartTextElement: ElementCreator<SmartTextElementConfig> = ({
       align={element.align ?? "left"}
       verticalAlign={element.verticalAlign}
       anchor={element.anchor}
-      shadowColor={element.shadowColor}
+      shadowColor={resolveColor(element.shadowColor, colorPalette)}
       shadowBlur={element.shadowBlur}
       shadowOffset={element.shadowOffset}
       shadowOpacity={element.shadowOpacity}
-      stroke={element.stroke}
+      stroke={resolveColor(element.stroke as string | undefined, colorPalette)}
       strokeWidth={element.strokeWidth}
     />
   );
@@ -128,7 +129,7 @@ const createGroupElement: ElementCreator<GroupElementConfig> = ({
 const createCharacterImageElement: ElementCreator<
   CharacterImageElementConfig
 > = ({ element, index, context }) => {
-  const { player } = context;
+  const { player, colorPalette } = context;
 
   if (!player || player.characters.length === 0) {
     return (
@@ -161,7 +162,7 @@ const createCharacterImageElement: ElementCreator<
       height={element.size?.height ?? 100}
       imageSrc={imageSrc}
       hasShadow
-      shadowColor={element.shadowColor}
+      shadowColor={resolveColor(element.shadowColor, colorPalette)}
       shadowOffset={{ x: 15, y: 15 }}
       shadowBlur={element.shadowBlur}
       shadowOpacity={element.shadowOpacity}
@@ -214,7 +215,10 @@ const createAltCharacterImageElement: ElementCreator<
 const createRectElement: ElementCreator<RectElementConfig> = ({
   element,
   index,
+  context,
 }) => {
+  const { colorPalette } = context;
+
   return (
     <Rect
       key={`rect-${index}`}
@@ -222,7 +226,7 @@ const createRectElement: ElementCreator<RectElementConfig> = ({
       y={element.position.y}
       width={element.size?.width}
       height={element.size?.height}
-      fill={element.fill ?? "black"}
+      fill={resolveColor(element.fill, colorPalette) ?? "black"}
     />
   );
 };
@@ -254,7 +258,13 @@ const createCustomImageElement: ElementCreator<CustomImageElementConfig> = ({
 const createSvgElement: ElementCreator<SvgElementConfig> = ({
   element,
   index,
+  context,
 }) => {
+  const { colorPalette } = context;
+
+  // Resolve palette references in the SVG palette (e.g., "primary" -> "#ff0000")
+  const resolvedPalette = resolvePaletteColors(element.palette, colorPalette);
+
   return (
     <CustomSVG
       key={`svg-${index}`}
@@ -263,7 +273,7 @@ const createSvgElement: ElementCreator<SvgElementConfig> = ({
       width={element.size?.width ?? 100}
       height={element.size?.height ?? 100}
       src={element.src}
-      palette={element.palette}
+      palette={resolvedPalette}
     />
   );
 };

@@ -10,7 +10,7 @@ type Props = {
 
 const BackgroundLayerComponent = ({ onClick }: Props) => {
   const layout = useCanvasStore((state) => state.layout);
-  const cavnasConfig = useCanvasStore((state) => state.layout.canvas);
+  const canvasConfig = useCanvasStore((state) => state.layout.canvas);
 
   const backgroundElements = useMemo(
     () => layout?.background.elements || [],
@@ -20,9 +20,10 @@ const BackgroundLayerComponent = ({ onClick }: Props) => {
   const konvaElements = useMemo(
     () =>
       createKonvaElements(backgroundElements, {
-        containerSize: cavnasConfig.size,
+        containerSize: canvasConfig.size,
+        colorPalette: canvasConfig.colorPalette,
       }),
-    [backgroundElements, cavnasConfig.size]
+    [backgroundElements, canvasConfig.size, canvasConfig.colorPalette]
   );
 
   return (

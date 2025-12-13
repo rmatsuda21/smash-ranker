@@ -28,6 +28,7 @@ type Props = {
 
 export const PlayerElementEditor = ({ className }: Props) => {
   const basePlayer = useCanvasStore((state) => state.layout.basePlayer);
+  const colorPalette = useCanvasStore((state) => state.layout.canvas.colorPalette);
   const selectedFont = useCanvasStore((state) => state.selectedFont);
   const tournament = useTournamentStore((state) => state.info);
   const canvasDispatch = useCanvasStore((state) => state.dispatch);
@@ -40,8 +41,9 @@ export const PlayerElementEditor = ({ className }: Props) => {
       containerSize: basePlayer.size,
       player: examplePlayer,
       tournament,
+      colorPalette,
     });
-  }, [basePlayer.elements, selectedFont, basePlayer.size, tournament]);
+  }, [basePlayer.elements, selectedFont, basePlayer.size, tournament, colorPalette]);
 
   const handleAddElement = useCallback(
     (element: ElementConfig) => {

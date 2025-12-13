@@ -25,7 +25,7 @@ const basePlayer: PlayerLayoutConfig = {
       elements: [
         {
           type: "rect",
-          fill: "rgb(203, 65, 65)",
+          fill: "primary",
           position: { x: 0, y: 0 },
           size: { width: BASE_PL_SIZE, height: 40 },
         },
@@ -77,7 +77,7 @@ const basePlayer: PlayerLayoutConfig = {
       position: { x: 0, y: 0 },
       size: { width: BASE_PL_SIZE, height: BASE_PL_SIZE },
       palette: {
-        color_1: "rgb(203, 65, 65)",
+        color_1: "primary",
       },
     },
     {
@@ -276,6 +276,11 @@ export const simpleLayout: LayoutConfig = {
       height: 1080,
     },
     displayScale: 0.5,
+    colorPalette: {
+      primary: "rgb(179, 0, 0)",
+      secondary: "rgb(235, 171, 64)",
+      accent: "rgb(255, 255, 255)",
+    },
   },
   background: {
     elements: [
@@ -286,8 +291,8 @@ export const simpleLayout: LayoutConfig = {
         position: { x: 0, y: 0 },
         size: { width: CANVAS_WIDTH, height: CANVAS_HEIGHT },
         palette: {
-          color_1: "rgb(179, 0, 0)",
-          color_2: "rgb(235, 171, 64)",
+          color_1: "primary",
+          color_2: "secondary",
         },
       },
       {
@@ -300,7 +305,7 @@ export const simpleLayout: LayoutConfig = {
         },
         size: { width: SMASH_BALL_SIZE, height: SMASH_BALL_SIZE },
         palette: {
-          color_1: "rgba(255, 255, 255, 0.2)",
+          color_1: "accent",
         },
       },
     ],

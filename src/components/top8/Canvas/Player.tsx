@@ -30,6 +30,9 @@ const PlayerComponent = ({
   isSelected,
 }: Props) => {
   const layout = useCanvasStore((state) => state.layout);
+  const colorPalette = useCanvasStore(
+    (state) => state.layout.canvas.colorPalette
+  );
   const editable = useCanvasStore((state) => state.editable);
   const selectedFont = useCanvasStore((state) => state.selectedFont);
   const fonts = useCanvasStore((state) => state.fonts);
@@ -114,8 +117,16 @@ const PlayerComponent = ({
           width: playerConfig.size?.width,
           height: playerConfig.size?.height,
         },
+        colorPalette,
       }),
-    [config.elements, fontFamily, player, playerConfig.size, tournamentInfo]
+    [
+      config.elements,
+      fontFamily,
+      player,
+      playerConfig.size,
+      tournamentInfo,
+      colorPalette,
+    ]
   );
 
   return (
