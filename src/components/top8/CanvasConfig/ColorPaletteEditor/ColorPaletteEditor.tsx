@@ -1,11 +1,11 @@
+import { useMemo } from "react";
 import cn from "classnames";
 import debounce from "lodash/debounce";
 
 import { useCanvasStore } from "@/store/canvasStore";
+import { rgbStringToHex } from "@/utils/top8/rgbStringToHex";
 
 import styles from "./ColorPaletteEditor.module.scss";
-import { useMemo } from "react";
-import { rgbStringToHex } from "@/utils/top8/rgbStringToHex";
 
 const DEBOUNCE_TIME = 100;
 
@@ -19,31 +19,37 @@ export const ColorPaletteEditor = ({ className }: Props) => {
 
   const debouncedDispatch = useMemo(
     () =>
-      debounce((key: string, color: string) => {
-        dispatch({ type: "UPDATE_COLOR_PALETTE", payload: { color, key } });
+      debounce((id: string, color: string, name: string) => {
+        dispatch({
+          type: "UPDATE_COLOR_PALETTE",
+          payload: { id, value: { color, name } },
+        });
       }, DEBOUNCE_TIME),
     [dispatch]
   );
 
-  const handleColorChange = (key: string, color: string) => {
-    debouncedDispatch(key, color);
+  const handleColorChange = (id: string, color: string, name: string) => {
+    debouncedDispatch(id, color, name);
   };
 
   return (
     <div className={cn(className, styles.wrapper)}>
-      {palette &&
-        Object.entries(palette).map(([key, color]) => (
-          <div key={key}>
-            <label htmlFor={key}>{key}</label>
-            <input
-              type="color"
-              id={key}
-              name={key}
-              value={rgbStringToHex(color)}
-              onChange={(e) => handleColorChange(key, e.target.value)}
-            />
-          </div>
-        ))}
+      <h3>Color Palette</h3>
+      <div className={styles.palette}>
+        {palette &&
+          Object.entries(palette).map(([id, { color, name }]) => (
+            <div className={styles.row}>
+              <input
+                type="color"
+                id={id}
+                name={id}
+                value={rgbStringToHex(color)}
+                onChange={(e) => handleColorChange(id, e.target.value, name)}
+              />
+              <label htmlFor={id}>{name}</label>
+            </div>
+          ))}
+      </div>
     </div>
   );
 };

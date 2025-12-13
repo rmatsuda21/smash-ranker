@@ -43,7 +43,10 @@ type CanvasAction =
     }
   | { type: "SET_EDITABLE"; payload: boolean }
   | { type: "SET_BACKGROUND_IMG_SRC"; payload: string }
-  | { type: "UPDATE_COLOR_PALETTE"; payload: { key: string; color: string } };
+  | {
+      type: "UPDATE_COLOR_PALETTE";
+      payload: { id: string; value: { color: string; name: string } };
+    };
 
 const initialState: CanvasState = {
   fonts: {},
@@ -156,7 +159,7 @@ const canvasReducer = (
             ...state.layout.canvas,
             colorPalette: {
               ...state.layout.canvas.colorPalette,
-              [action.payload.key]: action.payload.color,
+              [action.payload.id]: action.payload.value,
             },
           },
         },
