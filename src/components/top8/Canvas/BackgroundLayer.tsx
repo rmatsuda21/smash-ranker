@@ -21,9 +21,9 @@ const BackgroundLayerComponent = ({ onClick }: Props) => {
     () =>
       createKonvaElements(backgroundElements, {
         containerSize: canvasConfig.size,
-        colorPalette: canvasConfig.colorPalette,
+        canvas: canvasConfig,
       }),
-    [backgroundElements, canvasConfig.size, canvasConfig.colorPalette]
+    [backgroundElements, canvasConfig]
   );
 
   return (

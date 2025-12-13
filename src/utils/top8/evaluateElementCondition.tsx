@@ -5,7 +5,7 @@ import { ElementFactoryContext } from "@/types/top8/ElementFactoryTypes";
 const getConditionMap = (
   context: ElementFactoryContext
 ): Record<LayoutPlaceholder | RenderCondition, boolean> => {
-  const { player, tournament } = context;
+  const { player, tournament, canvas } = context;
   return {
     [LayoutPlaceholder.PLAYER_TWITTER]: Boolean(player?.twitter),
     [LayoutPlaceholder.PLAYER_PLACEMENT]: Boolean(player?.placement),
@@ -26,6 +26,7 @@ const getConditionMap = (
       tournament?.location.country
     ),
     [RenderCondition.TOURNAMENT_ICON]: Boolean(tournament?.iconSrc),
+    [RenderCondition.BACKGROUND_IMG]: Boolean(canvas?.backgroundImgSrc),
     [RenderCondition.NOT]: true,
   };
 };

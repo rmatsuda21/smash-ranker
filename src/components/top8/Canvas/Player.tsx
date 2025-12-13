@@ -30,9 +30,6 @@ const PlayerComponent = ({
   isSelected,
 }: Props) => {
   const layout = useCanvasStore((state) => state.layout);
-  const colorPalette = useCanvasStore(
-    (state) => state.layout.canvas.colorPalette
-  );
   const editable = useCanvasStore((state) => state.editable);
   const selectedFont = useCanvasStore((state) => state.selectedFont);
   const fonts = useCanvasStore((state) => state.fonts);
@@ -40,6 +37,7 @@ const PlayerComponent = ({
   const dispatch = usePlayerStore((state) => state.dispatch);
   const tournamentInfo = useTournamentStore((state) => state.info);
   const editorDispatch = useEditorStore((state) => state.dispatch);
+  const canvasConfig = useCanvasStore((state) => state.layout.canvas);
 
   // const isUsingBaseElements = !!layout.players[index]?.elements;
 
@@ -117,7 +115,7 @@ const PlayerComponent = ({
           width: playerConfig.size?.width,
           height: playerConfig.size?.height,
         },
-        colorPalette,
+        canvas: canvasConfig,
       }),
     [
       config.elements,
@@ -125,7 +123,7 @@ const PlayerComponent = ({
       player,
       playerConfig.size,
       tournamentInfo,
-      colorPalette,
+      canvasConfig,
     ]
   );
 

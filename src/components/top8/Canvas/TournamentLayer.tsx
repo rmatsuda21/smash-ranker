@@ -26,15 +26,9 @@ export const TournamentLayer = () => {
         fontFamily: selectedFont,
         tournament,
         containerSize: canvasConfig.size,
-        colorPalette: canvasConfig.colorPalette,
+        canvas: canvasConfig,
       }),
-    [
-      tournamentLayout?.elements,
-      selectedFont,
-      tournament,
-      canvasConfig.size,
-      canvasConfig.colorPalette,
-    ]
+    [tournamentLayout?.elements, selectedFont, tournament, canvasConfig]
   );
 
   useEffect(() => {

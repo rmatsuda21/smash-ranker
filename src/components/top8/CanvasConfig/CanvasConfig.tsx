@@ -6,6 +6,7 @@ import { useCanvasStore } from "@/store/canvasStore";
 import { usePlayerStore } from "@/store/playerStore";
 import { useTournamentStore } from "@/store/tournamentStore";
 import { Input } from "@/components/shared/Input/Input";
+import { FileUploader } from "@/components/shared/FileUploader/FileUploader";
 
 type Props = {
   className?: string;
@@ -34,6 +35,8 @@ export const CanvasConfig = ({ className }: Props) => {
   const stageRef = useCanvasStore((state) => state.stageRef);
   const dispatch = usePlayerStore((state) => state.dispatch);
   const tournamentDispatch = useTournamentStore((state) => state.dispatch);
+  const canvasDispatch = useCanvasStore((state) => state.dispatch);
+  const canvas = useCanvasStore((state) => state.layout.canvas);
 
   const handleDownload = useCallback(async () => {
     if (!stageRef) return;
@@ -105,6 +108,19 @@ export const CanvasConfig = ({ className }: Props) => {
       <Button disabled={!stageRef} onClick={handleDownload}>
         Download
       </Button>
+
+      <FileUploader
+        value={canvas.backgroundImgSrc}
+        onChange={(file) => {
+          if (file) {
+            const url = URL.createObjectURL(file);
+            canvasDispatch({
+              type: "SET_BACKGROUND_IMG_SRC",
+              payload: url,
+            });
+          }
+        }}
+      />
     </div>
   );
 };
