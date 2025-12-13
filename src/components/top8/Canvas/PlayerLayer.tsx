@@ -18,6 +18,7 @@ const PlayerLayerComponent = () => {
   const editable = useCanvasStore((state) => state.editable);
   const playerLayouts = useCanvasStore((state) => state.layout.players);
   const basePlayer = useCanvasStore((state) => state.layout.basePlayer);
+  const canvasConfig = useCanvasStore((state) => state.layout.canvas);
   const dispatch = useCanvasStore((state) => state.dispatch);
   const selectedPlayerIndex = usePlayerStore(
     (state) => state.selectedPlayerIndex
@@ -90,6 +91,7 @@ const PlayerLayerComponent = () => {
             <Player
               key={player.id}
               config={playerConfigs[index]}
+              canvasConfig={canvasConfig}
               isSelected={selectedPlayerIndex === index}
               player={player}
               index={index}

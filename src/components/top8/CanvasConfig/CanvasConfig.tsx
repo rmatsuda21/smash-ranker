@@ -7,6 +7,7 @@ import { usePlayerStore } from "@/store/playerStore";
 import { useTournamentStore } from "@/store/tournamentStore";
 import { Input } from "@/components/shared/Input/Input";
 import { FileUploader } from "@/components/shared/FileUploader/FileUploader";
+import { ColorPaletteEditor } from "@/components/top8/CanvasConfig/ColorPaletteEditor/ColorPaletteEditor";
 
 type Props = {
   className?: string;
@@ -121,6 +122,8 @@ export const CanvasConfig = ({ className }: Props) => {
           }
         }}
       />
+
+      <ColorPaletteEditor />
     </div>
   );
 };

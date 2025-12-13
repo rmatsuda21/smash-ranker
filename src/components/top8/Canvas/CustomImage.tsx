@@ -1,4 +1,4 @@
-import { ComponentProps, memo } from "react";
+import { ComponentProps, memo, useEffect } from "react";
 import { Image } from "react-konva";
 
 import { useCustomImage } from "@/hooks/top8/useCustomImage";
@@ -45,6 +45,13 @@ const CustomImageComponent = ({
     onReady,
     onError,
   });
+
+  useEffect(() => {
+    if (ref.current && finalImage) {
+      ref.current.clearCache();
+      ref.current.cache();
+    }
+  }, [shadowColor, shadowBlur, shadowOffset, hasShadow, finalImage, ref]);
 
   if (!finalImage) return null;
 
