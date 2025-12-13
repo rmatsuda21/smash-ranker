@@ -59,6 +59,7 @@ const DEFAULT_PLAYER: PlayerInfo = {
   prefix: "",
 };
 
+const placements = [1, 2, 3, 4, 5, 5, 7, 7];
 const defaultPlayers: PlayerInfo[] = new Array(8)
   .fill(DEFAULT_PLAYER)
   .map((player, index) => ({
@@ -66,7 +67,7 @@ const defaultPlayers: PlayerInfo[] = new Array(8)
     name: `Player ${index + 1}`,
     gamerTag: `Player ${index + 1}`,
     id: index.toString(),
-    placement: index + 1,
+    placement: placements[index],
     twitter: index === 0 ? "chikyunojin" : undefined,
   }));
 
