@@ -1,0 +1,18 @@
+.wrapper {
+  position: relative;
+
+  .color {
+    width: 25px;
+    height: 25px;
+    border-radius: 5px;
+    border: 1px solid var(--gray-6);
+    background-color: var(--gray-1);
+  }
+
+  .picker {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+  }
+}

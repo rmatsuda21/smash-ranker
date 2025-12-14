@@ -7,6 +7,7 @@ import {
   TextElementConfig,
 } from "@/types/top8/LayoutTypes";
 import { Input } from "@/components/shared/Input/Input";
+import { ColorInput } from "@/components/shared/ColorInput/ColorInput";
 
 type Props = {
   element: TextElementConfig | SmartTextElementConfig;
@@ -40,6 +41,15 @@ export const TextConfigEditor = ({ element, onUpdateElement }: Props) => {
     debouncedUpdateElementConfig(newConfig);
   };
 
+  const handleColorChange = (name: string, value: string) => {
+    const newConfig = {
+      ...elementConfig,
+      [name]: value,
+    };
+    setElementConfig(newConfig);
+    debouncedUpdateElementConfig(newConfig);
+  };
+
   const debouncedUpdateElementConfig = useMemo(
     () =>
       debounce((elementConfig: TextElementConfig | SmartTextElementConfig) => {
@@ -47,6 +57,8 @@ export const TextConfigEditor = ({ element, onUpdateElement }: Props) => {
       }, 100),
     [onUpdateElement]
   );
+
+  console.log(elementConfig.fill);
 
   return (
     <div>
@@ -79,13 +91,9 @@ export const TextConfigEditor = ({ element, onUpdateElement }: Props) => {
         }}
       />
       <label htmlFor="fill">Fill</label>
-      <input
-        id="fill"
-        name="fill"
-        aria-label="Fill"
-        type="color"
-        value={elementConfig.fill ?? "#ffffff"}
-        onChange={handleChange}
+      <ColorInput
+        color={elementConfig.fill ?? "#ffffff"}
+        onChange={(color) => handleColorChange("fill", color)}
       />
       <Input
         label="Align"
