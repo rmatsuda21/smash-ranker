@@ -6,6 +6,7 @@ import { useCanvasStore } from "@/store/canvasStore";
 import { rgbStringToHex } from "@/utils/top8/rgbStringToHex";
 
 import styles from "./ColorPaletteEditor.module.scss";
+import { ColorInput } from "@/components/shared/ColorInput/ColorInput";
 
 const DEBOUNCE_TIME = 100;
 
@@ -38,13 +39,10 @@ export const ColorPaletteEditor = ({ className }: Props) => {
       <div className={styles.palette}>
         {palette &&
           Object.entries(palette).map(([id, { color, name }]) => (
-            <div className={styles.row}>
-              <input
-                type="color"
-                id={id}
-                name={id}
-                value={rgbStringToHex(color)}
-                onChange={(e) => handleColorChange(id, e.target.value, name)}
+            <div key={id} className={styles.row}>
+              <ColorInput
+                color={rgbStringToHex(color)}
+                onChange={(color) => handleColorChange(id, color, name)}
               />
               <label htmlFor={id}>{name}</label>
             </div>
