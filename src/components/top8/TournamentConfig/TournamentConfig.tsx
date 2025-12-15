@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Button } from "@radix-ui/themes";
 
+import { Button } from "@/components/shared/Button/Button";
 import { useFetchTop8 } from "@/hooks/top8/useFetchTop8";
 import { usePlayerStore } from "@/store/playerStore";
 import { useTournamentStore } from "@/store/tournamentStore";

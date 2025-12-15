@@ -1,6 +1,6 @@
-import { Button } from "@radix-ui/themes";
 import { useCallback, useState } from "react";
 
+import { Button } from "@/components/shared/Button/Button";
 import { FontSelect } from "@/components/top8/CanvasConfig/FontSelect/FontSelect";
 import { useCanvasStore } from "@/store/canvasStore";
 import { usePlayerStore } from "@/store/playerStore";

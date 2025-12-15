@@ -1,5 +1,5 @@
 import { usePlayerStore } from "@/store/playerStore";
-import { Button } from "@radix-ui/themes";
+import { Button } from "@/components/shared/Button/Button";
 
 export const PlayerSelector = () => {
   const players = usePlayerStore((state) => state.players);
