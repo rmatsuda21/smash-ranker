@@ -3,10 +3,10 @@ import cn from "classnames";
 import debounce from "lodash/debounce";
 
 import { useCanvasStore } from "@/store/canvasStore";
-import { rgbStringToHex } from "@/utils/top8/rgbStringToHex";
+import { rgbStringToAlphaHex } from "@/utils/top8/rgbStringToHex";
+import { ColorInput } from "@/components/shared/ColorInput/ColorInput";
 
 import styles from "./ColorPaletteEditor.module.scss";
-import { ColorInput } from "@/components/shared/ColorInput/ColorInput";
 
 const DEBOUNCE_TIME = 100;
 
@@ -41,10 +41,10 @@ export const ColorPaletteEditor = ({ className }: Props) => {
           Object.entries(palette).map(([id, { color, name }]) => (
             <div key={id} className={styles.row}>
               <ColorInput
-                color={rgbStringToHex(color)}
+                color={rgbStringToAlphaHex(color)}
                 onChange={(color) => handleColorChange(id, color, name)}
               />
-              <label htmlFor={id}>{name}</label>
+              <span>{name}</span>
             </div>
           ))}
       </div>

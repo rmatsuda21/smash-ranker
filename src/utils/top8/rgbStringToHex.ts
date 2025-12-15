@@ -1,14 +1,17 @@
-const colorStringToRgb = (
+const colorStringToRgba = (
   color: string
-): { r: number; g: number; b: number } => {
+): { r: number; g: number; b: number; a: number } => {
   const trimmed = color.trim().toLowerCase();
 
-  // Handle hex colors (#RGB, #RRGGBB, #RRGGBBAA)
   if (trimmed.startsWith("#")) {
     let hex = trimmed.slice(1);
 
-    // Expand shorthand (#RGB -> #RRGGBB)
-    if (hex.length === 3 || hex.length === 4) {
+    if (hex.length === 3) {
+      hex = hex
+        .split("")
+        .map((c) => c + c)
+        .join("");
+    } else if (hex.length === 4) {
       hex = hex
         .split("")
         .map((c) => c + c)
@@ -18,31 +21,43 @@ const colorStringToRgb = (
     const r = parseInt(hex.slice(0, 2), 16);
     const g = parseInt(hex.slice(2, 4), 16);
     const b = parseInt(hex.slice(4, 6), 16);
+    const a = hex.length === 8 ? parseInt(hex.slice(6, 8), 16) / 255 : 1;
 
-    return { r: isNaN(r) ? 0 : r, g: isNaN(g) ? 0 : g, b: isNaN(b) ? 0 : b };
+    return {
+      r: isNaN(r) ? 0 : r,
+      g: isNaN(g) ? 0 : g,
+      b: isNaN(b) ? 0 : b,
+      a: isNaN(a) ? 1 : a,
+    };
   }
 
   if (trimmed.startsWith("rgb")) {
     const match = trimmed.match(
-      /rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(?:,\s*[\d.]+\s*)?\)/
+      /rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(?:,\s*([\d.]+)\s*)?\)/
     );
     if (match) {
-      return { r: Number(match[1]), g: Number(match[2]), b: Number(match[3]) };
+      return {
+        r: Number(match[1]),
+        g: Number(match[2]),
+        b: Number(match[3]),
+        a: match[4] !== undefined ? Number(match[4]) : 1,
+      };
     }
   }
 
   if (trimmed.startsWith("hsl")) {
     const match = trimmed.match(
-      /hsla?\(\s*([\d.]+)\s*,\s*([\d.]+)%\s*,\s*([\d.]+)%\s*(?:,\s*[\d.]+\s*)?\)/
+      /hsla?\(\s*([\d.]+)\s*,\s*([\d.]+)%\s*,\s*([\d.]+)%\s*(?:,\s*([\d.]+)\s*)?\)/
     );
     if (match) {
       const h = Number(match[1]) / 360;
       const s = Number(match[2]) / 100;
       const l = Number(match[3]) / 100;
+      const a = match[4] !== undefined ? Number(match[4]) : 1;
 
       if (s === 0) {
         const gray = Math.round(l * 255);
-        return { r: gray, g: gray, b: gray };
+        return { r: gray, g: gray, b: gray, a };
       }
 
       const hueToRgb = (p: number, q: number, t: number) => {
@@ -61,6 +76,7 @@ const colorStringToRgb = (
         r: Math.round(hueToRgb(p, q, h + 1 / 3) * 255),
         g: Math.round(hueToRgb(p, q, h) * 255),
         b: Math.round(hueToRgb(p, q, h - 1 / 3) * 255),
+        a,
       };
     }
   }
@@ -70,23 +86,30 @@ const colorStringToRgb = (
     ctx.fillStyle = trimmed;
     const computed = ctx.fillStyle;
 
-    // Canvas normalizes colors to hex or rgb
     if (computed.startsWith("#")) {
-      return colorStringToRgb(computed);
+      return colorStringToRgba(computed);
     }
     if (computed.startsWith("rgb")) {
-      const match = computed.match(/\d+/g)?.map(Number);
+      const match = computed.match(/[\d.]+/g)?.map(Number);
       if (match && match.length >= 3) {
-        return { r: match[0], g: match[1], b: match[2] };
+        return {
+          r: match[0],
+          g: match[1],
+          b: match[2],
+          a: match.length >= 4 ? match[3] : 1,
+        };
       }
     }
   }
 
-  return { r: 0, g: 0, b: 0 };
+  return { r: 0, g: 0, b: 0, a: 1 };
 };
 
-export const rgbStringToHex = (color: string): string => {
-  const { r, g, b } = colorStringToRgb(color);
+export const rgbStringToAlphaHex = (color: string): string => {
+  const { r, g, b, a } = colorStringToRgba(color);
   const toHex = (n: number) => n.toString(16).padStart(2, "0");
-  return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+  const alphaHex = Math.round(a * 255)
+    .toString(16)
+    .padStart(2, "0");
+  return `#${toHex(r)}${toHex(g)}${toHex(b)}${alphaHex}`;
 };

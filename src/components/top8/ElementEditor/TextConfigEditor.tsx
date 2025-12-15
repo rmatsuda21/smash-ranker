@@ -58,8 +58,6 @@ export const TextConfigEditor = ({ element, onUpdateElement }: Props) => {
     [onUpdateElement]
   );
 
-  console.log(elementConfig.fill);
-
   return (
     <div>
       <Input
@@ -78,7 +76,7 @@ export const TextConfigEditor = ({ element, onUpdateElement }: Props) => {
         value={elementConfig.fontSize ?? ""}
         onChange={handleChange}
       />
-      <label htmlFor="fontWeight">Font Weight</label>
+      <label>Font Weight</label>
       <Slider
         id="fontWeight"
         name="fontWeight"
@@ -90,7 +88,7 @@ export const TextConfigEditor = ({ element, onUpdateElement }: Props) => {
           handleFontWeightChange(value[0]);
         }}
       />
-      <label htmlFor="fill">Fill</label>
+      <label>Fill</label>
       <ColorInput
         color={elementConfig.fill ?? "#ffffff"}
         onChange={(color) => handleColorChange("fill", color)}

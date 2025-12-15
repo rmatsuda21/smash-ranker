@@ -362,10 +362,9 @@ export const createKonvaElements = (
         return null;
       }
 
-      const shouldRender = evaluateElementCondition(
-        element.conditions,
-        context
-      );
+      const shouldRender =
+        !element.hidden &&
+        evaluateElementCondition(element.conditions, context);
 
       const creator = elementCreators[element.type] as ElementCreator<
         typeof element

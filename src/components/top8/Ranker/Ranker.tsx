@@ -8,6 +8,8 @@ import { SidePanel } from "@/components/top8/SidePanel/SidePanel";
 import styles from "./Ranker.module.scss";
 import { Skeleton } from "@radix-ui/themes";
 
+// TODO: Create layout creator tool & graphic generator tool
+
 const Canvas = lazy(() =>
   import("@/components/top8/Canvas/Canvas").then((module) => ({
     default: module.Canvas,
