@@ -94,7 +94,10 @@ export const TournamentConfigEditor = () => {
 
   return (
     <div className={styles.wrapper}>
+      <label htmlFor="icon">Icon</label>
       <FileUploader
+        id="icon"
+        name="icon"
         value={tempTournament?.iconSrc}
         onChange={handleIconChange}
       />
@@ -114,46 +117,50 @@ export const TournamentConfigEditor = () => {
         value={tempTournament?.eventName}
         onChange={handleChange}
       />
-      <Input
-        label="Date"
-        name="date"
-        id="date"
-        type="date"
-        value={formatDateForInput(tempTournament?.date)}
-        onChange={handleDateChange}
-      />
-      <Input
-        label="City"
-        name="city"
-        id="city"
-        type="text"
-        value={tempTournament?.location.city}
-        onChange={handleLocationChange}
-      />
-      <Input
-        label="State"
-        name="state"
-        id="state"
-        type="text"
-        value={tempTournament?.location.state}
-        onChange={handleLocationChange}
-      />
-      <Input
-        label="Country"
-        name="country"
-        id="country"
-        type="text"
-        value={tempTournament?.location.country}
-        onChange={handleLocationChange}
-      />
-      <Input
-        label="Entrants"
-        name="entrants"
-        id="entrants"
-        type="number"
-        value={tempTournament?.entrants.toString()}
-        onChange={handleChange}
-      />
+      <div className={styles.row}>
+        <Input
+          label="Date"
+          name="date"
+          id="date"
+          type="date"
+          value={formatDateForInput(tempTournament?.date)}
+          onChange={handleDateChange}
+        />
+        <Input
+          label="Entrants"
+          name="entrants"
+          id="entrants"
+          type="number"
+          value={tempTournament?.entrants.toString()}
+          onChange={handleChange}
+        />
+      </div>
+      <div className={styles.row}>
+        <Input
+          label="City"
+          name="city"
+          id="city"
+          type="text"
+          value={tempTournament?.location.city}
+          onChange={handleLocationChange}
+        />
+        <Input
+          label="State"
+          name="state"
+          id="state"
+          type="text"
+          value={tempTournament?.location.state}
+          onChange={handleLocationChange}
+        />
+        <Input
+          label="Country"
+          name="country"
+          id="country"
+          type="text"
+          value={tempTournament?.location.country}
+          onChange={handleLocationChange}
+        />
+      </div>
     </div>
   );
 };

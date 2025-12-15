@@ -7,12 +7,20 @@ import { Button } from "@/components/shared/Button/Button";
 import styles from "./FileUploader.module.scss";
 
 type Props = {
+  id?: string;
+  name?: string;
   value?: string;
   disabled?: boolean;
   onChange: (file?: File) => void;
 };
 
-export const FileUploader = ({ value, disabled, onChange }: Props) => {
+export const FileUploader = ({
+  id,
+  name,
+  value,
+  disabled,
+  onChange,
+}: Props) => {
   const [isFileOver, setIsFileOver] = useState(false);
 
   const ref = useRef<HTMLLabelElement>(null);
@@ -102,6 +110,8 @@ export const FileUploader = ({ value, disabled, onChange }: Props) => {
         ref={inputRef}
         type="file"
         accept="image/*"
+        id={id}
+        name={name}
         onChange={handleChange}
       />
       <Button variant="outline" onClick={handleButtonClick} disabled={disabled}>
