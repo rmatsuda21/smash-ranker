@@ -10,6 +10,11 @@
       transition: none !important;
     }
   }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-6) transparent;
+  }
 }
 
 body {
