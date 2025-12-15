@@ -7,6 +7,11 @@
     border-radius: 5px;
     border: 1px solid var(--gray-6);
     background-color: var(--gray-1);
+
+    &:hover {
+      cursor: pointer;
+      outline: 2px solid var(--accent-9);
+    }
   }
 
   .picker {

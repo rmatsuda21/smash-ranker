@@ -19,27 +19,12 @@
       display: flex;
       align-items: center;
       gap: 10px;
-
-      &:has(input:hover),
-      &:has(label:hover) {
-        background-color: var(--accent-3);
-        cursor: pointer;
-      }
     }
 
-    input {
-      width: 25px;
-      height: 25px;
-      outline: none;
-      border: none;
-      cursor: pointer;
-    }
-
-    label {
+    span {
       flex: 1;
       font-size: 14px;
       font-weight: 600;
-      cursor: pointer;
     }
   }
 }

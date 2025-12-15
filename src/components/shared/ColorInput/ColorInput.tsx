@@ -1,7 +1,7 @@
+import { useEffect, useRef, useState } from "react";
 import { HexAlphaColorPicker } from "react-colorful";
 
 import styles from "./ColorInput.module.scss";
-import { useEffect, useRef, useState } from "react";
 
 type Props = {
   color: string;
@@ -11,6 +11,7 @@ type Props = {
 export const ColorInput = ({ color, onChange }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -33,7 +34,7 @@ export const ColorInput = ({ color, onChange }: Props) => {
       document.removeEventListener("click", handleClickOutside);
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isOpen]);
+  }, []);
 
   const handleClick = () => {
     setIsOpen(!isOpen);

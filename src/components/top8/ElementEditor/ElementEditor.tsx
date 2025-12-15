@@ -1,7 +1,7 @@
 import { Button } from "@radix-ui/themes";
 import { LuPlus } from "react-icons/lu";
 
-import { ElementConfigEditor } from "@/components/top8/ElementEditor/ElementConfigEditor";
+import { ElementConfigEditor } from "@/components/top8/ElementEditor/ElementConfigEditor/ElementConfigEditor";
 import { ElementConfig } from "@/types/top8/LayoutTypes";
 
 type Props = {

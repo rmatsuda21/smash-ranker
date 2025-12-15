@@ -18,6 +18,8 @@ export type ElementType =
   | "altCharacterImage"
   | "tournamentIcon";
 
+export type Condition = LayoutPlaceholder | RenderCondition;
+
 export interface CanvasConfig {
   size: { width: number; height: number };
   displayScale: number;
@@ -34,8 +36,8 @@ interface BaseElementConfig {
   offset?: { x: number; y: number };
   clip?: boolean;
   name?: string;
-  disabled?: boolean;
-  conditions?: (LayoutPlaceholder | RenderCondition)[];
+  hidden?: boolean;
+  conditions?: Condition[];
 }
 
 export interface TextElementConfig
