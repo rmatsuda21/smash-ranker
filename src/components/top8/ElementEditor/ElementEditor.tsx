@@ -1,5 +1,5 @@
 import { Button } from "@radix-ui/themes";
-import { LuPlus } from "react-icons/lu";
+// import { LuPlus } from "react-icons/lu";
 
 import { ElementConfigEditor } from "@/components/top8/ElementEditor/ElementConfigEditor/ElementConfigEditor";
 import { ElementConfig } from "@/types/top8/LayoutTypes";
@@ -17,7 +17,7 @@ export const ElementEditor = ({
   className,
   elements,
   selectedElementIndex,
-  onAddElement,
+  // onAddElement,
   onElementSelect,
   onUpdateElement,
 }: Props) => {
@@ -25,24 +25,24 @@ export const ElementEditor = ({
     onElementSelect(index);
   };
 
-  const addElement = () => {
-    onAddElement({
-      name: "New Element",
-      type: "text",
-      text: "Hello",
-      fill: "#ffff00",
-      fontSize: 200,
-      fontWeight: 900,
-      position: { x: 0, y: 0 },
-    });
-  };
+  // const addElement = () => {
+  //   onAddElement({
+  //     name: "New Element",
+  //     type: "text",
+  //     text: "Hello",
+  //     fill: "#ffff00",
+  //     fontSize: 200,
+  //     fontWeight: 900,
+  //     position: { x: 0, y: 0 },
+  //   });
+  // };
 
   return (
     <div className={className}>
-      <Button variant="outline" size="2" onClick={addElement}>
+      {/* <Button variant="outline" size="2" onClick={addElement}>
         <LuPlus />
         Add Element
-      </Button>
+      </Button> */}
       <div>
         {elements?.map((element, index) => (
           <Button
