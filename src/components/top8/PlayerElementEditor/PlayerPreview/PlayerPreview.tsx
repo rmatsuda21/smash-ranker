@@ -5,8 +5,8 @@ import { PlayerLayoutConfig } from "@/types/top8/LayoutTypes";
 import styles from "./PlayerPreview.module.scss";
 
 const PADDING = 75;
-const PREVIEW_WIDTH = 175;
-const PREVIEW_HEIGHT = 175;
+const PREVIEW_WIDTH = 150;
+const PREVIEW_HEIGHT = 150;
 
 type Props = {
   basePlayer: PlayerLayoutConfig;
