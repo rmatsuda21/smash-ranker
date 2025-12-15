@@ -50,22 +50,3 @@
     justify-content: center;
   }
 }
-
-.tooltip {
-  border-radius: 5px;
-  padding: 1px 3px;
-  font-size: 10px;
-  font-weight: 900;
-
-  display: none;
-  position: fixed;
-  z-index: 1000;
-  top: 0;
-  left: 0;
-
-  background-color: white;
-  color: black;
-  pointer-events: none;
-
-  content: "";
-}
