@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import { Slider } from "@radix-ui/themes";
 import debounce from "lodash/debounce";
 
 import {
@@ -8,6 +7,7 @@ import {
 } from "@/types/top8/LayoutTypes";
 import { Input } from "@/components/shared/Input/Input";
 import { ColorInput } from "@/components/shared/ColorInput/ColorInput";
+import { Slider } from "@/components/shared/Slider/Slider";
 
 import styles from "./TextConfigEditor.module.scss";
 
@@ -90,16 +90,13 @@ export const TextConfigEditor = ({ element, onUpdateElement }: Props) => {
           onChange={handleChange}
         />
         <Slider
-          className={styles.slider}
           id="fontWeight"
           name="fontWeight"
-          value={[Number(elementConfig.fontWeight?.toString() ?? 0)]}
+          value={Number(elementConfig.fontWeight?.toString() ?? 0)}
           min={100}
           max={900}
           step={100}
-          onValueChange={(value) => {
-            handleFontWeightChange(value[0]);
-          }}
+          onValueChange={handleFontWeightChange}
         />
       </div>
     </div>
