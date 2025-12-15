@@ -15,16 +15,16 @@ type Props = Omit<
 };
 
 const getFillPercent = (
-  value: number | undefined,
-  min: number,
-  max: number
+  value: string | number | readonly string[] | undefined,
+  min: string | number,
+  max: string | number
 ) => {
-  if (!value) return 0;
-
+  if (!value) return "0%";
+  const valueNum = Number(value);
   const minNum = Number(min);
   const maxNum = Number(max);
-  const valueNum = Number(value ?? minNum);
-  return ((valueNum - minNum) / (maxNum - minNum)) * 100;
+  const percent = ((valueNum - minNum) / (maxNum - minNum)) * 100;
+  return `${percent}%`;
 };
 
 export const Slider = ({
@@ -43,11 +43,7 @@ export const Slider = ({
   };
 
   const trackStyle = {
-    "--fill-percent": `${getFillPercent(
-      Number(value),
-      Number(min),
-      Number(max)
-    )}%`,
+    "--fill-percent": getFillPercent(value, min, max),
   } as React.CSSProperties;
 
   return (
