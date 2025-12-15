@@ -1,0 +1,29 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  --preview-width: 300px;
+  --preview-height: 300px;
+  --player-width: 100px;
+  --player-height: 100px;
+
+  width: var(--preview-width);
+  height: var(--preview-height);
+
+  .viewport {
+    transform: scale(
+      calc(
+        min(
+          var(--preview-width) / calc(var(--player-width) + var(--padding) * 2),
+          var(--preview-height) /
+            calc(var(--player-height) + var(--padding) * 2)
+        )
+      )
+    );
+    width: calc(var(--player-width) + var(--padding) * 2);
+    height: calc(var(--player-height) + var(--padding) * 2);
+    outline: 10px solid white;
+    border-radius: 10px;
+  }
+}

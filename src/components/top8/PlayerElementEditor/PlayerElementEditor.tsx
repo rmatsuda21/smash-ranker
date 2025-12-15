@@ -1,5 +1,4 @@
 import { useCallback, useMemo, useState } from "react";
-import { Layer, Stage } from "react-konva";
 import cn from "classnames";
 
 import { useCanvasStore } from "@/store/canvasStore";
@@ -8,6 +7,7 @@ import { PlayerInfo } from "@/types/top8/PlayerTypes";
 import { createKonvaElements } from "@/utils/top8/elementFactory";
 import { ElementEditor } from "@/components/top8/ElementEditor/ElementEditor";
 import { ElementConfig } from "@/types/top8/LayoutTypes";
+import { PlayerPreview } from "@/components/top8/PlayerElementEditor/PlayerPreview/PlayerPreview";
 
 import styles from "./PlayerElementEditor.module.scss";
 
@@ -82,23 +82,7 @@ export const PlayerElementEditor = ({ className }: Props) => {
 
   return (
     <div className={cn(styles.wrapper, className)}>
-      <div
-        className={styles.playerPreview}
-        style={
-          {
-            "--preview-width": "150px",
-            "--preview-height": "150px",
-            "--player-width": `${basePlayer.size.width}px`,
-            "--player-height": `${basePlayer.size.height}px`,
-          } as React.CSSProperties
-        }
-      >
-        <div className={styles.viewport}>
-          <Stage width={basePlayer.size.width} height={basePlayer.size.height}>
-            <Layer>{konvaElements}</Layer>
-          </Stage>
-        </div>
-      </div>
+      <PlayerPreview basePlayer={basePlayer} konvaElements={konvaElements} />
       <ElementEditor
         elements={basePlayer.elements}
         selectedElementIndex={selectedElementIndex}
