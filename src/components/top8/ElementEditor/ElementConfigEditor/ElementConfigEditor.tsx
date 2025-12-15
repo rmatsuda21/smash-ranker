@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import { LuEyeOff } from "react-icons/lu";
 
 import { Condition, ElementConfig } from "@/types/top8/LayoutTypes";
-import { TextConfigEditor } from "@/components/top8/ElementEditor/TextConfigEditor";
+import { TextConfigEditor } from "@/components/top8/ElementEditor/TextConfigEditor/TextConfigEditor";
 import { ImageConfigEditor } from "@/components/top8/ElementEditor/ImageConfigEditor";
 import { Input } from "@/components/shared/Input/Input";
 import { ConditionEditor } from "@/components/top8/ElementEditor/ConditionEditor/ConditionEditor";

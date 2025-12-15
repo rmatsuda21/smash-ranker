@@ -9,6 +9,8 @@ import {
 import { Input } from "@/components/shared/Input/Input";
 import { ColorInput } from "@/components/shared/ColorInput/ColorInput";
 
+import styles from "./TextConfigEditor.module.scss";
+
 type Props = {
   element: TextElementConfig | SmartTextElementConfig;
   onUpdateElement: (
@@ -24,9 +26,13 @@ export const TextConfigEditor = ({ element, onUpdateElement }: Props) => {
   }, [element]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const type = event.target.type;
+    const value =
+      type === "number" ? Number(event.target.value) : event.target.value;
+
     const newConfig = {
       ...elementConfig,
-      [event.target.name]: event.target.value,
+      [event.target.name]: value,
     };
     setElementConfig(newConfig);
     debouncedUpdateElementConfig(newConfig);
@@ -59,7 +65,7 @@ export const TextConfigEditor = ({ element, onUpdateElement }: Props) => {
   );
 
   return (
-    <div>
+    <div className={styles.wrapper}>
       <Input
         label="Text"
         type="text"
@@ -68,47 +74,34 @@ export const TextConfigEditor = ({ element, onUpdateElement }: Props) => {
         value={elementConfig.text}
         onChange={handleChange}
       />
-      <Input
-        label="Font Size"
-        type="number"
-        id="fontSize"
-        name="fontSize"
-        value={elementConfig.fontSize ?? ""}
-        onChange={handleChange}
-      />
-      <label>Font Weight</label>
-      <Slider
-        id="fontWeight"
-        name="fontWeight"
-        value={[Number(elementConfig.fontWeight?.toString() ?? 0)]}
-        min={100}
-        max={900}
-        step={100}
-        onValueChange={(value) => {
-          handleFontWeightChange(value[0]);
-        }}
-      />
-      <label>Fill</label>
-      <ColorInput
-        color={elementConfig.fill ?? "#ffffff"}
-        onChange={(color) => handleColorChange("fill", color)}
-      />
-      <Input
-        label="Align"
-        type="text"
-        id="align"
-        name="align"
-        value={elementConfig.align ?? ""}
-        onChange={handleChange}
-      />
-      <Input
-        label="Vertical Align"
-        type="text"
-        id="verticalAlign"
-        name="verticalAlign"
-        value={elementConfig.verticalAlign ?? ""}
-        onChange={handleChange}
-      />
+      <div className={styles.grid}>
+        <label className={styles.label}>Color</label>
+        <label className={styles.label}>Font Size</label>
+        <label className={styles.label}>Font Weight</label>
+        <ColorInput
+          color={elementConfig.fill ?? "#ffffff"}
+          onChange={(color) => handleColorChange("fill", color)}
+        />
+        <Input
+          type="number"
+          id="fontSize"
+          name="fontSize"
+          value={elementConfig.fontSize ?? ""}
+          onChange={handleChange}
+        />
+        <Slider
+          className={styles.slider}
+          id="fontWeight"
+          name="fontWeight"
+          value={[Number(elementConfig.fontWeight?.toString() ?? 0)]}
+          min={100}
+          max={900}
+          step={100}
+          onValueChange={(value) => {
+            handleFontWeightChange(value[0]);
+          }}
+        />
+      </div>
     </div>
   );
 };
