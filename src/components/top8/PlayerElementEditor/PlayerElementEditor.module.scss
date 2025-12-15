@@ -3,36 +3,5 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  gap: 10px;
-
-  .playerPreview {
-    margin: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    --preview-width: 300px;
-    --preview-height: 300px;
-    --player-width: 100px;
-    --player-height: 100px;
-
-    width: var(--preview-width);
-    height: var(--preview-height);
-    border-radius: 3px;
-    outline: 5px solid white;
-    outline-offset: 4px;
-
-    .viewport {
-      transform: scale(
-        calc(
-          min(
-            var(--preview-width) / var(--player-width),
-            var(--preview-height) / var(--player-height)
-          )
-        )
-      );
-      width: var(--player-width);
-      height: var(--player-height);
-    }
-  }
+  gap: 15px;
 }

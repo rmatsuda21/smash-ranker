@@ -52,21 +52,18 @@ export const ElementConfigEditor = (props: Props) => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.basicConfig}>
-        <p className={styles.title}>Basic Config</p>
-        <div className={styles.content}>
-          <Input
-            type="checkbox"
-            id="hidden"
-            name="hidden"
-            label={<LuEyeOff size={20} />}
-            checked={element.hidden}
-            onChange={handleInputChange}
-          />
-          <ConditionEditor
-            conditions={element.conditions}
-            onUpdateConditions={handleConditionUpdate}
-          />
-        </div>
+        <Input
+          type="checkbox"
+          id="hidden"
+          name="hidden"
+          label={<LuEyeOff size={20} />}
+          checked={element.hidden}
+          onChange={handleInputChange}
+        />
+        <ConditionEditor
+          conditions={element.conditions}
+          onUpdateConditions={handleConditionUpdate}
+        />
       </div>
       <SpecificConfigEditor {...props} />
     </div>
