@@ -4,6 +4,8 @@ import { Button } from "@radix-ui/themes";
 import { ElementConfigEditor } from "@/components/top8/ElementEditor/ElementConfigEditor/ElementConfigEditor";
 import { ElementConfig } from "@/types/top8/LayoutTypes";
 
+import styles from "./ElementEditor.module.scss";
+
 type Props = {
   className?: string;
   elements: ElementConfig[];
@@ -38,27 +40,30 @@ export const ElementEditor = ({
   // };
 
   return (
-    <div className={className}>
+    <div className={`${styles.wrapper} ${className || ""}`}>
       {/* <Button variant="outline" size="2" onClick={addElement}>
         <LuPlus />
         Add Element
       </Button> */}
-      <div>
+      <div className={styles.elementList}>
         {elements?.map((element, index) => (
           <Button
             key={`${element.type}-${index}`}
             onClick={() => handleClick(index)}
             variant={index === selectedElementIndex ? "solid" : "outline"}
+            size="1"
           >
             {element.name || element.type}
           </Button>
         ))}
       </div>
       {selectedElementIndex !== -1 && elements?.[selectedElementIndex] && (
-        <ElementConfigEditor
-          element={elements?.[selectedElementIndex]}
-          onUpdateElement={onUpdateElement}
-        />
+        <div className={styles.configSection}>
+          <ElementConfigEditor
+            element={elements?.[selectedElementIndex]}
+            onUpdateElement={onUpdateElement}
+          />
+        </div>
       )}
     </div>
   );

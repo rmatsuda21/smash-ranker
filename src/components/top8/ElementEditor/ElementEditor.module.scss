@@ -1,0 +1,27 @@
+.wrapper {
+  --button-height: 25px;
+  --gap: 3px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+  .elementList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+    height: calc(var(--button-height) * 2 + var(--gap));
+    overflow-y: auto;
+
+    button {
+      height: 25px;
+      font-size: 12px;
+      font-weight: 500;
+      text-transform: capitalize;
+    }
+  }
+
+  .configSection {
+    padding-top: 10px;
+    border-top: 1px solid var(--gray-6);
+  }
+}
