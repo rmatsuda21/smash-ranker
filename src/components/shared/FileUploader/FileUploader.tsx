@@ -1,7 +1,8 @@
-import { Button } from "@radix-ui/themes";
 import { useEffect, useRef, useState } from "react";
 import { IoIosRemoveCircle } from "react-icons/io";
 import cn from "classnames";
+
+import { Button } from "@/components/shared/Button/Button";
 
 import styles from "./FileUploader.module.scss";
 
@@ -109,7 +110,7 @@ export const FileUploader = ({ value, disabled, onChange }: Props) => {
       <span>Or drag and drop</span>
       {value && <img src={value} alt="Preview" width={100} />}
       {value && (
-        <Button onClick={handleRemoveClick} size="1">
+        <Button onClick={handleRemoveClick} size="sm">
           <IoIosRemoveCircle />
         </Button>
       )}

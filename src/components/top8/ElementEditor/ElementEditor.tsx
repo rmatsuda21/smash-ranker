@@ -1,6 +1,5 @@
-import { Button } from "@radix-ui/themes";
 // import { LuPlus } from "react-icons/lu";
-
+import { Button } from "@/components/shared/Button/Button";
 import { ElementConfigEditor } from "@/components/top8/ElementEditor/ElementConfigEditor/ElementConfigEditor";
 import { ElementConfig } from "@/types/top8/LayoutTypes";
 
@@ -51,7 +50,7 @@ export const ElementEditor = ({
             key={`${element.type}-${index}`}
             onClick={() => handleClick(index)}
             variant={index === selectedElementIndex ? "solid" : "outline"}
-            size="1"
+            size="sm"
           >
             {element.name || element.type}
           </Button>
