@@ -4,7 +4,7 @@
   gap: 10px;
 
   .label {
-    font-size: 12px;
+    font-size: var(--font-size-sm);
     font-weight: 500;
     color: var(--accent-9);
   }

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import debounce from "lodash/debounce";
+import cn from "classnames";
 
 import { usePlayerStore } from "@/store/playerStore";
 import { CharacerData, PlayerInfo } from "@/types/top8/PlayerTypes";
@@ -7,6 +8,8 @@ import { CharacterEditor } from "@/components/top8/CharacterEditor/CharacterEdit
 import { FileUploader } from "@/components/shared/FileUploader/FileUploader";
 import { Input } from "@/components/shared/Input/Input";
 import { PlayerSelector } from "@/components/top8/PlayerForm/PlayerSelector";
+
+import styles from "./PlayerForm.module.scss";
 
 type Props = {
   className?: string;
@@ -104,12 +107,15 @@ export const PlayerForm = ({ className }: Props) => {
   };
 
   return (
-    <div className={className}>
-      <PlayerSelector />
+    <div className={cn(styles.wrapper, className)}>
+      <div className={styles.playerSelector}>
+        <PlayerSelector />
+      </div>
       <Input
         id="prefix"
         name="prefix"
         type="text"
+        label="Prefix"
         value={tempPlayer?.prefix ?? ""}
         onChange={handleChange}
         placeholder="Prefix"
@@ -119,6 +125,7 @@ export const PlayerForm = ({ className }: Props) => {
         id="gamerTag"
         name="gamerTag"
         type="text"
+        label="Gamer Tag"
         value={tempPlayer?.gamerTag ?? ""}
         onChange={handleChange}
         placeholder="Gamer Tag"
@@ -128,21 +135,28 @@ export const PlayerForm = ({ className }: Props) => {
         id="twitter"
         name="twitter"
         type="text"
+        label="Twitter"
         value={tempPlayer?.twitter ?? ""}
         onChange={handleChange}
         placeholder="Twitter"
         disabled={!selectedPlayer}
       />
-      <FileUploader
-        value={tempPlayer?.avatarSrc}
-        disabled={!selectedPlayer}
-        onChange={handleCustomImgSrcChange}
-      />
-      <CharacterEditor
-        characters={tempPlayer?.characters ?? []}
-        onCharactersChange={handleCharactersChange}
-        disabled={!selectedPlayer}
-      />
+      <div>
+        <p className={styles.label}>Avatar</p>
+        <FileUploader
+          value={tempPlayer?.avatarSrc}
+          disabled={!selectedPlayer}
+          onChange={handleCustomImgSrcChange}
+        />
+      </div>
+      <div>
+        <p className={styles.label}>Characters</p>
+        <CharacterEditor
+          characters={tempPlayer?.characters ?? []}
+          onCharactersChange={handleCharactersChange}
+          disabled={!selectedPlayer}
+        />
+      </div>
     </div>
   );
 };

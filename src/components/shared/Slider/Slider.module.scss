@@ -10,7 +10,7 @@
   }
 
   label {
-    font-size: 12px;
+    font-size: var(--font-size-sm);
     font-weight: 500;
     color: var(--accent-9);
   }
@@ -26,7 +26,7 @@
 
     background: linear-gradient(
       to right,
-      var(--accent-9) var(--fill-percent),
+      white var(--fill-percent),
       var(--gray-6) var(--fill-percent)
     );
 
@@ -50,7 +50,7 @@
     }
 
     &::-moz-range-progress {
-      background: var(--accent-9);
+      background: white;
       border-radius: 9999px;
     }
 
@@ -59,7 +59,7 @@
       appearance: none;
       background: var(--accent-9);
       border-radius: 50%;
-      border: none;
+      border: 1px solid var(--gray-6);
       transition: background-color 0.15s ease, transform 0.15s ease;
     }
 

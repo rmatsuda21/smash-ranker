@@ -1,3 +1,4 @@
+import { RiDeleteBin6Fill } from "react-icons/ri";
 import cn from "classnames";
 
 import { CharacerData } from "@/types/top8/PlayerTypes";
@@ -56,6 +57,9 @@ export const CharacterList = ({
               type: "stock",
             })}
           />
+          <div className={styles.delete}>
+            <RiDeleteBin6Fill />
+          </div>
         </button>
       ))}
       <button disabled={disabled} onClick={addCharacter}>

@@ -5,7 +5,7 @@
   gap: 2px;
 
   .title {
-    font-size: 12px;
+    font-size: var(--font-size-sm);
     font-weight: 500;
     color: var(--accent-9);
   }
@@ -18,7 +18,7 @@
 
   .condition {
     cursor: default;
-    font-size: 12px;
+    font-size: var(--font-size-sm);
     font-weight: 900;
 
     min-width: 20px;
@@ -35,18 +35,5 @@
       border-color: var(--accent-9);
       text-decoration: line-through;
     }
-  }
-
-  .addCondition {
-    width: 25px;
-    height: 25px;
-
-    padding: 0;
-    font-size: 25px;
-    font-weight: 900;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
 }

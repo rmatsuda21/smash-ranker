@@ -6,6 +6,8 @@ import { CharacterAltPicker } from "@/components/top8/CharacterEditor/CharacterA
 import { CharacterList } from "@/components/top8/CharacterEditor/CharacterList/CharacterList";
 import { CharacerData } from "@/types/top8/PlayerTypes";
 
+import styles from "./CharacterEditor.module.scss";
+
 type Props = {
   className?: string;
   characters: CharacerData[];
@@ -47,25 +49,27 @@ const CharacterEditorComponent = ({
   };
 
   return (
-    <>
-      <CharacterList
-        characters={characters}
-        onCharactersChange={onCharactersChange}
-        selectedIndex={characterIndex}
-        setSelectedIndex={setCharacterIndex}
-        disabled={disabled}
-      />
-      <CharacterSelect
-        selectedCharacter={selectedCharacter}
-        onValueChange={onCharacterChange}
-        disabled={disabled}
-      />
+    <div className={styles.wrapper}>
       <CharacterAltPicker
         selectedCharacter={selectedCharacter}
         onAltChange={onAltChange}
         disabled={disabled}
       />
-    </>
+      <div className={styles.row}>
+        <CharacterSelect
+          selectedCharacter={selectedCharacter}
+          onValueChange={onCharacterChange}
+          disabled={disabled}
+        />
+        <CharacterList
+          characters={characters}
+          onCharactersChange={onCharactersChange}
+          selectedIndex={characterIndex}
+          setSelectedIndex={setCharacterIndex}
+          disabled={disabled}
+        />
+      </div>
+    </div>
   );
 };
 

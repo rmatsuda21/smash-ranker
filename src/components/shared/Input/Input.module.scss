@@ -1,7 +1,7 @@
 .wrapper {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 4px;
 
   &.labelInLine {
     flex-direction: row;
@@ -10,17 +10,21 @@
   }
 
   label {
-    font-size: 12px;
+    font-size: var(--font-size-sm);
+    line-height: 1;
     font-weight: 500;
     color: var(--accent-9);
   }
 
   input {
+    padding: var(--input-padding-sm);
+    background-color: var(--gray-1);
+
     color: white;
-    padding: 3px 6px;
+    font-size: var(--font-size-md);
+
     border-radius: 5px;
     border: 1px solid var(--gray-6);
-    background-color: var(--gray-1);
 
     &:focus {
       outline: 1px solid var(--accent-9);

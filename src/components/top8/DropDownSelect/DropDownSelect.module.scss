@@ -1,8 +1,9 @@
 .container {
   position: relative;
   width: 100%;
+  height: min-content;
 
-  font-size: 16px;
+  font-size: var(--font-size-md);
 }
 
 .trigger {
@@ -15,7 +16,7 @@
 
   background-color: #222;
   border: 1px solid #444;
-  padding: 8px 12px;
+  padding: var(--input-padding-sm);
   border-radius: 4px;
   color: white;
   transition: background-color 0.15s ease;
@@ -41,7 +42,7 @@
 .content {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   flex: 1;
   min-width: 0;
 
@@ -125,7 +126,7 @@
   display: flex;
   gap: 8px;
   align-items: center;
-  padding: 8px 12px;
+  padding: var(--input-padding-sm);
 
   img {
     flex-shrink: 0;

@@ -2,6 +2,13 @@
 
 :root {
   --nav-height: 60px;
+  --font-size-xs: 10px;
+  --font-size-sm: 12px;
+  --font-size-md: 14px;
+  --font-size-lg: 16px;
+  --input-padding-sm: 4px 8px;
+  --input-padding-md: 6px 12px;
+  --input-padding-lg: 8px 16px;
 
   @media (prefers-reduced-motion: reduce) {
     --transition-duration: 0s;
@@ -13,12 +20,37 @@
 
   * {
     scrollbar-width: thin;
-    scrollbar-color: var(--accent-6) transparent;
+    scrollbar-color: var(--accent-8) transparent;
+  }
+
+  *::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    background-color: white;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background: var(--accent-8);
+    border-radius: 5px;
   }
 }
 
 body {
   margin: 0;
+
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent-8) transparent;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    background-color: white;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--accent-8);
+    border-radius: 5px;
+  }
 }
 
 .radix-themes {
