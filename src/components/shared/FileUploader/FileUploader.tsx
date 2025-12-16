@@ -114,13 +114,23 @@ export const FileUploader = ({
         name={name}
         onChange={handleChange}
       />
-      <Button variant="outline" onClick={handleButtonClick} disabled={disabled}>
-        Upload
-      </Button>
-      <span>Or drag and drop</span>
+      <div className={styles.content}>
+        <Button
+          variant="outline"
+          onClick={handleButtonClick}
+          disabled={disabled}
+        >
+          Upload
+        </Button>
+        <span>Or drag and drop</span>
+      </div>
       {value && <img src={value} alt="Preview" width={100} />}
       {value && (
-        <Button onClick={handleRemoveClick} size="sm">
+        <Button
+          className={styles.removeButton}
+          onClick={handleRemoveClick}
+          size="sm"
+        >
           <IoIosRemoveCircle />
         </Button>
       )}

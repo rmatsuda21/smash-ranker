@@ -45,6 +45,7 @@ export const Ranker = () => {
     <div className={styles.root}>
       <h1>Ranker</h1>
 
+      <div className={styles.header}>Header Here</div>
       <div className={styles.body}>
         <SidePanel className={styles.sidePanel} />
 

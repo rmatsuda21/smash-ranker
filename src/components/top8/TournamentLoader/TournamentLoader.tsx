@@ -1,0 +1,59 @@
+import { useState } from "react";
+
+import { Button } from "@/components/shared/Button/Button";
+import { Input } from "@/components/shared/Input/Input";
+import { useFetchTop8 } from "@/hooks/top8/useFetchTop8";
+import { usePlayerStore } from "@/store/playerStore";
+import { useTournamentStore } from "@/store/tournamentStore";
+
+const urlToSlug = (url: string) => {
+  const match = url.match(/tournament\/([^/]+)\/event\/([^/]+)/);
+  if (match) {
+    return `tournament/${match[1]}/event/${match[2]}`;
+  }
+
+  return (
+    // "tournament/genesis-9-1/event/ultimate-singles"
+    "tournament/sp12-umeburasp12/event/singles"
+    // "tournament/no-caps-115-msc-1400/event/ultimate-singles"
+    // "tournament/smash-sans-fronti-res-271/event/smash-ultimate-singles"
+    // "tournament/the-buddbuds-local-15/event/ultimate-singles"
+    // "tournament/coffee-break-11-0/event/ultimate-singles"
+  );
+};
+
+export const TournamentLoader = () => {
+  const [url, setUrl] = useState(
+    "https://smash.gg/tournament/no-caps-115-msc-1400/event/ultimate-singles"
+  );
+
+  const isFetching = usePlayerStore((state) => state.fetching);
+  const playerDispatch = usePlayerStore((state) => state.dispatch);
+  const tournamentDispatch = useTournamentStore((state) => state.dispatch);
+
+  const { fetchTop8 } = useFetchTop8();
+
+  const handleLoadClick = () => {
+    playerDispatch({ type: "CLEAR_SELECTED_PLAYER" });
+    tournamentDispatch({ type: "CLEAR_SELECTED_ELEMENT" });
+
+    fetchTop8(urlToSlug(url));
+  };
+
+  return (
+    <div>
+      <Input
+        label="URL"
+        id="url"
+        type="text"
+        value={url}
+        onChange={(e) => {
+          setUrl(e.currentTarget.value);
+        }}
+      />
+      <Button loading={isFetching} onClick={handleLoadClick}>
+        Load
+      </Button>
+    </div>
+  );
+};

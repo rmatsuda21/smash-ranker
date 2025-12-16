@@ -363,7 +363,6 @@ export const simpleLayout: LayoutConfig = {
         fontWeight: 900,
         fill: "text",
         anchor: "topRight",
-        conditions: [RenderCondition.NOT, RenderCondition.TOURNAMENT_ICON],
       },
       {
         type: "text",
