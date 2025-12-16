@@ -13,6 +13,7 @@ import { Tooltip } from "@/components/shared/Tooltip/Tooltip";
 import { useTooltip } from "@/components/shared/Tooltip/useTooltip";
 
 import styles from "./ConditionEditor.module.scss";
+import { useRef } from "react";
 
 type Props = {
   conditions?: Condition[];
@@ -67,7 +68,8 @@ const applyNegationToConditions = (
 };
 
 export const ConditionEditor = ({ conditions }: Props) => {
-  const [tooltipRef, tooltip] = useTooltip();
+  const conditionsRef = useRef<HTMLDivElement>(null);
+  const [tooltipRef, tooltip] = useTooltip(conditionsRef);
 
   const handleMouseEnter = (condition: Condition, negated: boolean) => {
     const content = getConditionLabel(condition, negated);
@@ -83,7 +85,7 @@ export const ConditionEditor = ({ conditions }: Props) => {
   return (
     <div className={styles.wrapper}>
       <p className={styles.title}>Conditions</p>
-      <div className={styles.conditions}>
+      <div className={styles.conditions} ref={conditionsRef}>
         {negatedConditions?.map(({ condition, negated }, index) => (
           <div
             key={`${condition}-${index}`}

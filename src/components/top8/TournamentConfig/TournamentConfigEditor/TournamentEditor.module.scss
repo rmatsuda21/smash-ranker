@@ -4,11 +4,12 @@
   gap: 5px;
 
   input {
-    font-size: 14px;
+    font-size: var(--font-size-md);
   }
 
   label {
-    font-size: 12px;
+    line-height: 1;
+    font-size: var(--font-size-sm);
     font-weight: 500;
     color: var(--accent-9);
   }

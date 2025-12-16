@@ -1,6 +1,6 @@
 .wrapper {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(35px, 1fr));
   gap: 5px;
 
   button {
@@ -9,8 +9,8 @@
     align-items: center;
     justify-content: center;
 
-    width: 35px;
-    height: 35px;
+    min-width: 35px;
+    aspect-ratio: 1;
     border: 2px solid #ccc;
     border-radius: 5px;
     padding: 5px;
@@ -27,29 +27,39 @@
       object-fit: contain;
     }
 
+    .delete {
+      pointer-events: none;
+      opacity: 0;
+      z-index: 1000;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 100%;
+      height: 100%;
+
+      background-color: var(--accent-9);
+
+      transition: opacity 0.1s ease-in-out;
+
+      svg {
+        width: 90%;
+        height: 90%;
+      }
+    }
+
     &.selected {
       border-color: var(--accent-9);
       background-color: var(--accent-4);
     }
 
     &.selected:not(.only):hover {
-      &:before {
-        content: "×";
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 900;
-        font-size: 20px;
-        color: #fff;
-
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: var(--accent-9);
-
-        animation: fadeIn 0.2s ease;
+      .delete {
+        opacity: 1;
       }
     }
 

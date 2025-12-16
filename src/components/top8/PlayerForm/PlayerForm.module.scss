@@ -1,0 +1,35 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  .label {
+    font-size: var(--font-size-sm);
+    line-height: 1;
+    font-weight: 500;
+    color: var(--accent-9);
+    margin-bottom: 4px;
+  }
+}
+
+.playerSelector {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(32px, auto);
+  background-color: var(--gray-3);
+  border: 1px solid var(--gray-3);
+  gap: 1px;
+
+  overflow-x: auto;
+  white-space: nowrap;
+
+  button {
+    border-radius: 0;
+    background-color: var(--gray-1);
+
+    &:global(.selected) {
+      background-color: var(--accent-9);
+      color: white;
+    }
+  }
+}

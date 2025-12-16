@@ -35,8 +35,8 @@
 
 .sm {
   height: 25px;
-  padding: 4px 8px;
-  font-size: 12px;
+  padding: var(--input-padding-sm);
+  font-size: var(--font-size-sm);
 
   .loader {
     width: 12px;
@@ -46,8 +46,8 @@
 
 .md {
   height: 30px;
-  padding: 6px 12px;
-  font-size: 14px;
+  padding: var(--input-padding-md);
+  font-size: var(--font-size-md);
 
   .loader {
     width: 14px;
@@ -57,8 +57,8 @@
 
 .lg {
   height: 35px;
-  padding: 8px 16px;
-  font-size: 16px;
+  padding: var(--input-padding-lg);
+  font-size: var(--font-size-lg);
 
   .loader {
     width: 16px;

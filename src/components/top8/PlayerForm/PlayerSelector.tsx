@@ -14,7 +14,8 @@ export const PlayerSelector = () => {
       onClick={() =>
         dispatch({ type: "SET_SELECTED_PLAYER_INDEX", payload: index })
       }
-      variant={selectedPlayerIndex === index ? "solid" : "outline"}
+      variant={selectedPlayerIndex === index ? "solid" : "ghost"}
+      className={selectedPlayerIndex === index ? "selected" : ""}
     >
       {index + 1}
     </Button>

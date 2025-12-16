@@ -44,7 +44,7 @@ export const fetchAndMapFonts = async ({
   }
 
   const url = new URL("https://www.googleapis.com/webfonts/v1/webfonts");
-  url.searchParams.set("capability", "VF");
+  // url.searchParams.set("capability", "VF");
   url.searchParams.set("subset", "japanese");
   url.searchParams.set("sort", "popularity");
   url.searchParams.set("key", apiKey);
