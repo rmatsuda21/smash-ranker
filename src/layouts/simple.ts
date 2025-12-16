@@ -9,6 +9,7 @@ const MAIN_PL_SIZE = 665;
 const CANVAS_WIDTH = 1920;
 const CANVAS_HEIGHT = 1080;
 const SECOND_ROW_Y_OFFSET = 27;
+const TOURNAMENT_ICON_SIZE = 110;
 
 const SMASH_BALL_SIZE = 1600;
 
@@ -334,24 +335,14 @@ export const simpleLayout: LayoutConfig = {
     elements: [
       {
         type: "text",
-        id: "topLeftText",
-        name: "Top Left Text",
+        id: "tournamentName",
+        name: "Tournament Name",
         position: { x: PADDING, y: PADDING },
         text: `${LayoutPlaceholder.TOURNAMENT_NAME} - ${LayoutPlaceholder.EVENT_NAME}`,
         fontSize: 40,
         fontWeight: 900,
         fill: "text",
         conditions: [RenderCondition.NOT, RenderCondition.TOURNAMENT_ICON],
-      },
-      {
-        type: "tournamentIcon",
-        id: "tournamentIcon",
-        name: "Tournament Icon",
-        position: { x: PADDING, y: PADDING },
-        size: { width: 150, height: 150 },
-        conditions: [RenderCondition.TOURNAMENT_ICON],
-        fillMode: "contain",
-        align: "top",
       },
       {
         type: "smartText",
@@ -363,6 +354,27 @@ export const simpleLayout: LayoutConfig = {
         fontWeight: 900,
         fill: "text",
         anchor: "topRight",
+      },
+      {
+        type: "tournamentIcon",
+        id: "tournamentIcon",
+        name: "Tournament Icon",
+        position: { x: PADDING, y: 10 },
+        size: { width: TOURNAMENT_ICON_SIZE, height: TOURNAMENT_ICON_SIZE },
+        conditions: [RenderCondition.TOURNAMENT_ICON],
+        fillMode: "contain",
+        align: "top",
+      },
+      {
+        type: "text",
+        id: "tournamentNameWithIcon",
+        name: "Tournament Name (w/ Icon)",
+        position: { x: PADDING + TOURNAMENT_ICON_SIZE + 20, y: PADDING },
+        text: `${LayoutPlaceholder.TOURNAMENT_NAME} - ${LayoutPlaceholder.EVENT_NAME}`,
+        fontSize: 40,
+        fontWeight: 900,
+        fill: "text",
+        conditions: [RenderCondition.TOURNAMENT_ICON],
       },
       {
         type: "text",
