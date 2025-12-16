@@ -35,19 +35,16 @@ export const ColorPaletteEditor = ({ className }: Props) => {
 
   return (
     <div className={cn(className, styles.wrapper)}>
-      <h3>Color Palette</h3>
-      <div className={styles.palette}>
-        {palette &&
-          Object.entries(palette).map(([id, { color, name }]) => (
-            <div key={id} className={styles.row}>
-              <ColorInput
-                color={rgbStringToAlphaHex(color)}
-                onChange={(color) => handleColorChange(id, color, name)}
-              />
-              <span>{name}</span>
-            </div>
-          ))}
-      </div>
+      {palette &&
+        Object.entries(palette).map(([id, { color, name }]) => (
+          <div key={id} className={styles.row}>
+            <ColorInput
+              color={rgbStringToAlphaHex(color)}
+              onChange={(color) => handleColorChange(id, color, name)}
+            />
+            <span>{name}</span>
+          </div>
+        ))}
     </div>
   );
 };
