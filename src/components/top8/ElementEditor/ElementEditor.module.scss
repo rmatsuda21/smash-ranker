@@ -10,7 +10,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 3px;
-    height: calc(var(--button-height) * 2 + var(--gap));
+    max-height: calc(var(--button-height) * 2 + var(--gap));
     overflow-y: auto;
 
     button {
