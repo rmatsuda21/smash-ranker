@@ -29,6 +29,7 @@ type Props = {
   className?: string;
 };
 
+// TODO: Add image type selection + quality selection
 export const CanvasDownloader = ({ className }: Props) => {
   const [filename, setFilename] = useState("");
   const stageRef = useCanvasStore((state) => state.stageRef);
