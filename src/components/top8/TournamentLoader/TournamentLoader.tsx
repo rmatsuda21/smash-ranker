@@ -22,7 +22,11 @@ const urlToSlug = (url: string) => {
   );
 };
 
-export const TournamentLoader = () => {
+type Props = {
+  className?: string;
+};
+
+export const TournamentLoader = ({ className }: Props) => {
   const [url, setUrl] = useState(
     "https://smash.gg/tournament/no-caps-115-msc-1400/event/ultimate-singles"
   );
@@ -41,10 +45,11 @@ export const TournamentLoader = () => {
   };
 
   return (
-    <div>
+    <div className={className}>
       <Input
-        label="URL"
-        id="url"
+        label="Tournament URL"
+        id="tournament-url"
+        name="tournament-url"
         type="text"
         value={url}
         onChange={(e) => {

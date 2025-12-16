@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react";
+import { IoMdDownload } from "react-icons/io";
 
 import { Button } from "@/components/shared/Button/Button";
 import { Input } from "@/components/shared/Input/Input";
@@ -92,9 +93,9 @@ export const CanvasDownloader = ({ className }: Props) => {
     <div className={className}>
       <Input
         label="Filename"
-        id="filename"
+        id="downloader-filename"
+        name="downloader-filename"
         type="text"
-        name="filename"
         value={filename}
         onChange={(event) => {
           setFilename(event.currentTarget.value);
@@ -102,7 +103,7 @@ export const CanvasDownloader = ({ className }: Props) => {
         placeholder="ranker.png"
       />
       <Button disabled={!stageRef} onClick={handleDownload}>
-        Download
+        <IoMdDownload /> Download Graphic
       </Button>
     </div>
   );

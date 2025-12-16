@@ -1,12 +1,13 @@
 import { useEffect, lazy, Suspense } from "react";
+import { Skeleton } from "@radix-ui/themes";
 
 import { preloadCharacterImages } from "@/utils/top8/preloadCharacterImages";
 import { usePlayerStore } from "@/store/playerStore";
 import { useCanvasStore } from "@/store/canvasStore";
 import { SidePanel } from "@/components/top8/SidePanel/SidePanel";
+import { Header } from "@/components/top8/Ranker/Header/Header";
 
 import styles from "./Ranker.module.scss";
-import { Skeleton } from "@radix-ui/themes";
 
 // TODO: Create layout creator tool & graphic generator tool
 
@@ -45,7 +46,9 @@ export const Ranker = () => {
     <div className={styles.root}>
       <h1>Ranker</h1>
 
-      <div className={styles.header}>Header Here</div>
+      <div className={styles.header}>
+        <Header />
+      </div>
       <div className={styles.body}>
         <SidePanel className={styles.sidePanel} />
 

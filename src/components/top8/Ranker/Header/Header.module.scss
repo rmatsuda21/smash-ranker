@@ -1,0 +1,23 @@
+.wrapper {
+  background-color: var(--gray-3);
+  padding: 10px;
+  margin-block: 10px;
+  border-radius: 5px;
+
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+
+  .tournamentLoader,
+  .canvasDownloader {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+  }
+
+  .tournamentLoader {
+    input {
+      width: 400px;
+    }
+  }
+}
