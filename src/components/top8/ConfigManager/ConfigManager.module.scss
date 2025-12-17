@@ -1,0 +1,21 @@
+div.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  gap: 4px;
+
+  .label {
+    justify-self: flex-start;
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    color: var(--accent-9);
+    line-height: 1;
+  }
+
+  .buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+  }
+}
