@@ -57,7 +57,7 @@ export const ElementConfigEditor = (props: Props) => {
           id="hidden"
           name="hidden"
           label={<LuEyeOff size={20} />}
-          checked={element.hidden}
+          checked={element.hidden ?? false}
           onChange={handleInputChange}
         />
         <ConditionEditor

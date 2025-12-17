@@ -1,8 +1,8 @@
 import cn from "classnames";
 
 import { ConfigExport } from "@/components/top8/ConfigManager/ConfigExport";
-import { ConfigImport } from "@/components/top8/ConfigManager/ConfigImport";
-import { ConfigSelector } from "@/components/top8/ConfigManager/ConfigSelector";
+// import { ConfigImport } from "@/components/top8/ConfigManager/ConfigImport";
+import { ConfigSelector } from "@/components/top8/ConfigManager/ConfigSelector/ConfigSelector";
 
 import styles from "./ConfigManager.module.scss";
 
@@ -16,7 +16,7 @@ export const ConfigManager = ({ className }: Props) => {
       <p className={styles.label}>Config Manager</p>
       <div className={styles.buttons}>
         <ConfigExport />
-        <ConfigImport />
+        {/* <ConfigImport /> */}
         <ConfigSelector />
       </div>
     </div>

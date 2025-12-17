@@ -2,11 +2,18 @@ import { FaFileExport } from "react-icons/fa6";
 
 import { useCanvasStore } from "@/store/canvasStore";
 import { Button } from "@/components/shared/Button/Button";
+import { DBConfig } from "@/types/ConfigRepository";
 
 export const ConfigExport = () => {
-  const config = useCanvasStore((state) => state.layout);
+  const layout = useCanvasStore((state) => state.layout);
+  const selectedFont = useCanvasStore((state) => state.selectedFont);
 
   const handleExport = () => {
+    const config: Omit<DBConfig, "id"> = {
+      name: "Exported Config",
+      layout: layout,
+      selectedFont: selectedFont,
+    };
     const json = JSON.stringify(config, null, 2);
     const blob = new Blob([json], { type: "application/json" });
     const url = URL.createObjectURL(blob);
