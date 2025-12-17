@@ -7,6 +7,8 @@ import { useCanvasStore } from "@/store/canvasStore";
 import { usePlayerStore } from "@/store/playerStore";
 import { useTournamentStore } from "@/store/tournamentStore";
 
+// TODO: Create export config modal
+
 const isIOS = (): boolean => {
   return (
     /iPad|iPhone|iPod/.test(navigator.userAgent) ||
@@ -104,7 +106,7 @@ export const CanvasDownloader = ({ className }: Props) => {
         placeholder="ranker.png"
       />
       <Button disabled={!stageRef} onClick={handleDownload}>
-        <IoMdDownload /> Download Graphic
+        <IoMdDownload /> Download
       </Button>
     </div>
   );
