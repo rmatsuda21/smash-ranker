@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
-import { EditorTab, EditorTabs } from "@/types/top8/EditorTypes";
+import { EditorTab } from "@/types/top8/EditorTypes";
 
 interface EditorState {
   activeTab: EditorTab;
@@ -24,7 +24,7 @@ const editorReducer = (
 };
 
 const initialState: EditorState = {
-  activeTab: EditorTabs.TOURNAMENT_CONFIG,
+  activeTab: EditorTab.TOURNAMENT_CONFIG,
 };
 
 interface EditorStore extends EditorState {

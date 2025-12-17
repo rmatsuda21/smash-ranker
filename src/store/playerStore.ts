@@ -71,6 +71,9 @@ const defaultPlayers: PlayerInfo[] = new Array(8)
     twitter: index === 0 ? "chikyunojin" : undefined,
   }));
 
+defaultPlayers[0].name = "Reo M";
+defaultPlayers[0].gamerTag = "Reo M";
+
 const initialState: PlayerState = {
   players: defaultPlayers,
   selectedPlayerIndex: -1,

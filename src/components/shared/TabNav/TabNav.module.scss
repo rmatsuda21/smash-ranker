@@ -1,10 +1,12 @@
 .wrapper {
-  --border-width: 2px;
+  --border-width: 3px;
 
   display: flex;
   flex-direction: row;
 
-  border-bottom: var(--border-width) solid var(--gray-6);
+  overflow-x: auto;
+  height: max-content;
+  // border-bottom: var(--border-width) solid var(--gray-6);
 
   button {
     display: flex;
@@ -23,41 +25,24 @@
     font-weight: 900;
     cursor: pointer;
 
-    > div {
+    border-bottom: var(--border-width) solid var(--gray-6);
+
+    .label {
+      padding: 3px;
       width: min-content;
       height: min-content;
       transition: background-color 0.1s ease-in-out;
     }
 
-    &::after {
-      content: "";
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      margin-bottom: calc(-1 * var(--border-width));
-      width: 100%;
-      height: var(--border-width);
-      background-color: transparent;
-      transition: background-color 0.1s ease-in-out;
-    }
-
     &:hover {
+      border-color: var(--gray-3);
       div {
         background-color: rgba(255, 255, 255, 0.1);
-      }
-
-      &::after {
-        background-color: var(--gray-3);
       }
     }
 
     &.active {
-      // background-color: var(--accent-9);
-      // color: white;
-
-      &::after {
-        background-color: var(--accent-9);
-      }
+      border-color: var(--accent-9);
     }
   }
 }

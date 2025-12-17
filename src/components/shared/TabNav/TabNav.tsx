@@ -25,7 +25,7 @@ export const TabNav = <T extends string>({
           })}
           onClick={() => onTabChange(key as T)}
         >
-          <div>{value as string}</div>
+          <div className={styles.label}>{value as string}</div>
         </button>
       ))}
     </div>
