@@ -11,6 +11,7 @@ import { createKonvaElements } from "@/utils/top8/elementFactory";
 import { SelectableElement } from "@/components/top8/Canvas/SelectableElement";
 import { useTournamentStore } from "@/store/tournamentStore";
 import { useEditorStore } from "@/store/editorStore";
+import { EditorTab } from "@/types/top8/EditorTypes";
 
 type Props = {
   player: PlayerInfo;
@@ -68,7 +69,10 @@ const PlayerComponent = ({
     (e: KonvaEventObject<MouseEvent>) => {
       e.cancelBubble = true;
       dispatch({ type: "SET_SELECTED_PLAYER_INDEX", payload: index });
-      editorDispatch({ type: "SET_ACTIVE_TAB", payload: "player-form" });
+      editorDispatch({
+        type: "SET_ACTIVE_TAB",
+        payload: EditorTab.PLAYER_FORM,
+      });
     },
     [index, dispatch, editorDispatch]
   );

@@ -4,7 +4,7 @@ import { FaGear } from "react-icons/fa6";
 
 import { Button } from "@/components/shared/Button/Button";
 import { useConfigDB } from "@/hooks/useConfigDb";
-import { Modal } from "@/components/shared/Modal/Modal";
+import { ConfigManagerModal } from "@/components/top8/ConfigManager/ConfigSelector/ConfigManagerModal";
 // import { simpleLayout } from "@/layouts/simple";
 
 export const ConfigSelector = () => {
@@ -18,9 +18,10 @@ export const ConfigSelector = () => {
       <Button onClick={() => setIsModalOpen(true)}>
         <FaGear /> Manage
       </Button>
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <div>Config Manager</div>
-      </Modal>
+      <ConfigManagerModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </>
   );
 };

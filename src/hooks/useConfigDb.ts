@@ -22,11 +22,13 @@ export const useConfigDB = () => {
   }, []);
 
   const addConfig = async (config: Omit<DBConfig, "id">) => {
+    const id = crypto.randomUUID();
     await configRepository.put({
-      id: crypto.randomUUID(),
+      id,
       ...config,
     });
     await refresh();
+    return id;
   };
 
   const deleteConfig = async (id: string) => {
@@ -39,5 +41,9 @@ export const useConfigDB = () => {
     await refresh();
   };
 
-  return { configs, loading, addConfig, deleteConfig, clearAll };
+  const getConfig = async (id: string) => {
+    return await configRepository.get(id);
+  };
+
+  return { configs, loading, addConfig, deleteConfig, clearAll, getConfig };
 };
