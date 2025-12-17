@@ -75,6 +75,8 @@ export const ConfigManagerModal = ({ isOpen, onClose }: Props) => {
           const selectedFont = json.selectedFont;
 
           if (!layout || !selectedFont) {
+            alert("Invalid config!");
+            fileInput.remove();
             return;
           }
 
