@@ -1,11 +1,7 @@
 import { Suspense, lazy } from "react";
 import cn from "classnames";
 
-import {
-  EditorTab,
-  EditorTabLabels,
-  EditorTabs,
-} from "@/types/top8/EditorTypes";
+import { EditorTab, EditorTabLabels } from "@/types/top8/EditorTypes";
 import { useEditorStore } from "@/store/editorStore";
 import { TabNav } from "@/components/shared/TabNav/TabNav";
 
@@ -69,27 +65,27 @@ export const SidePanel = ({ className }: Props) => {
       <Suspense fallback={<div>Loading Configs...</div>}>
         <TournamentConfig
           className={cn({
-            [styles.hidden]: activeTab !== EditorTabs.TOURNAMENT_CONFIG,
+            [styles.hidden]: activeTab !== EditorTab.TOURNAMENT_CONFIG,
           })}
         />
         <PlayerForm
           className={cn({
-            [styles.hidden]: activeTab !== EditorTabs.PLAYER_FORM,
+            [styles.hidden]: activeTab !== EditorTab.PLAYER_FORM,
           })}
         />
         <PlayerElementEditor
           className={cn({
-            [styles.hidden]: activeTab !== EditorTabs.PLAYER_EDITOR,
+            [styles.hidden]: activeTab !== EditorTab.PLAYER_EDITOR,
           })}
         />
         <ElementPanel
           className={cn({
-            [styles.hidden]: activeTab !== EditorTabs.ELEMENT_EDITOR,
+            [styles.hidden]: activeTab !== EditorTab.ELEMENT_EDITOR,
           })}
         />
         <CanvasConfig
           className={cn({
-            [styles.hidden]: activeTab !== EditorTabs.CANVAS_CONFIG,
+            [styles.hidden]: activeTab !== EditorTab.CANVAS_CONFIG,
           })}
         />
       </Suspense>

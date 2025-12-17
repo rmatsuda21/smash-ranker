@@ -57,3 +57,8 @@ body {
   --default-font-family: "Lexend", sans-serif;
   --default-font-optical-sizing: auto;
 }
+
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
