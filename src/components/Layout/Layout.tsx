@@ -60,7 +60,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
       radius="small"
     >
       <nav className={styles.nav}>
-        <img src="/favicon.png" alt="Smash Ranker" />
+        <img src="/favicon.svg" alt="Smash Ranker" />
         <h1>{label}</h1>
         <IoIosMenu className={styles.icon} onClick={onMenuClick} />
       </nav>

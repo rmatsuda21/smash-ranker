@@ -17,8 +17,8 @@ export const ConfigManager = ({ className }: Props) => {
       <div className={styles.buttons}>
         <ConfigExport />
         <ConfigImport />
-        <ConfigSelector />
       </div>
+      <ConfigSelector />
     </div>
   );
 };
