@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { FaFileImport } from "react-icons/fa6";
 
 import { Modal } from "@/components/shared/Modal/Modal";
@@ -8,26 +8,50 @@ import { DropDownSelect } from "@/components/top8/DropDownSelect/DropDownSelect"
 import { DBConfig } from "@/types/ConfigRepository";
 import { useCanvasStore } from "@/store/canvasStore";
 import { fetchFontFamily } from "@/utils/top8/fetchAndMapFonts";
+import { loadFont } from "@/utils/top8/loadFont";
+import { simpleLayout } from "@/layouts/simple";
+import { squaresLayout } from "@/layouts/squares";
 
 import styles from "./ConfigSelector.module.scss";
-import { loadFont } from "@/utils/top8/loadFont";
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
 };
 
+const defaultConfigs: DBConfig[] = [
+  {
+    id: "default-simple",
+    name: "Simple Config",
+    layout: simpleLayout,
+    selectedFont: "Noto Sans JP",
+  },
+  {
+    id: "default-squares",
+    name: "Squares Config",
+    layout: squaresLayout,
+    selectedFont: "Noto Sans JP",
+  },
+];
+
 export const ConfigManagerModal = ({ isOpen, onClose }: Props) => {
   const [selectedConfig, setSelectedConfig] = useState<DBConfig | null>(null);
   const { configs, getConfig, addConfig, deleteConfig, clearAll } =
     useConfigDB();
+
   const layout = useCanvasStore((state) => state.layout);
   const selectedFont = useCanvasStore((state) => state.selectedFont);
   const dispatch = useCanvasStore((state) => state.dispatch!);
   const canvasDispatch = useCanvasStore((state) => state.dispatch);
 
   const handleConfigSelect = async (id: string) => {
-    const config = await getConfig(id);
+    let config: DBConfig | undefined;
+    if (defaultConfigs.some((c) => c.id === id)) {
+      config = defaultConfigs.find((c) => c.id === id)!;
+    } else {
+      config = await getConfig(id);
+    }
+
     if (config) {
       setSelectedConfig(config);
     }
@@ -54,11 +78,19 @@ export const ConfigManagerModal = ({ isOpen, onClose }: Props) => {
   };
 
   const handleLoad = async (id: string) => {
-    const config = await getConfig(id);
+    let config: DBConfig | undefined;
+    if (defaultConfigs.some((config) => config.id === id)) {
+      config = defaultConfigs.find((config) => config.id === id)!;
+    } else {
+      config = await getConfig(id);
+    }
+
     if (config) {
       dispatch({ type: "SET_LAYOUT", payload: config.layout });
       dispatch({ type: "SET_SELECTED_FONT", payload: config.selectedFont });
     }
+
+    onClose();
   };
 
   const handleImport = () => {
@@ -102,17 +134,21 @@ export const ConfigManagerModal = ({ isOpen, onClose }: Props) => {
     fileInput.click();
   };
 
+  const dropDownOptions = useMemo(() => {
+    return [...defaultConfigs, ...configs].map((config) => ({
+      id: config.id,
+      display: config.name,
+      value: config.id,
+    }));
+  }, [configs]);
+
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div className={styles.modal}>
         <div>
           <h3>Config Manager</h3>
           <DropDownSelect
-            options={configs.map((config) => ({
-              id: config.id,
-              display: config.name,
-              value: config.id,
-            }))}
+            options={dropDownOptions}
             placeholder="Select Config"
             selectedValue={selectedConfig?.id ?? ""}
             onChange={(values) => handleConfigSelect(values[0].id)}
