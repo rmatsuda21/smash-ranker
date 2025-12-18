@@ -4,8 +4,7 @@ import { FaGear } from "react-icons/fa6";
 
 import { Button } from "@/components/shared/Button/Button";
 import { useConfigDB } from "@/hooks/useConfigDb";
-import { ConfigManagerModal } from "@/components/top8/ConfigManager/ConfigSelector/ConfigManagerModal";
-// import { simpleLayout } from "@/layouts/simple";
+import { ConfigManagerModal } from "@/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal";
 
 export const ConfigSelector = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

@@ -12,7 +12,7 @@ import { loadFont } from "@/utils/top8/loadFont";
 import { simpleLayout } from "@/layouts/simple";
 import { squaresLayout } from "@/layouts/squares";
 
-import styles from "./ConfigSelector.module.scss";
+import styles from "./ConfigManagerModal.module.scss";
 
 type Props = {
   isOpen: boolean;
@@ -145,7 +145,7 @@ export const ConfigManagerModal = ({ isOpen, onClose }: Props) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div className={styles.modal}>
-        <div>
+        <div className={styles.body}>
           <h3>Config Manager</h3>
           <DropDownSelect
             options={dropDownOptions}
@@ -153,7 +153,7 @@ export const ConfigManagerModal = ({ isOpen, onClose }: Props) => {
             selectedValue={selectedConfig?.id ?? ""}
             onChange={(values) => handleConfigSelect(values[0].id)}
           />
-          <Button onClick={handleCreateNew}>Create New</Button>
+          <Button onClick={handleCreateNew}>Save Current Config</Button>
           <Button onClick={() => handleLoad(selectedConfig?.id ?? "")}>
             Load
           </Button>
