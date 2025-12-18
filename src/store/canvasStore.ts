@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { devtools } from "zustand/middleware";
+import { createJSONStorage, devtools, persist } from "zustand/middleware";
 import { Stage } from "konva/lib/Stage";
 
 import {
@@ -183,11 +183,19 @@ interface CanvasStore extends CanvasState {
 
 export const useCanvasStore = create<CanvasStore>()(
   devtools(
-    (set) => ({
-      ...initialState,
-      dispatch: (action: CanvasAction) =>
-        set((state) => canvasReducer(state, action), false, action),
-    }),
-    { name: "CanvasStore" }
+    persist(
+      (set) => ({
+        ...initialState,
+        dispatch: (action: CanvasAction) =>
+          set((state) => canvasReducer(state, action), false, action),
+      }),
+      {
+        name: "canvas-store",
+        storage: createJSONStorage(() => localStorage),
+        partialize: (state) => ({
+          layout: state.layout,
+        }),
+      }
+    )
   )
 );

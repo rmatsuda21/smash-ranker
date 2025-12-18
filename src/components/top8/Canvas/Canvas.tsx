@@ -9,7 +9,6 @@ import { useTournamentStore } from "@/store/tournamentStore";
 import { BackgroundLayer } from "@/components/top8/Canvas/BackgroundLayer";
 import { PlayerLayer } from "@/components/top8/Canvas/PlayerLayer";
 import { TournamentLayer } from "@/components/top8/Canvas/TournamentLayer";
-import { simpleLayout } from "@/layouts/simple";
 
 import styles from "./Canvas.module.scss";
 
@@ -41,10 +40,6 @@ export const Canvas = ({ className }: Props) => {
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, [dispatch]);
-
-  useEffect(() => {
-    canvasDispatch({ type: "SET_LAYOUT", payload: simpleLayout });
-  }, [canvasDispatch]);
 
   useEffect(() => {
     if (stageRef.current) {

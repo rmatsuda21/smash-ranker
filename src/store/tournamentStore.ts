@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { devtools } from "zustand/middleware";
+import { createJSONStorage, devtools, persist } from "zustand/middleware";
 
 import { TournamentInfo } from "@/types/top8/TournamentTypes";
 interface TournamentState {
@@ -99,11 +99,16 @@ interface TournamentStore extends TournamentState {
 
 export const useTournamentStore = create<TournamentStore>()(
   devtools(
-    (set) => ({
-      ...initialState,
-      dispatch: (action: TournamentAction) =>
-        set((state) => tournamentReducer(state, action), false, action),
-    }),
-    { name: "TournamentStore" }
+    persist(
+      (set) => ({
+        ...initialState,
+        dispatch: (action: TournamentAction) =>
+          set((state) => tournamentReducer(state, action), false, action),
+      }),
+      {
+        name: "tournament-store",
+        storage: createJSONStorage(() => localStorage),
+      }
+    )
   )
 );

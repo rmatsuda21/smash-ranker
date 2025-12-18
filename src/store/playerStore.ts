@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { devtools } from "zustand/middleware";
+import { createJSONStorage, devtools, persist } from "zustand/middleware";
 
 import { PlayerInfo } from "@/types/top8/PlayerTypes";
 
@@ -87,11 +87,13 @@ interface PlayerStore extends PlayerState {
 
 export const usePlayerStore = create<PlayerStore>()(
   devtools(
-    (set) => ({
-      ...initialState,
-      dispatch: (action: PlayerAction) =>
-        set((state) => playerReducer(state, action), false, action),
-    }),
-    { name: "PlayerStore" }
+    persist(
+      (set) => ({
+        ...initialState,
+        dispatch: (action: PlayerAction) =>
+          set((state) => playerReducer(state, action), false, action),
+      }),
+      { name: "player-store", storage: createJSONStorage(() => localStorage) }
+    )
   )
 );
