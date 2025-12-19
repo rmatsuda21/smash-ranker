@@ -1,11 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Theme } from "@radix-ui/themes";
 import { Link, useLocation } from "wouter";
 import { IoIosMenu } from "react-icons/io";
+import { MdClose } from "react-icons/md";
 import cn from "classnames";
 
 import styles from "./Layout.module.scss";
-import { MdClose } from "react-icons/md";
 
 const NAV_ITEMS = [
   {
@@ -52,13 +51,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
   }, [location]);
 
   return (
-    <Theme
-      className={styles.root}
-      id="parent"
-      accentColor="crimson"
-      grayColor="mauve"
-      radius="small"
-    >
+    <div className={styles.root}>
       <nav className={styles.nav}>
         <img src="/favicon.svg" alt="Smash Ranker" />
         <h1>{label}</h1>
@@ -81,6 +74,6 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
         ))}
       </div>
       <main>{children}</main>
-    </Theme>
+    </div>
   );
 };

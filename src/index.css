@@ -10,6 +10,9 @@
   --input-padding-md: 6px 12px;
   --input-padding-lg: 8px 16px;
 
+  font-family: "Lexend", sans-serif;
+  font-optical-sizing: auto;
+
   @media (prefers-reduced-motion: reduce) {
     --transition-duration: 0s;
     --transition-delay: 0s;
@@ -37,6 +40,7 @@
 
 body {
   margin: 0;
+  background-color: var(--gray-2);
 
   scrollbar-width: thin;
   scrollbar-color: var(--accent-8) transparent;
@@ -51,11 +55,6 @@ body {
     background: var(--accent-8);
     border-radius: 5px;
   }
-}
-
-.radix-themes {
-  --default-font-family: "Lexend", sans-serif;
-  --default-font-optical-sizing: auto;
 }
 
 .no-scrollbar {

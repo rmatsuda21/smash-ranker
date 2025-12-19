@@ -1,0 +1,63 @@
+@use "sass:color";
+
+@mixin generate-scale($base-color, $name, $type: "accent") {
+  @if $type == "gray" {
+    --#{$name}-1: #{color.scale($base-color, $lightness: -85%)};
+    --#{$name}-2: #{color.scale($base-color, $lightness: -70%)};
+    --#{$name}-3: #{color.scale($base-color, $lightness: -55%)};
+    --#{$name}-4: #{color.scale($base-color, $lightness: -40%)};
+    --#{$name}-5: #{color.scale($base-color, $lightness: -28%)};
+    --#{$name}-6: #{color.scale($base-color, $lightness: -16%)};
+    --#{$name}-7: #{color.scale($base-color, $lightness: -8%)};
+    --#{$name}-8: #{color.scale($base-color, $lightness: -3%)};
+    --#{$name}-9: #{$base-color};
+    --#{$name}-10: #{color.mix(white, $base-color, 40%)};
+    --#{$name}-11: #{color.mix(white, $base-color, 70%)};
+    --#{$name}-12: #{color.mix(white, $base-color, 90%)};
+  } @else {
+    --#{$name}-1: #{color.scale(
+        $base-color,
+        $lightness: -85%,
+        $saturation: -60%
+      )};
+    --#{$name}-2: #{color.scale(
+        $base-color,
+        $lightness: -70%,
+        $saturation: -30%
+      )};
+    --#{$name}-3: #{color.scale(
+        $base-color,
+        $lightness: -55%,
+        $saturation: -10%
+      )};
+    --#{$name}-4: #{color.scale(
+        $base-color,
+        $lightness: -40%,
+        $saturation: 5%
+      )};
+    --#{$name}-5: #{color.scale(
+        $base-color,
+        $lightness: -28%,
+        $saturation: 6%
+      )};
+    --#{$name}-6: #{color.scale(
+        $base-color,
+        $lightness: -16%,
+        $saturation: 4%
+      )};
+    --#{$name}-7: #{color.scale($base-color, $lightness: -8%, $saturation: 2%)};
+    --#{$name}-8: #{color.scale($base-color, $lightness: -3%, $saturation: 1%)};
+    --#{$name}-9: #{$base-color};
+    --#{$name}-10: #{color.mix(white, $base-color, 35%)};
+    --#{$name}-11: #{color.mix(white, $base-color, 65%)};
+    --#{$name}-12: #{color.mix(white, $base-color, 88%)};
+  }
+}
+
+@mixin create-theme($colors, $theme-name: "light") {
+  .theme-#{$theme-name} {
+    @each $name, $config in $colors {
+      @include generate-scale($config..., $name);
+    }
+  }
+}
