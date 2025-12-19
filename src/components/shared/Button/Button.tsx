@@ -1,5 +1,6 @@
 import cn from "classnames";
-import { Spinner } from "@radix-ui/themes";
+
+import { Spinner } from "@/components/shared/Spinner/Spinner";
 
 import styles from "./Button.module.scss";
 
@@ -36,7 +37,7 @@ export const Button = ({
       disabled={loading || disabled}
       {...props}
     >
-      {loading && <Spinner className={styles.loader} size="3" />}
+      {loading && <Spinner className={styles.loader} size={15} />}
       {children}
     </button>
   );

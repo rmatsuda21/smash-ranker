@@ -9,8 +9,9 @@ import {
 import { LuChevronsUpDown } from "react-icons/lu";
 import cn from "classnames";
 
+import { Spinner } from "@/components/shared/Spinner/Spinner";
+
 import styles from "./DropDownSelect.module.scss";
-import { Spinner } from "@radix-ui/themes";
 
 type Item<T> = {
   value: T;
@@ -219,7 +220,7 @@ export const DropDownSelect = <T,>({
   }, [isOpen, dropdownRef]);
 
   const content = useMemo(() => {
-    if (loading) return <Spinner size="3" />;
+    if (loading) return <Spinner size={20} />;
     if (selectedOption)
       return (
         <div className={styles.content}>

@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Spinner } from "@radix-ui/themes";
 import { FaGear } from "react-icons/fa6";
 
+import { Spinner } from "@/components/shared/Spinner/Spinner";
 import { Button } from "@/components/shared/Button/Button";
 import { useConfigDB } from "@/hooks/useConfigDb";
 import { ConfigManagerModal } from "@/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal";
@@ -10,7 +10,7 @@ export const ConfigSelector = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { loading } = useConfigDB();
 
-  if (loading) return <Spinner />;
+  if (loading) return <Spinner size={25} />;
 
   return (
     <>
