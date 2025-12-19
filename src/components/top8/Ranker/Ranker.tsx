@@ -1,11 +1,11 @@
 import { useEffect, lazy, Suspense } from "react";
-import { Skeleton } from "@radix-ui/themes";
 
 import { preloadCharacterImages } from "@/utils/top8/preloadCharacterImages";
 import { usePlayerStore } from "@/store/playerStore";
 import { useCanvasStore } from "@/store/canvasStore";
 import { SidePanel } from "@/components/top8/SidePanel/SidePanel";
 import { Header } from "@/components/top8/Ranker/Header/Header";
+import { Skeleton } from "@/components/shared/Skeleton/Skeleton";
 
 import styles from "./Ranker.module.scss";
 

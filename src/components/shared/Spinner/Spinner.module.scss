@@ -1,0 +1,53 @@
+.spinner {
+  --spinner-size: 50px;
+  position: relative;
+  width: var(--spinner-size);
+  height: var(--spinner-size);
+}
+
+.bar {
+  position: absolute;
+  width: 10%;
+  height: 27%;
+  background: #aaa;
+  border-radius: 15%;
+  left: 50%;
+  top: 0;
+  transform-origin: 50% calc(var(--spinner-size) / 2);
+}
+
+@for $i from 1 through 8 {
+  .bar:nth-child(#{$i}) {
+    transform: translate(-50%, 0) rotate(#{($i - 1) * 45deg});
+    animation: fade 1s linear infinite;
+    animation-delay: #{($i - 1) * 0.125s};
+  }
+}
+
+@keyframes fade {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  12.5% {
+    opacity: 0.875;
+  }
+  25% {
+    opacity: 0.75;
+  }
+  37.5% {
+    opacity: 0.625;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  62.5% {
+    opacity: 0.375;
+  }
+  75% {
+    opacity: 0.25;
+  }
+  87.5% {
+    opacity: 0.125;
+  }
+}
