@@ -1,0 +1,13 @@
+@use "./_theme" as *;
+
+:root {
+  @include generate-scale(#414141, "gray", "gray");
+  @include generate-scale(#e5484d, "crimson");
+  @include generate-scale(#f59e0b, "amber");
+  @include generate-scale(#3b82f6, "blue");
+  @include generate-scale(#10b981, "green");
+  @include generate-scale(#8b5cf6, "purple");
+  @include generate-scale(#e93d82, "accent");
+
+  color: white;
+}

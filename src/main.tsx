@@ -1,4 +1,4 @@
-import "@radix-ui/themes/styles.css";
+import "@/theme.scss";
 import "@/reset.css";
 import "@/index.css";
 
