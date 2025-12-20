@@ -25,17 +25,21 @@ export const Canvas = ({ className }: Props) => {
   const canvasSize = useCanvasStore((state) => state.layout.canvas.size);
   const canvasDispatch = useCanvasStore((state) => state.dispatch);
   const tournamentDispatch = useTournamentStore((state) => state.dispatch);
-  const dispatch = usePlayerStore((state) => state.dispatch);
+  const playerDispatch = usePlayerStore((state) => state.dispatch);
+
+  const clearSelections = useCallback(() => {
+    playerDispatch({ type: "CLEAR_SELECTED_PLAYER" });
+    tournamentDispatch({ type: "CLEAR_SELECTED_ELEMENT" });
+  }, [playerDispatch, tournamentDispatch]);
 
   const handleStageClick = useCallback(() => {
-    dispatch({ type: "CLEAR_SELECTED_PLAYER" });
-    tournamentDispatch({ type: "CLEAR_SELECTED_ELEMENT" });
-  }, [dispatch, tournamentDispatch]);
+    clearSelections();
+  }, [clearSelections]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        dispatch({ type: "CLEAR_SELECTED_PLAYER" });
+        clearSelections();
       }
     };
 
@@ -43,7 +47,7 @@ export const Canvas = ({ className }: Props) => {
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [dispatch]);
+  }, [clearSelections]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -67,12 +71,12 @@ export const Canvas = ({ className }: Props) => {
   return (
     <div
       ref={wrapperRef}
+      className={cn(className, styles.canvasContainer)}
       style={
         {
           "--display-scale": `${displayScale}`,
         } as React.CSSProperties
       }
-      className={cn(className, styles.canvasContainer)}
     >
       <div className={styles.canvasWrapper}>
         <Stage
