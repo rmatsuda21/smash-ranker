@@ -1,8 +1,7 @@
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { Group, Layer, Transformer } from "react-konva";
 import { Transformer as KonvaTransformer } from "konva/lib/shapes/Transformer";
 import { Group as KonvaGroup } from "konva/lib/Group";
-import { KonvaEventObject } from "konva/lib/Node";
 
 import { useCanvasStore } from "@/store/canvasStore";
 import { useTournamentStore } from "@/store/tournamentStore";
@@ -10,10 +9,9 @@ import { createKonvaElements } from "@/utils/top8/elementFactory";
 
 export const TournamentLayer = () => {
   const selectedFont = useCanvasStore((state) => state.selectedFont);
-  const tournamentLayout = useCanvasStore((state) => state.layout.tournament);
+  const layout = useCanvasStore((state) => state.layout.tournament);
   const canvasConfig = useCanvasStore((state) => state.layout.canvas);
   const tournament = useTournamentStore((state) => state.info);
-  const tournamentDispatch = useTournamentStore((state) => state.dispatch);
   const selectedElementIndex = useTournamentStore(
     (state) => state.selectedElementIndex
   );
@@ -22,13 +20,13 @@ export const TournamentLayer = () => {
 
   const konvaElements = useMemo(
     () =>
-      createKonvaElements(tournamentLayout?.elements ?? [], {
+      createKonvaElements(layout?.elements ?? [], {
         fontFamily: selectedFont,
         tournament,
         containerSize: canvasConfig.size,
         canvas: canvasConfig,
       }),
-    [tournamentLayout?.elements, selectedFont, tournament, canvasConfig]
+    [layout?.elements, selectedFont, tournament, canvasConfig]
   );
 
   useEffect(() => {
@@ -51,20 +49,8 @@ export const TournamentLayer = () => {
     }
   }, [selectedElementIndex, konvaElements]);
 
-  const handleLayerClick = useCallback(
-    (e: KonvaEventObject<MouseEvent>) => {
-      e.cancelBubble = true;
-      tournamentDispatch({ type: "SET_SELECTED_ELEMENT_INDEX", payload: -1 });
-    },
-    [tournamentDispatch]
-  );
-
-  const handleTransform = useCallback((e: KonvaEventObject<MouseEvent>) => {
-    console.log("handleTransform", e);
-  }, []);
-
   return (
-    <Layer onClick={handleLayerClick}>
+    <Layer>
       <Group
         ref={groupRef}
         width={canvasConfig.size.width}
@@ -74,7 +60,6 @@ export const TournamentLayer = () => {
         <Transformer
           name={`transformer-${selectedElementIndex}`}
           ref={transformerRef}
-          onTransform={handleTransform}
         />
       </Group>
     </Layer>

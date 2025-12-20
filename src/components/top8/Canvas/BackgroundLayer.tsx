@@ -9,12 +9,12 @@ type Props = {
 };
 
 const BackgroundLayerComponent = ({ onClick }: Props) => {
-  const layout = useCanvasStore((state) => state.layout);
+  const layout = useCanvasStore((state) => state.layout.background);
   const canvasConfig = useCanvasStore((state) => state.layout.canvas);
 
   const backgroundElements = useMemo(
-    () => layout?.background.elements || [],
-    [layout?.background.elements]
+    () => layout?.elements || [],
+    [layout?.elements]
   );
 
   const konvaElements = useMemo(
