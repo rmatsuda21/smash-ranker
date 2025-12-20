@@ -1,18 +1,5 @@
 .wrapper {
   display: flex;
   flex-direction: column;
-  gap: 5px;
-}
-
-.row {
-  display: flex;
-  gap: 5px;
-
-  & > * {
-    flex: 1;
-  }
-
-  & > *:first-child {
-    min-width: 200px;
-  }
+  gap: 7px;
 }
