@@ -50,25 +50,23 @@ const CharacterEditorComponent = ({
 
   return (
     <div className={styles.wrapper}>
+      <CharacterList
+        characters={characters}
+        onCharactersChange={onCharactersChange}
+        selectedIndex={characterIndex}
+        setSelectedIndex={setCharacterIndex}
+        disabled={disabled}
+      />
+      <CharacterSelect
+        selectedCharacter={selectedCharacter}
+        onValueChange={onCharacterChange}
+        disabled={disabled}
+      />
       <CharacterAltPicker
         selectedCharacter={selectedCharacter}
         onAltChange={onAltChange}
         disabled={disabled}
       />
-      <div className={styles.row}>
-        <CharacterSelect
-          selectedCharacter={selectedCharacter}
-          onValueChange={onCharacterChange}
-          disabled={disabled}
-        />
-        <CharacterList
-          characters={characters}
-          onCharactersChange={onCharactersChange}
-          selectedIndex={characterIndex}
-          setSelectedIndex={setCharacterIndex}
-          disabled={disabled}
-        />
-      </div>
     </div>
   );
 };
