@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Stage } from "react-konva";
 import { Stage as KonvaStage } from "konva/lib/Stage";
 import cn from "classnames";
@@ -17,11 +17,15 @@ type Props = {
 };
 
 export const Canvas = ({ className }: Props) => {
-  const layout = useCanvasStore((state) => state.layout);
+  const [displayScale, setDisplayScale] = useState(0.5);
+
+  const stageRef = useRef<KonvaStage>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  const canvasSize = useCanvasStore((state) => state.layout.canvas.size);
   const canvasDispatch = useCanvasStore((state) => state.dispatch);
   const tournamentDispatch = useTournamentStore((state) => state.dispatch);
   const dispatch = usePlayerStore((state) => state.dispatch);
-  const stageRef = useRef<KonvaStage>(null);
 
   const handleStageClick = useCallback(() => {
     dispatch({ type: "CLEAR_SELECTED_PLAYER" });
@@ -42,6 +46,19 @@ export const Canvas = ({ className }: Props) => {
   }, [dispatch]);
 
   useEffect(() => {
+    const handleResize = () => {
+      if (wrapperRef.current) {
+        setDisplayScale(wrapperRef.current.clientWidth / canvasSize.width);
+      }
+    };
+
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [canvasSize.width]);
+
+  useEffect(() => {
     if (stageRef.current) {
       canvasDispatch({ type: "SET_STAGE_REF", payload: stageRef.current });
     }
@@ -49,11 +66,10 @@ export const Canvas = ({ className }: Props) => {
 
   return (
     <div
+      ref={wrapperRef}
       style={
         {
-          "--canvas-width": `${layout?.canvas.size.width}px`,
-          "--canvas-height": `${layout?.canvas.size.height}px`,
-          "--display-scale": `${layout?.canvas.displayScale ?? 0.5}`,
+          "--display-scale": `${displayScale}`,
         } as React.CSSProperties
       }
       className={cn(className, styles.canvasContainer)}
@@ -61,8 +77,8 @@ export const Canvas = ({ className }: Props) => {
       <div className={styles.canvasWrapper}>
         <Stage
           ref={stageRef}
-          width={layout?.canvas.size.width}
-          height={layout?.canvas.size.height}
+          width={canvasSize.width}
+          height={canvasSize.height}
           onClick={handleStageClick}
           className={styles.canvas}
         >

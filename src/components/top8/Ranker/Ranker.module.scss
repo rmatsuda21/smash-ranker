@@ -8,14 +8,22 @@
 }
 
 .body {
+  flex: 1;
   display: flex;
   flex-direction: row;
+  justify-content: flex-start;
   gap: 20px;
   height: var(--canvas-height);
 
   .sidePanel {
     flex: 1;
     min-width: 300px;
+    max-width: 400px;
     max-height: var(--canvas-height);
+  }
+
+  .canvas {
+    flex: 3;
+    max-width: 1000px;
   }
 }

@@ -10,6 +10,7 @@ import {
 import { simpleLayout } from "@/layouts/simple";
 import { FontStatus } from "@/types/top8/CanvasTypes";
 
+// TODO: Integrate editable state
 interface CanvasState {
   layout: LayoutConfig;
   fonts: Record<string, FontStatus>;
