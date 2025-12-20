@@ -282,7 +282,7 @@ export const simpleLayout: LayoutConfig = {
       primary: { color: "rgb(179, 0, 0)", name: "Primary" },
       secondary: { color: "rgb(235, 171, 64)", name: "Secondary" },
       background: { color: "rgb(0, 0, 0)", name: "Background" },
-      accent: { color: "rgba(255, 255, 255, 0.2)", name: "Accent" },
+      smashBall: { color: "rgba(255, 255, 255, 0.2)", name: "Smash Ball" },
       text: { color: "rgb(255, 255, 255)", name: "Text" },
       textShadow: { color: "rgb(0, 0, 0)", name: "Text Shadow" },
       playerBackground: { color: "rgb(0, 0, 0)", name: "Player Background" },
@@ -307,7 +307,7 @@ export const simpleLayout: LayoutConfig = {
         },
         size: { width: SMASH_BALL_SIZE, height: SMASH_BALL_SIZE },
         palette: {
-          color_1: "accent",
+          color_1: "smashBall",
         },
       },
       {

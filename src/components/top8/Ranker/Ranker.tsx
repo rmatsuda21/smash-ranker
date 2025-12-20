@@ -65,7 +65,7 @@ export const Ranker = () => {
             />
           }
         >
-          <Canvas />
+          <Canvas className={styles.canvas} />
         </Suspense>
       </div>
     </div>
