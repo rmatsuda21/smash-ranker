@@ -1,8 +1,8 @@
 import { useEffect, lazy, Suspense } from "react";
+import { FaTriangleExclamation } from "react-icons/fa6";
 
 import { preloadCharacterImages } from "@/utils/top8/preloadCharacterImages";
 import { usePlayerStore } from "@/store/playerStore";
-import { useCanvasStore } from "@/store/canvasStore";
 import { SidePanel } from "@/components/top8/SidePanel/SidePanel";
 import { Header } from "@/components/top8/Ranker/Header/Header";
 import { Skeleton } from "@/components/shared/Skeleton/Skeleton";
@@ -18,9 +18,7 @@ const Canvas = lazy(() =>
 );
 
 export const Ranker = () => {
-  const players = usePlayerStore((state) => state.players);
   const error = usePlayerStore((state) => state.error);
-  const layout = useCanvasStore((state) => state.layout);
 
   useEffect(() => {
     preloadCharacterImages();
@@ -39,8 +37,17 @@ export const Ranker = () => {
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, []);
 
-  if (!players || error)
-    return <div>{error ? <h1>{error}</h1> : <h1>Error</h1>}</div>;
+  if (error) {
+    return (
+      <div className={styles.error}>
+        <h1>
+          <FaTriangleExclamation /> Error <FaTriangleExclamation />
+        </h1>
+        <h2>Please refresh the page.</h2>
+        <p>{error}</p>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.root}>
@@ -50,21 +57,7 @@ export const Ranker = () => {
       <div className={styles.body}>
         <SidePanel className={styles.sidePanel} />
 
-        <Suspense
-          fallback={
-            <Skeleton
-              style={{
-                width: `calc(${layout?.canvas.size.width}px * ${layout?.canvas.displayScale})`,
-                height: `calc(${layout?.canvas.size.height}px * ${layout?.canvas.displayScale})`,
-                minWidth: `calc(${layout?.canvas.size.width}px * ${layout?.canvas.displayScale})`,
-                minHeight: `calc(${layout?.canvas.size.height}px * ${layout?.canvas.displayScale})`,
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            />
-          }
-        >
+        <Suspense fallback={<Skeleton className={styles.canvas} />}>
           <Canvas className={styles.canvas} />
         </Suspense>
       </div>
