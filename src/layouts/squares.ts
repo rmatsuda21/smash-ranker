@@ -296,7 +296,7 @@ export const squaresLayout: LayoutConfig = {
         name: "Top Right Text",
         position: { x: CANVAS_WIDTH - PADDING, y: PADDING },
         text: "smash-ranker.vercel.app",
-        fontSize: 40,
+        fontSize: 25,
         fontWeight: 900,
         fill: "text",
         anchor: "topRight",
