@@ -69,7 +69,7 @@ export const TextConfigEditor = ({ element, onUpdateElement }: Props) => {
       <Input
         label="Text"
         type="text"
-        id="text"
+        id={`text-${elementConfig.id}`}
         name="text"
         value={elementConfig.text}
         onChange={handleChange}
@@ -84,13 +84,13 @@ export const TextConfigEditor = ({ element, onUpdateElement }: Props) => {
         />
         <Input
           type="number"
-          id="fontSize"
+          id={`fontSize-${elementConfig.id}`}
           name="fontSize"
           value={elementConfig.fontSize ?? ""}
           onChange={handleChange}
         />
         <Slider
-          id="fontWeight"
+          id={`fontWeight-${elementConfig.id}`}
           name="fontWeight"
           value={Number(elementConfig.fontWeight?.toString() ?? 0)}
           min={100}

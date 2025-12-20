@@ -54,7 +54,7 @@ export const ElementConfigEditor = (props: Props) => {
       <div className={styles.basicConfig}>
         <Input
           type="checkbox"
-          id="hidden"
+          id={`hidden-${element.id}`}
           name="hidden"
           label={<LuEyeOff size={20} />}
           checked={element.hidden ?? false}
