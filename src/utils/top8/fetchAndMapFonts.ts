@@ -76,7 +76,6 @@ export const fetchAndMapFonts = async ({
   const data: GoogleFontsResponse = await response.json();
 
   const fonts = data.items.slice(0, limit).reduce<Font[]>((acc, font) => {
-    console.log("font", font);
     const isVariableFont = Boolean(font.axes);
     const weightAxis = font.axes?.find((axis) => axis.tag === "wght");
 
