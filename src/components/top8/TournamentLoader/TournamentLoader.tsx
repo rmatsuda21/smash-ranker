@@ -41,7 +41,7 @@ export const TournamentLoader = ({ className }: Props) => {
     playerDispatch({ type: "CLEAR_SELECTED_PLAYER" });
     tournamentDispatch({ type: "CLEAR_SELECTED_ELEMENT" });
 
-    fetchResult(urlToSlug(url), 16);
+    fetchResult(urlToSlug(url), 8);
   };
 
   return (
