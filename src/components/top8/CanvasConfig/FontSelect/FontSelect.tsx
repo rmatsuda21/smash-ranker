@@ -1,12 +1,8 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo } from "react";
 
 import { DropDownSelect } from "@/components/top8/DropDownSelect/DropDownSelect";
-import { useCanvasStore } from "@/store/canvasStore";
 import { loadFont } from "@/utils/top8/loadFont";
-import { FontList, fetchAndMapFonts } from "@/utils/top8/fetchAndMapFonts";
-
-const FONT_FETCH_LIMIT = 100;
-const PREFERRED_FONT_VARIANTS = ["regular", "600"] as const;
+import { Font, useFontStore } from "@/store/fontStore";
 
 type FontOption = {
   value: string;
@@ -14,121 +10,67 @@ type FontOption = {
   display: string;
 };
 
-type FontData = {
-  fontFamily: string;
-  variants: string[];
-  files: Record<string, string>;
-  isVariableFont: boolean;
-};
-
-const selectFontUrl = (fontFiles: Record<string, string>) => {
-  const availableVariants = Object.keys(fontFiles);
-  const preferredVariant = PREFERRED_FONT_VARIANTS.find((variant) =>
-    availableVariants.includes(variant)
-  );
-  const selectedVariant = preferredVariant ?? availableVariants[0];
-  return fontFiles[selectedVariant];
-};
-
 export const FontSelect = () => {
-  const [fontList, setFontList] = useState<FontList>({});
-  const [fetchError, setFetchError] = useState<string | null>(null);
-
-  const selectedFont = useCanvasStore((state) => state.selectedFont);
-  const fetchingFont = useCanvasStore((state) => state.fetchingFont);
-  const dispatch = useCanvasStore((state) => state.dispatch);
+  // TODO: Add error handling
+  // const error = useFontStore((state) => state.error);
+  const fonts = useFontStore((state) => state.fonts);
+  const fetching = useFontStore((state) => state.fetching);
+  const selectedFont = useFontStore((state) => state.selectedFont);
+  const dispatch = useFontStore((state) => state.dispatch);
 
   const loadAndDispatchFont = useCallback(
-    (font: FontData) => {
-      const { fontFamily, variants, files, isVariableFont } = font;
+    (font: Font) => {
+      console.log("loadAndDispatchFont", font);
+      if (font.loaded) {
+        dispatch({ type: "SET_SELECTED_FONT", payload: font.fontFamily });
+        return;
+      }
 
-      dispatch({ type: "LOAD_FONT", payload: fontFamily });
+      dispatch({ type: "LOAD_FONT", payload: font.fontFamily });
 
-      loadFont({ fontFamily, variants, files, isVariableFont })
+      loadFont(font)
         .then(() => {
-          dispatch({ type: "FONT_LOADED", payload: fontFamily });
+          dispatch({ type: "LOAD_FONT_SUCCESS", payload: font });
         })
         .catch((error) => {
-          console.error(`Failed to load font "${fontFamily}":`, error);
-          dispatch({ type: "FONT_FAILED", payload: fontFamily });
+          console.error(`Failed to load font "${font.fontFamily}":`, error);
+          dispatch({ type: "LOAD_FONT_FAIL", payload: { error } });
         });
     },
     [dispatch]
   );
 
-  useEffect(() => {
-    const fetchFonts = async () => {
-      try {
-        dispatch({ type: "SET_FETCHING_FONT", payload: true });
-        setFetchError(null);
-        const fonts = await fetchAndMapFonts({ limit: FONT_FETCH_LIMIT });
-        setFontList(fonts);
-        return fonts;
-      } catch (error) {
-        const errorMessage =
-          error instanceof Error ? error.message : "Failed to fetch fonts";
-        setFetchError(errorMessage);
-        console.error("Error fetching fonts:", error);
-        return null;
-      } finally {
-        dispatch({ type: "SET_FETCHING_FONT", payload: false });
-      }
-    };
-
-    const initializeFonts = async () => {
-      const fonts = await fetchFonts();
-      if (!fonts) return;
-
-      const firstFont = Object.values(fonts)[0];
-      if (firstFont) {
-        loadAndDispatchFont(firstFont);
-      }
-    };
-
-    initializeFonts();
-  }, [dispatch, loadAndDispatchFont]);
-
   const fontOptions = useMemo<FontOption[]>(() => {
-    return Object.entries(fontList).map(([fontFamily, font]) => ({
-      value: fontFamily,
-      id: selectFontUrl(font.files),
-      display: fontFamily,
+    return Array.from(fonts).map((font) => ({
+      value: font.fontFamily,
+      id: font.fontFamily,
+      display: font.fontFamily,
     }));
-  }, [fontList]);
-
-  const selectedFontValue = useMemo(() => {
-    if (!selectedFont || fontOptions.length === 0) return undefined;
-    return fontOptions.find((option) => option.value === selectedFont)?.value;
-  }, [selectedFont, fontOptions]);
+  }, [fonts]);
 
   const handleChange = useCallback(
     (values: FontOption[]) => {
       if (values.length === 0) return;
 
       const selectedFontFamily = values[0].value;
-      const font = fontList[selectedFontFamily];
+      const font = Array.from(fonts).find(
+        (font) => font.fontFamily === selectedFontFamily
+      );
 
-      if (!font) {
-        console.error(`Font "${selectedFontFamily}" not found in fontList`);
-        return;
+      if (font) {
+        loadAndDispatchFont(font);
       }
-
-      loadAndDispatchFont(font);
     },
-    [fontList, loadAndDispatchFont]
+    [fonts, loadAndDispatchFont]
   );
-
-  if (fetchError) {
-    return <div>Error loading fonts: {fetchError}</div>;
-  }
 
   return (
     <DropDownSelect
       options={fontOptions}
-      selectedValue={selectedFontValue}
+      selectedValue={selectedFont}
       onChange={handleChange}
-      disabled={fetchingFont}
-      loading={fetchingFont}
+      disabled={fetching}
+      loading={fetching}
     />
   );
 };

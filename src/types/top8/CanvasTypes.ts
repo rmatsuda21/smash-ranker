@@ -8,5 +8,3 @@ export interface CanvasConfig {
 }
 
 export type CanvasTheme = Record<CanvasColors, string>;
-
-export type FontStatus = "loading" | "loaded" | "failed";

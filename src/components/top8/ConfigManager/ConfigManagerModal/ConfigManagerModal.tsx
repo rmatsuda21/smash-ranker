@@ -6,6 +6,7 @@ import { useConfigDB } from "@/hooks/useConfigDb";
 import { Button } from "@/components/shared/Button/Button";
 import { DropDownSelect } from "@/components/top8/DropDownSelect/DropDownSelect";
 import { DBConfig } from "@/types/ConfigRepository";
+import { useFontStore } from "@/store/fontStore";
 import { useCanvasStore } from "@/store/canvasStore";
 import { fetchFontFamily } from "@/utils/top8/fetchAndMapFonts";
 import { loadFont } from "@/utils/top8/loadFont";
@@ -40,9 +41,9 @@ export const ConfigManagerModal = ({ isOpen, onClose }: Props) => {
     useConfigDB();
 
   const layout = useCanvasStore((state) => state.layout);
-  const selectedFont = useCanvasStore((state) => state.selectedFont);
+  const selectedFont = useFontStore((state) => state.selectedFont);
   const dispatch = useCanvasStore((state) => state.dispatch!);
-  const canvasDispatch = useCanvasStore((state) => state.dispatch);
+  const fontDispatch = useFontStore((state) => state.dispatch);
 
   const handleConfigSelect = async (id: string) => {
     let config: DBConfig | undefined;
@@ -87,7 +88,7 @@ export const ConfigManagerModal = ({ isOpen, onClose }: Props) => {
 
     if (config) {
       dispatch({ type: "SET_LAYOUT", payload: config.layout });
-      dispatch({ type: "SET_SELECTED_FONT", payload: config.selectedFont });
+      fontDispatch({ type: "SET_SELECTED_FONT", payload: config.selectedFont });
     }
 
     onClose();
@@ -118,13 +119,13 @@ export const ConfigManagerModal = ({ isOpen, onClose }: Props) => {
             selectedFont: selectedFont,
           });
 
-          canvasDispatch({ type: "LOAD_FONT", payload: selectedFont });
+          fontDispatch({ type: "LOAD_FONT", payload: selectedFont });
           const font = await fetchFontFamily(selectedFont);
           await loadFont(font);
-          canvasDispatch({ type: "FONT_LOADED", payload: selectedFont });
+          fontDispatch({ type: "LOAD_FONT_SUCCESS", payload: font });
 
           dispatch({ type: "SET_LAYOUT", payload: layout });
-          dispatch({ type: "SET_SELECTED_FONT", payload: selectedFont });
+          fontDispatch({ type: "SET_SELECTED_FONT", payload: selectedFont });
 
           fileInput.remove();
         };

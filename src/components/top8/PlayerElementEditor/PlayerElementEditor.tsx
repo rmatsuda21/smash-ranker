@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState } from "react";
 import cn from "classnames";
 
+import { useFontStore } from "@/store/fontStore";
 import { useCanvasStore } from "@/store/canvasStore";
 import { useTournamentStore } from "@/store/tournamentStore";
 import { PlayerInfo } from "@/types/top8/PlayerTypes";
@@ -28,7 +29,7 @@ type Props = {
 
 export const PlayerElementEditor = ({ className }: Props) => {
   const basePlayer = useCanvasStore((state) => state.layout.basePlayer);
-  const selectedFont = useCanvasStore((state) => state.selectedFont);
+  const selectedFont = useFontStore((state) => state.selectedFont);
   const tournament = useTournamentStore((state) => state.info);
   const canvasDispatch = useCanvasStore((state) => state.dispatch);
   const canvasConfig = useCanvasStore((state) => state.layout.canvas);

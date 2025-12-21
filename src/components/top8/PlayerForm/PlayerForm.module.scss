@@ -3,10 +3,15 @@
   flex-direction: column;
   gap: 5px;
 
+  .disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
   .label {
     font-size: var(--font-size-sm);
     line-height: 1;
-    font-weight: 500;
+    font-weight: 600;
     color: var(--accent-9);
     margin-bottom: 4px;
   }

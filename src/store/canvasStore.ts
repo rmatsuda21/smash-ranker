@@ -8,24 +8,15 @@ import {
   PlayerLayoutConfig,
 } from "@/types/top8/LayoutTypes";
 import { simpleLayout } from "@/layouts/simple";
-import { FontStatus } from "@/types/top8/CanvasTypes";
 
 // TODO: Integrate editable state
 interface CanvasState {
   layout: LayoutConfig;
-  fonts: Record<string, FontStatus>;
-  selectedFont: string;
-  fetchingFont: boolean;
   stageRef: Stage | null;
   editable: boolean;
 }
 
 type CanvasAction =
-  | { type: "LOAD_FONT"; payload: string }
-  | { type: "FONT_LOADED"; payload: string }
-  | { type: "FONT_FAILED"; payload: string }
-  | { type: "SET_SELECTED_FONT"; payload: string }
-  | { type: "SET_FETCHING_FONT"; payload: boolean }
   | { type: "SET_LAYOUT"; payload: LayoutConfig }
   | { type: "SET_STAGE_REF"; payload: Stage | null }
   | { type: "ADD_TOURNAMENT_ELEMENT"; payload: ElementConfig }
@@ -51,9 +42,6 @@ type CanvasAction =
     };
 
 const initialState: CanvasState = {
-  fonts: {},
-  selectedFont: "Arial",
-  fetchingFont: false,
   layout: simpleLayout,
   stageRef: null,
   editable: false,
@@ -64,26 +52,6 @@ const canvasReducer = (
   action: CanvasAction
 ): Partial<CanvasState> => {
   switch (action.type) {
-    case "LOAD_FONT":
-      return {
-        fetchingFont: true,
-        fonts: { ...state.fonts, [action.payload]: "loading" },
-      };
-    case "FONT_LOADED":
-      return {
-        fonts: { ...state.fonts, [action.payload]: "loaded" },
-        selectedFont: action.payload,
-        fetchingFont: false,
-      };
-    case "FONT_FAILED":
-      return {
-        fonts: { ...state.fonts, [action.payload]: "failed" },
-        fetchingFont: false,
-      };
-    case "SET_FETCHING_FONT":
-      return { fetchingFont: action.payload };
-    case "SET_SELECTED_FONT":
-      return { selectedFont: action.payload };
     case "SET_LAYOUT":
       return { layout: action.payload };
     case "SET_STAGE_REF":
