@@ -3,27 +3,27 @@ import { memo, useMemo } from "react";
 
 import { useCanvasStore } from "@/store/canvasStore";
 import { createKonvaElements } from "@/utils/top8/elementFactory";
+import { useFontStore } from "@/store/fontStore";
 
 type Props = {
   onClick: () => void;
 };
 
 const BackgroundLayerComponent = ({ onClick }: Props) => {
-  const layout = useCanvasStore((state) => state.layout.background);
-  const canvasConfig = useCanvasStore((state) => state.layout.canvas);
-
-  const backgroundElements = useMemo(
-    () => layout?.elements || [],
-    [layout?.elements]
+  const backgroundElements = useCanvasStore(
+    (state) => state.layout.background.elements
   );
+  const canvasConfig = useCanvasStore((state) => state.layout.canvas);
+  const selectedFont = useFontStore((state) => state.selectedFont);
 
   const konvaElements = useMemo(
     () =>
       createKonvaElements(backgroundElements, {
         containerSize: canvasConfig.size,
         canvas: canvasConfig,
+        fontFamily: selectedFont,
       }),
-    [backgroundElements, canvasConfig]
+    [backgroundElements, canvasConfig, selectedFont]
   );
 
   return (
