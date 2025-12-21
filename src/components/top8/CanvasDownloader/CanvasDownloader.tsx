@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { IoMdDownload } from "react-icons/io";
 
 import { Button } from "@/components/shared/Button/Button";
@@ -7,20 +7,9 @@ import { useCanvasStore } from "@/store/canvasStore";
 import { usePlayerStore } from "@/store/playerStore";
 import { useTournamentStore } from "@/store/tournamentStore";
 import { DropDownSelect } from "@/components/top8/DropDownSelect/DropDownSelect";
-import { isIOS } from "@/utils/isIOS";
+import { downloadDataURL } from "@/utils/top8/downloadDataURL";
 
 // TODO: Create export config modal
-
-const dataURLtoBlob = (dataURL: string): Blob => {
-  const parts = dataURL.split(",");
-  const mime = parts[0].match(/:(.*?);/)?.[1] || "image/png";
-  const binary = atob(parts[1]);
-  const array = new Uint8Array(binary.length);
-  for (let i = 0; i < binary.length; i++) {
-    array[i] = binary.charCodeAt(i);
-  }
-  return new Blob([array], { type: mime });
-};
 
 type Props = {
   className?: string;
@@ -40,6 +29,17 @@ export const CanvasDownloader = ({ className }: Props) => {
   const stageRef = useCanvasStore((state) => state.stageRef);
   const dispatch = usePlayerStore((state) => state.dispatch);
   const tournamentDispatch = useTournamentStore((state) => state.dispatch);
+  const tournamentName = useTournamentStore(
+    (state) => state.info.tournamentName
+  );
+
+  useEffect(() => {
+    const normalizedFilename = tournamentName
+      .toLowerCase()
+      .replace(/[^\p{L}\p{N}]+/gu, "-")
+      .replace(/^-|-$/g, "");
+    setFilename(normalizedFilename);
+  }, [tournamentName]);
 
   const handleDownload = useCallback(async () => {
     if (!stageRef) return;
@@ -57,43 +57,7 @@ export const CanvasDownloader = ({ className }: Props) => {
     });
 
     const finalFilename = `${filename || "ranker"}.${fileExtensions[imgType]}`;
-
-    if (navigator.share && isIOS()) {
-      try {
-        const blob = dataURLtoBlob(dataURL);
-        const file = new File([blob], finalFilename, { type: mimeType });
-
-        await navigator.share({
-          files: [file],
-          title: finalFilename,
-        });
-        return;
-      } catch (err) {
-        if ((err as Error).name === "AbortError") return;
-      }
-    }
-
-    if (isIOS()) {
-      const blob = dataURLtoBlob(dataURL);
-      const blobURL = URL.createObjectURL(blob);
-      const newWindow = window.open(blobURL, "_blank");
-
-      if (newWindow) {
-        newWindow.onload = () => {
-          setTimeout(() => URL.revokeObjectURL(blobURL), 100);
-        };
-      } else {
-        window.location.href = blobURL;
-      }
-      return;
-    }
-
-    const link = document.createElement("a");
-    link.download = finalFilename;
-    link.href = dataURL;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    downloadDataURL({ dataURL, filename: finalFilename, mimeType });
   }, [stageRef, filename, dispatch, tournamentDispatch, imgType]);
 
   return (
