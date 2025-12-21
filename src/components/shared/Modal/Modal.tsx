@@ -3,12 +3,15 @@ import { createPortal } from "react-dom";
 import styles from "./Modal.module.scss";
 
 type Props = {
-  children: React.ReactNode;
   isOpen: boolean;
   onClose: () => void;
 };
 
-export const Modal = ({ children, isOpen, onClose }: Props) => {
+export const Modal = ({
+  children,
+  isOpen,
+  onClose,
+}: React.PropsWithChildren<Props>) => {
   return createPortal(
     isOpen ? (
       <div className={styles.modal}>
@@ -16,6 +19,7 @@ export const Modal = ({ children, isOpen, onClose }: Props) => {
         <div className={styles.content}>{children}</div>
       </div>
     ) : null,
-    document.getElementById("root")!.children[0]
+    document.getElementById("root")!.children[0] ||
+      document.getElementById("root")!
   );
 };
