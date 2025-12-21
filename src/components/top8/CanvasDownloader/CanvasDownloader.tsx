@@ -56,7 +56,7 @@ export const CanvasDownloader = ({ className }: Props) => {
       quality: 2,
     });
 
-    const finalFilename = filename || `ranker.${fileExtensions[imgType]}`;
+    const finalFilename = `${filename || "ranker"}.${fileExtensions[imgType]}`;
 
     if (navigator.share && isIOS()) {
       try {
@@ -107,7 +107,7 @@ export const CanvasDownloader = ({ className }: Props) => {
         onChange={(event) => {
           setFilename(event.currentTarget.value);
         }}
-        placeholder="ranker.png"
+        placeholder="ranker"
       />
       <DropDownSelect
         options={Object.entries(fileExtensions).map(([key]) => ({
