@@ -215,8 +215,6 @@ export const useFetchResult = () => {
       })
     );
 
-    console.log("results", players);
-
     if (results.every((result) => result.status === "fulfilled")) {
       playerDispatch({ type: "FETCH_PLAYERS_SUCCESS", payload: players });
     } else {
