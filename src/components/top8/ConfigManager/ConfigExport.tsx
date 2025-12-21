@@ -3,10 +3,11 @@ import { FaFileExport } from "react-icons/fa6";
 import { useCanvasStore } from "@/store/canvasStore";
 import { Button } from "@/components/shared/Button/Button";
 import { DBConfig } from "@/types/ConfigRepository";
+import { useFontStore } from "@/store/fontStore";
 
 export const ConfigExport = () => {
   const layout = useCanvasStore((state) => state.layout);
-  const selectedFont = useCanvasStore((state) => state.selectedFont);
+  const selectedFont = useFontStore((state) => state.selectedFont);
 
   const handleExport = () => {
     const config: Omit<DBConfig, "id"> = {

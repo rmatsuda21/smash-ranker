@@ -87,9 +87,7 @@ export const Canvas = ({ className }: Props) => {
           className={styles.canvas}
         >
           <BackgroundLayer onClick={handleStageClick} />
-
           <PlayerLayer />
-
           <TournamentLayer />
         </Stage>
       </div>

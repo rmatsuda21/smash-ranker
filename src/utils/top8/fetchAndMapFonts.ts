@@ -1,11 +1,4 @@
-export type Font = {
-  fontFamily: string;
-  variants: string[];
-  files: Record<string, string>;
-  isVariableFont: boolean;
-};
-
-export type FontList = Record<string, Font>;
+import { Font } from "@/store/fontStore";
 
 type FontAxis = {
   tag: string;
@@ -13,15 +6,13 @@ type FontAxis = {
   end: number;
 };
 
-type GoogleFont = {
-  family: string;
-  variants: string[];
-  files: Record<string, string>;
-  axes?: FontAxis[];
-};
-
 type GoogleFontsResponse = {
-  items: GoogleFont[];
+  items: {
+    family: string;
+    variants: string[];
+    files: Record<string, string>;
+    axes?: FontAxis[];
+  }[];
 };
 
 const createVariantFromAxis = (axis: FontAxis): string[] => {
@@ -55,6 +46,7 @@ export const fetchFontFamily = async (fontFamily: string): Promise<Font> => {
     variants: data.items[0].variants,
     files: data.items[0].files,
     isVariableFont: Boolean(data.items[0].axes),
+    loaded: false,
   };
 };
 
@@ -62,7 +54,7 @@ export const fetchAndMapFonts = async ({
   limit = 100,
 }: {
   limit?: number;
-} = {}): Promise<FontList> => {
+} = {}): Promise<Font[]> => {
   const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
 
   if (!apiKey) {
@@ -70,7 +62,7 @@ export const fetchAndMapFonts = async ({
   }
 
   const url = new URL("https://www.googleapis.com/webfonts/v1/webfonts");
-  // url.searchParams.set("capability", "VF");
+  url.searchParams.set("capability", "VF");
   url.searchParams.set("subset", "japanese");
   url.searchParams.set("sort", "popularity");
   url.searchParams.set("key", apiKey);
@@ -83,7 +75,8 @@ export const fetchAndMapFonts = async ({
 
   const data: GoogleFontsResponse = await response.json();
 
-  const fonts = data.items.slice(0, limit).reduce<FontList>((acc, font) => {
+  const fonts = data.items.slice(0, limit).reduce<Font[]>((acc, font) => {
+    console.log("font", font);
     const isVariableFont = Boolean(font.axes);
     const weightAxis = font.axes?.find((axis) => axis.tag === "wght");
 
@@ -92,15 +85,16 @@ export const fetchAndMapFonts = async ({
         ? createVariantFromAxis(weightAxis)
         : font.variants;
 
-    acc[font.family] = {
+    acc.push({
       fontFamily: font.family,
       variants,
       files: font.files,
       isVariableFont,
-    };
+      loaded: false,
+    });
 
     return acc;
-  }, {});
+  }, []);
 
   return fonts;
 };

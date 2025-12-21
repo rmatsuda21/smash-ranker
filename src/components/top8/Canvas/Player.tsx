@@ -12,6 +12,7 @@ import { SelectableElement } from "@/components/top8/Canvas/SelectableElement";
 import { useTournamentStore } from "@/store/tournamentStore";
 import { useEditorStore } from "@/store/editorStore";
 import { EditorTab } from "@/types/top8/EditorTypes";
+import { useFontStore } from "@/store/fontStore";
 
 type Props = {
   player: PlayerInfo;
@@ -34,8 +35,7 @@ const PlayerComponent = ({
 }: Props) => {
   const layout = useCanvasStore((state) => state.layout);
   const editable = useCanvasStore((state) => state.editable);
-  const selectedFont = useCanvasStore((state) => state.selectedFont);
-  const fonts = useCanvasStore((state) => state.fonts);
+  const selectedFont = useFontStore((state) => state.selectedFont);
   const canvasDispatch = useCanvasStore((state) => state.dispatch);
   const dispatch = usePlayerStore((state) => state.dispatch);
   const tournamentInfo = useTournamentStore((state) => state.info);
@@ -108,12 +108,10 @@ const PlayerComponent = ({
     ]
   );
 
-  const fontFamily = fonts[selectedFont] === "loaded" ? selectedFont : "Arial";
-
   const konvaElements = useMemo(
     () =>
       createKonvaElements(config.elements ?? [], {
-        fontFamily,
+        fontFamily: selectedFont,
         player,
         tournament: tournamentInfo,
         containerSize: {
@@ -124,7 +122,7 @@ const PlayerComponent = ({
       }),
     [
       config.elements,
-      fontFamily,
+      selectedFont,
       player,
       playerConfig.size,
       tournamentInfo,

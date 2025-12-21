@@ -141,7 +141,7 @@ export const PlayerForm = ({ className }: Props) => {
         placeholder="Twitter"
         disabled={!selectedPlayer}
       />
-      <div>
+      <div className={cn({ [styles.disabled]: !selectedPlayer })}>
         <p className={styles.label}>Avatar</p>
         <FileUploader
           value={tempPlayer?.avatarSrc}
@@ -149,7 +149,7 @@ export const PlayerForm = ({ className }: Props) => {
           onChange={handleCustomImgSrcChange}
         />
       </div>
-      <div>
+      <div className={cn({ [styles.disabled]: !selectedPlayer })}>
         <p className={styles.label}>Characters</p>
         <CharacterEditor
           characters={tempPlayer?.characters ?? []}

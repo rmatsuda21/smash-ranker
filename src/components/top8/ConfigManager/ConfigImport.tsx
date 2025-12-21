@@ -3,10 +3,11 @@ import { FaFileImport } from "react-icons/fa6";
 import { Button } from "@/components/shared/Button/Button";
 import { useCanvasStore } from "@/store/canvasStore";
 import { DBConfig } from "@/types/ConfigRepository";
+import { useFontStore } from "@/store/fontStore";
 
 export const ConfigImport = () => {
-  const dispatch = useCanvasStore((state) => state.dispatch);
   const canvasDispatch = useCanvasStore((state) => state.dispatch);
+  const fontDispatch = useFontStore((state) => state.dispatch);
 
   const handleImport = () => {
     const fileInput = document.createElement("input");
@@ -25,8 +26,9 @@ export const ConfigImport = () => {
             return;
           }
 
-          dispatch({ type: "SET_LAYOUT", payload: layout });
-          canvasDispatch({ type: "SET_SELECTED_FONT", payload: selectedFont });
+          canvasDispatch({ type: "SET_LAYOUT", payload: layout });
+          // TODO: LOAD FONT
+          fontDispatch({ type: "SET_SELECTED_FONT", payload: selectedFont });
           fileInput.remove();
         };
         reader.readAsText(file);

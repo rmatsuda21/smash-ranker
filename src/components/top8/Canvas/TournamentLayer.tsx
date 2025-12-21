@@ -6,17 +6,19 @@ import { Group as KonvaGroup } from "konva/lib/Group";
 import { useCanvasStore } from "@/store/canvasStore";
 import { useTournamentStore } from "@/store/tournamentStore";
 import { createKonvaElements } from "@/utils/top8/elementFactory";
+import { useFontStore } from "@/store/fontStore";
 
 export const TournamentLayer = () => {
-  const selectedFont = useCanvasStore((state) => state.selectedFont);
+  const transformerRef = useRef<KonvaTransformer>(null);
+  const groupRef = useRef<KonvaGroup>(null);
+
+  const selectedFont = useFontStore((state) => state.selectedFont);
   const layout = useCanvasStore((state) => state.layout.tournament);
   const canvasConfig = useCanvasStore((state) => state.layout.canvas);
   const tournament = useTournamentStore((state) => state.info);
   const selectedElementIndex = useTournamentStore(
     (state) => state.selectedElementIndex
   );
-  const transformerRef = useRef<KonvaTransformer>(null);
-  const groupRef = useRef<KonvaGroup>(null);
 
   const konvaElements = useMemo(
     () =>
