@@ -20,7 +20,6 @@ export const FontSelect = () => {
 
   const loadAndDispatchFont = useCallback(
     (font: Font) => {
-      console.log("loadAndDispatchFont", font);
       if (font.loaded) {
         dispatch({ type: "SET_SELECTED_FONT", payload: font.fontFamily });
         return;
