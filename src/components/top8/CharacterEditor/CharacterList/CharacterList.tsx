@@ -1,4 +1,5 @@
 import { RiDeleteBin6Fill } from "react-icons/ri";
+import { FaPlus } from "react-icons/fa6";
 import cn from "classnames";
 
 import { CharacerData } from "@/types/top8/PlayerTypes";
@@ -63,7 +64,7 @@ export const CharacterList = ({
         </button>
       ))}
       <button disabled={disabled} onClick={addCharacter}>
-        +
+        <FaPlus />
       </button>
     </div>
   );
