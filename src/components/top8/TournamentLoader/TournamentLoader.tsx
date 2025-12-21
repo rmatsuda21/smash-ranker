@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { Button } from "@/components/shared/Button/Button";
 import { Input } from "@/components/shared/Input/Input";
-import { useFetchTop8 } from "@/hooks/top8/useFetchTop8";
+import { useFetchResult } from "@/hooks/top8/useFetchResult";
 import { usePlayerStore } from "@/store/playerStore";
 import { useTournamentStore } from "@/store/tournamentStore";
 
@@ -35,13 +35,13 @@ export const TournamentLoader = ({ className }: Props) => {
   const playerDispatch = usePlayerStore((state) => state.dispatch);
   const tournamentDispatch = useTournamentStore((state) => state.dispatch);
 
-  const { fetchTop8 } = useFetchTop8();
+  const { fetchResult } = useFetchResult();
 
   const handleLoadClick = () => {
     playerDispatch({ type: "CLEAR_SELECTED_PLAYER" });
     tournamentDispatch({ type: "CLEAR_SELECTED_ELEMENT" });
 
-    fetchTop8(urlToSlug(url));
+    fetchResult(urlToSlug(url), 16);
   };
 
   return (
