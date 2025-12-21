@@ -87,6 +87,8 @@ const PlayerLayerComponent = () => {
     <>
       <Layer ref={mainLayerRef}>
         {players.map((player, index) => {
+          if (index >= playerConfigs.length) return null;
+
           return (
             <Player
               key={player.id}

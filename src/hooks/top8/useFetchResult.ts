@@ -9,19 +9,8 @@ import { usePlayerStore } from "@/store/playerStore";
 import { useTournamentStore } from "@/store/tournamentStore";
 import { TournamentInfo } from "@/types/top8/TournamentTypes";
 
-// const UltimateCharacterQuery = graphql(`
-//   query UltimateCharacters {
-//     videogame(slug: "Ultimate") {
-//       characters {
-//         id
-//         name
-//       }
-//     }
-//   }
-// `);
-
 const Top8Query = graphql(`
-  query EventStandings($slug: String!) {
+  query EventStandings($slug: String!, $playerCount: Int!) {
     event(slug: $slug) {
       id
       name
@@ -41,7 +30,7 @@ const Top8Query = graphql(`
           total
         }
       }
-      standings(query: { perPage: 8, page: 1 }) {
+      standings(query: { perPage: $playerCount, page: 1 }) {
         nodes {
           placement
           entrant {
@@ -90,7 +79,7 @@ type StandingNode = NonNullable<
   NonNullable<EventStandingsQuery["event"]>["standings"]
 >["nodes"];
 
-const getTop8Players = (standings: StandingNode): PlayerInfo[] => {
+const getPlayers = (standings: StandingNode): PlayerInfo[] => {
   if (!standings) return [];
 
   const players = new Map<string, PlayerInfo>();
@@ -155,15 +144,17 @@ const getPlayerCharacters = async (
     .map(([id]) => String(id));
 };
 
-export const useFetchTop8 = () => {
+export const useFetchResult = () => {
   const client = useClient();
   const playerDispatch = usePlayerStore((state) => state.dispatch);
   const tournamentDispatch = useTournamentStore((state) => state.dispatch);
 
-  const fetchTop8 = async (slug: string) => {
+  const fetchResult = async (slug: string, playerCount: number = 8) => {
     playerDispatch({ type: "FETCH_PLAYERS" });
 
-    const result = await client.query(Top8Query, { slug }).toPromise();
+    const result = await client
+      .query(Top8Query, { slug, playerCount })
+      .toPromise();
 
     if (result.error || !result.data) {
       playerDispatch({
@@ -206,7 +197,7 @@ export const useFetchTop8 = () => {
       payload: tournamentInfo,
     });
 
-    const players = getTop8Players(standings);
+    const players = getPlayers(standings);
 
     const results = await Promise.allSettled(
       players.map(async (player) => {
@@ -224,6 +215,8 @@ export const useFetchTop8 = () => {
       })
     );
 
+    console.log("results", players);
+
     if (results.every((result) => result.status === "fulfilled")) {
       playerDispatch({ type: "FETCH_PLAYERS_SUCCESS", payload: players });
     } else {
@@ -234,5 +227,5 @@ export const useFetchTop8 = () => {
     }
   };
 
-  return { fetchTop8 };
+  return { fetchResult };
 };
