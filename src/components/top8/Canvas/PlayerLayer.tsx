@@ -8,6 +8,7 @@ import { Player } from "@/components/top8/Canvas/Player";
 import { usePlayerStore } from "@/store/playerStore";
 import { useCanvasStore } from "@/store/canvasStore";
 import { PlayerLayoutConfig } from "@/types/top8/LayoutTypes";
+import { useFontStore } from "@/store/fontStore";
 
 const PlayerLayerComponent = () => {
   const trRef = useRef<KonvaTransformer>(null);
@@ -15,14 +16,17 @@ const PlayerLayerComponent = () => {
   const dragLayerRef = useRef<KonvaLayer>(null);
 
   const players = usePlayerStore((state) => state.players);
+  const selectedPlayerIndex = usePlayerStore(
+    (state) => state.selectedPlayerIndex
+  );
+
+  const selectedFont = useFontStore((state) => state.selectedFont);
+
   const editable = useCanvasStore((state) => state.editable);
   const playerLayouts = useCanvasStore((state) => state.layout.players);
   const basePlayer = useCanvasStore((state) => state.layout.basePlayer);
   const canvasConfig = useCanvasStore((state) => state.layout.canvas);
   const dispatch = useCanvasStore((state) => state.dispatch);
-  const selectedPlayerIndex = usePlayerStore(
-    (state) => state.selectedPlayerIndex
-  );
 
   const playerConfigs: PlayerLayoutConfig[] = useMemo(() => {
     return playerLayouts.map((player) => ({
@@ -89,16 +93,23 @@ const PlayerLayerComponent = () => {
         {players.map((player, index) => {
           if (index >= playerConfigs.length) return null;
 
+          const playerConfig = {
+            ...basePlayer,
+            ...playerLayouts[index],
+          };
+
           return (
             <Player
               key={player.id}
-              config={playerConfigs[index]}
+              config={playerConfig}
               canvasConfig={canvasConfig}
               isSelected={selectedPlayerIndex === index}
               player={player}
               index={index}
               onDragStart={onPlayerDragStart}
               onDragEnd={onPlayerDragEnd}
+              fontFamily={selectedFont}
+              editable={editable}
             />
           );
         })}

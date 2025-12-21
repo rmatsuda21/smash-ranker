@@ -9,6 +9,8 @@ import { usePlayerStore } from "@/store/playerStore";
 import { useTournamentStore } from "@/store/tournamentStore";
 import { TournamentInfo } from "@/types/top8/TournamentTypes";
 
+const DEFAULT_CHARACTER = "1293"; // Puff <3
+
 const Top8Query = graphql(`
   query EventStandings($slug: String!, $playerCount: Int!) {
     event(slug: $slug) {
@@ -209,7 +211,7 @@ export const useFetchResult = () => {
             alt: 0,
           }));
         } else {
-          player.characters = [{ id: "1293", alt: 0 }];
+          player.characters = [{ id: DEFAULT_CHARACTER, alt: 0 }];
         }
         player.id = player.id.toString();
       })

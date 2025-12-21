@@ -9,10 +9,8 @@ import { usePlayerStore } from "@/store/playerStore";
 import { CanvasConfig, PlayerLayoutConfig } from "@/types/top8/LayoutTypes";
 import { createKonvaElements } from "@/utils/top8/elementFactory";
 import { SelectableElement } from "@/components/top8/Canvas/SelectableElement";
-import { useTournamentStore } from "@/store/tournamentStore";
 import { useEditorStore } from "@/store/editorStore";
 import { EditorTab } from "@/types/top8/EditorTypes";
-import { useFontStore } from "@/store/fontStore";
 
 type Props = {
   player: PlayerInfo;
@@ -22,6 +20,8 @@ type Props = {
   onDragStart: (e: KonvaEventObject<MouseEvent>) => void;
   onDragEnd: (e: KonvaEventObject<MouseEvent>) => void;
   isSelected: boolean;
+  fontFamily: string;
+  editable: boolean;
 };
 
 const PlayerComponent = ({
@@ -32,21 +32,14 @@ const PlayerComponent = ({
   onDragStart,
   onDragEnd,
   isSelected,
+  fontFamily,
+  editable,
 }: Props) => {
-  const layout = useCanvasStore((state) => state.layout);
-  const editable = useCanvasStore((state) => state.editable);
-  const selectedFont = useFontStore((state) => state.selectedFont);
-  const canvasDispatch = useCanvasStore((state) => state.dispatch);
   const dispatch = usePlayerStore((state) => state.dispatch);
-  const tournamentInfo = useTournamentStore((state) => state.info);
+  const canvasDispatch = useCanvasStore((state) => state.dispatch);
   const editorDispatch = useEditorStore((state) => state.dispatch);
 
   // const isUsingBaseElements = !!layout.players[index]?.elements;
-
-  const playerConfig = {
-    ...layout.basePlayer,
-    ...(layout.players[index] ?? {}),
-  };
 
   const handleDragEnd = useCallback(
     (e: KonvaEventObject<MouseEvent>) => {
@@ -84,50 +77,35 @@ const PlayerComponent = ({
           0,
           Math.min(
             pos.x,
-            layout?.canvas.size.width -
-              (playerConfig.size?.width ?? 0) * (playerConfig.scale?.x ?? 1)
+            canvasConfig.size.width -
+              (config.size?.width ?? 0) * (config.scale?.x ?? 1)
           )
         ),
         y: Math.max(
           0,
           Math.min(
             pos.y,
-            layout?.canvas.size.height -
-              (playerConfig.size?.height ?? 0) * (playerConfig.scale?.y ?? 1)
+            canvasConfig.size.height -
+              (config.size?.height ?? 0) * (config.scale?.y ?? 1)
           )
         ),
       };
     },
-    [
-      layout?.canvas.size.width,
-      layout?.canvas.size.height,
-      playerConfig.size?.width,
-      playerConfig.size?.height,
-      playerConfig.scale?.x,
-      playerConfig.scale?.y,
-    ]
+    [canvasConfig.size, config.size, config.scale]
   );
 
   const konvaElements = useMemo(
     () =>
       createKonvaElements(config.elements ?? [], {
-        fontFamily: selectedFont,
+        fontFamily,
         player,
-        tournament: tournamentInfo,
         containerSize: {
-          width: playerConfig.size?.width,
-          height: playerConfig.size?.height,
+          width: config.size?.width,
+          height: config.size?.height,
         },
         canvas: canvasConfig,
       }),
-    [
-      config.elements,
-      selectedFont,
-      player,
-      playerConfig.size,
-      tournamentInfo,
-      canvasConfig,
-    ]
+    [config.elements, fontFamily, player, config.size, canvasConfig]
   );
 
   return (
@@ -135,13 +113,13 @@ const PlayerComponent = ({
       id={player.id}
       isSelected={isSelected}
       draggable={editable}
-      x={playerConfig.position?.x}
-      y={playerConfig.position?.y}
-      width={playerConfig.size?.width}
-      height={playerConfig.size?.height}
-      scaleX={playerConfig.scale?.x}
-      scaleY={playerConfig.scale?.y}
-      rotation={playerConfig.rotation ?? 0}
+      x={config.position?.x}
+      y={config.position?.y}
+      width={config.size?.width}
+      height={config.size?.height}
+      scaleX={config.scale?.x}
+      scaleY={config.scale?.y}
+      rotation={config.rotation ?? 0}
       onClick={handleGroupClick}
       onDragEnd={handleDragEnd}
       onDragStart={onDragStart}
@@ -158,11 +136,9 @@ export const Player = memo(PlayerComponent, (prevProps, nextProps) => {
     prevProps.index === nextProps.index &&
     isEqual(prevProps.player, nextProps.player) &&
     isEqual(prevProps.config, nextProps.config) &&
-    prevProps.isSelected === nextProps.isSelected &&
-    isEqual(prevProps.config.elements, nextProps.config.elements) &&
-    isEqual(
-      prevProps.canvasConfig.colorPalette,
-      nextProps.canvasConfig.colorPalette
-    )
+    isEqual(prevProps.canvasConfig, nextProps.canvasConfig) &&
+    prevProps.fontFamily === nextProps.fontFamily &&
+    prevProps.editable === nextProps.editable &&
+    prevProps.isSelected === nextProps.isSelected
   );
 });
