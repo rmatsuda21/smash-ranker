@@ -14,6 +14,7 @@ import styles from "./PlayerElementEditor.module.scss";
 
 const examplePlayer: PlayerInfo = {
   id: "1",
+  entrantId: "1",
   name: "T1 | Reo M",
   characters: [{ id: "1293", alt: 0 }],
   country: "US",
