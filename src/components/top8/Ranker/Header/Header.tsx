@@ -6,7 +6,7 @@ import styles from "./Header.module.scss";
 
 export const Header = () => {
   return (
-    <div className={styles.wrapper}>
+    <div className={styles.header}>
       <TournamentLoader className={styles.tournamentLoader} />
       <CanvasDownloader className={styles.canvasDownloader} />
       <ConfigManager className={styles.configConfig} />

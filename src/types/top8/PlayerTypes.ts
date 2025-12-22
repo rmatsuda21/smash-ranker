@@ -5,6 +5,7 @@ export type CharacerData = {
 
 export type PlayerInfo = {
   id: string;
+  entrantId: string;
   name: string;
   characters: CharacerData[];
   country?: string;

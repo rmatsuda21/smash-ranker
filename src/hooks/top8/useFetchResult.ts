@@ -43,6 +43,7 @@ const Top8Query = graphql(`
             gamerTag
             prefix
             user {
+              id
               authorizations(types: [TWITTER]) {
                 id
                 externalId
@@ -87,17 +88,21 @@ const getPlayers = (standings: StandingNode): PlayerInfo[] => {
   const players = new Map<string, PlayerInfo>();
 
   for (const standing of standings) {
-    if (!standing || !standing.entrant?.id) continue;
+    if (!standing || !standing.entrant?.id || !standing.player?.user?.id)
+      continue;
 
-    players.set(standing.entrant.id, {
-      id: standing.entrant.id,
-      name: standing.entrant.name || "Unknown",
+    const playerId = standing.player.user.id;
+
+    players.set(playerId, {
+      id: playerId,
+      entrantId: standing.entrant.id,
+      name: standing.player.gamerTag || "Unknown",
       characters: [],
       placement: standing.placement || 0,
-      gamerTag: standing.player?.gamerTag || "Unknown",
-      prefix: standing.player?.prefix || undefined,
+      gamerTag: standing.player.gamerTag || "Unknown",
+      prefix: standing.player.prefix || undefined,
       twitter:
-        standing.player?.user?.authorizations?.[0]?.externalUsername ||
+        standing.player.user?.authorizations?.[0]?.externalUsername ||
         undefined,
     });
   }
@@ -203,7 +208,11 @@ export const useFetchResult = () => {
 
     const results = await Promise.allSettled(
       players.map(async (player) => {
-        const characters = await getPlayerCharacters(client, slug, player.id);
+        const characters = await getPlayerCharacters(
+          client,
+          slug,
+          player.entrantId
+        );
 
         if (characters.length > 0) {
           player.characters = characters.map((character) => ({

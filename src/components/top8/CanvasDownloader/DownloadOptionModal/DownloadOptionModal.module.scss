@@ -1,0 +1,14 @@
+.modal {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  .inputs {
+    display: flex;
+    gap: 10px;
+
+    input {
+      width: 100px;
+    }
+  }
+}

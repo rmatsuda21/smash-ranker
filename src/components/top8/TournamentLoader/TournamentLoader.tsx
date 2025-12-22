@@ -19,9 +19,9 @@ const urlToSlug = (url: string) => {
 
   return (
     // "tournament/genesis-9-1/event/ultimate-singles"
-    "tournament/sp12-umeburasp12/event/singles"
+    // "tournament/sp12-umeburasp12/event/singles"
     // "tournament/no-caps-115-msc-1400/event/ultimate-singles"
-    // "tournament/smash-sans-fronti-res-271/event/smash-ultimate-singles"
+    "tournament/smash-sans-fronti-res-271/event/smash-ultimate-singles"
     // "tournament/the-buddbuds-local-15/event/ultimate-singles"
     // "tournament/coffee-break-11-0/event/ultimate-singles"
   );

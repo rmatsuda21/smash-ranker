@@ -1,0 +1,9 @@
+.buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+
+  button {
+    justify-content: flex-start;
+  }
+}

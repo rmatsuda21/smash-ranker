@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import { IoMdDownload } from "react-icons/io";
+import { FaWrench } from "react-icons/fa6";
 
 import { Button } from "@/components/shared/Button/Button";
 import { Input } from "@/components/shared/Input/Input";
@@ -8,6 +9,9 @@ import { usePlayerStore } from "@/store/playerStore";
 import { useTournamentStore } from "@/store/tournamentStore";
 import { DropDownSelect } from "@/components/top8/DropDownSelect/DropDownSelect";
 import { downloadDataURL } from "@/utils/top8/downloadDataURL";
+import { DownloadOptionModal } from "@/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal";
+
+import styles from "./CanvasDownloader.module.scss";
 
 // TODO: Create export config modal
 
@@ -24,6 +28,9 @@ const fileExtensions: Record<ImgTypes, string> = {
 
 // TODO: Add image type selection + quality selection
 export const CanvasDownloader = ({ className }: Props) => {
+  const [isOptionModalOpen, setIsOptionModalOpen] = useState(false);
+  const [quality, setQuality] = useState(2);
+  const [pixelRatio, setPixelRatio] = useState(2);
   const [filename, setFilename] = useState("");
   const [imgType, setImgType] = useState<ImgTypes>("png");
   const stageRef = useCanvasStore((state) => state.stageRef);
@@ -51,14 +58,22 @@ export const CanvasDownloader = ({ className }: Props) => {
 
     const mimeType = `image/${imgType}`;
     const dataURL = stageRef.toDataURL({
-      pixelRatio: 2,
+      pixelRatio,
       mimeType,
-      quality: 2,
+      quality,
     });
 
     const finalFilename = `${filename || "ranker"}.${fileExtensions[imgType]}`;
     downloadDataURL({ dataURL, filename: finalFilename, mimeType });
-  }, [stageRef, filename, dispatch, tournamentDispatch, imgType]);
+  }, [
+    stageRef,
+    filename,
+    dispatch,
+    tournamentDispatch,
+    imgType,
+    quality,
+    pixelRatio,
+  ]);
 
   return (
     <div className={className}>
@@ -84,9 +99,22 @@ export const CanvasDownloader = ({ className }: Props) => {
           setImgType(value[0].value);
         }}
       />
-      <Button disabled={!stageRef} onClick={handleDownload}>
-        <IoMdDownload style={{ minWidth: "1em" }} /> Download
-      </Button>
+      <div className={styles.buttons}>
+        <Button disabled={!stageRef} onClick={handleDownload}>
+          <IoMdDownload style={{ minWidth: "1em" }} /> Download
+        </Button>
+        <Button onClick={() => setIsOptionModalOpen(true)}>
+          <FaWrench style={{ minWidth: "1em" }} />
+        </Button>
+      </div>
+      <DownloadOptionModal
+        quality={quality}
+        pixelRatio={pixelRatio}
+        setQuality={setQuality}
+        setPixelRatio={setPixelRatio}
+        isOpen={isOptionModalOpen}
+        setIsOpen={setIsOptionModalOpen}
+      />
     </div>
   );
 };
