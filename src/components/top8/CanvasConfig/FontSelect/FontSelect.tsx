@@ -4,12 +4,6 @@ import { DropDownSelect } from "@/components/top8/DropDownSelect/DropDownSelect"
 import { loadFont } from "@/utils/top8/loadFont";
 import { Font, useFontStore } from "@/store/fontStore";
 
-type FontOption = {
-  value: string;
-  id: string;
-  display: string;
-};
-
 export const FontSelect = () => {
   // TODO: Add error handling
   // const error = useFontStore((state) => state.error);
@@ -39,7 +33,7 @@ export const FontSelect = () => {
     [dispatch]
   );
 
-  const fontOptions = useMemo<FontOption[]>(() => {
+  const fontOptions = useMemo(() => {
     return Array.from(fonts).map((font) => ({
       value: font.fontFamily,
       id: font.fontFamily,
@@ -48,12 +42,9 @@ export const FontSelect = () => {
   }, [fonts]);
 
   const handleChange = useCallback(
-    (values: FontOption[]) => {
-      if (values.length === 0) return;
-
-      const selectedFontFamily = values[0].value;
+    (fontFamily: string) => {
       const font = Array.from(fonts).find(
-        (font) => font.fontFamily === selectedFontFamily
+        (font) => font.fontFamily === fontFamily
       );
 
       if (font) {

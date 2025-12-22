@@ -90,13 +90,13 @@ export const CanvasDownloader = ({ className }: Props) => {
       />
       <DropDownSelect
         options={Object.entries(fileExtensions).map(([key]) => ({
-          value: key,
+          value: key as ImgTypes,
           id: key,
           display: key.toUpperCase(),
         }))}
         selectedValue={imgType}
         onChange={(value) => {
-          setImgType(value[0].value);
+          setImgType(value);
         }}
       />
       <div className={styles.buttons}>

@@ -152,7 +152,7 @@ export const ConfigManagerModal = ({ isOpen, onClose }: Props) => {
             options={dropDownOptions}
             placeholder="Select Config"
             selectedValue={selectedConfig?.id ?? ""}
-            onChange={(values) => handleConfigSelect(values[0].id)}
+            onChange={(id) => handleConfigSelect(id)}
           />
           <Button onClick={handleCreateNew}>Save Current Config</Button>
           <Button onClick={() => handleLoad(selectedConfig?.id ?? "")}>

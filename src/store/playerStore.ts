@@ -52,6 +52,7 @@ const playerReducer = (
 
 const DEFAULT_PLAYER: PlayerInfo = {
   id: "0",
+  entrantId: "0",
   name: "Player Name",
   characters: [{ id: "1293", alt: 0 }],
   placement: 0,
@@ -67,12 +68,16 @@ const defaultPlayers: PlayerInfo[] = new Array(8)
     name: `Player ${index + 1}`,
     gamerTag: `Player ${index + 1}`,
     id: index.toString(),
+    entrantId: index.toString(),
     placement: placements[index],
-    twitter: index === 0 ? "chikyunojin" : undefined,
+    twitter: undefined,
   }));
 
 defaultPlayers[0].name = "Reo M";
 defaultPlayers[0].gamerTag = "Reo M";
+defaultPlayers[0].entrantId = "69";
+defaultPlayers[0].id = "420";
+defaultPlayers[0].twitter = "chikyunojin";
 
 const initialState: PlayerState = {
   players: defaultPlayers,

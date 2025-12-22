@@ -5,14 +5,6 @@ import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
 import { DropDownSelect } from "@/components/top8/DropDownSelect/DropDownSelect";
 import { CharacerData } from "@/types/top8/PlayerTypes";
 
-type CharacterOption = {
-  id: string;
-  name: string;
-  imageSrc: string;
-  value: string;
-  display: string;
-};
-
 type Props = {
   selectedCharacter?: CharacerData;
   onValueChange: (value: string) => void;
@@ -26,9 +18,9 @@ const characterOptions = new Map(
       c.id,
       {
         id: c.id,
+        value: c.id,
         name: c.name,
         imageSrc: getCharImgUrl({ characterId: c.id, alt: 0, type: "stock" }),
-        value: c.id,
         display: c.name,
       },
     ])
@@ -41,16 +33,14 @@ const CharacterSelectComponent = ({
   onValueChange,
   disabled = false,
 }: Props) => {
-  const handleChange = (values: CharacterOption[]) => {
-    if (values.length > 0) {
-      onValueChange(String(values[0].id));
-    }
+  const handleChange = (id: string) => {
+    onValueChange(id);
   };
 
   return (
     <DropDownSelect
       options={options}
-      selectedValue={selectedCharacter?.id}
+      selectedValue={selectedCharacter?.id ?? ""}
       onChange={handleChange}
       disabled={disabled}
       placeholder="Select Character"
