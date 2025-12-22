@@ -1,8 +1,10 @@
-.wrapper {
+.header {
   background-color: var(--gray-3);
   padding: 10px;
   margin-block: 10px;
   border-radius: 5px;
+
+  overflow-x: auto;
 
   display: flex;
   flex-direction: row;
