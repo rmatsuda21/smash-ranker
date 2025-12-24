@@ -74,8 +74,9 @@ export const PlayerForm = ({ className }: Props) => {
     debouncedUpdatePlayer(newPlayer, selectedPlayerIndex);
   };
 
-  const handleCustomImgSrcChange = (file?: File) => {
+  const handleCustomImgSrcChange = (files?: File[]) => {
     if (!tempPlayer) return;
+    const file = files?.[0];
 
     if (!file) {
       const newPlayer: PlayerInfo = {

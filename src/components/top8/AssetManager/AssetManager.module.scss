@@ -1,0 +1,16 @@
+div.assetManager {
+  .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .label {
+    font-size: var(--font-size-sm);
+    line-height: 1;
+    font-weight: 600;
+    color: var(--accent-9);
+  }
+}

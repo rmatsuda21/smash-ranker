@@ -1,4 +1,6 @@
-import { ConfigRepository } from "@/types/ConfigRepository";
-import { IndexedDBConfigRepo } from "./IndexedDBConfigRepo";
+import { DBAsset, DBConfig, Store } from "@/types/Repository";
+import { ConfigStore } from "@/db/config/store";
+import { AssetStore } from "@/db/asset/store";
 
-export const configRepository: ConfigRepository = new IndexedDBConfigRepo();
+export const configRepository: Store<DBConfig> = new ConfigStore();
+export const assetRepository: Store<DBAsset> = new AssetStore();

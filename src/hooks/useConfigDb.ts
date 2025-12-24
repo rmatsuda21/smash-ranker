@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-import { DBConfig } from "@/types/ConfigRepository";
+import { DBConfig } from "@/types/Repository";
 import { configRepository } from "@/db/repository";
 
 export const useConfigDB = () => {
