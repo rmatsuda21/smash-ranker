@@ -11,7 +11,8 @@ type Props = {
   name?: string;
   value?: string;
   disabled?: boolean;
-  onChange: (file?: File) => void;
+  multiple?: boolean;
+  onChange: (files?: File[]) => void;
 };
 
 export const FileUploader = ({
@@ -20,6 +21,7 @@ export const FileUploader = ({
   value,
   disabled,
   onChange,
+  multiple = false,
 }: Props) => {
   const [isFileOver, setIsFileOver] = useState(false);
 
@@ -33,10 +35,10 @@ export const FileUploader = ({
   }, [value]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    if (!file.type.startsWith("image/")) return;
-    onChange(file);
+    const files = Array.from(e.target.files ?? []);
+    if (files.length === 0) return;
+    if (!files.every((file) => file.type.startsWith("image/"))) return;
+    onChange(files);
   };
 
   const handleButtonClick = () => {
@@ -60,10 +62,17 @@ export const FileUploader = ({
     const handleDrop = (e: DragEvent) => {
       e.preventDefault();
       if (!e.dataTransfer) return;
-      const file = e.dataTransfer.files[0];
-      if (!file || !file.type.startsWith("image/")) return;
-      onChange(file);
+      const files = Array.from(e.dataTransfer.files ?? []);
+
+      if (
+        files.length === 0 ||
+        !files.every((file) => file.type.startsWith("image/"))
+      ) {
+        return;
+      }
+
       setIsFileOver(false);
+      onChange(files);
     };
 
     const handleDragOver = (e: DragEvent) => {
@@ -113,6 +122,7 @@ export const FileUploader = ({
         id={id}
         name={name}
         onChange={handleChange}
+        multiple={multiple}
       />
       <div className={styles.content}>
         <Button

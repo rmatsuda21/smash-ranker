@@ -2,7 +2,7 @@ import { FaFileImport } from "react-icons/fa6";
 
 import { Button } from "@/components/shared/Button/Button";
 import { useCanvasStore } from "@/store/canvasStore";
-import { DBConfig } from "@/types/ConfigRepository";
+import { DBConfig } from "@/types/Repository";
 import { useFontStore } from "@/store/fontStore";
 
 export const ConfigImport = () => {

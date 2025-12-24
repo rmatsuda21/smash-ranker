@@ -26,7 +26,9 @@ export const CanvasConfig = ({ className }: Props) => {
         <p className={styles.label}>Background Image</p>
         <FileUploader
           value={canvas.backgroundImgSrc}
-          onChange={(file) => {
+          onChange={(files) => {
+            const file = files?.[0];
+
             if (file) {
               const url = URL.createObjectURL(file);
               canvasDispatch({

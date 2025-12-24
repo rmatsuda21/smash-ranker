@@ -5,7 +5,7 @@ import { Modal } from "@/components/shared/Modal/Modal";
 import { useConfigDB } from "@/hooks/useConfigDb";
 import { Button } from "@/components/shared/Button/Button";
 import { DropDownSelect } from "@/components/top8/DropDownSelect/DropDownSelect";
-import { DBConfig } from "@/types/ConfigRepository";
+import { DBConfig } from "@/types/Repository";
 import { useFontStore } from "@/store/fontStore";
 import { useCanvasStore } from "@/store/canvasStore";
 import { fetchFontFamily } from "@/utils/top8/fetchAndMapFonts";

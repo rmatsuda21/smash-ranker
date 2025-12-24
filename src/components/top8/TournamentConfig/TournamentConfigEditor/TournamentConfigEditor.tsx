@@ -82,7 +82,9 @@ export const TournamentConfigEditor = () => {
     debouncedUpdateTournament(newTournament);
   };
 
-  const handleIconChange = (file?: File) => {
+  const handleIconChange = (files?: File[]) => {
+    const file = files?.[0];
+
     if (!file) {
       dispatch({ type: "CLEAR_ICON_SRC" });
       return;
