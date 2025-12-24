@@ -1,8 +1,8 @@
 import { Modal } from "@/components/shared/Modal/Modal";
 import { useAssetDB } from "@/hooks/useAssetDb";
+import { FileUploader } from "@/components/shared/FileUploader/FileUploader";
 
 import styles from "./AssetsModal.module.scss";
-import { FileUploader } from "@/components/shared/FileUploader/FileUploader";
 
 type Props = {
   isOpen: boolean;
