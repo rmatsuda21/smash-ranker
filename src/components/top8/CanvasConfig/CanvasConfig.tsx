@@ -2,8 +2,8 @@ import cn from "classnames";
 
 import { FontSelect } from "@/components/top8/CanvasConfig/FontSelect/FontSelect";
 import { useCanvasStore } from "@/store/canvasStore";
-import { FileUploader } from "@/components/shared/FileUploader/FileUploader";
 import { ColorPaletteEditor } from "@/components/top8/CanvasConfig/ColorPaletteEditor/ColorPaletteEditor";
+import { AssetSelector } from "@/components/top8/AssetSelector/AssetSelector";
 
 import styles from "./CanvasConfig.module.scss";
 
@@ -22,24 +22,21 @@ export const CanvasConfig = ({ className }: Props) => {
         <FontSelect />
       </div>
 
-      <div>
+      <div className={styles.backgroundImg}>
         <p className={styles.label}>Background Image</p>
-        <FileUploader
-          value={canvas.backgroundImgSrc}
-          onChange={(files) => {
-            const file = files?.[0];
 
-            if (file) {
-              const url = URL.createObjectURL(file);
-              canvasDispatch({
-                type: "SET_BACKGROUND_IMG_SRC",
-                payload: url,
-              });
-            } else {
-              canvasDispatch({
-                type: "CLEAR_BACKGROUND_IMG_SRC",
-              });
-            }
+        <AssetSelector
+          selectedId={canvas.backgroundImgId}
+          onSelect={(id) => {
+            canvasDispatch({
+              type: "SET_BACKGROUND_IMG",
+              payload: id,
+            });
+          }}
+          onClear={() => {
+            canvasDispatch({
+              type: "CLEAR_BACKGROUND_IMG",
+            });
           }}
         />
       </div>

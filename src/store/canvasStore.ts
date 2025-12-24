@@ -34,8 +34,8 @@ type CanvasAction =
       payload: { index: number; element: ElementConfig };
     }
   | { type: "SET_EDITABLE"; payload: boolean }
-  | { type: "CLEAR_BACKGROUND_IMG_SRC" }
-  | { type: "SET_BACKGROUND_IMG_SRC"; payload: string }
+  | { type: "CLEAR_BACKGROUND_IMG" }
+  | { type: "SET_BACKGROUND_IMG"; payload: string }
   | {
       type: "UPDATE_COLOR_PALETTE";
       payload: { id: string; value: { color: string; name: string } };
@@ -114,18 +114,18 @@ const canvasReducer = (
       };
     case "SET_EDITABLE":
       return { editable: action.payload };
-    case "CLEAR_BACKGROUND_IMG_SRC":
+    case "CLEAR_BACKGROUND_IMG":
       return {
         layout: {
           ...state.layout,
-          canvas: { ...state.layout.canvas, backgroundImgSrc: undefined },
+          canvas: { ...state.layout.canvas, backgroundImgId: undefined },
         },
       };
-    case "SET_BACKGROUND_IMG_SRC":
+    case "SET_BACKGROUND_IMG":
       return {
         layout: {
           ...state.layout,
-          canvas: { ...state.layout.canvas, backgroundImgSrc: action.payload },
+          canvas: { ...state.layout.canvas, backgroundImgId: action.payload },
         },
       };
     case "UPDATE_COLOR_PALETTE":

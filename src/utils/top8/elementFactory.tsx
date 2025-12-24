@@ -24,6 +24,7 @@ import { CustomImage } from "@/components/top8/Canvas/CustomImage";
 import { SmartText } from "@/components/top8/SmartText/SmartText";
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
 import { CustomSVG } from "@/components/top8/Canvas/CustomSVG";
+import { AssetImage } from "@/components/top8/Canvas/AssetImage";
 import { replacePlaceholders } from "@/utils/top8/replacePlaceholderString";
 import { evaluateElementCondition } from "@/utils/top8/evaluateElementCondition";
 import { resolveColor, resolvePaletteColors } from "@/utils/top8/resolveColor";
@@ -323,15 +324,20 @@ const createTournamentIconElement: ElementCreator<
 const createBackgroundImageElement: ElementCreator<
   BackgroundImageElementConfig
 > = ({ element, index, context }) => {
-  const backgroundImgSrc = context.canvas?.backgroundImgSrc ?? "";
+  const backgroundImgId = context.canvas?.backgroundImgId ?? "";
+
+  if (!backgroundImgId) {
+    return null;
+  }
+
   return (
-    <CustomImage
+    <AssetImage
       key={`backgroundImage-${index}`}
+      id={backgroundImgId}
       x={element.position.x}
       y={element.position.y}
       width={element.size?.width ?? 100}
       height={element.size?.height ?? 100}
-      imageSrc={backgroundImgSrc}
       fillMode={element.fillMode ?? "contain"}
       align={element.align ?? "center"}
     />

@@ -24,7 +24,7 @@ export interface CanvasConfig {
   size: { width: number; height: number };
   displayScale: number;
   colorPalette?: Record<string, { color: string; name: string }>;
-  backgroundImgSrc?: string;
+  backgroundImgId?: string;
 }
 
 interface BaseElementConfig {

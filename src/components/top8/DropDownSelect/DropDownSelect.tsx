@@ -34,7 +34,6 @@ const getDropdownStyles = (
     };
 
   const dropdownRect = triggerEl.getBoundingClientRect();
-  console.log(dropdownRect);
   const width = dropdownRect ? dropdownRect.width : triggerEl.clientWidth;
   const left = dropdownRect ? dropdownRect.left : 0;
   let top;
