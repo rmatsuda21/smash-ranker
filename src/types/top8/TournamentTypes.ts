@@ -10,7 +10,7 @@ export type TournamentInfo = {
     country?: string;
   };
   entrants: number;
-  iconSrc?: string;
+  iconAssetId?: string;
 };
 
 export type Tournament = {

@@ -4,7 +4,8 @@ import { CustomImage } from "./CustomImage";
 import { assetRepository } from "@/db/repository";
 
 type Props = {
-  id: string;
+  assetId: string;
+  id?: string;
   x: number;
   y: number;
   width: number;
@@ -14,9 +15,10 @@ type Props = {
 };
 
 const AssetImageComponent = ({
-  id,
+  assetId,
   x,
   y,
+  id,
   width,
   height,
   fillMode = "contain",
@@ -25,7 +27,7 @@ const AssetImageComponent = ({
   const [imageSrc, setImageSrc] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!id) {
+    if (!assetId) {
       setImageSrc(null);
       return;
     }
@@ -34,7 +36,7 @@ const AssetImageComponent = ({
 
     const loadImage = async () => {
       try {
-        const asset = await assetRepository.get(id);
+        const asset = await assetRepository.get(assetId);
         if (asset?.data) {
           objectUrl = URL.createObjectURL(asset.data);
           setImageSrc(objectUrl);
@@ -52,7 +54,7 @@ const AssetImageComponent = ({
         URL.revokeObjectURL(objectUrl);
       }
     };
-  }, [id]);
+  }, [assetId]);
 
   if (!imageSrc) {
     return null;
@@ -62,6 +64,7 @@ const AssetImageComponent = ({
     <CustomImage
       x={x}
       y={y}
+      id={id}
       width={width}
       height={height}
       imageSrc={imageSrc}
@@ -72,4 +75,3 @@ const AssetImageComponent = ({
 };
 
 export const AssetImage = memo(AssetImageComponent);
-

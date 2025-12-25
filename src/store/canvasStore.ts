@@ -118,14 +118,14 @@ const canvasReducer = (
       return {
         layout: {
           ...state.layout,
-          canvas: { ...state.layout.canvas, backgroundImgId: undefined },
+          canvas: { ...state.layout.canvas, bgAssetId: undefined },
         },
       };
     case "SET_BACKGROUND_IMG":
       return {
         layout: {
           ...state.layout,
-          canvas: { ...state.layout.canvas, backgroundImgId: action.payload },
+          canvas: { ...state.layout.canvas, bgAssetId: action.payload },
         },
       };
     case "UPDATE_COLOR_PALETTE":

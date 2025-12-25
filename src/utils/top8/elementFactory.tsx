@@ -101,6 +101,21 @@ const createImageElement: ElementCreator<ImageElementConfig> = ({
   element,
   index,
 }) => {
+  if (element.assetId) {
+    return (
+      <AssetImage
+        key={`image-${index}`}
+        id={`image-${index}`}
+        assetId={element.assetId}
+        x={element.position.x}
+        y={element.position.y}
+        width={element.size?.width ?? 100}
+        height={element.size?.height ?? 100}
+        align="center"
+      />
+    );
+  }
+
   return (
     <CustomImage
       key={`image-${index}`}
@@ -249,6 +264,21 @@ const createCustomImageElement: ElementCreator<CustomImageElementConfig> = ({
   const width = element.size?.width ?? containerSize?.width ?? 100;
   const height = element.size?.height ?? containerSize?.height ?? 100;
 
+  if (element.assetId) {
+    return (
+      <AssetImage
+        key={`backgroundImage-${index}`}
+        assetId={element.assetId}
+        x={element.position.x}
+        y={element.position.y}
+        width={width}
+        height={height}
+        fillMode={element.fillMode ?? "contain"}
+        align={element.align ?? "center"}
+      />
+    );
+  }
+
   return (
     <CustomImage
       key={`customImage-${index}`}
@@ -293,7 +323,7 @@ const createTournamentIconElement: ElementCreator<
 > = ({ element, index, context }) => {
   const { tournament } = context;
 
-  if (!tournament?.iconSrc) {
+  if (!tournament?.iconAssetId) {
     return (
       <Rect
         key={`tournamentIcon-${index}`}
@@ -307,16 +337,16 @@ const createTournamentIconElement: ElementCreator<
   }
 
   return (
-    <CustomImage
+    <AssetImage
       key={`tournamentIcon-${index}`}
       x={element.position.x}
       y={element.position.y}
+      assetId={tournament.iconAssetId}
       width={element.size?.width ?? 100}
       height={element.size?.height ?? 100}
-      imageSrc={tournament.iconSrc}
       fillMode={element.fillMode ?? "contain"}
       align={element.align ?? "center"}
-      offset={element.offset ?? { x: 0, y: 0 }}
+      // offset={element.offset ?? { x: 0, y: 0 }}
     />
   );
 };
@@ -324,7 +354,7 @@ const createTournamentIconElement: ElementCreator<
 const createBackgroundImageElement: ElementCreator<
   BackgroundImageElementConfig
 > = ({ element, index, context }) => {
-  const backgroundImgId = context.canvas?.backgroundImgId ?? "";
+  const backgroundImgId = context.canvas?.bgAssetId ?? "";
 
   if (!backgroundImgId) {
     return null;
@@ -333,7 +363,7 @@ const createBackgroundImageElement: ElementCreator<
   return (
     <AssetImage
       key={`backgroundImage-${index}`}
-      id={backgroundImgId}
+      assetId={backgroundImgId}
       x={element.position.x}
       y={element.position.y}
       width={element.size?.width ?? 100}
@@ -386,7 +416,7 @@ export const createKonvaElements = (
 
       return (
         <Group
-          id={element.id}
+          assetId={element.id}
           draggable={context.options?.editable ?? false}
           key={`group-${index}`}
           clipFunc={element.clip ? clipFunc : undefined}
