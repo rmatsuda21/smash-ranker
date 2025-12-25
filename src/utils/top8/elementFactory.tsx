@@ -167,13 +167,25 @@ const createCharacterImageElement: ElementCreator<
     );
   }
 
+  if (player.avatarAssetId) {
+    return (
+      <AssetImage
+        key={`character-${index}`}
+        id="character"
+        assetId={player.avatarAssetId}
+        x={element.position.x}
+        y={element.position.y}
+        width={element.size?.width ?? 100}
+        height={element.size?.height ?? 100}
+      />
+    );
+  }
+
   const mainCharacter = player.characters[0];
-  const imageSrc =
-    player.avatarSrc ??
-    getCharImgUrl({
-      characterId: mainCharacter.id,
-      alt: mainCharacter.alt,
-    });
+  const imageSrc = getCharImgUrl({
+    characterId: mainCharacter.id,
+    alt: mainCharacter.alt,
+  });
 
   return (
     <CustomImage

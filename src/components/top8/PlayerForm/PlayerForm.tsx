@@ -5,9 +5,9 @@ import cn from "classnames";
 import { usePlayerStore } from "@/store/playerStore";
 import { CharacerData, PlayerInfo } from "@/types/top8/PlayerTypes";
 import { CharacterEditor } from "@/components/top8/CharacterEditor/CharacterEditor";
-import { FileUploader } from "@/components/shared/FileUploader/FileUploader";
 import { Input } from "@/components/shared/Input/Input";
 import { PlayerSelector } from "@/components/top8/PlayerForm/PlayerSelector";
+import { AssetSelector } from "@/components/top8/AssetSelector/AssetSelector";
 
 import styles from "./PlayerForm.module.scss";
 
@@ -74,24 +74,23 @@ export const PlayerForm = ({ className }: Props) => {
     debouncedUpdatePlayer(newPlayer, selectedPlayerIndex);
   };
 
-  const handleCustomImgSrcChange = (files?: File[]) => {
+  const handleAssetSelect = (id: string) => {
     if (!tempPlayer) return;
-    const file = files?.[0];
 
-    if (!file) {
-      const newPlayer: PlayerInfo = {
-        ...tempPlayer,
-        avatarSrc: undefined,
-      };
-      setTempPlayer(newPlayer);
-      debouncedUpdatePlayer(newPlayer, selectedPlayerIndex);
-      return;
-    }
-
-    const url = URL.createObjectURL(file);
     const newPlayer: PlayerInfo = {
       ...tempPlayer,
-      avatarSrc: url,
+      avatarAssetId: id,
+    };
+    setTempPlayer(newPlayer);
+    debouncedUpdatePlayer(newPlayer, selectedPlayerIndex);
+  };
+
+  const handleClear = () => {
+    if (!tempPlayer) return;
+
+    const newPlayer: PlayerInfo = {
+      ...tempPlayer,
+      avatarAssetId: undefined,
     };
     setTempPlayer(newPlayer);
     debouncedUpdatePlayer(newPlayer, selectedPlayerIndex);
@@ -144,10 +143,10 @@ export const PlayerForm = ({ className }: Props) => {
       />
       <div className={cn({ [styles.disabled]: !selectedPlayer })}>
         <p className={styles.label}>Avatar</p>
-        <FileUploader
-          value={tempPlayer?.avatarSrc}
-          disabled={!selectedPlayer}
-          onChange={handleCustomImgSrcChange}
+        <AssetSelector
+          selectedId={tempPlayer?.avatarAssetId}
+          onSelect={handleAssetSelect}
+          onClear={handleClear}
         />
       </div>
       <div className={cn({ [styles.disabled]: !selectedPlayer })}>
