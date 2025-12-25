@@ -13,5 +13,5 @@ export type PlayerInfo = {
   placement: number;
   gamerTag: string;
   prefix?: string;
-  avatarSrc?: string;
+  avatarAssetId?: string;
 };
