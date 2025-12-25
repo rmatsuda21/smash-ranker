@@ -3,8 +3,11 @@ import { memo, useEffect, useState } from "react";
 import { CustomImage } from "./CustomImage";
 import { assetRepository } from "@/db/repository";
 
+const MISSING_ASSET_URL = "/assets/missing_asset.svg";
+
 type Props = {
   assetId: string;
+  fallbackSrc?: string;
   id?: string;
   x: number;
   y: number;
@@ -16,6 +19,7 @@ type Props = {
 
 const AssetImageComponent = ({
   assetId,
+  fallbackSrc = MISSING_ASSET_URL,
   x,
   y,
   id,
@@ -28,7 +32,7 @@ const AssetImageComponent = ({
 
   useEffect(() => {
     if (!assetId) {
-      setImageSrc(null);
+      setImageSrc(fallbackSrc ?? null);
       return;
     }
 
@@ -40,10 +44,12 @@ const AssetImageComponent = ({
         if (asset?.data) {
           objectUrl = URL.createObjectURL(asset.data);
           setImageSrc(objectUrl);
+        } else {
+          setImageSrc(fallbackSrc ?? null);
         }
       } catch (error) {
         console.error("Failed to load asset image:", error);
-        setImageSrc(null);
+        setImageSrc(fallbackSrc ?? null);
       }
     };
 
@@ -54,7 +60,7 @@ const AssetImageComponent = ({
         URL.revokeObjectURL(objectUrl);
       }
     };
-  }, [assetId]);
+  }, [assetId, fallbackSrc]);
 
   if (!imageSrc) {
     return null;
