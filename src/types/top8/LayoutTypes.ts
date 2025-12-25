@@ -24,7 +24,7 @@ export interface CanvasConfig {
   size: { width: number; height: number };
   displayScale: number;
   colorPalette?: Record<string, { color: string; name: string }>;
-  backgroundImgId?: string;
+  bgAssetId?: string;
 }
 
 interface BaseElementConfig {
@@ -88,6 +88,7 @@ export interface ImageElementConfig
     Partial<ComponentProps<typeof Image>> {
   type: "image";
   src: string;
+  assetId?: string;
 }
 
 export interface GroupElementConfig
@@ -109,6 +110,7 @@ export interface CustomImageElementConfig
     Partial<ComponentProps<typeof Image>> {
   type: "customImage";
   src: string;
+  assetId?: string;
   fillMode?: CustomImageFillMode;
   align?: "center" | "left" | "right" | "top" | "bottom";
 }

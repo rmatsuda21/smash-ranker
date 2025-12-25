@@ -4,7 +4,7 @@ import { debounce, isEqual } from "lodash";
 import { useTournamentStore } from "@/store/tournamentStore";
 import { TournamentInfo } from "@/types/top8/TournamentTypes";
 import { Input } from "@/components/shared/Input/Input";
-import { FileUploader } from "@/components/shared/FileUploader/FileUploader";
+import { AssetSelector } from "@/components/top8/AssetSelector/AssetSelector";
 
 import styles from "./TournamentEditor.module.scss";
 
@@ -82,26 +82,17 @@ export const TournamentConfigEditor = () => {
     debouncedUpdateTournament(newTournament);
   };
 
-  const handleIconChange = (files?: File[]) => {
-    const file = files?.[0];
-
-    if (!file) {
-      dispatch({ type: "CLEAR_ICON_SRC" });
-      return;
-    }
-
-    const url = URL.createObjectURL(file);
-    dispatch({ type: "SET_ICON_SRC", payload: url });
-  };
-
   return (
     <div className={styles.wrapper}>
       <label htmlFor="icon">Icon</label>
-      <FileUploader
-        id="icon"
-        name="icon"
-        value={tempTournament?.iconSrc}
-        onChange={handleIconChange}
+      <AssetSelector
+        selectedId={tempTournament?.iconAssetId}
+        onSelect={(id) => {
+          dispatch({ type: "SET_ICON", payload: id });
+        }}
+        onClear={() => {
+          dispatch({ type: "CLEAR_ICON" });
+        }}
       />
       <Input
         label="Tournament Name"
