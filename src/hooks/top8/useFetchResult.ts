@@ -163,11 +163,12 @@ export const useFetchResult = () => {
       .query(Top8Query, { slug, playerCount })
       .toPromise();
 
-    if (result.error || !result.data) {
+    if (result.error || !result.data?.event) {
       playerDispatch({
         type: "FETCH_PLAYERS_FAIL",
         payload: result.error?.message || "Failed to fetch top 8 data",
       });
+      alert(result.error?.message || "Tournament not found");
       return;
     }
 
