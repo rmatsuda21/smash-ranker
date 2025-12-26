@@ -58,7 +58,6 @@ export const FontSelect = () => {
       options={fontOptions}
       selectedValue={selectedFont}
       onChange={handleChange}
-      disabled={fetching}
       loading={fetching}
       error={error}
     />
