@@ -18,7 +18,7 @@ const examplePlayer: PlayerInfo = {
   name: "T1 | Reo M",
   characters: [{ id: "1293", alt: 0 }],
   country: "US",
-  twitter: "test_player",
+  twitter: "chikyunojin",
   placement: 1,
   gamerTag: "Reo M",
   prefix: "T1",
