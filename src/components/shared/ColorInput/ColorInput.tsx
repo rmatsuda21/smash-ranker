@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { HexAlphaColorPicker } from "react-colorful";
+import { HexAlphaColorPicker, HexColorInput } from "react-colorful";
 
 import styles from "./ColorInput.module.scss";
 
@@ -48,11 +48,10 @@ export const ColorInput = ({ color, onChange }: Props) => {
         onClick={handleClick}
       />
       {isOpen && (
-        <HexAlphaColorPicker
-          className={styles.picker}
-          color={color}
-          onChange={onChange}
-        />
+        <div className={styles.picker}>
+          <HexAlphaColorPicker color={color} onChange={onChange} />
+          <HexColorInput color={color} onChange={onChange} alpha />
+        </div>
       )}
     </div>
   );

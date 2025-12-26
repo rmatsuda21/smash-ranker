@@ -84,7 +84,7 @@ export const TournamentConfigEditor = () => {
 
   return (
     <div className={styles.wrapper}>
-      <label htmlFor="icon">Icon</label>
+      <p className={styles.label}>Icon</p>
       <AssetSelector
         selectedId={tempTournament?.iconAssetId}
         onSelect={(id) => {
