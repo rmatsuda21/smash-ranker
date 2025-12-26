@@ -39,8 +39,10 @@
   }
 
   .tooltip {
+    pointer-events: none;
     text-wrap: nowrap;
     opacity: 0;
+
     position: absolute;
     top: 0;
     left: 50%;
