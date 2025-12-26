@@ -4,5 +4,6 @@ export const COOKIES = {
   NEEDS_TOURNAMENT_LOAD_CONFIRMATION: "needs-tournament-load-confirmation",
   DELETE_CONFIG: "delete-config",
   DELETE_ALL_CONFIGS: "delete-all-configs",
+  LOAD_CONFIG: "load-config",
   LAST_USED_FONT_FAMILY: "last-used-font-family",
 };

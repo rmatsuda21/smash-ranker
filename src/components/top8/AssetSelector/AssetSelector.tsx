@@ -56,11 +56,12 @@ export const AssetSelector = ({ selectedId, onSelect, onClear }: Props) => {
     <div className={styles.assetSelector}>
       <div className={styles.imgContainer}>
         {notFound && <GrDocumentMissing size={50} />}
-        {img ? (
-          <img src={URL.createObjectURL(img)} alt="Background Image" />
-        ) : (
-          <RxValueNone color="var(--gray-5)" size={50} />
-        )}
+        {!notFound &&
+          (img ? (
+            <img src={URL.createObjectURL(img)} alt="Background Image" />
+          ) : (
+            <RxValueNone color="var(--gray-5)" size={50} />
+          ))}
       </div>
       <div className={styles.buttons}>
         <Button onClick={() => setIsOpen(true)}>

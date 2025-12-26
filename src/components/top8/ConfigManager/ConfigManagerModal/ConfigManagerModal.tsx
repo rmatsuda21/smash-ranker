@@ -9,8 +9,6 @@ import { DropDownSelect } from "@/components/top8/DropDownSelect/DropDownSelect"
 import { DBConfig } from "@/types/Repository";
 import { useFontStore } from "@/store/fontStore";
 import { useCanvasStore } from "@/store/canvasStore";
-import { fetchFontFamily } from "@/utils/top8/fetchAndMapFonts";
-import { loadFont } from "@/utils/top8/loadFont";
 import { simpleLayout } from "@/layouts/simple";
 import { squaresLayout } from "@/layouts/squares";
 
@@ -80,6 +78,25 @@ export const ConfigManagerModal = ({ isOpen, onClose }: Props) => {
     setSelectedConfig(null);
   };
 
+  const handleLoad = async (id: string) => {
+    let config: DBConfig | undefined;
+    if (defaultConfigs.some((config) => config.id === id)) {
+      config = defaultConfigs.find((config) => config.id === id)!;
+    } else {
+      config = await getConfig(id);
+    }
+
+    if (config) {
+      dispatch({ type: "SET_LAYOUT", payload: config.layout });
+      fontDispatch({
+        type: "SET_SELECTED_FONT",
+        payload: config.selectedFont,
+      });
+    }
+
+    onClose();
+  };
+
   const { confirm: confirmDelete, ConfirmationDialog: DeleteConfirmation } =
     useConfirmation(handleDelete, {
       title: `Delete Config: ${selectedConfig?.name}`,
@@ -98,21 +115,13 @@ export const ConfigManagerModal = ({ isOpen, onClose }: Props) => {
     cookieName: COOKIES.DELETE_ALL_CONFIGS,
   });
 
-  const handleLoad = async (id: string) => {
-    let config: DBConfig | undefined;
-    if (defaultConfigs.some((config) => config.id === id)) {
-      config = defaultConfigs.find((config) => config.id === id)!;
-    } else {
-      config = await getConfig(id);
-    }
-
-    if (config) {
-      dispatch({ type: "SET_LAYOUT", payload: config.layout });
-      fontDispatch({ type: "SET_SELECTED_FONT", payload: config.selectedFont });
-    }
-
-    onClose();
-  };
+  const { confirm: confirmLoad, ConfirmationDialog: LoadConfirmation } =
+    useConfirmation(handleLoad, {
+      title: "Load Config",
+      description:
+        "Are you sure you want to load this config? This action will overwrite the current config.",
+      cookieName: COOKIES.LOAD_CONFIG,
+    });
 
   const handleImport = () => {
     const fileInput = document.createElement("input");
@@ -138,14 +147,6 @@ export const ConfigManagerModal = ({ isOpen, onClose }: Props) => {
             layout: layout,
             selectedFont: selectedFont,
           });
-
-          fontDispatch({ type: "LOAD_FONT", payload: selectedFont });
-          const font = await fetchFontFamily(selectedFont);
-          await loadFont(font);
-          fontDispatch({ type: "LOAD_FONT_SUCCESS", payload: font });
-
-          dispatch({ type: "SET_LAYOUT", payload: layout });
-          fontDispatch({ type: "SET_SELECTED_FONT", payload: selectedFont });
 
           fileInput.remove();
         };
@@ -176,7 +177,7 @@ export const ConfigManagerModal = ({ isOpen, onClose }: Props) => {
               onChange={(id) => handleConfigSelect(id)}
             />
             <Button onClick={handleCreateNew}>Save Current Config</Button>
-            <Button onClick={() => handleLoad(selectedConfig?.id ?? "")}>
+            <Button onClick={() => confirmLoad(selectedConfig?.id ?? "")}>
               Load
             </Button>
             <Button
@@ -207,6 +208,7 @@ export const ConfigManagerModal = ({ isOpen, onClose }: Props) => {
 
       <DeleteConfirmation />
       <ClearAllConfirmation />
+      <LoadConfirmation />
     </>
   );
 };
