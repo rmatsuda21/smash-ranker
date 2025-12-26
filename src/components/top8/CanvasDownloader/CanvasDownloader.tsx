@@ -89,6 +89,7 @@ export const CanvasDownloader = ({ className }: Props) => {
         placeholder="ranker"
       />
       <DropDownSelect
+        className={styles.dropdownSelect}
         options={Object.entries(fileExtensions).map(([key]) => ({
           value: key as ImgTypes,
           id: key,
@@ -105,13 +106,13 @@ export const CanvasDownloader = ({ className }: Props) => {
           onClick={handleDownload}
           tooltip="Download"
         >
-          <IoMdDownload style={{ minWidth: "1em" }} />
+          <IoMdDownload size={16} />
         </Button>
         <Button
           onClick={() => setIsOptionModalOpen(true)}
           tooltip="Download Options"
         >
-          <CgOptions style={{ minWidth: "1em" }} />
+          <CgOptions size={16} />
         </Button>
       </div>
       <DownloadOptionModal

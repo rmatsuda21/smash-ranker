@@ -54,9 +54,8 @@ export const Ranker = () => {
 
   return (
     <div className={styles.root}>
-      <div className={styles.header}>
-        <Header />
-      </div>
+      <Header />
+
       <div className={styles.body}>
         <SidePanel className={styles.sidePanel} />
 
