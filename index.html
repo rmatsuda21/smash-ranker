@@ -11,5 +11,22 @@
   <body class="dark">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      const code = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"];
+      let index = 0;
+      window.addEventListener("keydown", (e) => {
+        if (e.key === code[index]) {
+          index++;
+          console.log(index);
+        } else {
+          index = 0;
+        }
+
+        if (index === code.length) {
+          alert(":)");
+          index = 0;
+        }
+      });
+    </script>
   </body>
 </html>
