@@ -21,6 +21,7 @@ type Props<T> = {
   placeholder?: string;
   loading?: boolean;
   error?: Error;
+  className?: string;
 };
 
 const getDropdownStyles = (
@@ -97,6 +98,7 @@ export const DropDownSelect = <T,>({
   disabled = false,
   loading = false,
   error,
+  className,
 }: Props<T>) => {
   const [isOpen, setIsOpen] = useState(false);
   const [showAbove, setShowAbove] = useState(false);
@@ -253,7 +255,7 @@ export const DropDownSelect = <T,>({
   }, [isOpen, dropdownRef]);
 
   return (
-    <div className={styles.dropdownSelect} ref={containerRef}>
+    <div className={cn(styles.dropdownSelect, className)} ref={containerRef}>
       <button
         ref={triggerRef}
         className={styles.trigger}
@@ -283,6 +285,7 @@ export const DropDownSelect = <T,>({
             const onClick = () => handleValueChange(option.value);
             return (
               <div
+                key={option.id}
                 className={styles.item}
                 data-state={isSelected ? "checked" : undefined}
                 onClick={onClick}
