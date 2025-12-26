@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { FaImage, FaTrash } from "react-icons/fa6";
 import { GrDocumentMissing } from "react-icons/gr";
+import { RxValueNone } from "react-icons/rx";
 
 import { Modal } from "@/components/shared/Modal/Modal";
 import { Button } from "@/components/shared/Button/Button";
@@ -54,11 +55,15 @@ export const AssetSelector = ({ selectedId, onSelect, onClear }: Props) => {
     <div className={styles.assetSelector}>
       <div className={styles.imgContainer}>
         {notFound && <GrDocumentMissing size={50} />}
-        {img && <img src={URL.createObjectURL(img)} alt="Background Image" />}
+        {img ? (
+          <img src={URL.createObjectURL(img)} alt="Background Image" />
+        ) : (
+          <RxValueNone color="var(--gray-5)" size={50} />
+        )}
       </div>
       <div className={styles.buttons}>
         <Button onClick={() => setIsOpen(true)}>
-          <FaImage /> Manage
+          <FaImage /> Select
         </Button>
         <Button
           onClick={() => {

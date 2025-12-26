@@ -1,8 +1,10 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
+import Cookies from "js-cookie";
 
 import { fetchAndMapFonts } from "@/utils/top8/fetchAndMapFonts";
 import { loadFont } from "@/utils/top8/loadFont";
+import { COOKIES } from "@/consts/cookies";
 
 export type Font = {
   fontFamily: string;
@@ -16,7 +18,7 @@ interface FontState {
   fonts: Set<Font>;
   selectedFont: string;
   fetching: boolean;
-  error: Error | null;
+  error?: Error;
   dispatch: (action: FontAction) => void;
 }
 
@@ -35,14 +37,6 @@ type FontAction =
   | { type: "SET_FETCHING"; payload: boolean }
   | { type: "SET_ERROR"; payload: Error };
 
-const initialState: FontState = {
-  fonts: new Set(),
-  selectedFont: "Arial",
-  fetching: true,
-  error: null,
-  dispatch: () => {},
-};
-
 const fontReducer = (state: FontState, action: FontAction): FontState => {
   switch (action.type) {
     case "SET_FONTS":
@@ -52,7 +46,7 @@ const fontReducer = (state: FontState, action: FontAction): FontState => {
         ...state,
         fetching: false,
         fonts: new Set(action.payload),
-        error: null,
+        error: undefined,
       };
     case "FETCH_FONTS_FAIL":
       return { ...state, fetching: false, error: action.payload };
@@ -62,6 +56,7 @@ const fontReducer = (state: FontState, action: FontAction): FontState => {
         fetching: true,
       };
     case "LOAD_FONT_SUCCESS":
+      Cookies.set(COOKIES.LAST_USED_FONT_FAMILY, action.payload.fontFamily);
       return {
         ...state,
         fetching: false,
@@ -73,7 +68,7 @@ const fontReducer = (state: FontState, action: FontAction): FontState => {
           )
         ),
         selectedFont: action.payload.fontFamily,
-        error: null,
+        error: undefined,
       };
     case "LOAD_FONT_FAIL":
       return {
@@ -82,6 +77,7 @@ const fontReducer = (state: FontState, action: FontAction): FontState => {
         error: action.payload.error,
       };
     case "SET_SELECTED_FONT":
+      Cookies.set(COOKIES.LAST_USED_FONT_FAMILY, action.payload);
       return {
         ...state,
         selectedFont: action.payload,
@@ -93,6 +89,14 @@ const fontReducer = (state: FontState, action: FontAction): FontState => {
     default:
       return state;
   }
+};
+
+const initialState: FontState = {
+  fonts: new Set(),
+  selectedFont: "Arial",
+  fetching: true,
+  error: undefined,
+  dispatch: () => {},
 };
 
 export const useFontStore = create<FontState>()(
@@ -111,18 +115,34 @@ const fetchFonts = async (): Promise<Font[]> => {
   return fonts;
 };
 
-fetchFonts().then(async (fonts) => {
-  const dispatch = useFontStore.getState().dispatch;
-  dispatch({ type: "SET_FONTS", payload: fonts });
-  if (fonts.length > 0) {
-    const loaded = await loadFont(fonts[0]);
-    if (loaded) {
-      dispatch({ type: "LOAD_FONT_SUCCESS", payload: fonts[0] });
-    } else {
-      dispatch({
-        type: "LOAD_FONT_FAIL",
-        payload: { error: new Error("Failed to load font") },
-      });
+// TODO: Get initial font from Cookie
+fetchFonts()
+  .then(async (fonts) => {
+    const dispatch = useFontStore.getState().dispatch;
+    dispatch({ type: "FETCH_FONTS_SUCCESS", payload: fonts });
+    if (fonts.length > 0) {
+      const lastFontFamily = Cookies.get(COOKIES.LAST_USED_FONT_FAMILY);
+      let lastFont = fonts[0];
+
+      if (lastFontFamily) {
+        const lastUsedFont = fonts.find(
+          (font) => font.fontFamily === lastFontFamily
+        );
+        if (lastUsedFont) lastFont = lastUsedFont;
+      }
+
+      const loaded = await loadFont(lastFont);
+      if (loaded) {
+        dispatch({ type: "LOAD_FONT_SUCCESS", payload: lastFont });
+      } else {
+        dispatch({
+          type: "LOAD_FONT_FAIL",
+          payload: { error: new Error("Failed to load font") },
+        });
+      }
     }
-  }
-});
+  })
+  .catch((e) => {
+    const dispatch = useFontStore.getState().dispatch;
+    dispatch({ type: "FETCH_FONTS_FAIL", payload: e });
+  });

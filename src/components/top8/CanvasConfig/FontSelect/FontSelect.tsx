@@ -5,8 +5,7 @@ import { loadFont } from "@/utils/top8/loadFont";
 import { Font, useFontStore } from "@/store/fontStore";
 
 export const FontSelect = () => {
-  // TODO: Add error handling
-  // const error = useFontStore((state) => state.error);
+  const error = useFontStore((state) => state.error);
   const fonts = useFontStore((state) => state.fonts);
   const fetching = useFontStore((state) => state.fetching);
   const selectedFont = useFontStore((state) => state.selectedFont);
@@ -61,6 +60,7 @@ export const FontSelect = () => {
       onChange={handleChange}
       disabled={fetching}
       loading={fetching}
+      error={error}
     />
   );
 };

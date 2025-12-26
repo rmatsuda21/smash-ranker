@@ -20,6 +20,7 @@ type Props<T> = {
   disabled?: boolean;
   placeholder?: string;
   loading?: boolean;
+  error?: Error;
 };
 
 const getDropdownStyles = (
@@ -166,6 +167,7 @@ export const DropDownSelect = <T,>({
   placeholder = "",
   disabled = false,
   loading = false,
+  error,
 }: Props<T>) => {
   const [isOpen, setIsOpen] = useState(false);
   const [showAbove, setShowAbove] = useState(false);
@@ -352,6 +354,9 @@ export const DropDownSelect = <T,>({
           ))}
         </div>
       </div>
+      {error && (
+        <p className={styles.error}>{`${error?.name}: ${error?.message}`}</p>
+      )}
     </div>
   );
 };

@@ -122,6 +122,11 @@
   }
 }
 
+.error {
+  color: red;
+  font-size: var(--font-size-sm);
+}
+
 @keyframes slideDown {
   from {
     opacity: 0;

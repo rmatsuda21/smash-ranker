@@ -1,13 +1,13 @@
 import { useState } from "react";
-import { FaImage } from "react-icons/fa6";
+import { RiFolderImageFill } from "react-icons/ri";
 import cn from "classnames";
 
 import { Button } from "@/components/shared/Button/Button";
 import { useAssetDB } from "@/hooks/useAssetDb";
 import { Spinner } from "@/components/shared/Spinner/Spinner";
+import { AssetsModal } from "@/components/top8/AssetManager/AssetsModal/AssetsModal";
 
 import styles from "./AssetManager.module.scss";
-import { AssetsModal } from "./AssetsModal/AssetsModal";
 
 type Props = {
   className?: string;
@@ -26,7 +26,7 @@ export const AssetManager = ({ className }: Props) => {
       <div className={styles.content}>
         <p className={styles.label}>Assets</p>
         <Button onClick={() => setIsOpen(true)}>
-          <FaImage /> Manage
+          <RiFolderImageFill /> Manage
         </Button>
       </div>
       <AssetsModal isOpen={isOpen} onClose={onClose} />
