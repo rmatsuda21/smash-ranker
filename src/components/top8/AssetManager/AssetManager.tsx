@@ -25,8 +25,8 @@ export const AssetManager = ({ className }: Props) => {
     <div className={cn(styles.assetManager, className)}>
       <div className={styles.content}>
         <p className={styles.label}>Assets</p>
-        <Button onClick={() => setIsOpen(true)}>
-          <RiFolderImageFill /> Manage
+        <Button onClick={() => setIsOpen(true)} tooltip="Manage Assets">
+          <RiFolderImageFill />
         </Button>
       </div>
       <AssetsModal isOpen={isOpen} onClose={onClose} />

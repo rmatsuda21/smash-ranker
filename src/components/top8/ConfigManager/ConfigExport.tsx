@@ -50,8 +50,8 @@ export const ConfigExport = () => {
   };
 
   return (
-    <Button onClick={handleExport}>
-      <FaFileExport /> Export
+    <Button onClick={handleExport} tooltip="Export">
+      <FaFileExport />
     </Button>
   );
 };

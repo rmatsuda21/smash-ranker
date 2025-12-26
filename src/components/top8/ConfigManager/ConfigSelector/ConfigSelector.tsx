@@ -14,8 +14,8 @@ export const ConfigSelector = () => {
 
   return (
     <>
-      <Button onClick={() => setIsModalOpen(true)}>
-        <FaGear /> Manage
+      <Button onClick={() => setIsModalOpen(true)} tooltip="Config Manager">
+        <FaGear />
       </Button>
       <ConfigManagerModal
         isOpen={isModalOpen}

@@ -1,3 +1,4 @@
+import { useRef, useState } from "react";
 import cn from "classnames";
 
 import { Spinner } from "@/components/shared/Spinner/Spinner";
@@ -12,7 +13,10 @@ type Props = React.ComponentProps<"button"> & {
   size?: ButtonSize;
   fullWidth?: boolean;
   loading?: boolean;
+  tooltip?: string;
 };
+
+const TOOLTIP_DELAY = 250;
 
 export const Button = ({
   className,
@@ -22,23 +26,54 @@ export const Button = ({
   children,
   loading = false,
   disabled = false,
+  tooltip,
   ...props
 }: Props) => {
+  const [showTooltip, setShowTooltip] = useState(false);
+  const tooltipTimeout = useRef<ReturnType<typeof setTimeout>>(null);
+
+  const handleMouseEnter = () => {
+    if (tooltip) {
+      tooltipTimeout.current = setTimeout(() => {
+        setShowTooltip(true);
+      }, TOOLTIP_DELAY);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (tooltip) {
+      if (tooltipTimeout.current) {
+        clearTimeout(tooltipTimeout.current);
+      }
+      setShowTooltip(false);
+    }
+  };
+
   return (
-    <button
-      className={cn(
-        styles.button,
-        styles[variant],
-        styles[size],
-        { [styles.fullWidth]: fullWidth },
-        { [styles.loading]: loading },
-        className
-      )}
-      disabled={loading || disabled}
-      {...props}
-    >
-      {loading && <Spinner className={styles.loader} size={15} />}
-      {children}
-    </button>
+    <>
+      <button
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        className={cn(
+          styles.button,
+          styles[variant],
+          styles[size],
+          { [styles.fullWidth]: fullWidth },
+          { [styles.loading]: loading },
+          className
+        )}
+        disabled={loading || disabled}
+        aria-label={tooltip}
+        {...props}
+      >
+        {loading && <Spinner className={styles.loader} size={15} />}
+        {children}
+        {tooltip && (
+          <div className={cn(styles.tooltip, { [styles.show]: showTooltip })}>
+            {tooltip}
+          </div>
+        )}
+      </button>
+    </>
   );
 };
