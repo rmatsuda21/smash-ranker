@@ -6,8 +6,9 @@ import { RxValueNone } from "react-icons/rx";
 import { Modal } from "@/components/shared/Modal/Modal";
 import { Button } from "@/components/shared/Button/Button";
 import { assetRepository } from "@/db/repository";
-import styles from "./AssetSelector.module.scss";
 import { DBAsset } from "@/types/Repository";
+
+import styles from "./AssetSelector.module.scss";
 
 type Props = {
   selectedId?: string;
@@ -75,7 +76,7 @@ export const AssetSelector = ({ selectedId, onSelect, onClear }: Props) => {
       </div>
 
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-        <div className={styles.assetSelector}>
+        <div className={styles.assetSelectorModal}>
           <h3>Assets</h3>
           <div className={styles.assets}>
             {assets.map((asset) => (
