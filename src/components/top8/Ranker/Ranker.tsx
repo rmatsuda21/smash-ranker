@@ -1,8 +1,6 @@
 import { useEffect, lazy, Suspense } from "react";
-import { FaTriangleExclamation } from "react-icons/fa6";
 
 import { preloadCharacterImages } from "@/utils/top8/preloadCharacterImages";
-import { usePlayerStore } from "@/store/playerStore";
 import { SidePanel } from "@/components/top8/SidePanel/SidePanel";
 import { Header } from "@/components/top8/Ranker/Header/Header";
 import { Skeleton } from "@/components/shared/Skeleton/Skeleton";
@@ -21,8 +19,6 @@ const Canvas = lazy(() =>
 );
 
 export const Ranker = () => {
-  const error = usePlayerStore((state) => state.error);
-
   useEffect(() => {
     preloadCharacterImages();
   }, []);
@@ -39,18 +35,6 @@ export const Ranker = () => {
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, []);
-
-  if (error) {
-    return (
-      <div className={styles.error}>
-        <h1>
-          <FaTriangleExclamation /> Error <FaTriangleExclamation />
-        </h1>
-        <h2>Please refresh the page.</h2>
-        <p>{error}</p>
-      </div>
-    );
-  }
 
   return (
     <div className={styles.root}>
