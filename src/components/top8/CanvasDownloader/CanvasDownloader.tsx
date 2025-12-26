@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import { IoMdDownload } from "react-icons/io";
-import { FaWrench } from "react-icons/fa6";
+import { CgOptions } from "react-icons/cg";
 
 import { Button } from "@/components/shared/Button/Button";
 import { Input } from "@/components/shared/Input/Input";
@@ -100,11 +100,18 @@ export const CanvasDownloader = ({ className }: Props) => {
         }}
       />
       <div className={styles.buttons}>
-        <Button disabled={!stageRef} onClick={handleDownload}>
-          <IoMdDownload style={{ minWidth: "1em" }} /> Download
+        <Button
+          disabled={!stageRef}
+          onClick={handleDownload}
+          tooltip="Download"
+        >
+          <IoMdDownload style={{ minWidth: "1em" }} />
         </Button>
-        <Button onClick={() => setIsOptionModalOpen(true)}>
-          <FaWrench style={{ minWidth: "1em" }} />
+        <Button
+          onClick={() => setIsOptionModalOpen(true)}
+          tooltip="Download Options"
+        >
+          <CgOptions style={{ minWidth: "1em" }} />
         </Button>
       </div>
       <DownloadOptionModal

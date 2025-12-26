@@ -9,7 +9,20 @@
 
   display: flex;
   flex-direction: row;
-  gap: 15px;
+
+  > * {
+    border-left: 1px solid var(--gray-8);
+    border-right: 1px solid var(--gray-8);
+    padding-inline: 14px;
+  }
+
+  > *:first-child {
+    border-left: none;
+  }
+
+  > *:last-child {
+    border-right: none;
+  }
 }
 
 .item {
