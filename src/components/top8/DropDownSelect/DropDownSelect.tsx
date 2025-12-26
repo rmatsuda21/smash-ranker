@@ -56,42 +56,6 @@ const getDropdownStyles = (
   return dropdownStyles;
 };
 
-const Item = ({
-  display,
-  imageSrc,
-  isSelected,
-  onClick,
-}: {
-  display: string;
-  imageSrc?: string;
-  isSelected: boolean;
-  onClick: () => void;
-}) => {
-  return (
-    <div
-      className={styles.item}
-      data-state={isSelected ? "checked" : undefined}
-      onClick={onClick}
-      role="option"
-      aria-selected={isSelected}
-      tabIndex={0}
-    >
-      <div className={styles.itemContent}>
-        {imageSrc && (
-          <img
-            width={24}
-            height={24}
-            src={imageSrc}
-            alt={display ?? ""}
-            loading="lazy"
-          />
-        )}
-        {display}
-      </div>
-    </div>
-  );
-};
-
 const TriggerContent = <T,>({
   loading,
   selectedOption,
@@ -102,7 +66,7 @@ const TriggerContent = <T,>({
   placeholder: string;
 }) => {
   if (loading) {
-    return <Spinner size={20} />;
+    return <Spinner className={styles.spinner} size={20} />;
   }
 
   if (!selectedOption) {
@@ -110,7 +74,7 @@ const TriggerContent = <T,>({
   }
 
   return (
-    <>
+    <div className={styles.content}>
       {selectedOption.imageSrc && (
         <img
           width={24}
@@ -121,42 +85,7 @@ const TriggerContent = <T,>({
         />
       )}
       {selectedOption.display}
-    </>
-  );
-};
-
-const Trigger = <T,>({
-  ref,
-  onClick,
-  disabled,
-  loading,
-  selectedOption,
-  placeholder,
-}: {
-  ref: React.RefObject<HTMLButtonElement | null>;
-  onClick: () => void;
-  disabled: boolean;
-  loading: boolean;
-  selectedOption?: Item<T>;
-  placeholder: string;
-}) => {
-  return (
-    <button
-      ref={ref}
-      className={styles.trigger}
-      onClick={onClick}
-      disabled={disabled}
-      tabIndex={0}
-    >
-      <div className={styles.content}>
-        <TriggerContent
-          loading={loading}
-          selectedOption={selectedOption}
-          placeholder={placeholder}
-        />
-      </div>
-      <LuChevronsUpDown className={styles.icon} />
-    </button>
+    </div>
   );
 };
 
@@ -325,14 +254,20 @@ export const DropDownSelect = <T,>({
 
   return (
     <div className={styles.dropdownSelect} ref={containerRef}>
-      <Trigger
+      <button
         ref={triggerRef}
+        className={styles.trigger}
         onClick={toggleDropdown}
-        loading={loading}
         disabled={disabled || loading}
-        selectedOption={selectedOption}
-        placeholder={placeholder}
-      />
+        tabIndex={0}
+      >
+        <TriggerContent
+          loading={loading}
+          selectedOption={selectedOption}
+          placeholder={placeholder}
+        />
+        <LuChevronsUpDown className={styles.icon} />
+      </button>
 
       <div
         className={cn(styles.dropdown, {
@@ -343,15 +278,31 @@ export const DropDownSelect = <T,>({
         role="listbox"
       >
         <div className={styles.window} ref={dropdownRef}>
-          {options.map((option) => (
-            <Item
-              key={option.id}
-              display={option.display}
-              imageSrc={option.imageSrc}
-              isSelected={option.value === selectedValue}
-              onClick={() => handleValueChange(option.value)}
-            />
-          ))}
+          {options.map((option) => {
+            const isSelected = option.value === selectedValue;
+            const onClick = () => handleValueChange(option.value);
+            return (
+              <div
+                className={styles.item}
+                data-state={isSelected ? "checked" : undefined}
+                onClick={onClick}
+                role="option"
+                aria-selected={isSelected}
+                tabIndex={0}
+              >
+                {option.imageSrc && (
+                  <img
+                    width={24}
+                    height={24}
+                    src={option.imageSrc}
+                    alt={option.display ?? ""}
+                    loading="lazy"
+                  />
+                )}
+                {option.display}
+              </div>
+            );
+          })}
         </div>
       </div>
       {error && (
