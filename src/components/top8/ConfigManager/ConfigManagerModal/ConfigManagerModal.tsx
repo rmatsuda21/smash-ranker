@@ -3,6 +3,7 @@ import { FaFileImport } from "react-icons/fa6";
 
 import { Modal } from "@/components/shared/Modal/Modal";
 import { useConfigDB } from "@/hooks/useConfigDb";
+import { useConfirmation } from "@/hooks/useConfirmation";
 import { Button } from "@/components/shared/Button/Button";
 import { DropDownSelect } from "@/components/top8/DropDownSelect/DropDownSelect";
 import { DBConfig } from "@/types/Repository";
@@ -78,6 +79,22 @@ export const ConfigManagerModal = ({ isOpen, onClose }: Props) => {
     setSelectedConfig(null);
   };
 
+  const { confirm: confirmDelete, ConfirmationDialog: DeleteConfirmation } =
+    useConfirmation(handleDelete, {
+      title: `Delete Config: ${selectedConfig?.name}`,
+      description:
+        "Are you sure you want to delete this config? This action cannot be undone.",
+    });
+
+  const {
+    confirm: confirmDeleteAll,
+    ConfirmationDialog: ClearAllConfirmation,
+  } = useConfirmation(handleClearAll, {
+    title: "Delete All Configs",
+    description:
+      "Are you sure you want to delete all saved configs? This action cannot be undone.",
+  });
+
   const handleLoad = async (id: string) => {
     let config: DBConfig | undefined;
     if (defaultConfigs.some((config) => config.id === id)) {
@@ -144,36 +161,49 @@ export const ConfigManagerModal = ({ isOpen, onClose }: Props) => {
   }, [configs]);
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
-      <div className={styles.modal}>
-        <div className={styles.body}>
-          <h3>Config Manager</h3>
-          <DropDownSelect
-            options={dropDownOptions}
-            placeholder="Select Config"
-            selectedValue={selectedConfig?.id ?? ""}
-            onChange={(id) => handleConfigSelect(id)}
-          />
-          <Button onClick={handleCreateNew}>Save Current Config</Button>
-          <Button onClick={() => handleLoad(selectedConfig?.id ?? "")}>
-            Load
-          </Button>
-          <Button onClick={() => handleDelete(selectedConfig?.id ?? "")}>
-            Delete
-          </Button>
-          <Button onClick={handleClearAll}>Clear All</Button>
-          <Button onClick={handleImport}>
-            <FaFileImport />
-            Import
-          </Button>
-        </div>
+    <>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <div className={styles.modal}>
+          <div className={styles.body}>
+            <h3>Config Manager</h3>
+            <DropDownSelect
+              options={dropDownOptions}
+              placeholder="Select Config"
+              selectedValue={selectedConfig?.id ?? ""}
+              onChange={(id) => handleConfigSelect(id)}
+            />
+            <Button onClick={handleCreateNew}>Save Current Config</Button>
+            <Button onClick={() => handleLoad(selectedConfig?.id ?? "")}>
+              Load
+            </Button>
+            <Button
+              disabled={!selectedConfig}
+              onClick={() => confirmDelete(selectedConfig?.id ?? "")}
+            >
+              Delete
+            </Button>
+            <Button
+              disabled={configs.length === 0}
+              onClick={() => confirmDeleteAll()}
+            >
+              Delete All
+            </Button>
+            <Button onClick={handleImport}>
+              <FaFileImport />
+              Import
+            </Button>
+          </div>
 
-        <div className={styles.configViewer}>
-          {selectedConfig && (
-            <pre>{JSON.stringify(selectedConfig, null, 2)}</pre>
-          )}
+          <div className={styles.configViewer}>
+            {selectedConfig && (
+              <pre>{JSON.stringify(selectedConfig, null, 2)}</pre>
+            )}
+          </div>
         </div>
-      </div>
-    </Modal>
+      </Modal>
+
+      <DeleteConfirmation />
+      <ClearAllConfirmation />
+    </>
   );
 };

@@ -10,7 +10,9 @@ import { Skeleton } from "@/components/shared/Skeleton/Skeleton";
 import styles from "./Ranker.module.scss";
 
 // TODO: Create layout creator tool & graphic generator tool
-// TODO: Font doesn't stay on reload
+// TODO: Background Editor?
+// TODO: Tournament Searcher
+// TODO: Site light theme?
 
 const Canvas = lazy(() =>
   import("@/components/top8/Canvas/Canvas").then((module) => ({
