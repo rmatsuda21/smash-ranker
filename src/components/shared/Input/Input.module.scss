@@ -17,6 +17,8 @@
   }
 
   input {
+    width: var(--size) px;
+    height: var(--size) px;
     padding: var(--input-padding-sm);
     background-color: var(--gray-1);
 
@@ -42,8 +44,8 @@
     position: relative;
     box-sizing: content-box;
     padding: 1px;
-    width: 16px;
-    height: 16px;
+    width: calc(var(--size) * 1px);
+    height: calc(var(--size) * 1px);
     border-radius: 5px;
     appearance: none;
     -webkit-appearance: none;
@@ -71,6 +73,8 @@
       &::before {
         content: "✓";
         color: white;
+        font-size: calc(var(--size) * 1px);
+        font-weight: 900;
       }
     }
 

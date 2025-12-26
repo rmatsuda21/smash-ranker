@@ -15,6 +15,7 @@ import { simpleLayout } from "@/layouts/simple";
 import { squaresLayout } from "@/layouts/squares";
 
 import styles from "./ConfigManagerModal.module.scss";
+import { COOKIES } from "@/consts/cookies";
 
 type Props = {
   isOpen: boolean;
@@ -84,6 +85,7 @@ export const ConfigManagerModal = ({ isOpen, onClose }: Props) => {
       title: `Delete Config: ${selectedConfig?.name}`,
       description:
         "Are you sure you want to delete this config? This action cannot be undone.",
+      cookieName: COOKIES.DELETE_CONFIG,
     });
 
   const {
@@ -93,6 +95,7 @@ export const ConfigManagerModal = ({ isOpen, onClose }: Props) => {
     title: "Delete All Configs",
     description:
       "Are you sure you want to delete all saved configs? This action cannot be undone.",
+    cookieName: COOKIES.DELETE_ALL_CONFIGS,
   });
 
   const handleLoad = async (id: string) => {
