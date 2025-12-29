@@ -5,6 +5,19 @@ import { LayoutPlaceholder } from "@/consts/top8/placeholders";
 import { RenderCondition } from "@/consts/top8/renderConditions";
 
 export type ImageFillMode = "contain" | "cover";
+type ImageAlign = "center" | "left" | "right" | "top" | "bottom";
+type HorizontalAlign = "left" | "center" | "right";
+type VerticalAlign = "top" | "middle" | "bottom";
+type Anchor =
+  | "topLeft"
+  | "topRight"
+  | "bottomLeft"
+  | "bottomRight"
+  | "bottomMiddle"
+  | "topMiddle"
+  | "leftMiddle"
+  | "rightMiddle"
+  | "center";
 
 export type ElementType =
   | "text"
@@ -65,18 +78,9 @@ export interface SmartTextElementConfig
   fontWeight?: string | number;
   fontStyle?: string;
   fill?: string;
-  align?: "left" | "center" | "right";
-  verticalAlign?: "top" | "middle" | "bottom";
-  anchor?:
-    | "topLeft"
-    | "topRight"
-    | "bottomLeft"
-    | "bottomRight"
-    | "bottomMiddle"
-    | "topMiddle"
-    | "leftMiddle"
-    | "rightMiddle"
-    | "center";
+  align?: HorizontalAlign;
+  verticalAlign?: VerticalAlign;
+  anchor?: Anchor;
   shadowColor?: string;
   shadowBlur?: number;
   shadowOffset?: { x: number; y: number };
@@ -112,7 +116,7 @@ export interface CustomImageElementConfig
   src: string;
   assetId?: string;
   fillMode?: ImageFillMode;
-  align?: "center" | "left" | "right" | "top" | "bottom";
+  align?: ImageAlign;
 }
 
 export interface CharacterImageElementConfig
@@ -139,7 +143,7 @@ export interface TournamentIconElementConfig
     Partial<ComponentProps<typeof Image>> {
   type: "tournamentIcon";
   fillMode?: ImageFillMode;
-  align?: "center" | "left" | "right" | "top" | "bottom";
+  align?: ImageAlign;
 }
 
 export interface BackgroundImageElementConfig
@@ -147,7 +151,7 @@ export interface BackgroundImageElementConfig
     Partial<ComponentProps<typeof Image>> {
   type: "backgroundImage";
   fillMode?: ImageFillMode;
-  align?: "center" | "left" | "right" | "top" | "bottom";
+  align?: ImageAlign;
 }
 
 export type ElementConfig =
