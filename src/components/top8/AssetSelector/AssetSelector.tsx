@@ -37,9 +37,13 @@ export const AssetSelector = ({ selectedSrc, onSelect, onClear }: Props) => {
     });
   }, [selectedSrc]);
 
+  const openModal = () => {
+    setIsOpen(true);
+  };
+
   return (
     <div className={styles.assetSelector}>
-      <div className={styles.imgContainer}>
+      <div className={styles.imgContainer} onClick={openModal}>
         {notFound && <GrDocumentMissing size={50} />}
         {!notFound &&
           (img ? (
@@ -49,7 +53,7 @@ export const AssetSelector = ({ selectedSrc, onSelect, onClear }: Props) => {
           ))}
       </div>
       <div className={styles.buttons}>
-        <Button onClick={() => setIsOpen(true)}>
+        <Button onClick={openModal}>
           <FaImage /> Select
         </Button>
         <Button

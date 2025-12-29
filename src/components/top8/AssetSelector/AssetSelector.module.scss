@@ -9,9 +9,15 @@
     align-items: center;
     width: 100px;
     height: 100px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--gray-10);
     border-radius: 5px;
     overflow: hidden;
+
+    cursor: pointer;
+
+    &:hover {
+      border-color: var(--gray-8);
+    }
   }
 
   img {
