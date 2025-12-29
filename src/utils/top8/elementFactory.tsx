@@ -24,7 +24,6 @@ import { CustomImage } from "@/components/top8/Canvas/CustomImage";
 import { SmartText } from "@/components/top8/SmartText/SmartText";
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
 import { CustomSVG } from "@/components/top8/Canvas/CustomSVG";
-import { AssetImage } from "@/components/top8/Canvas/AssetImage";
 import { replacePlaceholders } from "@/utils/top8/replacePlaceholderString";
 import { evaluateElementCondition } from "@/utils/top8/evaluateElementCondition";
 import { resolveColor, resolvePaletteColors } from "@/utils/top8/resolveColor";
@@ -101,21 +100,6 @@ const createImageElement: ElementCreator<ImageElementConfig> = ({
   element,
   index,
 }) => {
-  if (element.assetId) {
-    return (
-      <AssetImage
-        key={`image-${index}`}
-        id={`image-${index}`}
-        assetId={element.assetId}
-        x={element.position.x}
-        y={element.position.y}
-        width={element.size?.width ?? 100}
-        height={element.size?.height ?? 100}
-        align="center"
-      />
-    );
-  }
-
   return (
     <CustomImage
       key={`image-${index}`}
@@ -167,25 +151,15 @@ const createCharacterImageElement: ElementCreator<
     );
   }
 
-  if (player.avatarAssetId) {
-    return (
-      <AssetImage
-        key={`character-${index}`}
-        id="character"
-        assetId={player.avatarAssetId}
-        x={element.position.x}
-        y={element.position.y}
-        width={element.size?.width ?? 100}
-        height={element.size?.height ?? 100}
-      />
-    );
-  }
-
   const mainCharacter = player.characters[0];
-  const imageSrc = getCharImgUrl({
+  let imageSrc = getCharImgUrl({
     characterId: mainCharacter.id,
     alt: mainCharacter.alt,
   });
+
+  if (context.player?.avatarImgSrc) {
+    imageSrc = context.player.avatarImgSrc;
+  }
 
   return (
     <CustomImage
@@ -276,21 +250,6 @@ const createCustomImageElement: ElementCreator<CustomImageElementConfig> = ({
   const width = element.size?.width ?? containerSize?.width ?? 100;
   const height = element.size?.height ?? containerSize?.height ?? 100;
 
-  if (element.assetId) {
-    return (
-      <AssetImage
-        key={`backgroundImage-${index}`}
-        assetId={element.assetId}
-        x={element.position.x}
-        y={element.position.y}
-        width={width}
-        height={height}
-        fillMode={element.fillMode ?? "contain"}
-        align={element.align ?? "center"}
-      />
-    );
-  }
-
   return (
     <CustomImage
       key={`customImage-${index}`}
@@ -349,11 +308,11 @@ const createTournamentIconElement: ElementCreator<
   }
 
   return (
-    <AssetImage
+    <CustomImage
       key={`tournamentIcon-${index}`}
       x={element.position.x}
       y={element.position.y}
-      assetId={tournament.iconAssetId}
+      imageSrc={tournament.iconAssetId}
       width={element.size?.width ?? 100}
       height={element.size?.height ?? 100}
       fillMode={element.fillMode ?? "contain"}
@@ -373,9 +332,9 @@ const createBackgroundImageElement: ElementCreator<
   }
 
   return (
-    <AssetImage
+    <CustomImage
       key={`backgroundImage-${index}`}
-      assetId={backgroundImgId}
+      imageSrc={backgroundImgId}
       x={element.position.x}
       y={element.position.y}
       width={element.size?.width ?? 100}
@@ -428,7 +387,6 @@ export const createKonvaElements = (
 
       return (
         <Group
-          assetId={element.id}
           draggable={context.options?.editable ?? false}
           key={`group-${index}`}
           clipFunc={element.clip ? clipFunc : undefined}

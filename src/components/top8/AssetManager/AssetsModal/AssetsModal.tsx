@@ -1,22 +1,29 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import cn from "classnames";
+import { RiDeleteBin6Fill } from "react-icons/ri";
 
 import { Modal } from "@/components/shared/Modal/Modal";
 import { useAssetDB } from "@/hooks/useAssetDb";
 import { FileUploader } from "@/components/shared/FileUploader/FileUploader";
 
 import styles from "./AssetsModal.module.scss";
-import { RiDeleteBin6Fill } from "react-icons/ri";
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
+  onSelect?: (src: string) => void;
 };
 
-export const AssetsModal = ({ isOpen, onClose }: Props) => {
-  const [selectedAssetId, setSelectedAssetId] = useState<string>("");
+export const AssetsModal = ({ isOpen, onClose, onSelect }: Props) => {
+  const [selectedAssetSrc, setSelectedAssetSrc] = useState<string>("");
 
-  const { assets, uploadAsset, deleteAsset } = useAssetDB();
+  const { assets, uploadAsset, deleteAsset, refresh } = useAssetDB();
+
+  useEffect(() => {
+    if (isOpen) {
+      refresh();
+    }
+  }, [isOpen, refresh]);
 
   if (!isOpen) return null;
 
@@ -36,12 +43,13 @@ export const AssetsModal = ({ isOpen, onClose }: Props) => {
     }
   };
 
-  const handleAssetClick = (id: string) => {
-    if (selectedAssetId === id) {
-      deleteAsset(id);
+  const handleAssetClick = (src: string) => {
+    if (selectedAssetSrc === src) {
+      deleteAsset(src);
     }
 
-    setSelectedAssetId(id);
+    setSelectedAssetSrc(src);
+    onSelect?.(src);
   };
 
   return (
@@ -53,9 +61,9 @@ export const AssetsModal = ({ isOpen, onClose }: Props) => {
             <div
               key={asset.id}
               className={cn(styles.asset, {
-                [styles.selected]: asset.id === selectedAssetId,
+                [styles.selected]: asset.src === selectedAssetSrc,
               })}
-              onClick={() => handleAssetClick(asset.id)}
+              onClick={() => handleAssetClick(asset.src)}
             >
               <div className={styles.deleteButton}>
                 <RiDeleteBin6Fill />

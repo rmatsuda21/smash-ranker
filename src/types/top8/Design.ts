@@ -92,7 +92,6 @@ export interface ImageElementConfig
     Partial<ComponentProps<typeof Image>> {
   type: "image";
   src: string;
-  assetId?: string;
 }
 
 export interface GroupElementConfig
@@ -114,7 +113,6 @@ export interface CustomImageElementConfig
     Partial<ComponentProps<typeof Image>> {
   type: "customImage";
   src: string;
-  assetId?: string;
   fillMode?: ImageFillMode;
   align?: ImageAlign;
 }

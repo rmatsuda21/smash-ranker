@@ -3,37 +3,31 @@ import { FaImage, FaTrash } from "react-icons/fa6";
 import { GrDocumentMissing } from "react-icons/gr";
 import { RxValueNone } from "react-icons/rx";
 
-import { Modal } from "@/components/shared/Modal/Modal";
+import { AssetsModal } from "@/components/top8/AssetManager/AssetsModal/AssetsModal";
 import { Button } from "@/components/shared/Button/Button";
 import { assetRepository } from "@/db/repository";
-import { DBAsset } from "@/types/Repository";
 
 import styles from "./AssetSelector.module.scss";
 
 type Props = {
-  selectedId?: string;
-  onSelect: (id: string) => void;
+  selectedSrc?: string;
+  onSelect?: (src: string) => void;
   onClear: () => void;
 };
 
-export const AssetSelector = ({ selectedId, onSelect, onClear }: Props) => {
-  const [assets, setAssets] = useState<DBAsset[]>([]);
+export const AssetSelector = ({ selectedSrc, onSelect, onClear }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [img, setImg] = useState<Blob | null>(null);
   const [notFound, setNotFound] = useState(false);
 
-  const handleSelect = (id: string) => {
-    onSelect(id);
-  };
-
   useEffect(() => {
-    if (!selectedId) {
+    if (!selectedSrc) {
       setImg(null);
       setNotFound(false);
       return;
     }
 
-    assetRepository.get(selectedId).then((asset) => {
+    assetRepository.get(selectedSrc).then((asset) => {
       if (asset?.data) {
         setImg(asset.data);
       } else {
@@ -41,16 +35,7 @@ export const AssetSelector = ({ selectedId, onSelect, onClear }: Props) => {
         setNotFound(true);
       }
     });
-  }, [selectedId]);
-
-  useEffect(() => {
-    const getAssets = async () => {
-      const assets = await assetRepository.getAll();
-      return assets;
-    };
-
-    getAssets().then((assets) => setAssets(assets));
-  }, [isOpen]);
+  }, [selectedSrc]);
 
   return (
     <div className={styles.assetSelector}>
@@ -76,25 +61,11 @@ export const AssetSelector = ({ selectedId, onSelect, onClear }: Props) => {
         </Button>
       </div>
 
-      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-        <div className={styles.assetSelectorModal}>
-          <h3>Assets</h3>
-          <div className={styles.assets}>
-            {assets.map((asset) => (
-              <div
-                key={asset.id}
-                className={styles.asset}
-                onClick={() => handleSelect(asset.id)}
-              >
-                <img
-                  src={URL.createObjectURL(asset.data)}
-                  alt={asset.fileName}
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-      </Modal>
+      <AssetsModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        onSelect={onSelect}
+      />
     </div>
   );
 };
