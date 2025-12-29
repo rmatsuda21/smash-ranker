@@ -1,4 +1,4 @@
-import { LayoutConfig, PlayerLayoutConfig } from "@/types/top8/LayoutTypes";
+import { Design, PlayerConfig } from "@/types/top8/Design";
 import { LayoutPlaceholder } from "@/consts/top8/placeholders";
 import { RenderCondition } from "@/consts/top8/renderConditions";
 
@@ -13,7 +13,7 @@ const TOURNAMENT_ICON_SIZE = 110;
 
 const SMASH_BALL_SIZE = 1600;
 
-const basePlayer: PlayerLayoutConfig = {
+const basePlayer: PlayerConfig = {
   position: { x: 25, y: 190 },
   size: { width: BASE_PL_SIZE, height: BASE_PL_SIZE },
   scale: { x: 1, y: 1 },
@@ -206,7 +206,7 @@ const secondRow: {
   scale: { x: number; y: number };
 }[] = getSecondRowPositions();
 
-const players: Partial<PlayerLayoutConfig>[] = [
+const players: Partial<PlayerConfig>[] = [
   {
     position: {
       x: PADDING,
@@ -271,7 +271,7 @@ const players: Partial<PlayerLayoutConfig>[] = [
   },
 ];
 
-export const simpleLayout: LayoutConfig = {
+export const simpleLayout: Design = {
   canvas: {
     size: {
       width: 1920,

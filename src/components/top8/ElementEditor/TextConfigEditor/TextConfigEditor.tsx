@@ -1,10 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import debounce from "lodash/debounce";
 
-import {
-  SmartTextElementConfig,
-  TextElementConfig,
-} from "@/types/top8/LayoutTypes";
+import { SmartTextElementConfig, TextElementConfig } from "@/types/top8/Design";
 import { Input } from "@/components/shared/Input/Input";
 import { ColorInput } from "@/components/shared/ColorInput/ColorInput";
 import { Slider } from "@/components/shared/Slider/Slider";

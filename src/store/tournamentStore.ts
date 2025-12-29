@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { createJSONStorage, devtools, persist } from "zustand/middleware";
 
-import { TournamentInfo } from "@/types/top8/TournamentTypes";
+import { TournamentInfo } from "@/types/top8/Tournament";
 interface TournamentState {
   info: TournamentInfo;
   fetching: boolean;

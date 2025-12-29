@@ -1,6 +1,6 @@
 import cn from "classnames";
 
-import { Condition } from "@/types/top8/LayoutTypes";
+import { Condition } from "@/types/top8/Design";
 import {
   LayoutPlaceholder,
   PlaceholderLabel,

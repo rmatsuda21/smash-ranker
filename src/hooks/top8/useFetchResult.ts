@@ -4,10 +4,10 @@ import type { Client } from "urql";
 import { graphql } from "@/gql";
 import type { EventStandingsQuery, PlayerSetsQuery } from "@/gql/graphql";
 
-import { PlayerInfo } from "@/types/top8/PlayerTypes";
+import { PlayerInfo } from "@/types/top8/Player";
 import { usePlayerStore } from "@/store/playerStore";
 import { useTournamentStore } from "@/store/tournamentStore";
-import { TournamentInfo } from "@/types/top8/TournamentTypes";
+import { TournamentInfo } from "@/types/top8/Tournament";
 
 const DEFAULT_CHARACTER = "1293"; // Puff <3
 

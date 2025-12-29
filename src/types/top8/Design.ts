@@ -162,11 +162,12 @@ export type ElementConfig =
   | SvgElementConfig
   | TournamentIconElementConfig
   | BackgroundImageElementConfig;
+
 export interface LayerConfig {
   elements: ElementConfig[];
 }
 
-export interface PlayerLayoutConfig extends BaseElementConfig {
+export interface PlayerConfig extends BaseElementConfig {
   frame?: ImageElementConfig | SvgElementConfig | CustomImageElementConfig;
   elements: ElementConfig[];
   size: { width: number; height: number };
@@ -174,10 +175,10 @@ export interface PlayerLayoutConfig extends BaseElementConfig {
   position: { x: number; y: number };
 }
 
-export interface LayoutConfig {
+export interface Design {
   canvas: CanvasConfig;
   background: LayerConfig;
   tournament: LayerConfig;
-  basePlayer: PlayerLayoutConfig;
-  players: Partial<PlayerLayoutConfig>[];
+  basePlayer: PlayerConfig;
+  players: Partial<PlayerConfig>[];
 }

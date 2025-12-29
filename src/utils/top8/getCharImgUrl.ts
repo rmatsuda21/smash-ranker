@@ -1,4 +1,4 @@
-import { CharacerData } from "@/types/top8/PlayerTypes";
+import { CharacerData } from "@/types/top8/Player";
 
 export const getCharImgUrl = ({
   characterId,

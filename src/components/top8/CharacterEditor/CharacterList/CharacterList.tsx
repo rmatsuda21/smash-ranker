@@ -2,7 +2,7 @@ import { RiDeleteBin6Fill } from "react-icons/ri";
 import { FaPlus } from "react-icons/fa6";
 import cn from "classnames";
 
-import { CharacerData } from "@/types/top8/PlayerTypes";
+import { CharacerData } from "@/types/top8/Player";
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
 
 import styles from "./CharacterList.module.scss";

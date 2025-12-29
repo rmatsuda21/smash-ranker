@@ -7,7 +7,7 @@ import { Transformer as KonvaTransformer } from "konva/lib/shapes/Transformer";
 import { Player } from "@/components/top8/Canvas/Player";
 import { usePlayerStore } from "@/store/playerStore";
 import { useCanvasStore } from "@/store/canvasStore";
-import { PlayerLayoutConfig } from "@/types/top8/LayoutTypes";
+import { PlayerConfig } from "@/types/top8/Design";
 import { useFontStore } from "@/store/fontStore";
 
 const PlayerLayerComponent = () => {
@@ -28,7 +28,7 @@ const PlayerLayerComponent = () => {
   const canvasConfig = useCanvasStore((state) => state.layout.canvas);
   const dispatch = useCanvasStore((state) => state.dispatch);
 
-  const playerConfigs: PlayerLayoutConfig[] = useMemo(() => {
+  const playerConfigs: PlayerConfig[] = useMemo(() => {
     return playerLayouts.map((player) => ({
       ...basePlayer,
       ...player,

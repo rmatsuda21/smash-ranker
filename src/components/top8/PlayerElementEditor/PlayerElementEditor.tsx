@@ -4,10 +4,10 @@ import cn from "classnames";
 import { useFontStore } from "@/store/fontStore";
 import { useCanvasStore } from "@/store/canvasStore";
 import { useTournamentStore } from "@/store/tournamentStore";
-import { PlayerInfo } from "@/types/top8/PlayerTypes";
+import { PlayerInfo } from "@/types/top8/Player";
 import { createKonvaElements } from "@/utils/top8/elementFactory";
 import { ElementEditor } from "@/components/top8/ElementEditor/ElementEditor";
-import { ElementConfig } from "@/types/top8/LayoutTypes";
+import { ElementConfig } from "@/types/top8/Design";
 import { PlayerPreview } from "@/components/top8/PlayerElementEditor/PlayerPreview/PlayerPreview";
 
 import styles from "./PlayerElementEditor.module.scss";

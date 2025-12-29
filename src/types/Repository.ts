@@ -1,4 +1,4 @@
-import { LayoutConfig } from "./top8/LayoutTypes";
+import { Design } from "./top8/Design";
 
 export interface Store<T> {
   get(id: string): Promise<T | undefined>;
@@ -11,7 +11,7 @@ export interface Store<T> {
 export type DBConfig = {
   id: string;
   name: string;
-  layout: LayoutConfig;
+  layout: Design;
   selectedFont: string;
 };
 

@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
-import { EditorTab } from "@/types/top8/EditorTypes";
+import { EditorTab } from "@/types/top8/Editor";
 
 interface EditorState {
   activeTab: EditorTab;

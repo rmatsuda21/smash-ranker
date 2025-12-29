@@ -1,5 +1,5 @@
 import { LayoutPlaceholder } from "@/consts/top8/placeholders";
-import { ElementFactoryContext } from "@/types/top8/ElementFactoryTypes";
+import { ElementFactoryContext } from "@/types/top8/ElementFactory";
 
 const formatDate = (date: Date | string | undefined): string | undefined => {
   if (!date) return undefined;

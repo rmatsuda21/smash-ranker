@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import debounce from "lodash/debounce";
 
-import { ImageElementConfig } from "@/types/top8/LayoutTypes";
+import { ImageElementConfig } from "@/types/top8/Design";
 
 type Props = {
   element: ImageElementConfig;

@@ -1,6 +1,6 @@
 import { LayoutPlaceholder } from "@/consts/top8/placeholders";
 import { RenderCondition } from "@/consts/top8/renderConditions";
-import { ElementFactoryContext } from "@/types/top8/ElementFactoryTypes";
+import { ElementFactoryContext } from "@/types/top8/ElementFactory";
 
 const getConditionMap = (
   context: ElementFactoryContext

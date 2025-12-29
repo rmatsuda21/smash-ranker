@@ -15,11 +15,11 @@ import {
   SvgElementConfig,
   TournamentIconElementConfig,
   BackgroundImageElementConfig,
-} from "@/types/top8/LayoutTypes";
+} from "@/types/top8/Design";
 import {
   ElementFactoryContext,
   ElementCreator,
-} from "@/types/top8/ElementFactoryTypes";
+} from "@/types/top8/ElementFactory";
 import { CustomImage } from "@/components/top8/Canvas/CustomImage";
 import { SmartText } from "@/components/top8/SmartText/SmartText";
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";

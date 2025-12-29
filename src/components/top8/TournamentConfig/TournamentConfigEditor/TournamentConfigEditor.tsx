@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { debounce, isEqual } from "lodash";
 
 import { useTournamentStore } from "@/store/tournamentStore";
-import { TournamentInfo } from "@/types/top8/TournamentTypes";
+import { TournamentInfo } from "@/types/top8/Tournament";
 import { Input } from "@/components/shared/Input/Input";
 import { AssetSelector } from "@/components/top8/AssetSelector/AssetSelector";
 
