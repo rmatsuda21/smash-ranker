@@ -4,7 +4,7 @@ import { Group, Image, Rect, Text } from "react-konva";
 import { LayoutPlaceholder } from "@/consts/top8/placeholders";
 import { RenderCondition } from "@/consts/top8/renderConditions";
 
-export type CustomImageFillMode = "contain" | "cover";
+export type ImageFillMode = "contain" | "cover";
 
 export type ElementType =
   | "text"
@@ -111,7 +111,7 @@ export interface CustomImageElementConfig
   type: "customImage";
   src: string;
   assetId?: string;
-  fillMode?: CustomImageFillMode;
+  fillMode?: ImageFillMode;
   align?: "center" | "left" | "right" | "top" | "bottom";
 }
 
@@ -138,7 +138,7 @@ export interface TournamentIconElementConfig
   extends BaseElementConfig,
     Partial<ComponentProps<typeof Image>> {
   type: "tournamentIcon";
-  fillMode?: CustomImageFillMode;
+  fillMode?: ImageFillMode;
   align?: "center" | "left" | "right" | "top" | "bottom";
 }
 
@@ -146,7 +146,7 @@ export interface BackgroundImageElementConfig
   extends BaseElementConfig,
     Partial<ComponentProps<typeof Image>> {
   type: "backgroundImage";
-  fillMode?: CustomImageFillMode;
+  fillMode?: ImageFillMode;
   align?: "center" | "left" | "right" | "top" | "bottom";
 }
 
