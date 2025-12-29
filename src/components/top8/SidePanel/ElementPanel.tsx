@@ -10,7 +10,7 @@ type Props = {
 };
 
 export const ElementPanel = ({ className }: Props) => {
-  const tournamentLayout = useCanvasStore((state) => state.layout.tournament);
+  const tournamentLayout = useCanvasStore((state) => state.design.tournament);
   const selectedElementIndex = useTournamentStore(
     (state) => state.selectedElementIndex
   );

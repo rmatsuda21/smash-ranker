@@ -15,7 +15,7 @@ type Props = {
 };
 
 export const ColorPaletteEditor = ({ className }: Props) => {
-  const palette = useCanvasStore((state) => state.layout.canvas.colorPalette);
+  const palette = useCanvasStore((state) => state.design.canvas.colorPalette);
   const dispatch = useCanvasStore((state) => state.dispatch);
 
   const debouncedDispatch = useMemo(

@@ -23,9 +23,9 @@ const PlayerLayerComponent = () => {
   const selectedFont = useFontStore((state) => state.selectedFont);
 
   const editable = useCanvasStore((state) => state.editable);
-  const playerLayouts = useCanvasStore((state) => state.layout.players);
-  const basePlayer = useCanvasStore((state) => state.layout.basePlayer);
-  const canvasConfig = useCanvasStore((state) => state.layout.canvas);
+  const playerLayouts = useCanvasStore((state) => state.design.players);
+  const basePlayer = useCanvasStore((state) => state.design.basePlayer);
+  const canvasConfig = useCanvasStore((state) => state.design.canvas);
   const dispatch = useCanvasStore((state) => state.dispatch);
 
   const playerConfigs: PlayerConfig[] = useMemo(() => {

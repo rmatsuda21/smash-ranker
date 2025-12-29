@@ -13,7 +13,7 @@ type Props = {
 
 export const CanvasConfig = ({ className }: Props) => {
   const canvasDispatch = useCanvasStore((state) => state.dispatch);
-  const canvas = useCanvasStore((state) => state.layout.canvas);
+  const canvas = useCanvasStore((state) => state.design.canvas);
 
   return (
     <div className={cn(className, styles.wrapper)}>

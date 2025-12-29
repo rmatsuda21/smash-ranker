@@ -29,11 +29,11 @@ type Props = {
 };
 
 export const PlayerElementEditor = ({ className }: Props) => {
-  const basePlayer = useCanvasStore((state) => state.layout.basePlayer);
+  const basePlayer = useCanvasStore((state) => state.design.basePlayer);
   const selectedFont = useFontStore((state) => state.selectedFont);
   const tournament = useTournamentStore((state) => state.info);
   const canvasDispatch = useCanvasStore((state) => state.dispatch);
-  const canvasConfig = useCanvasStore((state) => state.layout.canvas);
+  const canvasConfig = useCanvasStore((state) => state.design.canvas);
 
   const [selectedElementIndex, setSelectedElementIndex] = useState(0);
 

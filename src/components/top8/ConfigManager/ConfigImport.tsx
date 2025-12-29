@@ -26,7 +26,7 @@ export const ConfigImport = () => {
             return;
           }
 
-          canvasDispatch({ type: "SET_LAYOUT", payload: layout });
+          canvasDispatch({ type: "SET_DESIGN", payload: layout });
           // TODO: LOAD FONT
           fontDispatch({ type: "SET_SELECTED_FONT", payload: selectedFont });
           fileInput.remove();
