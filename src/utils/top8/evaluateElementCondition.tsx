@@ -25,7 +25,7 @@ const getConditionMap = (
     [LayoutPlaceholder.TOURNAMENT_COUNTRY]: Boolean(
       tournament?.location.country
     ),
-    [RenderCondition.TOURNAMENT_ICON]: Boolean(tournament?.iconAssetId),
+    [RenderCondition.TOURNAMENT_ICON]: Boolean(tournament?.iconSrc),
     [RenderCondition.BACKGROUND_IMG]: Boolean(canvas?.bgAssetId),
     [RenderCondition.NOT]: true,
   };

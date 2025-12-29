@@ -69,6 +69,7 @@ export const AssetSelector = ({ selectedSrc, onSelect, onClear }: Props) => {
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         onSelect={onSelect}
+        selectedSrc={selectedSrc}
       />
     </div>
   );

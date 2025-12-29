@@ -70,9 +70,9 @@ const tournamentReducer = (
     case "CLEAR_SELECTED_ELEMENT":
       return { selectedElementIndex: -1 };
     case "SET_ICON":
-      return { info: { ...state.info, iconAssetId: action.payload } };
+      return { info: { ...state.info, iconSrc: action.payload } };
     case "CLEAR_ICON":
-      return { info: { ...state.info, iconAssetId: undefined } };
+      return { info: { ...state.info, iconSrc: undefined } };
     case "RESET":
       return initialState;
     default:

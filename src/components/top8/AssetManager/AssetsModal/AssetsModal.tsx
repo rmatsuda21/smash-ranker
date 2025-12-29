@@ -12,10 +12,18 @@ type Props = {
   isOpen: boolean;
   onClose: () => void;
   onSelect?: (src: string) => void;
+  selectedSrc?: string;
 };
 
-export const AssetsModal = ({ isOpen, onClose, onSelect }: Props) => {
-  const [selectedAssetSrc, setSelectedAssetSrc] = useState<string>("");
+export const AssetsModal = ({
+  isOpen,
+  onClose,
+  onSelect,
+  selectedSrc,
+}: Props) => {
+  const [selectedAssetSrc, setSelectedAssetSrc] = useState<string>(
+    selectedSrc ?? ""
+  );
 
   const { assets, uploadAsset, deleteAsset, refresh } = useAssetDB();
 
@@ -24,6 +32,10 @@ export const AssetsModal = ({ isOpen, onClose, onSelect }: Props) => {
       refresh();
     }
   }, [isOpen, refresh]);
+
+  useEffect(() => {
+    setSelectedAssetSrc(selectedSrc ?? "");
+  }, [selectedSrc]);
 
   if (!isOpen) return null;
 
