@@ -3,7 +3,7 @@ import { useCallback } from "react";
 import { useCanvasStore } from "@/store/canvasStore";
 import { useTournamentStore } from "@/store/tournamentStore";
 import { ElementEditor } from "@/components/top8/ElementEditor/ElementEditor";
-import { ElementConfig } from "@/types/top8/LayoutTypes";
+import { ElementConfig } from "@/types/top8/Design";
 
 type Props = {
   className?: string;

@@ -2,22 +2,18 @@ import { create } from "zustand";
 import { createJSONStorage, devtools, persist } from "zustand/middleware";
 import { Stage } from "konva/lib/Stage";
 
-import {
-  ElementConfig,
-  LayoutConfig,
-  PlayerLayoutConfig,
-} from "@/types/top8/LayoutTypes";
+import { ElementConfig, Design, PlayerConfig } from "@/types/top8/Design";
 import { simpleLayout } from "@/layouts/simple";
 
 // TODO: Integrate editable state
 interface CanvasState {
-  layout: LayoutConfig;
+  layout: Design;
   stageRef: Stage | null;
   editable: boolean;
 }
 
 type CanvasAction =
-  | { type: "SET_LAYOUT"; payload: LayoutConfig }
+  | { type: "SET_LAYOUT"; payload: Design }
   | { type: "SET_STAGE_REF"; payload: Stage | null }
   | { type: "ADD_TOURNAMENT_ELEMENT"; payload: ElementConfig }
   | {
@@ -26,9 +22,9 @@ type CanvasAction =
     }
   | {
       type: "UPDATE_PLAYER_CONFIG";
-      payload: { index: number; config: Partial<PlayerLayoutConfig> };
+      payload: { index: number; config: Partial<PlayerConfig> };
     }
-  | { type: "UPDATE_BASE_PLAYER_CONFIG"; payload: Partial<PlayerLayoutConfig> }
+  | { type: "UPDATE_BASE_PLAYER_CONFIG"; payload: Partial<PlayerConfig> }
   | {
       type: "UPDATE_BASE_ELEMENT_CONFIG";
       payload: { index: number; element: ElementConfig };

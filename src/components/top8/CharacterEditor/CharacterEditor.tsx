@@ -4,7 +4,7 @@ import isEqual from "lodash/isEqual";
 import { CharacterSelect } from "@/components/top8/CharacterEditor/CharacterSelect/CharacterSelect";
 import { CharacterAltPicker } from "@/components/top8/CharacterEditor/CharacterAltPicker/CharacterAltPicker";
 import { CharacterList } from "@/components/top8/CharacterEditor/CharacterList/CharacterList";
-import { CharacerData } from "@/types/top8/PlayerTypes";
+import { CharacerData } from "@/types/top8/Player";
 
 import styles from "./CharacterEditor.module.scss";
 

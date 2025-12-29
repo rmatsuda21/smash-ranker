@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { createJSONStorage, devtools, persist } from "zustand/middleware";
 
-import { PlayerInfo } from "@/types/top8/PlayerTypes";
+import { PlayerInfo } from "@/types/top8/Player";
 
 interface PlayerState {
   players: PlayerInfo[];

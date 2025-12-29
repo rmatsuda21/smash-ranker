@@ -3,7 +3,7 @@ import debounce from "lodash/debounce";
 import cn from "classnames";
 
 import { usePlayerStore } from "@/store/playerStore";
-import { CharacerData, PlayerInfo } from "@/types/top8/PlayerTypes";
+import { CharacerData, PlayerInfo } from "@/types/top8/Player";
 import { CharacterEditor } from "@/components/top8/CharacterEditor/CharacterEditor";
 import { Input } from "@/components/shared/Input/Input";
 import { PlayerSelector } from "@/components/top8/PlayerForm/PlayerSelector";

@@ -1,6 +1,6 @@
 import { characters } from "@/consts/top8/ultCharacters.json";
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
-import { CharacerData } from "@/types/top8/PlayerTypes";
+import { CharacerData } from "@/types/top8/Player";
 
 export const preloadCharacterImages = () => {
   const imagePromises: Promise<void>[] = [];

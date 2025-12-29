@@ -1,8 +1,6 @@
-import { ReactNode } from "react";
-
-import { CanvasConfig, ElementConfig } from "@/types/top8/LayoutTypes";
-import { PlayerInfo } from "@/types/top8/PlayerTypes";
-import { TournamentInfo } from "@/types/top8/TournamentTypes";
+import { CanvasConfig, ElementConfig } from "@/types/top8/Design";
+import { PlayerInfo } from "@/types/top8/Player";
+import { TournamentInfo } from "@/types/top8/Tournament";
 
 export interface ElementFactoryContext {
   fontFamily?: string;
@@ -23,4 +21,4 @@ export type ElementCreator<T extends ElementConfig = ElementConfig> = ({
   element: T;
   index: number;
   context: ElementFactoryContext;
-}) => ReactNode;
+}) => React.ReactNode;

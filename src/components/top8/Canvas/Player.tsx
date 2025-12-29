@@ -3,19 +3,19 @@ import { Vector2d } from "konva/lib/types";
 import { KonvaEventObject } from "konva/lib/Node";
 import isEqual from "lodash/isEqual";
 
-import { PlayerInfo } from "@/types/top8/PlayerTypes";
+import { PlayerInfo } from "@/types/top8/Player";
 import { useCanvasStore } from "@/store/canvasStore";
 import { usePlayerStore } from "@/store/playerStore";
-import { CanvasConfig, PlayerLayoutConfig } from "@/types/top8/LayoutTypes";
+import { CanvasConfig, PlayerConfig } from "@/types/top8/Design";
 import { createKonvaElements } from "@/utils/top8/elementFactory";
 import { SelectableElement } from "@/components/top8/Canvas/SelectableElement";
 import { useEditorStore } from "@/store/editorStore";
-import { EditorTab } from "@/types/top8/EditorTypes";
+import { EditorTab } from "@/types/top8/Editor";
 
 type Props = {
   player: PlayerInfo;
   canvasConfig: CanvasConfig;
-  config: PlayerLayoutConfig;
+  config: PlayerConfig;
   index: number;
   onDragStart: (e: KonvaEventObject<MouseEvent>) => void;
   onDragEnd: (e: KonvaEventObject<MouseEvent>) => void;

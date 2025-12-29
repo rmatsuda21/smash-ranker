@@ -1,7 +1,7 @@
 import { Suspense, lazy } from "react";
 import cn from "classnames";
 
-import { EditorTab, EditorTabLabels } from "@/types/top8/EditorTypes";
+import { EditorTab, EditorTabLabels } from "@/types/top8/Editor";
 import { useEditorStore } from "@/store/editorStore";
 import { TabNav } from "@/components/shared/TabNav/TabNav";
 

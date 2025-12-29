@@ -1,4 +1,4 @@
-import { CanvasConfig } from "@/types/top8/LayoutTypes";
+import { CanvasConfig } from "@/types/top8/Design";
 
 export const resolveColor = (
   color: string | undefined,

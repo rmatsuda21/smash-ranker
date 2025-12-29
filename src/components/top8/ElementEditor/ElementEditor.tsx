@@ -1,7 +1,7 @@
 // import { LuPlus } from "react-icons/lu";
 import { Button } from "@/components/shared/Button/Button";
 import { ElementConfigEditor } from "@/components/top8/ElementEditor/ElementConfigEditor/ElementConfigEditor";
-import { ElementConfig } from "@/types/top8/LayoutTypes";
+import { ElementConfig } from "@/types/top8/Design";
 
 import styles from "./ElementEditor.module.scss";
 

@@ -1,6 +1,6 @@
 import { Layer, Stage } from "react-konva";
 
-import { PlayerLayoutConfig } from "@/types/top8/LayoutTypes";
+import { PlayerConfig } from "@/types/top8/Design";
 
 import styles from "./PlayerPreview.module.scss";
 
@@ -9,7 +9,7 @@ const PREVIEW_WIDTH = 150;
 const PREVIEW_HEIGHT = 150;
 
 type Props = {
-  basePlayer: PlayerLayoutConfig;
+  basePlayer: PlayerConfig;
   konvaElements: React.ReactNode;
 };
 
