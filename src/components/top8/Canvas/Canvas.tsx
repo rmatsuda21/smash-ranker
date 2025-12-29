@@ -22,7 +22,7 @@ export const Canvas = ({ className }: Props) => {
   const stageRef = useRef<KonvaStage>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
-  const canvasSize = useCanvasStore((state) => state.layout.canvas.size);
+  const canvasSize = useCanvasStore((state) => state.design.canvas.size);
   const canvasDispatch = useCanvasStore((state) => state.dispatch);
   const tournamentDispatch = useTournamentStore((state) => state.dispatch);
   const playerDispatch = usePlayerStore((state) => state.dispatch);

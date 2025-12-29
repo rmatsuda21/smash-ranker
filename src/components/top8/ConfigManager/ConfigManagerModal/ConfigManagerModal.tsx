@@ -40,7 +40,7 @@ export const ConfigManagerModal = ({ isOpen, onClose }: Props) => {
   const { configs, getConfig, addConfig, deleteConfig, clearAll } =
     useConfigDB();
 
-  const layout = useCanvasStore((state) => state.layout);
+  const layout = useCanvasStore((state) => state.design);
   const selectedFont = useFontStore((state) => state.selectedFont);
   const dispatch = useCanvasStore((state) => state.dispatch!);
   const fontDispatch = useFontStore((state) => state.dispatch);
@@ -87,7 +87,7 @@ export const ConfigManagerModal = ({ isOpen, onClose }: Props) => {
     }
 
     if (config) {
-      dispatch({ type: "SET_LAYOUT", payload: config.layout });
+      dispatch({ type: "SET_DESIGN", payload: config.layout });
       fontDispatch({
         type: "SET_SELECTED_FONT",
         payload: config.selectedFont,

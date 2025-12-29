@@ -6,7 +6,7 @@ import { DBConfig } from "@/types/Repository";
 import { useFontStore } from "@/store/fontStore";
 
 export const ConfigExport = () => {
-  const layout = useCanvasStore((state) => state.layout);
+  const layout = useCanvasStore((state) => state.design);
   const selectedFont = useFontStore((state) => state.selectedFont);
 
   const handleExport = async () => {

@@ -11,9 +11,9 @@ type Props = {
 
 const BackgroundLayerComponent = ({ onClick }: Props) => {
   const backgroundElements = useCanvasStore(
-    (state) => state.layout.background.elements
+    (state) => state.design.background.elements
   );
-  const canvasConfig = useCanvasStore((state) => state.layout.canvas);
+  const canvasConfig = useCanvasStore((state) => state.design.canvas);
   const selectedFont = useFontStore((state) => state.selectedFont);
 
   const konvaElements = useMemo(

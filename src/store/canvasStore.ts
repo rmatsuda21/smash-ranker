@@ -7,13 +7,13 @@ import { simpleLayout } from "@/layouts/simple";
 
 // TODO: Integrate editable state
 interface CanvasState {
-  layout: Design;
+  design: Design;
   stageRef: Stage | null;
   editable: boolean;
 }
 
 type CanvasAction =
-  | { type: "SET_LAYOUT"; payload: Design }
+  | { type: "SET_DESIGN"; payload: Design }
   | { type: "SET_STAGE_REF"; payload: Stage | null }
   | { type: "ADD_TOURNAMENT_ELEMENT"; payload: ElementConfig }
   | {
@@ -38,7 +38,7 @@ type CanvasAction =
     };
 
 const initialState: CanvasState = {
-  layout: simpleLayout,
+  design: simpleLayout,
   stageRef: null,
   editable: false,
 };
@@ -48,18 +48,18 @@ const canvasReducer = (
   action: CanvasAction
 ): Partial<CanvasState> => {
   switch (action.type) {
-    case "SET_LAYOUT":
-      return { layout: action.payload };
+    case "SET_DESIGN":
+      return { design: action.payload };
     case "SET_STAGE_REF":
       return { stageRef: action.payload };
     case "ADD_TOURNAMENT_ELEMENT":
       return {
-        layout: {
-          ...state.layout,
+        design: {
+          ...state.design,
           tournament: {
-            ...state.layout.tournament,
+            ...state.design.tournament,
             elements: [
-              ...(state.layout.tournament?.elements ?? []),
+              ...(state.design.tournament?.elements ?? []),
               action.payload,
             ],
           },
@@ -67,12 +67,12 @@ const canvasReducer = (
       };
     case "EDIT_TOURNAMENT_ELEMENT":
       return {
-        layout: {
-          ...state.layout,
+        design: {
+          ...state.design,
           tournament: {
-            ...state.layout.tournament,
+            ...state.design.tournament,
             elements:
-              state.layout.tournament?.elements?.map((element, index) =>
+              state.design.tournament?.elements?.map((element, index) =>
                 index === action.payload.index
                   ? action.payload.element
                   : element
@@ -82,27 +82,27 @@ const canvasReducer = (
       };
     case "UPDATE_PLAYER_CONFIG":
       return {
-        layout: {
-          ...state.layout,
-          players: state.layout.players.map((player, index) =>
+        design: {
+          ...state.design,
+          players: state.design.players.map((player, index) =>
             index === action.payload.index ? action.payload.config : player
           ),
         },
       };
     case "UPDATE_BASE_PLAYER_CONFIG":
       return {
-        layout: {
-          ...state.layout,
-          basePlayer: { ...state.layout.basePlayer, ...action.payload },
+        design: {
+          ...state.design,
+          basePlayer: { ...state.design.basePlayer, ...action.payload },
         },
       };
     case "UPDATE_BASE_ELEMENT_CONFIG":
       return {
-        layout: {
-          ...state.layout,
+        design: {
+          ...state.design,
           basePlayer: {
-            ...state.layout.basePlayer,
-            elements: state.layout.basePlayer.elements.map((element, index) =>
+            ...state.design.basePlayer,
+            elements: state.design.basePlayer.elements.map((element, index) =>
               index === action.payload.index ? action.payload.element : element
             ),
           },
@@ -112,26 +112,26 @@ const canvasReducer = (
       return { editable: action.payload };
     case "CLEAR_BACKGROUND_IMG":
       return {
-        layout: {
-          ...state.layout,
-          canvas: { ...state.layout.canvas, bgAssetId: undefined },
+        design: {
+          ...state.design,
+          canvas: { ...state.design.canvas, bgAssetId: undefined },
         },
       };
     case "SET_BACKGROUND_IMG":
       return {
-        layout: {
-          ...state.layout,
-          canvas: { ...state.layout.canvas, bgAssetId: action.payload },
+        design: {
+          ...state.design,
+          canvas: { ...state.design.canvas, bgAssetId: action.payload },
         },
       };
     case "UPDATE_COLOR_PALETTE":
       return {
-        layout: {
-          ...state.layout,
+        design: {
+          ...state.design,
           canvas: {
-            ...state.layout.canvas,
+            ...state.design.canvas,
             colorPalette: {
-              ...state.layout.canvas.colorPalette,
+              ...state.design.canvas.colorPalette,
               [action.payload.id]: action.payload.value,
             },
           },
@@ -158,7 +158,7 @@ export const useCanvasStore = create<CanvasStore>()(
         name: "canvas-store",
         storage: createJSONStorage(() => localStorage),
         partialize: (state) => ({
-          layout: state.layout,
+          layout: state.design,
         }),
       }
     )

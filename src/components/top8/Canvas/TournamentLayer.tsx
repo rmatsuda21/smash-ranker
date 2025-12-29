@@ -13,8 +13,8 @@ export const TournamentLayer = () => {
   const groupRef = useRef<KonvaGroup>(null);
 
   const selectedFont = useFontStore((state) => state.selectedFont);
-  const layout = useCanvasStore((state) => state.layout.tournament);
-  const canvasConfig = useCanvasStore((state) => state.layout.canvas);
+  const layout = useCanvasStore((state) => state.design.tournament);
+  const canvasConfig = useCanvasStore((state) => state.design.canvas);
   const tournament = useTournamentStore((state) => state.info);
   const selectedElementIndex = useTournamentStore(
     (state) => state.selectedElementIndex
