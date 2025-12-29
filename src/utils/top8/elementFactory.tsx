@@ -294,7 +294,7 @@ const createTournamentIconElement: ElementCreator<
 > = ({ element, index, context }) => {
   const { tournament } = context;
 
-  if (!tournament?.iconAssetId) {
+  if (!tournament?.iconSrc) {
     return (
       <Rect
         key={`tournamentIcon-${index}`}
@@ -312,7 +312,7 @@ const createTournamentIconElement: ElementCreator<
       key={`tournamentIcon-${index}`}
       x={element.position.x}
       y={element.position.y}
-      imageSrc={tournament.iconAssetId}
+      imageSrc={tournament.iconSrc}
       width={element.size?.width ?? 100}
       height={element.size?.height ?? 100}
       fillMode={element.fillMode ?? "contain"}

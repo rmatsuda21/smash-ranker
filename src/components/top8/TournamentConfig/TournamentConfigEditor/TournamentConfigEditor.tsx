@@ -82,17 +82,22 @@ export const TournamentConfigEditor = () => {
     debouncedUpdateTournament(newTournament);
   };
 
+  const handleIconSelect = (src?: string) => {
+    const newTournament = {
+      ...tempTournament,
+      iconSrc: src,
+    };
+    setTempTournament(newTournament);
+    debouncedUpdateTournament(newTournament);
+  };
+
   return (
     <div className={styles.wrapper}>
       <p className={styles.label}>Icon</p>
       <AssetSelector
-        selectedSrc={tempTournament?.iconAssetId}
-        onSelect={(id) => {
-          dispatch({ type: "SET_ICON", payload: id });
-        }}
-        onClear={() => {
-          dispatch({ type: "CLEAR_ICON" });
-        }}
+        selectedSrc={tempTournament?.iconSrc}
+        onSelect={handleIconSelect}
+        onClear={() => handleIconSelect(undefined)}
       />
       <Input
         label="Tournament Name"
