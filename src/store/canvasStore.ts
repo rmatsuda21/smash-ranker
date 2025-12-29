@@ -5,7 +5,6 @@ import { Stage } from "konva/lib/Stage";
 import { ElementConfig, Design, PlayerConfig } from "@/types/top8/Design";
 import { simpleLayout } from "@/layouts/simple";
 
-// TODO: Integrate editable state
 interface CanvasState {
   design: Design;
   stageRef: Stage | null;
