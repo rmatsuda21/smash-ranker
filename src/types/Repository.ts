@@ -17,6 +17,7 @@ export type DBConfig = {
 
 export type DBAsset = {
   id: string;
+  src: string;
   fileName: string;
   data: Blob;
   date: Date;

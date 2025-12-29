@@ -86,7 +86,7 @@ export const TournamentConfigEditor = () => {
     <div className={styles.wrapper}>
       <p className={styles.label}>Icon</p>
       <AssetSelector
-        selectedId={tempTournament?.iconAssetId}
+        selectedSrc={tempTournament?.iconAssetId}
         onSelect={(id) => {
           dispatch({ type: "SET_ICON", payload: id });
         }}

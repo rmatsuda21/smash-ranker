@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import { DBAsset } from "@/types/Repository";
 import { assetRepository } from "@/db/repository";
 
+const BASE_URL = "/idb-images/";
+
 export const useAssetDB = () => {
   const [assets, setAssets] = useState<DBAsset[]>([]);
   const [loading, setLoading] = useState(true);
@@ -15,14 +17,12 @@ export const useAssetDB = () => {
     refresh().finally(() => setLoading(false));
   }, []);
 
-  const uploadAsset = async (asset: Omit<DBAsset, "id">) => {
+  const uploadAsset = async (asset: Omit<DBAsset, "id" | "src">) => {
     const id = crypto.randomUUID();
-    await assetRepository.put({
-      id,
-      ...asset,
-    });
+    const src = `${BASE_URL}${id}`;
+    await assetRepository.put({ id, src, ...asset });
     await refresh();
-    return id;
+    return src;
   };
 
   const deleteAsset = async (id: string) => {

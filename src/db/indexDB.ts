@@ -7,7 +7,7 @@ interface Top8DB extends DBSchema {
   assets: {
     key: string;
     value: DBAsset;
-    indexes: { date: Date };
+    indexes: { date: Date; src: string };
   };
   configs: {
     key: string;
@@ -21,6 +21,7 @@ export const initDB = openDB<Top8DB>(DB_NAME, 1, {
       keyPath: "id",
     });
     assetsStore.createIndex("date", "date");
+    assetsStore.createIndex("src", "src");
 
     db.createObjectStore("configs", {
       keyPath: "id",

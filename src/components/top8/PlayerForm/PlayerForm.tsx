@@ -74,12 +74,12 @@ export const PlayerForm = ({ className }: Props) => {
     debouncedUpdatePlayer(newPlayer, selectedPlayerIndex);
   };
 
-  const handleAssetSelect = (id: string) => {
+  const handleAssetSelect = (src: string) => {
     if (!tempPlayer) return;
 
     const newPlayer: PlayerInfo = {
       ...tempPlayer,
-      avatarAssetId: id,
+      avatarImgSrc: src,
     };
     setTempPlayer(newPlayer);
     debouncedUpdatePlayer(newPlayer, selectedPlayerIndex);
@@ -90,7 +90,7 @@ export const PlayerForm = ({ className }: Props) => {
 
     const newPlayer: PlayerInfo = {
       ...tempPlayer,
-      avatarAssetId: undefined,
+      avatarImgSrc: undefined,
     };
     setTempPlayer(newPlayer);
     debouncedUpdatePlayer(newPlayer, selectedPlayerIndex);
@@ -144,7 +144,7 @@ export const PlayerForm = ({ className }: Props) => {
       <div className={cn({ [styles.disabled]: !selectedPlayer })}>
         <p className={styles.label}>Avatar</p>
         <AssetSelector
-          selectedId={tempPlayer?.avatarAssetId}
+          selectedSrc={tempPlayer?.avatarImgSrc}
           onSelect={handleAssetSelect}
           onClear={handleClear}
         />

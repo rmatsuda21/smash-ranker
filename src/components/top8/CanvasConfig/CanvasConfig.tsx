@@ -25,7 +25,7 @@ export const CanvasConfig = ({ className }: Props) => {
       <div className={styles.backgroundImg}>
         <p className={styles.label}>Background Image</p>
         <AssetSelector
-          selectedId={canvas.bgAssetId}
+          selectedSrc={canvas.bgAssetId}
           onSelect={(id) => {
             canvasDispatch({
               type: "SET_BACKGROUND_IMG",
