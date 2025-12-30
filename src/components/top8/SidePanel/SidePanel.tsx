@@ -41,6 +41,12 @@ const TournamentEditor = lazy(() =>
   )
 );
 
+const TextEditor = lazy(() =>
+  import("@/components/top8/TextEditor/TextEditor").then((module) => ({
+    default: module.TextEditor,
+  }))
+);
+
 type Props = {
   className?: string;
 };
@@ -76,6 +82,11 @@ export const SidePanel = ({ className }: Props) => {
         <PlayersEditor
           className={cn({
             [styles.hidden]: activeTab !== EditorTab.PLAYERS,
+          })}
+        />
+        <TextEditor
+          className={cn({
+            [styles.hidden]: activeTab !== EditorTab.TEXTS,
           })}
         />
         {/* <PlayerElementEditor

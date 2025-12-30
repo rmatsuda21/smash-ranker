@@ -289,9 +289,9 @@ export const simpleLayout: Design = {
       characterShadow: { color: "rgb(255, 0, 0)", name: "Character Shadow" },
     },
     textPalette: {
-      tournamentName: {
+      topLeftText: {
         text: `${LayoutPlaceholder.TOURNAMENT_NAME} - ${LayoutPlaceholder.EVENT_NAME}`,
-        name: "Tournament Name",
+        name: "Top Left Text",
       },
       topRightText: {
         text: "smash-ranker.vercel.app",
@@ -349,10 +349,10 @@ export const simpleLayout: Design = {
     elements: [
       {
         type: "text",
-        id: "tournamentName",
-        name: "Tournament Name",
+        id: "topLeftText",
+        name: "Top Left Text",
         position: { x: PADDING, y: PADDING },
-        textId: "tournamentName",
+        textId: "topLeftText",
         fontSize: 40,
         fontWeight: 900,
         fill: "text",
@@ -381,10 +381,10 @@ export const simpleLayout: Design = {
       },
       {
         type: "text",
-        id: "tournamentNameWithIcon",
-        name: "Tournament Name (w/ Icon)",
+        id: "topLeftTextWithIcon",
+        name: "Top Left Text (w/ Icon)",
         position: { x: PADDING + TOURNAMENT_ICON_SIZE + 20, y: PADDING },
-        textId: "tournamentName",
+        textId: "topLeftText",
         fontSize: 40,
         fontWeight: 900,
         fill: "text",
