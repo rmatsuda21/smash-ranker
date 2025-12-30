@@ -1,10 +1,12 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { characters } from "@/consts/top8/ultCharacters.json";
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
 import { CharacerData } from "@/types/top8/Player";
 
 import styles from "./CharacterAltPicker.module.scss";
+
+const TOOLTIP_DELAY = 200;
 
 type Props = {
   selectedCharacter?: CharacerData;
@@ -20,6 +22,7 @@ const getAltsAndIcons = (characterId?: string) => {
       alt: 0 as CharacerData["alt"],
       id: `alt-icon-${i}`,
       icon: null,
+      altName: null,
     }));
   }
 
@@ -31,6 +34,9 @@ const getAltsAndIcons = (characterId?: string) => {
       alt: i as CharacerData["alt"],
       type: "stock",
     }),
+    altName: character?.altNames?.[i]
+      ? `${i}: ${character?.altNames?.[i]}`
+      : null,
   }));
 };
 
@@ -40,6 +46,24 @@ export const CharacterAltPicker = ({
   disabled = false,
 }: Props) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const [activeTooltip, setActiveTooltip] = useState<string | null>(null);
+  const tooltipTimeout = useRef<ReturnType<typeof setTimeout>>(null);
+
+  const handleMouseEnter = (id: string, hasAltName: boolean) => {
+    if (hasAltName) {
+      tooltipTimeout.current = setTimeout(() => {
+        setActiveTooltip(id);
+      }, TOOLTIP_DELAY);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (tooltipTimeout.current) {
+      clearTimeout(tooltipTimeout.current);
+    }
+    setActiveTooltip(null);
+  };
+
   const altsAndIcons = useMemo(() => {
     const alts = getAltsAndIcons(selectedCharacter?.id);
 
@@ -76,12 +100,17 @@ export const CharacterAltPicker = ({
       role="radiogroup"
       aria-label="Character alternate costume"
     >
-      {altsAndIcons.map(({ alt, icon, id }) => {
+      {altsAndIcons.map(({ alt, icon, id, altName }) => {
         const isSelected =
           alt === selectedCharacter?.alt && !!selectedCharacter;
 
         return (
-          <label key={id} className={styles.label}>
+          <label
+            key={id}
+            className={styles.label}
+            onMouseEnter={() => handleMouseEnter(id, !!altName)}
+            onMouseLeave={handleMouseLeave}
+          >
             <input
               type="radio"
               name="character-alt"
@@ -92,6 +121,15 @@ export const CharacterAltPicker = ({
             />
 
             {icon && <img src={icon} alt={`Alt ${alt}`} />}
+            {altName && (
+              <div
+                className={`${styles.tooltip} ${
+                  activeTooltip === id ? styles.show : ""
+                }`}
+              >
+                {altName}
+              </div>
+            )}
           </label>
         );
       })}

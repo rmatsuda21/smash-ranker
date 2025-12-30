@@ -3,437 +3,1279 @@
     {
       "name": "Bayonetta",
       "id": "1271",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Black",
+        "Original",
+        "Yellow",
+        "Green",
+        "Red",
+        "Pink",
+        "White",
+        "Blue"
+      ]
     },
     {
       "name": "Bowser Jr.",
       "id": "1272",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Junior",
+        "Larry",
+        "Roy",
+        "Wendy",
+        "Iggy",
+        "Morton",
+        "Lemmy",
+        "Ludwig"
+      ]
     },
     {
       "name": "Bowser",
       "id": "1273",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Default",
+        "Black",
+        "Yellow",
+        "Green",
+        "Grey",
+        "Orange",
+        "Red",
+        "Blue"
+      ]
     },
     {
       "name": "Captain Falcon",
       "id": "1274",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Indigo",
+        "Black",
+        "Red",
+        "Green",
+        "Blue",
+        "White",
+        "Yellow",
+        "Cyan"
+      ]
     },
     {
       "name": "Cloud",
       "id": "1275",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Purple",
+        "Advent",
+        "Blue",
+        "Advent Blue",
+        "Red",
+        "Advent Black",
+        "Brown",
+        "Advent Purple"
+      ]
     },
     {
       "name": "Corrin",
       "id": "1276",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Male",
+        "Female",
+        "Red",
+        "Orange",
+        "Blue",
+        "Pink",
+        "Green",
+        "Black"
+      ]
     },
     {
       "name": "Daisy",
       "id": "1277",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Orange",
+        "Green",
+        "Pink",
+        "Blue",
+        "Red",
+        "Purple",
+        "White",
+        "Black"
+      ]
     },
     {
       "name": "Dark Pit",
       "id": "1278",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Black",
+        "Green",
+        "Brown",
+        "Yellow",
+        "Red",
+        "Blue",
+        "White",
+        "Purple"
+      ]
     },
     {
       "name": "Diddy Kong",
       "id": "1279",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Red",
+        "White",
+        "Pink",
+        "Purple",
+        "Green",
+        "Blue",
+        "Yellow",
+        "Cyan"
+      ]
     },
     {
       "name": "Donkey Kong",
       "id": "1280",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Brown",
+        "Black",
+        "Red",
+        "Black",
+        "Green",
+        "White",
+        "Yellow",
+        "Pink"
+      ]
     },
     {
       "name": "Dr. Mario",
       "id": "1282",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "White",
+        "Red",
+        "Blue",
+        "Green",
+        "Black",
+        "Yellow",
+        "Purple",
+        "Pink"
+      ]
     },
     {
       "name": "Duck Hunt",
       "id": "1283",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Default",
+        "Black",
+        "Blue",
+        "Brown",
+        "White",
+        "Tan",
+        "Yellow",
+        "Red"
+      ]
     },
     {
       "name": "Falco",
       "id": "1285",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Grey",
+        "Orange",
+        "Blue",
+        "Red",
+        "Green",
+        "Black",
+        "White",
+        "Pink"
+      ]
     },
     {
       "name": "Fox",
       "id": "1286",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Default",
+        "Black",
+        "Red",
+        "Green",
+        "Orange",
+        "White",
+        "Yellow",
+        "Purple"
+      ]
     },
     {
       "name": "Ganondorf",
       "id": "1287",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Red",
+        "Violet",
+        "Blue",
+        "Green",
+        "Purple",
+        "Brown",
+        "White",
+        "Grey"
+      ]
     },
     {
       "name": "Greninja",
       "id": "1289",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Blue",
+        "Red",
+        "Pink",
+        "Black",
+        "Violet",
+        "Green",
+        "Grey",
+        "Purple"
+      ]
     },
     {
       "name": "Ice Climbers",
       "id": "1290",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Purple",
+        "Blue",
+        "Green",
+        "Indigo",
+        "Red",
+        "Brown",
+        "White",
+        "Orange"
+      ]
     },
     {
       "name": "Ike",
       "id": "1291",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Default",
+        "Brown",
+        "Purple",
+        "Red",
+        "Yellow",
+        "Green",
+        "Blue",
+        "Black"
+      ]
     },
     {
       "name": "Inkling",
       "id": "1292",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Orange",
+        "Blue",
+        "Yellow",
+        "Green",
+        "Pink",
+        "Cyan",
+        "Purple",
+        "Indigo"
+      ]
     },
     {
       "name": "Jigglypuff",
       "id": "1293",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Default",
+        "Red",
+        "White",
+        "Blue",
+        "Green",
+        "Pink",
+        "Nurse",
+        "Glasses"
+      ]
     },
     {
       "name": "King Dedede",
       "id": "1294",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Red",
+        "Pink",
+        "Green",
+        "Purple",
+        "Cyan",
+        "Grey",
+        "Blue",
+        "Black"
+      ]
     },
     {
       "name": "Kirby",
       "id": "1295",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Pink",
+        "Yellow",
+        "Blue",
+        "Red",
+        "Green",
+        "White",
+        "Orange",
+        "Purple"
+      ]
     },
     {
       "name": "Link",
       "id": "1296",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Blue",
+        "Green",
+        "Red",
+        "Grey",
+        "Indigo",
+        "Teal",
+        "White",
+        "Black"
+      ]
     },
     {
       "name": "Little Mac",
       "id": "1297",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Default",
+        "Yellow",
+        "White",
+        "Blue",
+        "Black",
+        "Pink",
+        "Wire",
+        "Green"
+      ]
     },
     {
       "name": "Lucario",
       "id": "1298",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Blue",
+        "Purple",
+        "White",
+        "Grey",
+        "Teal",
+        "Navy",
+        "Green",
+        "Pink"
+      ]
     },
     {
       "name": "Lucas",
       "id": "1299",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Yellow",
+        "Orange",
+        "Blue",
+        "Red",
+        "Grey",
+        "Cyan",
+        "Green",
+        "Purple"
+      ]
     },
     {
       "name": "Lucina",
       "id": "1300",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Blue",
+        "Green",
+        "Black",
+        "White",
+        "Red",
+        "Yellow",
+        "Navy",
+        "Purple"
+      ]
     },
     {
       "name": "Luigi",
       "id": "1301",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Green",
+        "Orange",
+        "Pink",
+        "Cyan",
+        "White",
+        "Purple",
+        "Blue",
+        "Yellow"
+      ]
     },
     {
       "name": "Mario",
       "id": "1302",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Red",
+        "Striped",
+        "Blue",
+        "Black",
+        "Green",
+        "Purple",
+        "Yellow",
+        "White"
+      ]
     },
     {
       "name": "Marth",
       "id": "1304",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Navy",
+        "Red",
+        "Green",
+        "Black",
+        "White",
+        "Blue",
+        "Yellow",
+        "Purple"
+      ]
     },
     {
       "name": "Mega Man",
       "id": "1305",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Blue",
+        "Red",
+        "Green",
+        "Brown",
+        "Cyan",
+        "Chartreuse",
+        "Orange",
+        "Grey"
+      ]
     },
     {
       "name": "Meta Knight",
       "id": "1307",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Blue",
+        "White",
+        "Red",
+        "Green",
+        "Navy",
+        "Pink",
+        "Purple",
+        "Grey"
+      ]
     },
     {
       "name": "Mewtwo",
       "id": "1310",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Default",
+        "Orange",
+        "Blue",
+        "Brown",
+        "Pink",
+        "Yellow",
+        "Cyan",
+        "Purple"
+      ]
     },
     {
       "name": "Mii Brawler",
       "id": "1311",
-      "alts": 1
+      "alts": 1,
+      "altNames": [
+        "Default"
+      ]
     },
     {
       "name": "Ness",
       "id": "1313",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Red",
+        "White",
+        "Yellow",
+        "Green",
+        "Blue",
+        "Black",
+        "Cyan",
+        "Purple"
+      ]
     },
     {
       "name": "Olimar",
       "id": "1314",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Tan",
+        "Red",
+        "Green",
+        "Blue",
+        "Alph",
+        "Alph Green",
+        "Alph Pink",
+        "Alph Red"
+      ]
     },
     {
       "name": "Pac-Man",
       "id": "1315",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Default",
+        "Blue",
+        "Yellow",
+        "Black",
+        "Purple",
+        "White",
+        "Red",
+        "Plaid"
+      ]
     },
     {
       "name": "Palutena",
       "id": "1316",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "White",
+        "Pink",
+        "Cyan",
+        "Green",
+        "Blue",
+        "Red",
+        "Black",
+        "Purple"
+      ]
     },
     {
       "name": "Peach",
       "id": "1317",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Pink",
+        "Yellow",
+        "Red",
+        "Blue",
+        "Green",
+        "White",
+        "Fire",
+        "Black"
+      ]
     },
     {
       "name": "Pichu",
       "id": "1318",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Yellow",
+        "Cyan",
+        "Red",
+        "Grey",
+        "Blue",
+        "Spiky",
+        "White",
+        "Band"
+      ]
     },
     {
       "name": "Pikachu",
       "id": "1319",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Default",
+        "Red",
+        "Green",
+        "Yellow",
+        "Blue",
+        "Glasses",
+        "Female",
+        "Libre"
+      ]
     },
     {
       "name": "Pit",
       "id": "1320",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Default",
+        "Yellow",
+        "Red",
+        "Green",
+        "Blue",
+        "Black",
+        "White",
+        "Pink"
+      ]
     },
     {
       "name": "Pokemon Trainer",
       "id": "1321",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Default",
+        "Red",
+        "Green",
+        "Pink",
+        "Yellow",
+        "White",
+        "Blue",
+        "Purple"
+      ]
     },
     {
       "name": "Ridley",
       "id": "1322",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Default",
+        "Meta",
+        "Red",
+        "Blue",
+        "Green",
+        "Purple",
+        "Yellow",
+        "Grey"
+      ]
     },
     {
       "name": "R.O.B.",
       "id": "1323",
-      "alts": 8
+      "alts": 8,  
+      "altNames": [
+        "Tan",
+        "Grey",
+        "Yellow",
+        "Purple",
+        "Blue",
+        "Green",
+        "Cyan",
+        "Red"
+      ]
     },
     {
       "name": "Robin",
       "id": "1324",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Male",
+        "Female",
+        "Green",
+        "Red",
+        "Blue",
+        "Yellow",
+        "White",
+        "Pink"
+      ]
     },
     {
-      "name": "Rosalina",
+      "name": "Rosalina & Luma",
       "id": "1325",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Cyan",
+        "Pink",
+        "Yellow",
+        "Green",
+        "Red",
+        "Purple",
+        "Black",
+        "White"
+      ]
     },
     {
       "name": "Roy",
       "id": "1326",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Blue",
+        "Red",
+        "Green",
+        "Violet",
+        "Cyan",
+        "Purple",
+        "Pink",
+        "Yellow"
+      ]
     },
     {
       "name": "Ryu",
       "id": "1327",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "White",
+        "Grey",
+        "Cyan",
+        "Black",
+        "Orange",
+        "Blue",
+        "Green",
+        "Purple"
+      ]
     },
     {
       "name": "Samus",
       "id": "1328",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Orange",
+        "Blue",
+        "Pink",
+        "Brown",
+        "Purple",
+        "Green",
+        "White",
+        "Black"
+      ]
     },
     {
       "name": "Sheik",
       "id": "1329",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Blue",
+        "Red",
+        "Indigo",
+        "Purple",
+        "Green",
+        "Black",
+        "Yellow",
+        "White"
+      ]
     },
     {
       "name": "Shulk",
       "id": "1330",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Red",
+        "White",
+        "Black",
+        "Orange",
+        "Blue",
+        "Lavender",
+        "Yellow",
+        "Trunks"
+      ]
     },
     {
       "name": "Snake",
       "id": "1331",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Grey",
+        "Black",
+        "Red",
+        "Blue",
+        "Green",
+        "White",
+        "Chartreuse",
+        "Brown"
+      ]
     },
     {
       "name": "Sonic",
       "id": "1332",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Blue",
+        "Purple",
+        "Cyan",
+        "White",
+        "Black",
+        "Yellow",
+        "Orange",
+        "Green"
+      ]
     },
     {
       "name": "Toon Link",
       "id": "1333",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Green",
+        "Red",
+        "Blue",
+        "Purple",
+        "Brown",
+        "Black",
+        "Grey",
+        "Teal"
+      ]
     },
     {
       "name": "Villager",
       "id": "1334",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Red",
+        "Pink",
+        "Yellow",
+        "Green",
+        "Cyan",
+        "Blue",
+        "Purple",
+        "Chartreuse"
+      ]
     },
     {
       "name": "Wario",
       "id": "1335",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Blue",
+        "Classic",
+        "Red",
+        "Classic Red",
+        "Yellow",
+        "Classic Cyan",
+        "Green",
+        "Classic Green"
+      ]
     },
     {
       "name": "Wii Fit Trainer",
       "id": "1336",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Female",
+        "Male",
+        "Green",
+        "Male Green",
+        "Red",
+        "Male Red",
+        "Yellow",
+        "Male Yellow"
+      ]
     },
     {
       "name": "Wolf",
       "id": "1337",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Purple",
+        "Brown",
+        "Red",
+        "Blue",
+        "Green",
+        "Orange",
+        "Black",
+        "Pink"
+      ]
     },
     {
       "name": "Yoshi",
       "id": "1338",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Green",
+        "Red",
+        "Blue",
+        "Yellow",
+        "Pink",
+        "Cyan",
+        "Purple",
+        "Crafted"
+      ]
     },
     {
       "name": "Young Link",
       "id": "1339",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Green",
+        "Red",
+        "Blue",
+        "White",
+        "Pink",
+        "Cyan",
+        "Orange",
+        "Black"
+      ]
     },
     {
       "name": "Zelda",
       "id": "1340",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Pink",
+        "Red",
+        "Blue",
+        "Violet",
+        "Green",
+        "Black",
+        "Purple",
+        "White"
+      ]
     },
     {
       "name": "Zero Suit Samus",
       "id": "1341",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Cyan",
+        "Blue",
+        "Red",
+        "Black",
+        "Green",
+        "White",
+        "Shorts Orange",
+        "Shorts Blue"
+      ]
     },
     {
       "name": "Mr. Game & Watch",
       "id": "1405",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Black",
+        "Red",
+        "Yellow",
+        "Blue",
+        "Teal",
+        "Cyan",
+        "Green",
+        "White"
+      ]
     },
     {
       "name": "Incineroar",
       "id": "1406",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Red",
+        "Green",
+        "Black",
+        "Blue",
+        "Orange",
+        "Purple",
+        "Grey",
+        "White"
+      ]
     },
     {
       "name": "King K. Rool",
       "id": "1407",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Green",
+        "Orange",
+        "Blue",
+        "Yellow",
+        "Pink",
+        "Black",
+        "Brown",
+        "White"
+      ]
     },
     {
       "name": "Dark Samus",
       "id": "1408",
-      "alts": 8
+      "alts": 8,  
+      "altNames": [
+        "Blue",
+        "Green",
+        "Purple",
+        "Red",
+        "Yellow",
+        "Grey",
+        "Black",
+        "Pink"
+      ]
     },
     {
       "name": "Chrom",
       "id": "1409",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Blue",
+        "Red",
+        "Green",
+        "Yellow",
+        "Black",
+        "Purple",
+        "White",
+        "Cyan"
+      ]
     },
     {
       "name": "Ken",
       "id": "1410",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Red",
+        "Grey",
+        "Blue",
+        "White",
+        "Green",
+        "Yellow",
+        "Cyan",
+        "Black"
+      ]
     },
     {
       "name": "Simon Belmont",
       "id": "1411",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Brown",
+        "Red",
+        "Yellow",
+        "Black",
+        "Blue",
+        "Purple",
+        "Orange",
+        "Indigo"
+      ]
     },
     {
       "name": "Richter",
       "id": "1412",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Navy",
+        "Red",
+        "Purple",
+        "Green",
+        "Yellow",
+        "Blue",
+        "Black",
+        "White"
+      ]
     },
     {
       "name": "Isabelle",
       "id": "1413",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Green",
+        "Yellow",
+        "Pink",
+        "Red",
+        "Purple",
+        "Teal",
+        "Grey",
+        "Blue"
+      ]
     },
     {
       "name": "Mii Swordfighter",
       "id": "1414",
-      "alts": 1
+      "alts": 1,
+      "altNames": [
+        "Default"
+      ]
     },
     {
       "name": "Mii Gunner",
       "id": "1415",
-      "alts": 1
+      "alts": 1,
+      "altNames": [
+        "Default"
+      ]
     },
     {
       "name": "Piranha Plant",
       "id": "1441",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Red",
+        "Green",
+        "Yellow",
+        "Pink",
+        "Black",
+        "White",
+        "Purple",
+        "Blue"
+      ]
     },
     {
       "name": "Joker",
       "id": "1453",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Black",
+        "Purple",
+        "Blue",
+        "Yellow",
+        "Red",
+        "White",
+        "School",
+        "School White"
+      ]
     },
     {
       "name": "Hero",
       "id": "1526",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Luminary",
+        "Erdick",
+        "Solo",
+        "Eight",
+        "Luminary Red",
+        "Edrick White",
+        "Solo Orange",
+        "Eight Blue"
+      ]
     },
     {
       "name": "Banjo-Kazooie",
       "id": "1530",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Brown",
+        "Pink",
+        "Black",
+        "Red",
+        "White",
+        "Yellow",
+        "Blue",
+        "Green"
+      ]
     },
     {
       "name": "Terry",
       "id": "1532",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Red",
+        "Blue",
+        "Brown",
+        "Green",
+        "Orange",
+        "Grey",
+        "Black",
+        "Yellow"
+      ]
     },
     {
       "name": "Byleth",
       "id": "1539",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Male",
+        "Female",
+        "Blue",
+        "Red",
+        "Yellow",
+        "Green",
+        "Black",
+        "Grey"
+      ]
     },
     {
       "name": "Random",
       "id": "1746",
-      "alts": 1
+      "alts": 1,
+      "altNames": [
+        "Random"
+      ]
     },
     {
       "name": "Min Min",
       "id": "1747",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Orange",
+        "Cyan",
+        "Red",
+        "Yellow",
+        "Blue",
+        "Green",
+        "Pink",
+        "Black"
+      ]
     },
     {
       "name": "Steve",
       "id": "1766",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Steve",
+        "Alex",
+        "Steve White",
+        "Alex White",
+        "Steve Black",
+        "Alex Blue",
+        "Zombie",
+        "Enderman"
+      ]
     },
     {
       "name": "Sephiroth",
       "id": "1777",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Black",
+        "Purple",
+        "Green",
+        "Red",
+        "White",
+        "Blue",
+        "Coatless",
+        "Coatless Violet"
+      ]
     },
     {
-      "name": "Pyra & Mythra",
+      "name": "Pyra / Mythra",
       "id": "1795",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Default",
+        "Green",
+        "Swapped",
+        "Gormotti",
+        "Blackk",
+        "Blue",
+        "Saturated",
+        "Metal"
+      ]
     },
     {
       "name": "Kazuya",
       "id": "1846",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Default",
+        "Suit",
+        "Red",
+        "White",
+        "Blue",
+        "Purple",
+        "Black",
+        "Yellow"
+      ]
     },
     {
       "name": "Sora",
       "id": "1897",
-      "alts": 8
+      "alts": 8,
+      "altNames": [
+        "Original",
+        "Two",
+        "Dream",
+        "Three",
+        "Grey",
+        "Red",
+        "Blue",
+        "White"
+      ]
     }
   ]
 }
