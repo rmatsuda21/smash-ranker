@@ -234,6 +234,20 @@ export const squaresLayout: Design = {
       playerBackground: { color: "rgb(0, 0, 0)", name: "Player Background" },
       characterShadow: { color: "rgb(255, 0, 0)", name: "Character Shadow" },
     },
+    textPalette: {
+      tournamentName: {
+        text: `${LayoutPlaceholder.TOURNAMENT_NAME} - ${LayoutPlaceholder.EVENT_NAME}`,
+        name: "Tournament Name",
+      },
+      topRightText: {
+        text: "smash-ranker.vercel.app",
+        name: "Top Right Text",
+      },
+      bottomText: {
+        text: `${LayoutPlaceholder.TOURNAMENT_DATE} - ${LayoutPlaceholder.TOURNAMENT_LOCATION} - ${LayoutPlaceholder.ENTRANTS} Entrants`,
+        name: "Bottom Text",
+      },
+    },
   },
   background: {
     elements: [
@@ -284,7 +298,7 @@ export const squaresLayout: Design = {
         id: "tournamentName",
         name: "Tournament Name",
         position: { x: PADDING, y: PADDING },
-        text: `${LayoutPlaceholder.TOURNAMENT_NAME} - ${LayoutPlaceholder.EVENT_NAME}`,
+        textId: "tournamentName",
         fontSize: 40,
         fontWeight: 900,
         fill: "text",
@@ -295,7 +309,7 @@ export const squaresLayout: Design = {
         id: "topRightText",
         name: "Top Right Text",
         position: { x: CANVAS_WIDTH - PADDING, y: PADDING },
-        text: "smash-ranker.vercel.app",
+        textId: "topRightText",
         fontSize: 25,
         fontWeight: 900,
         fill: "text",
@@ -316,7 +330,7 @@ export const squaresLayout: Design = {
         id: "tournamentNameWithIcon",
         name: "Tournament Name (w/ Icon)",
         position: { x: PADDING + TOURNAMENT_ICON_SIZE + 20, y: PADDING },
-        text: `${LayoutPlaceholder.TOURNAMENT_NAME} - ${LayoutPlaceholder.EVENT_NAME}`,
+        textId: "tournamentName",
         fontSize: 40,
         fontWeight: 900,
         fill: "text",
@@ -327,7 +341,7 @@ export const squaresLayout: Design = {
         id: "bottomText",
         name: "Bottom Text",
         position: { x: PADDING, y: CANVAS_HEIGHT - PADDING - 40 },
-        text: `${LayoutPlaceholder.TOURNAMENT_DATE} - ${LayoutPlaceholder.TOURNAMENT_LOCATION} - ${LayoutPlaceholder.ENTRANTS} Entrants`,
+        textId: "bottomText",
         fontSize: 40,
         fontWeight: 900,
         fill: "text",
