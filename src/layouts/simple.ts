@@ -325,8 +325,8 @@ export const simpleLayout: Design = {
         position: { x: 0, y: 0 },
         size: { width: CANVAS_WIDTH, height: CANVAS_HEIGHT },
         palette: {
-          color_1: "primary",
-          color_2: "secondary",
+          color_1: "secondary",
+          color_2: "primary",
         },
       },
     ],
