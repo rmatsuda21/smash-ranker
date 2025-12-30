@@ -115,7 +115,6 @@ const fetchFonts = async (): Promise<Font[]> => {
   return fonts;
 };
 
-// TODO: Get initial font from Cookie
 fetchFonts()
   .then(async (fonts) => {
     const dispatch = useFontStore.getState().dispatch;

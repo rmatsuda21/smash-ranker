@@ -13,8 +13,6 @@ import { DownloadOptionModal } from "@/components/top8/CanvasDownloader/Download
 
 import styles from "./CanvasDownloader.module.scss";
 
-// TODO: Create export config modal
-
 type Props = {
   className?: string;
 };
@@ -26,7 +24,6 @@ const fileExtensions: Record<ImgTypes, string> = {
   webp: "webp",
 };
 
-// TODO: Add image type selection + quality selection
 export const CanvasDownloader = ({ className }: Props) => {
   const [isOptionModalOpen, setIsOptionModalOpen] = useState(false);
   const [quality, setQuality] = useState(2);
