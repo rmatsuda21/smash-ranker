@@ -157,7 +157,7 @@ export const useCanvasStore = create<CanvasStore>()(
         name: "canvas-store",
         storage: createJSONStorage(() => localStorage),
         partialize: (state) => ({
-          layout: state.design,
+          design: state.design,
         }),
       }
     )
