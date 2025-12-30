@@ -34,6 +34,10 @@ type CanvasAction =
   | {
       type: "UPDATE_COLOR_PALETTE";
       payload: { id: string; value: { color: string; name: string } };
+    }
+  | {
+      type: "UPDATE_TEXT_CONTENT";
+      payload: { id: string; value: { text: string; name: string } };
     };
 
 const initialState: CanvasState = {
@@ -131,6 +135,19 @@ const canvasReducer = (
             ...state.design.canvas,
             colorPalette: {
               ...state.design.canvas.colorPalette,
+              [action.payload.id]: action.payload.value,
+            },
+          },
+        },
+      };
+    case "UPDATE_TEXT_CONTENT":
+      return {
+        design: {
+          ...state.design,
+          canvas: {
+            ...state.design.canvas,
+            textPalette: {
+              ...state.design.canvas.textPalette,
               [action.payload.id]: action.payload.value,
             },
           },

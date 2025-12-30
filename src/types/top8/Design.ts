@@ -37,6 +37,7 @@ export interface CanvasConfig {
   size: { width: number; height: number };
   displayScale: number;
   colorPalette?: Record<string, { color: string; name: string }>;
+  textPalette?: Record<string, { text: string; name: string }>;
   bgAssetId?: string;
 }
 
@@ -57,7 +58,8 @@ export interface TextElementConfig
   extends BaseElementConfig,
     Partial<ComponentProps<typeof Text>> {
   type: "text";
-  text: string;
+  text?: string;
+  textId?: string;
   fontSize?: number;
   fontWeight?: number;
   fontStyle?: string;
@@ -73,7 +75,8 @@ export interface SmartTextElementConfig
   extends BaseElementConfig,
     Partial<ComponentProps<typeof Text>> {
   type: "smartText";
-  text: string;
+  text?: string;
+  textId?: string;
   fontSize?: number;
   fontWeight?: string | number;
   fontStyle?: string;

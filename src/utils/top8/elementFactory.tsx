@@ -27,6 +27,7 @@ import { CustomSVG } from "@/components/top8/Canvas/CustomSVG";
 import { replacePlaceholders } from "@/utils/top8/replacePlaceholderString";
 import { evaluateElementCondition } from "@/utils/top8/evaluateElementCondition";
 import { resolveColor, resolvePaletteColors } from "@/utils/top8/resolveColor";
+import { resolveText } from "@/utils/top8/resolveText";
 
 const createTextElement: ElementCreator<TextElementConfig> = ({
   element,
@@ -34,7 +35,12 @@ const createTextElement: ElementCreator<TextElementConfig> = ({
   context,
 }) => {
   const { fontFamily = "Arial", canvas } = context;
-  const text = replacePlaceholders(element.text, context);
+  const resolvedText = resolveText(
+    element.textId,
+    element.text,
+    canvas?.textPalette
+  );
+  const text = replacePlaceholders(resolvedText, context);
 
   return (
     <Text
@@ -67,7 +73,12 @@ const createSmartTextElement: ElementCreator<SmartTextElementConfig> = ({
   context,
 }) => {
   const { fontFamily = "Arial", canvas } = context;
-  const text = replacePlaceholders(element.text, context);
+  const resolvedText = resolveText(
+    element.textId,
+    element.text,
+    canvas?.textPalette
+  );
+  const text = replacePlaceholders(resolvedText, context);
 
   return (
     <SmartText
