@@ -7,36 +7,36 @@ import { TabNav } from "@/components/shared/TabNav/TabNav";
 
 import styles from "./SidePanel.module.scss";
 
-const PlayerElementEditor = lazy(() =>
-  import("@/components/top8/PlayerElementEditor/PlayerElementEditor").then(
+// const PlayerElementEditor = lazy(() =>
+//   import("@/components/top8/PlayerElementEditor/PlayerElementEditor").then(
+//     (module) => ({
+//       default: module.PlayerElementEditor,
+//     })
+//   )
+// );
+
+// const ElementPanel = lazy(() =>
+//   import("@/components/top8/SidePanel/ElementPanel").then((module) => ({
+//     default: module.ElementPanel,
+//   }))
+// );
+
+const PlayersEditor = lazy(() =>
+  import("@/components/top8/PlayersEditor/PlayersEditor").then((module) => ({
+    default: module.PlayersEditor,
+  }))
+);
+
+const DesignEditor = lazy(() =>
+  import("@/components/top8/DesignEditor/DesignEditor").then((module) => ({
+    default: module.DesignEditor,
+  }))
+);
+
+const TournamentEditor = lazy(() =>
+  import("@/components/top8/TournamentConfig/TournamentEditor").then(
     (module) => ({
-      default: module.PlayerElementEditor,
-    })
-  )
-);
-
-const PlayerForm = lazy(() =>
-  import("@/components/top8/PlayerForm/PlayerForm").then((module) => ({
-    default: module.PlayerForm,
-  }))
-);
-
-const ElementPanel = lazy(() =>
-  import("@/components/top8/SidePanel/ElementPanel").then((module) => ({
-    default: module.ElementPanel,
-  }))
-);
-
-const CanvasConfig = lazy(() =>
-  import("@/components/top8/CanvasConfig/CanvasConfig").then((module) => ({
-    default: module.CanvasConfig,
-  }))
-);
-
-const TournamentConfig = lazy(() =>
-  import("@/components/top8/TournamentConfig/TournamentConfig").then(
-    (module) => ({
-      default: module.TournamentConfig,
+      default: module.TournamentEditor,
     })
   )
 );
@@ -63,17 +63,22 @@ export const SidePanel = ({ className }: Props) => {
       />
 
       <Suspense fallback={<div>Loading Configs...</div>}>
-        <TournamentConfig
+        <TournamentEditor
           className={cn({
-            [styles.hidden]: activeTab !== EditorTab.TOURNAMENT_CONFIG,
+            [styles.hidden]: activeTab !== EditorTab.TOURNAMENT,
           })}
         />
-        <PlayerForm
+        <DesignEditor
           className={cn({
-            [styles.hidden]: activeTab !== EditorTab.PLAYER_FORM,
+            [styles.hidden]: activeTab !== EditorTab.DESIGN,
           })}
         />
-        <PlayerElementEditor
+        <PlayersEditor
+          className={cn({
+            [styles.hidden]: activeTab !== EditorTab.PLAYERS,
+          })}
+        />
+        {/* <PlayerElementEditor
           className={cn({
             [styles.hidden]: activeTab !== EditorTab.PLAYER_EDITOR,
           })}
@@ -82,12 +87,7 @@ export const SidePanel = ({ className }: Props) => {
           className={cn({
             [styles.hidden]: activeTab !== EditorTab.ELEMENT_EDITOR,
           })}
-        />
-        <CanvasConfig
-          className={cn({
-            [styles.hidden]: activeTab !== EditorTab.CANVAS_CONFIG,
-          })}
-        />
+        /> */}
       </Suspense>
     </div>
   );

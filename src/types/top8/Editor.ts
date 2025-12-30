@@ -1,15 +1,17 @@
 export enum EditorTab {
-  TOURNAMENT_CONFIG = "tournament-config",
-  PLAYER_FORM = "player-form",
-  PLAYER_EDITOR = "player-editor",
-  ELEMENT_EDITOR = "element-editor",
-  CANVAS_CONFIG = "canvas-config",
+  TOURNAMENT = "tournament",
+  PLAYERS = "players",
+  DESIGN = "design",
+  TEXTS = "texts",
+  // PLAYER_EDITOR = "player-editor",
+  // ELEMENT_EDITOR = "element-editor",
 }
 
 export const EditorTabLabels = {
-  [EditorTab.TOURNAMENT_CONFIG]: "Tournament Config",
-  [EditorTab.CANVAS_CONFIG]: "Canvas Config",
-  [EditorTab.PLAYER_FORM]: "Player Form",
-  [EditorTab.PLAYER_EDITOR]: "Player Editor",
-  [EditorTab.ELEMENT_EDITOR]: "Element Editor",
+  [EditorTab.TOURNAMENT]: "Tournament",
+  [EditorTab.DESIGN]: "Design",
+  [EditorTab.PLAYERS]: "Players",
+  [EditorTab.TEXTS]: "Texts",
+  // [EditorTab.PLAYER_EDITOR]: "Player Editor",
+  // [EditorTab.ELEMENT_EDITOR]: "Element Editor",
 } as const;

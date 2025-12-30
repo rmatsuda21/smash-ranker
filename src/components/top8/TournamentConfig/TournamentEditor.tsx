@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { debounce, isEqual } from "lodash";
+import cn from "classnames";
 
 import { useTournamentStore } from "@/store/tournamentStore";
 import { TournamentInfo } from "@/types/top8/Tournament";
@@ -24,7 +25,11 @@ const parseDateForInput = (date: string): string => {
   return new Date(year, month - 1, day).toISOString();
 };
 
-export const TournamentConfigEditor = () => {
+type Props = {
+  className?: string;
+};
+
+export const TournamentEditor = ({ className }: Props) => {
   const tournament = useTournamentStore((state) => state.info);
   const dispatch = useTournamentStore((state) => state.dispatch);
 
@@ -73,31 +78,21 @@ export const TournamentConfigEditor = () => {
     debouncedUpdateTournament(newTournament);
   };
 
-  const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newTournament = {
-      ...tempTournament,
-      date: parseDateForInput(event.target.value),
-    };
-    setTempTournament(newTournament);
-    debouncedUpdateTournament(newTournament);
-  };
-
-  const handleIconSelect = (src?: string) => {
-    const newTournament = {
-      ...tempTournament,
-      iconSrc: src,
-    };
-    setTempTournament(newTournament);
-    debouncedUpdateTournament(newTournament);
-  };
-
   return (
-    <div className={styles.wrapper}>
+    <div className={cn(styles.wrapper, className)}>
       <p className={styles.label}>Icon</p>
       <AssetSelector
         selectedSrc={tempTournament?.iconSrc}
-        onSelect={handleIconSelect}
-        onClear={() => handleIconSelect(undefined)}
+        onSelect={(src) =>
+          handleChange({
+            target: { name: "iconSrc", value: src },
+          } as unknown as React.ChangeEvent<HTMLInputElement>)
+        }
+        onClear={() =>
+          handleChange({
+            target: { name: "iconSrc", value: undefined },
+          } as unknown as React.ChangeEvent<HTMLInputElement>)
+        }
       />
       <Input
         label="Tournament Name"
@@ -122,7 +117,14 @@ export const TournamentConfigEditor = () => {
           id="date"
           type="date"
           value={formatDateForInput(tempTournament?.date)}
-          onChange={handleDateChange}
+          onChange={(event) =>
+            handleChange({
+              target: {
+                name: "date",
+                value: parseDateForInput(event.target.value),
+              },
+            } as unknown as React.ChangeEvent<HTMLInputElement>)
+          }
         />
         <Input
           label="Entrants"
@@ -130,7 +132,11 @@ export const TournamentConfigEditor = () => {
           id="entrants"
           type="number"
           value={tempTournament?.entrants.toString()}
-          onChange={handleChange}
+          onChange={(event) =>
+            handleChange({
+              target: { name: "entrants", value: Number(event.target.value) },
+            } as unknown as React.ChangeEvent<HTMLInputElement>)
+          }
         />
       </div>
       <div className={styles.row}>
