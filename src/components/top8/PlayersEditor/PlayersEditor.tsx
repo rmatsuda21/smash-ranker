@@ -6,16 +6,16 @@ import { usePlayerStore } from "@/store/playerStore";
 import { CharacerData, PlayerInfo } from "@/types/top8/Player";
 import { CharacterEditor } from "@/components/top8/CharacterEditor/CharacterEditor";
 import { Input } from "@/components/shared/Input/Input";
-import { PlayerSelector } from "@/components/top8/PlayerForm/PlayerSelector";
+import { PlayerSelector } from "@/components/top8/PlayersEditor/PlayerSelector";
 import { AssetSelector } from "@/components/top8/AssetSelector/AssetSelector";
 
-import styles from "./PlayerForm.module.scss";
+import styles from "./PlayersEditor.module.scss";
 
 type Props = {
   className?: string;
 };
 
-export const PlayerForm = ({ className }: Props) => {
+export const PlayersEditor = ({ className }: Props) => {
   const players = usePlayerStore((state) => state.players);
   const selectedPlayerIndex = usePlayerStore(
     (state) => state.selectedPlayerIndex

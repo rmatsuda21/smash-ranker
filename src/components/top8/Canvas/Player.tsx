@@ -64,7 +64,7 @@ const PlayerComponent = ({
       dispatch({ type: "SET_SELECTED_PLAYER_INDEX", payload: index });
       editorDispatch({
         type: "SET_ACTIVE_TAB",
-        payload: EditorTab.PLAYER_FORM,
+        payload: EditorTab.PLAYERS,
       });
     },
     [index, dispatch, editorDispatch]

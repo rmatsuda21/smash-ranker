@@ -24,7 +24,7 @@ const editorReducer = (
 };
 
 const initialState: EditorState = {
-  activeTab: EditorTab.TOURNAMENT_CONFIG,
+  activeTab: EditorTab.TOURNAMENT,
 };
 
 interface EditorStore extends EditorState {

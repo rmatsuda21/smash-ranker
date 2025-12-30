@@ -1,17 +1,17 @@
 import cn from "classnames";
 
-import { FontSelect } from "@/components/top8/CanvasConfig/FontSelect/FontSelect";
+import { FontSelect } from "@/components/top8/DesignEditor/FontSelect/FontSelect";
 import { useCanvasStore } from "@/store/canvasStore";
-import { ColorPaletteEditor } from "@/components/top8/CanvasConfig/ColorPaletteEditor/ColorPaletteEditor";
+import { ColorPaletteEditor } from "@/components/top8/DesignEditor/ColorPaletteEditor/ColorPaletteEditor";
 import { AssetSelector } from "@/components/top8/AssetSelector/AssetSelector";
 
-import styles from "./CanvasConfig.module.scss";
+import styles from "./DesignEditor.module.scss";
 
 type Props = {
   className?: string;
 };
 
-export const CanvasConfig = ({ className }: Props) => {
+export const DesignEditor = ({ className }: Props) => {
   const canvasDispatch = useCanvasStore((state) => state.dispatch);
   const canvas = useCanvasStore((state) => state.design.canvas);
 
