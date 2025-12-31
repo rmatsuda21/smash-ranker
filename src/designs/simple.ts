@@ -1,16 +1,17 @@
 import { Design, PlayerConfig } from "@/types/top8/Design";
-import { LayoutPlaceholder } from "@/consts/top8/placeholders";
+import { DesignPlaceholder } from "@/consts/top8/placeholders";
 import { RenderCondition } from "@/consts/top8/renderConditions";
 
 const PADDING = 40;
 const PLAYER_SPACING = 15;
 const BASE_PL_SIZE = 700;
+const MAIN_PL_SIZE = 665;
 const CANVAS_WIDTH = 1920;
 const CANVAS_HEIGHT = 1080;
+const SECOND_ROW_Y_OFFSET = 27;
 const TOURNAMENT_ICON_SIZE = 110;
-const SMASH_BALL_SIZE = 1600;
 
-const PLAYER_SIZE = 370;
+const SMASH_BALL_SIZE = 1600;
 
 const basePlayer: PlayerConfig = {
   position: { x: 25, y: 190 },
@@ -42,8 +43,8 @@ const basePlayer: PlayerConfig = {
         },
         {
           type: "text",
-          conditions: [LayoutPlaceholder.PLAYER_TWITTER],
-          text: `@${LayoutPlaceholder.PLAYER_TWITTER}`,
+          conditions: [DesignPlaceholder.PLAYER_TWITTER],
+          text: `@${DesignPlaceholder.PLAYER_TWITTER}`,
           fontSize: 30,
           align: "center",
           verticalAlign: "middle",
@@ -90,7 +91,7 @@ const basePlayer: PlayerConfig = {
     {
       name: "Full Name",
       type: "smartText",
-      text: `${LayoutPlaceholder.PLAYER_PREFIX} | ${LayoutPlaceholder.PLAYER_TAG}`,
+      text: `${DesignPlaceholder.PLAYER_PREFIX} | ${DesignPlaceholder.PLAYER_TAG}`,
       fontSize: 140,
       fontWeight: 900,
       align: "center",
@@ -100,12 +101,12 @@ const basePlayer: PlayerConfig = {
       fill: "text",
       shadowColor: "textShadow",
       shadowOffset: { x: 10, y: 10 },
-      conditions: [LayoutPlaceholder.PLAYER_PREFIX],
+      conditions: [DesignPlaceholder.PLAYER_PREFIX],
     },
     {
       name: "Tag",
       type: "smartText",
-      text: LayoutPlaceholder.PLAYER_TAG,
+      text: DesignPlaceholder.PLAYER_TAG,
       fontSize: 140,
       fontWeight: 900,
       align: "center",
@@ -115,12 +116,12 @@ const basePlayer: PlayerConfig = {
       fill: "text",
       shadowColor: "textShadow",
       shadowOffset: { x: 10, y: 10 },
-      conditions: [RenderCondition.NOT, LayoutPlaceholder.PLAYER_PREFIX],
+      conditions: [RenderCondition.NOT, DesignPlaceholder.PLAYER_PREFIX],
     },
     {
       name: "Placement",
       type: "text",
-      text: LayoutPlaceholder.PLAYER_PLACEMENT,
+      text: DesignPlaceholder.PLAYER_PLACEMENT,
       fontSize: 150,
       fontWeight: 900,
       fill: "text",
@@ -134,27 +135,27 @@ const getScale = (size: number) => ({
   y: size / BASE_PL_SIZE,
 });
 
-const TWITTER_HEIGHT = 50 * getScale(PLAYER_SIZE).y;
-const remainingWidth =
-  CANVAS_WIDTH - PADDING * 2 - PLAYER_SIZE * 4 - PLAYER_SPACING * 3;
-const remainingHeight =
-  CANVAS_HEIGHT - PADDING * 2 - PLAYER_SIZE * 2 - TWITTER_HEIGHT * 2;
-const startX = PADDING + remainingWidth / 2;
-const startY = PADDING + remainingHeight / 2;
-
 const getFirstRowPositions = () => {
   const row: {
     position: { x: number; y: number };
     scale: { x: number; y: number };
   }[] = [];
+  const remainingWidth =
+    CANVAS_WIDTH - PADDING * 2 - MAIN_PL_SIZE - PLAYER_SPACING;
 
-  for (let i = 0; i < 4; i++) {
+  const playerWidth = (remainingWidth - PLAYER_SPACING * 2) / 3;
+
+  for (let i = 0; i < 3; i++) {
     row.push({
       position: {
-        x: startX + i * (PLAYER_SIZE + PLAYER_SPACING),
-        y: startY,
+        x:
+          PADDING +
+          MAIN_PL_SIZE +
+          PLAYER_SPACING +
+          i * (playerWidth + PLAYER_SPACING),
+        y: PADDING + (CANVAS_HEIGHT - MAIN_PL_SIZE - PADDING * 2) / 2,
       },
-      scale: getScale(PLAYER_SIZE),
+      scale: getScale(playerWidth),
     });
   }
 
@@ -166,14 +167,29 @@ const getSecondRowPositions = () => {
     position: { x: number; y: number };
     scale: { x: number; y: number };
   }[] = [];
+  const remainingWidth =
+    CANVAS_WIDTH - PADDING * 2 - MAIN_PL_SIZE - PLAYER_SPACING;
+
+  const playerWidth = (remainingWidth - PLAYER_SPACING * 3) / 4;
+
+  const y =
+    PADDING +
+    (CANVAS_HEIGHT - MAIN_PL_SIZE - PADDING * 2) / 2 +
+    MAIN_PL_SIZE -
+    playerWidth +
+    SECOND_ROW_Y_OFFSET;
 
   for (let i = 0; i < 4; i++) {
     row.push({
       position: {
-        x: startX + i * (PLAYER_SIZE + PLAYER_SPACING),
-        y: startY + PLAYER_SIZE + PLAYER_SPACING + TWITTER_HEIGHT,
+        x:
+          PADDING +
+          MAIN_PL_SIZE +
+          PLAYER_SPACING +
+          i * (playerWidth + PLAYER_SPACING),
+        y,
       },
-      scale: getScale(PLAYER_SIZE),
+      scale: getScale(playerWidth),
     });
   }
 
@@ -192,16 +208,54 @@ const secondRow: {
 
 const players: Partial<PlayerConfig>[] = [
   {
+    position: {
+      x: PADDING,
+      y: PADDING + (CANVAS_HEIGHT - MAIN_PL_SIZE - PADDING * 2) / 2,
+    },
+    scale: getScale(MAIN_PL_SIZE),
+  },
+  {
     ...firstRow[0],
+    // elements: [
+    //   {
+    //     type: "rect",
+    //     fill: "#000000",
+    //     position: { x: 0, y: 0 },
+    //     size: { width: BASE_PL_SIZE, height: BASE_PL_SIZE },
+    //   },
+    //   {
+    //     type: "svg",
+    //     src: "/assets/top8/theme/mini/smash_ball.svg",
+    //     position: { x: 0, y: 0 },
+    //     size: { width: BASE_PL_SIZE, height: BASE_PL_SIZE },
+    //     palette: {
+    //       color_1: "rgba(255, 255, 255, 0.2)",
+    //     },
+    //   },
+    //   {
+    //     type: "characterImage",
+    //     position: { x: 0, y: 0 },
+    //     size: { width: BASE_PL_SIZE, height: BASE_PL_SIZE },
+    //     clip: true,
+    //     shadowBlur: 2,
+    //   },
+    //   {
+    //     type: "svg",
+    //     src: "/assets/top8/theme/mini/frame.svg",
+    //     position: { x: 0, y: 0 },
+    //     size: { width: BASE_PL_SIZE, height: BASE_PL_SIZE },
+    //     palette: {
+    //       color_1: "rgb(97, 233, 24)",
+    //     },
+    //   },
+    //   ...basePlayer.elements.slice(4),
+    // ],
   },
   {
     ...firstRow[1],
   },
   {
     ...firstRow[2],
-  },
-  {
-    ...firstRow[3],
   },
   {
     ...secondRow[0],
@@ -217,7 +271,7 @@ const players: Partial<PlayerConfig>[] = [
   },
 ];
 
-export const squaresLayout: Design = {
+export const simpleDesign: Design = {
   canvas: {
     size: {
       width: 1920,
@@ -228,23 +282,23 @@ export const squaresLayout: Design = {
       primary: { color: "rgb(179, 0, 0)", name: "Primary" },
       secondary: { color: "rgb(235, 171, 64)", name: "Secondary" },
       background: { color: "rgb(0, 0, 0)", name: "Background" },
-      accent: { color: "rgba(255, 255, 255, 0.2)", name: "Accent" },
+      smashBall: { color: "rgba(255, 255, 255, 0.2)", name: "Smash Ball" },
       text: { color: "rgb(255, 255, 255)", name: "Text" },
       textShadow: { color: "rgb(0, 0, 0)", name: "Text Shadow" },
       playerBackground: { color: "rgb(0, 0, 0)", name: "Player Background" },
       characterShadow: { color: "rgb(255, 0, 0)", name: "Character Shadow" },
     },
     textPalette: {
-      tournamentName: {
-        text: `${LayoutPlaceholder.TOURNAMENT_NAME} - ${LayoutPlaceholder.EVENT_NAME}`,
-        name: "Tournament Name",
+      topLeftText: {
+        text: `${DesignPlaceholder.TOURNAMENT_NAME} - ${DesignPlaceholder.EVENT_NAME}`,
+        name: "Top Left Text",
       },
       topRightText: {
         text: "smash-ranker.vercel.app",
         name: "Top Right Text",
       },
       bottomText: {
-        text: `${LayoutPlaceholder.TOURNAMENT_DATE} - ${LayoutPlaceholder.TOURNAMENT_LOCATION} - ${LayoutPlaceholder.ENTRANTS} Entrants`,
+        text: `${DesignPlaceholder.TOURNAMENT_DATE} - ${DesignPlaceholder.TOURNAMENT_LOCATION} - ${DesignPlaceholder.ENTRANTS} Entrants`,
         name: "Bottom Text",
       },
     },
@@ -267,7 +321,7 @@ export const squaresLayout: Design = {
         },
         size: { width: SMASH_BALL_SIZE, height: SMASH_BALL_SIZE },
         palette: {
-          color_1: "accent",
+          color_1: "smashBall",
         },
       },
       {
@@ -285,8 +339,8 @@ export const squaresLayout: Design = {
         position: { x: 0, y: 0 },
         size: { width: CANVAS_WIDTH, height: CANVAS_HEIGHT },
         palette: {
-          color_1: "primary",
-          color_2: "secondary",
+          color_1: "secondary",
+          color_2: "primary",
         },
       },
     ],
@@ -295,10 +349,10 @@ export const squaresLayout: Design = {
     elements: [
       {
         type: "text",
-        id: "tournamentName",
-        name: "Tournament Name",
+        id: "topLeftText",
+        name: "Top Left Text",
         position: { x: PADDING, y: PADDING },
-        textId: "tournamentName",
+        textId: "topLeftText",
         fontSize: 40,
         fontWeight: 900,
         fill: "text",
@@ -327,10 +381,10 @@ export const squaresLayout: Design = {
       },
       {
         type: "text",
-        id: "tournamentNameWithIcon",
-        name: "Tournament Name (w/ Icon)",
+        id: "topLeftTextWithIcon",
+        name: "Top Left Text (w/ Icon)",
         position: { x: PADDING + TOURNAMENT_ICON_SIZE + 20, y: PADDING },
-        textId: "tournamentName",
+        textId: "topLeftText",
         fontSize: 40,
         fontWeight: 900,
         fill: "text",

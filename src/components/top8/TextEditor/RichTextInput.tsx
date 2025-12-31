@@ -2,7 +2,7 @@ import { useRef, useState, useCallback, useEffect, KeyboardEvent } from "react";
 import cn from "classnames";
 
 import {
-  LayoutPlaceholder,
+  DesignPlaceholder,
   PlaceholderLabel,
 } from "@/consts/top8/placeholders";
 
@@ -21,7 +21,7 @@ const textToHtml = (text: string): string => {
   if (!text) return "";
 
   return text.replace(PLACEHOLDER_REGEX, (match) => {
-    const placeholder = match as LayoutPlaceholder;
+    const placeholder = match as DesignPlaceholder;
     const label = PlaceholderLabel[placeholder];
 
     if (!label) {
@@ -198,7 +198,7 @@ export const RichTextInput = ({
   }, []);
 
   const insertPlaceholder = useCallback(
-    (placeholder: LayoutPlaceholder) => {
+    (placeholder: DesignPlaceholder) => {
       if (!editorRef.current) return;
 
       const currentText = htmlToText(editorRef.current);
@@ -312,7 +312,7 @@ export const RichTextInput = ({
       } else if (e.key === "Enter" || e.key === "Tab") {
         e.preventDefault();
         insertPlaceholder(
-          filteredPlaceholders[selectedIndex][0] as LayoutPlaceholder
+          filteredPlaceholders[selectedIndex][0] as DesignPlaceholder
         );
       } else if (e.key === "Escape") {
         e.preventDefault();
@@ -392,7 +392,7 @@ export const RichTextInput = ({
                 })}
                 onMouseDown={(e) => {
                   e.preventDefault();
-                  insertPlaceholder(placeholder as LayoutPlaceholder);
+                  insertPlaceholder(placeholder as DesignPlaceholder);
                 }}
                 onMouseEnter={() => setSelectedIndex(index)}
               >

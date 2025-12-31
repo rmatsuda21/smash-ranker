@@ -1,4 +1,4 @@
-import { LayoutPlaceholder } from "@/consts/top8/placeholders";
+import { DesignPlaceholder } from "@/consts/top8/placeholders";
 import { ElementFactoryContext } from "@/types/top8/ElementFactory";
 
 const formatDate = (date: Date | string | undefined): string | undefined => {
@@ -10,26 +10,26 @@ const formatDate = (date: Date | string | undefined): string | undefined => {
 
 const getPlaceholderMap = (
   context: ElementFactoryContext
-): Record<LayoutPlaceholder, string | undefined> => {
+): Record<DesignPlaceholder, string | undefined> => {
   const { player, tournament } = context;
   return {
-    [LayoutPlaceholder.PLAYER_PLACEMENT]: player?.placement?.toString(),
-    [LayoutPlaceholder.PLAYER_NAME]: player?.name,
-    [LayoutPlaceholder.PLAYER_TAG]: player?.gamerTag,
-    [LayoutPlaceholder.PLAYER_PREFIX]: player?.prefix,
-    [LayoutPlaceholder.TOURNAMENT_NAME]: tournament?.tournamentName,
-    [LayoutPlaceholder.EVENT_NAME]: tournament?.eventName,
-    [LayoutPlaceholder.TOURNAMENT_DATE]: formatDate(tournament?.date),
-    [LayoutPlaceholder.TOURNAMENT_LOCATION]: `${tournament?.location.city}, ${
+    [DesignPlaceholder.PLAYER_PLACEMENT]: player?.placement?.toString(),
+    [DesignPlaceholder.PLAYER_NAME]: player?.name,
+    [DesignPlaceholder.PLAYER_TAG]: player?.gamerTag,
+    [DesignPlaceholder.PLAYER_PREFIX]: player?.prefix,
+    [DesignPlaceholder.TOURNAMENT_NAME]: tournament?.tournamentName,
+    [DesignPlaceholder.EVENT_NAME]: tournament?.eventName,
+    [DesignPlaceholder.TOURNAMENT_DATE]: formatDate(tournament?.date),
+    [DesignPlaceholder.TOURNAMENT_LOCATION]: `${tournament?.location.city}, ${
       tournament?.location.state
     }${
       tournament?.location.country ? `, ${tournament?.location.country}` : ""
     }`,
-    [LayoutPlaceholder.TOURNAMENT_CITY]: tournament?.location.city,
-    [LayoutPlaceholder.TOURNAMENT_STATE]: tournament?.location.state,
-    [LayoutPlaceholder.TOURNAMENT_COUNTRY]: tournament?.location.country,
-    [LayoutPlaceholder.ENTRANTS]: tournament?.entrants?.toString(),
-    [LayoutPlaceholder.PLAYER_TWITTER]: player?.twitter,
+    [DesignPlaceholder.TOURNAMENT_CITY]: tournament?.location.city,
+    [DesignPlaceholder.TOURNAMENT_STATE]: tournament?.location.state,
+    [DesignPlaceholder.TOURNAMENT_COUNTRY]: tournament?.location.country,
+    [DesignPlaceholder.ENTRANTS]: tournament?.entrants?.toString(),
+    [DesignPlaceholder.PLAYER_TWITTER]: player?.twitter,
   };
 };
 
@@ -40,6 +40,6 @@ export const replacePlaceholders = (
   const map = getPlaceholderMap(context);
   return text.replace(
     /<[^>]+>/g,
-    (match) => map[match as LayoutPlaceholder] ?? ""
+    (match) => map[match as DesignPlaceholder] ?? ""
   );
 };

@@ -9,8 +9,8 @@ import { DropDownSelect } from "@/components/top8/DropDownSelect/DropDownSelect"
 import { DBConfig } from "@/types/Repository";
 import { useFontStore } from "@/store/fontStore";
 import { useCanvasStore } from "@/store/canvasStore";
-import { simpleLayout } from "@/layouts/simple";
-import { squaresLayout } from "@/layouts/squares";
+import { simpleDesign } from "@/designs/simple";
+import { squaresDesign } from "@/designs/squares";
 
 import styles from "./ConfigManagerModal.module.scss";
 import { COOKIES } from "@/consts/cookies";
@@ -24,13 +24,13 @@ const defaultConfigs: DBConfig[] = [
   {
     id: "default-simple",
     name: "Simple Config",
-    layout: simpleLayout,
+    layout: simpleDesign,
     selectedFont: "Noto Sans JP",
   },
   {
     id: "default-squares",
     name: "Squares Config",
-    layout: squaresLayout,
+    layout: squaresDesign,
     selectedFont: "Noto Sans JP",
   },
 ];
