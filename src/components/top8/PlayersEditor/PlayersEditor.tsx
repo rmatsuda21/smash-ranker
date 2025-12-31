@@ -147,6 +147,7 @@ export const PlayersEditor = ({ className }: Props) => {
           selectedSrc={tempPlayer?.avatarImgSrc}
           onSelect={handleAssetSelect}
           onClear={handleClear}
+          disabled={!selectedPlayer}
         />
       </div>
       <div className={cn({ [styles.disabled]: !selectedPlayer })}>
