@@ -22,8 +22,26 @@ const textToHtml = (text: string): string => {
 
   return text.replace(PLACEHOLDER_REGEX, (match) => {
     const placeholder = match as LayoutPlaceholder;
-    const label = PlaceholderLabel[placeholder] ?? placeholder;
-    return `<span class="${styles.pill}" contenteditable="false" data-placeholder="${match}">${label}<span class="${styles.removeIcon}">×</span></span>&#8203;`;
+    const label = PlaceholderLabel[placeholder];
+
+    if (!label) {
+      return match;
+    }
+
+    const span = document.createElement("span");
+    span.id = "pill";
+    span.className = styles.pill;
+    span.contentEditable = "false";
+    span.dataset.placeholder = match;
+
+    const removeIcon = document.createElement("span");
+    removeIcon.className = styles.removeIcon;
+    removeIcon.textContent = "×";
+
+    span.appendChild(document.createTextNode(label));
+    span.appendChild(removeIcon);
+
+    return span.outerHTML;
   });
 };
 
@@ -32,16 +50,11 @@ const htmlToText = (element: HTMLElement): string => {
 
   element.childNodes.forEach((node) => {
     if (node.nodeType === Node.TEXT_NODE) {
-      result += (node.textContent ?? "").replace(/\u200B/g, "");
+      result += node.textContent ?? "";
     } else if (node.nodeType === Node.ELEMENT_NODE) {
       const el = node as HTMLElement;
       const placeholder = el.getAttribute("data-placeholder");
-      if (placeholder) {
-        result += placeholder;
-      } else {
-        // Recurse for other elements (like <br>)
-        result += htmlToText(el);
-      }
+      result += placeholder ? placeholder : htmlToText(el);
     }
   });
 
@@ -62,6 +75,7 @@ export const RichTextInput = ({
   const [selectedIndex, setSelectedIndex] = useState(0);
   const editorRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const dropdownListRef = useRef<HTMLDivElement>(null);
   const isInternalChange = useRef(false);
   const lastExternalValue = useRef(value);
 
@@ -95,6 +109,13 @@ export const RichTextInput = ({
   const filteredPlaceholders = Object.entries(PlaceholderLabel).filter(
     ([, label]) => label.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  useEffect(() => {
+    if (showDropdown && dropdownListRef.current) {
+      const selectedItem = dropdownListRef.current.children[selectedIndex];
+      selectedItem?.scrollIntoView({ block: "nearest" });
+    }
+  }, [selectedIndex, showDropdown]);
 
   const pushToHistory = useCallback((text: string) => {
     if (historyRef.current[historyIndexRef.current] === text) return;
@@ -304,47 +325,42 @@ export const RichTextInput = ({
   const handlePillClick = useCallback(
     (e: React.MouseEvent) => {
       const target = e.target as HTMLElement;
-      const pill = target.closest(`.${styles.pill}`) as HTMLElement | null;
+      const pill = target.closest(`#pill`) as HTMLElement | null;
 
       if (pill && editorRef.current) {
         e.preventDefault();
         e.stopPropagation();
 
-        const placeholder = pill.getAttribute("data-placeholder");
-        if (placeholder) {
-          const nextSibling = pill.nextSibling;
-          if (
-            nextSibling &&
-            nextSibling.nodeType === Node.TEXT_NODE &&
-            nextSibling.textContent === "\u200B"
-          ) {
-            nextSibling.remove();
-          }
-          pill.remove();
-
-          const newText = htmlToText(editorRef.current);
-          lastExternalValue.current = newText;
-          isInternalChange.current = true;
-
-          pushToHistory(newText);
-
-          onChange(newText);
+        const nextSibling = pill.nextSibling;
+        if (
+          nextSibling &&
+          nextSibling.nodeType === Node.TEXT_NODE &&
+          nextSibling.textContent === "\u200B"
+        ) {
+          nextSibling.remove();
         }
+
+        pill.remove();
+
+        const newText = htmlToText(editorRef.current);
+        lastExternalValue.current = newText;
+        isInternalChange.current = true;
+
+        pushToHistory(newText);
+        onChange(newText);
       }
     },
     [onChange, pushToHistory]
   );
 
   const handleBlur = () => {
-    setTimeout(() => {
-      setShowDropdown(false);
-    }, 200);
+    setShowDropdown(false);
   };
 
   const isEmpty = !value || value.trim() === "";
 
   return (
-    <div className={cn(styles.wrapper, className)}>
+    <div className={cn(styles.richTextInput, className)}>
       <div
         ref={editorRef}
         className={cn(styles.editor, { [styles.empty]: isEmpty })}
@@ -363,15 +379,15 @@ export const RichTextInput = ({
           className={styles.dropdown}
           style={{ left: dropdownPosition.x, top: dropdownPosition.y }}
         >
-          <div className={styles.dropdownHeader}>
-            <span className={styles.dropdownTitle}>Insert variable</span>
-            <span className={styles.dropdownHint}>Type to filter</span>
+          <div className={styles.header}>
+            <span className={styles.title}>Insert variable</span>
+            <span className={styles.hint}>Type to filter</span>
           </div>
-          <div className={styles.dropdownList}>
+          <div ref={dropdownListRef} className={styles.list}>
             {filteredPlaceholders.map(([placeholder, label], index) => (
               <button
                 key={placeholder}
-                className={cn(styles.dropdownItem, {
+                className={cn(styles.item, {
                   [styles.selected]: index === selectedIndex,
                 })}
                 onMouseDown={(e) => {
@@ -380,16 +396,12 @@ export const RichTextInput = ({
                 }}
                 onMouseEnter={() => setSelectedIndex(index)}
               >
-                <span className={styles.pillPreview}>{label}</span>
+                <span className={styles.pill}>{label}</span>
               </button>
             ))}
           </div>
         </div>
       )}
-
-      <div className={styles.hint}>
-        Type <code>{"{"}</code> to insert a variable
-      </div>
     </div>
   );
 };

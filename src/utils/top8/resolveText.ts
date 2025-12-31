@@ -1,8 +1,8 @@
 import { CanvasConfig } from "@/types/top8/Design";
 
 export const resolveText = (
-  textId: string | undefined,
-  text: string | undefined,
+  textId?: string,
+  text?: string,
   textPalette?: CanvasConfig["textPalette"]
 ): string => {
   if (textId && textPalette && textId in textPalette) {
