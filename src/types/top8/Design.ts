@@ -1,7 +1,7 @@
 import { type ComponentProps } from "react";
 import { Group, Image, Rect, Text } from "react-konva";
 
-import { LayoutPlaceholder } from "@/consts/top8/placeholders";
+import { DesignPlaceholder } from "@/consts/top8/placeholders";
 import { RenderCondition } from "@/consts/top8/renderConditions";
 
 export type ImageFillMode = "contain" | "cover";
@@ -31,7 +31,7 @@ export type ElementType =
   | "altCharacterImage"
   | "tournamentIcon";
 
-export type Condition = LayoutPlaceholder | RenderCondition;
+export type Condition = DesignPlaceholder | RenderCondition;
 
 export interface CanvasConfig {
   size: { width: number; height: number };

@@ -2,7 +2,7 @@ import cn from "classnames";
 
 import { Condition } from "@/types/top8/Design";
 import {
-  LayoutPlaceholder,
+  DesignPlaceholder,
   PlaceholderLabel,
 } from "@/consts/top8/placeholders";
 import {
@@ -21,7 +21,7 @@ type Props = {
 };
 
 const isPlaceholder = (condition: Condition): boolean => {
-  return Object.values(LayoutPlaceholder).some((placeholder) =>
+  return Object.values(DesignPlaceholder).some((placeholder) =>
     condition.includes(placeholder)
   );
 };
@@ -35,7 +35,7 @@ const isRenderCondition = (condition: Condition): boolean => {
 const getConditionLabel = (condition: Condition, negated: boolean): string => {
   let label = "";
   if (isPlaceholder(condition)) {
-    label = PlaceholderLabel[condition as LayoutPlaceholder];
+    label = PlaceholderLabel[condition as DesignPlaceholder];
   }
   if (isRenderCondition(condition)) {
     label = RenderConditionLabel[condition as RenderCondition];

@@ -3,7 +3,7 @@ import { createJSONStorage, devtools, persist } from "zustand/middleware";
 import { Stage } from "konva/lib/Stage";
 
 import { ElementConfig, Design, PlayerConfig } from "@/types/top8/Design";
-import { simpleLayout } from "@/layouts/simple";
+import { simpleDesign } from "@/designs/simple";
 
 interface CanvasState {
   design: Design;
@@ -41,7 +41,7 @@ type CanvasAction =
     };
 
 const initialState: CanvasState = {
-  design: simpleLayout,
+  design: simpleDesign,
   stageRef: null,
   editable: false,
 };

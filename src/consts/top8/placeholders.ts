@@ -1,4 +1,4 @@
-export enum LayoutPlaceholder {
+export enum DesignPlaceholder {
   PLAYER_PLACEMENT = "<🥇>",
   TOURNAMENT_NAME = "<📝>",
   EVENT_NAME = "<🎮>",
@@ -14,19 +14,19 @@ export enum LayoutPlaceholder {
   PLAYER_TWITTER = "<🐦>",
 }
 
-export const PlaceholderLabel: Record<LayoutPlaceholder, string> = {
-  [LayoutPlaceholder.PLAYER_PLACEMENT]: "Player Placement",
-  [LayoutPlaceholder.TOURNAMENT_NAME]: "Tournament Name",
-  [LayoutPlaceholder.EVENT_NAME]: "Event Name",
-  [LayoutPlaceholder.TOURNAMENT_DATE]: "Tournament Date",
-  [LayoutPlaceholder.TOURNAMENT_LOCATION]:
+export const PlaceholderLabel: Record<DesignPlaceholder, string> = {
+  [DesignPlaceholder.PLAYER_PLACEMENT]: "Player Placement",
+  [DesignPlaceholder.TOURNAMENT_NAME]: "Tournament Name",
+  [DesignPlaceholder.EVENT_NAME]: "Event Name",
+  [DesignPlaceholder.TOURNAMENT_DATE]: "Tournament Date",
+  [DesignPlaceholder.TOURNAMENT_LOCATION]:
     "Tournament Location (City, State, Country)",
-  [LayoutPlaceholder.TOURNAMENT_CITY]: "Tournament City",
-  [LayoutPlaceholder.TOURNAMENT_STATE]: "Tournament State",
-  [LayoutPlaceholder.TOURNAMENT_COUNTRY]: "Tournament Country",
-  [LayoutPlaceholder.ENTRANTS]: "# of Entrants",
-  [LayoutPlaceholder.PLAYER_NAME]: "Player Name (w/ Prefix)",
-  [LayoutPlaceholder.PLAYER_TAG]: "Player Tag",
-  [LayoutPlaceholder.PLAYER_PREFIX]: "Player Prefix",
-  [LayoutPlaceholder.PLAYER_TWITTER]: "Twitter Handle",
+  [DesignPlaceholder.TOURNAMENT_CITY]: "Tournament City",
+  [DesignPlaceholder.TOURNAMENT_STATE]: "Tournament State",
+  [DesignPlaceholder.TOURNAMENT_COUNTRY]: "Tournament Country",
+  [DesignPlaceholder.ENTRANTS]: "# of Entrants",
+  [DesignPlaceholder.PLAYER_NAME]: "Player Name (w/ Prefix)",
+  [DesignPlaceholder.PLAYER_TAG]: "Player Tag",
+  [DesignPlaceholder.PLAYER_PREFIX]: "Player Prefix",
+  [DesignPlaceholder.PLAYER_TWITTER]: "Twitter Handle",
 };
