@@ -36,7 +36,7 @@ export const TextEditor = ({ className }: Props) => {
 
   if (!textPalette || Object.keys(textPalette).length === 0) {
     return (
-      <div className={cn(className, styles.wrapper)}>
+      <div className={cn(className, styles.textEditor)}>
         <div className={styles.empty}>
           <p>No text content defined in this design.</p>
           <p className={styles.hint}>
@@ -48,16 +48,25 @@ export const TextEditor = ({ className }: Props) => {
   }
 
   return (
-    <div className={cn(className, styles.wrapper)}>
-      <p className={styles.description}>
-        Edit the text content displayed in your graphic. Use dynamic variables
-        to automatically insert tournament and player information.
-      </p>
+    <div className={cn(className, styles.textEditor)}>
+      <div className={styles.description}>
+        <p>
+          Edit the text content displayed in your graphic. Use dynamic variables
+          to insert tournament and player information.
+        </p>
+        <p className={styles.tip}>
+          <kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>Z</kbd> to undo and{" "}
+          <kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>Y</kbd> to redo.
+        </p>
+        <p className={styles.tip}>
+          Type <code>{"{"}</code> to insert a variable!
+        </p>
+      </div>
 
-      <div className={styles.textList}>
+      <div className={styles.list}>
         {Object.entries(textPalette).map(([id, { text, name }]) => (
-          <div key={id} className={styles.textItem}>
-            <label className={styles.label}>{name}</label>
+          <div key={id} className={styles.item}>
+            <span className={styles.label}>{name}</span>
             <RichTextInput
               value={text}
               onChange={(newText) => handleTextChange(id, newText, name)}
