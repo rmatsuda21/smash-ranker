@@ -13,7 +13,9 @@
         "Pink",
         "White",
         "Blue"
-      ]
+      ],
+      "cropOffset": { "x": 0, "y": 0.26 },
+      "cropScale": 2
     },
     {
       "name": "Bowser Jr.",
@@ -28,7 +30,9 @@
         "Morton",
         "Lemmy",
         "Ludwig"
-      ]
+      ],
+      "cropOffset": { "x": 0, "y": 0.2 },
+      "cropScale": 1.5
     },
     {
       "name": "Bowser",
@@ -43,7 +47,9 @@
         "Orange",
         "Red",
         "Blue"
-      ]
+      ],
+      "cropOffset": { "x": -0.05, "y": -0.05 },
+      "cropScale": 1.1
     },
     {
       "name": "Captain Falcon",
@@ -58,7 +64,9 @@
         "White",
         "Yellow",
         "Cyan"
-      ]
+      ],
+      "cropOffset": { "x": 0, "y": 0.25 },
+      "cropScale": 1.7
     },
     {
       "name": "Cloud",
@@ -73,7 +81,9 @@
         "Advent Black",
         "Brown",
         "Advent Purple"
-      ]
+      ],
+      "cropOffset": { "x": 0.15, "y": 0.25 },
+      "cropScale": 1.95
     },
     {
       "name": "Corrin",
@@ -88,7 +98,9 @@
         "Pink",
         "Green",
         "Black"
-      ]
+      ],
+      "cropOffset": { "x": -0.16, "y": 0.28 },
+      "cropScale": 1.95
     },
     {
       "name": "Daisy",
@@ -103,7 +115,9 @@
         "Purple",
         "White",
         "Black"
-      ]
+      ],
+      "cropOffset": { "x": 0.1, "y": 0.24 },
+      "cropScale": 1.9
     },
     {
       "name": "Dark Pit",
@@ -118,7 +132,9 @@
         "Blue",
         "White",
         "Purple"
-      ]
+      ],
+      "cropOffset": { "x": -0.07, "y": 0.23 },
+      "cropScale": 1.85
     },
     {
       "name": "Diddy Kong",
@@ -133,7 +149,9 @@
         "Blue",
         "Yellow",
         "Cyan"
-      ]
+      ],
+      "cropOffset": { "x": 0, "y": 0.1 },
+      "cropScale": 1.1
     },
     {
       "name": "Donkey Kong",
@@ -148,7 +166,9 @@
         "White",
         "Yellow",
         "Pink"
-      ]
+      ],
+      "cropOffset": { "x": 0, "y": 0.2 },
+      "cropScale": 1.35
     },
     {
       "name": "Dr. Mario",
@@ -163,7 +183,9 @@
         "Yellow",
         "Purple",
         "Pink"
-      ]
+      ],
+      "cropOffset": { "x": 0.1, "y": 0.22 },
+      "cropScale": 1.44
     },
     {
       "name": "Duck Hunt",
@@ -178,7 +200,9 @@
         "Tan",
         "Yellow",
         "Red"
-      ]
+      ],
+      "cropOffset": { "x": 0, "y": 0.2 },
+      "cropScale": 1.5
     },
     {
       "name": "Falco",
@@ -193,7 +217,9 @@
         "Black",
         "White",
         "Pink"
-      ]
+      ],
+      "cropOffset": { "x": -0.05, "y": 0.25 },
+      "cropScale": 1.8
     },
     {
       "name": "Fox",
@@ -208,7 +234,9 @@
         "White",
         "Yellow",
         "Purple"
-      ]
+      ],
+      "cropOffset": { "x": 0.1, "y": 0.21 },
+      "cropScale": 1.5
     },
     {
       "name": "Ganondorf",
@@ -223,7 +251,9 @@
         "Brown",
         "White",
         "Grey"
-      ]
+      ],
+      "cropOffset": { "x": 0.03, "y": 0.3 },
+      "cropScale": 1.9
     },
     {
       "name": "Greninja",
@@ -238,7 +268,9 @@
         "Green",
         "Grey",
         "Purple"
-      ]
+      ],
+      "cropOffset": { "x": 0.1, "y": 0.2 },
+      "cropScale": 1.4
     },
     {
       "name": "Ice Climbers",
@@ -268,7 +300,9 @@
         "Green",
         "Blue",
         "Black"
-      ]
+      ],
+      "cropOffset": { "x": 0.1, "y": 0.28 },
+      "cropScale": 1.8
     },
     {
       "name": "Inkling",
@@ -283,7 +317,9 @@
         "Cyan",
         "Purple",
         "Indigo"
-      ]
+      ],
+      "cropOffset": { "x": 0.05, "y": 0.21 },
+      "cropScale": 1.2
     },
     {
       "name": "Jigglypuff",
@@ -313,7 +349,9 @@
         "Grey",
         "Blue",
         "Black"
-      ]
+      ],
+      "cropOffset": { "x": -0.04, "y": 0.18 },
+      "cropScale": 1.2
     },
     {
       "name": "Kirby",
@@ -328,7 +366,9 @@
         "White",
         "Orange",
         "Purple"
-      ]
+      ],
+      "cropOffset": { "x": 0.02, "y": 0.1 },
+      "cropScale": 1.1
     },
     {
       "name": "Link",
@@ -343,7 +383,9 @@
         "Teal",
         "White",
         "Black"
-      ]
+      ],
+      "cropOffset": { "x": 0.02, "y": 0.15 },
+      "cropScale": 1.5
     },
     {
       "name": "Little Mac",
@@ -358,7 +400,9 @@
         "Pink",
         "Wire",
         "Green"
-      ]
+      ],
+      "cropOffset": { "x": 0.1, "y": 0.28 },
+      "cropScale": 1.75
     },
     {
       "name": "Lucario",
@@ -373,7 +417,9 @@
         "Navy",
         "Green",
         "Pink"
-      ]
+      ],
+      "cropOffset": { "x": 0.1, "y": 0.25 },
+      "cropScale": 1.7
     },
     {
       "name": "Lucas",
@@ -388,7 +434,9 @@
         "Cyan",
         "Green",
         "Purple"
-      ]
+      ],
+      "cropOffset": { "x": 0, "y": 0.15 },
+      "cropScale": 1.1
     },
     {
       "name": "Lucina",
@@ -403,7 +451,9 @@
         "Yellow",
         "Navy",
         "Purple"
-      ]
+      ],
+      "cropOffset": { "x": 0, "y": 0.29 },
+      "cropScale": 1.8
     },
     {
       "name": "Luigi",
@@ -418,7 +468,9 @@
         "Purple",
         "Blue",
         "Yellow"
-      ]
+      ],
+      "cropOffset": { "x": -0.08, "y": 0.18 },
+      "cropScale": 1.2
     },
     {
       "name": "Mario",
@@ -433,7 +485,9 @@
         "Purple",
         "Yellow",
         "White"
-      ]
+      ],
+      "cropOffset": { "x": 0.25, "y": 0.2 },
+      "cropScale": 1.2
     },
     {
       "name": "Marth",
@@ -448,7 +502,9 @@
         "Blue",
         "Yellow",
         "Purple"
-      ]
+      ],
+      "cropOffset": { "x": 0, "y": 0.29 },
+      "cropScale": 1.9
     },
     {
       "name": "Mega Man",
@@ -463,7 +519,9 @@
         "Chartreuse",
         "Orange",
         "Grey"
-      ]
+      ],
+      "cropOffset": { "x": 0.12, "y": 0.2 },
+      "cropScale": 1.2
     },
     {
       "name": "Meta Knight",
@@ -478,7 +536,9 @@
         "Pink",
         "Purple",
         "Grey"
-      ]
+      ],
+      "cropOffset": { "x": 0, "y": -0.2 },
+      "cropScale": 1.1
     },
     {
       "name": "Mewtwo",
@@ -493,7 +553,9 @@
         "Yellow",
         "Cyan",
         "Purple"
-      ]
+      ],
+      "cropOffset": { "x": -0.1, "y": 0.25 },
+      "cropScale": 1.5
     },
     {
       "name": "Mii Brawler",
@@ -501,7 +563,9 @@
       "alts": 1,
       "altNames": [
         "Default"
-      ]
+      ],
+      "cropOffset": { "x": -0.15, "y": 0.3 },
+      "cropScale": 1.7
     },
     {
       "name": "Ness",
@@ -516,7 +580,9 @@
         "Black",
         "Cyan",
         "Purple"
-      ]
+      ],
+      "cropOffset": { "x": 0, "y": 0.18 },
+      "cropScale": 1.2
     },
     {
       "name": "Olimar",
@@ -531,7 +597,9 @@
         "Alph Green",
         "Alph Pink",
         "Alph Red"
-      ]
+      ],
+      "cropOffset": { "x": 0, "y": -0.05 },
+      "cropScale": 0.9
     },
     {
       "name": "Pac-Man",
@@ -546,7 +614,9 @@
         "White",
         "Red",
         "Plaid"
-      ]
+      ],
+      "cropOffset": { "x": 0.05, "y": 0.1 },
+      "cropScale": 1
     },
     {
       "name": "Palutena",
@@ -561,7 +631,9 @@
         "Red",
         "Black",
         "Purple"
-      ]
+      ],
+      "cropOffset": { "x": 0, "y": 0.25 },
+      "cropScale": 1.9
     },
     {
       "name": "Peach",
@@ -576,7 +648,9 @@
         "White",
         "Fire",
         "Black"
-      ]
+      ],
+      "cropOffset": { "x": -0.05, "y": 0.25 },
+      "cropScale": 1.9
     },
     {
       "name": "Pichu",
@@ -591,7 +665,9 @@
         "Spiky",
         "White",
         "Band"
-      ]
+      ],
+      "cropOffset": { "x": 0.09, "y": 0.08 },
+      "cropScale": 1.05
     },
     {
       "name": "Pikachu",
@@ -606,7 +682,9 @@
         "Glasses",
         "Female",
         "Libre"
-      ]
+      ],
+      "cropOffset": { "x": 0.09, "y": 0.1 },
+      "cropScale": 1.1
     },
     {
       "name": "Pit",
@@ -621,7 +699,9 @@
         "Black",
         "White",
         "Pink"
-      ]
+      ],
+      "cropOffset": { "x": 0.05, "y": 0.22 },
+      "cropScale": 1.7
     },
     {
       "name": "Pokemon Trainer",
@@ -636,7 +716,9 @@
         "White",
         "Blue",
         "Purple"
-      ]
+      ],
+      "cropOffset": { "x": 0.05, "y": 0.15 },
+      "cropScale": 1.4
     },
     {
       "name": "Ridley",
@@ -651,7 +733,9 @@
         "Purple",
         "Yellow",
         "Grey"
-      ]
+      ],
+      "cropOffset": { "x": 0.1, "y": 0.1 },
+      "cropScale": 1.1
     },
     {
       "name": "R.O.B.",
@@ -666,7 +750,9 @@
         "Green",
         "Cyan",
         "Red"
-      ]
+      ],
+      "cropOffset": { "x": -0.1, "y": 0.24 },
+      "cropScale": 1.2
     },
     {
       "name": "Robin",
@@ -681,7 +767,9 @@
         "Yellow",
         "White",
         "Pink"
-      ]
+      ],
+      "cropOffset": { "x": 0.05, "y": 0.25 },
+      "cropScale": 2
     },
     {
       "name": "Rosalina & Luma",
@@ -696,7 +784,9 @@
         "Purple",
         "Black",
         "White"
-      ]
+      ],
+      "cropOffset": { "x": 0.05, "y": 0.23 },
+      "cropScale": 1.3
     },
     {
       "name": "Roy",
@@ -711,7 +801,9 @@
         "Purple",
         "Pink",
         "Yellow"
-      ]
+      ],
+      "cropOffset": { "x": 0.1, "y": 0.25 },
+      "cropScale": 1.85
     },
     {
       "name": "Ryu",
@@ -726,7 +818,9 @@
         "Blue",
         "Green",
         "Purple"
-      ]
+      ],
+      "cropOffset": { "x": 0, "y": 0.28 },
+      "cropScale": 1.85
     },
     {
       "name": "Samus",
@@ -741,7 +835,9 @@
         "Green",
         "White",
         "Black"
-      ]
+      ],
+      "cropOffset": { "x": 0.05, "y": 0.28 },
+      "cropScale": 1.85
     },
     {
       "name": "Sheik",
@@ -756,7 +852,9 @@
         "Black",
         "Yellow",
         "White"
-      ]
+      ],
+      "cropOffset": { "x": 0, "y": 0.28 },
+      "cropScale": 2.1
     },
     {
       "name": "Shulk",
@@ -771,7 +869,9 @@
         "Lavender",
         "Yellow",
         "Trunks"
-      ]
+      ],
+      "cropOffset": { "x": 0.2, "y": 0.2 },
+      "cropScale": 2
     },
     {
       "name": "Snake",
@@ -786,7 +886,9 @@
         "White",
         "Chartreuse",
         "Brown"
-      ]
+      ],
+      "cropOffset": { "x": -0.1, "y": 0.3 },
+      "cropScale": 1.9
     },
     {
       "name": "Sonic",
@@ -801,7 +903,9 @@
         "Yellow",
         "Orange",
         "Green"
-      ]
+      ],
+      "cropOffset": { "x": -0.05, "y": 0.2 },
+      "cropScale": 1.5
     },
     {
       "name": "Toon Link",
@@ -816,7 +920,9 @@
         "Black",
         "Grey",
         "Teal"
-      ]
+      ],
+      "cropOffset": { "x": 0, "y": 0.15 },
+      "cropScale": 1.2
     },
     {
       "name": "Villager",
@@ -831,7 +937,9 @@
         "Blue",
         "Purple",
         "Chartreuse"
-      ]
+      ],
+      "cropOffset": { "x": 0.1, "y": 0.18 },
+      "cropScale": 1.3
     },
     {
       "name": "Wario",
@@ -846,7 +954,9 @@
         "Classic Cyan",
         "Green",
         "Classic Green"
-      ]
+      ],
+      "cropOffset": { "x": 0.05, "y": 0.16 },
+      "cropScale": 1.2
     },
     {
       "name": "Wii Fit Trainer",
@@ -861,7 +971,9 @@
         "Male Red",
         "Yellow",
         "Male Yellow"
-      ]
+      ],
+      "cropOffset": { "x": 0.05, "y": 0.27 },
+      "cropScale": 1.65
     },
     {
       "name": "Wolf",
@@ -876,7 +988,9 @@
         "Orange",
         "Black",
         "Pink"
-      ]
+      ],
+      "cropOffset": { "x": -0.05, "y": 0.275 },
+      "cropScale": 1.4
     },
     {
       "name": "Yoshi",
@@ -891,7 +1005,9 @@
         "Cyan",
         "Purple",
         "Crafted"
-      ]
+      ],
+      "cropOffset": { "x": 0, "y": 0.165 },
+      "cropScale": 1.1
     },
     {
       "name": "Young Link",
@@ -906,7 +1022,9 @@
         "Cyan",
         "Orange",
         "Black"
-      ]
+      ],
+      "cropOffset": { "x": -0.05, "y": 0.18 },
+      "cropScale": 1.4
     },
     {
       "name": "Zelda",
@@ -921,7 +1039,9 @@
         "Black",
         "Purple",
         "White"
-      ]
+      ],
+      "cropOffset": { "x": 0, "y": 0.245 },
+      "cropScale": 1.55
     },
     {
       "name": "Zero Suit Samus",
@@ -936,7 +1056,9 @@
         "White",
         "Shorts Orange",
         "Shorts Blue"
-      ]
+      ],
+      "cropOffset": { "x": 0.05, "y": 0.275 },
+      "cropScale": 1.8
     },
     {
       "name": "Mr. Game & Watch",
@@ -951,7 +1073,9 @@
         "Cyan",
         "Green",
         "White"
-      ]
+      ],
+      "cropOffset": { "x": 0.1, "y": 0.15 },
+      "cropScale": 1.1
     },
     {
       "name": "Incineroar",
@@ -966,7 +1090,9 @@
         "Purple",
         "Grey",
         "White"
-      ]
+      ],
+      "cropOffset": { "x": 0.1, "y": 0.23 },
+      "cropScale": 1.4
     },
     {
       "name": "King K. Rool",
@@ -981,7 +1107,9 @@
         "Black",
         "Brown",
         "White"
-      ]
+      ],
+      "cropOffset": { "x": -0.04, "y": 0.18 },
+      "cropScale": 1.3
     },
     {
       "name": "Dark Samus",
@@ -1011,7 +1139,9 @@
         "Purple",
         "White",
         "Cyan"
-      ]
+      ],
+      "cropOffset": { "x": 0.15, "y": 0.25 },
+      "cropScale": 1.9
     },
     {
       "name": "Ken",
@@ -1026,10 +1156,12 @@
         "Yellow",
         "Cyan",
         "Black"
-      ]
+      ],
+      "cropOffset": { "x": -0.07, "y": 0.29 },
+      "cropScale": 1.9
     },
     {
-      "name": "Simon Belmont",
+      "name": "Simon",
       "id": "1411",
       "alts": 8,
       "altNames": [
@@ -1041,7 +1173,9 @@
         "Purple",
         "Orange",
         "Indigo"
-      ]
+      ],
+      "cropOffset": { "x": 0.05, "y": 0.28 },
+      "cropScale": 1.9
     },
     {
       "name": "Richter",
@@ -1056,7 +1190,9 @@
         "Blue",
         "Black",
         "White"
-      ]
+      ],
+      "cropOffset": { "x": 0, "y": 0.25 },
+      "cropScale": 2
     },
     {
       "name": "Isabelle",
@@ -1071,7 +1207,9 @@
         "Teal",
         "Grey",
         "Blue"
-      ]
+      ],
+      "cropOffset": { "x": 0, "y": 0.12 },
+      "cropScale": 1.25
     },
     {
       "name": "Mii Swordfighter",
@@ -1079,7 +1217,9 @@
       "alts": 1,
       "altNames": [
         "Default"
-      ]
+      ],
+      "cropOffset": { "x": 0.1, "y": 0.22 },
+      "cropScale": 1.5
     },
     {
       "name": "Mii Gunner",
@@ -1087,7 +1227,9 @@
       "alts": 1,
       "altNames": [
         "Default"
-      ]
+      ],
+      "cropOffset": { "x": -0.1, "y": 0.25 },
+      "cropScale": 1.4
     },
     {
       "name": "Piranha Plant",
@@ -1102,7 +1244,9 @@
         "White",
         "Purple",
         "Blue"
-      ]
+      ],
+      "cropOffset": { "x": -0.1, "y": 0.22 },
+      "cropScale": 1.15
     },
     {
       "name": "Joker",
@@ -1117,7 +1261,9 @@
         "White",
         "School",
         "School White"
-      ]
+      ],
+      "cropOffset": { "x": 0, "y": 0.28 },
+      "cropScale": 1.85
     },
     {
       "name": "Hero",
@@ -1132,7 +1278,9 @@
         "Edrick White",
         "Solo Orange",
         "Eight Blue"
-      ]
+      ],
+      "cropOffset": { "x": -0.15, "y": 0.32 },
+      "cropScale": 2.2
     },
     {
       "name": "Banjo-Kazooie",
@@ -1147,7 +1295,9 @@
         "Yellow",
         "Blue",
         "Green"
-      ]
+      ],
+      "cropOffset": { "x": 0.08, "y": 0.1 },
+      "cropScale": 1.5
     },
     {
       "name": "Terry",
@@ -1162,7 +1312,9 @@
         "Grey",
         "Black",
         "Yellow"
-      ]
+      ],
+      "cropOffset": { "x": 0, "y": 0.275 },
+      "cropScale": 1.75
     },
     {
       "name": "Byleth",
@@ -1177,7 +1329,9 @@
         "Green",
         "Black",
         "Grey"
-      ]
+      ],
+      "cropOffset": { "x": -0.1, "y": 0.22 },
+      "cropScale": 1.5
     },
     {
       "name": "Random",
@@ -1185,7 +1339,9 @@
       "alts": 1,
       "altNames": [
         "Random"
-      ]
+      ],
+      "cropOffset": { "x": 0, "y": -0.05 },
+      "cropScale": 0.6
     },
     {
       "name": "Min Min",
@@ -1200,7 +1356,9 @@
         "Green",
         "Pink",
         "Black"
-      ]
+      ],
+      "cropOffset": { "x": 0.1, "y": 0.22 },
+      "cropScale": 2.3
     },
     {
       "name": "Steve",
@@ -1215,7 +1373,9 @@
         "Alex Blue",
         "Zombie",
         "Enderman"
-      ]
+      ],
+      "cropOffset": { "x": 0, "y": 0.275 },
+      "cropScale": 1.4
     },
     {
       "name": "Sephiroth",
@@ -1230,7 +1390,9 @@
         "Blue",
         "Coatless",
         "Coatless Violet"
-      ]
+      ],
+      "cropOffset": { "x": 0, "y": 0.28 },
+      "cropScale": 2.1
     },
     {
       "name": "Pyra / Mythra",
@@ -1241,11 +1403,13 @@
         "Green",
         "Swapped",
         "Gormotti",
-        "Blackk",
+        "Black",
         "Blue",
         "Saturated",
         "Metal"
-      ]
+      ],
+      "cropOffset": { "x": 0.05, "y": 0.23 },
+      "cropScale": 1.85
     },
     {
       "name": "Kazuya",
@@ -1260,7 +1424,9 @@
         "Purple",
         "Black",
         "Yellow"
-      ]
+      ],
+      "cropOffset": { "x": -0.05, "y": 0.29 },
+      "cropScale": 2
     },
     {
       "name": "Sora",
@@ -1275,7 +1441,9 @@
         "Red",
         "Blue",
         "White"
-      ]
+      ],
+      "cropOffset": { "x": 0.05, "y": 0.31 },
+      "cropScale": 1.95
     }
   ]
 }

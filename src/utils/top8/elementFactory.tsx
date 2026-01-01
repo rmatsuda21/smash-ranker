@@ -23,6 +23,7 @@ import {
 import { CustomImage } from "@/components/top8/Canvas/CustomImage";
 import { SmartText } from "@/components/top8/SmartText/SmartText";
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
+import { getCharacterCrop } from "@/utils/top8/getCharacterCrop";
 import { CustomSVG } from "@/components/top8/Canvas/CustomSVG";
 import { replacePlaceholders } from "@/utils/top8/replacePlaceholderString";
 import { evaluateElementCondition } from "@/utils/top8/evaluateElementCondition";
@@ -169,8 +170,14 @@ const createCharacterImageElement: ElementCreator<
     alt: mainCharacter.alt,
   });
 
+  const characterCrop = getCharacterCrop(mainCharacter.id);
+  let cropOffset = characterCrop.offset;
+  let cropScale = characterCrop.scale;
+
   if (context.player?.avatarImgSrc) {
     imageSrc = context.player.avatarImgSrc;
+    cropOffset = { x: 0, y: 0 };
+    cropScale = 1;
   }
 
   return (
@@ -182,6 +189,8 @@ const createCharacterImageElement: ElementCreator<
       width={element.size?.width ?? 100}
       height={element.size?.height ?? 100}
       imageSrc={imageSrc}
+      cropOffset={cropOffset}
+      cropScale={cropScale}
       hasShadow
       shadowColor={resolveColor(element.shadowColor, canvas?.colorPalette)}
       shadowOffset={{ x: 15, y: 15 }}
