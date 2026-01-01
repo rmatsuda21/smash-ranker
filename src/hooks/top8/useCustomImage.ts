@@ -8,6 +8,8 @@ export const useCustomImage = ({
   fillMode = "contain",
   align = "center",
   offset = { x: 0, y: 0 },
+  cropOffset = { x: 0, y: 0 },
+  cropScale = 1,
   onReady,
   onError,
 }: {
@@ -17,6 +19,8 @@ export const useCustomImage = ({
   fillMode: "contain" | "cover";
   align?: "center" | "left" | "right" | "top" | "bottom";
   offset: { x: number; y: number };
+  cropOffset?: { x: number; y: number };
+  cropScale?: number;
   onReady?: () => void;
   onError?: (error: Error) => void;
 }) => {
@@ -100,12 +104,19 @@ export const useCustomImage = ({
         }
       }
 
+      const scaledWidth = imgWidth * cropScale;
+      const scaledHeight = imgHeight * cropScale;
+      const cropX =
+        imgX - (scaledWidth - imgWidth) / 2 + cropOffset.x * scaledWidth;
+      const cropY =
+        imgY - (scaledHeight - imgHeight) / 2 + cropOffset.y * scaledHeight;
+
       ctx.drawImage(
         image,
-        imgX + offset.x,
-        imgY + offset.y,
-        imgWidth,
-        imgHeight
+        cropX + offset.x,
+        cropY + offset.y,
+        scaledWidth,
+        scaledHeight
       );
     };
 
@@ -140,6 +151,9 @@ export const useCustomImage = ({
     height,
     offset.x,
     offset.y,
+    cropOffset.x,
+    cropOffset.y,
+    cropScale,
     fillMode,
     align,
     onReady,

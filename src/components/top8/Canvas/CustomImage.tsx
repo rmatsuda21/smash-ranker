@@ -12,6 +12,8 @@ type Props = Omit<ComponentProps<typeof Image>, "image"> & {
   hasShadow?: boolean;
   shadowColor?: string;
   offset?: { x: number; y: number };
+  cropOffset?: { x: number; y: number };
+  cropScale?: number;
   onReady?: () => void;
   onError?: (error: Error) => void;
   fillMode?: "contain" | "cover";
@@ -29,6 +31,8 @@ const CustomImageComponent = ({
   x = 0,
   y = 0,
   offset = { x: 0, y: 0 },
+  cropOffset = { x: 0, y: 0 },
+  cropScale = 1,
   onReady,
   onError,
   fillMode = "contain",
@@ -42,6 +46,8 @@ const CustomImageComponent = ({
     fillMode,
     align,
     offset,
+    cropOffset,
+    cropScale,
     onReady,
     onError,
   });

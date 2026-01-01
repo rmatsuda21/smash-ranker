@@ -282,12 +282,13 @@ const colorPalette: CanvasConfig["colorPalette"] = {
   primary: { color: "rgb(179, 0, 0)", name: "Primary" },
   secondary: { color: "rgb(235, 171, 64)", name: "Secondary" },
   background: { color: "rgb(0, 0, 0)", name: "Background" },
-  smashBall: { color: "rgba(255, 255, 255, 0.2)", name: "Smash Ball" },
   text: { color: "rgb(255, 255, 255)", name: "Text" },
-  textStroke: { color: "rgb(0, 0, 0)", name: "Text Stroke" },
+  // textStroke: { color: "rgb(0, 0, 0)", name: "Text Stroke" },
+  textShadow: { color: "rgb(0, 0, 0)", name: "Text Shadow" },
   placementShadow: { color: "rgb(255, 255, 255)", name: "Placement Shadow" },
   playerBackground: { color: "rgb(0, 0, 0)", name: "Player Background" },
   characterShadow: { color: "rgb(255, 0, 0)", name: "Character Shadow" },
+  smashBall: { color: "rgba(255, 255, 255, 0.2)", name: "Smash Ball" },
 };
 
 const background: LayerConfig = {
