@@ -131,6 +131,8 @@ const basePlayer: PlayerConfig = {
       fontWeight: 900,
       fill: "text",
       position: { x: 45, y: 20 },
+      shadowBlur: 15,
+      shadowColor: "placementShadow",
     },
   ],
 };
@@ -283,7 +285,7 @@ const colorPalette: CanvasConfig["colorPalette"] = {
   smashBall: { color: "rgba(255, 255, 255, 0.2)", name: "Smash Ball" },
   text: { color: "rgb(255, 255, 255)", name: "Text" },
   textStroke: { color: "rgb(0, 0, 0)", name: "Text Stroke" },
-  textShadow: { color: "rgb(0, 0, 0)", name: "Text Shadow" },
+  placementShadow: { color: "rgb(255, 255, 255)", name: "Placement Shadow" },
   playerBackground: { color: "rgb(0, 0, 0)", name: "Player Background" },
   characterShadow: { color: "rgb(255, 0, 0)", name: "Character Shadow" },
 };
