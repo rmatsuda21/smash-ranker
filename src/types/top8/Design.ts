@@ -52,6 +52,7 @@ interface BaseElementConfig {
   name?: string;
   hidden?: boolean;
   conditions?: Condition[];
+  selectable?: boolean;
 }
 
 export interface TextElementConfig

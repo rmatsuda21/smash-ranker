@@ -8,6 +8,7 @@ export interface ElementFactoryContext {
   tournament?: TournamentInfo;
   canvas?: CanvasConfig;
   containerSize?: { width: number; height: number };
+  onElementSelect?: () => void;
   options?: {
     editable?: boolean;
   };

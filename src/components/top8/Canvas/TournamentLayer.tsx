@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import { Group, Layer, Transformer } from "react-konva";
 import { Transformer as KonvaTransformer } from "konva/lib/shapes/Transformer";
 import { Group as KonvaGroup } from "konva/lib/Group";
@@ -7,6 +7,8 @@ import { useCanvasStore } from "@/store/canvasStore";
 import { useTournamentStore } from "@/store/tournamentStore";
 import { createKonvaElements } from "@/utils/top8/elementFactory";
 import { useFontStore } from "@/store/fontStore";
+import { useEditorStore } from "@/store/editorStore";
+import { EditorTab } from "@/types/top8/Editor";
 
 export const TournamentLayer = () => {
   const transformerRef = useRef<KonvaTransformer>(null);
@@ -19,6 +21,14 @@ export const TournamentLayer = () => {
   const selectedElementIndex = useTournamentStore(
     (state) => state.selectedElementIndex
   );
+  const dispatch = useEditorStore((state) => state.dispatch);
+
+  const handleElementSelect = useCallback(() => {
+    dispatch({
+      type: "SET_ACTIVE_TAB",
+      payload: EditorTab.TEXTS,
+    });
+  }, [dispatch]);
 
   const konvaElements = useMemo(
     () =>
@@ -27,8 +37,15 @@ export const TournamentLayer = () => {
         tournament,
         containerSize: canvasConfig.size,
         canvas: canvasConfig,
+        onElementSelect: handleElementSelect,
       }),
-    [layout?.elements, selectedFont, tournament, canvasConfig]
+    [
+      layout?.elements,
+      selectedFont,
+      tournament,
+      canvasConfig,
+      handleElementSelect,
+    ]
   );
 
   useEffect(() => {

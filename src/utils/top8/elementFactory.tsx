@@ -1,5 +1,5 @@
 import { Group, Rect, Text } from "react-konva";
-import { ReactNode } from "react";
+import { cloneElement, isValidElement, ReactElement, ReactNode } from "react";
 import { SceneContext } from "konva/lib/Context";
 
 import {
@@ -28,6 +28,7 @@ import { replacePlaceholders } from "@/utils/top8/replacePlaceholderString";
 import { evaluateElementCondition } from "@/utils/top8/evaluateElementCondition";
 import { resolveColor, resolvePaletteColors } from "@/utils/top8/resolveColor";
 import { resolveText } from "@/utils/top8/resolveText";
+import { SelectableElement } from "@/components/top8/Canvas/SelectableElement";
 
 const createTextElement: ElementCreator<TextElementConfig> = ({
   element,
@@ -395,6 +396,40 @@ export const createKonvaElements = (
         ctx.rect(0, 0, size.width, size.height);
         ctx.closePath();
       };
+
+      if (element.selectable) {
+        // Clone the inner element with position reset to 0,0 since the
+        // SelectableElement wrapper will handle the positioning
+        const resetPositionEl =
+          isValidElement(el) && el
+            ? cloneElement(el as ReactElement<{ x?: number; y?: number }>, {
+                x: 0,
+                y: 0,
+              })
+            : el;
+
+        return (
+          <SelectableElement
+            key={`selectable-${index}`}
+            x={element.position.x}
+            y={element.position.y}
+            draggable={false}
+            onClick={() => context.onElementSelect?.()}
+            isSelected={false}
+            width={element.size?.width}
+            height={element.size?.height}
+            scaleX={element.scale?.x}
+            scaleY={element.scale?.y}
+            rotation={element.rotation ?? 0}
+            clipFunc={element.clip ? clipFunc : undefined}
+            listening={true}
+            visible={shouldRender}
+            name={element.name ?? `element-${index}`}
+          >
+            {resetPositionEl}
+          </SelectableElement>
+        );
+      }
 
       return (
         <Group
