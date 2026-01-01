@@ -165,6 +165,14 @@ export const TournamentEditor = ({ className }: Props) => {
           onChange={handleLocationChange}
         />
       </div>
+      <Input
+        label="Tournament URL"
+        name="url"
+        id="url"
+        type="text"
+        value={tempTournament?.url}
+        onChange={handleChange}
+      />
     </div>
   );
 };

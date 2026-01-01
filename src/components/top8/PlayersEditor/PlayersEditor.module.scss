@@ -1,7 +1,9 @@
+@use "@/_theme" as *;
+
 .wrapper {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: var(--form-gap);
 
   .disabled {
     opacity: 0.5;
@@ -9,10 +11,7 @@
   }
 
   .label {
-    font-size: var(--font-size-sm);
-    line-height: 1;
-    font-weight: 600;
-    color: var(--accent-9);
+    @include label;
     margin-bottom: 4px;
   }
 }
