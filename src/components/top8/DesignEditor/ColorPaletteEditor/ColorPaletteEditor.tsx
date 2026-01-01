@@ -34,7 +34,7 @@ export const ColorPaletteEditor = ({ className }: Props) => {
   };
 
   return (
-    <div className={cn(className, styles.wrapper)}>
+    <div className={cn(className, styles.colorPaletteEditor)}>
       {palette &&
         Object.entries(palette).map(([id, { color, name }]) => (
           <div key={id} className={styles.row}>
