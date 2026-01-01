@@ -1,22 +1,21 @@
+@use "@/_theme" as *;
+
 .wrapper {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: var(--form-gap);
 
   input {
     font-size: var(--font-size-md);
   }
 
   .label {
-    line-height: 1;
-    font-size: var(--font-size-sm);
-    font-weight: 600;
-    color: var(--accent-9);
+    @include label;
   }
 
   .row {
     display: flex;
-    gap: 5px;
+    gap: var(--form-gap);
 
     & > * {
       flex: 1;

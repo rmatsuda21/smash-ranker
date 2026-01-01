@@ -1,12 +1,12 @@
+@use "@/_theme" as *;
+
 .wrapper {
   display: flex;
   flex-direction: column;
   gap: 10px;
 
   .label {
-    font-size: var(--font-size-sm);
-    font-weight: 600;
-    color: var(--accent-9);
+    @include label;
   }
 
   .grid {

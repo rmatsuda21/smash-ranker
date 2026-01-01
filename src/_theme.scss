@@ -1,5 +1,12 @@
 @use "sass:color";
 
+@mixin label {
+  line-height: 1;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--accent-9);
+}
+
 @mixin generate-scale($base-color, $name, $type: "accent") {
   @if $type == "gray" {
     --#{$name}-1: #{color.scale($base-color, $lightness: -85%)};

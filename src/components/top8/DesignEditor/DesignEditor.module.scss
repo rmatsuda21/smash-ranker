@@ -1,13 +1,12 @@
+@use "@/_theme" as *;
+
 .wrapper {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--form-gap);
 
   .label {
-    line-height: 1;
-    font-size: var(--font-size-sm);
-    font-weight: 600;
-    color: var(--accent-9);
+    @include label;
     margin-bottom: 4px;
   }
 
