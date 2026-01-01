@@ -8,8 +8,64 @@ import { PlayerInfo } from "@/types/top8/Player";
 import { usePlayerStore } from "@/store/playerStore";
 import { useTournamentStore } from "@/store/tournamentStore";
 import { TournamentInfo } from "@/types/top8/Tournament";
+import { assetRepository } from "@/db/repository";
 
 const DEFAULT_CHARACTER = "1293"; // Puff <3
+const IDB_IMAGES_BASE_URL = "/idb-images/";
+
+type TournamentImage = {
+  url: string;
+  type: string;
+  id: string;
+};
+
+const fetchAndStoreImage = async (image: TournamentImage): Promise<string> => {
+  try {
+    const response = await fetch(image.url);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch image: ${response.statusText}`);
+    }
+
+    const blob = await response.blob();
+    const id = crypto.randomUUID();
+    const src = `${IDB_IMAGES_BASE_URL}${id}`;
+    const fileName = `tournament-${image.type}-${image.id}`;
+
+    await assetRepository.put({
+      id,
+      src,
+      fileName,
+      data: blob,
+      date: new Date(),
+    });
+
+    return src;
+  } catch (error) {
+    console.error(`Error storing image ${image.id}:`, error);
+    throw error;
+  }
+};
+
+const storeAllTournamentImages = async (
+  images: TournamentImage[]
+): Promise<Map<string, string>> => {
+  const storedImages = new Map<string, string>();
+
+  const results = await Promise.allSettled(
+    images.map(async (image) => {
+      const src = await fetchAndStoreImage(image);
+      return { originalId: image.id, type: image.type, src };
+    })
+  );
+
+  for (const result of results) {
+    if (result.status === "fulfilled") {
+      storedImages.set(result.value.type, result.value.src);
+    }
+  }
+
+  return storedImages;
+};
 
 const Top8Query = graphql(`
   query EventStandings($slug: String!, $playerCount: Int!) {
@@ -23,6 +79,11 @@ const Top8Query = graphql(`
         city
         countryCode
         url(tab: "", relative: false)
+        images {
+          url
+          type
+          id
+        }
       }
       teamRosterSize {
         maxPlayers
@@ -182,6 +243,22 @@ export const useFetchResult = () => {
     const country = data?.event?.tournament?.countryCode;
     const teamRosterSize = data?.event?.teamRosterSize;
     const tournamentUrl = data?.event?.tournament?.url;
+    const images = data?.event?.tournament?.images;
+
+    let storedImages: Map<string, string> | undefined;
+    if (images && images.length > 0) {
+      const validImages = images.filter(
+        (img): img is TournamentImage =>
+          img !== null &&
+          img.url !== null &&
+          img.type !== null &&
+          img.id !== null
+      );
+
+      if (validImages.length > 0) {
+        storedImages = await storeAllTournamentImages(validImages);
+      }
+    }
 
     const date = data?.event?.startAt
       ? new Date(data.event.startAt * 1000).toISOString()
@@ -201,6 +278,7 @@ export const useFetchResult = () => {
         teamRosterSize?.maxPlayers ||
         0,
       url: tournamentUrl || "",
+      iconSrc: storedImages?.get("profile"),
     };
 
     tournamentDispatch({
