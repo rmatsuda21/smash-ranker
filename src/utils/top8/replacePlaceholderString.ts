@@ -25,6 +25,7 @@ const getPlaceholderMap = (
     }${
       tournament?.location.country ? `, ${tournament?.location.country}` : ""
     }`,
+    [DesignPlaceholder.TOURNAMENT_URL]: tournament?.url,
     [DesignPlaceholder.TOURNAMENT_CITY]: tournament?.location.city,
     [DesignPlaceholder.TOURNAMENT_STATE]: tournament?.location.state,
     [DesignPlaceholder.TOURNAMENT_COUNTRY]: tournament?.location.country,

@@ -22,6 +22,7 @@ const Top8Query = graphql(`
         addrState
         city
         countryCode
+        url(tab: "", relative: false)
       }
       teamRosterSize {
         maxPlayers
@@ -180,6 +181,7 @@ export const useFetchResult = () => {
     const city = data?.event?.tournament?.city;
     const country = data?.event?.tournament?.countryCode;
     const teamRosterSize = data?.event?.teamRosterSize;
+    const tournamentUrl = data?.event?.tournament?.url;
 
     const date = data?.event?.startAt
       ? new Date(data.event.startAt * 1000).toISOString()
@@ -198,6 +200,7 @@ export const useFetchResult = () => {
         data?.event?.entrants?.pageInfo?.total ||
         teamRosterSize?.maxPlayers ||
         0,
+      url: tournamentUrl || "",
     };
 
     tournamentDispatch({
