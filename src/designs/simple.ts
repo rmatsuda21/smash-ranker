@@ -7,10 +7,11 @@ import {
 import { DesignPlaceholder } from "@/consts/top8/placeholders";
 import { RenderCondition } from "@/consts/top8/renderConditions";
 
-const PADDING = 40;
-const PLAYER_SPACING = 15;
+const PADDING = 60;
+const TWIITER_HEIGHT = 55;
 const BASE_PL_SIZE = 700;
-const MAIN_PL_SIZE = 665;
+const MAIN_PL_SIZE = 630;
+const PLAYER_SPACING = 35;
 const CANVAS_WIDTH = 1920;
 const CANVAS_HEIGHT = 1080;
 const SECOND_ROW_Y_OFFSET = 27;
@@ -27,18 +28,18 @@ const basePlayer: PlayerConfig = {
       name: "Twitter",
       type: "group",
       position: { x: 0, y: BASE_PL_SIZE + 10 },
-      size: { width: BASE_PL_SIZE, height: 50 },
+      size: { width: BASE_PL_SIZE, height: TWIITER_HEIGHT },
       elements: [
         {
           type: "rect",
           fill: "primary",
           position: { x: 0, y: 0 },
-          size: { width: BASE_PL_SIZE, height: 40 },
+          size: { width: BASE_PL_SIZE, height: TWIITER_HEIGHT },
         },
         {
           type: "text",
           text: "𝕏",
-          fontSize: 40,
+          fontSize: 50,
           align: "left",
           verticalAlign: "top",
           fontWeight: 900,
@@ -50,13 +51,13 @@ const basePlayer: PlayerConfig = {
           type: "text",
           conditions: [DesignPlaceholder.PLAYER_TWITTER],
           text: `@${DesignPlaceholder.PLAYER_TWITTER}`,
-          fontSize: 30,
+          fontSize: 40,
           align: "center",
           verticalAlign: "middle",
           fontWeight: 600,
           fill: "text",
           position: { x: 0, y: 0 },
-          size: { width: BASE_PL_SIZE, height: 40 },
+          size: { width: BASE_PL_SIZE, height: TWIITER_HEIGHT },
         },
       ],
     },
@@ -223,40 +224,6 @@ const players: Partial<PlayerConfig>[] = [
   },
   {
     ...firstRow[0],
-    // elements: [
-    //   {
-    //     type: "rect",
-    //     fill: "#000000",
-    //     position: { x: 0, y: 0 },
-    //     size: { width: BASE_PL_SIZE, height: BASE_PL_SIZE },
-    //   },
-    //   {
-    //     type: "svg",
-    //     src: "/assets/top8/theme/mini/smash_ball.svg",
-    //     position: { x: 0, y: 0 },
-    //     size: { width: BASE_PL_SIZE, height: BASE_PL_SIZE },
-    //     palette: {
-    //       color_1: "rgba(255, 255, 255, 0.2)",
-    //     },
-    //   },
-    //   {
-    //     type: "characterImage",
-    //     position: { x: 0, y: 0 },
-    //     size: { width: BASE_PL_SIZE, height: BASE_PL_SIZE },
-    //     clip: true,
-    //     shadowBlur: 2,
-    //   },
-    //   {
-    //     type: "svg",
-    //     src: "/assets/top8/theme/mini/frame.svg",
-    //     position: { x: 0, y: 0 },
-    //     size: { width: BASE_PL_SIZE, height: BASE_PL_SIZE },
-    //     palette: {
-    //       color_1: "rgb(97, 233, 24)",
-    //     },
-    //   },
-    //   ...basePlayer.elements.slice(4),
-    // ],
   },
   {
     ...firstRow[1],
@@ -410,7 +377,7 @@ export const simpleDesign: Design = {
         name: "Top Left Text",
       },
       topRightText: {
-        text: "smash-ranker.vercel.app",
+        text: DesignPlaceholder.TOURNAMENT_URL,
         name: "Top Right Text",
       },
       bottomText: {

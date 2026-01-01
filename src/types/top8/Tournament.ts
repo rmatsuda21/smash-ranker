@@ -11,6 +11,7 @@ export type TournamentInfo = {
   };
   entrants: number;
   iconSrc?: string;
+  url?: string;
 };
 
 export type Tournament = {
