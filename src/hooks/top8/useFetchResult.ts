@@ -3,71 +3,31 @@ import type { Client } from "urql";
 
 import { graphql } from "@/gql";
 import type { EventStandingsQuery, PlayerSetsQuery } from "@/gql/graphql";
-
 import { PlayerInfo } from "@/types/top8/Player";
+import { TournamentInfo } from "@/types/top8/Tournament";
 import { usePlayerStore } from "@/store/playerStore";
 import { useTournamentStore } from "@/store/tournamentStore";
-import { TournamentInfo } from "@/types/top8/Tournament";
 import { assetRepository } from "@/db/repository";
 
-const DEFAULT_CHARACTER = "1293"; // Puff <3
+const DEFAULT_CHARACTER_ID = "1293"; // Puff <3
 const IDB_IMAGES_BASE_URL = "/idb-images/";
 
-type TournamentImage = {
+interface TournamentImage {
   url: string;
   type: string;
   id: string;
-};
+}
 
-const fetchAndStoreImage = async (image: TournamentImage): Promise<string> => {
-  try {
-    const response = await fetch(image.url);
-    if (!response.ok) {
-      throw new Error(`Failed to fetch image: ${response.statusText}`);
-    }
+type Event = NonNullable<EventStandingsQuery["event"]>;
+type Standings = NonNullable<Event["standings"]>["nodes"];
+type StandingNode = NonNullable<Standings>[number];
+type StoredImagesMap = Map<string, string>;
+type Sets = NonNullable<
+  NonNullable<NonNullable<PlayerSetsQuery["event"]>["sets"]>["nodes"]
+>;
+type TournamentImages = NonNullable<NonNullable<Event["tournament"]>["images"]>;
 
-    const blob = await response.blob();
-    const id = crypto.randomUUID();
-    const src = `${IDB_IMAGES_BASE_URL}${id}`;
-    const fileName = `tournament-${image.type}-${image.id}`;
-
-    await assetRepository.put({
-      id,
-      src,
-      fileName,
-      data: blob,
-      date: new Date(),
-    });
-
-    return src;
-  } catch (error) {
-    console.error(`Error storing image ${image.id}:`, error);
-    throw error;
-  }
-};
-
-const storeAllTournamentImages = async (
-  images: TournamentImage[]
-): Promise<Map<string, string>> => {
-  const storedImages = new Map<string, string>();
-
-  const results = await Promise.allSettled(
-    images.map(async (image) => {
-      const src = await fetchAndStoreImage(image);
-      return { originalId: image.id, type: image.type, src };
-    })
-  );
-
-  for (const result of results) {
-    if (result.status === "fulfilled") {
-      storedImages.set(result.value.type, result.value.src);
-    }
-  }
-
-  return storedImages;
-};
-
-const Top8Query = graphql(`
+const EventStandingsQueryDoc = graphql(`
   query EventStandings($slug: String!, $playerCount: Int!) {
     event(slug: $slug) {
       id
@@ -119,7 +79,7 @@ const Top8Query = graphql(`
   }
 `);
 
-const PlayerSetsQuery = graphql(`
+const PlayerSetsQueryDoc = graphql(`
   query PlayerSets($slug: String!, $entrantId: ID!) {
     event(slug: $slug) {
       sets(perPage: 50, page: 1, filters: { entrantIds: [$entrantId] }) {
@@ -140,56 +100,116 @@ const PlayerSetsQuery = graphql(`
   }
 `);
 
-type StandingNode = NonNullable<
-  NonNullable<EventStandingsQuery["event"]>["standings"]
->["nodes"];
+async function fetchAndStoreImage(image: TournamentImage): Promise<string> {
+  const response = await fetch(image.url);
 
-const getPlayers = (standings: StandingNode): PlayerInfo[] => {
-  if (!standings) return [];
-
-  const players = new Map<string, PlayerInfo>();
-
-  for (const standing of standings) {
-    if (!standing || !standing.entrant?.id || !standing.player?.user?.id)
-      continue;
-
-    const playerId = standing.player.user.id;
-
-    players.set(playerId, {
-      id: playerId,
-      entrantId: standing.entrant.id,
-      name: standing.player.gamerTag || "Unknown",
-      characters: [],
-      placement: standing.placement || 0,
-      gamerTag: standing.player.gamerTag || "Unknown",
-      prefix: standing.player.prefix || undefined,
-      twitter:
-        standing.player.user?.authorizations?.[0]?.externalUsername ||
-        undefined,
-    });
+  if (!response.ok) {
+    throw new Error(`Failed to fetch image: ${response.statusText}`);
   }
 
-  return Array.from(players.values()).sort((a, b) => a.placement - b.placement);
-};
+  const data = await response.blob();
+  const id = crypto.randomUUID();
+  const src = `${IDB_IMAGES_BASE_URL}${id}`;
+  const fileName = `tournament-${image.type}-${image.id}`;
 
-const getPlayerCharacters = async (
+  await assetRepository.put({
+    id,
+    src,
+    fileName,
+    data,
+    date: new Date(),
+  });
+
+  return src;
+}
+
+async function storeTournamentImages(
+  images: TournamentImage[]
+): Promise<StoredImagesMap> {
+  const results = await Promise.allSettled(
+    images.map(async (image) => ({
+      type: image.type,
+      src: await fetchAndStoreImage(image),
+    }))
+  );
+
+  const storedImages: StoredImagesMap = new Map();
+
+  for (const result of results) {
+    if (result.status === "fulfilled") {
+      storedImages.set(result.value.type, result.value.src);
+    } else {
+      console.error("Failed to store tournament image:", result.reason);
+    }
+  }
+
+  return storedImages;
+}
+
+function isValidStanding(standing: StandingNode): boolean {
+  return Boolean(standing?.entrant?.id && standing?.player?.user?.id);
+}
+
+function extractPlayerFromStanding(standing: StandingNode): PlayerInfo {
+  const player = standing!.player!;
+  const entrant = standing!.entrant!;
+  const twitterHandle = player.user?.authorizations?.[0]?.externalUsername;
+
+  return {
+    id: player.user!.id as string,
+    entrantId: entrant.id as string,
+    name: player.gamerTag || "Unknown",
+    gamerTag: player.gamerTag || "Unknown",
+    prefix: player.prefix || undefined,
+    twitter: twitterHandle || undefined,
+    characters: [],
+    placement: standing!.placement || 0,
+  };
+}
+
+function parseStandingsToPlayers(standings: Standings | null): PlayerInfo[] {
+  if (!standings) return [];
+
+  const playersById = new Map<string, PlayerInfo>();
+
+  for (const standing of standings) {
+    if (!isValidStanding(standing)) continue;
+
+    const player = extractPlayerFromStanding(standing);
+    playersById.set(player.id, player);
+  }
+
+  return Array.from(playersById.values()).sort(
+    (a, b) => a.placement - b.placement
+  );
+}
+
+async function fetchPlayerCharacters(
   client: Client,
   slug: string,
   entrantId: string
-): Promise<string[]> => {
+): Promise<string[]> {
   const result = await client
-    .query(PlayerSetsQuery, { slug, entrantId })
+    .query(PlayerSetsQueryDoc, { slug, entrantId })
     .toPromise();
 
-  if (result.error || !result.data) {
+  const nodes = result.data?.event?.sets?.nodes;
+
+  if (result.error || !nodes) {
     console.error("Error fetching player characters:", result.error);
     return [];
   }
 
-  const characters = new Map<string, number>();
-  const sets = result.data.event?.sets?.nodes;
+  const characterUsageCount = countCharacterUsage(nodes, entrantId);
 
-  if (!sets) return [];
+  return sortCharactersByUsage(characterUsageCount);
+}
+
+function countCharacterUsage(
+  sets: Sets,
+  entrantId: string
+): Map<string, number> {
+  const usageCount = new Map<string, number>();
 
   for (const set of sets) {
     if (!set?.games) continue;
@@ -198,125 +218,128 @@ const getPlayerCharacters = async (
       if (!game?.selections) continue;
 
       for (const selection of game.selections) {
-        if (selection?.entrant?.id === entrantId && selection?.character?.id) {
-          characters.set(
-            selection.character.id,
-            (characters.get(selection.character.id) || 0) + 1
-          );
+        const isPlayerSelection = selection?.entrant?.id === entrantId;
+        const characterId = selection?.character?.id;
+
+        if (isPlayerSelection && characterId) {
+          usageCount.set(characterId, (usageCount.get(characterId) || 0) + 1);
         }
       }
     }
   }
 
-  return Array.from(characters.entries())
-    .sort((a, b) => b[1] - a[1])
-    .map(([id]) => String(id));
-};
+  return usageCount;
+}
 
-export const useFetchResult = () => {
+function sortCharactersByUsage(usageCount: Map<string, number>): string[] {
+  return Array.from(usageCount.entries())
+    .sort((a, b) => b[1] - a[1])
+    .map(([characterId]) => String(characterId));
+}
+
+async function addCharactersToPlayers(
+  client: Client,
+  slug: string,
+  players: PlayerInfo[]
+): Promise<void> {
+  await Promise.all(
+    players.map(async (player) => {
+      const characterIds = await fetchPlayerCharacters(
+        client,
+        slug,
+        player.entrantId
+      );
+
+      player.characters =
+        characterIds.length > 0
+          ? characterIds.map((id) => ({ id, alt: 0 }))
+          : [{ id: DEFAULT_CHARACTER_ID, alt: 0 }];
+
+      player.id = String(player.id);
+    })
+  );
+}
+
+function filterValidImages(
+  images?: TournamentImages | null
+): TournamentImage[] {
+  if (!images) return [];
+
+  return images.filter((img): img is TournamentImage => img !== null);
+}
+
+function buildTournamentInfo(
+  event: Event,
+  storedImages?: StoredImagesMap
+): TournamentInfo {
+  const tournament = event.tournament;
+
+  const eventDate = event.startAt
+    ? new Date(event.startAt * 1000).toISOString()
+    : new Date().toISOString();
+
+  const entrantCount =
+    event.entrants?.pageInfo?.total || event.teamRosterSize?.maxPlayers || 0;
+
+  return {
+    tournamentName: tournament?.name || "",
+    eventName: event.name || "",
+    location: {
+      state: tournament?.addrState || "",
+      city: tournament?.city || "",
+      country: tournament?.countryCode || "",
+    },
+    date: eventDate,
+    entrants: entrantCount,
+    url: tournament?.url || "",
+    iconSrc: storedImages?.get("profile"),
+  };
+}
+
+export function useFetchResult() {
   const client = useClient();
   const playerDispatch = usePlayerStore((state) => state.dispatch);
   const tournamentDispatch = useTournamentStore((state) => state.dispatch);
 
-  const fetchResult = async (slug: string, playerCount: number = 8) => {
+  async function fetchResult(slug: string, playerCount: number = 8) {
     playerDispatch({ type: "FETCH_PLAYERS" });
 
     const result = await client
-      .query(Top8Query, { slug, playerCount })
+      .query(EventStandingsQueryDoc, { slug, playerCount })
       .toPromise();
 
     if (result.error || !result.data?.event) {
-      playerDispatch({
-        type: "FETCH_PLAYERS_FAIL",
-        payload: result.error?.message || "Failed to fetch top 8 data",
-      });
-      alert(result.error?.message || "Tournament not found");
+      const errorMessage = result.error?.message || "Tournament not found";
+      playerDispatch({ type: "FETCH_PLAYERS_FAIL", payload: errorMessage });
+      alert(errorMessage);
       return;
     }
 
-    const data = result.data;
-    const standings = data?.event?.standings?.nodes;
-    const tournamentName = data?.event?.tournament?.name;
-    const eventName = data?.event?.name;
-    const location = data?.event?.tournament?.addrState;
-    const city = data?.event?.tournament?.city;
-    const country = data?.event?.tournament?.countryCode;
-    const teamRosterSize = data?.event?.teamRosterSize;
-    const tournamentUrl = data?.event?.tournament?.url;
-    const images = data?.event?.tournament?.images;
+    const event = result.data.event;
+    const validImages = filterValidImages(event.tournament?.images ?? null);
+    const players = parseStandingsToPlayers(event.standings?.nodes ?? null);
 
-    let storedImages: Map<string, string> | undefined;
-    if (images && images.length > 0) {
-      const validImages = images.filter(
-        (img): img is TournamentImage =>
-          img !== null &&
-          img.url !== null &&
-          img.type !== null &&
-          img.id !== null
-      );
+    try {
+      const [storedImages] = await Promise.all([
+        validImages.length > 0 ? storeTournamentImages(validImages) : undefined,
+        addCharactersToPlayers(client, slug, players),
+      ]);
 
-      if (validImages.length > 0) {
-        storedImages = await storeAllTournamentImages(validImages);
-      }
-    }
+      const tournamentInfo = buildTournamentInfo(event, storedImages);
+      tournamentDispatch({
+        type: "SET_TOURNAMENT_INFO",
+        payload: tournamentInfo,
+      });
 
-    const date = data?.event?.startAt
-      ? new Date(data.event.startAt * 1000).toISOString()
-      : new Date().toISOString();
-
-    const tournamentInfo: TournamentInfo = {
-      tournamentName: tournamentName || "",
-      eventName: eventName || "",
-      location: {
-        state: location || "",
-        city: city || "",
-        country: country || "",
-      },
-      date: date,
-      entrants:
-        data?.event?.entrants?.pageInfo?.total ||
-        teamRosterSize?.maxPlayers ||
-        0,
-      url: tournamentUrl || "",
-      iconSrc: storedImages?.get("profile"),
-    };
-
-    tournamentDispatch({
-      type: "SET_TOURNAMENT_INFO",
-      payload: tournamentInfo,
-    });
-
-    const players = getPlayers(standings);
-
-    const results = await Promise.allSettled(
-      players.map(async (player) => {
-        const characters = await getPlayerCharacters(
-          client,
-          slug,
-          player.entrantId
-        );
-
-        if (characters.length > 0) {
-          player.characters = characters.map((character) => ({
-            id: character,
-            alt: 0,
-          }));
-        } else {
-          player.characters = [{ id: DEFAULT_CHARACTER, alt: 0 }];
-        }
-        player.id = player.id.toString();
-      })
-    );
-
-    if (results.every((result) => result.status === "fulfilled")) {
       playerDispatch({ type: "FETCH_PLAYERS_SUCCESS", payload: players });
-    } else {
+    } catch (error) {
+      console.error("Failed to fetch tournament data:", error);
       playerDispatch({
         type: "FETCH_PLAYERS_FAIL",
-        payload: "Failed to fetch characters for all players",
+        payload: "Failed to fetch tournament data",
       });
     }
-  };
+  }
 
   return { fetchResult };
-};
+}
