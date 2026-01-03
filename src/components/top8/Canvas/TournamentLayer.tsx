@@ -16,7 +16,10 @@ export const TournamentLayer = () => {
 
   const selectedFont = useFontStore((state) => state.selectedFont);
   const layout = useCanvasStore((state) => state.design.tournament);
-  const canvasConfig = useCanvasStore((state) => state.design.canvas);
+  const canvasSize = useCanvasStore((state) => state.design.canvasSize);
+  const colorPalette = useCanvasStore((state) => state.design.colorPalette);
+  const textPalette = useCanvasStore((state) => state.design.textPalette);
+  const bgAssetId = useCanvasStore((state) => state.design.bgAssetId);
   const tournament = useTournamentStore((state) => state.info);
   const selectedElementIndex = useTournamentStore(
     (state) => state.selectedElementIndex
@@ -35,15 +38,18 @@ export const TournamentLayer = () => {
       createKonvaElements(layout?.elements ?? [], {
         fontFamily: selectedFont,
         tournament,
-        containerSize: canvasConfig.size,
-        canvas: canvasConfig,
+        containerSize: canvasSize,
+        design: { colorPalette, textPalette, bgAssetId },
         onElementSelect: handleElementSelect,
       }),
     [
       layout?.elements,
       selectedFont,
       tournament,
-      canvasConfig,
+      canvasSize,
+      colorPalette,
+      textPalette,
+      bgAssetId,
       handleElementSelect,
     ]
   );
@@ -72,8 +78,8 @@ export const TournamentLayer = () => {
     <Layer>
       <Group
         ref={groupRef}
-        width={canvasConfig.size.width}
-        height={canvasConfig.size.height}
+        width={canvasSize.width}
+        height={canvasSize.height}
       >
         {konvaElements}
         <Transformer

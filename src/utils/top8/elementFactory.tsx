@@ -37,11 +37,11 @@ const createTextElement: ElementCreator<TextElementConfig> = ({
   index,
   context,
 }) => {
-  const { fontFamily = "Arial", canvas } = context;
+  const { fontFamily = "Arial", design } = context;
   const resolvedText = resolveText(
     element.textId,
     element.text,
-    canvas?.textPalette
+    design?.textPalette
   );
   const text = replacePlaceholders(resolvedText, context);
 
@@ -50,20 +50,20 @@ const createTextElement: ElementCreator<TextElementConfig> = ({
       key={`text-${index}`}
       x={element.position.x}
       y={element.position.y}
-      fill={resolveColor(element.fill, canvas?.colorPalette) ?? "white"}
+      fill={resolveColor(element.fill, design?.colorPalette) ?? "white"}
       fontSize={element.fontSize ?? 20}
       fontStyle={element.fontStyle ?? String(element.fontWeight ?? "normal")}
       fontFamily={fontFamily}
       text={text}
       align={element.align ?? "left"}
       width={element.size?.width}
-      shadowColor={resolveColor(element.shadowColor, canvas?.colorPalette)}
+      shadowColor={resolveColor(element.shadowColor, design?.colorPalette)}
       shadowBlur={element.shadowBlur}
       shadowOffset={element.shadowOffset}
       shadowOpacity={element.shadowOpacity}
       stroke={resolveColor(
         element.stroke as string | undefined,
-        canvas?.colorPalette
+        design?.colorPalette
       )}
       strokeWidth={element.strokeWidth}
     />
@@ -75,11 +75,11 @@ const createSmartTextElement: ElementCreator<SmartTextElementConfig> = ({
   index,
   context,
 }) => {
-  const { fontFamily = "Arial", canvas } = context;
+  const { fontFamily = "Arial", design } = context;
   const resolvedText = resolveText(
     element.textId,
     element.text,
-    canvas?.textPalette
+    design?.textPalette
   );
   const text = replacePlaceholders(resolvedText, context);
 
@@ -89,7 +89,7 @@ const createSmartTextElement: ElementCreator<SmartTextElementConfig> = ({
       x={element.position.x}
       y={element.position.y}
       width={element.size?.width}
-      fill={resolveColor(element.fill, canvas?.colorPalette) ?? "white"}
+      fill={resolveColor(element.fill, design?.colorPalette) ?? "white"}
       fontSize={element.fontSize ?? 20}
       fontStyle={element.fontStyle ?? String(element.fontWeight ?? "normal")}
       fontFamily={fontFamily}
@@ -97,13 +97,13 @@ const createSmartTextElement: ElementCreator<SmartTextElementConfig> = ({
       align={element.align ?? "left"}
       verticalAlign={element.verticalAlign}
       anchor={element.anchor}
-      shadowColor={resolveColor(element.shadowColor, canvas?.colorPalette)}
+      shadowColor={resolveColor(element.shadowColor, design?.colorPalette)}
       shadowBlur={element.shadowBlur}
       shadowOffset={element.shadowOffset}
       shadowOpacity={element.shadowOpacity}
       stroke={resolveColor(
         element.stroke as string | undefined,
-        canvas?.colorPalette
+        design?.colorPalette
       )}
       strokeWidth={element.strokeWidth}
     />
@@ -150,7 +150,7 @@ const createGroupElement: ElementCreator<GroupElementConfig> = ({
 const createCharacterImageElement: ElementCreator<
   CharacterImageElementConfig
 > = ({ element, index, context }) => {
-  const { player, canvas } = context;
+  const { player, design } = context;
 
   if (!player || player.characters.length === 0) {
     return (
@@ -193,7 +193,7 @@ const createCharacterImageElement: ElementCreator<
       cropOffset={cropOffset}
       cropScale={cropScale}
       hasShadow
-      shadowColor={resolveColor(element.shadowColor, canvas?.colorPalette)}
+      shadowColor={resolveColor(element.shadowColor, design?.colorPalette)}
       shadowOffset={{ x: 15, y: 15 }}
       shadowBlur={element.shadowBlur}
       shadowOpacity={element.shadowOpacity}
@@ -248,7 +248,7 @@ const createRectElement: ElementCreator<RectElementConfig> = ({
   index,
   context,
 }) => {
-  const { canvas } = context;
+  const { design } = context;
 
   return (
     <Rect
@@ -257,7 +257,7 @@ const createRectElement: ElementCreator<RectElementConfig> = ({
       y={element.position.y}
       width={element.size?.width}
       height={element.size?.height}
-      fill={resolveColor(element.fill, canvas?.colorPalette) ?? "black"}
+      fill={resolveColor(element.fill, design?.colorPalette) ?? "black"}
     />
   );
 };
@@ -291,11 +291,11 @@ const createSvgElement: ElementCreator<SvgElementConfig> = ({
   index,
   context,
 }) => {
-  const { canvas } = context;
+  const { design } = context;
 
   const resolvedPalette = resolvePaletteColors(
     element.palette,
-    canvas?.colorPalette
+    design?.colorPalette
   );
 
   return (
@@ -346,7 +346,7 @@ const createTournamentIconElement: ElementCreator<
 const createBackgroundImageElement: ElementCreator<
   BackgroundImageElementConfig
 > = ({ element, index, context }) => {
-  const backgroundImgId = context.canvas?.bgAssetId ?? "";
+  const backgroundImgId = context.design?.bgAssetId ?? "";
 
   if (!backgroundImgId) {
     return null;

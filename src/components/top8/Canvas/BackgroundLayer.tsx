@@ -13,17 +13,19 @@ const BackgroundLayerComponent = ({ onClick }: Props) => {
   const backgroundElements = useCanvasStore(
     (state) => state.design.background.elements
   );
-  const canvasConfig = useCanvasStore((state) => state.design.canvas);
+  const colorPalette = useCanvasStore((state) => state.design.colorPalette);
+  const bgAssetId = useCanvasStore((state) => state.design.bgAssetId);
+  const canvasSize = useCanvasStore((state) => state.design.canvasSize);
   const selectedFont = useFontStore((state) => state.selectedFont);
 
   const konvaElements = useMemo(
     () =>
       createKonvaElements(backgroundElements, {
-        containerSize: canvasConfig.size,
-        canvas: canvasConfig,
+        containerSize: canvasSize,
+        design: { colorPalette, bgAssetId },
         fontFamily: selectedFont,
       }),
-    [backgroundElements, canvasConfig, selectedFont]
+    [backgroundElements, colorPalette, bgAssetId, canvasSize, selectedFont]
   );
 
   return (

@@ -1,8 +1,8 @@
-import { CanvasConfig } from "@/types/top8/Design";
+import { type Design } from "@/types/top8/Design";
 
 export const resolveColor = (
   color: string | undefined,
-  palette?: CanvasConfig["colorPalette"]
+  palette?: Design["colorPalette"]
 ): string | undefined => {
   if (!color) return color;
   if (!palette) return color;
@@ -16,7 +16,7 @@ export const resolveColor = (
 
 export const resolvePaletteColors = (
   svgPalette: Record<string, string>,
-  colorPalette?: CanvasConfig["colorPalette"]
+  colorPalette?: Design["colorPalette"]
 ): Record<string, string> => {
   if (!colorPalette) return svgPalette;
 

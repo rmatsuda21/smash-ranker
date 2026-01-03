@@ -39,14 +39,6 @@ export type ElementFilterConfig =
   | { type: "RGB"; r: number; g: number; b: number }
   | { type: "Blur"; radius: number };
 
-export interface CanvasConfig {
-  size: { width: number; height: number };
-  displayScale: number;
-  colorPalette?: Record<string, { color: string; name: string }>;
-  textPalette?: Record<string, { text: string; name: string }>;
-  bgAssetId?: string;
-}
-
 interface BaseElementConfig {
   id?: string;
   position: { x: number; y: number };
@@ -176,11 +168,11 @@ export type ElementConfig =
   | TournamentIconElementConfig
   | BackgroundImageElementConfig;
 
-export interface LayerConfig {
+export interface LayerDesign {
   elements: ElementConfig[];
 }
 
-export interface PlayerConfig extends BaseElementConfig {
+export interface PlayerDesign extends BaseElementConfig {
   frame?: ImageElementConfig | SvgElementConfig | CustomImageElementConfig;
   elements: ElementConfig[];
   size: { width: number; height: number };
@@ -189,9 +181,13 @@ export interface PlayerConfig extends BaseElementConfig {
 }
 
 export interface Design {
-  canvas: CanvasConfig;
-  background: LayerConfig;
-  tournament: LayerConfig;
-  basePlayer: PlayerConfig;
-  players: Partial<PlayerConfig>[];
+  canvasSize: { width: number; height: number };
+  canvasDisplayScale: number;
+  colorPalette?: Record<string, { color: string; name: string }>;
+  textPalette?: Record<string, { text: string; name: string }>;
+  bgAssetId?: string;
+  background: LayerDesign;
+  tournament: LayerDesign;
+  basePlayer: PlayerDesign;
+  players: Partial<PlayerDesign>[];
 }
