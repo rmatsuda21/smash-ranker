@@ -30,6 +30,7 @@ import { evaluateElementCondition } from "@/utils/top8/evaluateElementCondition"
 import { resolveColor, resolvePaletteColors } from "@/utils/top8/resolveColor";
 import { resolveText } from "@/utils/top8/resolveText";
 import { SelectableElement } from "@/components/top8/Canvas/SelectableElement";
+import { FilteredElement } from "@/components/top8/Canvas/FilteredElement";
 
 const createTextElement: ElementCreator<TextElementConfig> = ({
   element,
@@ -338,7 +339,6 @@ const createTournamentIconElement: ElementCreator<
       height={element.size?.height ?? 100}
       fillMode={element.fillMode ?? "contain"}
       align={element.align ?? "center"}
-      // offset={element.offset ?? { x: 0, y: 0 }}
     />
   );
 };
@@ -394,11 +394,22 @@ export const createKonvaElements = (
         !element.hidden &&
         evaluateElementCondition(element.conditions, context);
 
+      if (!shouldRender) {
+        return null;
+      }
+
       const creator = elementCreators[element.type] as ElementCreator<
         typeof element
       >;
 
-      const el = creator({ element, index, context });
+      const createdEl = creator({ element, index, context });
+      const el =
+        isValidElement(createdEl) && createdEl
+          ? cloneElement(createdEl as ReactElement<{ listening?: boolean }>, {
+              listening: false,
+            })
+          : createdEl;
+
       const size = context.containerSize ?? { width: 100, height: 100 };
       const clipFunc = (ctx: SceneContext) => {
         ctx.beginPath();
@@ -407,8 +418,6 @@ export const createKonvaElements = (
       };
 
       if (element.selectable) {
-        // Clone the inner element with position reset to 0,0 since the
-        // SelectableElement wrapper will handle the positioning
         const resetPositionEl =
           isValidElement(el) && el
             ? cloneElement(el as ReactElement<{ x?: number; y?: number }>, {
@@ -432,24 +441,25 @@ export const createKonvaElements = (
             rotation={element.rotation ?? 0}
             clipFunc={element.clip ? clipFunc : undefined}
             listening={true}
-            visible={shouldRender}
             name={element.name ?? `element-${index}`}
           >
-            {resetPositionEl}
+            <FilteredElement filtersConfig={element.filterEffects}>
+              {resetPositionEl}
+            </FilteredElement>
           </SelectableElement>
         );
       }
 
       return (
-        <Group
+        <FilteredElement
           draggable={context.options?.editable ?? false}
           key={`group-${index}`}
           clipFunc={element.clip ? clipFunc : undefined}
           listening={false}
-          visible={shouldRender}
+          filtersConfig={element.filterEffects}
         >
           {el}
-        </Group>
+        </FilteredElement>
       );
     })
     .filter(Boolean);

@@ -61,6 +61,9 @@ export const useCustomImage = ({
   useEffect(() => {
     if (!image) return;
 
+    let cancelled = false;
+    let generatedImg: HTMLImageElement | null = null;
+
     const fitImage = (ctx: CanvasRenderingContext2D) => {
       const imageAspectRatio = image.width / image.height;
       const containerAspectRatio = width / height;
@@ -131,13 +134,16 @@ export const useCustomImage = ({
       fitImage(ctx);
 
       const img = new window.Image();
+      generatedImg = img;
       img.src = canvas.toDataURL();
       img.onload = () => {
+        if (cancelled) return;
         setFinalImage(img);
         ref.current?.cache();
         onReady?.();
       };
       img.onerror = (error) => {
+        if (cancelled) return;
         onError?.(
           new Error(error instanceof Error ? error.message : "Unknown error")
         );
@@ -145,6 +151,16 @@ export const useCustomImage = ({
     };
 
     createImage();
+
+    return () => {
+      cancelled = true;
+      if (generatedImg) {
+        generatedImg.src = "";
+        generatedImg.onload = null;
+        generatedImg.onerror = null;
+        generatedImg.remove();
+      }
+    };
   }, [
     image,
     width,
