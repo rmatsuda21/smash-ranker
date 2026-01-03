@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { createJSONStorage, devtools, persist } from "zustand/middleware";
 import { Stage } from "konva/lib/Stage";
 
-import { ElementConfig, Design, PlayerConfig } from "@/types/top8/Design";
+import { ElementConfig, Design, PlayerDesign } from "@/types/top8/Design";
 import { simpleDesign } from "@/designs/simple";
 
 interface CanvasState {
@@ -21,9 +21,9 @@ type CanvasAction =
     }
   | {
       type: "UPDATE_PLAYER_CONFIG";
-      payload: { index: number; config: Partial<PlayerConfig> };
+      payload: { index: number; config: Partial<PlayerDesign> };
     }
-  | { type: "UPDATE_BASE_PLAYER_CONFIG"; payload: Partial<PlayerConfig> }
+  | { type: "UPDATE_BASE_PLAYER_CONFIG"; payload: Partial<PlayerDesign> }
   | {
       type: "UPDATE_BASE_ELEMENT_CONFIG";
       payload: { index: number; element: ElementConfig };
@@ -117,26 +117,23 @@ const canvasReducer = (
       return {
         design: {
           ...state.design,
-          canvas: { ...state.design.canvas, bgAssetId: undefined },
+          bgAssetId: undefined,
         },
       };
     case "SET_BACKGROUND_IMG":
       return {
         design: {
           ...state.design,
-          canvas: { ...state.design.canvas, bgAssetId: action.payload },
+          bgAssetId: action.payload,
         },
       };
     case "UPDATE_COLOR_PALETTE":
       return {
         design: {
           ...state.design,
-          canvas: {
-            ...state.design.canvas,
-            colorPalette: {
-              ...state.design.canvas.colorPalette,
-              [action.payload.id]: action.payload.value,
-            },
+          colorPalette: {
+            ...state.design.colorPalette,
+            [action.payload.id]: action.payload.value,
           },
         },
       };
@@ -144,12 +141,9 @@ const canvasReducer = (
       return {
         design: {
           ...state.design,
-          canvas: {
-            ...state.design.canvas,
-            textPalette: {
-              ...state.design.canvas.textPalette,
-              [action.payload.id]: action.payload.value,
-            },
+          textPalette: {
+            ...state.design.textPalette,
+            [action.payload.id]: action.payload.value,
           },
         },
       };
@@ -172,10 +166,33 @@ export const useCanvasStore = create<CanvasStore>()(
       }),
       {
         name: "canvas-store",
+        version: 2,
         storage: createJSONStorage(() => localStorage),
         partialize: (state) => ({
           design: state.design,
         }),
+        migrate: (persisted, version) => {
+          if (version < 2) {
+            return { design: simpleDesign };
+          }
+
+          if (!persisted || typeof persisted !== "object") {
+            return { design: simpleDesign };
+          }
+
+          const persistedAny = persisted as { design?: unknown };
+          const design: any = persistedAny.design ?? {};
+
+          if (
+            !design?.canvasSize?.width ||
+            !design?.canvasSize?.height ||
+            typeof design?.canvasDisplayScale !== "number"
+          ) {
+            return { design: simpleDesign };
+          }
+
+          return persisted as { design: Design };
+        },
       }
     )
   )

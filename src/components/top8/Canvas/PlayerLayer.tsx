@@ -7,7 +7,7 @@ import { Transformer as KonvaTransformer } from "konva/lib/shapes/Transformer";
 import { Player } from "@/components/top8/Canvas/Player";
 import { usePlayerStore } from "@/store/playerStore";
 import { useCanvasStore } from "@/store/canvasStore";
-import { PlayerConfig } from "@/types/top8/Design";
+import { PlayerDesign } from "@/types/top8/Design";
 import { useFontStore } from "@/store/fontStore";
 
 const PlayerLayerComponent = () => {
@@ -25,10 +25,12 @@ const PlayerLayerComponent = () => {
   const editable = useCanvasStore((state) => state.editable);
   const playerLayouts = useCanvasStore((state) => state.design.players);
   const basePlayer = useCanvasStore((state) => state.design.basePlayer);
-  const canvasConfig = useCanvasStore((state) => state.design.canvas);
+  const canvasSize = useCanvasStore((state) => state.design.canvasSize);
+  const colorPalette = useCanvasStore((state) => state.design.colorPalette);
+  const bgAssetId = useCanvasStore((state) => state.design.bgAssetId);
   const dispatch = useCanvasStore((state) => state.dispatch);
 
-  const playerConfigs: PlayerConfig[] = useMemo(() => {
+  const playerConfigs: PlayerDesign[] = useMemo(() => {
     return playerLayouts.map((player) => ({
       ...basePlayer,
       ...player,
@@ -102,7 +104,8 @@ const PlayerLayerComponent = () => {
             <Player
               key={player.id}
               config={playerConfig}
-              canvasConfig={canvasConfig}
+              canvasSize={canvasSize}
+              design={{ colorPalette, bgAssetId }}
               isSelected={selectedPlayerIndex === index}
               player={player}
               index={index}

@@ -22,7 +22,7 @@ export const Canvas = ({ className }: Props) => {
   const stageRef = useRef<KonvaStage>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
-  const canvasSize = useCanvasStore((state) => state.design.canvas.size);
+  const canvasSize = useCanvasStore((state) => state.design.canvasSize);
   const canvasDispatch = useCanvasStore((state) => state.dispatch);
   const tournamentDispatch = useTournamentStore((state) => state.dispatch);
   const playerDispatch = usePlayerStore((state) => state.dispatch);
@@ -51,7 +51,7 @@ export const Canvas = ({ className }: Props) => {
 
   useEffect(() => {
     const handleResize = () => {
-      if (wrapperRef.current) {
+      if (wrapperRef.current && canvasSize?.width) {
         setDisplayScale(wrapperRef.current.clientWidth / canvasSize.width);
       }
     };
@@ -60,13 +60,17 @@ export const Canvas = ({ className }: Props) => {
 
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, [canvasSize.width]);
+  }, [canvasSize?.width]);
 
   useEffect(() => {
     if (stageRef.current) {
       canvasDispatch({ type: "SET_STAGE_REF", payload: stageRef.current });
     }
   }, [canvasDispatch, stageRef]);
+
+  if (!canvasSize?.width || !canvasSize?.height) {
+    return null;
+  }
 
   return (
     <div

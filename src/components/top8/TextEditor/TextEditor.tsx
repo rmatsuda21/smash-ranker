@@ -14,9 +14,7 @@ type Props = {
 };
 
 export const TextEditor = ({ className }: Props) => {
-  const textPalette = useCanvasStore(
-    (state) => state.design.canvas.textPalette
-  );
+  const textPalette = useCanvasStore((state) => state.design.textPalette);
   const dispatch = useCanvasStore((state) => state.dispatch);
 
   const debouncedDispatch = useMemo(

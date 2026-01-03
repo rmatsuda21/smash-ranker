@@ -1,8 +1,7 @@
 import {
-  CanvasConfig,
   Design,
-  LayerConfig,
-  PlayerConfig,
+  LayerDesign,
+  PlayerDesign,
 } from "@/types/top8/Design";
 import { DesignPlaceholder } from "@/consts/top8/placeholders";
 import { RenderCondition } from "@/consts/top8/renderConditions";
@@ -19,7 +18,7 @@ const TOURNAMENT_ICON_SIZE = 110;
 
 const SMASH_BALL_SIZE = 1600;
 
-const basePlayer: PlayerConfig = {
+const basePlayer: PlayerDesign = {
   position: { x: 25, y: 190 },
   size: { width: BASE_PL_SIZE, height: BASE_PL_SIZE },
   scale: { x: 1, y: 1 },
@@ -225,7 +224,7 @@ const secondRow: {
   scale: { x: number; y: number };
 }[] = getSecondRowPositions();
 
-const players: Partial<PlayerConfig>[] = [
+const players: Partial<PlayerDesign>[] = [
   {
     position: {
       x: PADDING,
@@ -256,7 +255,7 @@ const players: Partial<PlayerConfig>[] = [
   },
 ];
 
-const colorPalette: CanvasConfig["colorPalette"] = {
+const colorPalette: Design["colorPalette"] = {
   primary: { color: "rgb(179, 0, 0)", name: "Primary" },
   secondary: { color: "rgb(235, 171, 64)", name: "Secondary" },
   background: { color: "rgb(0, 0, 0)", name: "Background" },
@@ -269,7 +268,7 @@ const colorPalette: CanvasConfig["colorPalette"] = {
   smashBall: { color: "rgba(255, 255, 255, 0.2)", name: "Smash Ball" },
 };
 
-const background: LayerConfig = {
+const background: LayerDesign = {
   elements: [
     {
       type: "rect",
@@ -312,7 +311,7 @@ const background: LayerConfig = {
   ],
 };
 
-const tournament: LayerConfig = {
+const tournament: LayerDesign = {
   elements: [
     {
       type: "text",
@@ -375,26 +374,24 @@ const tournament: LayerConfig = {
 };
 
 export const simpleDesign: Design = {
-  canvas: {
-    size: {
-      width: 1920,
-      height: 1080,
+  canvasSize: {
+    width: 1920,
+    height: 1080,
+  },
+  canvasDisplayScale: 0.5,
+  colorPalette,
+  textPalette: {
+    topLeftText: {
+      text: `${DesignPlaceholder.TOURNAMENT_NAME} - ${DesignPlaceholder.EVENT_NAME}`,
+      name: "Top Left Text",
     },
-    displayScale: 0.5,
-    colorPalette,
-    textPalette: {
-      topLeftText: {
-        text: `${DesignPlaceholder.TOURNAMENT_NAME} - ${DesignPlaceholder.EVENT_NAME}`,
-        name: "Top Left Text",
-      },
-      topRightText: {
-        text: DesignPlaceholder.TOURNAMENT_URL,
-        name: "Top Right Text",
-      },
-      bottomText: {
-        text: `${DesignPlaceholder.TOURNAMENT_DATE} - ${DesignPlaceholder.TOURNAMENT_LOCATION} - ${DesignPlaceholder.ENTRANTS} Entrants`,
-        name: "Bottom Text",
-      },
+    topRightText: {
+      text: DesignPlaceholder.TOURNAMENT_URL,
+      name: "Top Right Text",
+    },
+    bottomText: {
+      text: `${DesignPlaceholder.TOURNAMENT_DATE} - ${DesignPlaceholder.TOURNAMENT_LOCATION} - ${DesignPlaceholder.ENTRANTS} Entrants`,
+      name: "Bottom Text",
     },
   },
   background,

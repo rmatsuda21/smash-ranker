@@ -6,7 +6,7 @@ import isEqual from "lodash/isEqual";
 import { PlayerInfo } from "@/types/top8/Player";
 import { useCanvasStore } from "@/store/canvasStore";
 import { usePlayerStore } from "@/store/playerStore";
-import { CanvasConfig, PlayerConfig } from "@/types/top8/Design";
+import { type Design, PlayerDesign } from "@/types/top8/Design";
 import { createKonvaElements } from "@/utils/top8/elementFactory";
 import { SelectableElement } from "@/components/top8/Canvas/SelectableElement";
 import { useEditorStore } from "@/store/editorStore";
@@ -14,8 +14,9 @@ import { EditorTab } from "@/types/top8/Editor";
 
 type Props = {
   player: PlayerInfo;
-  canvasConfig: CanvasConfig;
-  config: PlayerConfig;
+  canvasSize: Design["canvasSize"];
+  design: Pick<Design, "colorPalette" | "textPalette" | "bgAssetId">;
+  config: PlayerDesign;
   index: number;
   onDragStart: (e: KonvaEventObject<MouseEvent>) => void;
   onDragEnd: (e: KonvaEventObject<MouseEvent>) => void;
@@ -26,7 +27,8 @@ type Props = {
 
 const PlayerComponent = ({
   player,
-  canvasConfig,
+  canvasSize,
+  design,
   index,
   config,
   onDragStart,
@@ -77,7 +79,7 @@ const PlayerComponent = ({
           0,
           Math.min(
             pos.x,
-            canvasConfig.size.width -
+            canvasSize.width -
               (config.size?.width ?? 0) * (config.scale?.x ?? 1)
           )
         ),
@@ -85,13 +87,13 @@ const PlayerComponent = ({
           0,
           Math.min(
             pos.y,
-            canvasConfig.size.height -
+            canvasSize.height -
               (config.size?.height ?? 0) * (config.scale?.y ?? 1)
           )
         ),
       };
     },
-    [canvasConfig.size, config.size, config.scale]
+    [canvasSize.width, canvasSize.height, config.size, config.scale]
   );
 
   const konvaElements = useMemo(
@@ -103,9 +105,9 @@ const PlayerComponent = ({
           width: config.size?.width,
           height: config.size?.height,
         },
-        canvas: canvasConfig,
+        design,
       }),
-    [config.elements, fontFamily, player, config.size, canvasConfig]
+    [config.elements, fontFamily, player, config.size, design]
   );
 
   return (
@@ -136,7 +138,8 @@ export const Player = memo(PlayerComponent, (prevProps, nextProps) => {
     prevProps.index === nextProps.index &&
     isEqual(prevProps.player, nextProps.player) &&
     isEqual(prevProps.config, nextProps.config) &&
-    isEqual(prevProps.canvasConfig, nextProps.canvasConfig) &&
+    isEqual(prevProps.canvasSize, nextProps.canvasSize) &&
+    isEqual(prevProps.design, nextProps.design) &&
     prevProps.fontFamily === nextProps.fontFamily &&
     prevProps.editable === nextProps.editable &&
     prevProps.isSelected === nextProps.isSelected

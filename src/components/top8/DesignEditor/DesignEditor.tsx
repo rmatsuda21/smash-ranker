@@ -13,7 +13,7 @@ type Props = {
 
 export const DesignEditor = ({ className }: Props) => {
   const canvasDispatch = useCanvasStore((state) => state.dispatch);
-  const canvas = useCanvasStore((state) => state.design.canvas);
+  const bgAssetId = useCanvasStore((state) => state.design.bgAssetId);
 
   return (
     <div className={cn(className, styles.wrapper)}>
@@ -25,7 +25,7 @@ export const DesignEditor = ({ className }: Props) => {
       <div className={styles.backgroundImg}>
         <p className={styles.label}>Background Image</p>
         <AssetSelector
-          selectedSrc={canvas.bgAssetId}
+          selectedSrc={bgAssetId}
           onSelect={(id) => {
             canvasDispatch({
               type: "SET_BACKGROUND_IMG",
