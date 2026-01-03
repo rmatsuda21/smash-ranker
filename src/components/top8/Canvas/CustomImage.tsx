@@ -54,7 +54,6 @@ const CustomImageComponent = ({
 
   useEffect(() => {
     if (ref.current && finalImage) {
-      ref.current.clearCache();
       ref.current.cache();
     }
   }, [shadowColor, shadowBlur, shadowOffset, hasShadow, finalImage, ref]);

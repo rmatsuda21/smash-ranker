@@ -33,6 +33,12 @@ export type ElementType =
 
 export type Condition = DesignPlaceholder | RenderCondition;
 
+export type ElementFilterConfig =
+  | { type: "Grayscale" }
+  | { type: "Sepia" }
+  | { type: "RGB"; r: number; g: number; b: number }
+  | { type: "Blur"; radius: number };
+
 export interface CanvasConfig {
   size: { width: number; height: number };
   displayScale: number;
@@ -53,6 +59,7 @@ interface BaseElementConfig {
   hidden?: boolean;
   conditions?: Condition[];
   selectable?: boolean;
+  filterEffects?: ElementFilterConfig[];
 }
 
 export interface TextElementConfig
