@@ -20,7 +20,6 @@ type Props = {
   index: number;
   onDragStart: (e: KonvaEventObject<MouseEvent>) => void;
   onDragEnd: (e: KonvaEventObject<MouseEvent>) => void;
-  isSelected: boolean;
   fontFamily: string;
   editable: boolean;
 };
@@ -33,7 +32,6 @@ const PlayerComponent = ({
   config,
   onDragStart,
   onDragEnd,
-  isSelected,
   fontFamily,
   editable,
 }: Props) => {
@@ -113,7 +111,6 @@ const PlayerComponent = ({
   return (
     <SelectableElement
       id={player.id}
-      isSelected={isSelected}
       draggable={editable}
       x={config.position?.x}
       y={config.position?.y}
@@ -141,7 +138,6 @@ export const Player = memo(PlayerComponent, (prevProps, nextProps) => {
     isEqual(prevProps.canvasSize, nextProps.canvasSize) &&
     isEqual(prevProps.design, nextProps.design) &&
     prevProps.fontFamily === nextProps.fontFamily &&
-    prevProps.editable === nextProps.editable &&
-    prevProps.isSelected === nextProps.isSelected
+    prevProps.editable === nextProps.editable
   );
 });
