@@ -44,8 +44,6 @@ const buildKonvaFilterProps = (
     props.blurRadius = blur.radius;
   }
 
-  console.log(props);
-
   return props;
 };
 

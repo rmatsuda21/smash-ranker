@@ -433,7 +433,6 @@ export const createKonvaElements = (
             y={element.position.y}
             draggable={false}
             onClick={() => context.onElementSelect?.()}
-            isSelected={false}
             width={element.size?.width}
             height={element.size?.height}
             scaleX={element.scale?.x}
