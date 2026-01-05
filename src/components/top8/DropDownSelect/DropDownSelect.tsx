@@ -102,6 +102,7 @@ export const DropDownSelect = <T,>({
 }: Props<T>) => {
   const [isOpen, setIsOpen] = useState(false);
   const [showAbove, setShowAbove] = useState(false);
+  const [dropdownStyles, setDropdownStyles] = useState<React.CSSProperties>({});
 
   const triggerRef = useRef<HTMLButtonElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -121,7 +122,7 @@ export const DropDownSelect = <T,>({
     setIsOpen((prev) => !prev);
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const calculateShowAbove = () => {
       if (!triggerRef.current || !dropdownRef.current) return false;
       const triggerRect = triggerRef.current.getBoundingClientRect();
@@ -144,8 +145,6 @@ export const DropDownSelect = <T,>({
   }, []);
 
   useEffect(() => {
-    if (!isOpen) return;
-
     const handleClickOutside = (event: MouseEvent) => {
       if (
         containerRef.current &&
@@ -159,7 +158,7 @@ export const DropDownSelect = <T,>({
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isOpen]);
+  }, []);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -254,6 +253,20 @@ export const DropDownSelect = <T,>({
     }
   }, [isOpen, dropdownRef]);
 
+  useEffect(() => {
+    const calculateShowAbove = () => {
+      if (!triggerRef.current || !dropdownRef.current) return false;
+      const triggerRect = triggerRef.current.getBoundingClientRect();
+      const dropdownHeight = dropdownRef.current.offsetHeight;
+      const viewportHeight = window.innerHeight;
+
+      return triggerRect.bottom + dropdownHeight > viewportHeight;
+    };
+
+    setDropdownStyles(getDropdownStyles(triggerRef.current, showAbove));
+    setShowAbove(calculateShowAbove());
+  }, [isOpen, showAbove]);
+
   return (
     <div className={cn(styles.dropdownSelect, className)} ref={containerRef}>
       <button
@@ -275,7 +288,7 @@ export const DropDownSelect = <T,>({
         className={cn(styles.dropdown, {
           [styles.open]: isOpen,
         })}
-        style={getDropdownStyles(triggerRef.current, showAbove)}
+        style={dropdownStyles}
         inert={!isOpen ? true : undefined}
         role="listbox"
       >
