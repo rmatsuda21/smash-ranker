@@ -17,7 +17,8 @@ type Props = {
 };
 
 export const Canvas = ({ className }: Props) => {
-  const [displayScale, setDisplayScale] = useState(0.5);
+  const [canvasStyle, setCanvasStyle] = useState<React.CSSProperties>({});
+  const [isReady, setIsReady] = useState(false);
 
   const stageRef = useRef<KonvaStage>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -52,15 +53,36 @@ export const Canvas = ({ className }: Props) => {
   useEffect(() => {
     const handleResize = () => {
       if (wrapperRef.current && canvasSize?.width) {
-        setDisplayScale(wrapperRef.current.clientWidth / canvasSize.width);
+        const displayScale = wrapperRef.current.clientWidth / canvasSize.width;
+        const wrapperRect = wrapperRef.current.getBoundingClientRect();
+        setCanvasStyle({
+          "--display-scale": `${displayScale}`,
+          top: `${wrapperRect.top}px`,
+          left: `${wrapperRect.left}px`,
+        } as React.CSSProperties);
+        setIsReady(true);
+        console.log("isReady", isReady);
       }
     };
 
     handleResize();
 
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [canvasSize?.width]);
+    const wrapperEl = wrapperRef.current;
+    const observer =
+      typeof ResizeObserver !== "undefined" && wrapperEl
+        ? new ResizeObserver(() => {
+            window.requestAnimationFrame(handleResize);
+          })
+        : null;
+
+    if (observer && wrapperEl) {
+      observer.observe(wrapperEl);
+    }
+
+    return () => {
+      observer?.disconnect();
+    };
+  }, [canvasSize?.width, isReady]);
 
   useEffect(() => {
     if (stageRef.current) {
@@ -75,14 +97,11 @@ export const Canvas = ({ className }: Props) => {
   return (
     <div
       ref={wrapperRef}
-      className={cn(className, styles.canvasContainer)}
-      style={
-        {
-          "--display-scale": `${displayScale}`,
-        } as React.CSSProperties
-      }
+      className={cn(className, styles.canvasContainer, {
+        [styles.hidden]: !isReady,
+      })}
     >
-      <div className={styles.canvasWrapper}>
+      <div className={styles.canvasWrapper} style={canvasStyle}>
         <Stage
           ref={stageRef}
           width={canvasSize.width}
