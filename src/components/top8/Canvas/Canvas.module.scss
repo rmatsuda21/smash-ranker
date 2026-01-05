@@ -1,9 +1,13 @@
 .canvasContainer {
   position: relative;
 
+  &.hidden {
+    display: none;
+  }
+
   .canvasWrapper {
     border: 2px solid #ccc;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
 

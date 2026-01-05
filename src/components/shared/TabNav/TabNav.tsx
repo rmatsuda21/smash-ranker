@@ -16,7 +16,7 @@ export const TabNav = <T extends string>({
   onTabChange,
 }: Props<T>) => {
   return (
-    <div className={cn(styles.wrapper, className)}>
+    <div className={cn(styles.tabNav, className)}>
       {Object.entries(tabs).map(([key, value]) => (
         <button
           key={key}

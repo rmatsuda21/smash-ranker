@@ -1,25 +1,12 @@
 import { Suspense, lazy } from "react";
+import { FaCaretLeft } from "react-icons/fa6";
 import cn from "classnames";
 
-import { EditorTab, EditorTabLabels } from "@/types/top8/Editor";
+import { EditorTab } from "@/types/top8/Editor";
 import { useEditorStore } from "@/store/editorStore";
-import { TabNav } from "@/components/shared/TabNav/TabNav";
+import { SidePanelNav } from "@/components/top8/SidePanel/SidePanelNav";
 
 import styles from "./SidePanel.module.scss";
-
-// const PlayerElementEditor = lazy(() =>
-//   import("@/components/top8/PlayerElementEditor/PlayerElementEditor").then(
-//     (module) => ({
-//       default: module.PlayerElementEditor,
-//     })
-//   )
-// );
-
-// const ElementPanel = lazy(() =>
-//   import("@/components/top8/SidePanel/ElementPanel").then((module) => ({
-//     default: module.ElementPanel,
-//   }))
-// );
 
 const PlayersEditor = lazy(() =>
   import("@/components/top8/PlayersEditor/PlayersEditor").then((module) => ({
@@ -54,52 +41,59 @@ type Props = {
 export const SidePanel = ({ className }: Props) => {
   const activeTab = useEditorStore((state) => state.activeTab);
   const dispatch = useEditorStore((state) => state.dispatch);
+  const isSidePanelOpen = useEditorStore((state) => state.isSidePanelOpen);
 
   const handleTabChange = (tab: EditorTab) => {
     dispatch({ type: "SET_ACTIVE_TAB", payload: tab });
+    dispatch({ type: "SET_IS_SIDE_PANEL_OPEN", payload: true });
+  };
+
+  const handleClose = () => {
+    dispatch({ type: "SET_IS_SIDE_PANEL_OPEN", payload: false });
+    dispatch({ type: "SET_ACTIVE_TAB", payload: null });
   };
 
   return (
-    <div className={cn(styles.wrapper, className)}>
-      <TabNav
-        className={styles.tabNav}
-        tabs={EditorTabLabels}
+    <div
+      className={cn(className, styles.sidePanel, {
+        [styles.closed]: !isSidePanelOpen,
+      })}
+    >
+      <SidePanelNav
         activeTab={activeTab}
         onTabChange={handleTabChange}
+        className={styles.nav}
       />
 
-      <Suspense fallback={<div>Loading Configs...</div>}>
-        <TournamentEditor
-          className={cn({
-            [styles.hidden]: activeTab !== EditorTab.TOURNAMENT,
-          })}
-        />
-        <DesignEditor
-          className={cn({
-            [styles.hidden]: activeTab !== EditorTab.DESIGN,
-          })}
-        />
-        <PlayersEditor
-          className={cn({
-            [styles.hidden]: activeTab !== EditorTab.PLAYERS,
-          })}
-        />
-        <TextEditor
-          className={cn({
-            [styles.hidden]: activeTab !== EditorTab.TEXTS,
-          })}
-        />
-        {/* <PlayerElementEditor
-          className={cn({
-            [styles.hidden]: activeTab !== EditorTab.PLAYER_EDITOR,
-          })}
-        />
-        <ElementPanel
-          className={cn({
-            [styles.hidden]: activeTab !== EditorTab.ELEMENT_EDITOR,
-          })}
-        /> */}
-      </Suspense>
+      <div className={styles.editorsWindow}>
+        <div className={styles.editors}>
+          <Suspense fallback={<div>Loading Configs...</div>}>
+            <TournamentEditor
+              className={cn({
+                [styles.hidden]: activeTab !== EditorTab.TOURNAMENT,
+              })}
+            />
+            <DesignEditor
+              className={cn({
+                [styles.hidden]: activeTab !== EditorTab.DESIGN,
+              })}
+            />
+            <PlayersEditor
+              className={cn({
+                [styles.hidden]: activeTab !== EditorTab.PLAYERS,
+              })}
+            />
+            <TextEditor
+              className={cn({
+                [styles.hidden]: activeTab !== EditorTab.TEXTS,
+              })}
+            />
+          </Suspense>
+        </div>
+        <button className={styles.close} onClick={handleClose}>
+          <FaCaretLeft className={styles.icon} />
+        </button>
+      </div>
     </div>
   );
 };

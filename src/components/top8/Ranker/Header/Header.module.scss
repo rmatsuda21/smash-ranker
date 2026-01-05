@@ -1,8 +1,13 @@
 .header {
-  background-color: var(--gray-3);
-  padding: 10px;
-  margin-block: 10px;
-  border-radius: 5px;
+  background: linear-gradient(
+    24deg,
+    var(--accent-2),
+    var(--accent-1),
+    var(--accent-2)
+  );
+  border-top: 1px solid var(--accent-1);
+  border-bottom: 1px solid var(--accent-1);
+  padding-top: 10px;
 
   overflow-x: scroll;
   overflow-y: hidden;

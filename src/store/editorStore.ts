@@ -4,10 +4,13 @@ import { devtools } from "zustand/middleware";
 import { EditorTab } from "@/types/top8/Editor";
 
 interface EditorState {
-  activeTab: EditorTab;
+  activeTab: EditorTab | null;
+  isSidePanelOpen: boolean;
 }
 
-type EditorAction = { type: "SET_ACTIVE_TAB"; payload: EditorTab };
+type EditorAction =
+  | { type: "SET_ACTIVE_TAB"; payload: EditorTab | null }
+  | { type: "SET_IS_SIDE_PANEL_OPEN"; payload: boolean };
 
 const editorReducer = (
   state: EditorState,
@@ -18,6 +21,10 @@ const editorReducer = (
       return {
         activeTab: action.payload,
       };
+    case "SET_IS_SIDE_PANEL_OPEN":
+      return {
+        isSidePanelOpen: action.payload,
+      };
     default:
       return state;
   }
@@ -25,6 +32,7 @@ const editorReducer = (
 
 const initialState: EditorState = {
   activeTab: EditorTab.PLAYERS,
+  isSidePanelOpen: true,
 };
 
 interface EditorStore extends EditorState {
