@@ -61,7 +61,6 @@ export const Canvas = ({ className }: Props) => {
           left: `${wrapperRect.left}px`,
         } as React.CSSProperties);
         setIsReady(true);
-        console.log("isReady", isReady);
       }
     };
 
