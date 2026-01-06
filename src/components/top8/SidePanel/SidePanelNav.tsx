@@ -1,6 +1,7 @@
 import { IoPerson, IoTrophy } from "react-icons/io5";
 import { IoPencil } from "react-icons/io5";
 import { IoText } from "react-icons/io5";
+import { FaFile } from "react-icons/fa6";
 
 import { EditorTab } from "@/types/top8/Editor";
 
@@ -23,6 +24,10 @@ const EditorTabLabels: Record<
   [EditorTab.TOURNAMENT]: {
     label: "Tournament",
     icon: <IoTrophy />,
+  },
+  [EditorTab.TEMPLATES]: {
+    label: "Templates",
+    icon: <FaFile />,
   },
 };
 
