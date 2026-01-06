@@ -170,7 +170,7 @@ export const TournamentEditor = ({ className }: Props) => {
         name="url"
         id="url"
         type="text"
-        value={tempTournament?.url}
+        value={tempTournament?.url ?? ""}
         onChange={handleChange}
       />
     </div>

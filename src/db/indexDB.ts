@@ -1,4 +1,4 @@
-import { DBAsset, DBConfig } from "@/types/Repository";
+import { DBAsset, DBTemplate } from "@/types/Repository";
 import { openDB, DBSchema } from "idb";
 
 const DB_NAME = "top8-db";
@@ -9,9 +9,9 @@ interface Top8DB extends DBSchema {
     value: DBAsset;
     indexes: { date: Date; src: string };
   };
-  configs: {
+  templates: {
     key: string;
-    value: DBConfig;
+    value: DBTemplate;
   };
 }
 
@@ -23,7 +23,7 @@ export const initDB = openDB<Top8DB>(DB_NAME, 1, {
     assetsStore.createIndex("date", "date");
     assetsStore.createIndex("src", "src");
 
-    db.createObjectStore("configs", {
+    db.createObjectStore("templates", {
       keyPath: "id",
     });
   },

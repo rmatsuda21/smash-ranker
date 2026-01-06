@@ -2,7 +2,7 @@ import { FaFileExport } from "react-icons/fa6";
 
 import { useCanvasStore } from "@/store/canvasStore";
 import { Button } from "@/components/shared/Button/Button";
-import { DBConfig } from "@/types/Repository";
+import { DBTemplate } from "@/types/Repository";
 import { useFontStore } from "@/store/fontStore";
 
 export const ConfigExport = () => {
@@ -10,10 +10,10 @@ export const ConfigExport = () => {
   const selectedFont = useFontStore((state) => state.selectedFont);
 
   const handleExport = async () => {
-    const config: Omit<DBConfig, "id"> = {
+    const config: Omit<DBTemplate, "id"> = {
       name: "Exported Config",
-      layout: layout,
-      selectedFont: selectedFont,
+      design: layout,
+      font: selectedFont,
     };
     const json = JSON.stringify(config, null, 2);
 

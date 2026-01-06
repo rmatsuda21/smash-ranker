@@ -2,7 +2,7 @@ import { FaFileImport } from "react-icons/fa6";
 
 import { Button } from "@/components/shared/Button/Button";
 import { useCanvasStore } from "@/store/canvasStore";
-import { DBConfig } from "@/types/Repository";
+import { DBTemplate } from "@/types/Repository";
 import { useFontStore } from "@/store/fontStore";
 
 export const ConfigImport = () => {
@@ -18,9 +18,9 @@ export const ConfigImport = () => {
       if (file) {
         const reader = new FileReader();
         reader.onload = (event) => {
-          const json = JSON.parse(event.target?.result as string) as DBConfig;
-          const layout = json.layout;
-          const selectedFont = json.selectedFont;
+          const json = JSON.parse(event.target?.result as string) as DBTemplate;
+          const layout = json.design;
+          const selectedFont = json.font;
 
           if (!layout || !selectedFont) {
             return;

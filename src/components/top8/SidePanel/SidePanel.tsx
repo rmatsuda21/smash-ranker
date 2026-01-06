@@ -34,6 +34,12 @@ const TextEditor = lazy(() =>
   }))
 );
 
+const TemplateEditor = lazy(() =>
+  import("@/components/top8/TemplateEditor/TemplateEditor").then((module) => ({
+    default: module.TemplateEditor,
+  }))
+);
+
 type Props = {
   className?: string;
 };
@@ -86,6 +92,11 @@ export const SidePanel = ({ className }: Props) => {
             <TextEditor
               className={cn({
                 [styles.hidden]: activeTab !== EditorTab.TEXTS,
+              })}
+            />
+            <TemplateEditor
+              className={cn({
+                [styles.hidden]: activeTab !== EditorTab.TEMPLATES,
               })}
             />
           </Suspense>

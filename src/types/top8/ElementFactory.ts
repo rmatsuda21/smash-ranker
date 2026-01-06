@@ -11,6 +11,11 @@ export interface ElementFactoryContext {
   onElementSelect?: () => void;
   options?: {
     editable?: boolean;
+    /**
+     * When true, elements marked `selectable` will be rendered as normal, non-interactive
+     * elements (no `SelectableElement` wrapper, no click handlers).
+     */
+    disableSelectable?: boolean;
   };
 }
 
