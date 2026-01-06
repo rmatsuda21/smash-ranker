@@ -2,11 +2,11 @@ import { useMemo, useState } from "react";
 import { FaFileImport } from "react-icons/fa6";
 
 import { Modal } from "@/components/shared/Modal/Modal";
-import { useConfigDB } from "@/hooks/useConfigDb";
+import { useTemplateDB } from "@/hooks/useConfigDb";
 import { useConfirmation } from "@/hooks/useConfirmation";
 import { Button } from "@/components/shared/Button/Button";
 import { DropDownSelect } from "@/components/top8/DropDownSelect/DropDownSelect";
-import { DBConfig } from "@/types/Repository";
+import { DBTemplate } from "@/types/Repository";
 import { useFontStore } from "@/store/fontStore";
 import { useCanvasStore } from "@/store/canvasStore";
 import { simpleDesign } from "@/designs/simple";
@@ -20,25 +20,30 @@ type Props = {
   onClose: () => void;
 };
 
-const defaultConfigs: DBConfig[] = [
+const defaultConfigs: DBTemplate[] = [
   {
     id: "default-simple",
     name: "Simple Config",
-    layout: simpleDesign,
-    selectedFont: "Noto Sans JP",
+    design: simpleDesign,
+    font: "Noto Sans JP",
   },
   {
     id: "default-squares",
     name: "Squares Config",
-    layout: squaresDesign,
-    selectedFont: "Noto Sans JP",
+    design: squaresDesign,
+    font: "Noto Sans JP",
   },
 ];
 
 export const ConfigManagerModal = ({ isOpen, onClose }: Props) => {
-  const [selectedConfig, setSelectedConfig] = useState<DBConfig | null>(null);
-  const { configs, getConfig, addConfig, deleteConfig, clearAll } =
-    useConfigDB();
+  const [selectedConfig, setSelectedConfig] = useState<DBTemplate | null>(null);
+  const {
+    templates: configs,
+    getTemplateWithId: getConfig,
+    addTemplate: addConfig,
+    deleteTemplate: deleteConfig,
+    clearAll,
+  } = useTemplateDB();
 
   const layout = useCanvasStore((state) => state.design);
   const selectedFont = useFontStore((state) => state.selectedFont);
@@ -46,7 +51,7 @@ export const ConfigManagerModal = ({ isOpen, onClose }: Props) => {
   const fontDispatch = useFontStore((state) => state.dispatch);
 
   const handleConfigSelect = async (id: string) => {
-    let config: DBConfig | undefined;
+    let config: DBTemplate | undefined;
     if (defaultConfigs.some((c) => c.id === id)) {
       config = defaultConfigs.find((c) => c.id === id)!;
     } else {
@@ -61,8 +66,8 @@ export const ConfigManagerModal = ({ isOpen, onClose }: Props) => {
   const handleCreateNew = async () => {
     const id = await addConfig({
       name: "New Config!",
-      layout: layout,
-      selectedFont: selectedFont,
+      design: layout,
+      font: selectedFont,
     });
 
     setTimeout(() => handleConfigSelect(id), 0);
@@ -79,7 +84,7 @@ export const ConfigManagerModal = ({ isOpen, onClose }: Props) => {
   };
 
   const handleLoad = async (id: string) => {
-    let config: DBConfig | undefined;
+    let config: DBTemplate | undefined;
     if (defaultConfigs.some((config) => config.id === id)) {
       config = defaultConfigs.find((config) => config.id === id)!;
     } else {
@@ -87,10 +92,10 @@ export const ConfigManagerModal = ({ isOpen, onClose }: Props) => {
     }
 
     if (config) {
-      dispatch({ type: "SET_DESIGN", payload: config.layout });
+      dispatch({ type: "SET_DESIGN", payload: config.design });
       fontDispatch({
         type: "SET_SELECTED_FONT",
-        payload: config.selectedFont,
+        payload: config.font,
       });
     }
 
@@ -132,9 +137,9 @@ export const ConfigManagerModal = ({ isOpen, onClose }: Props) => {
       if (file) {
         const reader = new FileReader();
         reader.onload = async (event) => {
-          const json = JSON.parse(event.target?.result as string) as DBConfig;
-          const layout = json.layout;
-          const selectedFont = json.selectedFont;
+          const json = JSON.parse(event.target?.result as string) as DBTemplate;
+          const layout = json.design;
+          const selectedFont = json.font;
 
           if (!layout || !selectedFont) {
             alert("Invalid config!");
@@ -144,8 +149,8 @@ export const ConfigManagerModal = ({ isOpen, onClose }: Props) => {
 
           addConfig({
             name: "Imported Config",
-            layout: layout,
-            selectedFont: selectedFont,
+            design: layout,
+            font: selectedFont,
           });
 
           fileInput.remove();

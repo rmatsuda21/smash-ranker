@@ -1,7 +1,5 @@
-import { IoPerson, IoTrophy } from "react-icons/io5";
-import { IoPencil } from "react-icons/io5";
-import { IoText } from "react-icons/io5";
-import { FaFile } from "react-icons/fa6";
+import { IoPerson, IoTrophy, IoText, IoPencil } from "react-icons/io5";
+import { HiOutlineTemplate } from "react-icons/hi";
 
 import { EditorTab } from "@/types/top8/Editor";
 
@@ -27,7 +25,7 @@ const EditorTabLabels: Record<
   },
   [EditorTab.TEMPLATES]: {
     label: "Templates",
-    icon: <FaFile />,
+    icon: <HiOutlineTemplate />,
   },
 };
 

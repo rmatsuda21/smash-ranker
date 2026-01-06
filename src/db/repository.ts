@@ -1,6 +1,6 @@
-import { DBAsset, DBConfig, Store } from "@/types/Repository";
-import { ConfigStore } from "@/db/config/store";
+import { DBAsset, DBTemplate, Store } from "@/types/Repository";
+import { TemplateStore } from "@/db/template/store";
 import { AssetStore } from "@/db/asset/store";
 
-export const configRepository: Store<DBConfig> = new ConfigStore();
+export const templateRepository: Store<DBTemplate> = new TemplateStore();
 export const assetRepository: Store<DBAsset> = new AssetStore();

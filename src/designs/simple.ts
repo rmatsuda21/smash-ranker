@@ -1,8 +1,4 @@
-import {
-  Design,
-  LayerDesign,
-  PlayerDesign,
-} from "@/types/top8/Design";
+import { Design, LayerDesign, PlayerDesign } from "@/types/top8/Design";
 import { DesignPlaceholder } from "@/consts/top8/placeholders";
 import { RenderCondition } from "@/consts/top8/renderConditions";
 
@@ -307,6 +303,17 @@ const background: LayerDesign = {
         color_1: "secondary",
         color_2: "primary",
       },
+    },
+    {
+      id: "creatorText",
+      type: "smartText",
+      textId: "creatorText",
+      text: "Design by @Elenriqu3",
+      fontSize: 25,
+      fontWeight: 900,
+      fill: "text",
+      anchor: "bottomRight",
+      position: { x: CANVAS_WIDTH - PADDING, y: CANVAS_HEIGHT - PADDING },
     },
   ],
 };

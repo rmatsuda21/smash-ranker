@@ -1,15 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
-import { DBConfig } from "@/types/Repository";
-import { configRepository } from "@/db/repository";
+import { DBTemplate } from "@/types/Repository";
+import { templateRepository } from "@/db/repository";
 
-export const useConfigDB = () => {
-  const [configs, setConfigs] = useState<{ id: string; name: string }[]>([]);
+export const useTemplateDB = () => {
+  const [templates, setTemplates] = useState<{ id: string; name: string }[]>(
+    []
+  );
   const [loading, setLoading] = useState(true);
 
   const refresh = async () => {
-    setConfigs(
-      await configRepository
+    setTemplates(
+      await templateRepository
         .getAll()
         .then((configs) =>
           configs.map((config) => ({ id: config.id, name: config.name }))
@@ -21,29 +23,36 @@ export const useConfigDB = () => {
     refresh().finally(() => setLoading(false));
   }, []);
 
-  const addConfig = async (config: Omit<DBConfig, "id">) => {
+  const addTemplate = useCallback(async (config: Omit<DBTemplate, "id">) => {
     const id = crypto.randomUUID();
-    await configRepository.put({
+    await templateRepository.put({
       id,
       ...config,
     });
     await refresh();
     return id;
-  };
+  }, []);
 
-  const deleteConfig = async (id: string) => {
-    await configRepository.delete(id);
+  const deleteTemplate = useCallback(async (id: string) => {
+    await templateRepository.delete(id);
     await refresh();
-  };
+  }, []);
 
-  const clearAll = async () => {
-    await configRepository.clear();
+  const clearAll = useCallback(async () => {
+    await templateRepository.clear();
     await refresh();
-  };
+  }, []);
 
-  const getConfig = async (id: string) => {
-    return await configRepository.get(id);
-  };
+  const getTemplateWithId = useCallback(async (id: string) => {
+    return await templateRepository.get(id);
+  }, []);
 
-  return { configs, loading, addConfig, deleteConfig, clearAll, getConfig };
+  return {
+    templates,
+    loading,
+    addTemplate,
+    deleteTemplate,
+    clearAll,
+    getTemplateWithId,
+  };
 };

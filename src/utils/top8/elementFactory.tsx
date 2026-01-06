@@ -417,7 +417,7 @@ export const createKonvaElements = (
         ctx.closePath();
       };
 
-      if (element.selectable) {
+      if (element.selectable && !context.options?.disableSelectable) {
         const resetPositionEl =
           isValidElement(el) && el
             ? cloneElement(el as ReactElement<{ x?: number; y?: number }>, {
