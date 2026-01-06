@@ -20,6 +20,7 @@ const editorReducer = (
     case "SET_ACTIVE_TAB":
       return {
         activeTab: action.payload,
+        isSidePanelOpen: action.payload === null ? false : true,
       };
     case "SET_IS_SIDE_PANEL_OPEN":
       return {

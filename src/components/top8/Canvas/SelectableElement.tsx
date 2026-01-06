@@ -17,7 +17,6 @@ export const SelectableElement = ({
   const contentRef = useRef<KonvaGroup>(null);
   const [contentSize, setContentSize] = useState({ width: 0, height: 0 });
 
-  // Measure the actual content size after render
   useEffect(() => {
     if (contentRef.current) {
       const parent = contentRef.current.getParent();
@@ -28,7 +27,6 @@ export const SelectableElement = ({
     }
   }, [children]);
 
-  // Use explicit size if provided, otherwise use measured content size
   const width = rest.width ?? contentSize.width;
   const height = rest.height ?? contentSize.height;
 
