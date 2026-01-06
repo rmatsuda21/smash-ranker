@@ -31,8 +31,18 @@ export const TemplateEditor = ({ className }: Props) => {
     fetchDesigns();
   }, [templates, getTemplateWithId]);
 
-  if (loading) return <Spinner size={25} />;
-  if (templates.length === 0) return <div>No templates found</div>;
+  if (loading)
+    return (
+      <div className={cn(className, styles.loading)}>
+        <Spinner size={25} />
+      </div>
+    );
+  if (templates.length === 0)
+    return (
+      <div className={cn(className, styles.noTemplates)}>
+        No templates found
+      </div>
+    );
 
   return (
     <div className={cn(className, styles.templateEditor)}>
