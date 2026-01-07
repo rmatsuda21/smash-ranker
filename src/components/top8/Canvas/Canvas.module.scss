@@ -1,5 +1,6 @@
 .canvasContainer {
   position: relative;
+  max-width: 1920px;
 
   &.hidden {
     display: none;

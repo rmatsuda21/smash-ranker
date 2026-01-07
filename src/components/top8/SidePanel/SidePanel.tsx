@@ -50,13 +50,17 @@ export const SidePanel = ({ className }: Props) => {
   const isSidePanelOpen = useEditorStore((state) => state.isSidePanelOpen);
 
   const handleTabChange = (tab: EditorTab) => {
+    if (activeTab === tab) {
+      dispatch({ type: "CLOSE_SIDE_PANEL" });
+      return;
+    }
+
     dispatch({ type: "SET_ACTIVE_TAB", payload: tab });
     dispatch({ type: "SET_IS_SIDE_PANEL_OPEN", payload: true });
   };
 
   const handleClose = () => {
-    dispatch({ type: "SET_IS_SIDE_PANEL_OPEN", payload: false });
-    dispatch({ type: "SET_ACTIVE_TAB", payload: null });
+    dispatch({ type: "CLOSE_SIDE_PANEL" });
   };
 
   return (
