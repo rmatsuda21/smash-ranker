@@ -42,7 +42,11 @@ const getDropdownStyles = (
   let bottom;
 
   if (showAbove) {
-    bottom = dropdownRect ? dropdownRect.bottom : 0;
+    const window = triggerEl.parentElement?.querySelector(
+      "#dropdown-container"
+    );
+    const windowHeight = window?.getBoundingClientRect().height;
+    top = dropdownRect ? dropdownRect.top - (windowHeight ?? 0) - 15 : 0;
   } else {
     top = dropdownRect ? dropdownRect.top + dropdownRect.height + 5 : 0;
   }
@@ -285,6 +289,7 @@ export const DropDownSelect = <T,>({
       </button>
 
       <div
+        id="dropdown-container"
         className={cn(styles.dropdown, {
           [styles.open]: isOpen,
         })}
