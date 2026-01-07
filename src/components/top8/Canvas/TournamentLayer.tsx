@@ -10,7 +10,7 @@ import { useFontStore } from "@/store/fontStore";
 import { useEditorStore } from "@/store/editorStore";
 import { EditorTab } from "@/types/top8/Editor";
 
-export const TournamentLayer = () => {
+export const TournamentLayer = ({ onReady }: { onReady?: () => void }) => {
   const transformerRef = useRef<KonvaTransformer>(null);
   const groupRef = useRef<KonvaGroup>(null);
 
@@ -35,13 +35,17 @@ export const TournamentLayer = () => {
 
   const konvaElements = useMemo(
     () =>
-      createKonvaElements(layout?.elements ?? [], {
-        fontFamily: selectedFont,
-        tournament,
-        containerSize: canvasSize,
-        design: { colorPalette, textPalette, bgAssetId },
-        onElementSelect: handleElementSelect,
-      }),
+      createKonvaElements(
+        layout?.elements ?? [],
+        {
+          fontFamily: selectedFont,
+          tournament,
+          containerSize: canvasSize,
+          design: { colorPalette, textPalette, bgAssetId },
+          onElementSelect: handleElementSelect,
+        },
+        { onAllReady: onReady }
+      ),
     [
       layout?.elements,
       selectedFont,
@@ -51,6 +55,7 @@ export const TournamentLayer = () => {
       textPalette,
       bgAssetId,
       handleElementSelect,
+      onReady,
     ]
   );
 
@@ -76,11 +81,7 @@ export const TournamentLayer = () => {
 
   return (
     <Layer>
-      <Group
-        ref={groupRef}
-        width={canvasSize.width}
-        height={canvasSize.height}
-      >
+      <Group ref={groupRef} width={canvasSize.width} height={canvasSize.height}>
         {konvaElements}
         <Transformer
           name={`transformer-${selectedElementIndex}`}

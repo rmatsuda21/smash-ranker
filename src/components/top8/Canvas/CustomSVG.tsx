@@ -1,4 +1,4 @@
-import { ComponentProps, memo, useEffect } from "react";
+import { ComponentProps, memo } from "react";
 import { Image } from "react-konva";
 import { useSvgImage } from "@/hooks/top8/useSvgImage";
 
@@ -26,18 +26,14 @@ const CustomSVGComponent = ({
   onError,
   ...rest
 }: Props) => {
-  const [image, status] = useSvgImage({
+  const [image] = useSvgImage({
     svgUrl: src,
     palette,
+    onReady,
+    onError,
   });
 
-  useEffect(() => {
-    if (status === "loaded") onReady?.();
-    if (status === "failed") onError?.(new Error("Failed to load SVG"));
-  }, [status, onReady, onError]);
-
-  if (status === "loading") return null;
-  if (status === "failed") return null;
+  if (!image) return null;
 
   return (
     <Image

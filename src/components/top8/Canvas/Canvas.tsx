@@ -11,6 +11,7 @@ import { PlayerLayer } from "@/components/top8/Canvas/PlayerLayer";
 import { TournamentLayer } from "@/components/top8/Canvas/TournamentLayer";
 
 import styles from "./Canvas.module.scss";
+import { Spinner } from "@/components/shared/Spinner/Spinner";
 
 type Props = {
   className?: string;
@@ -18,7 +19,11 @@ type Props = {
 
 export const Canvas = ({ className }: Props) => {
   const [canvasStyle, setCanvasStyle] = useState<React.CSSProperties>({});
-  const [isReady, setIsReady] = useState(false);
+  const [canvasMounted, setCanvasMounted] = useState(false);
+  const [isDrawingReady, setIsDrawingReady] = useState(false);
+  const [isBackgroundReady, setIsBackgroundReady] = useState(false);
+  const [isPlayerReady, setIsPlayerReady] = useState(false);
+  const [isTournamentReady, setIsTournamentReady] = useState(false);
 
   const stageRef = useRef<KonvaStage>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -60,7 +65,7 @@ export const Canvas = ({ className }: Props) => {
           top: `${wrapperRect.top}px`,
           left: `${wrapperRect.left}px`,
         } as React.CSSProperties);
-        setIsReady(true);
+        setCanvasMounted(true);
       }
     };
 
@@ -81,13 +86,31 @@ export const Canvas = ({ className }: Props) => {
     return () => {
       observer?.disconnect();
     };
-  }, [canvasSize?.width, isReady]);
+  }, [canvasSize?.width, canvasMounted]);
 
   useEffect(() => {
     if (stageRef.current) {
       canvasDispatch({ type: "SET_STAGE_REF", payload: stageRef.current });
     }
   }, [canvasDispatch, stageRef]);
+
+  useEffect(() => {
+    if (isBackgroundReady && isPlayerReady && isTournamentReady) {
+      setIsDrawingReady(true);
+    }
+  }, [isBackgroundReady, isPlayerReady, isTournamentReady]);
+
+  const handleBackgroundReady = useCallback(() => {
+    setIsBackgroundReady(true);
+  }, []);
+
+  const handlePlayerReady = useCallback(() => {
+    setIsPlayerReady(true);
+  }, []);
+
+  const handleTournamentReady = useCallback(() => {
+    setIsTournamentReady(true);
+  }, []);
 
   if (!canvasSize?.width || !canvasSize?.height) {
     return null;
@@ -97,19 +120,27 @@ export const Canvas = ({ className }: Props) => {
     <div
       ref={wrapperRef}
       className={cn(className, styles.canvasContainer, {
-        [styles.hidden]: !isReady,
+        [styles.hidden]: !canvasMounted,
       })}
     >
       <div className={styles.canvasWrapper} style={canvasStyle}>
+        {!isDrawingReady ? (
+          <div className={styles.loader}>
+            <Spinner size={150} />
+          </div>
+        ) : null}
         <Stage
           ref={stageRef}
           width={canvasSize.width}
           height={canvasSize.height}
           onClick={handleStageClick}
         >
-          <BackgroundLayer onClick={handleStageClick} />
-          <PlayerLayer />
-          <TournamentLayer />
+          <BackgroundLayer
+            onClick={handleStageClick}
+            onReady={handleBackgroundReady}
+          />
+          <PlayerLayer onReady={handlePlayerReady} />
+          <TournamentLayer onReady={handleTournamentReady} />
         </Stage>
       </div>
     </div>

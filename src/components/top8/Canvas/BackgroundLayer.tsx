@@ -7,9 +7,10 @@ import { useFontStore } from "@/store/fontStore";
 
 type Props = {
   onClick: () => void;
+  onReady?: () => void;
 };
 
-const BackgroundLayerComponent = ({ onClick }: Props) => {
+const BackgroundLayerComponent = ({ onClick, onReady }: Props) => {
   const backgroundElements = useCanvasStore(
     (state) => state.design.background.elements
   );
@@ -20,12 +21,23 @@ const BackgroundLayerComponent = ({ onClick }: Props) => {
 
   const konvaElements = useMemo(
     () =>
-      createKonvaElements(backgroundElements, {
-        containerSize: canvasSize,
-        design: { colorPalette, bgAssetId },
-        fontFamily: selectedFont,
-      }),
-    [backgroundElements, colorPalette, bgAssetId, canvasSize, selectedFont]
+      createKonvaElements(
+        backgroundElements,
+        {
+          containerSize: canvasSize,
+          design: { colorPalette, bgAssetId },
+          fontFamily: selectedFont,
+        },
+        { onAllReady: onReady }
+      ),
+    [
+      backgroundElements,
+      colorPalette,
+      bgAssetId,
+      canvasSize,
+      selectedFont,
+      onReady,
+    ]
   );
 
   return (

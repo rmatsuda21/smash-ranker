@@ -1,25 +1,26 @@
 import { useState, useEffect } from "react";
 
-type Status = "loading" | "loaded" | "failed";
 export const useSvgImage = ({
   svgUrl,
   palette,
   crossOrigin,
+  onReady,
+  onError,
 }: {
   svgUrl: string;
   palette: Record<string, string>;
   crossOrigin?: string;
-}): [HTMLImageElement | undefined, Status] => {
+  onReady?: () => void;
+  onError?: (error: Error) => void;
+}): [HTMLImageElement | undefined] => {
   const [image, setImage] = useState<HTMLImageElement>();
-  const [status, setStatus] = useState<Status>("loading");
 
   useEffect(() => {
     if (!svgUrl) {
-      setStatus("failed");
+      onError?.(new Error("SVG URL is required"));
       return;
     }
 
-    setStatus("loading");
     setImage(undefined);
 
     let cancelled = false;
@@ -65,14 +66,14 @@ export const useSvgImage = ({
         img.onload = () => {
           if (!cancelled) {
             setImage(img);
-            setStatus("loaded");
+            onReady?.();
           }
           URL.revokeObjectURL(url);
         };
 
         img.onerror = () => {
           if (!cancelled) {
-            setStatus("failed");
+            onError?.(new Error("Failed to load SVG"));
           }
           URL.revokeObjectURL(url);
         };
@@ -81,7 +82,7 @@ export const useSvgImage = ({
       } catch (error) {
         console.error("Error loading SVG:", error);
         if (!cancelled) {
-          setStatus("failed");
+          onError?.(new Error("Failed to load SVG"));
         }
       }
     };
@@ -91,7 +92,7 @@ export const useSvgImage = ({
     return () => {
       cancelled = true;
     };
-  }, [svgUrl, palette, crossOrigin]);
+  }, [svgUrl, palette, crossOrigin, onReady, onError]);
 
-  return [image, status];
+  return [image];
 };
