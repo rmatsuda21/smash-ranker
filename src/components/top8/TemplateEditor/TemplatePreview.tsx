@@ -114,6 +114,12 @@ export const TemplatePreview = ({ design }: Props) => {
   );
 
   const playerElements = useMemo(() => {
+    const actualPlayerCount = Math.min(
+      samplePlayers.length,
+      design.players.length
+    );
+    let readyCount = 0;
+
     return samplePlayers.map((player, index) => {
       if (index >= design.players.length) return null;
 
@@ -137,7 +143,14 @@ export const TemplatePreview = ({ design }: Props) => {
           perfectDraw: false,
           options: { disableSelectable: true },
         },
-        { onAllReady: () => setIsPlayerReady(true) }
+        {
+          onAllReady: () => {
+            readyCount++;
+            if (readyCount === actualPlayerCount) {
+              setIsPlayerReady(true);
+            }
+          },
+        }
       );
 
       return (

@@ -100,7 +100,8 @@ const PlayerTransformerLayer = memo(
   }
 );
 
-const PlayerLayerComponent = () => {
+const PlayerLayerComponent = ({ onReady }: { onReady?: () => void }) => {
+  const readyPlayerCountRef = useRef(0);
   const mainLayerRef = useRef<KonvaLayer>(null);
   const dragLayerRef = useRef<KonvaLayer>(null);
 
@@ -136,6 +137,13 @@ const PlayerLayerComponent = () => {
     player.moveTo(mainLayerRef.current);
   }, []);
 
+  const handlePlayerReady = useCallback(() => {
+    readyPlayerCountRef.current++;
+    if (readyPlayerCountRef.current === players.length) {
+      onReady?.();
+    }
+  }, [players.length, onReady]);
+
   if (!playerLayouts) return <Layer ref={mainLayerRef} />;
 
   return (
@@ -161,6 +169,7 @@ const PlayerLayerComponent = () => {
               onDragEnd={onPlayerDragEnd}
               fontFamily={selectedFont}
               editable={editable}
+              onReady={handlePlayerReady}
             />
           );
         })}

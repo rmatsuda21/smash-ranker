@@ -22,6 +22,7 @@ type Props = {
   onDragEnd: (e: KonvaEventObject<MouseEvent>) => void;
   fontFamily: string;
   editable: boolean;
+  onReady?: () => void;
 };
 
 const PlayerComponent = ({
@@ -34,6 +35,7 @@ const PlayerComponent = ({
   onDragEnd,
   fontFamily,
   editable,
+  onReady,
 }: Props) => {
   const dispatch = usePlayerStore((state) => state.dispatch);
   const canvasDispatch = useCanvasStore((state) => state.dispatch);
@@ -96,16 +98,20 @@ const PlayerComponent = ({
 
   const konvaElements = useMemo(
     () =>
-      createKonvaElements(config.elements ?? [], {
-        fontFamily,
-        player,
-        containerSize: {
-          width: config.size?.width,
-          height: config.size?.height,
+      createKonvaElements(
+        config.elements ?? [],
+        {
+          fontFamily,
+          player,
+          containerSize: {
+            width: config.size?.width,
+            height: config.size?.height,
+          },
+          design,
         },
-        design,
-      }),
-    [config.elements, fontFamily, player, config.size, design]
+        { onAllReady: onReady }
+      ),
+    [config.elements, fontFamily, player, config.size, design, onReady]
   );
 
   return (
