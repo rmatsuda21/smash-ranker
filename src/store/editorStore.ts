@@ -10,7 +10,8 @@ interface EditorState {
 
 type EditorAction =
   | { type: "SET_ACTIVE_TAB"; payload: EditorTab | null }
-  | { type: "SET_IS_SIDE_PANEL_OPEN"; payload: boolean };
+  | { type: "SET_IS_SIDE_PANEL_OPEN"; payload: boolean }
+  | { type: "CLOSE_SIDE_PANEL" };
 
 const editorReducer = (
   state: EditorState,
@@ -20,11 +21,16 @@ const editorReducer = (
     case "SET_ACTIVE_TAB":
       return {
         activeTab: action.payload,
-        isSidePanelOpen: action.payload === null ? false : true,
+        isSidePanelOpen: true,
       };
     case "SET_IS_SIDE_PANEL_OPEN":
       return {
         isSidePanelOpen: action.payload,
+      };
+    case "CLOSE_SIDE_PANEL":
+      return {
+        isSidePanelOpen: false,
+        activeTab: null,
       };
     default:
       return state;

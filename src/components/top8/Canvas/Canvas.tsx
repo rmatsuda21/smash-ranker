@@ -106,7 +106,6 @@ export const Canvas = ({ className }: Props) => {
           width={canvasSize.width}
           height={canvasSize.height}
           onClick={handleStageClick}
-          className={styles.canvas}
         >
           <BackgroundLayer onClick={handleStageClick} />
           <PlayerLayer />
