@@ -46,6 +46,7 @@ const getDropdownStyles = (
       "#dropdown-container"
     );
     const windowHeight = window?.getBoundingClientRect().height;
+
     top = dropdownRect ? dropdownRect.top - (windowHeight ?? 0) - 15 : 0;
   } else {
     top = dropdownRect ? dropdownRect.top + dropdownRect.height + 5 : 0;

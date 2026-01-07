@@ -32,6 +32,34 @@ import { resolveText } from "@/utils/top8/resolveText";
 import { SelectableElement } from "@/components/top8/Canvas/SelectableElement";
 import { FilteredElement } from "@/components/top8/Canvas/FilteredElement";
 
+export interface CreateKonvaElementsOptions {
+  onAllReady?: () => void;
+  onError?: (error: Error) => void;
+  perfectDraw?: boolean;
+}
+
+interface AsyncLoadTracker {
+  expected: number;
+  loaded: number;
+  hasErrored: boolean;
+  onAllReady?: () => void;
+  onError?: (error: Error) => void;
+}
+
+type InternalContext = ElementFactoryContext & {
+  _asyncTracker?: AsyncLoadTracker;
+};
+
+const ASYNC_ELEMENT_TYPES = new Set([
+  "image",
+  "characterImage",
+  "altCharacterImage",
+  "customImage",
+  "svg",
+  "tournamentIcon",
+  "backgroundImage",
+]);
+
 const createTextElement: ElementCreator<TextElementConfig> = ({
   element,
   index,
@@ -66,6 +94,7 @@ const createTextElement: ElementCreator<TextElementConfig> = ({
         design?.colorPalette
       )}
       strokeWidth={element.strokeWidth}
+      perfectDrawEnabled={context.perfectDraw}
     />
   );
 };
@@ -106,6 +135,7 @@ const createSmartTextElement: ElementCreator<SmartTextElementConfig> = ({
         design?.colorPalette
       )}
       strokeWidth={element.strokeWidth}
+      perfectDrawEnabled={context.perfectDraw}
     />
   );
 };
@@ -132,7 +162,7 @@ const createGroupElement: ElementCreator<GroupElementConfig> = ({
   index,
   context,
 }) => {
-  const konvaElements = createKonvaElements(element.elements, context);
+  const konvaElements = createKonvaElementsInternal(element.elements, context);
 
   return (
     <Group
@@ -161,6 +191,7 @@ const createCharacterImageElement: ElementCreator<
         width={element.size?.width ?? 100}
         height={element.size?.height ?? 100}
         fill="#000000"
+        perfectDrawEnabled={context.perfectDraw}
       />
     );
   }
@@ -197,6 +228,7 @@ const createCharacterImageElement: ElementCreator<
       shadowOffset={{ x: 15, y: 15 }}
       shadowBlur={element.shadowBlur}
       shadowOpacity={element.shadowOpacity}
+      perfectDrawEnabled={context.perfectDraw}
     />
   );
 };
@@ -236,6 +268,7 @@ const createAltCharacterImageElement: ElementCreator<
             width={size}
             height={size}
             imageSrc={imageSrc}
+            perfectDrawEnabled={context.perfectDraw}
           />
         );
       })}
@@ -258,6 +291,7 @@ const createRectElement: ElementCreator<RectElementConfig> = ({
       width={element.size?.width}
       height={element.size?.height}
       fill={resolveColor(element.fill, design?.colorPalette) ?? "black"}
+      perfectDrawEnabled={context.perfectDraw}
     />
   );
 };
@@ -282,6 +316,7 @@ const createCustomImageElement: ElementCreator<CustomImageElementConfig> = ({
       imageSrc={element.src}
       fillMode={element.fillMode ?? "contain"}
       align={element.align ?? "center"}
+      perfectDrawEnabled={context.perfectDraw}
     />
   );
 };
@@ -307,6 +342,7 @@ const createSvgElement: ElementCreator<SvgElementConfig> = ({
       height={element.size?.height ?? 100}
       src={element.src}
       palette={resolvedPalette}
+      perfectDrawEnabled={context.perfectDraw}
     />
   );
 };
@@ -325,6 +361,7 @@ const createTournamentIconElement: ElementCreator<
         width={element.size?.width ?? 100}
         height={element.size?.height ?? 100}
         fill="#000000"
+        perfectDrawEnabled={context.perfectDraw}
       />
     );
   }
@@ -339,6 +376,7 @@ const createTournamentIconElement: ElementCreator<
       height={element.size?.height ?? 100}
       fillMode={element.fillMode ?? "contain"}
       align={element.align ?? "center"}
+      perfectDrawEnabled={context.perfectDraw}
     />
   );
 };
@@ -362,6 +400,7 @@ const createBackgroundImageElement: ElementCreator<
       height={element.size?.height ?? 100}
       fillMode={element.fillMode ?? "contain"}
       align={element.align ?? "center"}
+      perfectDrawEnabled={context.perfectDraw}
     />
   );
 };
@@ -380,9 +419,104 @@ const elementCreators = {
   backgroundImage: createBackgroundImageElement,
 };
 
-export const createKonvaElements = (
+const countAsyncElements = (
   elements: ElementConfig[],
-  context: ElementFactoryContext = {}
+  context: ElementFactoryContext
+): number => {
+  let count = 0;
+
+  for (const element of elements) {
+    if (!(element.type in elementCreators)) continue;
+
+    const shouldRender =
+      !element.hidden && evaluateElementCondition(element.conditions, context);
+
+    if (!shouldRender) continue;
+
+    if (element.type === "group") {
+      count += countAsyncElements(
+        (element as GroupElementConfig).elements,
+        context
+      );
+    } else if (element.type === "altCharacterImage") {
+      const player = context.player;
+      if (player && player.characters.length > 1) {
+        count += player.characters.length - 1;
+      }
+    } else if (element.type === "characterImage") {
+      const player = context.player;
+      if (player && player.characters.length > 0) {
+        count += 1;
+      }
+    } else if (element.type === "tournamentIcon") {
+      if (context.tournament?.iconSrc) {
+        count += 1;
+      }
+    } else if (element.type === "backgroundImage") {
+      if (context.design?.bgAssetId) {
+        count += 1;
+      }
+    } else if (ASYNC_ELEMENT_TYPES.has(element.type)) {
+      count += 1;
+    }
+  }
+
+  return count;
+};
+
+const injectAsyncCallbacks = (
+  node: ReactNode,
+  tracker: AsyncLoadTracker
+): ReactNode => {
+  if (!isValidElement(node)) return node;
+
+  const handleReady = () => {
+    tracker.loaded += 1;
+    if (tracker.loaded === tracker.expected && !tracker.hasErrored) {
+      tracker.onAllReady?.();
+    }
+  };
+
+  const handleError = (error: Error) => {
+    if (!tracker.hasErrored) {
+      tracker.hasErrored = true;
+      tracker.onError?.(error);
+    }
+  };
+
+  const elementType = node.type;
+  if (elementType === CustomImage || elementType === CustomSVG) {
+    return cloneElement(
+      node as ReactElement<{
+        onReady?: () => void;
+        onError?: (e: Error) => void;
+      }>,
+      {
+        onReady: handleReady,
+        onError: handleError,
+      }
+    );
+  }
+
+  if (elementType === Group) {
+    const groupElement = node as ReactElement<{ children?: ReactNode }>;
+    const children = groupElement.props.children;
+
+    if (children) {
+      const processedChildren = Array.isArray(children)
+        ? children.map((child) => injectAsyncCallbacks(child, tracker))
+        : injectAsyncCallbacks(children, tracker);
+
+      return cloneElement(groupElement, { children: processedChildren });
+    }
+  }
+
+  return node;
+};
+
+const createKonvaElementsInternal = (
+  elements: ElementConfig[],
+  context: InternalContext
 ): ReactNode[] => {
   return elements
     .map((element, index) => {
@@ -402,7 +536,12 @@ export const createKonvaElements = (
         typeof element
       >;
 
-      const createdEl = creator({ element, index, context });
+      let createdEl = creator({ element, index, context });
+
+      if (context._asyncTracker) {
+        createdEl = injectAsyncCallbacks(createdEl, context._asyncTracker);
+      }
+
       const el =
         isValidElement(createdEl) && createdEl
           ? cloneElement(createdEl as ReactElement<{ listening?: boolean }>, {
@@ -462,4 +601,36 @@ export const createKonvaElements = (
       );
     })
     .filter(Boolean);
+};
+
+export const createKonvaElements = (
+  elements: ElementConfig[],
+  context: ElementFactoryContext = {},
+  options?: CreateKonvaElementsOptions
+): ReactNode[] => {
+  if (!options?.onAllReady && !options?.onError) {
+    return createKonvaElementsInternal(elements, context);
+  }
+
+  const expectedCount = countAsyncElements(elements, context);
+
+  if (expectedCount === 0) {
+    queueMicrotask(() => options.onAllReady?.());
+    return createKonvaElementsInternal(elements, context);
+  }
+
+  const tracker: AsyncLoadTracker = {
+    expected: expectedCount,
+    loaded: 0,
+    hasErrored: false,
+    onAllReady: options.onAllReady,
+    onError: options.onError,
+  };
+
+  const internalContext: InternalContext = {
+    ...context,
+    _asyncTracker: tracker,
+  };
+
+  return createKonvaElementsInternal(elements, internalContext);
 };

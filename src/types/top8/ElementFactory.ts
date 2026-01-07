@@ -3,6 +3,7 @@ import { PlayerInfo } from "@/types/top8/Player";
 import { TournamentInfo } from "@/types/top8/Tournament";
 
 export interface ElementFactoryContext {
+  perfectDraw?: boolean;
   fontFamily?: string;
   player?: PlayerInfo;
   tournament?: TournamentInfo;
@@ -11,10 +12,6 @@ export interface ElementFactoryContext {
   onElementSelect?: () => void;
   options?: {
     editable?: boolean;
-    /**
-     * When true, elements marked `selectable` will be rendered as normal, non-interactive
-     * elements (no `SelectableElement` wrapper, no click handlers).
-     */
     disableSelectable?: boolean;
   };
 }

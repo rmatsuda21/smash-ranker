@@ -35,7 +35,6 @@ const samplePlayers: PlayerInfo[] = new Array(20)
     placement: placements[index],
     twitter: undefined,
   }));
-
 samplePlayers[0].name = "Reo M";
 samplePlayers[0].gamerTag = "Reo M";
 samplePlayers[0].entrantId = "69";
@@ -59,17 +58,27 @@ export const TemplatePreview = ({ design }: Props) => {
   const stageRef = useRef<KonvaStage>(null);
   const [imageDataUrl, setImageDataUrl] = useState<string | null>(null);
   const [isRendering, setIsRendering] = useState(true);
+  const [isBackgroundReady, setIsBackgroundReady] = useState(false);
+  const [isTournamentReady, setIsTournamentReady] = useState(false);
+  const [isPlayerReady, setIsPlayerReady] = useState(false);
 
   const backgroundElements = useMemo(
     () =>
-      createKonvaElements(design.background.elements, {
-        containerSize: design.canvasSize,
-        design: {
-          colorPalette: design.colorPalette,
-          bgAssetId: design.bgAssetId,
+      createKonvaElements(
+        design.background.elements,
+        {
+          containerSize: design.canvasSize,
+          design: {
+            colorPalette: design.colorPalette,
+            bgAssetId: design.bgAssetId,
+          },
+          perfectDraw: false,
+          options: {
+            disableSelectable: true,
+          },
         },
-        options: { disableSelectable: true },
-      }),
+        { onAllReady: () => setIsBackgroundReady(true) }
+      ),
     [
       design.background.elements,
       design.colorPalette,
@@ -80,16 +89,21 @@ export const TemplatePreview = ({ design }: Props) => {
 
   const tournamentElements = useMemo(
     () =>
-      createKonvaElements(design.tournament?.elements ?? [], {
-        tournament: sampleTournament,
-        containerSize: design.canvasSize,
-        design: {
-          colorPalette: design.colorPalette,
-          textPalette: design.textPalette,
-          bgAssetId: design.bgAssetId,
+      createKonvaElements(
+        design.tournament?.elements ?? [],
+        {
+          tournament: sampleTournament,
+          containerSize: design.canvasSize,
+          design: {
+            colorPalette: design.colorPalette,
+            textPalette: design.textPalette,
+            bgAssetId: design.bgAssetId,
+          },
+          perfectDraw: false,
+          options: { disableSelectable: true },
         },
-        options: { disableSelectable: true },
-      }),
+        { onAllReady: () => setIsTournamentReady(true) }
+      ),
     [
       design.tournament?.elements,
       design.colorPalette,
@@ -108,18 +122,23 @@ export const TemplatePreview = ({ design }: Props) => {
         ...design.players[index],
       };
 
-      const elements = createKonvaElements(playerDesign.elements ?? [], {
-        player,
-        containerSize: {
-          width: playerDesign.size?.width,
-          height: playerDesign.size?.height,
+      const elements = createKonvaElements(
+        playerDesign.elements ?? [],
+        {
+          player,
+          containerSize: {
+            width: playerDesign.size?.width,
+            height: playerDesign.size?.height,
+          },
+          design: {
+            colorPalette: design.colorPalette,
+            bgAssetId: design.bgAssetId,
+          },
+          perfectDraw: false,
+          options: { disableSelectable: true },
         },
-        design: {
-          colorPalette: design.colorPalette,
-          bgAssetId: design.bgAssetId,
-        },
-        options: { disableSelectable: true },
-      });
+        { onAllReady: () => setIsPlayerReady(true) }
+      );
 
       return (
         <Group
@@ -153,7 +172,7 @@ export const TemplatePreview = ({ design }: Props) => {
 
     try {
       const dataUrl = stageRef.current.toDataURL({
-        quality: 0.3,
+        quality: 0.1,
         mimeType: "image/webp",
       });
 
@@ -165,14 +184,11 @@ export const TemplatePreview = ({ design }: Props) => {
     }
   }, []);
 
-  // TODO: Implement onReady on createKonvaElements
   useEffect(() => {
-    const timeoutId = setTimeout(() => {
+    if (isBackgroundReady && isTournamentReady && isPlayerReady) {
       captureImage();
-    }, 1500);
-
-    return () => clearTimeout(timeoutId);
-  }, [captureImage]);
+    }
+  }, [isBackgroundReady, isTournamentReady, isPlayerReady, captureImage]);
 
   return (
     <div className={styles.previewContainer}>
@@ -181,6 +197,7 @@ export const TemplatePreview = ({ design }: Props) => {
           ref={stageRef}
           width={design.canvasSize.width}
           height={design.canvasSize.height}
+          listening={false}
         >
           <Layer listening={false}>{backgroundElements}</Layer>
           <Layer listening={false}>{playerElements}</Layer>
