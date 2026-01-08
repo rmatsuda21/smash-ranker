@@ -1,7 +1,7 @@
-import { useRef, useState } from "react";
 import cn from "classnames";
 
 import { Spinner } from "@/components/shared/Spinner/Spinner";
+import { useTooltip } from "@/hooks/top8/useTooltip";
 
 import styles from "./Button.module.scss";
 
@@ -16,8 +16,6 @@ type Props = React.ComponentProps<"button"> & {
   tooltip?: string;
 };
 
-const TOOLTIP_DELAY = 250;
-
 export const Button = ({
   className,
   variant = "solid",
@@ -29,26 +27,9 @@ export const Button = ({
   tooltip,
   ...props
 }: Props) => {
-  const [showTooltip, setShowTooltip] = useState(false);
-  const tooltipTimeout = useRef<ReturnType<typeof setTimeout>>(null);
-
-  const handleMouseEnter = () => {
-    if (tooltip) {
-      tooltipTimeout.current = setTimeout(() => {
-        setShowTooltip(true);
-      }, TOOLTIP_DELAY);
-    }
-  };
-
-  const handleMouseLeave = () => {
-    if (tooltip) {
-      if (tooltipTimeout.current) {
-        clearTimeout(tooltipTimeout.current);
-      }
-      setShowTooltip(false);
-    }
-  };
-
+  const { Tooltip, handleMouseEnter, handleMouseLeave } = useTooltip({
+    tooltip: tooltip ?? "",
+  });
   return (
     <>
       <button
@@ -68,11 +49,7 @@ export const Button = ({
       >
         {loading && <Spinner className={styles.loader} size={15} />}
         {children}
-        {tooltip && (
-          <div className={cn(styles.tooltip, { [styles.show]: showTooltip })}>
-            {tooltip}
-          </div>
-        )}
+        {tooltip && <Tooltip className={styles.tooltip} />}
       </button>
     </>
   );

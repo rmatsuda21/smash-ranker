@@ -38,7 +38,7 @@
     min-width: 1em;
   }
 
-  .tooltip {
+  :global(.tooltip) {
     pointer-events: none;
     text-wrap: nowrap;
     opacity: 0;
@@ -58,7 +58,7 @@
 
     transition: opacity 0.15s ease;
 
-    &.show {
+    &:global(.show) {
       opacity: 1;
     }
   }
