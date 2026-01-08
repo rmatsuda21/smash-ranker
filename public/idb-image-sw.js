@@ -1,7 +1,7 @@
 /// <reference lib="webworker" />
 
 const DB_NAME = "top8-db";
-const DB_VERSION = 1;
+const DB_VERSION = 2;
 const ASSETS_STORE = "assets";
 const MISSING_ASSET_PATH = "/assets/missing_asset.svg";
 
