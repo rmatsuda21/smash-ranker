@@ -5,13 +5,13 @@ import { useTemplateDB } from "@/hooks/useConfigDb";
 import { Spinner } from "@/components/shared/Spinner/Spinner";
 import { simpleDesign } from "@/designs/simple";
 import { squaresDesign } from "@/designs/squares";
-import { TemplatePreview } from "@/components/top8/TemplateEditor/TemplatePreview";
-import { Design } from "@/types/top8/Design";
+import { TemplatePreview } from "@/components/top8/TemplateEditor/TemplatePreview/TemplatePreview";
 import { Button } from "@/components/shared/Button/Button";
 import { DBTemplate } from "@/types/Repository";
 import { useCanvasStore } from "@/store/canvasStore";
 import { useFontStore } from "@/store/fontStore";
 import { useConfirmation } from "@/hooks/useConfirmation";
+import { CreateTemplateModal } from "@/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal";
 
 import styles from "./TemplateEditor.module.scss";
 
@@ -30,44 +30,33 @@ const DEFAULT_TEMPLATES: DBTemplate[] = [
 ];
 
 export const TemplateEditor = ({ className }: Props) => {
-  const { templates, loading, getTemplateWithId } = useTemplateDB();
-  const [userDesigns, setUserDesigns] = useState<
-    { id: string; design: Design }[]
-  >([]);
+  const { templates, loading, getTemplateWithId, addTemplate } =
+    useTemplateDB();
+  const [userTemplates, setUserTemplates] = useState<DBTemplate[]>([]);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   const dispatch = useCanvasStore((state) => state.dispatch!);
   const fontDispatch = useFontStore((state) => state.dispatch);
 
   useEffect(() => {
-    const fetchDesigns = async () => {
+    const fetchTemplates = async () => {
       const _templates = await Promise.all(
         templates.map((template) => getTemplateWithId(template.id))
       );
-      setUserDesigns(
+      setUserTemplates(
         _templates
-          .map((template) => ({ id: template?.id, design: template?.design }))
-          .filter((design) => design !== undefined) as {
-          id: string;
-          design: Design;
-        }[]
+          .map((template) => template)
+          .filter((template) => template !== undefined) as DBTemplate[]
       );
     };
 
-    fetchDesigns();
+    fetchTemplates();
   }, [templates, getTemplateWithId]);
 
   const designs = useMemo(
-    () => [...DEFAULT_TEMPLATES, ...userDesigns],
-    [userDesigns]
+    () => [...DEFAULT_TEMPLATES, ...userTemplates],
+    [userTemplates]
   );
-
-  // const handleCreateNewTemplate = async () => {
-  //   const id = await addTemplate({
-  //     name: "New Template",
-  //     design: layout,
-  //     font: selectedFont,
-  //   });
-  // };
 
   const handleTemplateClick = async (id: string) => {
     let template: DBTemplate | undefined;
@@ -84,6 +73,16 @@ export const TemplateEditor = ({ className }: Props) => {
         payload: template.font,
       });
     }
+  };
+
+  const handleCreateTemplate = (name: string) => {
+    addTemplate({
+      name,
+      design: useCanvasStore.getState().design,
+      font: useFontStore.getState().selectedFont,
+    }).then(() => {
+      setIsCreateModalOpen(false);
+    });
   };
 
   const {
@@ -103,18 +102,25 @@ export const TemplateEditor = ({ className }: Props) => {
 
   return (
     <div className={cn(className, styles.templateEditor)}>
-      <Button>Create New Template</Button>
+      <Button onClick={() => setIsCreateModalOpen(true)}>
+        Create New Template
+      </Button>
       <div className={styles.templates}>
-        {designs.map(({ id, design }) => (
+        {designs.map((template) => (
           <TemplatePreview
             className={styles.template}
-            key={id}
-            design={design}
-            onClick={() => confirmTemplateClick(id)}
+            key={template.id}
+            template={template}
+            onClick={() => confirmTemplateClick(template.id)}
           />
         ))}
       </div>
       <TemplateClickConfirmation />
+      <CreateTemplateModal
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+        createTemplate={handleCreateTemplate}
+      />
     </div>
   );
 };

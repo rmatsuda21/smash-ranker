@@ -3,15 +3,17 @@ import { Stage, Layer, Group } from "react-konva";
 import { Stage as KonvaStage } from "konva/lib/Stage";
 import cn from "classnames";
 
-import { Design } from "@/types/top8/Design";
+import { DBTemplate } from "@/types/Repository";
 import { createKonvaElements } from "@/utils/top8/elementFactory";
 import { PlayerInfo } from "@/types/top8/Player";
 import { TournamentInfo } from "@/types/top8/Tournament";
+import { useTooltip } from "@/hooks/top8/useTooltip";
 
 import styles from "./TemplatePreview.module.scss";
+import { Spinner } from "@/components/shared/Spinner/Spinner";
 
 type Props = {
-  design: Design;
+  template: DBTemplate;
   onClick: () => void;
   className?: string;
 };
@@ -57,23 +59,28 @@ const sampleTournament: TournamentInfo = {
   url: "https://start.gg/420-69-tournament",
 };
 
-export const TemplatePreview = ({ design, onClick, className }: Props) => {
-  const stageRef = useRef<KonvaStage>(null);
+export const TemplatePreview = ({ template, onClick, className }: Props) => {
   const [imageDataUrl, setImageDataUrl] = useState<string | null>(null);
   const [isRendering, setIsRendering] = useState(true);
   const [isBackgroundReady, setIsBackgroundReady] = useState(false);
   const [isTournamentReady, setIsTournamentReady] = useState(false);
   const [isPlayerReady, setIsPlayerReady] = useState(false);
 
+  const stageRef = useRef<KonvaStage>(null);
+
+  const { Tooltip, handleMouseEnter, handleMouseLeave } = useTooltip({
+    tooltip: template.name,
+  });
+
   const backgroundElements = useMemo(
     () =>
       createKonvaElements(
-        design.background.elements,
+        template.design.background.elements,
         {
-          containerSize: design.canvasSize,
+          containerSize: template.design.canvasSize,
           design: {
-            colorPalette: design.colorPalette,
-            bgAssetId: design.bgAssetId,
+            colorPalette: template.design.colorPalette,
+            bgAssetId: template.design.bgAssetId,
           },
           perfectDraw: false,
           options: {
@@ -83,24 +90,24 @@ export const TemplatePreview = ({ design, onClick, className }: Props) => {
         { onAllReady: () => setIsBackgroundReady(true) }
       ),
     [
-      design.background.elements,
-      design.colorPalette,
-      design.bgAssetId,
-      design.canvasSize,
+      template.design.background.elements,
+      template.design.colorPalette,
+      template.design.bgAssetId,
+      template.design.canvasSize,
     ]
   );
 
   const tournamentElements = useMemo(
     () =>
       createKonvaElements(
-        design.tournament?.elements ?? [],
+        template.design.tournament?.elements ?? [],
         {
           tournament: sampleTournament,
-          containerSize: design.canvasSize,
+          containerSize: template.design.canvasSize,
           design: {
-            colorPalette: design.colorPalette,
-            textPalette: design.textPalette,
-            bgAssetId: design.bgAssetId,
+            colorPalette: template.design.colorPalette,
+            textPalette: template.design.textPalette,
+            bgAssetId: template.design.bgAssetId,
           },
           perfectDraw: false,
           options: { disableSelectable: true },
@@ -108,27 +115,27 @@ export const TemplatePreview = ({ design, onClick, className }: Props) => {
         { onAllReady: () => setIsTournamentReady(true) }
       ),
     [
-      design.tournament?.elements,
-      design.colorPalette,
-      design.textPalette,
-      design.bgAssetId,
-      design.canvasSize,
+      template.design.tournament?.elements,
+      template.design.colorPalette,
+      template.design.textPalette,
+      template.design.bgAssetId,
+      template.design.canvasSize,
     ]
   );
 
   const playerElements = useMemo(() => {
     const actualPlayerCount = Math.min(
       samplePlayers.length,
-      design.players.length
+      template.design.players.length
     );
     let readyCount = 0;
 
     return samplePlayers.map((player, index) => {
-      if (index >= design.players.length) return null;
+      if (index >= template.design.players.length) return null;
 
       const playerDesign = {
-        ...design.basePlayer,
-        ...design.players[index],
+        ...template.design.basePlayer,
+        ...template.design.players[index],
       };
 
       const elements = createKonvaElements(
@@ -140,8 +147,8 @@ export const TemplatePreview = ({ design, onClick, className }: Props) => {
             height: playerDesign.size?.height,
           },
           design: {
-            colorPalette: design.colorPalette,
-            bgAssetId: design.bgAssetId,
+            colorPalette: template.design.colorPalette,
+            bgAssetId: template.design.bgAssetId,
           },
           perfectDraw: false,
           options: { disableSelectable: true },
@@ -172,10 +179,10 @@ export const TemplatePreview = ({ design, onClick, className }: Props) => {
       );
     });
   }, [
-    design.basePlayer,
-    design.players,
-    design.colorPalette,
-    design.bgAssetId,
+    template.design.basePlayer,
+    template.design.players,
+    template.design.colorPalette,
+    template.design.bgAssetId,
   ]);
 
   const captureImage = useCallback(() => {
@@ -207,12 +214,16 @@ export const TemplatePreview = ({ design, onClick, className }: Props) => {
   }, [isBackgroundReady, isTournamentReady, isPlayerReady, captureImage]);
 
   return (
-    <div className={cn(styles.previewContainer, className)}>
+    <div
+      className={cn(styles.previewContainer, className)}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       <div className={styles.hiddenStage}>
         <Stage
           ref={stageRef}
-          width={design.canvasSize.width}
-          height={design.canvasSize.height}
+          width={template.design.canvasSize.width}
+          height={template.design.canvasSize.height}
           listening={false}
         >
           <Layer listening={false}>{backgroundElements}</Layer>
@@ -221,20 +232,26 @@ export const TemplatePreview = ({ design, onClick, className }: Props) => {
         </Stage>
       </div>
 
-      {isRendering ? (
+      {isRendering && (
         <div className={styles.loading}>
-          <div className={styles.spinner} />
+          <Spinner size={32} />
         </div>
-      ) : imageDataUrl ? (
+      )}
+
+      {imageDataUrl && (
         <img
           src={imageDataUrl}
           alt="Template preview"
           className={styles.previewImage}
           onClick={onClick}
         />
-      ) : (
+      )}
+
+      {!imageDataUrl && !isRendering && (
         <div className={styles.error}>Failed to load preview</div>
       )}
+
+      {Tooltip && <Tooltip className={styles.tooltip} />}
     </div>
   );
 };
