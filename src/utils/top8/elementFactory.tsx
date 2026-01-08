@@ -518,89 +518,133 @@ const createKonvaElementsInternal = (
   elements: ElementConfig[],
   context: InternalContext
 ): ReactNode[] => {
-  return elements
-    .map((element, index) => {
-      if (!(element.type in elementCreators)) {
-        return null;
-      }
+  const result: ReactNode[] = [];
+  const containerSize = context.containerSize ?? { width: 100, height: 100 };
+  const disableSelectable = context.options?.disableSelectable;
+  const isEditable = context.options?.editable ?? false;
 
-      const shouldRender =
-        !element.hidden &&
-        evaluateElementCondition(element.conditions, context);
+  for (let index = 0; index < elements.length; index++) {
+    const element = elements[index];
 
-      if (!shouldRender) {
-        return null;
-      }
+    if (!(element.type in elementCreators)) {
+      continue;
+    }
 
-      const creator = elementCreators[element.type] as ElementCreator<
-        typeof element
-      >;
+    if (
+      element.hidden ||
+      !evaluateElementCondition(element.conditions, context)
+    ) {
+      continue;
+    }
 
-      let createdEl = creator({ element, index, context });
+    const creator = elementCreators[element.type] as ElementCreator<
+      typeof element
+    >;
+    let createdEl = creator({ element, index, context });
 
-      if (context._asyncTracker) {
-        createdEl = injectAsyncCallbacks(createdEl, context._asyncTracker);
-      }
+    if (!createdEl) {
+      continue;
+    }
 
-      const el =
-        isValidElement(createdEl) && createdEl
+    if (context._asyncTracker) {
+      createdEl = injectAsyncCallbacks(createdEl, context._asyncTracker);
+    }
+
+    const clipFunc = element.clip
+      ? (ctx: SceneContext) => {
+          ctx.beginPath();
+          ctx.rect(0, 0, containerSize.width, containerSize.height);
+          ctx.closePath();
+        }
+      : undefined;
+
+    const hasFilters =
+      element.filterEffects && element.filterEffects.length > 0;
+
+    if (element.selectable && !disableSelectable) {
+      const resetEl = isValidElement(createdEl)
+        ? cloneElement(
+            createdEl as ReactElement<{
+              x?: number;
+              y?: number;
+              listening?: boolean;
+            }>,
+            { x: 0, y: 0, listening: false }
+          )
+        : createdEl;
+
+      const childContent = hasFilters ? (
+        <FilteredElement filtersConfig={element.filterEffects}>
+          {resetEl}
+        </FilteredElement>
+      ) : (
+        resetEl
+      );
+
+      result.push(
+        <SelectableElement
+          key={`selectable-${index}`}
+          x={element.position.x}
+          y={element.position.y}
+          draggable={false}
+          onClick={() => context.onElementSelect?.()}
+          width={element.size?.width}
+          height={element.size?.height}
+          scaleX={element.scale?.x}
+          scaleY={element.scale?.y}
+          rotation={element.rotation ?? 0}
+          clipFunc={clipFunc}
+          listening={true}
+          name={element.name ?? `element-${index}`}
+        >
+          {childContent}
+        </SelectableElement>
+      );
+    } else {
+      if (hasFilters) {
+        const el = isValidElement(createdEl)
           ? cloneElement(createdEl as ReactElement<{ listening?: boolean }>, {
               listening: false,
             })
           : createdEl;
 
-      const size = context.containerSize ?? { width: 100, height: 100 };
-      const clipFunc = (ctx: SceneContext) => {
-        ctx.beginPath();
-        ctx.rect(0, 0, size.width, size.height);
-        ctx.closePath();
-      };
-
-      if (element.selectable && !context.options?.disableSelectable) {
-        const resetPositionEl =
-          isValidElement(el) && el
-            ? cloneElement(el as ReactElement<{ x?: number; y?: number }>, {
-                x: 0,
-                y: 0,
-              })
-            : el;
-
-        return (
-          <SelectableElement
-            key={`selectable-${index}`}
-            x={element.position.x}
-            y={element.position.y}
-            draggable={false}
-            onClick={() => context.onElementSelect?.()}
-            width={element.size?.width}
-            height={element.size?.height}
-            scaleX={element.scale?.x}
-            scaleY={element.scale?.y}
-            rotation={element.rotation ?? 0}
-            clipFunc={element.clip ? clipFunc : undefined}
-            listening={true}
-            name={element.name ?? `element-${index}`}
+        result.push(
+          <FilteredElement
+            draggable={isEditable}
+            key={`filtered-${index}`}
+            clipFunc={clipFunc}
+            listening={false}
+            filtersConfig={element.filterEffects}
           >
-            <FilteredElement filtersConfig={element.filterEffects}>
-              {resetPositionEl}
-            </FilteredElement>
-          </SelectableElement>
+            {el}
+          </FilteredElement>
         );
-      }
+      } else {
+        const el = isValidElement(createdEl)
+          ? cloneElement(createdEl as ReactElement<{ listening?: boolean }>, {
+              listening: false,
+            })
+          : createdEl;
 
-      return (
-        <FilteredElement
-          draggable={context.options?.editable ?? false}
-          key={`group-${index}`}
-          clipFunc={element.clip ? clipFunc : undefined}
-          listening={false}
-          filtersConfig={element.filterEffects}
-        >
-          {el}
-        </FilteredElement>
-      );
-    })
-    .filter(Boolean);
+        if (clipFunc) {
+          result.push(
+            <Group
+              key={`group-${index}`}
+              clipFunc={clipFunc}
+              listening={false}
+              draggable={isEditable}
+            >
+              {el}
+            </Group>
+          );
+        } else {
+          result.push(el);
+        }
+      }
+    }
+  }
+
+  return result;
 };
 
 export const createKonvaElements = (
@@ -615,7 +659,10 @@ export const createKonvaElements = (
   const expectedCount = countAsyncElements(elements, context);
 
   if (expectedCount === 0) {
-    queueMicrotask(() => options.onAllReady?.());
+    if (typeof options.onAllReady === "function") {
+      queueMicrotask(options.onAllReady);
+    }
+
     return createKonvaElementsInternal(elements, context);
   }
 

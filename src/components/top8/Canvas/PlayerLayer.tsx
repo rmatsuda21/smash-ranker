@@ -116,6 +116,11 @@ const PlayerLayerComponent = ({ onReady }: { onReady?: () => void }) => {
   const colorPalette = useCanvasStore((state) => state.design.colorPalette);
   const bgAssetId = useCanvasStore((state) => state.design.bgAssetId);
 
+  const design = useMemo(
+    () => ({ colorPalette, bgAssetId }),
+    [colorPalette, bgAssetId]
+  );
+
   const playerConfigs: PlayerDesign[] = useMemo(() => {
     return playerLayouts.map((player) => ({
       ...basePlayer,
@@ -152,17 +157,12 @@ const PlayerLayerComponent = ({ onReady }: { onReady?: () => void }) => {
         {players.map((player, index) => {
           if (index >= playerConfigs.length) return null;
 
-          const playerConfig = {
-            ...basePlayer,
-            ...playerLayouts[index],
-          };
-
           return (
             <Player
               key={player.id}
-              config={playerConfig}
+              config={playerConfigs[index]}
               canvasSize={canvasSize}
-              design={{ colorPalette, bgAssetId }}
+              design={design}
               player={player}
               index={index}
               onDragStart={onPlayerDragStart}

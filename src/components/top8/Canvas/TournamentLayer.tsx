@@ -33,6 +33,11 @@ export const TournamentLayer = ({ onReady }: { onReady?: () => void }) => {
     });
   }, [dispatch]);
 
+  const design = useMemo(
+    () => ({ colorPalette, textPalette, bgAssetId }),
+    [colorPalette, textPalette, bgAssetId]
+  );
+
   const konvaElements = useMemo(
     () =>
       createKonvaElements(
@@ -41,7 +46,7 @@ export const TournamentLayer = ({ onReady }: { onReady?: () => void }) => {
           fontFamily: selectedFont,
           tournament,
           containerSize: canvasSize,
-          design: { colorPalette, textPalette, bgAssetId },
+          design,
           onElementSelect: handleElementSelect,
         },
         { onAllReady: onReady }
@@ -51,9 +56,7 @@ export const TournamentLayer = ({ onReady }: { onReady?: () => void }) => {
       selectedFont,
       tournament,
       canvasSize,
-      colorPalette,
-      textPalette,
-      bgAssetId,
+      design,
       handleElementSelect,
       onReady,
     ]

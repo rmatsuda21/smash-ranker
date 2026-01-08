@@ -96,6 +96,14 @@ const PlayerComponent = ({
     [canvasSize.width, canvasSize.height, config.size, config.scale]
   );
 
+  const containerSize = useMemo(
+    () => ({
+      width: config.size?.width,
+      height: config.size?.height,
+    }),
+    [config.size?.width, config.size?.height]
+  );
+
   const konvaElements = useMemo(
     () =>
       createKonvaElements(
@@ -103,15 +111,12 @@ const PlayerComponent = ({
         {
           fontFamily,
           player,
-          containerSize: {
-            width: config.size?.width,
-            height: config.size?.height,
-          },
+          containerSize,
           design,
         },
         { onAllReady: onReady }
       ),
-    [config.elements, fontFamily, player, config.size, design, onReady]
+    [config.elements, fontFamily, player, containerSize, design, onReady]
   );
 
   return (
