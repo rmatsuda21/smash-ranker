@@ -5,5 +5,6 @@ export const COOKIES = {
   DELETE_CONFIG: "delete-config",
   DELETE_ALL_CONFIGS: "delete-all-configs",
   LOAD_CONFIG: "load-config",
+  LOAD_TEMPLATE: "load-template",
   LAST_USED_FONT_FAMILY: "last-used-font-family",
 };
