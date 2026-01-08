@@ -9,6 +9,7 @@ import { TemplatePreview } from "@/components/top8/TemplateEditor/TemplatePrevie
 import { Button } from "@/components/shared/Button/Button";
 import { DBTemplate } from "@/types/Repository";
 import { useCanvasStore } from "@/store/canvasStore";
+import { usePlayerStore } from "@/store/playerStore";
 import { useFontStore } from "@/store/fontStore";
 import { useConfirmation } from "@/hooks/useConfirmation";
 import { CreateTemplateModal } from "@/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal";
@@ -35,7 +36,8 @@ export const TemplateEditor = ({ className }: Props) => {
   const [userTemplates, setUserTemplates] = useState<DBTemplate[]>([]);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
-  const dispatch = useCanvasStore((state) => state.dispatch!);
+  const dispatch = useCanvasStore((state) => state.dispatch);
+  const playerDispatch = usePlayerStore((state) => state.dispatch);
   const fontDispatch = useFontStore((state) => state.dispatch);
 
   useEffect(() => {
@@ -58,7 +60,7 @@ export const TemplateEditor = ({ className }: Props) => {
     [userTemplates]
   );
 
-  const handleTemplateClick = async (id: string) => {
+  const loadTemplate = async (id: string) => {
     let template: DBTemplate | undefined;
     if (DEFAULT_TEMPLATES.some((template) => template.id === id)) {
       template = DEFAULT_TEMPLATES.find((template) => template.id === id)!;
@@ -68,6 +70,7 @@ export const TemplateEditor = ({ className }: Props) => {
 
     if (template) {
       dispatch({ type: "SET_DESIGN", payload: template.design });
+      playerDispatch({ type: "CLEAR_SELECTED_PLAYER" });
       fontDispatch({
         type: "SET_SELECTED_FONT",
         payload: template.font,
@@ -88,7 +91,7 @@ export const TemplateEditor = ({ className }: Props) => {
   const {
     confirm: confirmTemplateClick,
     ConfirmationDialog: TemplateClickConfirmation,
-  } = useConfirmation(handleTemplateClick, {
+  } = useConfirmation(loadTemplate, {
     title: "Load Template?",
     description: "Your current design will be overwritten!",
   });
