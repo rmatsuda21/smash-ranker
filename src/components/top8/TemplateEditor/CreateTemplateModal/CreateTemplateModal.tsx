@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { IoMdCreate } from "react-icons/io";
 
 import { Modal } from "@/components/shared/Modal/Modal";
 import { Input } from "@/components/shared/Input/Input";
@@ -48,16 +49,18 @@ export const CreateTemplateModal = ({
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <div className={styles.modal}>
-        <h1>Create Template</h1>
-        <p>Enter a name for your new template.</p>
+      <div className={styles.createTemplateModal}>
+        <h2 className={styles.title}>Create Template</h2>
+        <span className={styles.label}>Template Name</span>
         <Input
           type="text"
           placeholder="Template Name"
           value={templateName}
           onChange={(e) => setTemplateName(e.target.value)}
         />
-        <Button onClick={handleCreate}>Create</Button>
+        <Button onClick={handleCreate}>
+          <IoMdCreate /> Create
+        </Button>
       </div>
     </Modal>
   );
