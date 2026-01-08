@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Stage, Layer, Group } from "react-konva";
 import { Stage as KonvaStage } from "konva/lib/Stage";
+import cn from "classnames";
 
 import { Design } from "@/types/top8/Design";
 import { createKonvaElements } from "@/utils/top8/elementFactory";
@@ -11,6 +12,8 @@ import styles from "./TemplatePreview.module.scss";
 
 type Props = {
   design: Design;
+  onClick: () => void;
+  className?: string;
 };
 
 const DEFAULT_PLAYER: PlayerInfo = {
@@ -54,7 +57,7 @@ const sampleTournament: TournamentInfo = {
   url: "https://start.gg/420-69-tournament",
 };
 
-export const TemplatePreview = ({ design }: Props) => {
+export const TemplatePreview = ({ design, onClick, className }: Props) => {
   const stageRef = useRef<KonvaStage>(null);
   const [imageDataUrl, setImageDataUrl] = useState<string | null>(null);
   const [isRendering, setIsRendering] = useState(true);
@@ -204,7 +207,7 @@ export const TemplatePreview = ({ design }: Props) => {
   }, [isBackgroundReady, isTournamentReady, isPlayerReady, captureImage]);
 
   return (
-    <div className={styles.previewContainer}>
+    <div className={cn(styles.previewContainer, className)}>
       <div className={styles.hiddenStage}>
         <Stage
           ref={stageRef}
@@ -227,6 +230,7 @@ export const TemplatePreview = ({ design }: Props) => {
           src={imageDataUrl}
           alt="Template preview"
           className={styles.previewImage}
+          onClick={onClick}
         />
       ) : (
         <div className={styles.error}>Failed to load preview</div>
