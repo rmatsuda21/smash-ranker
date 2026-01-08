@@ -90,7 +90,7 @@ export const TemplateEditor = ({ className }: Props) => {
     ConfirmationDialog: TemplateClickConfirmation,
   } = useConfirmation(handleTemplateClick, {
     title: "Load Template?",
-    description: "Your current design and font will be overwritten!",
+    description: "Your current design will be overwritten!",
   });
 
   if (loading)

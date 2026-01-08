@@ -1,0 +1,25 @@
+@use "@/_theme" as *;
+
+.createTemplateModal {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.title {
+  font-size: var(--title-size);
+  font-weight: 800;
+}
+
+.label {
+  @include label;
+}
+
+.description {
+  font-size: var(--font-size-md);
+  margin-bottom: 10px;
+}
+
+.input {
+  width: 100%;
+}
