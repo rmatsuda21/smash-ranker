@@ -1,4 +1,4 @@
-import { ComponentProps, memo } from "react";
+import { ComponentProps, memo, useRef } from "react";
 import { Image } from "react-konva";
 import { useSvgImage } from "@/hooks/top8/useSvgImage";
 
@@ -26,11 +26,16 @@ const CustomSVGComponent = ({
   onError,
   ...rest
 }: Props) => {
+  const onReadyRef = useRef(onReady);
+  const onErrorRef = useRef(onError);
+  onReadyRef.current = onReady;
+  onErrorRef.current = onError;
+
   const [image] = useSvgImage({
     svgUrl: src,
     palette,
-    onReady,
-    onError,
+    onReady: onReadyRef.current,
+    onError: onErrorRef.current,
   });
 
   if (!image) return null;
@@ -51,4 +56,25 @@ const CustomSVGComponent = ({
   );
 };
 
-export const CustomSVG = memo(CustomSVGComponent);
+const arePaletteEqual = (
+  prevPalette: Record<string, string>,
+  nextPalette: Record<string, string>
+): boolean => {
+  const prevKeys = Object.keys(prevPalette);
+  const nextKeys = Object.keys(nextPalette);
+  if (prevKeys.length !== nextKeys.length) return false;
+  return prevKeys.every((key) => prevPalette[key] === nextPalette[key]);
+};
+
+export const CustomSVG = memo(CustomSVGComponent, (prevProps, nextProps) => {
+  return (
+    prevProps.width === nextProps.width &&
+    prevProps.height === nextProps.height &&
+    prevProps.src === nextProps.src &&
+    prevProps.hasShadow === nextProps.hasShadow &&
+    prevProps.shadowColor === nextProps.shadowColor &&
+    prevProps.x === nextProps.x &&
+    prevProps.y === nextProps.y &&
+    arePaletteEqual(prevProps.palette, nextProps.palette)
+  );
+});

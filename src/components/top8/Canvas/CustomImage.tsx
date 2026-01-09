@@ -1,4 +1,4 @@
-import { ComponentProps, memo, useEffect } from "react";
+import { ComponentProps, memo, useEffect, useRef } from "react";
 import { Image } from "react-konva";
 
 import { useCustomImage } from "@/hooks/top8/useCustomImage";
@@ -39,6 +39,11 @@ const CustomImageComponent = ({
   align = "center",
   ...rest
 }: Props) => {
+  const onReadyRef = useRef(onReady);
+  const onErrorRef = useRef(onError);
+  onReadyRef.current = onReady;
+  onErrorRef.current = onError;
+
   const { finalImage, ref } = useCustomImage({
     imageSrc,
     width,
@@ -48,8 +53,8 @@ const CustomImageComponent = ({
     offset,
     cropOffset,
     cropScale,
-    onReady,
-    onError,
+    onReady: onReadyRef.current,
+    onError: onErrorRef.current,
   });
 
   useEffect(() => {
@@ -77,4 +82,33 @@ const CustomImageComponent = ({
   );
 };
 
-export const CustomImage = memo(CustomImageComponent);
+const areOffsetsEqual = (
+  a: { x: number; y: number } | undefined,
+  b: { x: number; y: number } | undefined
+): boolean => {
+  if (a === b) return true;
+  if (!a || !b) return false;
+  return a.x === b.x && a.y === b.y;
+};
+
+export const CustomImage = memo(
+  CustomImageComponent,
+  (prevProps, nextProps) => {
+    return (
+      prevProps.width === nextProps.width &&
+      prevProps.height === nextProps.height &&
+      prevProps.imageSrc === nextProps.imageSrc &&
+      prevProps.hasShadow === nextProps.hasShadow &&
+      prevProps.shadowColor === nextProps.shadowColor &&
+      prevProps.shadowBlur === nextProps.shadowBlur &&
+      prevProps.x === nextProps.x &&
+      prevProps.y === nextProps.y &&
+      prevProps.cropScale === nextProps.cropScale &&
+      prevProps.fillMode === nextProps.fillMode &&
+      prevProps.align === nextProps.align &&
+      areOffsetsEqual(prevProps.offset, nextProps.offset) &&
+      areOffsetsEqual(prevProps.cropOffset, nextProps.cropOffset) &&
+      areOffsetsEqual(prevProps.shadowOffset, nextProps.shadowOffset)
+    );
+  }
+);

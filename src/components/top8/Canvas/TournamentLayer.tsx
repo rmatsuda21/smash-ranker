@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef } from "react";
 import { Group, Layer, Transformer } from "react-konva";
 import { Transformer as KonvaTransformer } from "konva/lib/shapes/Transformer";
 import { Group as KonvaGroup } from "konva/lib/Group";
+import { useShallow } from "zustand/react/shallow";
 
 import { useCanvasStore } from "@/store/canvasStore";
 import { useTournamentStore } from "@/store/tournamentStore";
@@ -13,12 +14,20 @@ import { EditorTab } from "@/types/top8/Editor";
 export const TournamentLayer = ({ onReady }: { onReady?: () => void }) => {
   const transformerRef = useRef<KonvaTransformer>(null);
   const groupRef = useRef<KonvaGroup>(null);
+  const onReadyRef = useRef(onReady);
+  onReadyRef.current = onReady;
 
   const selectedFont = useFontStore((state) => state.selectedFont);
   const layout = useCanvasStore((state) => state.design.tournament);
-  const canvasSize = useCanvasStore((state) => state.design.canvasSize);
-  const colorPalette = useCanvasStore((state) => state.design.colorPalette);
-  const textPalette = useCanvasStore((state) => state.design.textPalette);
+  const canvasSize = useCanvasStore(
+    useShallow((state) => state.design.canvasSize)
+  );
+  const colorPalette = useCanvasStore(
+    useShallow((state) => state.design.colorPalette)
+  );
+  const textPalette = useCanvasStore(
+    useShallow((state) => state.design.textPalette)
+  );
   const bgAssetId = useCanvasStore((state) => state.design.bgAssetId);
   const tournament = useTournamentStore((state) => state.info);
   const selectedElementIndex = useTournamentStore(
@@ -38,6 +47,8 @@ export const TournamentLayer = ({ onReady }: { onReady?: () => void }) => {
     [colorPalette, textPalette, bgAssetId]
   );
 
+  const stableOnReady = useMemo(() => () => onReadyRef.current?.(), []);
+
   const konvaElements = useMemo(
     () =>
       createKonvaElements(
@@ -49,7 +60,7 @@ export const TournamentLayer = ({ onReady }: { onReady?: () => void }) => {
           design,
           onElementSelect: handleElementSelect,
         },
-        { onAllReady: onReady }
+        { onAllReady: stableOnReady }
       ),
     [
       layout?.elements,
@@ -58,7 +69,7 @@ export const TournamentLayer = ({ onReady }: { onReady?: () => void }) => {
       canvasSize,
       design,
       handleElementSelect,
-      onReady,
+      stableOnReady,
     ]
   );
 

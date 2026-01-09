@@ -1,4 +1,4 @@
-import { useCallback, useMemo, memo } from "react";
+import { useCallback, useMemo, memo, useRef } from "react";
 import { Vector2d } from "konva/lib/types";
 import { KonvaEventObject } from "konva/lib/Node";
 import isEqual from "lodash/isEqual";
@@ -37,6 +37,9 @@ const PlayerComponent = ({
   editable,
   onReady,
 }: Props) => {
+  const onReadyRef = useRef(onReady);
+  onReadyRef.current = onReady;
+
   const dispatch = usePlayerStore((state) => state.dispatch);
   const canvasDispatch = useCanvasStore((state) => state.dispatch);
   const editorDispatch = useEditorStore((state) => state.dispatch);
@@ -104,6 +107,8 @@ const PlayerComponent = ({
     [config.size?.width, config.size?.height]
   );
 
+  const stableOnReady = useMemo(() => () => onReadyRef.current?.(), []);
+
   const konvaElements = useMemo(
     () =>
       createKonvaElements(
@@ -114,9 +119,9 @@ const PlayerComponent = ({
           containerSize,
           design,
         },
-        { onAllReady: onReady }
+        { onAllReady: stableOnReady }
       ),
-    [config.elements, fontFamily, player, containerSize, design, onReady]
+    [config.elements, fontFamily, player, containerSize, design, stableOnReady]
   );
 
   return (
