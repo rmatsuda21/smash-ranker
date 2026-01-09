@@ -1,6 +1,7 @@
 import { Suspense, lazy } from "react";
 import { FaCaretLeft } from "react-icons/fa6";
 import cn from "classnames";
+import { Trans } from "@lingui/react/macro";
 
 import { EditorTab } from "@/types/top8/Editor";
 import { useEditorStore } from "@/store/editorStore";
@@ -77,7 +78,13 @@ export const SidePanel = ({ className }: Props) => {
 
       <div className={styles.editorsWindow}>
         <div className={styles.editors}>
-          <Suspense fallback={<div>Loading Configs...</div>}>
+          <Suspense
+            fallback={
+              <div>
+                <Trans>Loading Configs...</Trans>
+              </div>
+            }
+          >
             <TournamentEditor
               className={cn({
                 [styles.hidden]: activeTab !== EditorTab.TOURNAMENT,

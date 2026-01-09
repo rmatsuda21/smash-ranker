@@ -1,1 +1,1 @@
-/*eslint-disable*/import type{Messages}from"@lingui/core";export const messages=JSON.parse("{}")as Messages;
+/*eslint-disable*/import type{Messages}from"@lingui/core";export const messages=JSON.parse("{\"IgolPj\":[\"プレイヤー\"],\"b5sq9Y\":[\"テキスト\"],\"df2GgS\":[\"大会\"],\"f8fH8W\":[\"デザイン\"],\"iTylMl\":[\"テンプレート\"],\"mkhC4o\":[\"読み込み中...\"]}")as Messages;

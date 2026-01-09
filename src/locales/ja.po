@@ -6,3 +6,33 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
 "Language: ja\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
+
+#: src/components/top8/SidePanel/SidePanelNav.tsx:18
+msgid "Design"
+msgstr "デザイン"
+
+#: src/components/top8/SidePanel/SidePanel.tsx:81
+msgid "Loading Configs..."
+msgstr "読み込み中..."
+
+#: src/components/top8/SidePanel/SidePanelNav.tsx:14
+msgid "Players"
+msgstr "プレイヤー"
+
+#: src/components/top8/SidePanel/SidePanelNav.tsx:30
+msgid "Templates"
+msgstr "テンプレート"
+
+#: src/components/top8/SidePanel/SidePanelNav.tsx:22
+msgid "Texts"
+msgstr "テキスト"
+
+#: src/components/top8/SidePanel/SidePanelNav.tsx:26
+msgid "Tournament"
+msgstr "大会"
