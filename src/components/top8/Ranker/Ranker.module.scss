@@ -16,7 +16,9 @@
 
   .canvasWrapper {
     flex: 1;
-    padding: 20px 40px;
+    min-width: 0;
+    max-height: 100%;
+    overflow: hidden;
   }
 
   .sidePanel {

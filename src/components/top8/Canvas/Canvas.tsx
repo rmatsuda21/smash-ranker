@@ -9,9 +9,13 @@ import { useTournamentStore } from "@/store/tournamentStore";
 import { BackgroundLayer } from "@/components/top8/Canvas/BackgroundLayer";
 import { PlayerLayer } from "@/components/top8/Canvas/PlayerLayer";
 import { TournamentLayer } from "@/components/top8/Canvas/TournamentLayer";
+import { Spinner } from "@/components/shared/Spinner/Spinner";
+import { Slider } from "@/components/shared/Slider/Slider";
+import { Button } from "@/components/shared/Button/Button";
 
 import styles from "./Canvas.module.scss";
-import { Spinner } from "@/components/shared/Spinner/Spinner";
+
+const CANVAS_PADDING = 40;
 
 type Props = {
   className?: string;
@@ -24,6 +28,8 @@ export const Canvas = ({ className }: Props) => {
   const [isBackgroundReady, setIsBackgroundReady] = useState(false);
   const [isPlayerReady, setIsPlayerReady] = useState(false);
   const [isTournamentReady, setIsTournamentReady] = useState(false);
+
+  const [displayScale, setDisplayScale] = useState(1);
 
   const stageRef = useRef<KonvaStage>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -58,12 +64,16 @@ export const Canvas = ({ className }: Props) => {
   useEffect(() => {
     const handleResize = () => {
       if (wrapperRef.current && canvasSize?.width) {
-        const displayScale = wrapperRef.current.clientWidth / canvasSize.width;
-        const wrapperRect = wrapperRef.current.getBoundingClientRect();
+        setDisplayScale(
+          (wrapperRef.current.clientWidth - CANVAS_PADDING * 2) /
+            canvasSize.width
+        );
+
         setCanvasStyle({
-          "--display-scale": `${displayScale}`,
-          top: `${wrapperRect.top}px`,
-          left: `${wrapperRect.left}px`,
+          "--aspect-ratio": `${canvasSize.width / canvasSize.height}`,
+          "--canvas-width": `${canvasSize.width}px`,
+          "--canvas-height": `${canvasSize.height}px`,
+          "--canvas-padding": `${CANVAS_PADDING}px`,
         } as React.CSSProperties);
         setCanvasMounted(true);
       }
@@ -86,7 +96,7 @@ export const Canvas = ({ className }: Props) => {
     return () => {
       observer?.disconnect();
     };
-  }, [canvasSize?.width, canvasMounted]);
+  }, [canvasSize?.width, canvasSize?.height, canvasMounted]);
 
   useEffect(() => {
     if (stageRef.current) {
@@ -112,6 +122,18 @@ export const Canvas = ({ className }: Props) => {
     setIsTournamentReady(true);
   }, []);
 
+  const handleDisplayScaleChange = useCallback((value: number) => {
+    setDisplayScale(value);
+  }, []);
+
+  const handleFitToWindow = useCallback(() => {
+    if (wrapperRef.current) {
+      setDisplayScale(
+        (wrapperRef.current.clientWidth - CANVAS_PADDING * 2) / canvasSize.width
+      );
+    }
+  }, [canvasSize.width, wrapperRef]);
+
   if (!canvasSize?.width || !canvasSize?.height) {
     return null;
   }
@@ -122,13 +144,17 @@ export const Canvas = ({ className }: Props) => {
       className={cn(className, styles.canvasContainer, {
         [styles.hidden]: !canvasMounted,
       })}
+      style={canvasStyle}
     >
-      <div className={styles.canvasWrapper} style={canvasStyle}>
-        {!isDrawingReady ? (
-          <div className={styles.loader}>
-            <Spinner size={150} />
-          </div>
-        ) : null}
+      {!isDrawingReady ? (
+        <div className={styles.loader}>
+          <Spinner size={100} />
+        </div>
+      ) : null}
+      <div
+        className={styles.canvasWrapper}
+        style={{ "--display-scale": displayScale } as React.CSSProperties}
+      >
         <Stage
           ref={stageRef}
           width={canvasSize.width}
@@ -142,6 +168,20 @@ export const Canvas = ({ className }: Props) => {
           <PlayerLayer onReady={handlePlayerReady} />
           <TournamentLayer onReady={handleTournamentReady} />
         </Stage>
+      </div>
+
+      <div className={styles.controls}>
+        <span>{`${(displayScale * 100).toFixed(0)}%`}</span>
+        <Slider
+          value={displayScale}
+          onValueChange={handleDisplayScaleChange}
+          min={0.1}
+          max={2}
+          step={0.1}
+        />
+        <Button variant="outline" size="sm" onClick={handleFitToWindow}>
+          Fit to window
+        </Button>
       </div>
     </div>
   );
