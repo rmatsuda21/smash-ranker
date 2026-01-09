@@ -1,30 +1,33 @@
 import { IoPerson, IoTrophy, IoText, IoPencil } from "react-icons/io5";
 import { HiOutlineTemplate } from "react-icons/hi";
+import { msg } from "@lingui/core/macro";
+import { useLingui } from "@lingui/react";
+import { MessageDescriptor } from "@lingui/core";
 
 import { EditorTab } from "@/types/top8/Editor";
 
 const EditorTabLabels: Record<
   EditorTab,
-  { label: string; icon: React.ReactNode }
+  { label: MessageDescriptor; icon: React.ReactNode }
 > = {
   [EditorTab.PLAYERS]: {
-    label: "Players",
+    label: msg`Players`,
     icon: <IoPerson />,
   },
   [EditorTab.DESIGN]: {
-    label: "Design",
+    label: msg`Design`,
     icon: <IoPencil />,
   },
   [EditorTab.TEXTS]: {
-    label: "Texts",
+    label: msg`Texts`,
     icon: <IoText />,
   },
   [EditorTab.TOURNAMENT]: {
-    label: "Tournament",
+    label: msg`Tournament`,
     icon: <IoTrophy />,
   },
   [EditorTab.TEMPLATES]: {
-    label: "Templates",
+    label: msg`Templates`,
     icon: <HiOutlineTemplate />,
   },
 };
@@ -36,6 +39,8 @@ type Props = {
 };
 
 export const SidePanelNav = ({ activeTab, onTabChange, className }: Props) => {
+  const { _ } = useLingui();
+
   return (
     <div className={className}>
       {Object.entries(EditorTabLabels).map(([key, value]) => (
@@ -45,7 +50,7 @@ export const SidePanelNav = ({ activeTab, onTabChange, className }: Props) => {
           onClick={() => onTabChange(key as EditorTab)}
         >
           <div className="icon">{value.icon}</div>
-          <span>{value.label}</span>
+          <span>{_(value.label)}</span>
         </button>
       ))}
     </div>
