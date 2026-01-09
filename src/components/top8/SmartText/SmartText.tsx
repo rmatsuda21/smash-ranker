@@ -36,7 +36,7 @@ function calculateAnchorOffsets(
     case "bottomRight":
       return { offsetX: textWidth, offsetY: textHeight };
     case "bottomMiddle":
-      return { offsetX: 0, offsetY: textHeight };
+      return { offsetX: textWidth / 2, offsetY: textHeight };
     case "topMiddle":
       return { offsetX: textWidth / 2, offsetY: 0 };
     case "leftMiddle":

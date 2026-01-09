@@ -15,20 +15,63 @@ export const SelectableElement = ({
 }: React.PropsWithChildren<Props>) => {
   const [isHovered, setIsHovered] = useState(false);
   const contentRef = useRef<KonvaGroup>(null);
-  const [contentSize, setContentSize] = useState({ width: 0, height: 0 });
+  const [contentBounds, setContentBounds] = useState({
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0,
+  });
 
   useEffect(() => {
-    if (contentRef.current) {
+    if (!contentRef.current) return;
+
+    const measureBounds = () => {
+      if (!contentRef.current) return null;
       const parent = contentRef.current.getParent();
-      const box = contentRef.current.getClientRect(
+      return contentRef.current.getClientRect(
         parent ? { relativeTo: parent } : undefined
       );
-      setContentSize({ width: box.width, height: box.height });
+    };
+
+    const initialBox = measureBounds();
+    if (initialBox) {
+      setContentBounds({
+        x: initialBox.x,
+        y: initialBox.y,
+        width: initialBox.width,
+        height: initialBox.height,
+      });
     }
+
+    const timeoutId = setTimeout(() => {
+      const box = measureBounds();
+      if (box) {
+        setContentBounds((prev) => {
+          if (
+            prev.x !== box.x ||
+            prev.y !== box.y ||
+            prev.width !== box.width ||
+            prev.height !== box.height
+          ) {
+            return {
+              x: box.x,
+              y: box.y,
+              width: box.width,
+              height: box.height,
+            };
+          }
+          return prev;
+        });
+      }
+    }, 50);
+
+    return () => clearTimeout(timeoutId);
   }, [children]);
 
-  const width = rest.width ?? contentSize.width;
-  const height = rest.height ?? contentSize.height;
+  const width = rest.width ?? contentBounds.width;
+  const height = rest.height ?? contentBounds.height;
+  const rectX = contentBounds.x;
+  const rectY = contentBounds.y;
 
   const handleMouseEnter = useCallback((e: KonvaEventObject<MouseEvent>) => {
     e.cancelBubble = true;
@@ -59,11 +102,17 @@ export const SelectableElement = ({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <Rect x={0} y={0} width={width} height={height} fill="transparent" />
+      <Rect
+        x={rectX}
+        y={rectY}
+        width={width}
+        height={height}
+        fill="transparent"
+      />
       <Group ref={contentRef}>{children}</Group>
       <Rect
-        x={0}
-        y={0}
+        x={rectX}
+        y={rectY}
         width={width}
         height={height}
         fill={isHovered ? "rgba(0, 0, 0, 0.2)" : "transparent"}
