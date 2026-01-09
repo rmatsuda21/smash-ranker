@@ -84,8 +84,8 @@ export const AssetsModal = ({
             </div>
           ))}
         </div>
+        <FileUploader onChange={handleUpload} multiple />
       </div>
-      <FileUploader onChange={handleUpload} multiple />
     </Modal>
   );
 };
