@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import cn from "classnames";
+import { IoGrid } from "react-icons/io5";
+import { FaList } from "react-icons/fa6";
 
 import { useTemplateDB } from "@/hooks/useConfigDb";
 import { Spinner } from "@/components/shared/Spinner/Spinner";
@@ -35,6 +37,7 @@ export const TemplateEditor = ({ className }: Props) => {
     useTemplateDB();
   const [userTemplates, setUserTemplates] = useState<DBTemplate[]>([]);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
   const dispatch = useCanvasStore((state) => state.dispatch);
   const playerDispatch = usePlayerStore((state) => state.dispatch);
@@ -105,10 +108,31 @@ export const TemplateEditor = ({ className }: Props) => {
 
   return (
     <div className={cn(className, styles.templateEditor)}>
-      <Button onClick={() => setIsCreateModalOpen(true)}>
-        Create New Template
-      </Button>
-      <div className={styles.templates}>
+      <div className={styles.header}>
+        <Button onClick={() => setIsCreateModalOpen(true)}>
+          Create New Template
+        </Button>
+
+        <div className={styles.viewMode}>
+          <Button
+            size="sm"
+            variant={viewMode === "list" ? "solid" : "ghost"}
+            onClick={() => setViewMode("list")}
+          >
+            <FaList />
+          </Button>
+          <Button
+            size="sm"
+            variant={viewMode === "grid" ? "solid" : "ghost"}
+            onClick={() => setViewMode("grid")}
+          >
+            <IoGrid />
+          </Button>
+        </div>
+      </div>
+      <div
+        className={cn(styles.templates, { [styles.grid]: viewMode === "grid" })}
+      >
         {designs.map((template) => (
           <TemplatePreview
             className={styles.template}

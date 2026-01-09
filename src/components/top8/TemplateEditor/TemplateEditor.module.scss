@@ -6,10 +6,38 @@
   min-height: 0;
   overflow-y: auto;
 
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .viewMode {
+    width: fit-content;
+    border: 1px solid var(--gray-6);
+    border-radius: 5px;
+
+    button {
+      &:first-child {
+        border-radius: 5px 0 0 5px;
+      }
+      &:last-child {
+        border-radius: 0 5px 5px 0;
+      }
+    }
+  }
+
   .templates {
     display: flex;
     flex-direction: column;
     gap: 16px;
+
+    &.grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
 
     .template {
       cursor: pointer;
