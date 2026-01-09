@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Image as KonvaImage } from "konva/lib/shapes/Image";
 
+const imageCache = new Map<string, HTMLImageElement>();
+
 export const useCustomImage = ({
   imageSrc,
   width,
@@ -25,8 +27,15 @@ export const useCustomImage = ({
   onError?: (error: Error) => void;
 }) => {
   const [finalImage, setFinalImage] = useState<HTMLImageElement>();
-  const [image, setImage] = useState<HTMLImageElement>();
+  const [image, setImage] = useState<HTMLImageElement | undefined>(() =>
+    imageCache.get(imageSrc)
+  );
   const ref = useRef<KonvaImage>(null);
+
+  const onReadyRef = useRef(onReady);
+  const onErrorRef = useRef(onError);
+  onReadyRef.current = onReady;
+  onErrorRef.current = onError;
 
   useEffect(() => {
     const imgRef = ref.current;
@@ -35,14 +44,21 @@ export const useCustomImage = ({
       imgRef.clearCache();
     }
 
+    const cached = imageCache.get(imageSrc);
+    if (cached) {
+      setImage(cached);
+      return;
+    }
+
     const image = new window.Image();
     image.src = imageSrc;
     image.crossOrigin = "anonymous";
     image.onload = () => {
+      imageCache.set(imageSrc, image);
       setImage(image);
     };
     image.onerror = (error) => {
-      onError?.(
+      onErrorRef.current?.(
         new Error(error instanceof Error ? error.message : "Unknown error")
       );
       setImage(undefined);
@@ -50,13 +66,11 @@ export const useCustomImage = ({
     };
 
     return () => {
-      image.src = "";
       image.onload = null;
       image.onerror = null;
-      image.remove();
       imgRef?.clearCache();
     };
-  }, [imageSrc, onError]);
+  }, [imageSrc]);
 
   useEffect(() => {
     if (!image) return;
@@ -74,7 +88,6 @@ export const useCustomImage = ({
       let imgY = 0;
 
       if (imageAspectRatio > containerAspectRatio) {
-        // Image is wider than container
         if (fillMode === "contain") {
           imgHeight = width / imageAspectRatio;
           const remainingHeight = height - imgHeight;
@@ -90,7 +103,6 @@ export const useCustomImage = ({
           imgX = (width - imgWidth) / 2;
         }
       } else {
-        // Image is taller than container
         if (fillMode === "contain") {
           imgWidth = height * imageAspectRatio;
           const remainingWidth = width - imgWidth;
@@ -140,11 +152,11 @@ export const useCustomImage = ({
         if (cancelled) return;
         setFinalImage(img);
         ref.current?.cache();
-        onReady?.();
+        onReadyRef.current?.();
       };
       img.onerror = (error) => {
         if (cancelled) return;
-        onError?.(
+        onErrorRef.current?.(
           new Error(error instanceof Error ? error.message : "Unknown error")
         );
       };
@@ -172,8 +184,6 @@ export const useCustomImage = ({
     cropScale,
     fillMode,
     align,
-    onReady,
-    onError,
   ]);
 
   return {

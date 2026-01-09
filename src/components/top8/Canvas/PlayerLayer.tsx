@@ -3,6 +3,7 @@ import { Layer, Rect, Transformer } from "react-konva";
 import { Layer as KonvaLayer } from "konva/lib/Layer";
 import { KonvaEventObject } from "konva/lib/Node";
 import { Transformer as KonvaTransformer } from "konva/lib/shapes/Transformer";
+import { useShallow } from "zustand/react/shallow";
 
 import { Player } from "@/components/top8/Canvas/Player";
 import { usePlayerStore } from "@/store/playerStore";
@@ -104,6 +105,8 @@ const PlayerLayerComponent = ({ onReady }: { onReady?: () => void }) => {
   const readyPlayerCountRef = useRef(0);
   const mainLayerRef = useRef<KonvaLayer>(null);
   const dragLayerRef = useRef<KonvaLayer>(null);
+  const onReadyRef = useRef(onReady);
+  onReadyRef.current = onReady;
 
   const players = usePlayerStore((state) => state.players);
 
@@ -112,8 +115,12 @@ const PlayerLayerComponent = ({ onReady }: { onReady?: () => void }) => {
   const editable = useCanvasStore((state) => state.editable);
   const playerLayouts = useCanvasStore((state) => state.design.players);
   const basePlayer = useCanvasStore((state) => state.design.basePlayer);
-  const canvasSize = useCanvasStore((state) => state.design.canvasSize);
-  const colorPalette = useCanvasStore((state) => state.design.colorPalette);
+  const canvasSize = useCanvasStore(
+    useShallow((state) => state.design.canvasSize)
+  );
+  const colorPalette = useCanvasStore(
+    useShallow((state) => state.design.colorPalette)
+  );
   const bgAssetId = useCanvasStore((state) => state.design.bgAssetId);
 
   const design = useMemo(
@@ -145,9 +152,9 @@ const PlayerLayerComponent = ({ onReady }: { onReady?: () => void }) => {
   const handlePlayerReady = useCallback(() => {
     readyPlayerCountRef.current++;
     if (readyPlayerCountRef.current === players.length) {
-      onReady?.();
+      onReadyRef.current?.();
     }
-  }, [players.length, onReady]);
+  }, [players.length]);
 
   if (!playerLayouts) return <Layer ref={mainLayerRef} />;
 
