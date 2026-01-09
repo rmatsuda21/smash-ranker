@@ -662,7 +662,6 @@ export const createKonvaElements = (
     if (typeof options.onAllReady === "function") {
       queueMicrotask(options.onAllReady);
     }
-
     return createKonvaElementsInternal(elements, context);
   }
 
