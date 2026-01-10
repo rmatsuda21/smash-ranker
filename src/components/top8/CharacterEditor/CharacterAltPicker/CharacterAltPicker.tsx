@@ -1,18 +1,58 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef } from "react";
 
 import { characters } from "@/consts/top8/ultCharacters.json";
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
 import { CharacerData } from "@/types/top8/Player";
+import { useTooltip } from "@/hooks/top8/useTooltip";
 
 import styles from "./CharacterAltPicker.module.scss";
-
-// TODO: Use hook for this
-const TOOLTIP_DELAY = 200;
 
 type Props = {
   selectedCharacter?: CharacerData;
   onAltChange: (alt: CharacerData["alt"]) => void;
   disabled?: boolean;
+};
+
+type AltOptionProps = {
+  alt: CharacerData["alt"];
+  icon: string | null;
+  altName: string | null;
+  isSelected: boolean;
+  disabled: boolean;
+  onAltChange: (alt: CharacerData["alt"]) => void;
+};
+
+const AltOption = ({
+  alt,
+  icon,
+  altName,
+  isSelected,
+  disabled,
+  onAltChange,
+}: AltOptionProps) => {
+  const { Tooltip, handleMouseEnter, handleMouseLeave } = useTooltip({
+    tooltip: altName ?? "",
+  });
+
+  return (
+    <label
+      className={styles.label}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      <input
+        type="radio"
+        name="character-alt"
+        value={alt}
+        checked={isSelected}
+        onChange={() => !disabled && onAltChange(alt)}
+        disabled={disabled}
+      />
+
+      {icon && <img src={icon} alt={`Alt ${alt}`} />}
+      {altName && <Tooltip className={styles.tooltip} />}
+    </label>
+  );
 };
 
 const getAltsAndIcons = (characterId?: string) => {
@@ -47,23 +87,6 @@ export const CharacterAltPicker = ({
   disabled = false,
 }: Props) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const [activeTooltip, setActiveTooltip] = useState<string | null>(null);
-  const tooltipTimeout = useRef<ReturnType<typeof setTimeout>>(null);
-
-  const handleMouseEnter = (id: string, hasAltName: boolean) => {
-    if (hasAltName) {
-      tooltipTimeout.current = setTimeout(() => {
-        setActiveTooltip(id);
-      }, TOOLTIP_DELAY);
-    }
-  };
-
-  const handleMouseLeave = () => {
-    if (tooltipTimeout.current) {
-      clearTimeout(tooltipTimeout.current);
-    }
-    setActiveTooltip(null);
-  };
 
   const altsAndIcons = useMemo(() => {
     const alts = getAltsAndIcons(selectedCharacter?.id);
@@ -88,12 +111,6 @@ export const CharacterAltPicker = ({
     }
   }, [selectedCharacter?.alt]);
 
-  const handleAltClick = (alt: CharacerData["alt"]) => {
-    if (!disabled) {
-      onAltChange(alt);
-    }
-  };
-
   return (
     <div
       ref={wrapperRef}
@@ -101,39 +118,17 @@ export const CharacterAltPicker = ({
       role="radiogroup"
       aria-label="Character alternate costume"
     >
-      {altsAndIcons.map(({ alt, icon, id, altName }) => {
-        const isSelected =
-          alt === selectedCharacter?.alt && !!selectedCharacter;
-
-        return (
-          <label
-            key={id}
-            className={styles.label}
-            onMouseEnter={() => handleMouseEnter(id, !!altName)}
-            onMouseLeave={handleMouseLeave}
-          >
-            <input
-              type="radio"
-              name="character-alt"
-              value={alt}
-              checked={isSelected}
-              onChange={() => handleAltClick(alt)}
-              disabled={disabled}
-            />
-
-            {icon && <img src={icon} alt={`Alt ${alt}`} />}
-            {altName && (
-              <div
-                className={`${styles.tooltip} ${
-                  activeTooltip === id ? styles.show : ""
-                }`}
-              >
-                {altName}
-              </div>
-            )}
-          </label>
-        );
-      })}
+      {altsAndIcons.map(({ alt, icon, id, altName }) => (
+        <AltOption
+          key={id}
+          alt={alt}
+          icon={icon}
+          altName={altName}
+          isSelected={alt === selectedCharacter?.alt && !!selectedCharacter}
+          disabled={disabled}
+          onAltChange={onAltChange}
+        />
+      ))}
     </div>
   );
 };
