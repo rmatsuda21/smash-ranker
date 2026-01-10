@@ -10,20 +10,22 @@ type Props = {
   disabled?: boolean;
 };
 
-console.log(Object.entries(countryList.getNameList()));
-
 export const CountryDropDown = ({
   selectedCountry,
   onCountryChange,
   disabled,
 }: Props) => {
   const options = useMemo(() => {
-    return Object.entries(countryList.getNameList()).map(([name, code]) => ({
-      id: code,
-      value: code,
-      display: startCase(name),
-      imageSrc: `/assets/flags/${code.toLowerCase()}.svg`,
-    }));
+    const countryOptions = Object.entries(countryList.getNameList()).map(
+      ([name, code]) => ({
+        id: code,
+        value: code,
+        display: startCase(name),
+        imageSrc: `/assets/flags/${code.toLowerCase()}.svg`,
+      })
+    );
+
+    return [{ id: "none", value: "", display: "None" }, ...countryOptions];
   }, []);
 
   const handleChange = (country: string) => {
