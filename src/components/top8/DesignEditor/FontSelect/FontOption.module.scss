@@ -1,0 +1,8 @@
+.fontOption {
+  display: block;
+  width: 100%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: font-family 0.15s ease-out;
+}
