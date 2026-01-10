@@ -122,6 +122,14 @@ export const PlayersEditor = ({ className }: Props) => {
       <div className={styles.playerSelector}>
         <PlayerSelector />
       </div>
+      <div className={cn({ [styles.disabled]: !selectedPlayer })}>
+        <p className={styles.label}>Characters</p>
+        <CharacterEditor
+          characters={tempPlayer?.characters ?? []}
+          onCharactersChange={handleCharactersChange}
+          disabled={!selectedPlayer}
+        />
+      </div>
       <Input
         id="prefix"
         name="prefix"
@@ -166,14 +174,6 @@ export const PlayersEditor = ({ className }: Props) => {
           selectedSrc={tempPlayer?.avatarImgSrc}
           onSelect={handleAssetSelect}
           onClear={handleClear}
-          disabled={!selectedPlayer}
-        />
-      </div>
-      <div className={cn({ [styles.disabled]: !selectedPlayer })}>
-        <p className={styles.label}>Characters</p>
-        <CharacterEditor
-          characters={tempPlayer?.characters ?? []}
-          onCharactersChange={handleCharactersChange}
           disabled={!selectedPlayer}
         />
       </div>
