@@ -1,5 +1,6 @@
 import { useClient } from "urql";
 import type { Client } from "urql";
+import * as countryList from "country-list";
 
 import { graphql } from "@/gql";
 import type { EventStandingsQuery, PlayerSetsQuery } from "@/gql/graphql";
@@ -158,7 +159,9 @@ function extractPlayerFromStanding(standing: StandingNode): PlayerInfo {
   const player = standing!.player!;
   const entrant = standing!.entrant!;
   const twitterHandle = player.user?.authorizations?.[0]?.externalUsername;
-  const country = player.user?.location?.country;
+
+  const countryName = player.user?.location?.country;
+  const countryCode = countryList.getCode(countryName ?? "");
 
   return {
     id: player.user!.id as string,
@@ -169,7 +172,7 @@ function extractPlayerFromStanding(standing: StandingNode): PlayerInfo {
     twitter: twitterHandle || undefined,
     characters: [],
     placement: standing!.placement || 0,
-    country: country || undefined,
+    country: countryCode || undefined,
   };
 }
 
