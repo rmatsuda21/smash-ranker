@@ -8,6 +8,7 @@ import { CharacterEditor } from "@/components/top8/CharacterEditor/CharacterEdit
 import { Input } from "@/components/shared/Input/Input";
 import { PlayerSelector } from "@/components/top8/PlayersEditor/PlayerSelector";
 import { AssetSelector } from "@/components/top8/AssetSelector/AssetSelector";
+import { CountryDropDown } from "@/components/top8/PlayersEditor/CountryDropDown";
 
 import styles from "./PlayersEditor.module.scss";
 
@@ -106,6 +107,16 @@ export const PlayersEditor = ({ className }: Props) => {
     debouncedUpdatePlayer(newPlayer, selectedPlayerIndex);
   };
 
+  const handleCountryChange = (country: string) => {
+    if (!tempPlayer) return;
+    const newPlayer: PlayerInfo = {
+      ...tempPlayer,
+      country,
+    };
+    setTempPlayer(newPlayer);
+    debouncedUpdatePlayer(newPlayer, selectedPlayerIndex);
+  };
+
   return (
     <div className={cn(styles.wrapper, className)}>
       <div className={styles.playerSelector}>
@@ -141,6 +152,14 @@ export const PlayersEditor = ({ className }: Props) => {
         placeholder="Twitter"
         disabled={!selectedPlayer}
       />
+      <div className={cn({ [styles.disabled]: !selectedPlayer })}>
+        <p className={styles.label}>Country</p>
+        <CountryDropDown
+          selectedCountry={tempPlayer?.country ?? ""}
+          onCountryChange={handleCountryChange}
+          disabled={!selectedPlayer}
+        />
+      </div>
       <div className={cn({ [styles.disabled]: !selectedPlayer })}>
         <p className={styles.label}>Avatar</p>
         <AssetSelector
