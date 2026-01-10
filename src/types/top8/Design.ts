@@ -29,7 +29,8 @@ export type ElementType =
   | "customImage"
   | "characterImage"
   | "altCharacterImage"
-  | "tournamentIcon";
+  | "tournamentIcon"
+  | "userFlag";
 
 export type Condition = DesignPlaceholder | RenderCondition;
 
@@ -155,6 +156,14 @@ export interface BackgroundImageElementConfig
   align?: ImageAlign;
 }
 
+export interface UserFlagElementConfig
+  extends BaseElementConfig,
+    Partial<ComponentProps<typeof Image>> {
+  type: "userFlag";
+  fillMode?: ImageFillMode;
+  align?: ImageAlign;
+}
+
 export type ElementConfig =
   | TextElementConfig
   | SmartTextElementConfig
@@ -166,7 +175,8 @@ export type ElementConfig =
   | CustomImageElementConfig
   | SvgElementConfig
   | TournamentIconElementConfig
-  | BackgroundImageElementConfig;
+  | BackgroundImageElementConfig
+  | UserFlagElementConfig;
 
 export interface LayerDesign {
   elements: ElementConfig[];

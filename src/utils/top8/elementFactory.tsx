@@ -15,6 +15,7 @@ import {
   SvgElementConfig,
   TournamentIconElementConfig,
   BackgroundImageElementConfig,
+  UserFlagElementConfig,
 } from "@/types/top8/Design";
 import {
   ElementFactoryContext,
@@ -58,6 +59,7 @@ const ASYNC_ELEMENT_TYPES = new Set([
   "svg",
   "tournamentIcon",
   "backgroundImage",
+  "userFlag",
 ]);
 
 const createTextElement: ElementCreator<TextElementConfig> = ({
@@ -405,6 +407,35 @@ const createBackgroundImageElement: ElementCreator<
   );
 };
 
+const createUserFlagElement: ElementCreator<UserFlagElementConfig> = ({
+  element,
+  index,
+  context,
+}) => {
+  const { player } = context;
+
+  if (!player?.country) {
+    return null;
+  }
+
+  const countryCode = player.country.toLowerCase();
+  const flagSrc = `/assets/flags/${countryCode}.svg`;
+
+  return (
+    <CustomImage
+      key={`userFlag-${index}`}
+      x={element.position.x}
+      y={element.position.y}
+      width={element.size?.width ?? 40}
+      height={element.size?.height ?? 30}
+      imageSrc={flagSrc}
+      fillMode={element.fillMode ?? "contain"}
+      align={element.align ?? "center"}
+      perfectDrawEnabled={context.perfectDraw}
+    />
+  );
+};
+
 const elementCreators = {
   text: createTextElement,
   smartText: createSmartTextElement,
@@ -417,6 +448,7 @@ const elementCreators = {
   svg: createSvgElement,
   tournamentIcon: createTournamentIconElement,
   backgroundImage: createBackgroundImageElement,
+  userFlag: createUserFlagElement,
 };
 
 const countAsyncElements = (
@@ -454,6 +486,10 @@ const countAsyncElements = (
       }
     } else if (element.type === "backgroundImage") {
       if (context.design?.bgAssetId) {
+        count += 1;
+      }
+    } else if (element.type === "userFlag") {
+      if (context.player?.country) {
         count += 1;
       }
     } else if (ASYNC_ELEMENT_TYPES.has(element.type)) {

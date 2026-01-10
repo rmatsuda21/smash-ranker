@@ -97,8 +97,8 @@ const basePlayer: PlayerDesign = {
     {
       name: "Alt Characters",
       type: "altCharacterImage",
-      position: { x: 575, y: 30 },
-      size: { width: 90, height: undefined },
+      position: { x: 555, y: 30 },
+      size: { width: 105, height: undefined },
     },
     {
       name: "Full Name",
@@ -140,6 +140,12 @@ const basePlayer: PlayerDesign = {
       position: { x: 45, y: 20 },
       shadowBlur: 15,
       shadowColor: "placementShadow",
+    },
+    {
+      type: "userFlag",
+      position: { x: 40, y: 185 },
+      size: { width: 100, height: 100 },
+      fillMode: "contain",
     },
   ],
 };
