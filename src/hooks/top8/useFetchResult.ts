@@ -71,6 +71,10 @@ const EventStandingsQueryDoc = graphql(`
                 externalId
                 externalUsername
               }
+              location {
+                country
+                countryId
+              }
             }
           }
         }
@@ -154,6 +158,7 @@ function extractPlayerFromStanding(standing: StandingNode): PlayerInfo {
   const player = standing!.player!;
   const entrant = standing!.entrant!;
   const twitterHandle = player.user?.authorizations?.[0]?.externalUsername;
+  const country = player.user?.location?.country;
 
   return {
     id: player.user!.id as string,
@@ -164,6 +169,7 @@ function extractPlayerFromStanding(standing: StandingNode): PlayerInfo {
     twitter: twitterHandle || undefined,
     characters: [],
     placement: standing!.placement || 0,
+    country: country || undefined,
   };
 }
 

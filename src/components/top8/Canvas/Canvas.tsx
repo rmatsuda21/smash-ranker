@@ -151,23 +151,27 @@ export const Canvas = ({ className }: Props) => {
           <Spinner size={100} />
         </div>
       ) : null}
-      <div
-        className={styles.canvasWrapper}
-        style={{ "--display-scale": displayScale } as React.CSSProperties}
-      >
-        <Stage
-          ref={stageRef}
-          width={canvasSize.width}
-          height={canvasSize.height}
-          onClick={handleStageClick}
+      <div className={styles.scrollArea}>
+        <div
+          className={styles.canvasWrapper}
+          style={{ "--display-scale": displayScale } as React.CSSProperties}
         >
-          <BackgroundLayer
-            onClick={handleStageClick}
-            onReady={handleBackgroundReady}
-          />
-          <PlayerLayer onReady={handlePlayerReady} />
-          <TournamentLayer onReady={handleTournamentReady} />
-        </Stage>
+          <div className={styles.canvasInner}>
+            <Stage
+              ref={stageRef}
+              width={canvasSize.width}
+              height={canvasSize.height}
+              onClick={handleStageClick}
+            >
+              <BackgroundLayer
+                onClick={handleStageClick}
+                onReady={handleBackgroundReady}
+              />
+              <PlayerLayer onReady={handlePlayerReady} />
+              <TournamentLayer onReady={handleTournamentReady} />
+            </Stage>
+          </div>
+        </div>
       </div>
 
       <div className={styles.controls}>
