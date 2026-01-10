@@ -60,6 +60,7 @@ export const FontSelect = () => {
       onChange={handleChange}
       loading={fetching}
       error={error}
+      searchable
     />
   );
 };

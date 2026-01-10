@@ -39,6 +39,7 @@ export const CountryDropDown = ({
       selectedValue={selectedCountry}
       onChange={handleChange}
       placeholder="Select Country"
+      searchable
     />
   );
 };

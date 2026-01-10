@@ -6,6 +6,7 @@ import { CharacerData } from "@/types/top8/Player";
 
 import styles from "./CharacterAltPicker.module.scss";
 
+// TODO: Use hook for this
 const TOOLTIP_DELAY = 200;
 
 type Props = {
