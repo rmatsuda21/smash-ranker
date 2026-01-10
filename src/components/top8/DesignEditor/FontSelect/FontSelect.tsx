@@ -1,8 +1,12 @@
 import { useCallback, useMemo } from "react";
 
-import { DropDownSelect } from "@/components/top8/DropDownSelect/DropDownSelect";
+import {
+  DropDownItem,
+  DropDownSelect,
+} from "@/components/top8/DropDownSelect/DropDownSelect";
 import { loadFont } from "@/utils/top8/loadFont";
 import { Font, useFontStore } from "@/store/fontStore";
+import { FontOption } from "@/components/top8/DesignEditor/FontSelect/FontOption";
 
 export const FontSelect = () => {
   const error = useFontStore((state) => state.error);
@@ -53,6 +57,13 @@ export const FontSelect = () => {
     [fonts, loadAndDispatchFont]
   );
 
+  const renderFontOption = useCallback(
+    (option: DropDownItem<string>, isSelected: boolean) => (
+      <FontOption option={option} isSelected={isSelected} />
+    ),
+    []
+  );
+
   return (
     <DropDownSelect
       options={fontOptions}
@@ -61,6 +72,7 @@ export const FontSelect = () => {
       loading={fetching}
       error={error}
       searchable
+      renderOption={renderFontOption}
     />
   );
 };

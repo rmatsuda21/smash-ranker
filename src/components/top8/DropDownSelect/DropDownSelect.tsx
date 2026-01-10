@@ -13,7 +13,7 @@ import { Spinner } from "@/components/shared/Spinner/Spinner";
 
 import styles from "./DropDownSelect.module.scss";
 
-type Item<T> = {
+export type DropDownItem<T> = {
   value: T;
   id: string;
   display: string;
@@ -21,7 +21,7 @@ type Item<T> = {
 };
 
 type Props<T> = {
-  options: Item<T>[];
+  options: DropDownItem<T>[];
   selectedValue: T;
   onChange: (value: T) => void;
   disabled?: boolean;
@@ -31,6 +31,10 @@ type Props<T> = {
   className?: string;
   searchable?: boolean;
   searchPlaceholder?: string;
+  renderOption?: (
+    option: DropDownItem<T>,
+    isSelected: boolean
+  ) => React.ReactNode;
 };
 
 const getDropdownStyles = (
@@ -77,7 +81,7 @@ const TriggerContent = <T,>({
   placeholder,
 }: {
   loading: boolean;
-  selectedOption?: Item<T>;
+  selectedOption?: DropDownItem<T>;
   placeholder: string;
 }) => {
   if (loading) {
@@ -115,6 +119,7 @@ export const DropDownSelect = <T,>({
   className,
   searchable = false,
   searchPlaceholder = "Search...",
+  renderOption,
 }: Props<T>) => {
   const [isOpen, setIsOpen] = useState(false);
   const [showAbove, setShowAbove] = useState(false);
@@ -389,16 +394,22 @@ export const DropDownSelect = <T,>({
                   aria-selected={isSelected}
                   tabIndex={0}
                 >
-                  {option.imageSrc && (
-                    <img
-                      width={24}
-                      height={24}
-                      src={option.imageSrc}
-                      alt={option.display ?? ""}
-                      loading="lazy"
-                    />
+                  {renderOption ? (
+                    renderOption(option, isSelected)
+                  ) : (
+                    <>
+                      {option.imageSrc && (
+                        <img
+                          width={24}
+                          height={24}
+                          src={option.imageSrc}
+                          alt={option.display ?? ""}
+                          loading="lazy"
+                        />
+                      )}
+                      {option.display}
+                    </>
                   )}
-                  {option.display}
                 </div>
               );
             })
