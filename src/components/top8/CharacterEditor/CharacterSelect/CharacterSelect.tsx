@@ -44,6 +44,7 @@ const CharacterSelectComponent = ({
       onChange={handleChange}
       disabled={disabled}
       placeholder="Select Character"
+      searchable
     />
   );
 };

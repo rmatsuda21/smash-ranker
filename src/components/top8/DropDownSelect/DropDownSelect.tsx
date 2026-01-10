@@ -1,5 +1,12 @@
-import { useMemo, useState, useRef, useEffect, useLayoutEffect } from "react";
-import { LuChevronsUpDown } from "react-icons/lu";
+import {
+  useMemo,
+  useState,
+  useRef,
+  useEffect,
+  useLayoutEffect,
+  useCallback,
+} from "react";
+import { LuChevronsUpDown, LuSearch } from "react-icons/lu";
 import cn from "classnames";
 
 import { Spinner } from "@/components/shared/Spinner/Spinner";
@@ -22,6 +29,8 @@ type Props<T> = {
   loading?: boolean;
   error?: Error;
   className?: string;
+  searchable?: boolean;
+  searchPlaceholder?: string;
 };
 
 const getDropdownStyles = (
@@ -104,28 +113,50 @@ export const DropDownSelect = <T,>({
   loading = false,
   error,
   className,
+  searchable = false,
+  searchPlaceholder = "Search...",
 }: Props<T>) => {
   const [isOpen, setIsOpen] = useState(false);
   const [showAbove, setShowAbove] = useState(false);
   const [dropdownStyles, setDropdownStyles] = useState<React.CSSProperties>({});
+  const [searchQuery, setSearchQuery] = useState("");
 
   const triggerRef = useRef<HTMLButtonElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const focusedItemRef = useRef<HTMLDivElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   const selectedOption = useMemo(() => {
     return options.find((option) => option.value === selectedValue);
   }, [options, selectedValue]);
 
-  const handleValueChange = (value: T) => {
-    onChange(value);
-    setIsOpen(false);
-  };
+  const filteredOptions = useMemo(() => {
+    if (!searchQuery.trim()) return options;
 
-  const toggleDropdown = () => {
+    const query = searchQuery.toLowerCase().trim();
+    return options.filter((option) =>
+      option.display.toLowerCase().includes(query)
+    );
+  }, [options, searchQuery]);
+
+  const handleValueChange = useCallback(
+    (value: T) => {
+      onChange(value);
+      setIsOpen(false);
+      setSearchQuery("");
+    },
+    [onChange]
+  );
+
+  const toggleDropdown = useCallback(() => {
     setIsOpen((prev) => !prev);
-  };
+  }, []);
+
+  const closeDropdown = useCallback(() => {
+    setIsOpen(false);
+    setSearchQuery("");
+  }, []);
 
   useLayoutEffect(() => {
     const calculateShowAbove = () => {
@@ -155,7 +186,7 @@ export const DropDownSelect = <T,>({
         containerRef.current &&
         !containerRef.current.contains(event.target as Node)
       ) {
-        setIsOpen(false);
+        closeDropdown();
       }
     };
 
@@ -163,73 +194,87 @@ export const DropDownSelect = <T,>({
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [closeDropdown]);
 
   useEffect(() => {
+    if (!isOpen) return;
+
+    const getVisibleItems = () => {
+      return dropdownRef.current?.querySelectorAll(`.${styles.item}`) as
+        | NodeListOf<HTMLDivElement>
+        | undefined;
+    };
+
+    const focusPreviousItem = () => {
+      const items = getVisibleItems();
+      if (!items?.length) return;
+
+      if (focusedItemRef.current) {
+        const currentIndex = Array.from(items).indexOf(focusedItemRef.current);
+        const prevIndex =
+          currentIndex > 0 ? currentIndex - 1 : items.length - 1;
+        const prevItem = items[prevIndex];
+        prevItem?.focus();
+        focusedItemRef.current = prevItem;
+      } else {
+        const lastItem = items[items.length - 1];
+        lastItem?.focus();
+        focusedItemRef.current = lastItem;
+      }
+    };
+
+    const focusNextItem = () => {
+      const items = getVisibleItems();
+      if (!items?.length) return;
+
+      if (focusedItemRef.current) {
+        const currentIndex = Array.from(items).indexOf(focusedItemRef.current);
+        const nextIndex =
+          currentIndex < items.length - 1 ? currentIndex + 1 : 0;
+        const nextItem = items[nextIndex];
+        nextItem?.focus();
+        focusedItemRef.current = nextItem;
+      } else {
+        const firstItem = items[0];
+        firstItem?.focus();
+        focusedItemRef.current = firstItem;
+      }
+    };
+
     const handleKeyDown = (e: KeyboardEvent) => {
-      const focusPreviousItem = () => {
-        if (focusedItemRef.current) {
-          const previousItem = focusedItemRef.current
-            .previousElementSibling as HTMLDivElement;
-
-          if (previousItem) {
-            previousItem.focus();
-            focusedItemRef.current = previousItem;
-          } else {
-            const parent = focusedItemRef.current.parentElement;
-            const lastEl = parent?.children[
-              parent.children.length - 1
-            ] as HTMLDivElement;
-
-            if (lastEl) {
-              lastEl.focus();
-              focusedItemRef.current = lastEl;
-            }
-          }
-        }
-      };
-
-      const focusNextItem = () => {
-        if (focusedItemRef.current) {
-          const nextItem = focusedItemRef.current
-            .nextElementSibling as HTMLDivElement;
-
-          if (nextItem) {
-            nextItem.focus();
-            focusedItemRef.current = nextItem;
-          } else {
-            const parent = focusedItemRef.current.parentElement;
-            const firstEl = parent?.children[0] as HTMLDivElement;
-            if (firstEl) {
-              firstEl.focus();
-              focusedItemRef.current = firstEl;
-            }
-          }
-        }
-      };
+      const isSearchFocused = document.activeElement === searchInputRef.current;
 
       switch (e.key) {
         case "Escape":
-          setIsOpen(false);
+          closeDropdown();
           triggerRef.current?.focus();
           break;
         case "ArrowUp":
+          e.preventDefault();
           focusPreviousItem();
           break;
         case "ArrowDown":
+          e.preventDefault();
           focusNextItem();
           break;
         case "Tab":
-          e.preventDefault();
-          if (e.shiftKey) {
-            focusPreviousItem();
-          } else {
-            focusNextItem();
+          if (!isSearchFocused) {
+            e.preventDefault();
+            if (e.shiftKey) {
+              focusPreviousItem();
+            } else {
+              focusNextItem();
+            }
           }
           break;
         case "Enter":
-          e.preventDefault();
-          focusedItemRef.current?.click();
+          if (!isSearchFocused) {
+            e.preventDefault();
+            focusedItemRef.current?.click();
+          } else if (filteredOptions.length === 1) {
+            e.preventDefault();
+            handleValueChange(filteredOptions[0].value);
+          }
           break;
       }
     };
@@ -239,12 +284,18 @@ export const DropDownSelect = <T,>({
     return () => {
       container?.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
+  }, [isOpen, closeDropdown, filteredOptions, handleValueChange]);
 
   useLayoutEffect(() => {
     if (!isOpen) {
       focusedItemRef.current = null;
       return;
+    }
+
+    if (searchable && searchInputRef.current) {
+      requestAnimationFrame(() => {
+        searchInputRef.current?.focus();
+      });
     }
 
     if (dropdownRef.current) {
@@ -256,7 +307,13 @@ export const DropDownSelect = <T,>({
         focusedItemRef.current = checkedElement as HTMLDivElement;
       }
     }
-  }, [isOpen, dropdownRef]);
+  }, [isOpen, searchable]);
+
+  useEffect(() => {
+    if (isOpen && searchQuery) {
+      focusedItemRef.current = null;
+    }
+  }, [isOpen, searchQuery]);
 
   useEffect(() => {
     const calculateShowAbove = () => {
@@ -298,33 +355,54 @@ export const DropDownSelect = <T,>({
         inert={!isOpen ? true : undefined}
         role="listbox"
       >
+        {searchable && (
+          <div className={styles.searchContainer}>
+            <div className={styles.searchInput}>
+              <LuSearch className={styles.searchIcon} />
+              <input
+                ref={searchInputRef}
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder={searchPlaceholder}
+                autoComplete="off"
+                autoCorrect="off"
+                spellCheck={false}
+              />
+            </div>
+          </div>
+        )}
         <div className={styles.window} ref={dropdownRef}>
-          {options.map((option) => {
-            const isSelected = option.value === selectedValue;
-            const onClick = () => handleValueChange(option.value);
-            return (
-              <div
-                key={option.id}
-                className={styles.item}
-                data-state={isSelected ? "checked" : undefined}
-                onClick={onClick}
-                role="option"
-                aria-selected={isSelected}
-                tabIndex={0}
-              >
-                {option.imageSrc && (
-                  <img
-                    width={24}
-                    height={24}
-                    src={option.imageSrc}
-                    alt={option.display ?? ""}
-                    loading="lazy"
-                  />
-                )}
-                {option.display}
-              </div>
-            );
-          })}
+          {filteredOptions.length === 0 ? (
+            <div className={styles.noResults}>No results found</div>
+          ) : (
+            filteredOptions.map((option) => {
+              const isSelected = option.value === selectedValue;
+              const onClick = () => handleValueChange(option.value);
+              return (
+                <div
+                  key={option.id}
+                  className={styles.item}
+                  data-state={isSelected ? "checked" : undefined}
+                  onClick={onClick}
+                  role="option"
+                  aria-selected={isSelected}
+                  tabIndex={0}
+                >
+                  {option.imageSrc && (
+                    <img
+                      width={24}
+                      height={24}
+                      src={option.imageSrc}
+                      alt={option.display ?? ""}
+                      loading="lazy"
+                    />
+                  )}
+                  {option.display}
+                </div>
+              );
+            })
+          )}
         </div>
       </div>
       {error && (
