@@ -33,6 +33,7 @@ export const Canvas = ({ className }: Props) => {
 
   const stageRef = useRef<KonvaStage>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   const canvasSize = useCanvasStore((state) => state.design.canvasSize);
   const canvasDispatch = useCanvasStore((state) => state.dispatch);
@@ -47,6 +48,20 @@ export const Canvas = ({ className }: Props) => {
   const handleStageClick = useCallback(() => {
     clearSelections();
   }, [clearSelections]);
+
+  const handleFitToWindow = useCallback(() => {
+    if (scrollAreaRef.current) {
+      const availableWidth =
+        scrollAreaRef.current.clientWidth - CANVAS_PADDING * 2;
+      const availableHeight =
+        scrollAreaRef.current.clientHeight - CANVAS_PADDING * 2;
+
+      const scaleByWidth = availableWidth / canvasSize.width;
+      const scaleByHeight = availableHeight / canvasSize.height;
+
+      setDisplayScale(Math.min(scaleByWidth, scaleByHeight));
+    }
+  }, [canvasSize.width, canvasSize.height]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -63,11 +78,8 @@ export const Canvas = ({ className }: Props) => {
 
   useEffect(() => {
     const handleResize = () => {
-      if (wrapperRef.current && canvasSize?.width) {
-        setDisplayScale(
-          (wrapperRef.current.clientWidth - CANVAS_PADDING * 2) /
-            canvasSize.width
-        );
+      if (scrollAreaRef.current && canvasSize?.width && canvasSize?.height) {
+        handleFitToWindow();
 
         setCanvasStyle({
           "--aspect-ratio": `${canvasSize.width / canvasSize.height}`,
@@ -81,22 +93,22 @@ export const Canvas = ({ className }: Props) => {
 
     handleResize();
 
-    const wrapperEl = wrapperRef.current;
+    const scrollAreaEl = scrollAreaRef.current;
     const observer =
-      typeof ResizeObserver !== "undefined" && wrapperEl
+      typeof ResizeObserver !== "undefined" && scrollAreaEl
         ? new ResizeObserver(() => {
             window.requestAnimationFrame(handleResize);
           })
         : null;
 
-    if (observer && wrapperEl) {
-      observer.observe(wrapperEl);
+    if (observer && scrollAreaEl) {
+      observer.observe(scrollAreaEl);
     }
 
     return () => {
       observer?.disconnect();
     };
-  }, [canvasSize?.width, canvasSize?.height, canvasMounted]);
+  }, [canvasSize?.width, canvasSize?.height, canvasMounted, handleFitToWindow]);
 
   useEffect(() => {
     if (stageRef.current) {
@@ -126,14 +138,6 @@ export const Canvas = ({ className }: Props) => {
     setDisplayScale(value);
   }, []);
 
-  const handleFitToWindow = useCallback(() => {
-    if (wrapperRef.current) {
-      setDisplayScale(
-        (wrapperRef.current.clientWidth - CANVAS_PADDING * 2) / canvasSize.width
-      );
-    }
-  }, [canvasSize.width, wrapperRef]);
-
   if (!canvasSize?.width || !canvasSize?.height) {
     return null;
   }
@@ -151,7 +155,7 @@ export const Canvas = ({ className }: Props) => {
           <Spinner size={100} />
         </div>
       ) : null}
-      <div className={styles.scrollArea}>
+      <div ref={scrollAreaRef} className={styles.scrollArea}>
         <div
           className={styles.canvasWrapper}
           style={{ "--display-scale": displayScale } as React.CSSProperties}
