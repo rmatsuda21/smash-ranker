@@ -32,8 +32,8 @@ const DEFAULT_TEMPLATES: DBTemplate[] = [
     font: "Noto Sans JP",
   },
   {
-    id: "top8er-test",
-    name: "Top8er (FlexGroup Test)",
+    id: "minimal",
+    name: "Minimal",
     design: testDesign,
     font: "Noto Sans JP",
   },
