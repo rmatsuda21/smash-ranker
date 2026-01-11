@@ -33,7 +33,7 @@ type Props<T> = {
   searchPlaceholder?: string;
   renderOption?: (
     option: DropDownItem<T>,
-    isSelected: boolean
+    isSelected?: boolean
   ) => React.ReactNode;
 };
 

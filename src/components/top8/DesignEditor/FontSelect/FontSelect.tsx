@@ -58,9 +58,7 @@ export const FontSelect = () => {
   );
 
   const renderFontOption = useCallback(
-    (option: DropDownItem<string>, isSelected: boolean) => (
-      <FontOption option={option} isSelected={isSelected} />
-    ),
+    (option: DropDownItem<string>) => <FontOption option={option} />,
     []
   );
 
