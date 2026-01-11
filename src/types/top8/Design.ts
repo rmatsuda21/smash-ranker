@@ -24,6 +24,7 @@ export type ElementType =
   | "smartText"
   | "image"
   | "group"
+  | "flexGroup"
   | "rect"
   | "svg"
   | "customImage"
@@ -40,6 +41,16 @@ export type ElementFilterConfig =
   | { type: "RGB"; r: number; g: number; b: number }
   | { type: "Blur"; radius: number };
 
+export type FlexAlign = "start" | "center" | "end";
+export type FlexJustify = "start" | "center" | "end" | "space-between";
+export type FlexDirection = "row" | "column";
+
+export interface FlexItemConfig {
+  shrink?: boolean;
+  grow?: boolean;
+  basis?: number;
+}
+
 interface BaseElementConfig {
   id?: string;
   position: { x: number; y: number };
@@ -53,6 +64,7 @@ interface BaseElementConfig {
   conditions?: Condition[];
   selectable?: boolean;
   filterEffects?: ElementFilterConfig[];
+  flex?: FlexItemConfig;
 }
 
 export interface TextElementConfig
@@ -66,6 +78,7 @@ export interface TextElementConfig
   fontStyle?: string;
   fill?: string;
   align?: "left" | "center" | "right";
+  verticalAlign?: "top" | "middle" | "bottom";
   shadowColor?: string;
   shadowBlur?: number;
   shadowOffset?: { x: number; y: number };
@@ -105,6 +118,17 @@ export interface GroupElementConfig
   elements: ElementConfig[];
 }
 
+export interface FlexGroupElementConfig
+  extends BaseElementConfig,
+    Partial<ComponentProps<typeof Group>> {
+  type: "flexGroup";
+  elements: ElementConfig[];
+  direction?: FlexDirection;
+  gap?: number;
+  align?: FlexAlign;
+  justify?: FlexJustify;
+}
+
 export interface RectElementConfig
   extends BaseElementConfig,
     Partial<ComponentProps<typeof Rect>> {
@@ -126,6 +150,7 @@ export interface CharacterImageElementConfig
     Partial<ComponentProps<typeof Image>> {
   type: "characterImage";
   usePlayerAvatar?: boolean;
+  shadowEnabled?: boolean;
 }
 
 export interface AltCharacterImageElementConfig extends BaseElementConfig {
@@ -169,6 +194,7 @@ export type ElementConfig =
   | SmartTextElementConfig
   | ImageElementConfig
   | GroupElementConfig
+  | FlexGroupElementConfig
   | CharacterImageElementConfig
   | AltCharacterImageElementConfig
   | RectElementConfig

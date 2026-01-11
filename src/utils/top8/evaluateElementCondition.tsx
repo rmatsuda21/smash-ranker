@@ -9,6 +9,7 @@ const getConditionMap = (
   return {
     [DesignPlaceholder.PLAYER_TWITTER]: Boolean(player?.twitter),
     [DesignPlaceholder.PLAYER_PLACEMENT]: Boolean(player?.placement),
+    [DesignPlaceholder.PLAYER_COUNTRY]: Boolean(player?.country),
     [DesignPlaceholder.PLAYER_NAME]: Boolean(player?.name),
     [DesignPlaceholder.PLAYER_TAG]: Boolean(player?.gamerTag),
     [DesignPlaceholder.PLAYER_PREFIX]: Boolean(player?.prefix),

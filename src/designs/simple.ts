@@ -113,6 +113,7 @@ const basePlayer: PlayerDesign = {
       fill: "text",
       shadowColor: "textShadow",
       shadowOffset: { x: 10, y: 10 },
+      verticalAlign: "bottom",
       conditions: [DesignPlaceholder.PLAYER_PREFIX],
     },
     {
@@ -127,6 +128,7 @@ const basePlayer: PlayerDesign = {
       position: { x: 0, y: BASE_PL_SIZE - 20 },
       fill: "text",
       shadowColor: "textShadow",
+      verticalAlign: "bottom",
       shadowOffset: { x: 10, y: 10 },
       conditions: [RenderCondition.NOT, DesignPlaceholder.PLAYER_PREFIX],
     },

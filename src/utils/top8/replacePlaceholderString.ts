@@ -14,6 +14,7 @@ const getPlaceholderMap = (
   const { player, tournament } = context;
   return {
     [DesignPlaceholder.PLAYER_PLACEMENT]: player?.placement?.toString(),
+    [DesignPlaceholder.PLAYER_COUNTRY]: player?.country,
     [DesignPlaceholder.PLAYER_NAME]: player?.name,
     [DesignPlaceholder.PLAYER_TAG]: player?.gamerTag,
     [DesignPlaceholder.PLAYER_PREFIX]: player?.prefix,

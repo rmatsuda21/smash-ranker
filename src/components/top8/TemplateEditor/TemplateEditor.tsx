@@ -7,6 +7,7 @@ import { useTemplateDB } from "@/hooks/useConfigDb";
 import { Spinner } from "@/components/shared/Spinner/Spinner";
 import { simpleDesign } from "@/designs/simple";
 import { squaresDesign } from "@/designs/squares";
+import { testDesign } from "@/designs/test";
 import { TemplatePreview } from "@/components/top8/TemplateEditor/TemplatePreview/TemplatePreview";
 import { Button } from "@/components/shared/Button/Button";
 import { DBTemplate } from "@/types/Repository";
@@ -28,6 +29,12 @@ const DEFAULT_TEMPLATES: DBTemplate[] = [
     id: "top8er-squares",
     name: "Top8er (Square Variant)",
     design: squaresDesign,
+    font: "Noto Sans JP",
+  },
+  {
+    id: "top8er-test",
+    name: "Top8er (FlexGroup Test)",
+    design: testDesign,
     font: "Noto Sans JP",
   },
 ];
