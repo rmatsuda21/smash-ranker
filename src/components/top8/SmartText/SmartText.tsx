@@ -97,6 +97,7 @@ export const SmartText = (props: SmartTextProps) => {
   const {
     fontSize = 16,
     width,
+    height,
     text = "",
     shadowOffset: initialShadowOffset,
     anchor = "topLeft",
@@ -206,10 +207,12 @@ export const SmartText = (props: SmartTextProps) => {
       offsetX={offsetX}
       offsetY={offsetY}
       width={width}
+      height={height}
       text={text}
       shadowOffset={shadowOffset}
       fontFamily={fontFamily}
       fontStyle={fontStyle}
+      wrap="word"
       {...restProps}
     />
   );

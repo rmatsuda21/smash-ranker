@@ -28,6 +28,7 @@ const CustomImageComponent = ({
   shadowColor = "red",
   shadowBlur = 3,
   shadowOffset = { x: BACKDROP_OFFSET, y: BACKDROP_OFFSET },
+  shadowOpacity: _shadowOpacity,
   x = 0,
   y = 0,
   offset = { x: 0, y: 0 },
@@ -39,6 +40,7 @@ const CustomImageComponent = ({
   align = "center",
   ...rest
 }: Props) => {
+  const shadowOpacity = hasShadow ? _shadowOpacity ?? 1 : 0;
   const onReadyRef = useRef(onReady);
   const onErrorRef = useRef(onError);
   onReadyRef.current = onReady;
@@ -59,9 +61,10 @@ const CustomImageComponent = ({
 
   useEffect(() => {
     if (ref.current && finalImage) {
+      ref.current.clearCache();
       ref.current.cache();
     }
-  }, [shadowColor, shadowBlur, shadowOffset, hasShadow, finalImage, ref]);
+  }, [shadowColor, shadowBlur, shadowOffset, shadowOpacity, finalImage, ref]);
 
   if (!finalImage) return null;
 
@@ -76,7 +79,7 @@ const CustomImageComponent = ({
       shadowColor={shadowColor}
       shadowBlur={shadowBlur}
       shadowOffset={shadowOffset}
-      shadowOpacity={hasShadow ? 1 : 0}
+      shadowOpacity={shadowOpacity}
       {...rest}
     />
   );
@@ -101,6 +104,7 @@ export const CustomImage = memo(
       prevProps.hasShadow === nextProps.hasShadow &&
       prevProps.shadowColor === nextProps.shadowColor &&
       prevProps.shadowBlur === nextProps.shadowBlur &&
+      prevProps.shadowOpacity === nextProps.shadowOpacity &&
       prevProps.x === nextProps.x &&
       prevProps.y === nextProps.y &&
       prevProps.cropScale === nextProps.cropScale &&

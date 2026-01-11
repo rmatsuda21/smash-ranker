@@ -10,6 +10,7 @@ import {
   CharacterImageElementConfig,
   AltCharacterImageElementConfig,
   GroupElementConfig,
+  FlexGroupElementConfig,
   RectElementConfig,
   CustomImageElementConfig,
   SvgElementConfig,
@@ -77,7 +78,7 @@ const createTextElement: ElementCreator<TextElementConfig> = ({
 
   return (
     <Text
-      key={`text-${index}`}
+      key={element.id ?? `text-${index}`}
       x={element.position.x}
       y={element.position.y}
       fill={resolveColor(element.fill, design?.colorPalette) ?? "white"}
@@ -86,7 +87,10 @@ const createTextElement: ElementCreator<TextElementConfig> = ({
       fontFamily={fontFamily}
       text={text}
       align={element.align ?? "left"}
+      verticalAlign={element.verticalAlign ?? "top"}
       width={element.size?.width}
+      height={element.size?.height}
+      wrap="word"
       shadowColor={resolveColor(element.shadowColor, design?.colorPalette)}
       shadowBlur={element.shadowBlur}
       shadowOffset={element.shadowOffset}
@@ -116,10 +120,11 @@ const createSmartTextElement: ElementCreator<SmartTextElementConfig> = ({
 
   return (
     <SmartText
-      key={`smartText-${index}`}
+      key={element.id ?? `smartText-${index}`}
       x={element.position.x}
       y={element.position.y}
       width={element.size?.width}
+      height={element.size?.height}
       fill={resolveColor(element.fill, design?.colorPalette) ?? "white"}
       fontSize={element.fontSize ?? 20}
       fontStyle={element.fontStyle ?? String(element.fontWeight ?? "normal")}
@@ -148,7 +153,7 @@ const createImageElement: ElementCreator<ImageElementConfig> = ({
 }) => {
   return (
     <CustomImage
-      key={`image-${index}`}
+      key={element.id ?? `image-${index}`}
       id={`image-${index}`}
       x={element.position.x}
       y={element.position.y}
@@ -168,13 +173,227 @@ const createGroupElement: ElementCreator<GroupElementConfig> = ({
 
   return (
     <Group
-      key={`group-${index}`}
+      key={element.id ?? `group-${index}`}
       x={element.position.x}
       y={element.position.y}
       width={element.size?.width}
       height={element.size?.height}
     >
       {konvaElements}
+    </Group>
+  );
+};
+
+interface FlexChildInfo {
+  element: ElementConfig;
+  originalIndex: number;
+  mainSize: number;
+  crossSize: number;
+  isFlexible: boolean;
+  flexGrow: boolean;
+  flexShrink: boolean;
+}
+
+const getElementMainSize = (
+  element: ElementConfig,
+  direction: "row" | "column"
+): number => {
+  const basis = element.flex?.basis;
+  if (basis !== undefined) return basis;
+
+  if (direction === "row") {
+    return element.size?.width ?? 0;
+  }
+
+  if (element.size?.height === undefined) {
+    if (element.type === "text" || element.type === "smartText") {
+      const textEl = element as TextElementConfig | SmartTextElementConfig;
+      return textEl.fontSize ?? 20;
+    }
+  }
+
+  return element.size?.height ?? 0;
+};
+
+const getElementCrossSize = (
+  element: ElementConfig,
+  direction: "row" | "column"
+): number => {
+  if (direction === "row") {
+    if (element.size?.height === undefined) {
+      if (element.type === "text" || element.type === "smartText") {
+        const textEl = element as TextElementConfig | SmartTextElementConfig;
+        return textEl.fontSize ?? 20;
+      }
+    }
+    return element.size?.height ?? 0;
+  }
+  return element.size?.width ?? 0;
+};
+
+const createFlexGroupElement: ElementCreator<FlexGroupElementConfig> = ({
+  element,
+  index,
+  context,
+}) => {
+  const direction = element.direction ?? "row";
+  const gap = element.gap ?? 0;
+  const align = element.align ?? "start";
+  const justify = element.justify ?? "start";
+
+  const containerMainSize =
+    direction === "row" ? element.size?.width ?? 0 : element.size?.height ?? 0;
+  const containerCrossSize =
+    direction === "row" ? element.size?.height ?? 0 : element.size?.width ?? 0;
+
+  const visibleChildren: FlexChildInfo[] = [];
+
+  for (let i = 0; i < element.elements.length; i++) {
+    const child = element.elements[i];
+
+    if (child.hidden || !evaluateElementCondition(child.conditions, context)) {
+      continue;
+    }
+
+    const isFlexible = !!(child.flex?.grow || child.flex?.shrink);
+
+    visibleChildren.push({
+      element: child,
+      originalIndex: i,
+      mainSize: getElementMainSize(child, direction),
+      crossSize: getElementCrossSize(child, direction),
+      isFlexible,
+      flexGrow: !!child.flex?.grow,
+      flexShrink: !!child.flex?.shrink,
+    });
+  }
+
+  if (visibleChildren.length === 0) {
+    return (
+      <Group
+        key={element.id ?? `flexGroup-${index}`}
+        x={element.position.x}
+        y={element.position.y}
+        width={element.size?.width}
+        height={element.size?.height}
+      />
+    );
+  }
+
+  const totalGaps = gap * (visibleChildren.length - 1);
+  const totalDefinedSize = visibleChildren.reduce(
+    (sum, child) => sum + child.mainSize,
+    0
+  );
+  const remainingSpace = containerMainSize - totalDefinedSize - totalGaps;
+
+  let growCount = 0;
+  let shrinkCount = 0;
+  let shrinkableSize = 0;
+
+  for (const child of visibleChildren) {
+    if (child.flexGrow) growCount++;
+    if (child.flexShrink) {
+      shrinkCount++;
+      shrinkableSize += child.mainSize;
+    }
+  }
+
+  if (remainingSpace > 0 && growCount > 0) {
+    const extraPerElement = remainingSpace / growCount;
+    for (const child of visibleChildren) {
+      if (child.flexGrow) {
+        child.mainSize += extraPerElement;
+      }
+    }
+  } else if (remainingSpace < 0 && shrinkCount > 0) {
+    const shrinkAmount = Math.min(Math.abs(remainingSpace), shrinkableSize);
+    for (const child of visibleChildren) {
+      if (child.flexShrink && shrinkableSize > 0) {
+        const ratio = child.mainSize / shrinkableSize;
+        child.mainSize = Math.max(0, child.mainSize - shrinkAmount * ratio);
+      }
+    }
+  }
+
+  const totalContentSize = visibleChildren.reduce(
+    (sum, child) => sum + child.mainSize,
+    0
+  );
+
+  let mainOffset = 0;
+  let spaceBetween = 0;
+
+  switch (justify) {
+    case "center":
+      mainOffset = (containerMainSize - totalContentSize - totalGaps) / 2;
+      break;
+    case "end":
+      mainOffset = containerMainSize - totalContentSize - totalGaps;
+      break;
+    case "space-between":
+      if (visibleChildren.length > 1) {
+        spaceBetween =
+          (containerMainSize - totalContentSize) / (visibleChildren.length - 1);
+      }
+      break;
+    case "start":
+    default:
+      mainOffset = 0;
+      break;
+  }
+
+  const positionedElements: ReactNode[] = [];
+  let currentMainPosition = mainOffset;
+
+  for (const child of visibleChildren) {
+    let crossPosition = 0;
+    switch (align) {
+      case "center":
+        crossPosition = (containerCrossSize - child.crossSize) / 2;
+        break;
+      case "end":
+        crossPosition = containerCrossSize - child.crossSize;
+        break;
+      case "start":
+      default:
+        crossPosition = 0;
+        break;
+    }
+
+    const modifiedElement: ElementConfig = {
+      ...child.element,
+      position: {
+        x: direction === "row" ? currentMainPosition : crossPosition,
+        y: direction === "row" ? crossPosition : currentMainPosition,
+      },
+      size: {
+        ...child.element.size,
+        ...(direction === "row"
+          ? { width: child.mainSize }
+          : { height: child.mainSize }),
+      },
+    };
+
+    const createdElements = createKonvaElementsInternal(
+      [modifiedElement],
+      context
+    );
+    positionedElements.push(...createdElements);
+
+    currentMainPosition +=
+      child.mainSize + (justify === "space-between" ? spaceBetween : gap);
+  }
+
+  return (
+    <Group
+      key={element.id ?? `flexGroup-${index}`}
+      x={element.position.x}
+      y={element.position.y}
+      width={element.size?.width}
+      height={element.size?.height}
+    >
+      {positionedElements}
     </Group>
   );
 };
@@ -187,7 +406,7 @@ const createCharacterImageElement: ElementCreator<
   if (!player || player.characters.length === 0) {
     return (
       <Rect
-        key={`character-${index}`}
+        key={element.id ?? `character-${index}`}
         x={element.position.x}
         y={element.position.y}
         width={element.size?.width ?? 100}
@@ -216,7 +435,7 @@ const createCharacterImageElement: ElementCreator<
 
   return (
     <CustomImage
-      key={`character-${index}`}
+      key={element.id ?? `character-${index}`}
       id="character"
       x={element.position.x}
       y={element.position.y}
@@ -225,7 +444,7 @@ const createCharacterImageElement: ElementCreator<
       imageSrc={imageSrc}
       cropOffset={cropOffset}
       cropScale={cropScale}
-      hasShadow
+      hasShadow={element.shadowEnabled ?? true}
       shadowColor={resolveColor(element.shadowColor, design?.colorPalette)}
       shadowOffset={{ x: 15, y: 15 }}
       shadowBlur={element.shadowBlur}
@@ -250,7 +469,7 @@ const createAltCharacterImageElement: ElementCreator<
 
   return (
     <Group
-      key={`alt-group-${index}`}
+      key={element.id ?? `alt-group-${index}`}
       x={element.position.x}
       y={element.position.y}
     >
@@ -287,7 +506,7 @@ const createRectElement: ElementCreator<RectElementConfig> = ({
 
   return (
     <Rect
-      key={`rect-${index}`}
+      key={element.id ?? `rect-${index}`}
       x={element.position.x}
       y={element.position.y}
       width={element.size?.width}
@@ -310,7 +529,7 @@ const createCustomImageElement: ElementCreator<CustomImageElementConfig> = ({
 
   return (
     <CustomImage
-      key={`customImage-${index}`}
+      key={element.id ?? `customImage-${index}`}
       x={element.position.x}
       y={element.position.y}
       width={width}
@@ -337,7 +556,7 @@ const createSvgElement: ElementCreator<SvgElementConfig> = ({
 
   return (
     <CustomSVG
-      key={`svg-${index}`}
+      key={element.id ?? `svg-${index}`}
       x={element.position.x}
       y={element.position.y}
       width={element.size?.width ?? 100}
@@ -357,7 +576,7 @@ const createTournamentIconElement: ElementCreator<
   if (!tournament?.iconSrc) {
     return (
       <Rect
-        key={`tournamentIcon-${index}`}
+        key={element.id ?? `tournamentIcon-${index}`}
         x={element.position.x}
         y={element.position.y}
         width={element.size?.width ?? 100}
@@ -370,7 +589,7 @@ const createTournamentIconElement: ElementCreator<
 
   return (
     <CustomImage
-      key={`tournamentIcon-${index}`}
+      key={element.id ?? `tournamentIcon-${index}`}
       x={element.position.x}
       y={element.position.y}
       imageSrc={tournament.iconSrc}
@@ -394,7 +613,7 @@ const createBackgroundImageElement: ElementCreator<
 
   return (
     <CustomImage
-      key={`backgroundImage-${index}`}
+      key={element.id ?? `backgroundImage-${index}`}
       imageSrc={backgroundImgId}
       x={element.position.x}
       y={element.position.y}
@@ -423,7 +642,7 @@ const createUserFlagElement: ElementCreator<UserFlagElementConfig> = ({
 
   return (
     <CustomImage
-      key={`userFlag-${index}`}
+      key={element.id ?? `userFlag-${index}`}
       x={element.position.x}
       y={element.position.y}
       width={element.size?.width ?? 40}
@@ -441,6 +660,7 @@ const elementCreators = {
   smartText: createSmartTextElement,
   image: createImageElement,
   group: createGroupElement,
+  flexGroup: createFlexGroupElement,
   characterImage: createCharacterImageElement,
   altCharacterImage: createAltCharacterImageElement,
   rect: createRectElement,
@@ -468,6 +688,11 @@ const countAsyncElements = (
     if (element.type === "group") {
       count += countAsyncElements(
         (element as GroupElementConfig).elements,
+        context
+      );
+    } else if (element.type === "flexGroup") {
+      count += countAsyncElements(
+        (element as FlexGroupElementConfig).elements,
         context
       );
     } else if (element.type === "altCharacterImage") {
@@ -619,7 +844,7 @@ const createKonvaElementsInternal = (
 
       result.push(
         <SelectableElement
-          key={`selectable-${index}`}
+          key={element.id ?? `selectable-${index}`}
           x={element.position.x}
           y={element.position.y}
           draggable={false}
@@ -637,19 +862,22 @@ const createKonvaElementsInternal = (
         </SelectableElement>
       );
     } else {
+      const isContainer =
+        element.type === "group" || element.type === "flexGroup";
+
       if (hasFilters) {
         const el = isValidElement(createdEl)
           ? cloneElement(createdEl as ReactElement<{ listening?: boolean }>, {
-              listening: false,
+              listening: isContainer,
             })
           : createdEl;
 
         result.push(
           <FilteredElement
             draggable={isEditable}
-            key={`filtered-${index}`}
+            key={element.id ?? `filtered-${index}`}
             clipFunc={clipFunc}
-            listening={false}
+            listening={isContainer}
             filtersConfig={element.filterEffects}
           >
             {el}
@@ -658,16 +886,16 @@ const createKonvaElementsInternal = (
       } else {
         const el = isValidElement(createdEl)
           ? cloneElement(createdEl as ReactElement<{ listening?: boolean }>, {
-              listening: false,
+              listening: isContainer,
             })
           : createdEl;
 
         if (clipFunc) {
           result.push(
             <Group
-              key={`group-${index}`}
+              key={element.id ?? `group-${index}`}
               clipFunc={clipFunc}
-              listening={false}
+              listening={isContainer}
               draggable={isEditable}
             >
               {el}

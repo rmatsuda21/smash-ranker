@@ -1,5 +1,6 @@
 export enum DesignPlaceholder {
   PLAYER_PLACEMENT = "<🥇>",
+  PLAYER_COUNTRY = "<🎌>",
   TOURNAMENT_NAME = "<📝>",
   EVENT_NAME = "<🎮>",
   TOURNAMENT_DATE = "<📅>",
@@ -17,6 +18,7 @@ export enum DesignPlaceholder {
 
 export const PlaceholderLabel: Record<DesignPlaceholder, string> = {
   [DesignPlaceholder.PLAYER_PLACEMENT]: "Player Placement",
+  [DesignPlaceholder.PLAYER_COUNTRY]: "Player Country",
   [DesignPlaceholder.TOURNAMENT_NAME]: "Tournament Name",
   [DesignPlaceholder.EVENT_NAME]: "Event Name",
   [DesignPlaceholder.TOURNAMENT_DATE]: "Tournament Date",
