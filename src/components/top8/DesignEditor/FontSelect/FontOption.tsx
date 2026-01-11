@@ -1,4 +1,4 @@
-import { memo, useEffect, useRef, useState } from "react";
+import { memo, useEffect, useState } from "react";
 
 import { DropDownItem } from "@/components/top8/DropDownSelect/DropDownSelect";
 
@@ -6,7 +6,6 @@ import styles from "./FontOption.module.scss";
 
 type Props = {
   option: DropDownItem<string>;
-  isSelected: boolean;
 };
 
 const getGoogleFontPreviewUrl = (fontFamily: string, previewText: string) => {
@@ -18,7 +17,6 @@ const getGoogleFontPreviewUrl = (fontFamily: string, previewText: string) => {
 export const FontOption = memo(({ option }: Props) => {
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState(false);
-  const linkRef = useRef<HTMLLinkElement | null>(null);
   const fontFamily = option.value;
 
   useEffect(() => {
@@ -34,7 +32,6 @@ export const FontOption = memo(({ option }: Props) => {
     link.rel = "stylesheet";
     link.href = getGoogleFontPreviewUrl(fontFamily, fontFamily);
     link.setAttribute("data-font-preview", fontFamily);
-    linkRef.current = link;
 
     link.onload = () => {
       setLoaded(true);
