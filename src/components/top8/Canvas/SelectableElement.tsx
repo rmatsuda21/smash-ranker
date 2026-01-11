@@ -68,10 +68,11 @@ export const SelectableElement = ({
     return () => clearTimeout(timeoutId);
   }, [children]);
 
+  const hasExplicitSize = rest.width !== undefined && rest.height !== undefined;
   const width = rest.width ?? contentBounds.width;
   const height = rest.height ?? contentBounds.height;
-  const rectX = contentBounds.x;
-  const rectY = contentBounds.y;
+  const rectX = hasExplicitSize ? 0 : contentBounds.x;
+  const rectY = hasExplicitSize ? 0 : contentBounds.y;
 
   const handleMouseEnter = useCallback((e: KonvaEventObject<MouseEvent>) => {
     e.cancelBubble = true;
