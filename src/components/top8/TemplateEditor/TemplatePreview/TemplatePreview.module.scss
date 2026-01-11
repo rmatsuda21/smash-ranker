@@ -6,6 +6,10 @@
   aspect-ratio: 16 / 9;
   border-radius: 8px;
   background: #1a1a1a;
+
+  img {
+    object-fit: contain;
+  }
 }
 
 .hiddenStage {

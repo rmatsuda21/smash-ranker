@@ -8,9 +8,9 @@ import { createKonvaElements } from "@/utils/top8/elementFactory";
 import { PlayerInfo } from "@/types/top8/Player";
 import { TournamentInfo } from "@/types/top8/Tournament";
 import { useTooltip } from "@/hooks/top8/useTooltip";
+import { Spinner } from "@/components/shared/Spinner/Spinner";
 
 import styles from "./TemplatePreview.module.scss";
-import { Spinner } from "@/components/shared/Spinner/Spinner";
 
 type Props = {
   template: DBTemplate;
@@ -45,6 +45,7 @@ samplePlayers[0].gamerTag = "Reo M";
 samplePlayers[0].entrantId = "69";
 samplePlayers[0].id = "420";
 samplePlayers[0].twitter = "chikyunojin";
+samplePlayers[0].country = "JP";
 
 const sampleTournament: TournamentInfo = {
   tournamentName: "Some Tournament",
