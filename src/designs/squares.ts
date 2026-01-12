@@ -218,6 +218,8 @@ const players: Partial<PlayerDesign>[] = [
 ];
 
 export const squaresDesign: Design = {
+  name: "Top8er (Square Variant)",
+  author: "@Elenriqu3",
   canvasSize: {
     width: 1920,
     height: 1080,

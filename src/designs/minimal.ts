@@ -313,6 +313,8 @@ const players = Array.from({ length: 8 }, (_, index) => {
 });
 
 export const minimalDesign: Design = {
+  name: "Minimal",
+  author: "@chikyunojin",
   canvasSize: {
     width: CANVAS_WIDTH,
     height: CANVAS_HEIGHT,

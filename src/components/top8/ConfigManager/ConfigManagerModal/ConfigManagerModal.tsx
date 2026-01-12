@@ -9,7 +9,7 @@ import { DropDownSelect } from "@/components/top8/DropDownSelect/DropDownSelect"
 import { DBTemplate } from "@/types/Repository";
 import { useFontStore } from "@/store/fontStore";
 import { useCanvasStore } from "@/store/canvasStore";
-import { simpleDesign } from "@/designs/simple";
+import { top8erDesign } from "@/designs/top8er";
 import { squaresDesign } from "@/designs/squares";
 
 import styles from "./ConfigManagerModal.module.scss";
@@ -24,7 +24,7 @@ const defaultConfigs: DBTemplate[] = [
   {
     id: "default-simple",
     name: "Simple Config",
-    design: simpleDesign,
+    design: top8erDesign,
     font: "Noto Sans JP",
   },
   {

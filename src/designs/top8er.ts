@@ -390,7 +390,9 @@ const tournament: LayerDesign = {
   ],
 };
 
-export const simpleDesign: Design = {
+export const top8erDesign: Design = {
+  name: "Top8er",
+  author: "@Elenriqu3",
   canvasSize: {
     width: 1920,
     height: 1080,

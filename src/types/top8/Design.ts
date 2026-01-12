@@ -237,4 +237,6 @@ export interface Design {
   tournament: LayerDesign;
   basePlayer: PlayerDesign;
   players: Partial<PlayerDesign>[];
+  name: string;
+  author?: string;
 }

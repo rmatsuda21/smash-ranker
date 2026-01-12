@@ -5,7 +5,7 @@ import { FaList } from "react-icons/fa6";
 
 import { useTemplateDB } from "@/hooks/useConfigDb";
 import { Spinner } from "@/components/shared/Spinner/Spinner";
-import { simpleDesign } from "@/designs/simple";
+import { top8erDesign } from "@/designs/top8er";
 import { squaresDesign } from "@/designs/squares";
 import { minimalDesign } from "@/designs/minimal";
 import { TemplatePreview } from "@/components/top8/TemplateEditor/TemplatePreview/TemplatePreview";
@@ -24,7 +24,7 @@ type Props = {
 };
 
 const DEFAULT_TEMPLATES: DBTemplate[] = [
-  { id: "top8er", name: "Top8er", design: simpleDesign, font: "Noto Sans JP" },
+  { id: "top8er", name: "Top8er", design: top8erDesign, font: "Noto Sans JP" },
   {
     id: "top8er-squares",
     name: "Top8er (Square Variant)",
