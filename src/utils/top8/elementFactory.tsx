@@ -1,6 +1,7 @@
 import { Group, Rect, Text } from "react-konva";
 import { cloneElement, isValidElement, ReactElement, ReactNode } from "react";
 import { SceneContext } from "konva/lib/Context";
+import { Text as KonvaText } from "konva/lib/shapes/Text";
 
 import {
   ElementConfig,
@@ -11,6 +12,8 @@ import {
   AltCharacterImageElementConfig,
   GroupElementConfig,
   FlexGroupElementConfig,
+  FlexAlign,
+  FlexJustify,
   RectElementConfig,
   CustomImageElementConfig,
   SvgElementConfig,
@@ -196,12 +199,37 @@ interface FlexChildInfo {
 
 const getElementMainSize = (
   element: ElementConfig,
-  direction: "row" | "column"
+  direction: "row" | "column",
+  context: InternalContext
 ): number => {
   const basis = element.flex?.basis;
   if (basis !== undefined) return basis;
 
   if (direction === "row") {
+    if (element.type === "smartText" || element.type === "text") {
+      const textEl = element as TextElementConfig | SmartTextElementConfig;
+      const resolvedText = resolveText(
+        textEl.textId,
+        textEl.text,
+        context.design?.textPalette
+      );
+      const text = replacePlaceholders(resolvedText, context);
+
+      const tempText = new KonvaText({
+        text: text,
+        fontSize: textEl.fontSize ?? 20,
+        fontFamily: context.fontFamily ?? "Arial",
+        fontStyle: textEl.fontStyle ?? String(textEl.fontWeight ?? "normal"),
+        width: textEl.size?.width,
+        wrap: "word",
+      });
+
+      const measuredWidth = tempText.width();
+      tempText.destroy();
+
+      return measuredWidth;
+    }
+
     return element.size?.width ?? 0;
   }
 
@@ -231,42 +259,175 @@ const getElementCrossSize = (
   return element.size?.width ?? 0;
 };
 
+const collectVisibleChildren = (
+  elements: ElementConfig[],
+  direction: "row" | "column",
+  context: InternalContext
+): FlexChildInfo[] =>
+  elements.reduce<FlexChildInfo[]>((acc, child, i) => {
+    if (child.hidden || !evaluateElementCondition(child.conditions, context)) {
+      return acc;
+    }
+    acc.push({
+      element: child,
+      originalIndex: i,
+      mainSize: getElementMainSize(child, direction, context),
+      crossSize: getElementCrossSize(child, direction),
+      isFlexible: !!(child.flex?.grow || child.flex?.shrink),
+      flexGrow: !!child.flex?.grow,
+      flexShrink: !!child.flex?.shrink,
+    });
+    return acc;
+  }, []);
+
+const buildFlexLines = (
+  children: FlexChildInfo[],
+  containerMainSize: number,
+  gap: number,
+  wrap: boolean
+): FlexChildInfo[][] => {
+  if (!wrap || containerMainSize <= 0) {
+    return [children];
+  }
+
+  const lines: FlexChildInfo[][] = [];
+  let currentLine: FlexChildInfo[] = [];
+  let currentLineSize = 0;
+
+  for (const child of children) {
+    const sizeWithGap =
+      currentLine.length > 0 ? gap + child.mainSize : child.mainSize;
+
+    if (
+      currentLine.length > 0 &&
+      currentLineSize + sizeWithGap > containerMainSize
+    ) {
+      lines.push(currentLine);
+      currentLine = [child];
+      currentLineSize = child.mainSize;
+    } else {
+      currentLine.push(child);
+      currentLineSize += sizeWithGap;
+    }
+  }
+
+  if (currentLine.length > 0) {
+    lines.push(currentLine);
+  }
+
+  return lines;
+};
+
+const applyFlexSizing = (
+  line: FlexChildInfo[],
+  containerMainSize: number,
+  gap: number
+): number[] => {
+  const sizes = line.map((child) => child.mainSize);
+  const totalGaps = gap * (line.length - 1);
+  const totalSize = sizes.reduce((sum, s) => sum + s, 0);
+  const remainingSpace = containerMainSize - totalSize - totalGaps;
+
+  if (remainingSpace === 0) return sizes;
+
+  if (remainingSpace > 0) {
+    // Grow
+    const growCount = line.filter((c) => c.flexGrow).length;
+    if (growCount > 0) {
+      const extra = remainingSpace / growCount;
+      line.forEach((child, i) => {
+        if (child.flexGrow) sizes[i] += extra;
+      });
+    }
+  } else {
+    // Shrink
+    const shrinkable = line.reduce(
+      (acc, child, i) => (child.flexShrink ? acc + sizes[i] : acc),
+      0
+    );
+    if (shrinkable > 0) {
+      const shrinkAmount = Math.min(-remainingSpace, shrinkable);
+      line.forEach((child, i) => {
+        if (child.flexShrink) {
+          sizes[i] = Math.max(
+            0,
+            sizes[i] - shrinkAmount * (sizes[i] / shrinkable)
+          );
+        }
+      });
+    }
+  }
+
+  return sizes;
+};
+
+const calculateJustifyOffset = (
+  justify: FlexJustify,
+  containerSize: number,
+  contentSize: number,
+  totalGaps: number,
+  itemCount: number
+): { offset: number; spaceBetween: number } => {
+  const freeSpace = containerSize - contentSize - totalGaps;
+
+  switch (justify) {
+    case "center":
+      return { offset: freeSpace / 2, spaceBetween: 0 };
+    case "end":
+      return { offset: freeSpace, spaceBetween: 0 };
+    case "space-between":
+      return {
+        offset: 0,
+        spaceBetween:
+          itemCount > 1 ? (containerSize - contentSize) / (itemCount - 1) : 0,
+      };
+    default:
+      return { offset: 0, spaceBetween: 0 };
+  }
+};
+
+const calculateAlignOffset = (
+  align: FlexAlign,
+  alignmentSize: number,
+  childSize: number
+): number => {
+  switch (align) {
+    case "center":
+      return (alignmentSize - childSize) / 2;
+    case "end":
+      return alignmentSize - childSize;
+    default:
+      return 0;
+  }
+};
+
 const createFlexGroupElement: ElementCreator<FlexGroupElementConfig> = ({
   element,
   index,
   context,
 }) => {
-  const direction = element.direction ?? "row";
-  const gap = element.gap ?? 0;
-  const align = element.align ?? "start";
-  const justify = element.justify ?? "start";
+  const {
+    direction = "row",
+    gap = 0,
+    align = "start",
+    justify = "start",
+    wrap = false,
+    wrapDirection = "start",
+  } = element;
 
-  const containerMainSize =
-    direction === "row" ? element.size?.width ?? 0 : element.size?.height ?? 0;
-  const containerCrossSize =
-    direction === "row" ? element.size?.height ?? 0 : element.size?.width ?? 0;
+  const isRow = direction === "row";
+  const containerMainSize = isRow
+    ? element.size?.width ?? 0
+    : element.size?.height ?? 0;
+  const containerCrossSize = isRow
+    ? element.size?.height ?? 0
+    : element.size?.width ?? 0;
 
-  const visibleChildren: FlexChildInfo[] = [];
-
-  for (let i = 0; i < element.elements.length; i++) {
-    const child = element.elements[i];
-
-    if (child.hidden || !evaluateElementCondition(child.conditions, context)) {
-      continue;
-    }
-
-    const isFlexible = !!(child.flex?.grow || child.flex?.shrink);
-
-    visibleChildren.push({
-      element: child,
-      originalIndex: i,
-      mainSize: getElementMainSize(child, direction),
-      crossSize: getElementCrossSize(child, direction),
-      isFlexible,
-      flexGrow: !!child.flex?.grow,
-      flexShrink: !!child.flex?.shrink,
-    });
-  }
+  const visibleChildren = collectVisibleChildren(
+    element.elements,
+    direction,
+    context
+  );
 
   if (visibleChildren.length === 0) {
     return (
@@ -280,109 +441,59 @@ const createFlexGroupElement: ElementCreator<FlexGroupElementConfig> = ({
     );
   }
 
-  const totalGaps = gap * (visibleChildren.length - 1);
-  const totalDefinedSize = visibleChildren.reduce(
-    (sum, child) => sum + child.mainSize,
-    0
-  );
-  const remainingSpace = containerMainSize - totalDefinedSize - totalGaps;
-
-  let growCount = 0;
-  let shrinkCount = 0;
-  let shrinkableSize = 0;
-
-  for (const child of visibleChildren) {
-    if (child.flexGrow) growCount++;
-    if (child.flexShrink) {
-      shrinkCount++;
-      shrinkableSize += child.mainSize;
-    }
-  }
-
-  if (remainingSpace > 0 && growCount > 0) {
-    const extraPerElement = remainingSpace / growCount;
-    for (const child of visibleChildren) {
-      if (child.flexGrow) {
-        child.mainSize += extraPerElement;
-      }
-    }
-  } else if (remainingSpace < 0 && shrinkCount > 0) {
-    const shrinkAmount = Math.min(Math.abs(remainingSpace), shrinkableSize);
-    for (const child of visibleChildren) {
-      if (child.flexShrink && shrinkableSize > 0) {
-        const ratio = child.mainSize / shrinkableSize;
-        child.mainSize = Math.max(0, child.mainSize - shrinkAmount * ratio);
-      }
-    }
-  }
-
-  const totalContentSize = visibleChildren.reduce(
-    (sum, child) => sum + child.mainSize,
-    0
-  );
-
-  let mainOffset = 0;
-  let spaceBetween = 0;
-
-  switch (justify) {
-    case "center":
-      mainOffset = (containerMainSize - totalContentSize - totalGaps) / 2;
-      break;
-    case "end":
-      mainOffset = containerMainSize - totalContentSize - totalGaps;
-      break;
-    case "space-between":
-      if (visibleChildren.length > 1) {
-        spaceBetween =
-          (containerMainSize - totalContentSize) / (visibleChildren.length - 1);
-      }
-      break;
-    case "start":
-    default:
-      mainOffset = 0;
-      break;
-  }
+  const lines = buildFlexLines(visibleChildren, containerMainSize, gap, wrap);
+  const orderedLines = wrapDirection === "end" ? [...lines].reverse() : lines;
 
   const positionedElements: ReactNode[] = [];
-  let currentMainPosition = mainOffset;
+  let crossPosition = 0;
 
-  for (const child of visibleChildren) {
-    let crossPosition = 0;
-    switch (align) {
-      case "center":
-        crossPosition = (containerCrossSize - child.crossSize) / 2;
-        break;
-      case "end":
-        crossPosition = containerCrossSize - child.crossSize;
-        break;
-      case "start":
-      default:
-        crossPosition = 0;
-        break;
+  for (const line of orderedLines) {
+    const sizes = applyFlexSizing(line, containerMainSize, gap);
+    const maxCrossSize = Math.max(...line.map((c) => c.crossSize), 0);
+    const alignmentCrossSize =
+      !wrap && containerCrossSize > 0 ? containerCrossSize : maxCrossSize;
+
+    const totalGaps = gap * (line.length - 1);
+    const totalContentSize = sizes.reduce((sum, s) => sum + s, 0);
+    const { offset, spaceBetween } = calculateJustifyOffset(
+      justify,
+      containerMainSize,
+      totalContentSize,
+      totalGaps,
+      line.length
+    );
+
+    let mainPosition = Math.max(0, offset);
+
+    for (let i = 0; i < line.length; i++) {
+      const child = line[i];
+      const childMainSize = sizes[i];
+      const alignOffset = calculateAlignOffset(
+        align,
+        alignmentCrossSize,
+        child.crossSize
+      );
+
+      const modifiedElement: ElementConfig = {
+        ...child.element,
+        position: {
+          x: isRow ? mainPosition : crossPosition + alignOffset,
+          y: isRow ? crossPosition + alignOffset : mainPosition,
+        },
+        size: {
+          ...child.element.size,
+          ...(isRow ? { width: childMainSize } : { height: childMainSize }),
+        },
+      };
+
+      positionedElements.push(
+        ...createKonvaElementsInternal([modifiedElement], context)
+      );
+
+      mainPosition += childMainSize + (spaceBetween || gap);
     }
 
-    const modifiedElement: ElementConfig = {
-      ...child.element,
-      position: {
-        x: direction === "row" ? currentMainPosition : crossPosition,
-        y: direction === "row" ? crossPosition : currentMainPosition,
-      },
-      size: {
-        ...child.element.size,
-        ...(direction === "row"
-          ? { width: child.mainSize }
-          : { height: child.mainSize }),
-      },
-    };
-
-    const createdElements = createKonvaElementsInternal(
-      [modifiedElement],
-      context
-    );
-    positionedElements.push(...createdElements);
-
-    currentMainPosition +=
-      child.mainSize + (justify === "space-between" ? spaceBetween : gap);
+    crossPosition += maxCrossSize + gap;
   }
 
   return (
@@ -464,8 +575,76 @@ const createAltCharacterImageElement: ElementCreator<
   }
 
   const altCharacters = player.characters.slice(1);
-  const size = element.size?.width ?? 50;
-  const gap = 5;
+  const gap = element.gap ?? 5;
+  const direction = element.direction ?? "column";
+  const wrap = element.wrap ?? false;
+  const wrapDirection = element.wrapDirection ?? "start";
+
+  const containerWidth = element.size?.width ?? 0;
+  const containerHeight = element.size?.height ?? 0;
+
+  // Determine character size based on wrap mode and direction
+  let characterSize: number;
+
+  if (wrap) {
+    // When wrapping is enabled, use the cross-axis size to determine character size
+    // This keeps characters square and allows them to wrap naturally
+    const crossSize = direction === "row" ? containerHeight : containerWidth;
+    characterSize = crossSize > 0 ? crossSize : 40;
+  } else {
+    // When not wrapping, calculate size to fit all characters in available space
+    const mainSize = direction === "row" ? containerWidth : containerHeight;
+    const crossSize = direction === "row" ? containerHeight : containerWidth;
+    const totalGaps = gap * Math.max(0, altCharacters.length - 1);
+    const availableSpace = Math.max(0, mainSize - totalGaps);
+
+    // Divide available space by number of characters, but don't exceed cross size
+    characterSize = availableSpace / altCharacters.length;
+    if (crossSize > 0) {
+      characterSize = Math.min(characterSize, crossSize);
+    }
+  }
+
+  // Ensure minimum size
+  characterSize = Math.max(10, characterSize);
+
+  const characterImageElements: ImageElementConfig[] = altCharacters.map(
+    (character, altIndex) => {
+      const imageSrc = getCharImgUrl({
+        characterId: character.id,
+        alt: character.alt,
+        type: "stock",
+      });
+
+      return {
+        type: "image",
+        id: `alt-character-${altIndex}`,
+        position: { x: 0, y: 0 },
+        size: { width: characterSize, height: characterSize },
+        src: imageSrc,
+      };
+    }
+  );
+
+  const flexGroupElement: FlexGroupElementConfig = {
+    type: "flexGroup",
+    id: element.id ?? `alt-flexGroup-${index}`,
+    position: { x: 0, y: 0 },
+    size: element.size,
+    elements: characterImageElements,
+    direction,
+    gap,
+    align: element.align ?? "start",
+    justify: element.justify ?? "start",
+    wrap,
+    wrapDirection,
+  };
+
+  const flexGroup = createFlexGroupElement({
+    element: flexGroupElement,
+    index,
+    context,
+  });
 
   return (
     <Group
@@ -473,26 +652,7 @@ const createAltCharacterImageElement: ElementCreator<
       x={element.position.x}
       y={element.position.y}
     >
-      {altCharacters.map((character, altIndex) => {
-        const imageSrc = getCharImgUrl({
-          characterId: character.id,
-          alt: character.alt,
-          type: "stock",
-        });
-
-        return (
-          <CustomImage
-            key={`alt-${player.id}-${altIndex}`}
-            id={`alternate-character-${altIndex}`}
-            x={0}
-            y={altIndex * (size + gap)}
-            width={size}
-            height={size}
-            imageSrc={imageSrc}
-            perfectDrawEnabled={context.perfectDraw}
-          />
-        );
-      })}
+      {flexGroup}
     </Group>
   );
 };
@@ -512,7 +672,13 @@ const createRectElement: ElementCreator<RectElementConfig> = ({
       width={element.size?.width}
       height={element.size?.height}
       fill={resolveColor(element.fill, design?.colorPalette) ?? "black"}
+      cornerRadius={element.cornerRadius}
       perfectDrawEnabled={context.perfectDraw}
+      stroke={resolveColor(
+        element.stroke as string | undefined,
+        design?.colorPalette
+      )}
+      strokeWidth={element.strokeWidth}
     />
   );
 };

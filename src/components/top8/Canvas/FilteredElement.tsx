@@ -26,6 +26,11 @@ export const FilteredElement = ({ children, ...rest }: Props) => {
   }, []);
 
   const childOnReadyRef = useRef<undefined | (() => void)>(undefined);
+  const prevChildPropsRef = useRef<{
+    text?: string;
+    fontSize?: number;
+    fill?: string;
+  }>({});
 
   useEffect(() => {
     const child = children as ReactElement<any>;
@@ -37,6 +42,31 @@ export const FilteredElement = ({ children, ...rest }: Props) => {
 
     childOnReadyRef.current = child.props?.onReady;
   }, [children]);
+
+  const childText = (children as ReactElement<any>).props?.text;
+  const childFontSize = (children as ReactElement<any>).props?.fontSize;
+  const childFill = (children as ReactElement<any>).props?.fill;
+
+  useEffect(() => {
+    if (!isValidElement(children)) return;
+
+    const prevProps = prevChildPropsRef.current;
+
+    const hasChanged =
+      childText !== prevProps.text ||
+      childFontSize !== prevProps.fontSize ||
+      childFill !== prevProps.fill;
+
+    prevChildPropsRef.current = {
+      text: childText,
+      fontSize: childFontSize,
+      fill: childFill,
+    };
+
+    if (hasChanged) {
+      invalidate();
+    }
+  }, [children, childText, childFontSize, childFill, invalidate]);
 
   const handleReady = useCallback(() => {
     childOnReadyRef.current?.();

@@ -7,7 +7,7 @@ import { useTemplateDB } from "@/hooks/useConfigDb";
 import { Spinner } from "@/components/shared/Spinner/Spinner";
 import { simpleDesign } from "@/designs/simple";
 import { squaresDesign } from "@/designs/squares";
-import { testDesign } from "@/designs/test";
+import { minimalDesign } from "@/designs/minimal";
 import { TemplatePreview } from "@/components/top8/TemplateEditor/TemplatePreview/TemplatePreview";
 import { Button } from "@/components/shared/Button/Button";
 import { DBTemplate } from "@/types/Repository";
@@ -34,7 +34,7 @@ const DEFAULT_TEMPLATES: DBTemplate[] = [
   {
     id: "minimal",
     name: "Minimal",
-    design: testDesign,
+    design: minimalDesign,
     font: "Noto Sans JP",
   },
 ];
