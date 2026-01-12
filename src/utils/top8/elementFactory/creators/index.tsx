@@ -11,7 +11,11 @@ import {
   createAltCharacterImageElement,
   createPlayerFlagElement,
 } from "./player";
-import { createGroupElement, createFlexGroupElement } from "./layout";
+import {
+  createGroupElement,
+  createFlexGroupElement,
+  createFlexGridElement,
+} from "./layout";
 import { createRectElement } from "./shape";
 
 export const elementCreators = {
@@ -20,6 +24,7 @@ export const elementCreators = {
   image: createImageElement,
   group: createGroupElement,
   flexGroup: createFlexGroupElement,
+  flexGrid: createFlexGridElement,
   characterImage: createCharacterImageElement,
   altCharacterImage: createAltCharacterImageElement,
   rect: createRectElement,
@@ -43,5 +48,6 @@ export {
   createPlayerFlagElement,
   createGroupElement,
   createFlexGroupElement,
+  createFlexGridElement,
   createRectElement,
 };

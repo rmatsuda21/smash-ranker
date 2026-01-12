@@ -99,8 +99,6 @@ const basePlayer: PlayerDesign = {
       type: "altCharacterImage",
       position: { x: 555, y: 30 },
       size: { width: 105, height: BASE_PL_SIZE - 200 },
-      wrap: false,
-      align: "end",
     },
     {
       name: "Full Name",

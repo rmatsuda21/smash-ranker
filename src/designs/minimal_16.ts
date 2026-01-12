@@ -6,7 +6,7 @@ const CANVAS_WIDTH = 900;
 const PADDING = 55;
 const TOURNAMENT_ICON_SIZE = 150;
 
-const PLAYER_COUNT = 8;
+const PLAYER_COUNT = 16;
 const PLAYER_SPACING = 10;
 const PLAYER_WIDTH = CANVAS_WIDTH - PADDING * 2;
 const PLAYER_HEIGHT = 100;
@@ -304,7 +304,7 @@ const players = Array.from({ length: PLAYER_COUNT }, (_, index) => {
   return baseConfig;
 });
 
-export const minimalDesign: Design = {
+export const minimal16Design: Design = {
   name: "Minimal",
   author: "@chikyunojin",
   canvasSize: {

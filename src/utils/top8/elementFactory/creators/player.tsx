@@ -5,14 +5,14 @@ import type {
   AltCharacterImageElementConfig,
   PlayerFlagElementConfig,
   ImageElementConfig,
-  FlexGroupElementConfig,
+  FlexGridElementConfig,
 } from "@/types/top8/Design";
 import type { ElementCreator } from "@/types/top8/ElementFactory";
 import { CustomImage } from "@/components/top8/Canvas/CustomImage";
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
 import { getCharacterCrop } from "@/utils/top8/getCharacterCrop";
 import { resolveColor } from "@/utils/top8/resolveColor";
-import { createFlexGroupElement } from "./layout";
+import { createFlexGridElement } from "./layout";
 
 export const createCharacterImageElement: ElementCreator<
   CharacterImageElementConfig
@@ -80,38 +80,6 @@ export const createAltCharacterImageElement: ElementCreator<
   }
 
   const altCharacters = player.characters.slice(1);
-  const gap = element.gap ?? 5;
-  const direction = element.direction ?? "column";
-  const wrap = element.wrap ?? false;
-  const wrapDirection = element.wrapDirection ?? "start";
-
-  const containerWidth = element.size?.width ?? 0;
-  const containerHeight = element.size?.height ?? 0;
-
-  // Determine character size based on wrap mode and direction
-  let characterSize: number;
-
-  if (wrap) {
-    // When wrapping is enabled, use the cross-axis size to determine character size
-    // This keeps characters square and allows them to wrap naturally
-    const crossSize = direction === "row" ? containerHeight : containerWidth;
-    characterSize = crossSize > 0 ? crossSize : 40;
-  } else {
-    // When not wrapping, calculate size to fit all characters in available space
-    const mainSize = direction === "row" ? containerWidth : containerHeight;
-    const crossSize = direction === "row" ? containerHeight : containerWidth;
-    const totalGaps = gap * Math.max(0, altCharacters.length - 1);
-    const availableSpace = Math.max(0, mainSize - totalGaps);
-
-    // Divide available space by number of characters, but don't exceed cross size
-    characterSize = availableSpace / altCharacters.length;
-    if (crossSize > 0) {
-      characterSize = Math.min(characterSize, crossSize);
-    }
-  }
-
-  // Ensure minimum size
-  characterSize = Math.max(10, characterSize);
 
   const characterImageElements: ImageElementConfig[] = altCharacters.map(
     (character, altIndex) => {
@@ -125,28 +93,30 @@ export const createAltCharacterImageElement: ElementCreator<
         type: "image",
         id: `alt-character-${altIndex}`,
         position: { x: 0, y: 0 },
-        size: { width: characterSize, height: characterSize },
         src: imageSrc,
       };
     }
   );
 
-  const flexGroupElement: FlexGroupElementConfig = {
-    type: "flexGroup",
-    id: element.id ?? `alt-flexGroup-${index}`,
+  const flexGridElement: FlexGridElementConfig = {
+    type: "flexGrid",
+    id: element.id ?? `alt-flexGrid-${index}`,
     position: { x: 0, y: 0 },
     size: element.size,
     elements: characterImageElements,
-    direction,
-    gap,
-    align: element.align ?? "start",
-    justify: element.justify ?? "start",
-    wrap,
-    wrapDirection,
+    gap: element.gap ?? 5,
+    rowGap: element.rowGap,
+    columnGap: element.columnGap,
+    columns: element.columns,
+    rows: element.rows,
+    aspectRatio: 1,
+    align: element.align,
+    justify: element.justify,
+    alignLastRow: element.alignLastRow,
   };
 
-  const flexGroup = createFlexGroupElement({
-    element: flexGroupElement,
+  const flexGrid = createFlexGridElement({
+    element: flexGridElement,
     index,
     context,
   });
@@ -157,7 +127,7 @@ export const createAltCharacterImageElement: ElementCreator<
       x={element.position.x}
       y={element.position.y}
     >
-      {flexGroup}
+      {flexGrid}
     </Group>
   );
 };

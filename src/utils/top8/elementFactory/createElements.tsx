@@ -100,7 +100,9 @@ export const createKonvaElementsInternal = (
       );
     } else {
       const isContainer =
-        element.type === "group" || element.type === "flexGroup";
+        element.type === "group" ||
+        element.type === "flexGroup" ||
+        element.type === "flexGrid";
 
       if (hasFilters) {
         const el = isValidElement(createdEl)

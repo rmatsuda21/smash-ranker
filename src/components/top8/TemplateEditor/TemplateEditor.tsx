@@ -4,6 +4,8 @@ import { IoGrid } from "react-icons/io5";
 import { FaList } from "react-icons/fa6";
 
 import { useTemplateDB } from "@/hooks/useConfigDb";
+import { minimal4Design } from "@/designs/minimal_4";
+import { minimal16Design } from "@/designs/minimal_16";
 import { Spinner } from "@/components/shared/Spinner/Spinner";
 import { top8erDesign } from "@/designs/top8er";
 import { squaresDesign } from "@/designs/squares";
@@ -35,6 +37,18 @@ const DEFAULT_TEMPLATES: DBTemplate[] = [
     id: "minimal",
     name: "Minimal",
     design: minimalDesign,
+    font: "Noto Sans JP",
+  },
+  {
+    id: "minimal-4",
+    name: "Minimal (4 Players)",
+    design: minimal4Design,
+    font: "Noto Sans JP",
+  },
+  {
+    id: "minimal-16",
+    name: "Minimal (16 Players)",
+    design: minimal16Design,
     font: "Noto Sans JP",
   },
 ];
