@@ -7,6 +7,7 @@ import { ElementFilterConfig } from "@/types/top8/Design";
 
 type FilterProps = {
   filters?: any[];
+  brightness?: number;
   red?: number;
   green?: number;
   blue?: number;
@@ -26,12 +27,14 @@ const buildKonvaFilterProps = (
   const filterFns: any[] = [];
   const rgb = filtersConfig.find(isFilterType("RGB"));
   const blur = filtersConfig.find(isFilterType("Blur"));
+  const brightness = filtersConfig.find(isFilterType("Brightness"));
 
   for (const f of filtersConfig) {
     if (f.type === "Grayscale") filterFns.push(Konva.Filters.Grayscale);
     if (f.type === "Sepia") filterFns.push(Konva.Filters.Sepia);
     if (f.type === "RGB") filterFns.push(Konva.Filters.RGB);
     if (f.type === "Blur") filterFns.push(Konva.Filters.Blur);
+    if (f.type === "Brightness") filterFns.push(Konva.Filters.Brightness);
   }
 
   const props: FilterProps = { filters: filterFns };
@@ -43,7 +46,9 @@ const buildKonvaFilterProps = (
   if (blur) {
     props.blurRadius = blur.radius;
   }
-
+  if (brightness) {
+    props.brightness = brightness.brightness;
+  }
   return props;
 };
 

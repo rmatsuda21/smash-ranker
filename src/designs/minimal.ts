@@ -1,16 +1,21 @@
-import { Design, LayerDesign, PlayerDesign } from "@/types/top8/Design";
+import {
+  Design,
+  ElementConfig,
+  LayerDesign,
+  PlayerDesign,
+} from "@/types/top8/Design";
 import { DesignPlaceholder } from "@/consts/top8/placeholders";
 import { RenderCondition } from "@/consts/top8/renderConditions";
 
 const PADDING = 55;
-const CANVAS_WIDTH = 1000;
+const CANVAS_WIDTH = 900;
 const CANVAS_HEIGHT = 1150;
 const TOURNAMENT_ICON_SIZE = 150;
 
 const PLAYER_WIDTH = CANVAS_WIDTH - PADDING * 2;
 const PLAYER_HEIGHT = 100;
 const FLAG_SIZE = 40;
-const CHARACTER_IMAGE_SIZE = 80;
+const CHARACTER_IMAGE_SIZE = 70;
 
 const createPlacementText = (
   fill: string,
@@ -48,7 +53,7 @@ const createPlayerElements = (
     type: "flexGroup" as const,
     id: "main",
     name: "Main",
-    position: { x: 20, y: 0 },
+    position: { x: 40, y: 0 },
     size: { width: PLAYER_WIDTH - 80, height: PLAYER_HEIGHT },
     direction: "row" as const,
     align: "center" as const,
@@ -65,21 +70,44 @@ const createPlayerElements = (
         verticalAlign: "middle" as const,
       },
       {
-        type: "text" as const,
-        text: `${DesignPlaceholder.PLAYER_PREFIX} | ${DesignPlaceholder.PLAYER_TAG}`,
-        id: "fullNameText",
-        conditions: [DesignPlaceholder.PLAYER_PREFIX],
-        fontSize: 32,
-        align: "left" as const,
-        verticalAlign: "middle" as const,
-        fontWeight: 900,
-        fill: "text",
+        type: "flexGroup" as const,
+        id: "fullNameGroup",
         position: { x: 0, y: 0 },
-        size: { width: 150, height: PLAYER_HEIGHT },
+        size: { width: 150, height: 32 },
+        justify: "start" as const,
+        align: "end" as const,
+        gap: 5,
+        conditions: [DesignPlaceholder.PLAYER_PREFIX],
         flex: { grow: true },
+        elements: [
+          {
+            type: "smartText" as const,
+            text: `${DesignPlaceholder.PLAYER_PREFIX}`,
+            id: "fullNameText",
+            fontSize: 18,
+            align: "left" as const,
+            verticalAlign: "middle" as const,
+            fontWeight: 900,
+            fill: "text",
+            filterEffects: [{ type: "Brightness", brightness: 0.5 }],
+            position: { x: 0, y: 0 },
+          },
+          {
+            type: "smartText" as const,
+            text: `${DesignPlaceholder.PLAYER_TAG}`,
+            id: "tagText",
+            fontSize: 32,
+            align: "left" as const,
+            verticalAlign: "start" as const,
+            fontWeight: 900,
+            fill: "text",
+            position: { x: 0, y: 0 },
+            flex: { shrink: true },
+          },
+        ],
       },
       {
-        type: "text" as const,
+        type: "smartText" as const,
         text: DesignPlaceholder.PLAYER_TAG,
         id: "tagText",
         conditions: [RenderCondition.NOT, DesignPlaceholder.PLAYER_PREFIX],
@@ -89,28 +117,76 @@ const createPlayerElements = (
         fontWeight: 900,
         fill: "text",
         position: { x: 0, y: 0 },
-        size: { width: 150, height: PLAYER_HEIGHT },
-        flex: { grow: true },
+        size: { height: 50 },
+        flex: { shrink: true, grow: true },
       },
       {
-        type: "group" as const,
+        type: "flexGroup" as const,
+        id: "characterImageGroup",
         position: { x: 0, y: 0 },
-        size: { width: CHARACTER_IMAGE_SIZE, height: CHARACTER_IMAGE_SIZE },
+        size: { width: 150 + CHARACTER_IMAGE_SIZE + 5, height: PLAYER_HEIGHT },
+        direction: "row" as const,
+        align: "center" as const,
+        gap: 15,
         elements: [
           {
-            type: "rect" as const,
-            fill: "rgba(0, 0, 0, 0.21)",
+            type: "altCharacterImage" as const,
+            id: "altCharacterImage",
             position: { x: 0, y: 0 },
-            size: { width: CHARACTER_IMAGE_SIZE, height: CHARACTER_IMAGE_SIZE },
+            size: { width: 150, height: CHARACTER_IMAGE_SIZE - 15 },
+            direction: "row",
+            wrap: true,
+            gap: 5,
+            align: "start",
+            justify: "end",
+            flex: { shrink: true, grow: false },
           },
           {
-            type: "characterImage" as const,
-            id: "characterImage",
-            name: "Character Image",
-            shadowEnabled: false,
+            type: "group" as const,
             position: { x: 0, y: 0 },
             size: { width: CHARACTER_IMAGE_SIZE, height: CHARACTER_IMAGE_SIZE },
-            flex: { shrink: true, grow: false },
+            cornerRadius: 5,
+            clip: true,
+            stroke: "red",
+            strokeWidth: 2,
+            elements: [
+              {
+                type: "rect" as const,
+                id: "characterBackground",
+                fill: "characterBackground",
+                position: { x: 0, y: 0 },
+                size: {
+                  width: CHARACTER_IMAGE_SIZE,
+                  height: CHARACTER_IMAGE_SIZE,
+                },
+                cornerRadius: 5,
+              },
+              {
+                type: "characterImage" as const,
+                id: "characterImage",
+                name: "Character Image",
+                shadowEnabled: false,
+                position: { x: 0, y: 0 },
+                size: {
+                  width: CHARACTER_IMAGE_SIZE,
+                  height: CHARACTER_IMAGE_SIZE,
+                },
+                flex: { shrink: true, grow: false },
+              },
+              {
+                type: "rect" as const,
+                id: "characterBorder",
+                fill: "transparent",
+                stroke: "characterBorder",
+                strokeWidth: 2,
+                position: { x: 0, y: 0 },
+                size: {
+                  width: CHARACTER_IMAGE_SIZE,
+                  height: CHARACTER_IMAGE_SIZE,
+                },
+                cornerRadius: 5,
+              },
+            ],
           },
         ],
       },
@@ -122,7 +198,9 @@ const basePlayer: PlayerDesign = {
   position: { x: PADDING, y: 190 },
   size: { width: PLAYER_WIDTH, height: PLAYER_HEIGHT },
   scale: { x: 1, y: 1 },
-  elements: createPlayerElements(createPlacementText("text")),
+  elements: createPlayerElements(
+    createPlacementText("text")
+  ) as unknown as ElementConfig[],
 };
 
 const colorPalette: Design["colorPalette"] = {
@@ -132,6 +210,11 @@ const colorPalette: Design["colorPalette"] = {
   gold: { color: "#FFD700", name: "Gold" },
   silver: { color: "#C0C0C0", name: "Silver" },
   bronze: { color: "#CD7F32", name: "Bronze" },
+  characterBackground: {
+    color: "rgb(236, 236, 236)",
+    name: "Character Background",
+  },
+  characterBorder: { color: "rgb(255, 255, 255)", name: "Character Border" },
 };
 
 const background: LayerDesign = {
@@ -173,6 +256,7 @@ const tournament: LayerDesign = {
         },
         {
           type: "flexGroup",
+          id: "tournamentInfoGroup",
           position: { x: 0, y: 0 },
           size: {
             width: CANVAS_WIDTH - PADDING * 2 - TOURNAMENT_ICON_SIZE - 10,
@@ -180,7 +264,7 @@ const tournament: LayerDesign = {
           },
           direction: "column",
           justify: "center",
-          gap: 0,
+          gap: 10,
           elements: [
             {
               type: "smartText",
@@ -219,42 +303,21 @@ const tournament: LayerDesign = {
   ],
 };
 
-const goldElements = createPlayerElements(
-  createPlacementText("gold", "#FFF8DC", 20, 1)
-);
-const silverElements = createPlayerElements(
-  createPlacementText("silver", "#E8E8E8", 12, 0.7)
-);
-const bronzeElements = createPlayerElements(
-  createPlacementText("bronze", "#DEB887", 10, 0.6)
-);
+const players = Array.from({ length: 8 }, (_, index) => {
+  const baseConfig = {
+    id: `player-${index}`,
+    name: `Player ${index + 1}`,
+    position: {
+      x: PADDING,
+      y: PADDING + TOURNAMENT_ICON_SIZE + 10 + index * (PLAYER_HEIGHT + 10),
+    },
+    size: { width: PLAYER_WIDTH, height: PLAYER_HEIGHT },
+  };
 
-const players: Partial<PlayerDesign>[] = Array.from(
-  { length: 8 },
-  (_, index) => {
-    const baseConfig = {
-      id: `player-${index}`,
-      name: `Player ${index + 1}`,
-      position: {
-        x: PADDING,
-        y: PADDING + TOURNAMENT_ICON_SIZE + 10 + index * (PLAYER_HEIGHT + 10),
-      },
-      size: { width: PLAYER_WIDTH, height: PLAYER_HEIGHT },
-    };
+  return baseConfig;
+});
 
-    if (index === 0) {
-      return { ...baseConfig, elements: goldElements };
-    } else if (index === 1) {
-      return { ...baseConfig, elements: silverElements };
-    } else if (index === 2) {
-      return { ...baseConfig, elements: bronzeElements };
-    }
-
-    return baseConfig;
-  }
-);
-
-export const testDesign: Design = {
+export const minimalDesign: Design = {
   canvasSize: {
     width: CANVAS_WIDTH,
     height: CANVAS_HEIGHT,
@@ -274,5 +337,5 @@ export const testDesign: Design = {
   background,
   tournament,
   basePlayer,
-  players,
+  players: players as unknown as Partial<PlayerDesign>[],
 };

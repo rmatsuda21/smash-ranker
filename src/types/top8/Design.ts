@@ -39,7 +39,8 @@ export type ElementFilterConfig =
   | { type: "Grayscale" }
   | { type: "Sepia" }
   | { type: "RGB"; r: number; g: number; b: number }
-  | { type: "Blur"; radius: number };
+  | { type: "Blur"; radius: number }
+  | { type: "Brightness"; brightness: number };
 
 export type FlexAlign = "start" | "center" | "end";
 export type FlexJustify = "start" | "center" | "end" | "space-between";
@@ -127,6 +128,8 @@ export interface FlexGroupElementConfig
   gap?: number;
   align?: FlexAlign;
   justify?: FlexJustify;
+  wrap?: boolean;
+  wrapDirection?: "start" | "end";
 }
 
 export interface RectElementConfig
@@ -134,6 +137,7 @@ export interface RectElementConfig
     Partial<ComponentProps<typeof Rect>> {
   type: "rect";
   fill?: string;
+  cornerRadius?: number | number[];
 }
 
 export interface CustomImageElementConfig
@@ -155,6 +159,13 @@ export interface CharacterImageElementConfig
 
 export interface AltCharacterImageElementConfig extends BaseElementConfig {
   type: "altCharacterImage";
+  wrap?: boolean;
+  wrapDirection?: "start" | "end";
+  characterSizes?: number[];
+  gap?: number;
+  direction?: FlexDirection;
+  align?: FlexAlign;
+  justify?: FlexJustify;
 }
 
 export interface SvgElementConfig
