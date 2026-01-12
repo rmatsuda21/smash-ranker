@@ -3,7 +3,7 @@ import { createJSONStorage, devtools, persist } from "zustand/middleware";
 import { Stage } from "konva/lib/Stage";
 
 import { ElementConfig, Design, PlayerDesign } from "@/types/top8/Design";
-import { simpleDesign } from "@/designs/simple";
+import { top8erDesign } from "@/designs/top8er";
 
 interface CanvasState {
   design: Design;
@@ -41,7 +41,7 @@ type CanvasAction =
     };
 
 const initialState: CanvasState = {
-  design: simpleDesign,
+  design: top8erDesign,
   stageRef: null,
   editable: false,
 };
@@ -173,11 +173,11 @@ export const useCanvasStore = create<CanvasStore>()(
         }),
         migrate: (persisted, version) => {
           if (version < 2) {
-            return { design: simpleDesign };
+            return { design: top8erDesign };
           }
 
           if (!persisted || typeof persisted !== "object") {
-            return { design: simpleDesign };
+            return { design: top8erDesign };
           }
 
           const persistedAny = persisted as { design?: unknown };
@@ -188,7 +188,7 @@ export const useCanvasStore = create<CanvasStore>()(
             !design?.canvasSize?.height ||
             typeof design?.canvasDisplayScale !== "number"
           ) {
-            return { design: simpleDesign };
+            return { design: top8erDesign };
           }
 
           return persisted as { design: Design };
