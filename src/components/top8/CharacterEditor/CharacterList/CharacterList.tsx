@@ -42,6 +42,9 @@ export const CharacterList = ({
 
   return (
     <div className={styles.wrapper}>
+      <button disabled={disabled} onClick={addCharacter}>
+        <FaPlus />
+      </button>
       {characters?.map((char, i) => (
         <button
           key={`${char.id}-${i}`}
@@ -63,9 +66,6 @@ export const CharacterList = ({
           </div>
         </button>
       ))}
-      <button disabled={disabled} onClick={addCharacter}>
-        <FaPlus />
-      </button>
     </div>
   );
 };

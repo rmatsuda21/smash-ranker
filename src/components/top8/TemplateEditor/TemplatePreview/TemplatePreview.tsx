@@ -5,7 +5,7 @@ import cn from "classnames";
 
 import { DBTemplate } from "@/types/Repository";
 import { createKonvaElements } from "@/utils/top8/elementFactory";
-import { PlayerInfo } from "@/types/top8/Player";
+import { createSamplePlayers } from "@/utils/top8/samplePlayers";
 import { TournamentInfo } from "@/types/top8/Tournament";
 import { useTooltip } from "@/hooks/top8/useTooltip";
 import { Spinner } from "@/components/shared/Spinner/Spinner";
@@ -18,34 +18,7 @@ type Props = {
   className?: string;
 };
 
-const DEFAULT_PLAYER: PlayerInfo = {
-  id: "0",
-  entrantId: "0",
-  name: "Player Name",
-  characters: [{ id: "1293", alt: 0 }],
-  placement: 0,
-  gamerTag: "Player Name",
-  prefix: "",
-};
-
-const placements = [1, 2, 3, 4, 5, 5, 7, 7];
-const samplePlayers: PlayerInfo[] = new Array(20)
-  .fill(DEFAULT_PLAYER)
-  .map((player, index) => ({
-    ...player,
-    name: `Player ${index + 1}`,
-    gamerTag: `Player ${index + 1}`,
-    id: index.toString(),
-    entrantId: index.toString(),
-    placement: placements[index],
-    twitter: undefined,
-  }));
-samplePlayers[0].name = "Reo M";
-samplePlayers[0].gamerTag = "Reo M";
-samplePlayers[0].entrantId = "69";
-samplePlayers[0].id = "420";
-samplePlayers[0].twitter = "chikyunojin";
-samplePlayers[0].country = "JP";
+const samplePlayers = createSamplePlayers(20);
 
 const sampleTournament: TournamentInfo = {
   tournamentName: "Some Tournament",
