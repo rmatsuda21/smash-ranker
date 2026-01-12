@@ -57,7 +57,7 @@ export const TournamentLoader = ({ className }: Props) => {
       return;
     }
 
-    fetchResult(matchedUrl, 8);
+    fetchResult(matchedUrl, 16);
   };
 
   const { confirm: confirmLoad, ConfirmationDialog: LoadConfirmation } =

@@ -25,6 +25,7 @@ export type ElementType =
   | "image"
   | "group"
   | "flexGroup"
+  | "flexGrid"
   | "rect"
   | "svg"
   | "customImage"
@@ -132,6 +133,22 @@ export interface FlexGroupElementConfig
   wrapDirection?: "start" | "end";
 }
 
+export interface FlexGridElementConfig
+  extends BaseElementConfig,
+    Partial<ComponentProps<typeof Group>> {
+  type: "flexGrid";
+  elements: ElementConfig[];
+  gap?: number;
+  rowGap?: number;
+  columnGap?: number;
+  columns?: number;
+  rows?: number;
+  aspectRatio?: number;
+  align?: FlexAlign;
+  justify?: FlexAlign;
+  alignLastRow?: FlexAlign;
+}
+
 export interface RectElementConfig
   extends BaseElementConfig,
     Partial<ComponentProps<typeof Rect>> {
@@ -159,13 +176,14 @@ export interface CharacterImageElementConfig
 
 export interface AltCharacterImageElementConfig extends BaseElementConfig {
   type: "altCharacterImage";
-  wrap?: boolean;
-  wrapDirection?: "start" | "end";
-  characterSizes?: number[];
   gap?: number;
-  direction?: FlexDirection;
+  rowGap?: number;
+  columnGap?: number;
+  columns?: number;
+  rows?: number;
   align?: FlexAlign;
-  justify?: FlexJustify;
+  justify?: FlexAlign;
+  alignLastRow?: FlexAlign;
 }
 
 export interface SvgElementConfig
@@ -206,6 +224,7 @@ export type ElementConfig =
   | ImageElementConfig
   | GroupElementConfig
   | FlexGroupElementConfig
+  | FlexGridElementConfig
   | CharacterImageElementConfig
   | AltCharacterImageElementConfig
   | RectElementConfig

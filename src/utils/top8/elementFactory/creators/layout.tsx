@@ -8,6 +8,7 @@ import type {
   SmartTextElementConfig,
   GroupElementConfig,
   FlexGroupElementConfig,
+  FlexGridElementConfig,
   FlexAlign,
   FlexJustify,
 } from "@/types/top8/Design";
@@ -370,6 +371,308 @@ export const createFlexGroupElement: ElementCreator<FlexGroupElementConfig> = ({
       y={element.position.y}
       width={element.size?.width}
       height={element.size?.height}
+    >
+      {positionedElements}
+    </Group>
+  );
+};
+
+interface GridDimensions {
+  rows: number;
+  columns: number;
+  cellWidth: number;
+  cellHeight: number;
+  fillRatio: number;
+}
+
+const calculateOptimalGrid = (
+  numChildren: number,
+  containerWidth: number,
+  containerHeight: number,
+  columnGap: number,
+  rowGap: number,
+  fixedColumns?: number,
+  fixedRows?: number,
+  aspectRatio?: number
+): GridDimensions => {
+  if (numChildren === 0) {
+    return { rows: 0, columns: 0, cellWidth: 0, cellHeight: 0, fillRatio: 0 };
+  }
+
+  const calculateCellSize = (
+    rows: number,
+    cols: number
+  ): { cellWidth: number; cellHeight: number } => {
+    const totalColumnGaps = (cols - 1) * columnGap;
+    const totalRowGaps = (rows - 1) * rowGap;
+
+    const maxCellWidth = (containerWidth - totalColumnGaps) / cols;
+    const maxCellHeight = (containerHeight - totalRowGaps) / rows;
+
+    if (aspectRatio === undefined || aspectRatio <= 0) {
+      return { cellWidth: maxCellWidth, cellHeight: maxCellHeight };
+    }
+
+    const cellByWidth = {
+      width: maxCellWidth,
+      height: maxCellWidth / aspectRatio,
+    };
+
+    const cellByHeight = {
+      width: maxCellHeight * aspectRatio,
+      height: maxCellHeight,
+    };
+
+    if (cellByWidth.height <= maxCellHeight) {
+      return { cellWidth: cellByWidth.width, cellHeight: cellByWidth.height };
+    } else {
+      return { cellWidth: cellByHeight.width, cellHeight: cellByHeight.height };
+    }
+  };
+
+  const calculateFillRatio = (
+    rows: number,
+    cols: number,
+    cellWidth: number,
+    cellHeight: number
+  ): number => {
+    const usedCells = Math.min(numChildren, rows * cols);
+    const totalCellArea = cellWidth * cellHeight * usedCells;
+    const containerArea = containerWidth * containerHeight;
+    return totalCellArea / containerArea;
+  };
+
+  if (fixedColumns !== undefined && fixedRows !== undefined) {
+    const { cellWidth, cellHeight } = calculateCellSize(
+      fixedRows,
+      fixedColumns
+    );
+    return {
+      rows: fixedRows,
+      columns: fixedColumns,
+      cellWidth,
+      cellHeight,
+      fillRatio: calculateFillRatio(
+        fixedRows,
+        fixedColumns,
+        cellWidth,
+        cellHeight
+      ),
+    };
+  }
+
+  if (fixedColumns !== undefined) {
+    const rows = Math.ceil(numChildren / fixedColumns);
+    const { cellWidth, cellHeight } = calculateCellSize(rows, fixedColumns);
+    return {
+      rows,
+      columns: fixedColumns,
+      cellWidth,
+      cellHeight,
+      fillRatio: calculateFillRatio(rows, fixedColumns, cellWidth, cellHeight),
+    };
+  }
+
+  if (fixedRows !== undefined) {
+    const cols = Math.ceil(numChildren / fixedRows);
+    const { cellWidth, cellHeight } = calculateCellSize(fixedRows, cols);
+    return {
+      rows: fixedRows,
+      columns: cols,
+      cellWidth,
+      cellHeight,
+      fillRatio: calculateFillRatio(fixedRows, cols, cellWidth, cellHeight),
+    };
+  }
+
+  const targetAspectRatio = aspectRatio ?? 1;
+
+  let bestGrid: GridDimensions = {
+    rows: 1,
+    columns: numChildren,
+    cellWidth: 0,
+    cellHeight: 0,
+    fillRatio: 0,
+  };
+  let bestScore = -Infinity;
+
+  for (let rows = 1; rows <= numChildren; rows++) {
+    const cols = Math.ceil(numChildren / rows);
+
+    if (rows * cols - numChildren >= cols) continue;
+
+    const { cellWidth, cellHeight } = calculateCellSize(rows, cols);
+
+    if (cellWidth <= 0 || cellHeight <= 0) continue;
+
+    const cellAspectRatio = cellWidth / cellHeight;
+    const aspectRatioScore =
+      1 - Math.abs(Math.log(cellAspectRatio / targetAspectRatio));
+
+    const fillRatio = calculateFillRatio(rows, cols, cellWidth, cellHeight);
+
+    const score = fillRatio * 0.7 + aspectRatioScore * 0.3;
+
+    if (score > bestScore) {
+      bestScore = score;
+      bestGrid = { rows, columns: cols, cellWidth, cellHeight, fillRatio };
+    }
+  }
+
+  return bestGrid;
+};
+
+const collectGridVisibleChildren = (
+  elements: ElementConfig[],
+  context: InternalContext
+): { element: ElementConfig; originalIndex: number }[] =>
+  elements.reduce<{ element: ElementConfig; originalIndex: number }[]>(
+    (acc, child, i) => {
+      if (
+        child.hidden ||
+        !evaluateElementCondition(child.conditions, context)
+      ) {
+        return acc;
+      }
+      acc.push({ element: child, originalIndex: i });
+      return acc;
+    },
+    []
+  );
+
+const calculateGridAlignOffset = (
+  align: FlexAlign,
+  containerSize: number,
+  contentSize: number
+): number => {
+  switch (align) {
+    case "center":
+      return (containerSize - contentSize) / 2;
+    case "end":
+      return containerSize - contentSize;
+    default:
+      return 0;
+  }
+};
+
+export const createFlexGridElement: ElementCreator<FlexGridElementConfig> = ({
+  element,
+  index,
+  context,
+}) => {
+  const {
+    gap = 0,
+    rowGap = gap,
+    columnGap = gap,
+    columns: fixedColumns,
+    rows: fixedRows,
+    aspectRatio,
+    align = "start",
+    justify = "start",
+    alignLastRow = "start",
+  } = element;
+
+  const containerWidth = element.size?.width ?? 0;
+  const containerHeight = element.size?.height ?? 0;
+
+  const visibleChildren = collectGridVisibleChildren(
+    element.elements,
+    context as InternalContext
+  );
+
+  if (visibleChildren.length === 0) {
+    return (
+      <Group
+        key={element.id ?? `flexGrid-${index}`}
+        x={element.position.x}
+        y={element.position.y}
+        width={containerWidth}
+        height={containerHeight}
+      />
+    );
+  }
+
+  const grid = calculateOptimalGrid(
+    visibleChildren.length,
+    containerWidth,
+    containerHeight,
+    columnGap,
+    rowGap,
+    fixedColumns,
+    fixedRows,
+    aspectRatio
+  );
+
+  const gridContentWidth =
+    grid.columns * grid.cellWidth + (grid.columns - 1) * columnGap;
+  const gridContentHeight =
+    grid.rows * grid.cellHeight + (grid.rows - 1) * rowGap;
+
+  const gridOffsetX = calculateGridAlignOffset(
+    justify,
+    containerWidth,
+    gridContentWidth
+  );
+  const gridOffsetY = calculateGridAlignOffset(
+    align,
+    containerHeight,
+    gridContentHeight
+  );
+
+  const lastRowItemCount =
+    visibleChildren.length % grid.columns || grid.columns;
+  const isLastRowFull = lastRowItemCount === grid.columns;
+
+  const positionedElements: ReactNode[] = [];
+
+  for (let i = 0; i < visibleChildren.length; i++) {
+    const child = visibleChildren[i];
+    const row = Math.floor(i / grid.columns);
+    const col = i % grid.columns;
+    const isLastRow = row === grid.rows - 1;
+
+    let x = col * (grid.cellWidth + columnGap);
+    const y = row * (grid.cellHeight + rowGap);
+
+    if (isLastRow && !isLastRowFull) {
+      const lastRowWidth =
+        lastRowItemCount * grid.cellWidth + (lastRowItemCount - 1) * columnGap;
+      const lastRowOffset = calculateGridAlignOffset(
+        alignLastRow,
+        gridContentWidth,
+        lastRowWidth
+      );
+      x += lastRowOffset;
+    }
+
+    const finalX = gridOffsetX + x;
+    const finalY = gridOffsetY + y;
+
+    const modifiedElement: ElementConfig = {
+      ...child.element,
+      position: { x: finalX, y: finalY },
+      size: {
+        ...child.element.size,
+        width: grid.cellWidth,
+        height: grid.cellHeight,
+      },
+    };
+
+    positionedElements.push(
+      ...createKonvaElementsInternal(
+        [modifiedElement],
+        context as InternalContext
+      )
+    );
+  }
+
+  return (
+    <Group
+      key={element.id ?? `flexGrid-${index}`}
+      x={element.position.x}
+      y={element.position.y}
+      width={containerWidth}
+      height={containerHeight}
     >
       {positionedElements}
     </Group>
