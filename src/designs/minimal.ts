@@ -3,6 +3,7 @@ import {
   ElementConfig,
   LayerDesign,
   PlayerDesign,
+  TextElementConfig,
 } from "@/types/top8/Design";
 import { DesignPlaceholder } from "@/consts/top8/placeholders";
 import { RenderCondition } from "@/consts/top8/renderConditions";
@@ -22,14 +23,14 @@ const createPlacementText = (
   shadowColor?: string,
   shadowBlur?: number,
   shadowOpacity?: number
-) => ({
-  type: "text" as const,
+): TextElementConfig => ({
+  type: "text",
   text: DesignPlaceholder.PLAYER_PLACEMENT,
   fontSize: 55,
   fontWeight: 900,
   fill,
-  align: "left" as const,
-  verticalAlign: "middle" as const,
+  align: "left",
+  verticalAlign: "middle",
   position: { x: 0, y: 0 },
   size: { width: PLAYER_HEIGHT - 20, height: PLAYER_HEIGHT },
   ...(shadowColor && {
@@ -41,64 +42,63 @@ const createPlacementText = (
 });
 
 const createPlayerElements = (
-  placementText: ReturnType<typeof createPlacementText>
-) => [
+  placementText: TextElementConfig
+): ElementConfig[] => [
   {
-    type: "rect" as const,
+    type: "rect",
     fill: "primary",
     position: { x: 0, y: 0 },
     size: { width: PLAYER_WIDTH, height: PLAYER_HEIGHT },
   },
   {
-    type: "flexGroup" as const,
+    type: "flexGroup",
     id: "main",
     name: "Main",
     position: { x: 40, y: 0 },
     size: { width: PLAYER_WIDTH - 80, height: PLAYER_HEIGHT },
-    direction: "row" as const,
-    align: "center" as const,
+    direction: "row",
+    align: "center",
     gap: 10,
     elements: [
       placementText,
       {
-        type: "playerFlag" as const,
+        type: "playerFlag",
         position: { x: 0, y: 0 },
         size: { width: FLAG_SIZE, height: FLAG_SIZE },
         conditions: [DesignPlaceholder.PLAYER_COUNTRY],
-        fillMode: "contain" as const,
-        align: "center" as const,
-        verticalAlign: "middle" as const,
+        fillMode: "contain",
+        align: "center",
       },
       {
-        type: "flexGroup" as const,
+        type: "flexGroup",
         id: "fullNameGroup",
         position: { x: 0, y: 0 },
         size: { width: 150, height: 32 },
-        justify: "start" as const,
-        align: "end" as const,
+        justify: "start",
+        align: "end",
         gap: 5,
         conditions: [DesignPlaceholder.PLAYER_PREFIX],
         flex: { grow: true },
         elements: [
           {
-            type: "smartText" as const,
+            type: "smartText",
             text: `${DesignPlaceholder.PLAYER_PREFIX}`,
             id: "fullNameText",
             fontSize: 18,
-            align: "left" as const,
-            verticalAlign: "middle" as const,
+            align: "left",
+            verticalAlign: "middle",
             fontWeight: 900,
             fill: "text",
             filterEffects: [{ type: "Brightness", brightness: 0.5 }],
             position: { x: 0, y: 0 },
           },
           {
-            type: "smartText" as const,
+            type: "smartText",
             text: `${DesignPlaceholder.PLAYER_TAG}`,
             id: "tagText",
             fontSize: 32,
-            align: "left" as const,
-            verticalAlign: "start" as const,
+            align: "left",
+            verticalAlign: "top",
             fontWeight: 900,
             fill: "text",
             position: { x: 0, y: 0 },
@@ -107,13 +107,13 @@ const createPlayerElements = (
         ],
       },
       {
-        type: "smartText" as const,
+        type: "smartText",
         text: DesignPlaceholder.PLAYER_TAG,
         id: "tagText",
         conditions: [RenderCondition.NOT, DesignPlaceholder.PLAYER_PREFIX],
         fontSize: 32,
-        align: "left" as const,
-        verticalAlign: "middle" as const,
+        align: "left",
+        verticalAlign: "middle",
         fontWeight: 900,
         fill: "text",
         position: { x: 0, y: 0 },
@@ -121,16 +121,16 @@ const createPlayerElements = (
         flex: { shrink: true, grow: true },
       },
       {
-        type: "flexGroup" as const,
+        type: "flexGroup",
         id: "characterImageGroup",
         position: { x: 0, y: 0 },
         size: { width: 150 + CHARACTER_IMAGE_SIZE + 5, height: PLAYER_HEIGHT },
-        direction: "row" as const,
-        align: "center" as const,
+        direction: "row",
+        align: "center",
         gap: 15,
         elements: [
           {
-            type: "altCharacterImage" as const,
+            type: "altCharacterImage",
             id: "altCharacterImage",
             position: { x: 0, y: 0 },
             size: { width: 150, height: CHARACTER_IMAGE_SIZE - 15 },
@@ -142,16 +142,13 @@ const createPlayerElements = (
             flex: { shrink: true, grow: false },
           },
           {
-            type: "group" as const,
+            type: "group",
             position: { x: 0, y: 0 },
             size: { width: CHARACTER_IMAGE_SIZE, height: CHARACTER_IMAGE_SIZE },
-            cornerRadius: 5,
             clip: true,
-            stroke: "red",
-            strokeWidth: 2,
             elements: [
               {
-                type: "rect" as const,
+                type: "rect",
                 id: "characterBackground",
                 fill: "characterBackground",
                 position: { x: 0, y: 0 },
@@ -162,7 +159,7 @@ const createPlayerElements = (
                 cornerRadius: 5,
               },
               {
-                type: "characterImage" as const,
+                type: "characterImage",
                 id: "characterImage",
                 name: "Character Image",
                 shadowEnabled: false,
@@ -174,7 +171,7 @@ const createPlayerElements = (
                 flex: { shrink: true, grow: false },
               },
               {
-                type: "rect" as const,
+                type: "rect",
                 id: "characterBorder",
                 fill: "transparent",
                 stroke: "characterBorder",
@@ -198,9 +195,7 @@ const basePlayer: PlayerDesign = {
   position: { x: PADDING, y: 190 },
   size: { width: PLAYER_WIDTH, height: PLAYER_HEIGHT },
   scale: { x: 1, y: 1 },
-  elements: createPlayerElements(
-    createPlacementText("text")
-  ) as unknown as ElementConfig[],
+  elements: createPlayerElements(createPlacementText("text")),
 };
 
 const colorPalette: Design["colorPalette"] = {
