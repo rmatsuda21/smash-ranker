@@ -61,7 +61,7 @@ const createPlayerElements = (
     elements: [
       placementText,
       {
-        type: "userFlag" as const,
+        type: "playerFlag" as const,
         position: { x: 0, y: 0 },
         size: { width: FLAG_SIZE, height: FLAG_SIZE },
         conditions: [DesignPlaceholder.PLAYER_COUNTRY],
