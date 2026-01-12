@@ -146,7 +146,7 @@ const basePlayer: PlayerDesign = {
       shadowColor: "placementShadow",
     },
     {
-      type: "userFlag",
+      type: "playerFlag",
       position: { x: 40, y: 185 },
       size: { width: 100, height: 100 },
       fillMode: "contain",
