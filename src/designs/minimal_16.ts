@@ -187,17 +187,14 @@ const basePlayer: PlayerDesign = {
 };
 
 const colorPalette: Design["colorPalette"] = {
-  primary: { color: "rgba(142, 142, 142, 0.21)", name: "Primary" },
-  background: { color: "rgb(0, 0, 0)", name: "Background" },
-  text: { color: "rgb(255, 255, 255)", name: "Text" },
-  gold: { color: "#FFD700", name: "Gold" },
-  silver: { color: "#C0C0C0", name: "Silver" },
-  bronze: { color: "#CD7F32", name: "Bronze" },
+  primary: { color: "rgba(142, 142, 142, 0.21)", name: "Player BG" },
   characterBackground: {
     color: "rgb(236, 236, 236)",
-    name: "Character Background",
+    name: "Character BG",
   },
   characterBorder: { color: "rgb(255, 255, 255)", name: "Character Border" },
+  background: { color: "rgb(0, 0, 0)", name: "Background" },
+  text: { color: "rgb(255, 255, 255)", name: "Text" },
 };
 
 const background: LayerDesign = {
