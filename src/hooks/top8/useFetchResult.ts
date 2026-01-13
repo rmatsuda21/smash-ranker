@@ -105,7 +105,13 @@ const PlayerSetsQueryDoc = graphql(`
   }
 `);
 
-async function fetchAndStoreImage(image: TournamentImage): Promise<string> {
+interface FetchedImage {
+  type: string;
+  id: string;
+  data: Blob;
+}
+
+async function fetchImage(image: TournamentImage): Promise<FetchedImage> {
   const response = await fetch(image.url);
 
   if (!response.ok) {
@@ -113,15 +119,19 @@ async function fetchAndStoreImage(image: TournamentImage): Promise<string> {
   }
 
   const data = await response.blob();
+  return { type: image.type, id: image.id, data };
+}
+
+async function storeImage(fetchedImage: FetchedImage): Promise<string> {
   const id = crypto.randomUUID();
   const src = `${IDB_IMAGES_BASE_URL}${id}`;
-  const fileName = `tournament-${image.type}-${image.id}`;
+  const fileName = `tournament-${fetchedImage.type}-${fetchedImage.id}`;
 
   await assetRepository.put({
     id,
     src,
     fileName,
-    data,
+    data: fetchedImage.data,
     date: new Date(),
   });
 
@@ -131,20 +141,19 @@ async function fetchAndStoreImage(image: TournamentImage): Promise<string> {
 async function storeTournamentImages(
   images: TournamentImage[]
 ): Promise<StoredImagesMap> {
-  const results = await Promise.allSettled(
-    images.map(async (image) => ({
-      type: image.type,
-      src: await fetchAndStoreImage(image),
-    }))
-  );
+  const fetchResults = await Promise.allSettled(images.map(fetchImage));
 
   const storedImages: StoredImagesMap = new Map();
-
-  for (const result of results) {
+  for (const result of fetchResults) {
     if (result.status === "fulfilled") {
-      storedImages.set(result.value.type, result.value.src);
+      try {
+        const src = await storeImage(result.value);
+        storedImages.set(result.value.type, src);
+      } catch (error) {
+        console.error("Failed to store tournament image:", error);
+      }
     } else {
-      console.error("Failed to store tournament image:", result.reason);
+      console.error("Failed to fetch tournament image:", result.reason);
     }
   }
 
