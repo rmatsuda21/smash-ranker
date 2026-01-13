@@ -51,20 +51,20 @@ type UpgradeTransaction = IDBPTransaction<
   "versionchange"
 >;
 
-function createStore(db: IDBPDatabase<Top8DB>, name: StoreName) {
+const createStore = (db: IDBPDatabase<Top8DB>, name: StoreName) => {
   const config = STORE_CONFIGS[name];
   const store = db.createObjectStore(name, { keyPath: config.keyPath });
 
   for (const indexName of config.indexes) {
     (store as unknown as IDBObjectStore).createIndex(indexName, indexName);
   }
-}
+};
 
-function validateStore(
+const validateStore = (
   db: IDBPDatabase<Top8DB>,
   transaction: UpgradeTransaction,
   name: StoreName
-) {
+) => {
   const config = STORE_CONFIGS[name];
 
   if (!db.objectStoreNames.contains(name)) {
@@ -77,28 +77,28 @@ function validateStore(
       }
     }
   }
-}
+};
 
-function createAllStores(db: IDBPDatabase<Top8DB>) {
+const createAllStores = (db: IDBPDatabase<Top8DB>) => {
   for (const name of EXPECTED_STORES) {
     createStore(db, name);
   }
-}
+};
 
-function validateAllStores(
+const validateAllStores = (
   db: IDBPDatabase<Top8DB>,
   transaction: UpgradeTransaction
-) {
+) => {
   for (const name of EXPECTED_STORES) {
     validateStore(db, transaction, name);
   }
-}
+};
 
-function performUpgrade(
+const performUpgrade = (
   db: IDBPDatabase<Top8DB>,
   oldVersion: number,
   transaction: UpgradeTransaction
-) {
+) => {
   console.log(`Upgrading database from version ${oldVersion} to ${DB_VERSION}`);
 
   if (oldVersion === 0) {
@@ -107,9 +107,9 @@ function performUpgrade(
   }
 
   validateAllStores(db, transaction);
-}
+};
 
-function validateDatabase(db: IDBPDatabase<Top8DB>): boolean {
+const validateDatabase = (db: IDBPDatabase<Top8DB>): boolean => {
   for (const storeName of EXPECTED_STORES) {
     if (!db.objectStoreNames.contains(storeName)) {
       console.warn(`Missing object store: ${storeName}`);
@@ -117,9 +117,9 @@ function validateDatabase(db: IDBPDatabase<Top8DB>): boolean {
     }
   }
   return true;
-}
+};
 
-async function deleteAndRecreateDatabase(): Promise<IDBPDatabase<Top8DB>> {
+const deleteAndRecreateDatabase = async (): Promise<IDBPDatabase<Top8DB>> => {
   console.warn("Database is corrupted. Deleting and recreating...");
 
   await deleteDB(DB_NAME, {
@@ -135,9 +135,9 @@ async function deleteAndRecreateDatabase(): Promise<IDBPDatabase<Top8DB>> {
       createAllStores(db);
     },
   });
-}
+};
 
-async function openDatabase(): Promise<IDBPDatabase<Top8DB>> {
+const openDatabase = async (): Promise<IDBPDatabase<Top8DB>> => {
   try {
     const db = await openDB<Top8DB>(DB_NAME, DB_VERSION, {
       upgrade(db, oldVersion, _newVersion, transaction) {
@@ -173,6 +173,6 @@ async function openDatabase(): Promise<IDBPDatabase<Top8DB>> {
 
     throw error;
   }
-}
+};
 
 export const initDB = openDatabase();
