@@ -323,5 +323,5 @@ export const minimal4Design: Design = {
   background,
   tournament,
   basePlayer,
-  players: players as unknown as Partial<PlayerDesign>[],
+  players,
 };
