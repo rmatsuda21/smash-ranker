@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import cn from "classnames";
 import { IoGrid } from "react-icons/io5";
 import { FaList } from "react-icons/fa6";
@@ -10,7 +10,6 @@ import { Spinner } from "@/components/shared/Spinner/Spinner";
 import { top8erDesign } from "@/designs/top8er";
 import { squaresDesign } from "@/designs/squares";
 import { minimalDesign } from "@/designs/minimal";
-import { TemplatePreview } from "@/components/top8/TemplateEditor/TemplatePreview/TemplatePreview";
 import { Button } from "@/components/shared/Button/Button";
 import { DBTemplate } from "@/types/Repository";
 import { useCanvasStore } from "@/store/canvasStore";
@@ -18,6 +17,7 @@ import { usePlayerStore } from "@/store/playerStore";
 import { useFontStore } from "@/store/fontStore";
 import { useConfirmation } from "@/hooks/useConfirmation";
 import { CreateTemplateModal } from "@/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal";
+import { TemplateGroup } from "@/components/top8/TemplateEditor/TemplateGroup";
 
 import styles from "./TemplateEditor.module.scss";
 
@@ -25,31 +25,46 @@ type Props = {
   className?: string;
 };
 
-const DEFAULT_TEMPLATES: DBTemplate[] = [
-  { id: "top8er", name: "Top8er", design: top8erDesign, font: "Noto Sans JP" },
+const DEFAULT_TEMPLATE_GROUPS: { templates: DBTemplate[]; name: string }[] = [
   {
-    id: "top8er-squares",
-    name: "Top8er (Square Variant)",
-    design: squaresDesign,
-    font: "Noto Sans JP",
+    name: "Top8er",
+    templates: [
+      {
+        id: "top8er",
+        name: "Top8er",
+        design: top8erDesign,
+        font: "Noto Sans JP",
+      },
+      {
+        id: "top8er-squares",
+        name: "Top8er (Square Variant)",
+        design: squaresDesign,
+        font: "Noto Sans JP",
+      },
+    ],
   },
   {
-    id: "minimal",
     name: "Minimal",
-    design: minimalDesign,
-    font: "Noto Sans JP",
-  },
-  {
-    id: "minimal-4",
-    name: "Minimal (4 Players)",
-    design: minimal4Design,
-    font: "Noto Sans JP",
-  },
-  {
-    id: "minimal-16",
-    name: "Minimal (16 Players)",
-    design: minimal16Design,
-    font: "Noto Sans JP",
+    templates: [
+      {
+        id: "minimal",
+        name: "Minimal",
+        design: minimalDesign,
+        font: "Noto Sans JP",
+      },
+      {
+        id: "minimal-4",
+        name: "Minimal (4 Players)",
+        design: minimal4Design,
+        font: "Noto Sans JP",
+      },
+      {
+        id: "minimal-16",
+        name: "Minimal (16 Players)",
+        design: minimal16Design,
+        font: "Noto Sans JP",
+      },
+    ],
   },
 ];
 
@@ -79,15 +94,16 @@ export const TemplateEditor = ({ className }: Props) => {
     fetchTemplates();
   }, [templates, getTemplateWithId]);
 
-  const designs = useMemo(
-    () => [...DEFAULT_TEMPLATES, ...userTemplates],
-    [userTemplates]
-  );
-
   const loadTemplate = async (id: string) => {
     let template: DBTemplate | undefined;
-    if (DEFAULT_TEMPLATES.some((template) => template.id === id)) {
-      template = DEFAULT_TEMPLATES.find((template) => template.id === id)!;
+    if (
+      DEFAULT_TEMPLATE_GROUPS.some((group) =>
+        group.templates.some((template) => template.id === id)
+      )
+    ) {
+      template = DEFAULT_TEMPLATE_GROUPS.find((group) =>
+        group.templates.some((template) => template.id === id)
+      )!.templates.find((template) => template.id === id)!;
     } else {
       template = await getTemplateWithId(id);
     }
@@ -151,18 +167,23 @@ export const TemplateEditor = ({ className }: Props) => {
           </Button>
         </div>
       </div>
-      <div
-        className={cn(styles.templates, { [styles.grid]: viewMode === "grid" })}
-      >
-        {designs.map((template) => (
-          <TemplatePreview
-            className={styles.template}
-            key={template.id}
-            template={template}
-            onClick={() => confirmTemplateClick(template.id)}
-          />
-        ))}
-      </div>
+      {DEFAULT_TEMPLATE_GROUPS.map((group) => (
+        <TemplateGroup
+          key={group.name}
+          templates={group.templates}
+          name={group.name}
+          onTemplateClick={confirmTemplateClick}
+          viewMode={viewMode}
+        />
+      ))}
+      {userTemplates.length > 0 && (
+        <TemplateGroup
+          templates={userTemplates}
+          name="My Templates"
+          onTemplateClick={confirmTemplateClick}
+          viewMode={viewMode}
+        />
+      )}
       <TemplateClickConfirmation />
       <CreateTemplateModal
         isOpen={isCreateModalOpen}
