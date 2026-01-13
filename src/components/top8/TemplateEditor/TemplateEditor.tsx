@@ -4,12 +4,15 @@ import { IoGrid } from "react-icons/io5";
 import { FaList } from "react-icons/fa6";
 
 import { useTemplateDB } from "@/hooks/useConfigDb";
-import { minimal4Design } from "@/designs/minimal_4";
-import { minimal16Design } from "@/designs/minimal_16";
 import { Spinner } from "@/components/shared/Spinner/Spinner";
 import { top8erDesign } from "@/designs/top8er";
 import { squaresDesign } from "@/designs/squares";
-import { minimalDesign } from "@/designs/minimal";
+import {
+  minimalDesign,
+  minimal4Design,
+  minimal16Design,
+  minimal24Design,
+} from "@/designs/minimal";
 import { Button } from "@/components/shared/Button/Button";
 import { DBTemplate } from "@/types/Repository";
 import { useCanvasStore } from "@/store/canvasStore";
@@ -62,6 +65,12 @@ const DEFAULT_TEMPLATE_GROUPS: { templates: DBTemplate[]; name: string }[] = [
         id: "minimal-16",
         name: "Minimal (16 Players)",
         design: minimal16Design,
+        font: "Noto Sans JP",
+      },
+      {
+        id: "minimal-24",
+        name: "Minimal (24 Players)",
+        design: minimal24Design,
         font: "Noto Sans JP",
       },
     ],
