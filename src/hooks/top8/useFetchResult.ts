@@ -111,7 +111,7 @@ interface FetchedImage {
   data: Blob;
 }
 
-async function fetchImage(image: TournamentImage): Promise<FetchedImage> {
+const fetchImage = async (image: TournamentImage): Promise<FetchedImage> => {
   const response = await fetch(image.url);
 
   if (!response.ok) {
@@ -120,9 +120,9 @@ async function fetchImage(image: TournamentImage): Promise<FetchedImage> {
 
   const data = await response.blob();
   return { type: image.type, id: image.id, data };
-}
+};
 
-async function storeImage(fetchedImage: FetchedImage): Promise<string> {
+const storeImage = async (fetchedImage: FetchedImage): Promise<string> => {
   const id = crypto.randomUUID();
   const src = `${IDB_IMAGES_BASE_URL}${id}`;
   const fileName = `tournament-${fetchedImage.type}-${fetchedImage.id}`;
@@ -136,11 +136,11 @@ async function storeImage(fetchedImage: FetchedImage): Promise<string> {
   });
 
   return src;
-}
+};
 
-async function storeTournamentImages(
+const storeTournamentImages = async (
   images: TournamentImage[]
-): Promise<StoredImagesMap> {
+): Promise<StoredImagesMap> => {
   const fetchResults = await Promise.allSettled(images.map(fetchImage));
 
   const storedImages: StoredImagesMap = new Map();
@@ -158,13 +158,13 @@ async function storeTournamentImages(
   }
 
   return storedImages;
-}
+};
 
-function isValidStanding(standing: StandingNode): boolean {
+const isValidStanding = (standing: StandingNode): boolean => {
   return Boolean(standing?.entrant?.id && standing?.player?.user?.id);
-}
+};
 
-function extractPlayerFromStanding(standing: StandingNode): PlayerInfo {
+const extractPlayerFromStanding = (standing: StandingNode): PlayerInfo => {
   const player = standing!.player!;
   const entrant = standing!.entrant!;
   const twitterHandle = player.user?.authorizations?.[0]?.externalUsername;
@@ -183,9 +183,9 @@ function extractPlayerFromStanding(standing: StandingNode): PlayerInfo {
     placement: standing!.placement || 0,
     country: countryCode || undefined,
   };
-}
+};
 
-function parseStandingsToPlayers(standings: Standings | null): PlayerInfo[] {
+const parseStandingsToPlayers = (standings: Standings | null): PlayerInfo[] => {
   if (!standings) return [];
 
   const playersById = new Map<string, PlayerInfo>();
@@ -200,13 +200,13 @@ function parseStandingsToPlayers(standings: Standings | null): PlayerInfo[] {
   return Array.from(playersById.values()).sort(
     (a, b) => a.placement - b.placement
   );
-}
+};
 
-async function fetchPlayerCharacters(
+const fetchPlayerCharacters = async (
   client: Client,
   slug: string,
   entrantId: string
-): Promise<string[]> {
+): Promise<string[]> => {
   const result = await client
     .query(PlayerSetsQueryDoc, { slug, entrantId })
     .toPromise();
@@ -221,12 +221,12 @@ async function fetchPlayerCharacters(
   const characterUsageCount = countCharacterUsage(nodes, entrantId);
 
   return sortCharactersByUsage(characterUsageCount);
-}
+};
 
-function countCharacterUsage(
+const countCharacterUsage = (
   sets: Sets,
   entrantId: string
-): Map<string, number> {
+): Map<string, number> => {
   const usageCount = new Map<string, number>();
 
   for (const set of sets) {
@@ -247,19 +247,19 @@ function countCharacterUsage(
   }
 
   return usageCount;
-}
+};
 
-function sortCharactersByUsage(usageCount: Map<string, number>): string[] {
+const sortCharactersByUsage = (usageCount: Map<string, number>): string[] => {
   return Array.from(usageCount.entries())
     .sort((a, b) => b[1] - a[1])
     .map(([characterId]) => String(characterId));
-}
+};
 
-async function addCharactersToPlayers(
+const addCharactersToPlayers = async (
   client: Client,
   slug: string,
   players: PlayerInfo[]
-): Promise<void> {
+): Promise<void> => {
   await Promise.all(
     players.map(async (player) => {
       const characterIds = await fetchPlayerCharacters(
@@ -276,20 +276,20 @@ async function addCharactersToPlayers(
       player.id = String(player.id);
     })
   );
-}
+};
 
-function filterValidImages(
+const filterValidImages = (
   images?: TournamentImages | null
-): TournamentImage[] {
+): TournamentImage[] => {
   if (!images) return [];
 
   return images.filter((img): img is TournamentImage => img !== null);
-}
+};
 
-function buildTournamentInfo(
+const buildTournamentInfo = (
   event: Event,
   storedImages?: StoredImagesMap
-): TournamentInfo {
+): TournamentInfo => {
   const tournament = event.tournament;
 
   const eventDate = event.startAt
@@ -312,14 +312,14 @@ function buildTournamentInfo(
     url: tournament?.url || "",
     iconSrc: storedImages?.get("profile"),
   };
-}
+};
 
-export function useFetchResult() {
+export const useFetchResult = () => {
   const client = useClient();
   const playerDispatch = usePlayerStore((state) => state.dispatch);
   const tournamentDispatch = useTournamentStore((state) => state.dispatch);
 
-  async function fetchResult(slug: string, playerCount: number = 8) {
+  const fetchResult = async (slug: string, playerCount: number = 8) => {
     playerDispatch({ type: "FETCH_PLAYERS" });
 
     const result = await client
@@ -357,7 +357,7 @@ export function useFetchResult() {
         payload: "Failed to fetch tournament data",
       });
     }
-  }
+  };
 
   return { fetchResult };
-}
+};

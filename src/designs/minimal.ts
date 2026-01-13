@@ -5,18 +5,22 @@ import { RenderCondition } from "@/consts/top8/renderConditions";
 const CANVAS_WIDTH = 900;
 const PADDING = 55;
 const TOURNAMENT_ICON_SIZE = 150;
-
-const PLAYER_COUNT = 8;
 const PLAYER_SPACING = 10;
 const PLAYER_WIDTH = CANVAS_WIDTH - PADDING * 2;
 const PLAYER_HEIGHT = 100;
 const FLAG_SIZE = 40;
 const CHARACTER_IMAGE_SIZE = 70;
-const CANVAS_HEIGHT =
-  PADDING * 2 +
-  TOURNAMENT_ICON_SIZE +
-  PLAYER_HEIGHT * PLAYER_COUNT +
-  PLAYER_SPACING * (PLAYER_COUNT - 1);
+
+const colorPalette: Design["colorPalette"] = {
+  primary: { color: "rgba(142, 142, 142, 0.21)", name: "Player BG" },
+  characterBackground: {
+    color: "rgb(236, 236, 236)",
+    name: "Character BG",
+  },
+  characterBorder: { color: "rgb(255, 255, 255)", name: "Character Border" },
+  background: { color: "rgb(0, 0, 0)", name: "Background" },
+  text: { color: "rgb(255, 255, 255)", name: "Text" },
+};
 
 const basePlayer: PlayerDesign = {
   position: { x: PADDING, y: 190 },
@@ -87,10 +91,11 @@ const basePlayer: PlayerDesign = {
               id: "tagText",
               fontSize: 32,
               align: "left",
-              verticalAlign: "top",
+              verticalAlign: "bottom",
               fontWeight: 900,
               fill: "text",
               position: { x: 0, y: 0 },
+              size: { height: 32 },
               flex: { shrink: true },
             },
           ],
@@ -186,105 +191,103 @@ const basePlayer: PlayerDesign = {
   ],
 };
 
-const colorPalette: Design["colorPalette"] = {
-  primary: { color: "rgba(142, 142, 142, 0.21)", name: "Player BG" },
-  characterBackground: {
-    color: "rgb(236, 236, 236)",
-    name: "Character BG",
-  },
-  characterBorder: { color: "rgb(255, 255, 255)", name: "Character Border" },
-  background: { color: "rgb(0, 0, 0)", name: "Background" },
-  text: { color: "rgb(255, 255, 255)", name: "Text" },
-};
+const createMinimalDesign = (playerCount: number): Design => {
+  const canvasHeight =
+    PADDING * 2 +
+    TOURNAMENT_ICON_SIZE +
+    PLAYER_HEIGHT * playerCount +
+    PLAYER_SPACING * (playerCount - 1);
 
-const background: LayerDesign = {
-  elements: [
-    {
-      type: "rect",
-      fill: "background",
-      position: { x: 0, y: 0 },
-      size: { width: CANVAS_WIDTH, height: CANVAS_HEIGHT },
-    },
-  ],
-};
+  const background: LayerDesign = {
+    elements: [
+      {
+        type: "rect",
+        fill: "background",
+        position: { x: 0, y: 0 },
+        size: { width: CANVAS_WIDTH, height: canvasHeight },
+      },
+    ],
+  };
 
-const tournament: LayerDesign = {
-  elements: [
-    {
-      type: "flexGroup",
-      id: "tournamentHeader",
-      name: "Tournament Header",
-      position: { x: PADDING, y: PADDING - 10 },
-      size: { width: CANVAS_WIDTH - PADDING * 2, height: TOURNAMENT_ICON_SIZE },
-      direction: "row",
-      align: "center",
-      gap: 10,
-      elements: [
-        {
-          type: "tournamentIcon",
-          id: "tournamentIcon",
-          name: "Tournament Icon",
-          position: { x: 0, y: 0 },
-          size: {
-            width: TOURNAMENT_ICON_SIZE,
-            height: TOURNAMENT_ICON_SIZE,
-          },
-          conditions: [RenderCondition.TOURNAMENT_ICON],
-          fillMode: "contain",
-          align: "center",
-          flex: { shrink: false, grow: true },
+  const tournament: LayerDesign = {
+    elements: [
+      {
+        type: "flexGroup",
+        id: "tournamentHeader",
+        name: "Tournament Header",
+        position: { x: PADDING, y: PADDING - 10 },
+        size: {
+          width: CANVAS_WIDTH - PADDING * 2,
+          height: TOURNAMENT_ICON_SIZE,
         },
-        {
-          type: "flexGroup",
-          id: "tournamentInfoGroup",
-          position: { x: 0, y: 0 },
-          size: {
-            width: CANVAS_WIDTH - PADDING * 2 - TOURNAMENT_ICON_SIZE - 10,
-            height: TOURNAMENT_ICON_SIZE,
+        direction: "row",
+        align: "center",
+        gap: 10,
+        elements: [
+          {
+            type: "tournamentIcon",
+            id: "tournamentIcon",
+            name: "Tournament Icon",
+            position: { x: 0, y: 0 },
+            size: {
+              width: TOURNAMENT_ICON_SIZE,
+              height: TOURNAMENT_ICON_SIZE,
+            },
+            conditions: [RenderCondition.TOURNAMENT_ICON],
+            fillMode: "contain",
+            align: "center",
+            flex: { shrink: false, grow: true },
           },
-          direction: "column",
-          justify: "center",
-          gap: 10,
-          elements: [
-            {
-              type: "smartText",
-              id: "topRightText",
-              name: "Top Right Text",
-              position: { x: 0, y: 0 },
-              textId: "tournamentInfo",
-              fontSize: 20,
-              fontWeight: 900,
-              fill: "text",
-              size: {
-                width: CANVAS_WIDTH - PADDING * 2 - TOURNAMENT_ICON_SIZE - 10,
-              },
-              align: "left",
-              selectable: true,
+          {
+            type: "flexGroup",
+            id: "tournamentInfoGroup",
+            position: { x: 0, y: 0 },
+            size: {
+              width: CANVAS_WIDTH - PADDING * 2 - TOURNAMENT_ICON_SIZE - 10,
+              height: TOURNAMENT_ICON_SIZE,
             },
-            {
-              type: "smartText",
-              id: "topLeftText",
-              name: "Top Left Text",
-              textId: "tournamentName",
-              fontSize: 40,
-              fontWeight: 900,
-              fill: "text",
-              align: "left",
-              position: { x: 0, y: 0 },
-              size: {
-                width: CANVAS_WIDTH - PADDING * 2 - TOURNAMENT_ICON_SIZE - 10,
+            direction: "column",
+            justify: "center",
+            gap: 10,
+            elements: [
+              {
+                type: "smartText",
+                id: "topRightText",
+                name: "Top Right Text",
+                position: { x: 0, y: 0 },
+                textId: "tournamentInfo",
+                fontSize: 20,
+                fontWeight: 900,
+                fill: "text",
+                size: {
+                  width: CANVAS_WIDTH - PADDING * 2 - TOURNAMENT_ICON_SIZE - 10,
+                },
+                align: "left",
+                selectable: true,
               },
-              selectable: true,
-            },
-          ],
-        },
-      ],
-    },
-  ],
-};
+              {
+                type: "smartText",
+                id: "topLeftText",
+                name: "Top Left Text",
+                textId: "tournamentName",
+                fontSize: 40,
+                fontWeight: 900,
+                fill: "text",
+                align: "left",
+                position: { x: 0, y: 0 },
+                size: {
+                  width: CANVAS_WIDTH - PADDING * 2 - TOURNAMENT_ICON_SIZE - 10,
+                },
+                selectable: true,
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  };
 
-const players = Array.from({ length: PLAYER_COUNT }, (_, index) => {
-  const baseConfig = {
+  const players = Array.from({ length: playerCount }, (_, index) => ({
     id: `player-${index}`,
     name: `Player ${index + 1}`,
     position: {
@@ -296,32 +299,35 @@ const players = Array.from({ length: PLAYER_COUNT }, (_, index) => {
         index * (PLAYER_HEIGHT + PLAYER_SPACING),
     },
     size: { width: PLAYER_WIDTH, height: PLAYER_HEIGHT },
+  }));
+
+  return {
+    name: "Minimal",
+    author: "@chikyunojin",
+    canvasSize: {
+      width: CANVAS_WIDTH,
+      height: canvasHeight,
+    },
+    canvasDisplayScale: 0.5,
+    colorPalette,
+    textPalette: {
+      tournamentName: {
+        text: `${DesignPlaceholder.TOURNAMENT_NAME}`,
+        name: "Tournament Name",
+      },
+      tournamentInfo: {
+        text: `${DesignPlaceholder.TOURNAMENT_DATE} - ${DesignPlaceholder.TOURNAMENT_LOCATION} - ${DesignPlaceholder.ENTRANTS} Entrants`,
+        name: "Tournament Info",
+      },
+    },
+    background,
+    tournament,
+    basePlayer,
+    players,
   };
-
-  return baseConfig;
-});
-
-export const minimalDesign: Design = {
-  name: "Minimal",
-  author: "@chikyunojin",
-  canvasSize: {
-    width: CANVAS_WIDTH,
-    height: CANVAS_HEIGHT,
-  },
-  canvasDisplayScale: 0.5,
-  colorPalette,
-  textPalette: {
-    tournamentName: {
-      text: `${DesignPlaceholder.TOURNAMENT_NAME}`,
-      name: "Tournament Name",
-    },
-    tournamentInfo: {
-      text: `${DesignPlaceholder.TOURNAMENT_DATE} - ${DesignPlaceholder.TOURNAMENT_LOCATION} - ${DesignPlaceholder.ENTRANTS} Entrants`,
-      name: "Tournament Info",
-    },
-  },
-  background,
-  tournament,
-  basePlayer,
-  players,
 };
+
+export const minimalDesign = createMinimalDesign(8);
+export const minimal4Design = createMinimalDesign(4);
+export const minimal16Design = createMinimalDesign(16);
+export const minimal24Design = createMinimalDesign(24);
