@@ -6,7 +6,6 @@ const CANVAS_WIDTH = 1920;
 const CANVAS_HEIGHT = 1080;
 
 const INLINE_PADDING = 74;
-const BLOCK_PADDING = 15;
 const TWIITER_HEIGHT = 55;
 const BASE_PL_SIZE = 700;
 const MAIN_PL_SIZE = 639;
