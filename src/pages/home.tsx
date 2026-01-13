@@ -1,15 +1,24 @@
+import { Link } from "wouter";
+
+import { Button } from "@/components/shared/Button/Button";
+
 import styles from "./home.module.scss";
 
 export const Home = () => {
   return (
     <div className={styles.root}>
-      <h1>Welcome 👋</h1>
       <div className={styles.content}>
-        <p>Soon to be page for all of your smash graphic generator tools</p>
+        <h1>Welcome 👋</h1>
+        <p>Soon to be page for all of your smash graphic generator tools!</p>
+      </div>
 
-        <p>
-          <em>Check back for updates~</em>
-        </p>
+      <div className={styles.tools}>
+        <h2>Tools</h2>
+        <Link to="/ranker">
+          <Button>
+            <img src="/favicon.svg" alt="Ranker" /> Ranker
+          </Button>
+        </Link>
       </div>
     </div>
   );
