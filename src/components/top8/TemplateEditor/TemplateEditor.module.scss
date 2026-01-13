@@ -28,10 +28,43 @@
     }
   }
 
+  .templateGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .groupHeader {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+
+      button {
+        height: 16px;
+        padding: 4px 2px;
+        border-radius: 5px;
+        cursor: pointer;
+
+        &.collapsed svg {
+          transform: rotate(180deg);
+        }
+      }
+    }
+
+    .groupName {
+      font-size: var(--font-size-md);
+      font-weight: 600;
+      color: var(--accent-9);
+    }
+  }
+
   .templates {
     display: flex;
     flex-direction: column;
     gap: 16px;
+    max-height: 100%;
+
+    transition: max-height 0.1s ease-in-out;
 
     &.grid {
       display: grid;
@@ -48,6 +81,11 @@
 
     .template:hover {
       border-color: var(--gray-10);
+    }
+
+    &.collapsed {
+      max-height: 0;
+      overflow: hidden;
     }
   }
 }
