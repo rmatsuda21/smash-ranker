@@ -1,14 +1,15 @@
 import { usePlayerStore } from "@/store/playerStore";
 import { Button } from "@/components/shared/Button/Button";
+import { useCanvasStore } from "@/store/canvasStore";
 
 export const PlayerSelector = () => {
-  const players = usePlayerStore((state) => state.players);
+  const playerCount = useCanvasStore((state) => state.design.players.length);
   const selectedPlayerIndex = usePlayerStore(
     (state) => state.selectedPlayerIndex
   );
   const dispatch = usePlayerStore((state) => state.dispatch);
 
-  return Array.from({ length: players.length }).map((_, index) => (
+  return Array.from({ length: playerCount }).map((_, index) => (
     <Button
       key={index}
       onClick={() =>
