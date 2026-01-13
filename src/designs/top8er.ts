@@ -2,16 +2,21 @@ import { Design, LayerDesign, PlayerDesign } from "@/types/top8/Design";
 import { DesignPlaceholder } from "@/consts/top8/placeholders";
 import { RenderCondition } from "@/consts/top8/renderConditions";
 
-const PADDING = 60;
-const TWIITER_HEIGHT = 55;
-const BASE_PL_SIZE = 700;
-const MAIN_PL_SIZE = 630;
-const PLAYER_SPACING = 35;
 const CANVAS_WIDTH = 1920;
 const CANVAS_HEIGHT = 1080;
-const SECOND_ROW_Y_OFFSET = 27;
-const TOURNAMENT_ICON_SIZE = 110;
 
+const INLINE_PADDING = 74;
+const BLOCK_PADDING = 15;
+const TWIITER_HEIGHT = 55;
+const BASE_PL_SIZE = 700;
+const MAIN_PL_SIZE = 639;
+const PLAYER_SPACING = 20;
+const TOP_ROW_SIZE = 355;
+const BOTTOM_ROW_SIZE = 261;
+const MAIN_PL_X = INLINE_PADDING;
+const MAIN_PL_Y = 190;
+
+const TOURNAMENT_ICON_SIZE = 140;
 const SMASH_BALL_SIZE = 1600;
 
 const basePlayer: PlayerDesign = {
@@ -158,82 +163,66 @@ const getScale = (size: number) => ({
   y: size / BASE_PL_SIZE,
 });
 
-const getFirstRowPositions = () => {
-  const row: {
-    position: { x: number; y: number };
-    scale: { x: number; y: number };
-  }[] = [];
-  const remainingWidth =
-    CANVAS_WIDTH - PADDING * 2 - MAIN_PL_SIZE - PLAYER_SPACING;
+const firstRow = [
+  {
+    position: {
+      x: MAIN_PL_X + MAIN_PL_SIZE + PLAYER_SPACING,
+      y: MAIN_PL_Y,
+    },
+    scale: getScale(TOP_ROW_SIZE),
+  },
+  {
+    position: {
+      x: MAIN_PL_X + MAIN_PL_SIZE + PLAYER_SPACING * 2 + TOP_ROW_SIZE,
+      y: MAIN_PL_Y,
+    },
+    scale: getScale(TOP_ROW_SIZE),
+  },
+  {
+    position: {
+      x: MAIN_PL_X + MAIN_PL_SIZE + PLAYER_SPACING * 3 + TOP_ROW_SIZE * 2,
+      y: MAIN_PL_Y,
+    },
+    scale: getScale(TOP_ROW_SIZE),
+  },
+];
 
-  const playerWidth = (remainingWidth - PLAYER_SPACING * 2) / 3;
-
-  for (let i = 0; i < 3; i++) {
-    row.push({
-      position: {
-        x:
-          PADDING +
-          MAIN_PL_SIZE +
-          PLAYER_SPACING +
-          i * (playerWidth + PLAYER_SPACING),
-        y: PADDING + (CANVAS_HEIGHT - MAIN_PL_SIZE - PADDING * 2) / 2,
-      },
-      scale: getScale(playerWidth),
-    });
-  }
-
-  return row;
-};
-
-const getSecondRowPositions = () => {
-  const row: {
-    position: { x: number; y: number };
-    scale: { x: number; y: number };
-  }[] = [];
-  const remainingWidth =
-    CANVAS_WIDTH - PADDING * 2 - MAIN_PL_SIZE - PLAYER_SPACING;
-
-  const playerWidth = (remainingWidth - PLAYER_SPACING * 3) / 4;
-
-  const y =
-    PADDING +
-    (CANVAS_HEIGHT - MAIN_PL_SIZE - PADDING * 2) / 2 +
-    MAIN_PL_SIZE -
-    playerWidth +
-    SECOND_ROW_Y_OFFSET;
-
-  for (let i = 0; i < 4; i++) {
-    row.push({
-      position: {
-        x:
-          PADDING +
-          MAIN_PL_SIZE +
-          PLAYER_SPACING +
-          i * (playerWidth + PLAYER_SPACING),
-        y,
-      },
-      scale: getScale(playerWidth),
-    });
-  }
-
-  return row;
-};
-
-const firstRow: {
-  position: { x: number; y: number };
-  scale: { x: number; y: number };
-}[] = getFirstRowPositions();
-
-const secondRow: {
-  position: { x: number; y: number };
-  scale: { x: number; y: number };
-}[] = getSecondRowPositions();
+const secondRow = [
+  {
+    position: {
+      x: MAIN_PL_X + MAIN_PL_SIZE + PLAYER_SPACING,
+      y: 603,
+    },
+    scale: getScale(BOTTOM_ROW_SIZE),
+  },
+  {
+    position: {
+      x: MAIN_PL_X + MAIN_PL_SIZE + PLAYER_SPACING * 2 + BOTTOM_ROW_SIZE,
+      y: 603,
+    },
+    scale: getScale(BOTTOM_ROW_SIZE),
+  },
+  {
+    position: {
+      x: MAIN_PL_X + MAIN_PL_SIZE + PLAYER_SPACING * 3 + BOTTOM_ROW_SIZE * 2,
+      y: 603,
+    },
+    scale: getScale(BOTTOM_ROW_SIZE),
+  },
+  {
+    position: {
+      x: MAIN_PL_X + MAIN_PL_SIZE + PLAYER_SPACING * 4 + BOTTOM_ROW_SIZE * 3,
+      y: 603,
+    },
+    scale: getScale(BOTTOM_ROW_SIZE),
+  },
+];
 
 const players: Partial<PlayerDesign>[] = [
   {
     position: {
-      x: PADDING,
-      y: PADDING + (CANVAS_HEIGHT - MAIN_PL_SIZE - PADDING * 2) / 2,
+      x: MAIN_PL_X,
+      y: MAIN_PL_Y,
     },
     scale: getScale(MAIN_PL_SIZE),
   },
@@ -322,7 +311,10 @@ const background: LayerDesign = {
       fontWeight: 900,
       fill: "text",
       anchor: "bottomRight",
-      position: { x: CANVAS_WIDTH - PADDING, y: CANVAS_HEIGHT - PADDING },
+      position: {
+        x: CANVAS_WIDTH - INLINE_PADDING - 10,
+        y: CANVAS_HEIGHT - INLINE_PADDING,
+      },
     },
   ],
 };
@@ -330,34 +322,48 @@ const background: LayerDesign = {
 const tournament: LayerDesign = {
   elements: [
     {
-      type: "text",
-      id: "topLeftText",
-      name: "Top Left Text",
-      position: { x: PADDING, y: PADDING },
-      textId: "topLeftText",
-      fontSize: 40,
-      fontWeight: 900,
-      fill: "text",
-      conditions: [RenderCondition.NOT, RenderCondition.TOURNAMENT_ICON],
-      selectable: true,
-    },
-    {
-      type: "text",
-      id: "topLeftTextWithIcon",
-      name: "Top Left Text (w/ Icon)",
-      position: { x: PADDING + TOURNAMENT_ICON_SIZE + 20, y: PADDING },
-      textId: "topLeftText",
-      fontSize: 40,
-      fontWeight: 900,
-      fill: "text",
-      conditions: [RenderCondition.TOURNAMENT_ICON],
-      selectable: true,
+      type: "flexGroup",
+      id: "tournamentInfoGroup",
+      position: { x: INLINE_PADDING, y: 25 },
+      size: {
+        width: CANVAS_WIDTH - INLINE_PADDING * 2 - TOURNAMENT_ICON_SIZE,
+        height: TOURNAMENT_ICON_SIZE,
+      },
+      direction: "row",
+      align: "center",
+      gap: 10,
+      elements: [
+        {
+          type: "tournamentIcon",
+          id: "tournamentIcon",
+          name: "Tournament Icon",
+          position: { x: 0, y: 0 },
+          size: { width: TOURNAMENT_ICON_SIZE, height: TOURNAMENT_ICON_SIZE },
+          conditions: [RenderCondition.TOURNAMENT_ICON],
+          fillMode: "contain",
+          align: "top",
+        },
+        {
+          type: "text",
+          id: "topLeftText",
+          name: "Top Left Text",
+          position: { x: 0, y: 0 },
+          textId: "topLeftText",
+          fontSize: 40,
+          fontWeight: 900,
+          fill: "text",
+          selectable: true,
+        },
+      ],
     },
     {
       type: "smartText",
       id: "topRightText",
       name: "Top Right Text",
-      position: { x: CANVAS_WIDTH - PADDING, y: PADDING + 10 },
+      position: {
+        x: CANVAS_WIDTH - INLINE_PADDING - 10,
+        y: INLINE_PADDING + 10,
+      },
       textId: "topRightText",
       fontSize: 20,
       fontWeight: 900,
@@ -366,20 +372,10 @@ const tournament: LayerDesign = {
       selectable: true,
     },
     {
-      type: "tournamentIcon",
-      id: "tournamentIcon",
-      name: "Tournament Icon",
-      position: { x: PADDING, y: PADDING - (TOURNAMENT_ICON_SIZE - 45) / 2 },
-      size: { width: TOURNAMENT_ICON_SIZE, height: TOURNAMENT_ICON_SIZE },
-      conditions: [RenderCondition.TOURNAMENT_ICON],
-      fillMode: "contain",
-      align: "top",
-    },
-    {
       type: "text",
       id: "bottomText",
       name: "Bottom Text",
-      position: { x: PADDING, y: CANVAS_HEIGHT - PADDING - 40 },
+      position: { x: INLINE_PADDING, y: CANVAS_HEIGHT - INLINE_PADDING - 40 },
       textId: "bottomText",
       fontSize: 40,
       fontWeight: 900,
@@ -393,8 +389,8 @@ export const top8erDesign: Design = {
   name: "Top8er",
   author: "@Elenriqu3",
   canvasSize: {
-    width: 1920,
-    height: 1080,
+    width: CANVAS_WIDTH,
+    height: CANVAS_HEIGHT,
   },
   canvasDisplayScale: 0.5,
   colorPalette,
