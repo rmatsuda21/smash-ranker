@@ -1,16 +1,19 @@
-import { Design, PlayerDesign } from "@/types/top8/Design";
+import { Design, LayerDesign, PlayerDesign } from "@/types/top8/Design";
 import { DesignPlaceholder } from "@/consts/top8/placeholders";
 import { RenderCondition } from "@/consts/top8/renderConditions";
 
-const PADDING = 40;
-const PLAYER_SPACING = 15;
-const BASE_PL_SIZE = 700;
 const CANVAS_WIDTH = 1920;
 const CANVAS_HEIGHT = 1080;
-const TOURNAMENT_ICON_SIZE = 110;
-const SMASH_BALL_SIZE = 1600;
 
-const PLAYER_SIZE = 370;
+const INLINE_PADDING = 74;
+const TWIITER_HEIGHT = 55;
+const BASE_PL_SIZE = 700;
+const PL_SIZE = 337;
+const PLAYER_SPACING = 22;
+const PL_START_X = 253;
+
+const TOURNAMENT_ICON_SIZE = 140;
+const SMASH_BALL_SIZE = 1600;
 
 const basePlayer: PlayerDesign = {
   position: { x: 25, y: 190 },
@@ -21,18 +24,20 @@ const basePlayer: PlayerDesign = {
       name: "Twitter",
       type: "group",
       position: { x: 0, y: BASE_PL_SIZE + 10 },
-      size: { width: BASE_PL_SIZE, height: 50 },
+      size: { width: BASE_PL_SIZE, height: TWIITER_HEIGHT },
+      conditions: [DesignPlaceholder.PLAYER_TWITTER],
+      align: "center",
       elements: [
         {
           type: "rect",
           fill: "primary",
           position: { x: 0, y: 0 },
-          size: { width: BASE_PL_SIZE, height: 40 },
+          size: { width: BASE_PL_SIZE, height: TWIITER_HEIGHT },
         },
         {
           type: "text",
           text: "𝕏",
-          fontSize: 40,
+          fontSize: 50,
           align: "left",
           verticalAlign: "top",
           fontWeight: 900,
@@ -41,18 +46,28 @@ const basePlayer: PlayerDesign = {
           size: { width: BASE_PL_SIZE, height: 40 },
         },
         {
-          type: "text",
+          type: "smartText",
           conditions: [DesignPlaceholder.PLAYER_TWITTER],
           text: `@${DesignPlaceholder.PLAYER_TWITTER}`,
-          fontSize: 30,
+          fontSize: 40,
           align: "center",
           verticalAlign: "middle",
           fontWeight: 600,
           fill: "text",
           position: { x: 0, y: 0 },
-          size: { width: BASE_PL_SIZE, height: 40 },
+          size: { width: BASE_PL_SIZE, height: TWIITER_HEIGHT - 10 },
         },
       ],
+    },
+    {
+      name: "No Twitter",
+      id: "no-twitter",
+      type: "rect",
+      fill: "#00000055",
+      position: { x: 0, y: BASE_PL_SIZE + 10 },
+      size: { width: BASE_PL_SIZE, height: TWIITER_HEIGHT },
+      conditions: [RenderCondition.NOT, DesignPlaceholder.PLAYER_TWITTER],
+      filterEffects: [{ type: "Grayscale" }],
     },
     {
       name: "Background",
@@ -84,8 +99,9 @@ const basePlayer: PlayerDesign = {
     {
       name: "Alt Characters",
       type: "altCharacterImage",
-      position: { x: 575, y: 30 },
-      size: { width: 90, height: undefined },
+      position: { x: 555, y: 30 },
+      justify: "end",
+      size: { width: 105, height: BASE_PL_SIZE - 150 },
     },
     {
       name: "Full Name",
@@ -100,6 +116,7 @@ const basePlayer: PlayerDesign = {
       fill: "text",
       shadowColor: "textShadow",
       shadowOffset: { x: 10, y: 10 },
+      verticalAlign: "bottom",
       conditions: [DesignPlaceholder.PLAYER_PREFIX],
     },
     {
@@ -114,6 +131,7 @@ const basePlayer: PlayerDesign = {
       position: { x: 0, y: BASE_PL_SIZE - 20 },
       fill: "text",
       shadowColor: "textShadow",
+      verticalAlign: "bottom",
       shadowOffset: { x: 10, y: 10 },
       conditions: [RenderCondition.NOT, DesignPlaceholder.PLAYER_PREFIX],
     },
@@ -125,6 +143,14 @@ const basePlayer: PlayerDesign = {
       fontWeight: 900,
       fill: "text",
       position: { x: 45, y: 20 },
+      shadowBlur: 15,
+      shadowColor: "placementShadow",
+    },
+    {
+      type: "playerFlag",
+      position: { x: 40, y: 185 },
+      size: { width: 100, height: 100 },
+      fillMode: "contain",
     },
   ],
 };
@@ -134,61 +160,67 @@ const getScale = (size: number) => ({
   y: size / BASE_PL_SIZE,
 });
 
-const TWITTER_HEIGHT = 50 * getScale(PLAYER_SIZE).y;
-const remainingWidth =
-  CANVAS_WIDTH - PADDING * 2 - PLAYER_SIZE * 4 - PLAYER_SPACING * 3;
-const remainingHeight =
-  CANVAS_HEIGHT - PADDING * 2 - PLAYER_SIZE * 2 - TWITTER_HEIGHT * 2;
-const startX = PADDING + remainingWidth / 2;
-const startY = PADDING + remainingHeight / 2;
+const firstRow = [
+  {
+    position: {
+      x: PL_START_X,
+      y: 160,
+    },
+    scale: getScale(PL_SIZE),
+  },
+  {
+    position: {
+      x: PL_START_X + PL_SIZE + PLAYER_SPACING,
+      y: 160,
+    },
+    scale: getScale(PL_SIZE),
+  },
+  {
+    position: {
+      x: PL_START_X + PL_SIZE * 2 + PLAYER_SPACING * 2,
+      y: 160,
+    },
+    scale: getScale(PL_SIZE),
+  },
+  {
+    position: {
+      x: PL_START_X + PL_SIZE * 3 + PLAYER_SPACING * 3,
+      y: 160,
+    },
+    scale: getScale(PL_SIZE),
+  },
+];
 
-const getFirstRowPositions = () => {
-  const row: {
-    position: { x: number; y: number };
-    scale: { x: number; y: number };
-  }[] = [];
-
-  for (let i = 0; i < 4; i++) {
-    row.push({
-      position: {
-        x: startX + i * (PLAYER_SIZE + PLAYER_SPACING),
-        y: startY,
-      },
-      scale: getScale(PLAYER_SIZE),
-    });
-  }
-
-  return row;
-};
-
-const getSecondRowPositions = () => {
-  const row: {
-    position: { x: number; y: number };
-    scale: { x: number; y: number };
-  }[] = [];
-
-  for (let i = 0; i < 4; i++) {
-    row.push({
-      position: {
-        x: startX + i * (PLAYER_SIZE + PLAYER_SPACING),
-        y: startY + PLAYER_SIZE + PLAYER_SPACING + TWITTER_HEIGHT,
-      },
-      scale: getScale(PLAYER_SIZE),
-    });
-  }
-
-  return row;
-};
-
-const firstRow: {
-  position: { x: number; y: number };
-  scale: { x: number; y: number };
-}[] = getFirstRowPositions();
-
-const secondRow: {
-  position: { x: number; y: number };
-  scale: { x: number; y: number };
-}[] = getSecondRowPositions();
+const secondRow = [
+  {
+    position: {
+      x: PL_START_X,
+      y: 552,
+    },
+    scale: getScale(PL_SIZE),
+  },
+  {
+    position: {
+      x: PL_START_X + PL_SIZE + PLAYER_SPACING,
+      y: 552,
+    },
+    scale: getScale(PL_SIZE),
+  },
+  {
+    position: {
+      x: PL_START_X + PL_SIZE * 2 + PLAYER_SPACING * 2,
+      y: 552,
+    },
+    scale: getScale(PL_SIZE),
+  },
+  {
+    position: {
+      x: PL_START_X + PL_SIZE * 3 + PLAYER_SPACING * 3,
+      y: 552,
+    },
+    scale: getScale(PL_SIZE),
+  },
+];
 
 const players: Partial<PlayerDesign>[] = [
   {
@@ -217,31 +249,158 @@ const players: Partial<PlayerDesign>[] = [
   },
 ];
 
+const colorPalette: Design["colorPalette"] = {
+  primary: { color: "rgb(179, 0, 0)", name: "Primary" },
+  secondary: { color: "rgb(235, 171, 64)", name: "Secondary" },
+  background: { color: "rgb(0, 0, 0)", name: "Background" },
+  text: { color: "rgb(255, 255, 255)", name: "Text" },
+  // textStroke: { color: "rgb(0, 0, 0)", name: "Text Stroke" },
+  textShadow: { color: "rgb(0, 0, 0)", name: "Text Shadow" },
+  placementShadow: { color: "rgb(255, 255, 255)", name: "Placement Shadow" },
+  playerBackground: { color: "rgb(0, 0, 0)", name: "Player Background" },
+  characterShadow: { color: "rgb(255, 0, 0)", name: "Character Shadow" },
+  smashBall: { color: "rgba(255, 255, 255, 0.2)", name: "Smash Ball" },
+};
+
+const background: LayerDesign = {
+  elements: [
+    {
+      type: "rect",
+      fill: "background",
+      position: { x: 0, y: 0 },
+      size: { width: CANVAS_WIDTH, height: CANVAS_HEIGHT },
+    },
+    {
+      id: "smashBall",
+      type: "svg",
+      src: "/assets/top8/theme/mini/smash_ball.svg",
+      position: {
+        x: (CANVAS_WIDTH - SMASH_BALL_SIZE) / 2 + 510,
+        y: (CANVAS_HEIGHT - SMASH_BALL_SIZE) / 2 - 200,
+      },
+      size: { width: SMASH_BALL_SIZE, height: SMASH_BALL_SIZE },
+      palette: {
+        color_1: "smashBall",
+      },
+    },
+    {
+      id: "backgroundImage",
+      type: "backgroundImage",
+      conditions: [RenderCondition.BACKGROUND_IMG],
+      position: { x: 0, y: 0 },
+      size: { width: CANVAS_WIDTH, height: CANVAS_HEIGHT },
+      fillMode: "cover",
+    },
+    {
+      id: "bg",
+      type: "svg",
+      src: "/assets/top8/theme/mini/bg_frame.svg",
+      position: { x: 0, y: 0 },
+      size: { width: CANVAS_WIDTH, height: CANVAS_HEIGHT },
+      palette: {
+        color_1: "secondary",
+        color_2: "primary",
+      },
+    },
+    {
+      id: "creatorText",
+      type: "smartText",
+      textId: "creatorText",
+      text: "Design by @Elenriqu3",
+      fontSize: 25,
+      fontWeight: 900,
+      fill: "text",
+      anchor: "bottomRight",
+      position: {
+        x: CANVAS_WIDTH - INLINE_PADDING - 10,
+        y: CANVAS_HEIGHT - INLINE_PADDING,
+      },
+    },
+  ],
+};
+
+const tournament: LayerDesign = {
+  elements: [
+    {
+      type: "flexGroup",
+      id: "tournamentInfoGroup",
+      position: { x: INLINE_PADDING, y: 25 },
+      size: {
+        width: CANVAS_WIDTH - INLINE_PADDING * 2 - TOURNAMENT_ICON_SIZE,
+        height: TOURNAMENT_ICON_SIZE,
+      },
+      direction: "row",
+      align: "center",
+      gap: 10,
+      elements: [
+        {
+          type: "tournamentIcon",
+          id: "tournamentIcon",
+          name: "Tournament Icon",
+          position: { x: 0, y: 0 },
+          size: { width: TOURNAMENT_ICON_SIZE, height: TOURNAMENT_ICON_SIZE },
+          conditions: [RenderCondition.TOURNAMENT_ICON],
+          fillMode: "contain",
+          align: "top",
+        },
+        {
+          type: "text",
+          id: "topLeftText",
+          name: "Top Left Text",
+          position: { x: 0, y: 0 },
+          textId: "topLeftText",
+          fontSize: 40,
+          fontWeight: 900,
+          fill: "text",
+          selectable: true,
+        },
+      ],
+    },
+    {
+      type: "smartText",
+      id: "topRightText",
+      name: "Top Right Text",
+      position: {
+        x: CANVAS_WIDTH - INLINE_PADDING - 10,
+        y: INLINE_PADDING + 10,
+      },
+      textId: "topRightText",
+      fontSize: 20,
+      fontWeight: 900,
+      fill: "text",
+      anchor: "topRight",
+      selectable: true,
+    },
+    {
+      type: "text",
+      id: "bottomText",
+      name: "Bottom Text",
+      position: { x: INLINE_PADDING, y: CANVAS_HEIGHT - INLINE_PADDING - 40 },
+      textId: "bottomText",
+      fontSize: 40,
+      fontWeight: 900,
+      fill: "text",
+      selectable: true,
+    },
+  ],
+};
+
 export const squaresDesign: Design = {
   name: "Top8er (Square Variant)",
   author: "@Elenriqu3",
   canvasSize: {
-    width: 1920,
-    height: 1080,
+    width: CANVAS_WIDTH,
+    height: CANVAS_HEIGHT,
   },
   canvasDisplayScale: 0.5,
-  colorPalette: {
-    primary: { color: "rgb(179, 0, 0)", name: "Primary" },
-    secondary: { color: "rgb(235, 171, 64)", name: "Secondary" },
-    background: { color: "rgb(0, 0, 0)", name: "Background" },
-    accent: { color: "rgba(255, 255, 255, 0.2)", name: "Accent" },
-    text: { color: "rgb(255, 255, 255)", name: "Text" },
-    textShadow: { color: "rgb(0, 0, 0)", name: "Text Shadow" },
-    playerBackground: { color: "rgb(0, 0, 0)", name: "Player Background" },
-    characterShadow: { color: "rgb(255, 0, 0)", name: "Character Shadow" },
-  },
+  colorPalette,
   textPalette: {
-    tournamentName: {
+    topLeftText: {
       text: `${DesignPlaceholder.TOURNAMENT_NAME} - ${DesignPlaceholder.EVENT_NAME}`,
-      name: "Tournament Name",
+      name: "Top Left Text",
     },
     topRightText: {
-      text: "smash-ranker.vercel.app",
+      text: DesignPlaceholder.TOURNAMENT_URL,
       name: "Top Right Text",
     },
     bottomText: {
@@ -249,105 +408,8 @@ export const squaresDesign: Design = {
       name: "Bottom Text",
     },
   },
-  background: {
-    elements: [
-      {
-        type: "rect",
-        fill: "background",
-        position: { x: 0, y: 0 },
-        size: { width: CANVAS_WIDTH, height: CANVAS_HEIGHT },
-      },
-      {
-        id: "smashBall",
-        type: "svg",
-        src: "/assets/top8/theme/mini/smash_ball.svg",
-        position: {
-          x: (CANVAS_WIDTH - SMASH_BALL_SIZE) / 2 + 510,
-          y: (CANVAS_HEIGHT - SMASH_BALL_SIZE) / 2 - 200,
-        },
-        size: { width: SMASH_BALL_SIZE, height: SMASH_BALL_SIZE },
-        palette: {
-          color_1: "accent",
-        },
-      },
-      {
-        id: "backgroundImage",
-        type: "backgroundImage",
-        conditions: [RenderCondition.BACKGROUND_IMG],
-        position: { x: 0, y: 0 },
-        size: { width: CANVAS_WIDTH, height: CANVAS_HEIGHT },
-        fillMode: "cover",
-      },
-      {
-        id: "bg",
-        type: "svg",
-        src: "/assets/top8/theme/mini/bg_frame.svg",
-        position: { x: 0, y: 0 },
-        size: { width: CANVAS_WIDTH, height: CANVAS_HEIGHT },
-        palette: {
-          color_1: "primary",
-          color_2: "secondary",
-        },
-      },
-    ],
-  },
-  tournament: {
-    elements: [
-      {
-        type: "text",
-        id: "tournamentName",
-        name: "Tournament Name",
-        position: { x: PADDING, y: PADDING },
-        textId: "tournamentName",
-        fontSize: 40,
-        fontWeight: 900,
-        fill: "text",
-        conditions: [RenderCondition.NOT, RenderCondition.TOURNAMENT_ICON],
-      },
-      {
-        type: "smartText",
-        id: "topRightText",
-        name: "Top Right Text",
-        position: { x: CANVAS_WIDTH - PADDING, y: PADDING },
-        textId: "topRightText",
-        fontSize: 25,
-        fontWeight: 900,
-        fill: "text",
-        anchor: "topRight",
-      },
-      {
-        type: "tournamentIcon",
-        id: "tournamentIcon",
-        name: "Tournament Icon",
-        position: { x: PADDING, y: 10 },
-        size: { width: TOURNAMENT_ICON_SIZE, height: TOURNAMENT_ICON_SIZE },
-        conditions: [RenderCondition.TOURNAMENT_ICON],
-        fillMode: "contain",
-        align: "top",
-      },
-      {
-        type: "text",
-        id: "tournamentNameWithIcon",
-        name: "Tournament Name (w/ Icon)",
-        position: { x: PADDING + TOURNAMENT_ICON_SIZE + 20, y: PADDING },
-        textId: "tournamentName",
-        fontSize: 40,
-        fontWeight: 900,
-        fill: "text",
-        conditions: [RenderCondition.TOURNAMENT_ICON],
-      },
-      {
-        type: "text",
-        id: "bottomText",
-        name: "Bottom Text",
-        position: { x: PADDING, y: CANVAS_HEIGHT - PADDING - 40 },
-        textId: "bottomText",
-        fontSize: 40,
-        fontWeight: 900,
-        fill: "text",
-      },
-    ],
-  },
+  background,
+  tournament,
   basePlayer,
   players,
 };
