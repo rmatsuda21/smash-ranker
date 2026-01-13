@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "wouter";
 import { IoIosMenu } from "react-icons/io";
 import { MdClose } from "react-icons/md";
@@ -46,15 +46,15 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
     return () => window.removeEventListener("click", handleClickOutside);
   }, []);
 
-  const label = useMemo(() => {
-    return NAV_ITEMS.find((item) => item.href === location)?.siteLabel ?? "";
-  }, [location]);
+  // const label = useMemo(() => {
+  //   return NAV_ITEMS.find((item) => item.href === location)?.siteLabel ?? "";
+  // }, [location]);
 
   return (
     <div className={styles.root}>
       <nav className={styles.nav}>
         <img src="/favicon.svg" alt="Smash Ranker" />
-        <h1>{label}</h1>
+        <h1>Smash Ranker</h1>
         <IoIosMenu className={styles.icon} onClick={onMenuClick} />
       </nav>
       <div
