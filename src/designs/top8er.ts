@@ -29,6 +29,7 @@ const basePlayer: PlayerDesign = {
       position: { x: 0, y: BASE_PL_SIZE + 10 },
       size: { width: BASE_PL_SIZE, height: TWIITER_HEIGHT },
       conditions: [DesignPlaceholder.PLAYER_TWITTER],
+      align: "center",
       elements: [
         {
           type: "rect",
@@ -48,7 +49,7 @@ const basePlayer: PlayerDesign = {
           size: { width: BASE_PL_SIZE, height: 40 },
         },
         {
-          type: "text",
+          type: "smartText",
           conditions: [DesignPlaceholder.PLAYER_TWITTER],
           text: `@${DesignPlaceholder.PLAYER_TWITTER}`,
           fontSize: 40,
@@ -56,8 +57,8 @@ const basePlayer: PlayerDesign = {
           verticalAlign: "middle",
           fontWeight: 600,
           fill: "text",
-          position: { x: 0, y: 0 },
-          size: { width: BASE_PL_SIZE, height: TWIITER_HEIGHT },
+          position: { x: 50, y: 0 },
+          size: { width: BASE_PL_SIZE - 50, height: TWIITER_HEIGHT - 10 },
         },
       ],
     },
