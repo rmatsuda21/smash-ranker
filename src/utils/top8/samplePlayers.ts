@@ -10,6 +10,18 @@ const DEFAULT_PLAYER: PlayerInfo = {
   prefix: "",
 };
 
+export const createBlankPlayer = (placement: number): PlayerInfo => ({
+  id: `blank-${crypto.randomUUID()}`,
+  entrantId: "",
+  name: "",
+  characters: [],
+  placement,
+  gamerTag: "",
+  prefix: "",
+  twitter: "",
+  country: "",
+});
+
 export const getPlacements = (playerCount: number): number[] => {
   const placements: number[] = [];
 

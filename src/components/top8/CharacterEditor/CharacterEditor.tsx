@@ -33,6 +33,11 @@ const CharacterEditorComponent = ({
   }, [characters, characterIndex]);
 
   const onCharacterChange = (characterId: string) => {
+    if (characters.length === 0) {
+      onCharactersChange([{ id: characterId, alt: 0 }]);
+      return;
+    }
+
     onCharactersChange(
       characters.map((char, i) =>
         i === characterIndex ? { id: characterId, alt: 0 } : char
@@ -41,6 +46,8 @@ const CharacterEditorComponent = ({
   };
 
   const onAltChange = (alt: CharacerData["alt"]) => {
+    if (!selectedCharacter) return;
+
     onCharactersChange(
       characters.map((char, i) =>
         i === characterIndex ? { id: selectedCharacter.id, alt } : char

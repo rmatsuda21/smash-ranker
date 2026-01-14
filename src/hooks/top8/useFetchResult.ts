@@ -9,6 +9,7 @@ import { TournamentInfo } from "@/types/top8/Tournament";
 import { usePlayerStore } from "@/store/playerStore";
 import { useTournamentStore } from "@/store/tournamentStore";
 import { assetRepository } from "@/db/repository";
+import { createBlankPlayer, getPlacements } from "@/utils/top8/samplePlayers";
 
 const DEFAULT_CHARACTER_ID = "1293"; // Puff <3
 const IDB_IMAGES_BASE_URL = "/idb-images/";
@@ -286,6 +287,24 @@ const filterValidImages = (
   return images.filter((img): img is TournamentImage => img !== null);
 };
 
+const padPlayersWithBlanks = (
+  players: PlayerInfo[],
+  targetCount: number
+): PlayerInfo[] => {
+  if (players.length >= targetCount) {
+    return players;
+  }
+
+  const placements = getPlacements(targetCount);
+  const paddedPlayers = [...players];
+
+  for (let i = players.length; i < targetCount; i++) {
+    paddedPlayers.push(createBlankPlayer(placements[i]));
+  }
+
+  return paddedPlayers;
+};
+
 const buildTournamentInfo = (
   event: Event,
   storedImages?: StoredImagesMap
@@ -349,7 +368,8 @@ export const useFetchResult = () => {
         payload: tournamentInfo,
       });
 
-      playerDispatch({ type: "FETCH_PLAYERS_SUCCESS", payload: players });
+      const paddedPlayers = padPlayersWithBlanks(players, playerCount);
+      playerDispatch({ type: "FETCH_PLAYERS_SUCCESS", payload: paddedPlayers });
     } catch (error) {
       console.error("Failed to fetch tournament data:", error);
       playerDispatch({
