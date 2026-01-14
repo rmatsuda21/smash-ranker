@@ -13,6 +13,7 @@ type Props = {
   name: string;
   onTemplateClick: (templateId: string) => void;
   viewMode: "grid" | "list";
+  loadingTemplateId: string | null;
 };
 
 export const TemplateGroup = ({
@@ -20,6 +21,7 @@ export const TemplateGroup = ({
   name,
   onTemplateClick,
   viewMode,
+  loadingTemplateId,
 }: Props) => {
   const [collapsed, setCollapsed] = useState(false);
 
@@ -47,6 +49,7 @@ export const TemplateGroup = ({
             key={template.id}
             template={template}
             onClick={() => onTemplateClick(template.id)}
+            isLoading={loadingTemplateId === template.id}
           />
         ))}
       </div>

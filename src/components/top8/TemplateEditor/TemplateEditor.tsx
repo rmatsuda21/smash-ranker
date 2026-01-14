@@ -83,10 +83,13 @@ export const TemplateEditor = ({ className }: Props) => {
   const [userTemplates, setUserTemplates] = useState<DBTemplate[]>([]);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [loadingTemplateId, setLoadingTemplateId] = useState<string | null>(
+    null
+  );
 
   const dispatch = useCanvasStore((state) => state.dispatch);
   const playerDispatch = usePlayerStore((state) => state.dispatch);
-  const fontDispatch = useFontStore((state) => state.dispatch);
+  const selectFont = useFontStore((state) => state.selectFont);
 
   useEffect(() => {
     const fetchTemplates = async () => {
@@ -104,6 +107,8 @@ export const TemplateEditor = ({ className }: Props) => {
   }, [templates, getTemplateWithId]);
 
   const loadTemplate = async (id: string) => {
+    setLoadingTemplateId(id);
+
     let template: DBTemplate | undefined;
     if (
       DEFAULT_TEMPLATE_GROUPS.some((group) =>
@@ -118,13 +123,12 @@ export const TemplateEditor = ({ className }: Props) => {
     }
 
     if (template) {
+      await selectFont(template.font);
       dispatch({ type: "SET_DESIGN", payload: template.design });
       playerDispatch({ type: "CLEAR_SELECTED_PLAYER" });
-      fontDispatch({
-        type: "SET_SELECTED_FONT",
-        payload: template.font,
-      });
     }
+
+    setLoadingTemplateId(null);
   };
 
   const handleCreateTemplate = (name: string) => {
@@ -183,6 +187,7 @@ export const TemplateEditor = ({ className }: Props) => {
           name={group.name}
           onTemplateClick={confirmTemplateClick}
           viewMode={viewMode}
+          loadingTemplateId={loadingTemplateId}
         />
       ))}
       {userTemplates.length > 0 && (
@@ -191,6 +196,7 @@ export const TemplateEditor = ({ className }: Props) => {
           name="My Templates"
           onTemplateClick={confirmTemplateClick}
           viewMode={viewMode}
+          loadingTemplateId={loadingTemplateId}
         />
       )}
       <TemplateClickConfirmation />
