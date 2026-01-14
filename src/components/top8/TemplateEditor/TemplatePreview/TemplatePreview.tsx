@@ -16,6 +16,7 @@ type Props = {
   template: DBTemplate;
   onClick: () => void;
   className?: string;
+  isLoading?: boolean;
 };
 
 const samplePlayers = createSamplePlayers(20);
@@ -33,7 +34,12 @@ const sampleTournament: TournamentInfo = {
   url: "https://start.gg/420-69-tournament",
 };
 
-export const TemplatePreview = ({ template, onClick, className }: Props) => {
+export const TemplatePreview = ({
+  template,
+  onClick,
+  className,
+  isLoading,
+}: Props) => {
   const [imageDataUrl, setImageDataUrl] = useState<string | null>(null);
   const [isRendering, setIsRendering] = useState(true);
   const [isBackgroundReady, setIsBackgroundReady] = useState(false);
@@ -223,6 +229,12 @@ export const TemplatePreview = ({ template, onClick, className }: Props) => {
 
       {!imageDataUrl && !isRendering && (
         <div className={styles.error}>Failed to load preview</div>
+      )}
+
+      {isLoading && (
+        <div className={styles.loadingOverlay}>
+          <Spinner size={32} />
+        </div>
       )}
 
       {Tooltip && <Tooltip className={styles.tooltip} />}
