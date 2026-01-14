@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { HiOutlineUserRemove } from "react-icons/hi";
 import debounce from "lodash/debounce";
 import cn from "classnames";
 
@@ -6,9 +7,12 @@ import { usePlayerStore } from "@/store/playerStore";
 import { CharacerData, PlayerInfo } from "@/types/top8/Player";
 import { CharacterEditor } from "@/components/top8/CharacterEditor/CharacterEditor";
 import { Input } from "@/components/shared/Input/Input";
+import { Button } from "@/components/shared/Button/Button";
 import { PlayerSelector } from "@/components/top8/PlayersEditor/PlayerSelector";
 import { AssetSelector } from "@/components/top8/AssetSelector/AssetSelector";
 import { CountryDropDown } from "@/components/top8/PlayersEditor/CountryDropDown";
+import { createBlankPlayer } from "@/utils/top8/samplePlayers";
+import { useConfirmation } from "@/hooks/useConfirmation";
 
 import styles from "./PlayersEditor.module.scss";
 
@@ -117,6 +121,24 @@ export const PlayersEditor = ({ className }: Props) => {
     debouncedUpdatePlayer(newPlayer, selectedPlayerIndex);
   };
 
+  const handleClearPlayer = () => {
+    if (!tempPlayer) return;
+    const blankPlayer = createBlankPlayer(tempPlayer.placement);
+    setTempPlayer(blankPlayer);
+    dispatch({
+      type: "UPDATE_PLAYER",
+      payload: { index: selectedPlayerIndex, player: blankPlayer },
+    });
+  };
+
+  const {
+    confirm: confirmClearPlayer,
+    ConfirmationDialog: ClearPlayerConfirmation,
+  } = useConfirmation(handleClearPlayer, {
+    title: "Clear Player?",
+    description: "This will reset all player data for this slot.",
+  });
+
   return (
     <div className={cn(styles.wrapper, className)}>
       <div className={styles.playerSelector}>
@@ -177,6 +199,14 @@ export const PlayersEditor = ({ className }: Props) => {
           disabled={!selectedPlayer}
         />
       </div>
+      <Button
+        variant="outline"
+        onClick={confirmClearPlayer}
+        disabled={!selectedPlayer}
+      >
+        <HiOutlineUserRemove /> Clear Player
+      </Button>
+      <ClearPlayerConfirmation />
     </div>
   );
 };
