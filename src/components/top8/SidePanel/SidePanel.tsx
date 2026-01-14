@@ -6,6 +6,7 @@ import { Trans } from "@lingui/react/macro";
 import { EditorTab } from "@/types/top8/Editor";
 import { useEditorStore } from "@/store/editorStore";
 import { SidePanelNav } from "@/components/top8/SidePanel/SidePanelNav";
+import { InfoPanel } from "@/components/top8/SidePanel/InfoPanel";
 
 import styles from "./SidePanel.module.scss";
 
@@ -70,11 +71,7 @@ export const SidePanel = ({ className }: Props) => {
         [styles.closed]: !isSidePanelOpen,
       })}
     >
-      <SidePanelNav
-        activeTab={activeTab}
-        onTabChange={handleTabChange}
-        className={styles.nav}
-      />
+      <SidePanelNav activeTab={activeTab} onTabChange={handleTabChange} />
 
       <div className={styles.editorsWindow}>
         <div className={styles.editors}>
@@ -108,6 +105,11 @@ export const SidePanel = ({ className }: Props) => {
             <TemplateEditor
               className={cn({
                 [styles.hidden]: activeTab !== EditorTab.TEMPLATES,
+              })}
+            />
+            <InfoPanel
+              className={cn({
+                [styles.hidden]: activeTab !== EditorTab.CREDIT,
               })}
             />
           </Suspense>
