@@ -1,4 +1,7 @@
 .header {
+  padding-block: 10px;
+  display: flex;
+
   background: linear-gradient(
     24deg,
     var(--accent-2),
@@ -7,13 +10,10 @@
   );
   border-top: 1px solid var(--accent-1);
   border-bottom: 1px solid var(--accent-1);
-  padding-block: 10px;
-
-  display: flex;
 
   > * {
-    border-left: 1px solid var(--gray-8);
-    border-right: 1px solid var(--gray-8);
+    border-left: 1px solid var(--accent-4);
+    border-right: 1px solid var(--accent-4);
     padding-inline: 14px;
   }
 
@@ -23,6 +23,22 @@
 
   > *:last-child {
     border-right: none;
+  }
+
+  [data-theme="light"] & {
+    background: linear-gradient(
+      24deg,
+      var(--accent-11),
+      var(--accent-12),
+      var(--accent-11)
+    );
+    border-top: 1px solid var(--accent-10);
+    border-bottom: 1px solid var(--accent-10);
+
+    > * {
+      border-left: 1px solid var(--accent-9);
+      border-right: 1px solid var(--accent-9);
+    }
   }
 }
 

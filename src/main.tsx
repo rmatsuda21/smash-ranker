@@ -24,6 +24,10 @@ import App from "@/App";
   const savedTheme = Cookies.get(COOKIES.THEME) || "dark";
   document.documentElement.setAttribute("data-theme", savedTheme);
 
+  // Apply saved accent color preference
+  const savedAccent = Cookies.get(COOKIES.ACCENT_COLOR) || "pink";
+  document.documentElement.setAttribute("data-accent", savedAccent);
+
   await waitForServiceWorker();
   inject();
   createRoot(document.getElementById("root")!).render(

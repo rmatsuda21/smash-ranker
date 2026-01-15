@@ -21,7 +21,7 @@
   border: 1px solid var(--gray-6);
   padding: var(--input-padding-sm);
   border-radius: 5px;
-  color: white;
+  color: var(--gray-12);
   transition: background-color 0.15s ease;
 
   &:hover:not(:disabled) {
@@ -90,7 +90,7 @@
   background-color: var(--gray-2);
   border: 1px solid var(--gray-6);
   border-radius: 4px;
-  color: white;
+  color: var(--gray-12);
   font-size: var(--font-size-sm);
   transition: border-color 0.15s ease;
 

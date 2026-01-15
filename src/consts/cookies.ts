@@ -9,4 +9,5 @@ export const COOKIES = {
   LAST_USED_FONT_FAMILY: "last-used-font-family",
   LANGUAGE: "language",
   THEME: "theme",
+  ACCENT_COLOR: "accent-color",
 };

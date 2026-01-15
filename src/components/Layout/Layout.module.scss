@@ -34,6 +34,11 @@
   img {
     width: 32px;
     height: 32px;
+    transition: filter 0.2s ease;
+
+    [data-theme="light"] & {
+      filter: invert(1);
+    }
   }
 
   h1 {
@@ -59,7 +64,7 @@
 
   a {
     position: relative;
-    color: white;
+    color: var(--gray-12);
     text-decoration: none;
     font-size: 32px;
     font-weight: 600;
@@ -69,7 +74,7 @@
 
     &.active {
       &:before {
-        background-color: white;
+        background-color: var(--accent-9);
       }
     }
 
@@ -88,7 +93,7 @@
 
     &:hover {
       &:before {
-        background-color: white;
+        background-color: var(--accent-9);
       }
     }
   }
