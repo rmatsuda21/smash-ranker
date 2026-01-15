@@ -15,14 +15,6 @@ export const SettingsPanel = ({ className }: Props) => {
         <LanguagePicker />
         <ThemePicker />
         <AccentColorPicker />
-
-        <section className={styles.section}>
-          <h3 className={styles.sectionTitle}>About Settings</h3>
-          <p className={styles.sectionDesc}>
-            Your preferences are automatically saved and will persist across
-            sessions.
-          </p>
-        </section>
       </div>
     </div>
   );
