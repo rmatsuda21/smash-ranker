@@ -1,0 +1,175 @@
+.settings {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sectionIcon {
+  width: 14px;
+  height: 14px;
+  color: var(--accent-9);
+}
+
+.sectionTitle {
+  font-size: var(--font-size-xs);
+  font-weight: 900;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--gray-11);
+  margin: 0;
+}
+
+.sectionDesc {
+  font-size: var(--font-size-sm);
+  color: var(--gray-10);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.optionGrid {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.optionButton {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  flex: 1;
+  padding: 8px 14px;
+  background-color: transparent;
+  border: 1px solid var(--gray-6);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background-color: var(--gray-4);
+    border-color: var(--gray-7);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent-9);
+    outline-offset: 2px;
+  }
+
+  &.selected {
+    background-color: var(--accent-3);
+    border-color: var(--accent-8);
+
+    &:hover {
+      background-color: var(--accent-4);
+    }
+
+    // Light theme
+    [data-theme="light"] & {
+      background-color: var(--accent-11);
+      border-color: var(--accent-9);
+
+      &:hover {
+        background-color: var(--accent-10);
+      }
+    }
+  }
+}
+
+.optionLabel {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--gray-12);
+}
+
+.optionSubLabel {
+  font-size: var(--font-size-xs);
+  color: var(--gray-10);
+
+  &::before {
+    content: "·";
+    margin-right: 4px;
+  }
+}
+
+.themeIcon {
+  font-size: 16px;
+  color: var(--gray-12);
+  display: flex;
+}
+
+.checkIcon {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 10px;
+  color: var(--accent-9);
+}
+
+.colorGrid {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.colorButton {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  background-color: transparent;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    transform: scale(0.95);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--gray-12);
+    outline-offset: 2px;
+  }
+
+  &.selected {
+    border-color: var(--gray-12);
+  }
+}
+
+.colorSwatch {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: var(--swatch-color);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.colorCheck {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  color: #fff;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5));
+}

@@ -21,7 +21,7 @@
     padding: var(--input-padding-sm);
     background-color: var(--gray-1);
 
-    color: white;
+    color: var(--gray-12);
     font-size: var(--font-size-md);
 
     border-radius: 5px;
@@ -35,8 +35,11 @@
   }
 
   input[type="date"]::-webkit-calendar-picker-indicator {
-    filter: invert(1);
     cursor: pointer;
+  }
+
+  [data-theme="dark"] & input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
   }
 
   input[type="checkbox"] {
@@ -72,7 +75,7 @@
 
       &::before {
         content: "✓";
-        color: white;
+        color: #fff;
         font-size: calc(var(--size) * 1px);
         font-weight: 900;
       }

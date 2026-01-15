@@ -22,7 +22,7 @@
 
     font-size: 25px;
     font-weight: 900;
-    color: #fff;
+    color: var(--gray-12);
   }
 
   span::after {
@@ -34,19 +34,19 @@
     left: 0;
     width: 350px;
     height: 100%;
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: var(--gray-4);
   }
 
   span:nth-child(1) {
-    color: #ffd700;
+    color: var(--amber-9);
   }
 
   span:nth-child(2) {
-    color: #c0c0c0;
+    color: var(--gray-9);
   }
 
   span:nth-child(3) {
-    color: #cd7f32;
+    color: var(--amber-7);
   }
 }
 
@@ -66,14 +66,14 @@
     justify-content: center;
 
     padding: 0 10px;
-    background-color: #222;
-    border: 1px solid #ccc;
+    background-color: var(--gray-3);
+    border: 1px solid var(--gray-6);
     border-radius: 5px;
 
     span {
       font-size: 14px;
       font-weight: 800;
-      color: #fff;
+      color: var(--gray-12);
     }
 
     .header {
@@ -92,7 +92,7 @@
       width: auto;
       border-radius: 5px;
 
-      background-color: rgba(255, 255, 255, 0.075);
+      background-color: var(--gray-4);
     }
 
     .formWrapper {
@@ -104,11 +104,11 @@
     }
 
     &:not(.selected):hover {
-      border-color: #444;
+      border-color: var(--gray-8);
     }
 
     &.selected {
-      outline: 2px solid #ccc;
+      outline: 2px solid var(--accent-9);
       outline-offset: -2px;
     }
   }

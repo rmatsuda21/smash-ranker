@@ -100,7 +100,7 @@
     cursor: pointer;
     background-color: transparent;
     border: none;
-    color: white;
+    color: var(--gray-12);
 
     width: 100%;
     aspect-ratio: 1 / 1;
@@ -142,21 +142,42 @@
     }
   }
 
-  .credit {
+  .bottomButtons {
     margin-top: auto;
     margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .bottomButton {
     width: 40px;
     height: 40px;
     border-radius: 50%;
+
+    &:hover {
+      background-color: var(--gray-8);
+    }
 
     &.active {
       background-color: var(--gray-8);
       color: var(--accent-9);
     }
 
+    // Light theme - use lighter backgrounds for better contrast
+    [data-theme="light"] & {
+      &:hover {
+        background-color: var(--gray-4);
+      }
+
+      &.active {
+        background-color: var(--accent-11);
+      }
+    }
+
     svg {
-      width: 25px;
-      height: 25px;
+      width: 22px;
+      height: 22px;
     }
   }
 }
