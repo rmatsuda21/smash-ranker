@@ -20,6 +20,7 @@ interface FontState {
   fetching: boolean;
   error?: Error;
   dispatch: (action: FontAction) => void;
+  selectFont: (fontFamily: string) => Promise<void>;
 }
 
 type FontAction =
@@ -91,20 +92,51 @@ const fontReducer = (state: FontState, action: FontAction): FontState => {
   }
 };
 
-const initialState: FontState = {
+const initialState: Omit<FontState, "dispatch" | "selectFont"> = {
   fonts: new Set(),
   selectedFont: "Arial",
   fetching: true,
   error: undefined,
-  dispatch: () => {},
 };
 
 export const useFontStore = create<FontState>()(
   devtools(
-    (set) => ({
+    (set, get) => ({
       ...initialState,
       dispatch: (action: FontAction) =>
         set((state) => fontReducer(state, action)),
+
+      selectFont: async (fontFamily: string) => {
+        const { fonts, dispatch } = get();
+        const font = Array.from(fonts).find((f) => f.fontFamily === fontFamily);
+
+        if (!font) {
+          dispatch({
+            type: "SET_ERROR",
+            payload: new Error(`Font "${fontFamily}" not found`),
+          });
+          return;
+        }
+
+        if (font.loaded) {
+          dispatch({ type: "SET_SELECTED_FONT", payload: fontFamily });
+          return;
+        }
+
+        dispatch({ type: "LOAD_FONT", payload: fontFamily });
+
+        try {
+          await loadFont(font);
+          dispatch({ type: "LOAD_FONT_SUCCESS", payload: font });
+        } catch (error) {
+          dispatch({
+            type: "LOAD_FONT_FAIL",
+            payload: {
+              error: error instanceof Error ? error : new Error(String(error)),
+            },
+          });
+        }
+      },
     }),
     { name: "font-store" }
   )
