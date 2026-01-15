@@ -6,7 +6,7 @@ import { Trans } from "@lingui/react/macro";
 import { EditorTab } from "@/types/top8/Editor";
 import { useEditorStore } from "@/store/editorStore";
 import { SidePanelNav } from "@/components/top8/SidePanel/SidePanelNav";
-import { InfoPanel } from "@/components/top8/SidePanel/InfoPanel";
+import { InfoPanel } from "@/components/top8/InfoPanel/InfoPanel";
 
 import styles from "./SidePanel.module.scss";
 
