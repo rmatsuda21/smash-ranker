@@ -43,7 +43,6 @@ export const AccentColorPicker = () => {
         <FaDroplet className={styles.sectionIcon} />
         <h3 className={styles.sectionTitle}>Accent Color</h3>
       </div>
-      <p className={styles.sectionDesc}>Choose your preferred accent color</p>
       <div className={styles.colorGrid}>
         {ACCENT_COLORS.map((accent) => (
           <button
