@@ -11,11 +11,11 @@
 
     min-width: 35px;
     aspect-ratio: 1;
-    border: 2px solid #ccc;
+    border: 2px solid var(--gray-6);
     border-radius: 5px;
     padding: 5px;
-    background-color: #222;
-    color: #fff;
+    background-color: var(--gray-3);
+    color: var(--gray-12);
     cursor: pointer;
     transition: background-color 0.2s ease;
 
