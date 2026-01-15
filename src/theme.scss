@@ -1,6 +1,9 @@
 @use "./_theme" as *;
+@use "sass:color";
 
-:root {
+// Dark theme (default)
+:root,
+[data-theme="dark"] {
   @include generate-scale(#414141, "gray", "gray");
   @include generate-scale(#e5484d, "crimson");
   @include generate-scale(#f59e0b, "amber");
@@ -10,4 +13,31 @@
   @include generate-scale(#e93d82, "accent");
 
   color: white;
+}
+
+// Light theme
+[data-theme="light"] {
+  // Inverted gray scale for light mode
+  --gray-1: #{color.scale(#f8f8f8, $lightness: 0%)};
+  --gray-2: #{color.scale(#f0f0f0, $lightness: 0%)};
+  --gray-3: #{color.scale(#e8e8e8, $lightness: 0%)};
+  --gray-4: #{color.scale(#dedede, $lightness: 0%)};
+  --gray-5: #{color.scale(#d0d0d0, $lightness: 0%)};
+  --gray-6: #{color.scale(#b8b8b8, $lightness: 0%)};
+  --gray-7: #{color.scale(#a0a0a0, $lightness: 0%)};
+  --gray-8: #{color.scale(#787878, $lightness: 0%)};
+  --gray-9: #{color.scale(#606060, $lightness: 0%)};
+  --gray-10: #{color.scale(#484848, $lightness: 0%)};
+  --gray-11: #{color.scale(#383838, $lightness: 0%)};
+  --gray-12: #{color.scale(#1a1a1a, $lightness: 0%)};
+
+  // Accent colors adjusted for light mode
+  @include generate-scale(#e5484d, "crimson");
+  @include generate-scale(#f59e0b, "amber");
+  @include generate-scale(#3b82f6, "blue");
+  @include generate-scale(#10b981, "green");
+  @include generate-scale(#8b5cf6, "purple");
+  @include generate-scale(#d6409f, "accent");
+
+  color: #1a1a1a;
 }
