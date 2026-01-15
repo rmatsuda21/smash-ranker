@@ -35,7 +35,6 @@ export const ThemePicker = () => {
         <FaPalette className={styles.sectionIcon} />
         <h3 className={styles.sectionTitle}>Theme</h3>
       </div>
-      <p className={styles.sectionDesc}>Choose your preferred color scheme</p>
       <div className={styles.optionGrid}>
         {THEMES.map((theme) => (
           <button

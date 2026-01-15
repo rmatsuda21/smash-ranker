@@ -32,9 +32,6 @@ export const LanguagePicker = () => {
         <FaGlobe className={styles.sectionIcon} />
         <h3 className={styles.sectionTitle}>Language</h3>
       </div>
-      <p className={styles.sectionDesc}>
-        Select your preferred language for the interface
-      </p>
       <div className={styles.optionGrid}>
         {LANGUAGES.map((lang) => (
           <button
