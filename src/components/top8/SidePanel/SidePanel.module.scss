@@ -142,9 +142,15 @@
     }
   }
 
-  .credit {
+  .bottomButtons {
     margin-top: auto;
     margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .bottomButton {
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -155,8 +161,8 @@
     }
 
     svg {
-      width: 25px;
-      height: 25px;
+      width: 22px;
+      height: 22px;
     }
   }
 }

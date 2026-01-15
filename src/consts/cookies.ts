@@ -7,4 +7,6 @@ export const COOKIES = {
   LOAD_CONFIG: "load-config",
   LOAD_TEMPLATE: "load-template",
   LAST_USED_FONT_FAMILY: "last-used-font-family",
+  LANGUAGE: "language",
+  THEME: "theme",
 };

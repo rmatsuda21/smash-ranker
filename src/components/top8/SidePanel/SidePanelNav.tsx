@@ -1,6 +1,6 @@
 import { IoPerson, IoTrophy, IoText, IoPencil } from "react-icons/io5";
 import { HiOutlineTemplate } from "react-icons/hi";
-import { FaCircleInfo } from "react-icons/fa6";
+import { FaCircleInfo, FaGear } from "react-icons/fa6";
 import { msg } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { MessageDescriptor } from "@lingui/core";
@@ -12,7 +12,7 @@ import styles from "./SidePanel.module.scss";
 import { Button } from "@/components/shared/Button/Button";
 
 const EditorTabLabels: Record<
-  Exclude<EditorTab, EditorTab.CREDIT>,
+  Exclude<EditorTab, EditorTab.CREDIT | EditorTab.SETTINGS>,
   { label: MessageDescriptor; icon: React.ReactNode }
 > = {
   [EditorTab.PLAYERS]: {
@@ -57,15 +57,28 @@ export const SidePanelNav = ({ activeTab, onTabChange }: Props) => {
           <span>{_(value.label)}</span>
         </button>
       ))}
-      <Button
-        variant="ghost"
-        className={cn(styles.credit, {
-          [styles.active]: activeTab === EditorTab.CREDIT,
-        })}
-        onClick={() => onTabChange(EditorTab.CREDIT)}
-      >
-        <FaCircleInfo />
-      </Button>
+      <div className={styles.bottomButtons}>
+        <Button
+          variant="ghost"
+          className={cn(styles.bottomButton, {
+            [styles.active]: activeTab === EditorTab.SETTINGS,
+          })}
+          onClick={() => onTabChange(EditorTab.SETTINGS)}
+          aria-label="Settings"
+        >
+          <FaGear />
+        </Button>
+        <Button
+          variant="ghost"
+          className={cn(styles.bottomButton, {
+            [styles.active]: activeTab === EditorTab.CREDIT,
+          })}
+          onClick={() => onTabChange(EditorTab.CREDIT)}
+          aria-label="Info"
+        >
+          <FaCircleInfo />
+        </Button>
+      </div>
     </div>
   );
 };

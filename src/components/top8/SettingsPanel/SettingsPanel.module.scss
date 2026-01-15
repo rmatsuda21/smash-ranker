@@ -1,0 +1,110 @@
+.settings {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sectionIcon {
+  width: 14px;
+  height: 14px;
+  color: var(--accent-9);
+}
+
+.sectionTitle {
+  font-size: var(--font-size-xs);
+  font-weight: 900;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--gray-11);
+  margin: 0;
+}
+
+.sectionDesc {
+  font-size: var(--font-size-sm);
+  color: var(--gray-10);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.optionGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.optionButton {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+
+  padding: 12px 16px;
+  background-color: var(--gray-3);
+  border: 2px solid var(--gray-5);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background-color: var(--gray-4);
+    border-color: var(--gray-6);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent-9);
+    outline-offset: 2px;
+  }
+
+  &.selected {
+    background-color: var(--accent-3);
+    border-color: var(--accent-7);
+
+    &:hover {
+      background-color: var(--accent-4);
+      border-color: var(--accent-8);
+    }
+  }
+}
+
+.optionLabel {
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  color: var(--gray-12);
+}
+
+.optionSubLabel {
+  font-size: var(--font-size-xs);
+  color: var(--gray-10);
+}
+
+.themeIcon {
+  font-size: 20px;
+  margin-bottom: 2px;
+}
+
+.checkIcon {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 12px;
+  height: 12px;
+  color: var(--accent-9);
+}
+

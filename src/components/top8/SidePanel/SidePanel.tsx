@@ -7,6 +7,7 @@ import { EditorTab } from "@/types/top8/Editor";
 import { useEditorStore } from "@/store/editorStore";
 import { SidePanelNav } from "@/components/top8/SidePanel/SidePanelNav";
 import { InfoPanel } from "@/components/top8/InfoPanel/InfoPanel";
+import { SettingsPanel } from "@/components/top8/SettingsPanel/SettingsPanel";
 
 import styles from "./SidePanel.module.scss";
 
@@ -105,6 +106,11 @@ export const SidePanel = ({ className }: Props) => {
             <TemplateEditor
               className={cn({
                 [styles.hidden]: activeTab !== EditorTab.TEMPLATES,
+              })}
+            />
+            <SettingsPanel
+              className={cn({
+                [styles.hidden]: activeTab !== EditorTab.SETTINGS,
               })}
             />
             <InfoPanel
