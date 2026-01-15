@@ -4,8 +4,7 @@ import {
   DropDownItem,
   DropDownSelect,
 } from "@/components/top8/DropDownSelect/DropDownSelect";
-import { loadFont } from "@/utils/top8/loadFont";
-import { Font, useFontStore } from "@/store/fontStore";
+import { useFontStore } from "@/store/fontStore";
 import { FontOption } from "@/components/top8/DesignEditor/FontSelect/FontOption";
 
 export const FontSelect = () => {
@@ -13,28 +12,7 @@ export const FontSelect = () => {
   const fonts = useFontStore((state) => state.fonts);
   const fetching = useFontStore((state) => state.fetching);
   const selectedFont = useFontStore((state) => state.selectedFont);
-  const dispatch = useFontStore((state) => state.dispatch);
-
-  const loadAndDispatchFont = useCallback(
-    (font: Font) => {
-      if (font.loaded) {
-        dispatch({ type: "SET_SELECTED_FONT", payload: font.fontFamily });
-        return;
-      }
-
-      dispatch({ type: "LOAD_FONT", payload: font.fontFamily });
-
-      loadFont(font)
-        .then(() => {
-          dispatch({ type: "LOAD_FONT_SUCCESS", payload: font });
-        })
-        .catch((error) => {
-          console.error(`Failed to load font "${font.fontFamily}":`, error);
-          dispatch({ type: "LOAD_FONT_FAIL", payload: { error } });
-        });
-    },
-    [dispatch]
-  );
+  const selectFont = useFontStore((state) => state.selectFont);
 
   const fontOptions = useMemo(() => {
     return Array.from(fonts).map((font) => ({
@@ -46,15 +24,9 @@ export const FontSelect = () => {
 
   const handleChange = useCallback(
     (fontFamily: string) => {
-      const font = Array.from(fonts).find(
-        (font) => font.fontFamily === fontFamily
-      );
-
-      if (font) {
-        loadAndDispatchFont(font);
-      }
+      selectFont(fontFamily);
     },
-    [fonts, loadAndDispatchFont]
+    [selectFont]
   );
 
   const renderFontOption = useCallback(
