@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { FaPalette, FaCheck } from "react-icons/fa6";
+import { FaPalette, FaCheck, FaMoon, FaSun } from "react-icons/fa6";
 import Cookies from "js-cookie";
 import cn from "classnames";
 
@@ -9,9 +9,9 @@ import styles from "./SettingsPanel.module.scss";
 
 type Theme = "dark" | "light";
 
-const THEMES: { value: Theme; label: string; icon: string }[] = [
-  { value: "dark", label: "Dark", icon: "🌙" },
-  { value: "light", label: "Light", icon: "☀️" },
+const THEMES: { value: Theme; label: string; icon: React.ReactNode }[] = [
+  { value: "dark", label: "Dark", icon: <FaMoon /> },
+  { value: "light", label: "Light", icon: <FaSun /> },
 ];
 
 export const ThemePicker = () => {
