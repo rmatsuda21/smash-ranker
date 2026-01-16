@@ -1,6 +1,8 @@
 import { useState, useCallback, useEffect } from "react";
 import { IoMdDownload } from "react-icons/io";
 import { CgOptions } from "react-icons/cg";
+import { msg } from "@lingui/core/macro";
+import { useLingui } from "@lingui/react";
 
 import { Button } from "@/components/shared/Button/Button";
 import { Input } from "@/components/shared/Input/Input";
@@ -25,6 +27,7 @@ const fileExtensions: Record<ImgTypes, string> = {
 };
 
 export const CanvasDownloader = ({ className }: Props) => {
+  const { _ } = useLingui();
   const [isOptionModalOpen, setIsOptionModalOpen] = useState(false);
   const [quality, setQuality] = useState(2);
   const [pixelRatio, setPixelRatio] = useState(2);
@@ -75,7 +78,7 @@ export const CanvasDownloader = ({ className }: Props) => {
   return (
     <div className={className}>
       <Input
-        label="Filename"
+        label={_(msg`Filename`)}
         id="downloader-filename"
         name="downloader-filename"
         type="text"
@@ -101,13 +104,13 @@ export const CanvasDownloader = ({ className }: Props) => {
         <Button
           disabled={!stageRef}
           onClick={handleDownload}
-          tooltip="Download"
+          tooltip={_(msg`Download`)}
         >
           <IoMdDownload size={16} />
         </Button>
         <Button
           onClick={() => setIsOptionModalOpen(true)}
-          tooltip="Download Options"
+          tooltip={_(msg`Download Options`)}
         >
           <CgOptions size={16} />
         </Button>

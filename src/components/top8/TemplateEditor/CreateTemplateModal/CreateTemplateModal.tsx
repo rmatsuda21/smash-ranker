@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import { IoMdCreate } from "react-icons/io";
+import { msg } from "@lingui/core/macro";
+import { Trans } from "@lingui/react/macro";
+import { useLingui } from "@lingui/react";
 
 import { Modal } from "@/components/shared/Modal/Modal";
 import { Input } from "@/components/shared/Input/Input";
@@ -37,6 +40,7 @@ export const CreateTemplateModal = ({
   onClose,
   createTemplate,
 }: Props) => {
+  const { _ } = useLingui();
   const [templateName, setTemplateName] = useState("");
 
   useEffect(() => {
@@ -50,16 +54,20 @@ export const CreateTemplateModal = ({
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div className={styles.createTemplateModal}>
-        <h2 className={styles.title}>Create Template</h2>
-        <span className={styles.label}>Template Name</span>
+        <h2 className={styles.title}>
+          <Trans>Create Template</Trans>
+        </h2>
+        <span className={styles.label}>
+          <Trans>Template Name</Trans>
+        </span>
         <Input
           type="text"
-          placeholder="Template Name"
+          placeholder={_(msg`Template Name`)}
           value={templateName}
           onChange={(e) => setTemplateName(e.target.value)}
         />
         <Button onClick={handleCreate}>
-          <IoMdCreate /> Create
+          <IoMdCreate /> <Trans>Create</Trans>
         </Button>
       </div>
     </Modal>

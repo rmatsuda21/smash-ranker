@@ -2,6 +2,9 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { HiOutlineUserRemove } from "react-icons/hi";
 import debounce from "lodash/debounce";
 import cn from "classnames";
+import { msg } from "@lingui/core/macro";
+import { Trans } from "@lingui/react/macro";
+import { useLingui } from "@lingui/react";
 
 import { usePlayerStore } from "@/store/playerStore";
 import { CharacerData, PlayerInfo } from "@/types/top8/Player";
@@ -21,6 +24,7 @@ type Props = {
 };
 
 export const PlayersEditor = ({ className }: Props) => {
+  const { _ } = useLingui();
   const players = usePlayerStore((state) => state.players);
   const selectedPlayerIndex = usePlayerStore(
     (state) => state.selectedPlayerIndex
@@ -135,8 +139,8 @@ export const PlayersEditor = ({ className }: Props) => {
     confirm: confirmClearPlayer,
     ConfirmationDialog: ClearPlayerConfirmation,
   } = useConfirmation(handleClearPlayer, {
-    title: "Clear Player?",
-    description: "This will reset all player data for this slot.",
+    title: _(msg`Clear Player?`),
+    description: _(msg`This will reset all player data for this slot.`),
   });
 
   return (
@@ -145,7 +149,9 @@ export const PlayersEditor = ({ className }: Props) => {
         <PlayerSelector />
       </div>
       <div className={cn({ [styles.disabled]: !selectedPlayer })}>
-        <p className={styles.label}>Characters</p>
+        <p className={styles.label}>
+          <Trans>Characters</Trans>
+        </p>
         <CharacterEditor
           characters={tempPlayer?.characters ?? []}
           onCharactersChange={handleCharactersChange}
@@ -156,34 +162,36 @@ export const PlayersEditor = ({ className }: Props) => {
         id="prefix"
         name="prefix"
         type="text"
-        label="Prefix"
+        label={_(msg`Prefix`)}
         value={tempPlayer?.prefix ?? ""}
         onChange={handleChange}
-        placeholder="Prefix"
+        placeholder={_(msg`Prefix`)}
         disabled={!selectedPlayer}
       />
       <Input
         id="gamerTag"
         name="gamerTag"
         type="text"
-        label="Gamer Tag"
+        label={_(msg`Gamer Tag`)}
         value={tempPlayer?.gamerTag ?? ""}
         onChange={handleChange}
-        placeholder="Gamer Tag"
+        placeholder={_(msg`Gamer Tag`)}
         disabled={!selectedPlayer}
       />
       <Input
         id="twitter"
         name="twitter"
         type="text"
-        label="Twitter"
+        label={_(msg`Twitter`)}
         value={tempPlayer?.twitter ?? ""}
         onChange={handleChange}
-        placeholder="Twitter"
+        placeholder={_(msg`Twitter`)}
         disabled={!selectedPlayer}
       />
       <div className={cn({ [styles.disabled]: !selectedPlayer })}>
-        <p className={styles.label}>Country</p>
+        <p className={styles.label}>
+          <Trans>Country</Trans>
+        </p>
         <CountryDropDown
           selectedCountry={tempPlayer?.country ?? ""}
           onCountryChange={handleCountryChange}
@@ -191,7 +199,9 @@ export const PlayersEditor = ({ className }: Props) => {
         />
       </div>
       <div className={cn({ [styles.disabled]: !selectedPlayer })}>
-        <p className={styles.label}>Avatar</p>
+        <p className={styles.label}>
+          <Trans>Avatar</Trans>
+        </p>
         <AssetSelector
           selectedSrc={tempPlayer?.avatarImgSrc}
           onSelect={handleAssetSelect}
@@ -204,7 +214,7 @@ export const PlayersEditor = ({ className }: Props) => {
         onClick={confirmClearPlayer}
         disabled={!selectedPlayer}
       >
-        <HiOutlineUserRemove /> Clear Player
+        <HiOutlineUserRemove /> <Trans>Clear Player</Trans>
       </Button>
       <ClearPlayerConfirmation />
     </div>

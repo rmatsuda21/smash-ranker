@@ -13,26 +13,402 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/components/top8/SidePanel/SidePanelNav.tsx:18
+#. placeholder {0}: file.name
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:49
+msgid "{0} is too large! (Max 2MB)"
+msgstr "{0}が容量オーバーです！（最大2MB）"
+
+#: src/components/top8/TextEditor/TextEditor.tsx:64
+msgid "<0>Ctrl</0>/<1>Cmd</1>+<2>Z</2> to undo and <3>Ctrl</3>/<4>Cmd</4>+<5>Y</5> to redo."
+msgstr "<0>Ctrl</0>/<1>Cmd</1>+<2>Z</2>でUndo、<3>Ctrl</3>/<4>Cmd</4>+<5>Y</5>でRedo。"
+
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:52
+msgid "Accent Color"
+msgstr "アクセントカラー"
+
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:24
+msgid "Amber"
+msgstr "アンバー"
+
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:70
+msgid "Any current player and tournament data will be overwritten."
+msgstr "現在の選手と大会データは上書きされます。"
+
+#: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:124
+msgid "Are you sure you want to delete all saved configs? This action cannot be undone."
+msgstr "保存されたすべての設定を削除しますか？この操作は元に戻せません。"
+
+#: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:113
+msgid "Are you sure you want to delete this config? This action cannot be undone."
+msgstr "この設定を削除しますか？この操作は元に戻せません。"
+
+#: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:133
+msgid "Are you sure you want to load this config? This action will overwrite the current config."
+msgstr "この設定を読み込みますか？現在の設定は上書きされます。"
+
+#: src/components/top8/AssetManager/AssetManager.tsx:32
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:75
+msgid "Assets"
+msgstr "素材"
+
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:203
+msgid "Avatar"
+msgstr "アイコン"
+
+#: src/components/top8/DesignEditor/DesignEditor.tsx:30
+msgid "Background Image"
+msgstr "背景画像"
+
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:25
+msgid "Blue"
+msgstr "ブルー"
+
+#: src/components/top8/InfoPanel/InfoPanel.tsx:82
+msgid "Buy me a coffee"
+msgstr "一杯だけよ"
+
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:153
+msgid "Characters"
+msgstr "使用キャラ"
+
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:150
+msgid "City"
+msgstr "市区町村"
+
+#: src/components/top8/AssetSelector/AssetSelector.tsx:77
+msgid "Clear"
+msgstr "クリア"
+
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:217
+msgid "Clear Player"
+msgstr "選手初期化"
+
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:142
+msgid "Clear Player?"
+msgstr "選手を初期化しますか？"
+
+#: src/components/top8/ElementEditor/TextConfigEditor/TextConfigEditor.tsx:78
+msgid "Color"
+msgstr "色"
+
+#: src/components/top8/DesignEditor/DesignEditor.tsx:50
+msgid "Color Palette"
+msgstr "カラーパレット"
+
+#: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:185
+msgid "Config Manager"
+msgstr "設定マネージャー"
+
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:193
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:166
+msgid "Country"
+msgstr "国"
+
+#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:70
+msgid "Create"
+msgstr "作成"
+
+#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:58
+msgid "Create Template"
+msgstr "テンプレートを作成"
+
+#: src/components/top8/InfoPanel/InfoPanel.tsx:17
+msgid "Created by"
+msgstr "制作者"
+
+#: src/components/top8/InfoPanel/InfoPanel.tsx:89
+msgid "Credits & Inspiration"
+msgstr "クレジット & インスピレーション"
+
+#: src/components/top8/SettingsPanel/ThemePicker.tsx:20
+msgid "Dark"
+msgstr "ダーク"
+
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:121
+msgid "Date"
+msgstr "日付"
+
+#: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:203
+msgid "Delete"
+msgstr "削除"
+
+#: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:209
+msgid "Delete All"
+msgstr "すべて削除"
+
+#: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:122
+msgid "Delete All Configs"
+msgstr "すべての設定を削除"
+
+#. placeholder {0}: selectedConfig?.name
+#: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:111
+msgid "Delete Config: {0}"
+msgstr "設定を削除: {0}"
+
+#: src/components/top8/SidePanel/SidePanelNav.tsx:23
 msgid "Design"
 msgstr "デザイン"
 
-#: src/components/top8/SidePanel/SidePanel.tsx:81
+#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:107
+msgid "Download"
+msgstr "ダウンロード"
+
+#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:113
+#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:36
+msgid "Download Options"
+msgstr "ダウンロード設定"
+
+#: src/components/top8/TextEditor/TextEditor.tsx:58
+msgid "Edit the text content displayed in your graphic. Use dynamic variables to insert tournament and player information."
+msgstr "画像に表示されるテキストを編集できます。"
+
+#: src/components/top8/SettingsPanel/LanguagePicker.tsx:21
+msgid "English"
+msgstr "英語"
+
+#. placeholder {0}: name.toLowerCase()
+#: src/components/top8/TextEditor/TextEditor.tsx:83
+msgid "Enter {0}..."
+msgstr "{0}を入力..."
+
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:136
+msgid "Entrants"
+msgstr "参加人数"
+
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:112
+msgid "Event Name"
+msgstr "イベント名"
+
+#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:81
+msgid "Filename"
+msgstr "ファイル名"
+
+#: src/components/top8/DesignEditor/DesignEditor.tsx:23
+msgid "Font"
+msgstr "フォント"
+
+#: src/components/top8/ElementEditor/TextConfigEditor/TextConfigEditor.tsx:79
+msgid "Font Size"
+msgstr "フォントサイズ"
+
+#: src/components/top8/ElementEditor/TextConfigEditor/TextConfigEditor.tsx:80
+msgid "Font Weight"
+msgstr "フォントウェイト"
+
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:175
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:178
+msgid "Gamer Tag"
+msgstr "選手名"
+
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:26
+msgid "Green"
+msgstr "グリーン"
+
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:88
+msgid "Icon"
+msgstr "アイコン"
+
+#: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:213
+msgid "Import"
+msgstr "インポート"
+
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:58
+msgid "Invalid tournament URL!"
+msgstr "無効な大会URLです！"
+
+#: src/components/top8/SettingsPanel/LanguagePicker.tsx:22
+msgid "Japanese"
+msgstr "日本語"
+
+#: src/components/top8/InfoPanel/InfoPanel.tsx:57
+msgid "Join Discord"
+msgstr "参加"
+
+#: src/components/top8/InfoPanel/InfoPanel.tsx:45
+msgid "Join the official server for help, feedback, and updates!"
+msgstr "公式サーバーで情報発信を行なってます！"
+
+#: src/components/top8/SettingsPanel/LanguagePicker.tsx:41
+msgid "Language"
+msgstr "言語"
+
+#: src/components/top8/SettingsPanel/ThemePicker.tsx:21
+msgid "Light"
+msgstr "ライト"
+
+#: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:197
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:91
+msgid "Load"
+msgstr "取得"
+
+#: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:131
+msgid "Load Config"
+msgstr "設定を読み込む"
+
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:68
+msgid "Load Tournament?"
+msgstr "大会を読み込みますか？"
+
+#: src/components/top8/SidePanel/SidePanel.tsx:82
 msgid "Loading Configs..."
 msgstr "読み込み中..."
 
-#: src/components/top8/SidePanel/SidePanelNav.tsx:14
+#: src/components/top8/InfoPanel/InfoPanel.tsx:67
+msgid "Love Smash Ranker? Support the project!"
+msgstr "応援クラファン実施中です。"
+
+#: src/components/top8/AssetManager/AssetManager.tsx:34
+msgid "Manage Assets"
+msgstr "素材管理"
+
+#: src/components/top8/InfoPanel/InfoPanel.tsx:70
+msgid "Many cups of coffee were consumed during development 👀"
+msgstr "珈琲一杯分から！"
+
+#: src/components/top8/TextEditor/TextEditor.tsx:44
+msgid "No text content defined in this design."
+msgstr "このデザインにはテキストが定義されていません。"
+
+#: src/components/top8/PlayersEditor/CountryDropDown.tsx:31
+msgid "None"
+msgstr "なし"
+
+#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:53
+msgid "Okay"
+msgstr "OK"
+
+#: src/components/top8/InfoPanel/InfoPanel.tsx:101
+msgid "Original concept & inspiration"
+msgstr "元コンセプトとインスピレーション"
+
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:22
+msgid "Pink"
+msgstr "ピンク"
+
+#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:46
+msgid "Pixel Ratio"
+msgstr "ピクセル比"
+
+#: src/components/top8/SidePanel/SidePanelNav.tsx:19
 msgid "Players"
-msgstr "プレイヤー"
+msgstr "選手情報"
 
-#: src/components/top8/SidePanel/SidePanelNav.tsx:30
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:165
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:168
+msgid "Prefix"
+msgstr "所属"
+
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:27
+msgid "Purple"
+msgstr "紫"
+
+#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:40
+msgid "Quality"
+msgstr "品質"
+
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:23
+msgid "Red"
+msgstr "赤"
+
+#: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:194
+msgid "Save Current Config"
+msgstr "現在の設定を保存"
+
+#: src/components/top8/AssetSelector/AssetSelector.tsx:69
+msgid "Select"
+msgstr "選択"
+
+#: src/components/top8/CharacterEditor/CharacterSelect/CharacterSelect.tsx:49
+msgid "Select Character"
+msgstr "キャラクター選択"
+
+#: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:189
+msgid "Select Config"
+msgstr "設定を選択"
+
+#: src/components/top8/PlayersEditor/CountryDropDown.tsx:44
+msgid "Select Country"
+msgstr "国選択"
+
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:158
+msgid "State"
+msgstr "州・都道府県"
+
+#: src/components/top8/InfoPanel/InfoPanel.tsx:113
+msgid "Stock icons"
+msgstr "ストックアイコン"
+
+#: src/components/top8/InfoPanel/InfoPanel.tsx:64
+msgid "Support"
+msgstr "サポート"
+
+#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:61
+#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:65
+msgid "Template Name"
+msgstr "テンプレ名"
+
+#: src/components/top8/SidePanel/SidePanelNav.tsx:35
 msgid "Templates"
-msgstr "テンプレート"
+msgstr "テンプレ"
 
-#: src/components/top8/SidePanel/SidePanelNav.tsx:22
+#: src/components/top8/ElementEditor/TextConfigEditor/TextConfigEditor.tsx:70
+msgid "Text"
+msgstr "テキスト"
+
+#: src/components/top8/TextEditor/TextEditor.tsx:47
+msgid "Text content is configured in the design layout."
+msgstr "テキストはデザインレイアウトで設定されます。"
+
+#: src/components/top8/SidePanel/SidePanelNav.tsx:27
 msgid "Texts"
 msgstr "テキスト"
 
-#: src/components/top8/SidePanel/SidePanelNav.tsx:26
+#: src/components/top8/SettingsPanel/ThemePicker.tsx:44
+msgid "Theme"
+msgstr "テーマ"
+
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:143
+msgid "This will reset all player data for this slot."
+msgstr "このスロットの選手情報がすべてリセットされます。"
+
+#: src/components/top8/TextEditor/TextEditor.tsx:64
+#~ msgid "to insert a variable!"
+#~ msgstr "で変数を挿入できます！"
+
+#: src/components/top8/TextEditor/TextEditor.tsx:61
+#~ msgid "to redo."
+#~ msgstr "でやり直し。"
+
+#: src/components/top8/TextEditor/TextEditor.tsx:60
+#~ msgid "to undo and"
+#~ msgstr "で元に戻す、"
+
+#: src/components/top8/SidePanel/SidePanelNav.tsx:31
 msgid "Tournament"
 msgstr "大会"
+
+#: src/components/top8/InfoPanel/InfoPanel.tsx:125
+msgid "Tournament & Player data"
+msgstr "大会・選手情報"
+
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:104
+msgid "Tournament Name"
+msgstr "大会名"
+
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:175
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:80
+msgid "Tournament URL"
+msgstr "大会URL"
+
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:185
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:188
+msgid "Twitter"
+msgstr "X（旧ツイッタ）"
+
+#: src/components/top8/TextEditor/TextEditor.tsx:64
+#~ msgid "Type"
+#~ msgstr "入力"
+
+#: src/components/top8/TextEditor/TextEditor.tsx:70
+msgid "Type <0>{</0> to insert a variable!"
+msgstr "<0>{</0>を入力して関数を入力できます。"

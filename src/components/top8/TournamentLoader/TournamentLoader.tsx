@@ -1,5 +1,7 @@
 import { useState } from "react";
 import cn from "classnames";
+import { msg } from "@lingui/core/macro";
+import { useLingui } from "@lingui/react";
 
 import { Button } from "@/components/shared/Button/Button";
 import { Input } from "@/components/shared/Input/Input";
@@ -34,6 +36,7 @@ type Props = {
 };
 
 export const TournamentLoader = ({ className }: Props) => {
+  const { _ } = useLingui();
   const [url, setUrl] = useState(
     "https://smash.gg/tournament/no-caps-115-msc-1400/event/ultimate-singles"
   );
@@ -52,7 +55,7 @@ export const TournamentLoader = ({ className }: Props) => {
     const matchedUrl = urlToSlug(url);
 
     if (!matchedUrl) {
-      alert("Invalid tournament URL!");
+      alert(_(msg`Invalid tournament URL!`));
       setError(true);
       return;
     }
@@ -62,9 +65,10 @@ export const TournamentLoader = ({ className }: Props) => {
 
   const { confirm: confirmLoad, ConfirmationDialog: LoadConfirmation } =
     useConfirmation(loadTournament, {
-      title: "Load Tournament?",
-      description:
-        "Any current player and tournament data will be overwritten.",
+      title: _(msg`Load Tournament?`),
+      description: _(
+        msg`Any current player and tournament data will be overwritten.`
+      ),
       cookieName: COOKIES.NEEDS_TOURNAMENT_LOAD_CONFIRMATION,
     });
 
@@ -73,7 +77,7 @@ export const TournamentLoader = ({ className }: Props) => {
       <div className={styles.inputContainer}>
         <Input
           className={cn({ [styles.error]: error })}
-          label="Tournament URL"
+          label={_(msg`Tournament URL`)}
           id="tournament-url"
           name="tournament-url"
           type="text"
@@ -84,7 +88,7 @@ export const TournamentLoader = ({ className }: Props) => {
           }}
         />
         <Button loading={isFetching} onClick={confirmLoad}>
-          Load
+          {_(msg`Load`)}
         </Button>
       </div>
 

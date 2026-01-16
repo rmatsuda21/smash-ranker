@@ -1,4 +1,6 @@
 import { memo } from "react";
+import { msg } from "@lingui/core/macro";
+import { useLingui } from "@lingui/react";
 
 import { characters } from "@/consts/top8/ultCharacters.json";
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
@@ -33,6 +35,7 @@ const CharacterSelectComponent = ({
   onValueChange,
   disabled = false,
 }: Props) => {
+  const { _ } = useLingui();
   const handleChange = (id: string) => {
     onValueChange(id);
   };
@@ -43,7 +46,7 @@ const CharacterSelectComponent = ({
       selectedValue={selectedCharacter?.id ?? ""}
       onChange={handleChange}
       disabled={disabled}
-      placeholder="Select Character"
+      placeholder={_(msg`Select Character`)}
       searchable
     />
   );

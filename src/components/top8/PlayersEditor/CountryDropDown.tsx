@@ -1,6 +1,8 @@
 import { useMemo } from "react";
 import * as countryList from "country-list";
 import startCase from "lodash/startCase";
+import { msg } from "@lingui/core/macro";
+import { useLingui } from "@lingui/react";
 
 import { DropDownSelect } from "@/components/top8/DropDownSelect/DropDownSelect";
 
@@ -15,6 +17,7 @@ export const CountryDropDown = ({
   onCountryChange,
   disabled,
 }: Props) => {
+  const { _ } = useLingui();
   const options = useMemo(() => {
     const countryOptions = Object.entries(countryList.getNameList()).map(
       ([name, code]) => ({
@@ -25,8 +28,8 @@ export const CountryDropDown = ({
       })
     );
 
-    return [{ id: "none", value: "", display: "None" }, ...countryOptions];
-  }, []);
+    return [{ id: "none", value: "", display: _(msg`None`) }, ...countryOptions];
+  }, [_]);
 
   const handleChange = (country: string) => {
     onCountryChange(country);
@@ -38,7 +41,7 @@ export const CountryDropDown = ({
       options={options}
       selectedValue={selectedCountry}
       onChange={handleChange}
-      placeholder="Select Country"
+      placeholder={_(msg`Select Country`)}
       searchable
     />
   );

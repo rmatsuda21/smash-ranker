@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import debounce from "lodash/debounce";
+import { msg } from "@lingui/core/macro";
+import { useLingui } from "@lingui/react";
 
 import { SmartTextElementConfig, TextElementConfig } from "@/types/top8/Design";
 import { Input } from "@/components/shared/Input/Input";
@@ -16,6 +18,7 @@ type Props = {
 };
 
 export const TextConfigEditor = ({ element, onUpdateElement }: Props) => {
+  const { _ } = useLingui();
   const [elementConfig, setElementConfig] = useState(element);
 
   useEffect(() => {
@@ -64,7 +67,7 @@ export const TextConfigEditor = ({ element, onUpdateElement }: Props) => {
   return (
     <div className={styles.wrapper}>
       <Input
-        label="Text"
+        label={_(msg`Text`)}
         type="text"
         id={`text-${elementConfig.id}`}
         name="text"
@@ -72,9 +75,9 @@ export const TextConfigEditor = ({ element, onUpdateElement }: Props) => {
         onChange={handleChange}
       />
       <div className={styles.grid}>
-        <label className={styles.label}>Color</label>
-        <label className={styles.label}>Font Size</label>
-        <label className={styles.label}>Font Weight</label>
+        <label className={styles.label}>{_(msg`Color`)}</label>
+        <label className={styles.label}>{_(msg`Font Size`)}</label>
+        <label className={styles.label}>{_(msg`Font Weight`)}</label>
         <ColorInput
           color={elementConfig.fill ?? "#ffffff"}
           onChange={(color) => handleColorChange("fill", color)}

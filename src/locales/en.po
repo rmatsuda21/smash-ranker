@@ -13,26 +13,402 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/components/top8/SidePanel/SidePanelNav.tsx:18
+#. placeholder {0}: file.name
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:49
+msgid "{0} is too large! (Max 2MB)"
+msgstr "{0} is too large! (Max 2MB)"
+
+#: src/components/top8/TextEditor/TextEditor.tsx:64
+msgid "<0>Ctrl</0>/<1>Cmd</1>+<2>Z</2> to undo and <3>Ctrl</3>/<4>Cmd</4>+<5>Y</5> to redo."
+msgstr "<0>Ctrl</0>/<1>Cmd</1>+<2>Z</2> to undo and <3>Ctrl</3>/<4>Cmd</4>+<5>Y</5> to redo."
+
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:52
+msgid "Accent Color"
+msgstr "Accent Color"
+
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:24
+msgid "Amber"
+msgstr "Amber"
+
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:70
+msgid "Any current player and tournament data will be overwritten."
+msgstr "Any current player and tournament data will be overwritten."
+
+#: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:124
+msgid "Are you sure you want to delete all saved configs? This action cannot be undone."
+msgstr "Are you sure you want to delete all saved configs? This action cannot be undone."
+
+#: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:113
+msgid "Are you sure you want to delete this config? This action cannot be undone."
+msgstr "Are you sure you want to delete this config? This action cannot be undone."
+
+#: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:133
+msgid "Are you sure you want to load this config? This action will overwrite the current config."
+msgstr "Are you sure you want to load this config? This action will overwrite the current config."
+
+#: src/components/top8/AssetManager/AssetManager.tsx:32
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:75
+msgid "Assets"
+msgstr "Assets"
+
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:203
+msgid "Avatar"
+msgstr "Avatar"
+
+#: src/components/top8/DesignEditor/DesignEditor.tsx:30
+msgid "Background Image"
+msgstr "Background Image"
+
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:25
+msgid "Blue"
+msgstr "Blue"
+
+#: src/components/top8/InfoPanel/InfoPanel.tsx:82
+msgid "Buy me a coffee"
+msgstr "Buy me a coffee"
+
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:153
+msgid "Characters"
+msgstr "Characters"
+
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:150
+msgid "City"
+msgstr "City"
+
+#: src/components/top8/AssetSelector/AssetSelector.tsx:77
+msgid "Clear"
+msgstr "Clear"
+
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:217
+msgid "Clear Player"
+msgstr "Clear Player"
+
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:142
+msgid "Clear Player?"
+msgstr "Clear Player?"
+
+#: src/components/top8/ElementEditor/TextConfigEditor/TextConfigEditor.tsx:78
+msgid "Color"
+msgstr "Color"
+
+#: src/components/top8/DesignEditor/DesignEditor.tsx:50
+msgid "Color Palette"
+msgstr "Color Palette"
+
+#: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:185
+msgid "Config Manager"
+msgstr "Config Manager"
+
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:193
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:166
+msgid "Country"
+msgstr "Country"
+
+#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:70
+msgid "Create"
+msgstr "Create"
+
+#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:58
+msgid "Create Template"
+msgstr "Create Template"
+
+#: src/components/top8/InfoPanel/InfoPanel.tsx:17
+msgid "Created by"
+msgstr "Created by"
+
+#: src/components/top8/InfoPanel/InfoPanel.tsx:89
+msgid "Credits & Inspiration"
+msgstr "Credits & Inspiration"
+
+#: src/components/top8/SettingsPanel/ThemePicker.tsx:20
+msgid "Dark"
+msgstr "Dark"
+
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:121
+msgid "Date"
+msgstr "Date"
+
+#: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:203
+msgid "Delete"
+msgstr "Delete"
+
+#: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:209
+msgid "Delete All"
+msgstr "Delete All"
+
+#: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:122
+msgid "Delete All Configs"
+msgstr "Delete All Configs"
+
+#. placeholder {0}: selectedConfig?.name
+#: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:111
+msgid "Delete Config: {0}"
+msgstr "Delete Config: {0}"
+
+#: src/components/top8/SidePanel/SidePanelNav.tsx:23
 msgid "Design"
 msgstr "Design"
 
-#: src/components/top8/SidePanel/SidePanel.tsx:81
+#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:107
+msgid "Download"
+msgstr "Download"
+
+#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:113
+#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:36
+msgid "Download Options"
+msgstr "Download Options"
+
+#: src/components/top8/TextEditor/TextEditor.tsx:58
+msgid "Edit the text content displayed in your graphic. Use dynamic variables to insert tournament and player information."
+msgstr "Edit the text content displayed in your graphic. Use dynamic variables to insert tournament and player information."
+
+#: src/components/top8/SettingsPanel/LanguagePicker.tsx:21
+msgid "English"
+msgstr "English"
+
+#. placeholder {0}: name.toLowerCase()
+#: src/components/top8/TextEditor/TextEditor.tsx:83
+msgid "Enter {0}..."
+msgstr "Enter {0}..."
+
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:136
+msgid "Entrants"
+msgstr "Entrants"
+
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:112
+msgid "Event Name"
+msgstr "Event Name"
+
+#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:81
+msgid "Filename"
+msgstr "Filename"
+
+#: src/components/top8/DesignEditor/DesignEditor.tsx:23
+msgid "Font"
+msgstr "Font"
+
+#: src/components/top8/ElementEditor/TextConfigEditor/TextConfigEditor.tsx:79
+msgid "Font Size"
+msgstr "Font Size"
+
+#: src/components/top8/ElementEditor/TextConfigEditor/TextConfigEditor.tsx:80
+msgid "Font Weight"
+msgstr "Font Weight"
+
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:175
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:178
+msgid "Gamer Tag"
+msgstr "Gamer Tag"
+
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:26
+msgid "Green"
+msgstr "Green"
+
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:88
+msgid "Icon"
+msgstr "Icon"
+
+#: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:213
+msgid "Import"
+msgstr "Import"
+
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:58
+msgid "Invalid tournament URL!"
+msgstr "Invalid tournament URL!"
+
+#: src/components/top8/SettingsPanel/LanguagePicker.tsx:22
+msgid "Japanese"
+msgstr "Japanese"
+
+#: src/components/top8/InfoPanel/InfoPanel.tsx:57
+msgid "Join Discord"
+msgstr "Join Discord"
+
+#: src/components/top8/InfoPanel/InfoPanel.tsx:45
+msgid "Join the official server for help, feedback, and updates!"
+msgstr "Join the official server for help, feedback, and updates!"
+
+#: src/components/top8/SettingsPanel/LanguagePicker.tsx:41
+msgid "Language"
+msgstr "Language"
+
+#: src/components/top8/SettingsPanel/ThemePicker.tsx:21
+msgid "Light"
+msgstr "Light"
+
+#: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:197
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:91
+msgid "Load"
+msgstr "Load"
+
+#: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:131
+msgid "Load Config"
+msgstr "Load Config"
+
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:68
+msgid "Load Tournament?"
+msgstr "Load Tournament?"
+
+#: src/components/top8/SidePanel/SidePanel.tsx:82
 msgid "Loading Configs..."
 msgstr "Loading Configs..."
 
-#: src/components/top8/SidePanel/SidePanelNav.tsx:14
+#: src/components/top8/InfoPanel/InfoPanel.tsx:67
+msgid "Love Smash Ranker? Support the project!"
+msgstr "Love Smash Ranker? Support the project!"
+
+#: src/components/top8/AssetManager/AssetManager.tsx:34
+msgid "Manage Assets"
+msgstr "Manage Assets"
+
+#: src/components/top8/InfoPanel/InfoPanel.tsx:70
+msgid "Many cups of coffee were consumed during development 👀"
+msgstr "Many cups of coffee were consumed during development 👀"
+
+#: src/components/top8/TextEditor/TextEditor.tsx:44
+msgid "No text content defined in this design."
+msgstr "No text content defined in this design."
+
+#: src/components/top8/PlayersEditor/CountryDropDown.tsx:31
+msgid "None"
+msgstr "None"
+
+#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:53
+msgid "Okay"
+msgstr "Okay"
+
+#: src/components/top8/InfoPanel/InfoPanel.tsx:101
+msgid "Original concept & inspiration"
+msgstr "Original concept & inspiration"
+
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:22
+msgid "Pink"
+msgstr "Pink"
+
+#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:46
+msgid "Pixel Ratio"
+msgstr "Pixel Ratio"
+
+#: src/components/top8/SidePanel/SidePanelNav.tsx:19
 msgid "Players"
 msgstr "Players"
 
-#: src/components/top8/SidePanel/SidePanelNav.tsx:30
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:165
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:168
+msgid "Prefix"
+msgstr "Prefix"
+
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:27
+msgid "Purple"
+msgstr "Purple"
+
+#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:40
+msgid "Quality"
+msgstr "Quality"
+
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:23
+msgid "Red"
+msgstr "Red"
+
+#: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:194
+msgid "Save Current Config"
+msgstr "Save Current Config"
+
+#: src/components/top8/AssetSelector/AssetSelector.tsx:69
+msgid "Select"
+msgstr "Select"
+
+#: src/components/top8/CharacterEditor/CharacterSelect/CharacterSelect.tsx:49
+msgid "Select Character"
+msgstr "Select Character"
+
+#: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:189
+msgid "Select Config"
+msgstr "Select Config"
+
+#: src/components/top8/PlayersEditor/CountryDropDown.tsx:44
+msgid "Select Country"
+msgstr "Select Country"
+
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:158
+msgid "State"
+msgstr "State"
+
+#: src/components/top8/InfoPanel/InfoPanel.tsx:113
+msgid "Stock icons"
+msgstr "Stock icons"
+
+#: src/components/top8/InfoPanel/InfoPanel.tsx:64
+msgid "Support"
+msgstr "Support"
+
+#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:61
+#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:65
+msgid "Template Name"
+msgstr "Template Name"
+
+#: src/components/top8/SidePanel/SidePanelNav.tsx:35
 msgid "Templates"
 msgstr "Templates"
 
-#: src/components/top8/SidePanel/SidePanelNav.tsx:22
+#: src/components/top8/ElementEditor/TextConfigEditor/TextConfigEditor.tsx:70
+msgid "Text"
+msgstr "Text"
+
+#: src/components/top8/TextEditor/TextEditor.tsx:47
+msgid "Text content is configured in the design layout."
+msgstr "Text content is configured in the design layout."
+
+#: src/components/top8/SidePanel/SidePanelNav.tsx:27
 msgid "Texts"
 msgstr "Texts"
 
-#: src/components/top8/SidePanel/SidePanelNav.tsx:26
+#: src/components/top8/SettingsPanel/ThemePicker.tsx:44
+msgid "Theme"
+msgstr "Theme"
+
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:143
+msgid "This will reset all player data for this slot."
+msgstr "This will reset all player data for this slot."
+
+#: src/components/top8/TextEditor/TextEditor.tsx:64
+#~ msgid "to insert a variable!"
+#~ msgstr "to insert a variable!"
+
+#: src/components/top8/TextEditor/TextEditor.tsx:61
+#~ msgid "to redo."
+#~ msgstr "to redo."
+
+#: src/components/top8/TextEditor/TextEditor.tsx:60
+#~ msgid "to undo and"
+#~ msgstr "to undo and"
+
+#: src/components/top8/SidePanel/SidePanelNav.tsx:31
 msgid "Tournament"
 msgstr "Tournament"
+
+#: src/components/top8/InfoPanel/InfoPanel.tsx:125
+msgid "Tournament & Player data"
+msgstr "Tournament & Player data"
+
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:104
+msgid "Tournament Name"
+msgstr "Tournament Name"
+
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:175
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:80
+msgid "Tournament URL"
+msgstr "Tournament URL"
+
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:185
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:188
+msgid "Twitter"
+msgstr "Twitter"
+
+#: src/components/top8/TextEditor/TextEditor.tsx:64
+#~ msgid "Type"
+#~ msgstr "Type"
+
+#: src/components/top8/TextEditor/TextEditor.tsx:70
+msgid "Type <0>{</0> to insert a variable!"
+msgstr "Type <0>{</0> to insert a variable!"

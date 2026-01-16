@@ -1,3 +1,7 @@
+import { msg } from "@lingui/core/macro";
+import { Trans } from "@lingui/react/macro";
+import { useLingui } from "@lingui/react";
+
 import { Button } from "@/components/shared/Button/Button";
 import { Input } from "@/components/shared/Input/Input";
 import { Modal } from "@/components/shared/Modal/Modal";
@@ -21,27 +25,33 @@ export const DownloadOptionModal = ({
   isOpen,
   setIsOpen,
 }: Props) => {
+  const { _ } = useLingui();
+
   if (!isOpen) return null;
 
   return (
     <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
       <div className={styles.modal}>
-        <h3>Download Options</h3>
+        <h3>
+          <Trans>Download Options</Trans>
+        </h3>
         <div className={styles.inputs}>
           <Input
-            label="Quality"
+            label={_(msg`Quality`)}
             type="number"
             value={quality}
             onChange={(e) => setQuality(Number(e.currentTarget.value))}
           />
           <Input
-            label="Pixel Ratio"
+            label={_(msg`Pixel Ratio`)}
             type="number"
             value={pixelRatio}
             onChange={(e) => setPixelRatio(Number(e.currentTarget.value))}
           />
         </div>
-        <Button onClick={() => setIsOpen(false)}>Okay</Button>
+        <Button onClick={() => setIsOpen(false)}>
+          <Trans>Okay</Trans>
+        </Button>
       </div>
     </Modal>
   );

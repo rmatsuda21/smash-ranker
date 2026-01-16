@@ -1,5 +1,8 @@
 import { useMemo, useState } from "react";
 import { FaFileImport } from "react-icons/fa6";
+import { msg } from "@lingui/core/macro";
+import { Trans } from "@lingui/react/macro";
+import { useLingui } from "@lingui/react";
 
 import { Modal } from "@/components/shared/Modal/Modal";
 import { useTemplateDB } from "@/hooks/useConfigDb";
@@ -36,6 +39,7 @@ const defaultConfigs: DBTemplate[] = [
 ];
 
 export const ConfigManagerModal = ({ isOpen, onClose }: Props) => {
+  const { _ } = useLingui();
   const [selectedConfig, setSelectedConfig] = useState<DBTemplate | null>(null);
   const {
     templates: configs,
@@ -104,9 +108,10 @@ export const ConfigManagerModal = ({ isOpen, onClose }: Props) => {
 
   const { confirm: confirmDelete, ConfirmationDialog: DeleteConfirmation } =
     useConfirmation(handleDelete, {
-      title: `Delete Config: ${selectedConfig?.name}`,
-      description:
-        "Are you sure you want to delete this config? This action cannot be undone.",
+      title: _(msg`Delete Config: <0>${selectedConfig?.name ?? ""}</0>`),
+      description: _(
+        msg`Are you sure you want to delete this config? This action cannot be undone.`
+      ),
       cookieName: COOKIES.DELETE_CONFIG,
     });
 
@@ -114,17 +119,19 @@ export const ConfigManagerModal = ({ isOpen, onClose }: Props) => {
     confirm: confirmDeleteAll,
     ConfirmationDialog: ClearAllConfirmation,
   } = useConfirmation(handleClearAll, {
-    title: "Delete All Configs",
-    description:
-      "Are you sure you want to delete all saved configs? This action cannot be undone.",
+    title: _(msg`Delete All Configs`),
+    description: _(
+      msg`Are you sure you want to delete all saved configs? This action cannot be undone.`
+    ),
     cookieName: COOKIES.DELETE_ALL_CONFIGS,
   });
 
   const { confirm: confirmLoad, ConfirmationDialog: LoadConfirmation } =
     useConfirmation(handleLoad, {
-      title: "Load Config",
-      description:
-        "Are you sure you want to load this config? This action will overwrite the current config.",
+      title: _(msg`Load Config`),
+      description: _(
+        msg`Are you sure you want to load this config? This action will overwrite the current config.`
+      ),
       cookieName: COOKIES.LOAD_CONFIG,
     });
 
@@ -174,32 +181,36 @@ export const ConfigManagerModal = ({ isOpen, onClose }: Props) => {
       <Modal isOpen={isOpen} onClose={onClose}>
         <div className={styles.modal}>
           <div className={styles.body}>
-            <h3>Config Manager</h3>
+            <h3>
+              <Trans>Config Manager</Trans>
+            </h3>
             <DropDownSelect
               options={dropDownOptions}
-              placeholder="Select Config"
+              placeholder={_(msg`Select Config`)}
               selectedValue={selectedConfig?.id ?? ""}
               onChange={(id) => handleConfigSelect(id)}
             />
-            <Button onClick={handleCreateNew}>Save Current Config</Button>
+            <Button onClick={handleCreateNew}>
+              <Trans>Save Current Config</Trans>
+            </Button>
             <Button onClick={() => confirmLoad(selectedConfig?.id ?? "")}>
-              Load
+              <Trans>Load</Trans>
             </Button>
             <Button
               disabled={!selectedConfig}
               onClick={() => confirmDelete(selectedConfig?.id ?? "")}
             >
-              Delete
+              <Trans>Delete</Trans>
             </Button>
             <Button
               disabled={configs.length === 0}
               onClick={() => confirmDeleteAll()}
             >
-              Delete All
+              <Trans>Delete All</Trans>
             </Button>
             <Button onClick={handleImport}>
               <FaFileImport />
-              Import
+              <Trans>Import</Trans>
             </Button>
           </div>
 

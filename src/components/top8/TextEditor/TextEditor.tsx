@@ -1,6 +1,9 @@
 import { useMemo } from "react";
 import cn from "classnames";
 import debounce from "lodash/debounce";
+import { msg } from "@lingui/core/macro";
+import { Trans } from "@lingui/react/macro";
+import { useLingui } from "@lingui/react";
 
 import { useCanvasStore } from "@/store/canvasStore";
 import { RichTextInput } from "./RichTextInput";
@@ -14,6 +17,7 @@ type Props = {
 };
 
 export const TextEditor = ({ className }: Props) => {
+  const { _ } = useLingui();
   const textPalette = useCanvasStore((state) => state.design.textPalette);
   const dispatch = useCanvasStore((state) => state.dispatch);
 
@@ -36,9 +40,11 @@ export const TextEditor = ({ className }: Props) => {
     return (
       <div className={cn(className, styles.textEditor)}>
         <div className={styles.empty}>
-          <p>No text content defined in this design.</p>
+          <p>
+            <Trans>No text content defined in this design.</Trans>
+          </p>
           <p className={styles.hint}>
-            Text content is configured in the design layout.
+            <Trans>Text content is configured in the design layout.</Trans>
           </p>
         </div>
       </div>
@@ -49,15 +55,21 @@ export const TextEditor = ({ className }: Props) => {
     <div className={cn(className, styles.textEditor)}>
       <div className={styles.description}>
         <p>
-          Edit the text content displayed in your graphic. Use dynamic variables
-          to insert tournament and player information.
+          <Trans>
+            Edit the text content displayed in your graphic. Use dynamic
+            variables to insert tournament and player information.
+          </Trans>
         </p>
         <p className={styles.tip}>
-          <kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>Z</kbd> to undo and{" "}
-          <kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>Y</kbd> to redo.
+          <Trans>
+            <kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>Z</kbd> to undo and{" "}
+            <kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>Y</kbd> to redo.
+          </Trans>
         </p>
         <p className={styles.tip}>
-          Type <code>{"{"}</code> to insert a variable!
+          <Trans>
+            Type <code>{"{"}</code> to insert a variable!
+          </Trans>
         </p>
       </div>
 
@@ -68,7 +80,7 @@ export const TextEditor = ({ className }: Props) => {
             <RichTextInput
               value={text}
               onChange={(newText) => handleTextChange(id, newText, name)}
-              placeholder={`Enter ${name.toLowerCase()}...`}
+              placeholder={_(msg`Enter ${name.toLowerCase()}...`)}
             />
           </div>
         ))}
