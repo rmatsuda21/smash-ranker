@@ -1,12 +1,13 @@
 import { useState } from "react";
 import cn from "classnames";
+import { FaChevronUp, FaPlus } from "react-icons/fa6";
+import { Trans } from "@lingui/react/macro";
 
 import { DBTemplate } from "@/types/Repository";
 import { TemplatePreview } from "@/components/top8/TemplateEditor/TemplatePreview/TemplatePreview";
+import { Button } from "@/components/shared/Button/Button";
 
 import styles from "./TemplateEditor.module.scss";
-import { Button } from "@/components/shared/Button/Button";
-import { FaChevronUp } from "react-icons/fa6";
 
 type Props = {
   templates: DBTemplate[];
@@ -14,6 +15,7 @@ type Props = {
   onTemplateClick: (templateId: string) => void;
   viewMode: "grid" | "list";
   loadingTemplateId: string | null;
+  onCreateCustom?: () => void;
 };
 
 export const TemplateGroup = ({
@@ -22,6 +24,7 @@ export const TemplateGroup = ({
   onTemplateClick,
   viewMode,
   loadingTemplateId,
+  onCreateCustom,
 }: Props) => {
   const [collapsed, setCollapsed] = useState(false);
 
@@ -52,6 +55,17 @@ export const TemplateGroup = ({
             isLoading={loadingTemplateId === template.id}
           />
         ))}
+        {onCreateCustom && (
+          <button
+            className={cn(styles.template, styles.createCustomCard)}
+            onClick={onCreateCustom}
+          >
+            <FaPlus size={16} />
+            <span>
+              <Trans>Custom Minimal</Trans>
+            </span>
+          </button>
+        )}
       </div>
     </div>
   );
