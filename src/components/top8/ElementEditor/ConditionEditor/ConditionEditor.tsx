@@ -35,7 +35,7 @@ const isRenderCondition = (condition: Condition): boolean => {
 const getConditionLabel = (condition: Condition, negated: boolean): string => {
   let label = "";
   if (isPlaceholder(condition)) {
-    label = PlaceholderLabel[condition as DesignPlaceholder];
+    label = PlaceholderLabel.get(condition as DesignPlaceholder);
   }
   if (isRenderCondition(condition)) {
     label = RenderConditionLabel[condition as RenderCondition];

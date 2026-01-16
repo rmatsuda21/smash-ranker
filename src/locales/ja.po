@@ -22,6 +22,10 @@ msgstr "(https://start.gg/tournament/[大会名]/event/[イベント名])"
 msgid "{0} is too large! (Max 2MB)"
 msgstr "{0}が容量オーバーです！（最大2MB）"
 
+#: src/consts/top8/placeholders.ts:36
+msgid "# of Entrants"
+msgstr "参加人数"
+
 #: src/components/top8/TextEditor/TextEditor.tsx:64
 msgid "<0>Ctrl</0>/<1>Cmd</1>+<2>Z</2> to undo and <3>Ctrl</3>/<4>Cmd</4>+<5>Y</5> to redo."
 msgstr "<0>Ctrl</0>/<1>Cmd</1>+<2>Z</2>でUndo、<3>Ctrl</3>/<4>Cmd</4>+<5>Y</5>でRedo。"
@@ -196,6 +200,7 @@ msgid "Entrants"
 msgstr "参加人数"
 
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:112
+#: src/consts/top8/placeholders.ts:29
 msgid "Event Name"
 msgstr "イベント名"
 
@@ -292,6 +297,10 @@ msgstr "このデザインにはテキストが定義されていません。"
 msgid "None"
 msgstr "なし"
 
+#: src/consts/top8/renderConditions.ts:14
+#~ msgid "Not"
+#~ msgstr ""
+
 #: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:53
 msgid "Okay"
 msgstr "OK"
@@ -312,6 +321,26 @@ msgstr "ピクセル比"
 #: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:68
 msgid "Player Count"
 msgstr "選手数"
+
+#: src/consts/top8/placeholders.ts:43
+msgid "Player Country"
+msgstr "選手の国"
+
+#: src/consts/top8/placeholders.ts:44
+msgid "Player Name (w/ Prefix)"
+msgstr "選手名（所属付き）"
+
+#: src/consts/top8/placeholders.ts:42
+msgid "Player Placement"
+msgstr "選手順位"
+
+#: src/consts/top8/placeholders.ts:46
+msgid "Player Prefix"
+msgstr "選手所属"
+
+#: src/consts/top8/placeholders.ts:45
+msgid "Player Tag"
+msgstr "選手タグ"
 
 #: src/components/top8/SidePanel/SidePanelNav.tsx:19
 msgid "Players"
@@ -356,7 +385,7 @@ msgstr "国選択"
 
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:80
 msgid "Show help"
-msgstr ""
+msgstr "ヘルプを表示"
 
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:158
 msgid "State"
@@ -421,12 +450,38 @@ msgstr "大会"
 msgid "Tournament & Player data"
 msgstr "大会・選手情報"
 
+#: src/consts/top8/placeholders.ts:32
+msgid "Tournament City"
+msgstr "大会市区町村"
+
+#: src/consts/top8/placeholders.ts:34
+msgid "Tournament Country"
+msgstr "大会国"
+
+#: src/consts/top8/placeholders.ts:30
+msgid "Tournament Date"
+msgstr "大会日付"
+
+#: src/consts/top8/placeholders.ts:31
+msgid "Tournament Full Address"
+msgstr "大会住所"
+
+#: src/consts/top8/renderConditions.ts:13
+#~ msgid "Tournament Icon"
+#~ msgstr ""
+
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:104
+#: src/consts/top8/placeholders.ts:28
 msgid "Tournament Name"
 msgstr "大会名"
 
+#: src/consts/top8/placeholders.ts:33
+msgid "Tournament State"
+msgstr "大会都道府県"
+
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:175
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:79
+#: src/consts/top8/placeholders.ts:35
 msgid "Tournament URL"
 msgstr "大会URL"
 
@@ -434,6 +489,10 @@ msgstr "大会URL"
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:188
 msgid "Twitter"
 msgstr "X（旧ツイッタ）"
+
+#: src/consts/top8/placeholders.ts:47
+msgid "Twitter Handle"
+msgstr "Xアカウント"
 
 #: src/components/top8/TextEditor/TextEditor.tsx:64
 #~ msgid "Type"
