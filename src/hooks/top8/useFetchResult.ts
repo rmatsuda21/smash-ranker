@@ -112,8 +112,16 @@ interface FetchedImage {
   data: Blob;
 }
 
+const upgradeToHttps = (url: string): string => {
+  if (url.startsWith("http://")) {
+    return url.replace("http://", "https://");
+  }
+  return url;
+};
+
 const fetchImage = async (image: TournamentImage): Promise<FetchedImage> => {
-  const response = await fetch(image.url);
+  const secureUrl = upgradeToHttps(image.url);
+  const response = await fetch(secureUrl);
 
   if (!response.ok) {
     throw new Error(`Failed to fetch image: ${response.statusText}`);

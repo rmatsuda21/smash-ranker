@@ -5,6 +5,17 @@
       "destination": "/index.html"
     }
   ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "upgrade-insecure-requests"
+        }
+      ]
+    }
+  ],
   "devCommand": "vite --host --port $PORT",
   "bunVersion": "1.x"
 }

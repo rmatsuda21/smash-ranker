@@ -51,8 +51,10 @@ export const useCustomImage = ({
     }
 
     const image = new window.Image();
+    if (imageSrc.startsWith("http://") || imageSrc.startsWith("https://")) {
+      image.crossOrigin = "anonymous";
+    }
     image.src = imageSrc;
-    image.crossOrigin = "anonymous";
     image.onload = () => {
       imageCache.set(imageSrc, image);
       setImage(image);
