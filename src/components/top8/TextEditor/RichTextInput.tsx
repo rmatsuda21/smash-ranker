@@ -1,4 +1,5 @@
 import { useRef, useState, useCallback, useEffect, KeyboardEvent } from "react";
+import { createPortal } from "react-dom";
 import cn from "classnames";
 
 import {
@@ -267,10 +268,9 @@ export const RichTextInput = ({
         if (selection && selection.rangeCount > 0) {
           const range = selection.getRangeAt(0);
           const rect = range.getBoundingClientRect();
-          const editorRect = editorRef.current.getBoundingClientRect();
           setDropdownPosition({
-            x: Math.max(0, rect.left - editorRect.left),
-            y: rect.bottom - editorRect.top + 4,
+            x: rect.left,
+            y: rect.bottom + 4,
           });
         }
       } else {
@@ -373,35 +373,42 @@ export const RichTextInput = ({
         suppressContentEditableWarning
       />
 
-      {showDropdown && filteredPlaceholders.length > 0 && (
-        <div
-          ref={dropdownRef}
-          className={styles.dropdown}
-          style={{ left: dropdownPosition.x, top: dropdownPosition.y }}
-        >
-          <div className={styles.header}>
-            <span className={styles.title}>Insert variable</span>
-            <span className={styles.hint}>Type to filter</span>
-          </div>
-          <div ref={dropdownListRef} className={styles.list}>
-            {filteredPlaceholders.map(([placeholder, label], index) => (
-              <button
-                key={placeholder}
-                className={cn(styles.item, {
-                  [styles.selected]: index === selectedIndex,
-                })}
-                onMouseDown={(e) => {
-                  e.preventDefault();
-                  insertPlaceholder(placeholder as DesignPlaceholder);
-                }}
-                onMouseEnter={() => setSelectedIndex(index)}
-              >
-                <span className={styles.pill}>{label}</span>
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
+      {showDropdown &&
+        filteredPlaceholders.length > 0 &&
+        createPortal(
+          <div
+            ref={dropdownRef}
+            className={styles.dropdown}
+            style={{
+              position: "fixed",
+              left: dropdownPosition.x,
+              top: dropdownPosition.y,
+            }}
+          >
+            <div className={styles.header}>
+              <span className={styles.title}>Insert variable</span>
+              <span className={styles.hint}>Type to filter</span>
+            </div>
+            <div ref={dropdownListRef} className={styles.list}>
+              {filteredPlaceholders.map(([placeholder, label], index) => (
+                <button
+                  key={placeholder}
+                  className={cn(styles.item, {
+                    [styles.selected]: index === selectedIndex,
+                  })}
+                  onMouseDown={(e) => {
+                    e.preventDefault();
+                    insertPlaceholder(placeholder as DesignPlaceholder);
+                  }}
+                  onMouseEnter={() => setSelectedIndex(index)}
+                >
+                  <span className={styles.pill}>{label}</span>
+                </button>
+              ))}
+            </div>
+          </div>,
+          document.body
+        )}
     </div>
   );
 };
