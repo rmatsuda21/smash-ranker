@@ -1,5 +1,7 @@
 import { FaGithub, FaXTwitter, FaDiscord } from "react-icons/fa6";
 import { FaCoffee } from "react-icons/fa";
+import { Trans } from "@lingui/react/macro";
+
 import styles from "./InfoPanel.module.scss";
 
 type Props = {
@@ -11,7 +13,9 @@ export const InfoPanel = ({ className }: Props) => {
     <div className={className}>
       <div className={styles.info}>
         <section className={styles.section}>
-          <h3 className={styles.sectionTitle}>Created by</h3>
+          <h3 className={styles.sectionTitle}>
+            <Trans>Created by</Trans>
+          </h3>
           <div className={styles.author}>
             <span className={styles.authorName}>Reo Matsuda</span>
             <div className={styles.socials}>
@@ -38,7 +42,9 @@ export const InfoPanel = ({ className }: Props) => {
         <section className={styles.section}>
           <h3 className={styles.sectionTitle}>Discord</h3>
           <p className={styles.supportText}>
-            Join the official server for help, feedback, and updates!
+            <Trans>
+              Join the official server for help, feedback, and updates!
+            </Trans>
           </p>
           <a
             href="https://discord.gg/ZR5KxeysTH"
@@ -47,17 +53,23 @@ export const InfoPanel = ({ className }: Props) => {
             className={styles.discordButton}
           >
             <FaDiscord />
-            <span>Join Discord</span>
+            <span>
+              <Trans>Join Discord</Trans>
+            </span>
           </a>
         </section>
 
         <section className={styles.section}>
-          <h3 className={styles.sectionTitle}>Support</h3>
+          <h3 className={styles.sectionTitle}>
+            <Trans>Support</Trans>
+          </h3>
           <p className={styles.supportText}>
-            Love Smash Ranker? Support the project!
+            <Trans>Love Smash Ranker? Support the project!</Trans>
           </p>
           <p className={styles.supportText}>
-            Many cups of coffee were consumed during development 👀
+            <Trans>
+              Many cups of coffee were consumed during development 👀
+            </Trans>
           </p>
           <a
             href="https://buymeacoffee.com/chikyunojin"
@@ -66,12 +78,16 @@ export const InfoPanel = ({ className }: Props) => {
             className={styles.coffeeButton}
           >
             <FaCoffee />
-            <span>Buy me a coffee</span>
+            <span>
+              <Trans>Buy me a coffee</Trans>
+            </span>
           </a>
         </section>
 
         <section className={styles.section}>
-          <h3 className={styles.sectionTitle}>Credits & Inspiration</h3>
+          <h3 className={styles.sectionTitle}>
+            <Trans>Credits & Inspiration</Trans>
+          </h3>
           <div className={styles.credits}>
             <div>
               <a
@@ -82,7 +98,7 @@ export const InfoPanel = ({ className }: Props) => {
                 top8er.com
               </a>
               <span className={styles.creditDesc}>
-                Original concept & inspiration
+                <Trans>Original concept & inspiration</Trans>
               </span>
             </div>
             <div>
@@ -93,7 +109,9 @@ export const InfoPanel = ({ className }: Props) => {
               >
                 SmashWiki
               </a>
-              <span className={styles.creditDesc}>Stock icons</span>
+              <span className={styles.creditDesc}>
+                <Trans>Stock icons</Trans>
+              </span>
             </div>
             <div>
               <a
@@ -104,7 +122,7 @@ export const InfoPanel = ({ className }: Props) => {
                 Start.gg
               </a>
               <span className={styles.creditDesc}>
-                Tournament & Player data
+                <Trans>Tournament & Player data</Trans>
               </span>
             </div>
           </div>

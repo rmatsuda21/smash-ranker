@@ -1,4 +1,5 @@
 import cn from "classnames";
+import { Trans } from "@lingui/react/macro";
 
 import { FontSelect } from "@/components/top8/DesignEditor/FontSelect/FontSelect";
 import { useCanvasStore } from "@/store/canvasStore";
@@ -18,12 +19,16 @@ export const DesignEditor = ({ className }: Props) => {
   return (
     <div className={cn(className, styles.wrapper)}>
       <div>
-        <p className={styles.label}>Font</p>
+        <p className={styles.label}>
+          <Trans>Font</Trans>
+        </p>
         <FontSelect />
       </div>
 
       <div className={styles.backgroundImg}>
-        <p className={styles.label}>Background Image</p>
+        <p className={styles.label}>
+          <Trans>Background Image</Trans>
+        </p>
         <AssetSelector
           selectedSrc={bgAssetId}
           onSelect={(id) => {
@@ -41,7 +46,9 @@ export const DesignEditor = ({ className }: Props) => {
       </div>
 
       <div>
-        <p className={styles.label}>Color Palette</p>
+        <p className={styles.label}>
+          <Trans>Color Palette</Trans>
+        </p>
         <ColorPaletteEditor />
       </div>
     </div>

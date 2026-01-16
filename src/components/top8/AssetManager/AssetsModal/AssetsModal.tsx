@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import cn from "classnames";
 import { RiDeleteBin6Fill } from "react-icons/ri";
+import { msg } from "@lingui/core/macro";
+import { Trans } from "@lingui/react/macro";
+import { useLingui } from "@lingui/react";
 
 import { Modal } from "@/components/shared/Modal/Modal";
 import { useAssetDB } from "@/hooks/useAssetDb";
@@ -21,6 +24,7 @@ export const AssetsModal = ({
   onSelect,
   selectedSrc,
 }: Props) => {
+  const { _ } = useLingui();
   const [selectedAssetSrc, setSelectedAssetSrc] = useState<string>(
     selectedSrc ?? ""
   );
@@ -42,7 +46,7 @@ export const AssetsModal = ({
   const handleUpload = (files?: File[]) => {
     for (const file of files ?? []) {
       if (file.size > 2 * 1024 * 1024) {
-        alert(`${file.name} is too large! (Max 2MB)`);
+        alert(_(msg`${file.name} is too large! (Max 2MB)`));
         continue;
       }
 
@@ -67,7 +71,9 @@ export const AssetsModal = ({
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div className={styles.assetsModal}>
-        <h3>Assets</h3>
+        <h3>
+          <Trans>Assets</Trans>
+        </h3>
         <div className={styles.assets}>
           {assets.map((asset) => (
             <div

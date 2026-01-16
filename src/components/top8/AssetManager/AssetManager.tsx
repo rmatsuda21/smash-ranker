@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { RiFolderImageFill } from "react-icons/ri";
 import cn from "classnames";
+import { msg } from "@lingui/core/macro";
+import { Trans } from "@lingui/react/macro";
+import { useLingui } from "@lingui/react";
 
 import { Button } from "@/components/shared/Button/Button";
 import { useAssetDB } from "@/hooks/useAssetDb";
@@ -14,6 +17,7 @@ type Props = {
 };
 
 export const AssetManager = ({ className }: Props) => {
+  const { _ } = useLingui();
   const [isOpen, setIsOpen] = useState(false);
   const { loading } = useAssetDB();
 
@@ -24,8 +28,10 @@ export const AssetManager = ({ className }: Props) => {
   return (
     <div className={cn(styles.assetManager, className)}>
       <div className={styles.content}>
-        <p className={styles.label}>Assets</p>
-        <Button onClick={() => setIsOpen(true)} tooltip="Manage Assets">
+        <p className={styles.label}>
+          <Trans>Assets</Trans>
+        </p>
+        <Button onClick={() => setIsOpen(true)} tooltip={_(msg`Manage Assets`)}>
           <RiFolderImageFill />
         </Button>
       </div>

@@ -3,6 +3,7 @@ import { FaImage, FaTrash } from "react-icons/fa6";
 import { GrDocumentMissing } from "react-icons/gr";
 import { RxValueNone } from "react-icons/rx";
 import cn from "classnames";
+import { Trans } from "@lingui/react/macro";
 
 import { AssetsModal } from "@/components/top8/AssetManager/AssetsModal/AssetsModal";
 import { Button } from "@/components/shared/Button/Button";
@@ -65,7 +66,7 @@ export const AssetSelector = ({
       </div>
       <div className={styles.buttons}>
         <Button onClick={openModal} disabled={disabled}>
-          <FaImage /> Select
+          <FaImage /> <Trans>Select</Trans>
         </Button>
         <Button
           onClick={() => {
@@ -73,7 +74,7 @@ export const AssetSelector = ({
           }}
           disabled={disabled}
         >
-          <FaTrash /> Clear
+          <FaTrash /> <Trans>Clear</Trans>
         </Button>
       </div>
 

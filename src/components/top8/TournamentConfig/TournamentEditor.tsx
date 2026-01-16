@@ -1,6 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { debounce, isEqual } from "lodash";
 import cn from "classnames";
+import { msg } from "@lingui/core/macro";
+import { Trans } from "@lingui/react/macro";
+import { useLingui } from "@lingui/react";
 
 import { useTournamentStore } from "@/store/tournamentStore";
 import { TournamentInfo } from "@/types/top8/Tournament";
@@ -30,6 +33,7 @@ type Props = {
 };
 
 export const TournamentEditor = ({ className }: Props) => {
+  const { _ } = useLingui();
   const tournament = useTournamentStore((state) => state.info);
   const dispatch = useTournamentStore((state) => state.dispatch);
 
@@ -80,7 +84,9 @@ export const TournamentEditor = ({ className }: Props) => {
 
   return (
     <div className={cn(styles.wrapper, className)}>
-      <p className={styles.label}>Icon</p>
+      <p className={styles.label}>
+        <Trans>Icon</Trans>
+      </p>
       <AssetSelector
         selectedSrc={tempTournament?.iconSrc}
         onSelect={(src) =>
@@ -95,7 +101,7 @@ export const TournamentEditor = ({ className }: Props) => {
         }
       />
       <Input
-        label="Tournament Name"
+        label={_(msg`Tournament Name`)}
         name="tournamentName"
         id="tournamentName"
         type="text"
@@ -103,7 +109,7 @@ export const TournamentEditor = ({ className }: Props) => {
         onChange={handleChange}
       />
       <Input
-        label="Event Name"
+        label={_(msg`Event Name`)}
         name="eventName"
         id="eventName"
         type="text"
@@ -112,7 +118,7 @@ export const TournamentEditor = ({ className }: Props) => {
       />
       <div className={styles.row}>
         <Input
-          label="Date"
+          label={_(msg`Date`)}
           name="date"
           id="date"
           type="date"
@@ -127,7 +133,7 @@ export const TournamentEditor = ({ className }: Props) => {
           }
         />
         <Input
-          label="Entrants"
+          label={_(msg`Entrants`)}
           name="entrants"
           id="entrants"
           type="number"
@@ -141,7 +147,7 @@ export const TournamentEditor = ({ className }: Props) => {
       </div>
       <div className={styles.row}>
         <Input
-          label="City"
+          label={_(msg`City`)}
           name="city"
           id="city"
           type="text"
@@ -149,7 +155,7 @@ export const TournamentEditor = ({ className }: Props) => {
           onChange={handleLocationChange}
         />
         <Input
-          label="State"
+          label={_(msg`State`)}
           name="state"
           id="state"
           type="text"
@@ -157,7 +163,7 @@ export const TournamentEditor = ({ className }: Props) => {
           onChange={handleLocationChange}
         />
         <Input
-          label="Country"
+          label={_(msg`Country`)}
           name="country"
           id="country"
           type="text"
@@ -166,7 +172,7 @@ export const TournamentEditor = ({ className }: Props) => {
         />
       </div>
       <Input
-        label="Tournament URL"
+        label={_(msg`Tournament URL`)}
         name="url"
         id="url"
         type="text"
