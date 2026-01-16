@@ -23,7 +23,7 @@ const textToHtml = (text: string): string => {
 
   return text.replace(PLACEHOLDER_REGEX, (match) => {
     const placeholder = match as DesignPlaceholder;
-    const label = PlaceholderLabel[placeholder];
+    const label = PlaceholderLabel.get(placeholder);
 
     if (!label) {
       return match;
@@ -107,7 +107,7 @@ export const RichTextInput = ({
     }
   }, [value]);
 
-  const filteredPlaceholders = Object.entries(PlaceholderLabel).filter(
+  const filteredPlaceholders = PlaceholderLabel.tournamentEntries().filter(
     ([, label]) => label.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
