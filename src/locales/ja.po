@@ -108,9 +108,14 @@ msgstr "カラーパレット"
 msgid "Country"
 msgstr "国"
 
+#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:90
 #: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:70
 msgid "Create"
 msgstr "作成"
+
+#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:57
+msgid "Create a minimal template with a specific player count."
+msgstr "指定の数の選手でミニマルテンプレを作成"
 
 #: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:58
 msgid "Create Template"
@@ -123,6 +128,14 @@ msgstr "制作者"
 #: src/components/top8/InfoPanel/InfoPanel.tsx:89
 msgid "Credits & Inspiration"
 msgstr "クレジット & インスピレーション"
+
+#: src/components/top8/TemplateEditor/TemplateGroup.tsx:65
+msgid "Custom Minimal"
+msgstr "自作"
+
+#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:54
+msgid "Custom Minimal Template"
+msgstr "自作ミニマルテンプレ"
 
 #: src/components/top8/SettingsPanel/ThemePicker.tsx:20
 msgid "Dark"
@@ -295,6 +308,11 @@ msgstr "ピンク"
 msgid "Pixel Ratio"
 msgstr "ピクセル比"
 
+#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:62
+#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:68
+msgid "Player Count"
+msgstr "選手数"
+
 #: src/components/top8/SidePanel/SidePanelNav.tsx:19
 msgid "Players"
 msgstr "選手情報"
@@ -352,6 +370,8 @@ msgstr "ストックアイコン"
 msgid "Support"
 msgstr "サポート"
 
+#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:76
+#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:80
 #: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:61
 #: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:65
 msgid "Template Name"

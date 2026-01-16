@@ -331,3 +331,5 @@ export const minimalDesign = createMinimalDesign(8);
 export const minimal4Design = createMinimalDesign(4);
 export const minimal16Design = createMinimalDesign(16);
 export const minimal24Design = createMinimalDesign(24);
+
+export { createMinimalDesign };

@@ -83,6 +83,26 @@
       border-color: var(--gray-10);
     }
 
+    .createCustomCard {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: var(--gray-3);
+      color: var(--gray-11);
+      font-size: var(--font-size-sm);
+      font-weight: 800;
+      transition: all 0.15s ease-in-out;
+
+      &:hover {
+        background: var(--gray-4);
+        color: var(--gray-12);
+        border-color: var(--accent-9);
+      }
+    }
+
     &.collapsed {
       max-height: 0;
       overflow: hidden;

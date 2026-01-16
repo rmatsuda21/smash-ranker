@@ -12,6 +12,7 @@ import {
   minimal4Design,
   minimal16Design,
   minimal24Design,
+  createMinimalDesign,
 } from "@/designs/minimal";
 import { Button } from "@/components/shared/Button/Button";
 import { DBTemplate } from "@/types/Repository";
@@ -20,6 +21,7 @@ import { usePlayerStore } from "@/store/playerStore";
 import { useFontStore } from "@/store/fontStore";
 import { useConfirmation } from "@/hooks/useConfirmation";
 import { CreateTemplateModal } from "@/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal";
+import { CreateMinimalTemplateModal } from "@/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal";
 import { TemplateGroup } from "@/components/top8/TemplateEditor/TemplateGroup";
 
 import styles from "./TemplateEditor.module.scss";
@@ -82,6 +84,8 @@ export const TemplateEditor = ({ className }: Props) => {
     useTemplateDB();
   const [userTemplates, setUserTemplates] = useState<DBTemplate[]>([]);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isCreateMinimalModalOpen, setIsCreateMinimalModalOpen] =
+    useState(false);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [loadingTemplateId, setLoadingTemplateId] = useState<string | null>(
     null
@@ -141,6 +145,16 @@ export const TemplateEditor = ({ className }: Props) => {
     });
   };
 
+  const handleCreateMinimalTemplate = (name: string, playerCount: number) => {
+    addTemplate({
+      name,
+      design: createMinimalDesign(playerCount),
+      font: "Noto Sans JP",
+    }).then(() => {
+      setIsCreateMinimalModalOpen(false);
+    });
+  };
+
   const {
     confirm: confirmTemplateClick,
     ConfirmationDialog: TemplateClickConfirmation,
@@ -188,6 +202,11 @@ export const TemplateEditor = ({ className }: Props) => {
           onTemplateClick={confirmTemplateClick}
           viewMode={viewMode}
           loadingTemplateId={loadingTemplateId}
+          onCreateCustom={
+            group.name === "Minimal"
+              ? () => setIsCreateMinimalModalOpen(true)
+              : undefined
+          }
         />
       ))}
       {userTemplates.length > 0 && (
@@ -204,6 +223,11 @@ export const TemplateEditor = ({ className }: Props) => {
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}
         createTemplate={handleCreateTemplate}
+      />
+      <CreateMinimalTemplateModal
+        isOpen={isCreateMinimalModalOpen}
+        onClose={() => setIsCreateMinimalModalOpen(false)}
+        createTemplate={handleCreateMinimalTemplate}
       />
     </div>
   );
