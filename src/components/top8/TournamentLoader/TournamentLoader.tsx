@@ -79,11 +79,11 @@ export const TournamentLoader = ({ className }: Props) => {
       <Trans>Tournament URL</Trans>
       <span className={styles.infoButton} aria-label={_(msg`Show help`)}>
         <FaCircleInfo />
-        <span className={styles.tooltip}>
+        <pre className={styles.tooltip}>
           <Trans>Enter the start.gg event URL</Trans>
           <br />
           <Trans>(https://start.gg/tournament/[name]/event/[event])</Trans>
-        </span>
+        </pre>
       </span>
     </span>
   );
