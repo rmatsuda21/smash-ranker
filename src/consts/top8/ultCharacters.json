@@ -1074,8 +1074,8 @@
         "Green",
         "White"
       ],
-      "cropOffset": { "x": 0.1, "y": 0.15 },
-      "cropScale": 1.1
+      "cropOffset": { "x": 0.1, "y": 0.1 },
+      "cropScale": 1.2
     },
     {
       "name": "Incineroar",
@@ -1425,8 +1425,8 @@
         "Black",
         "Yellow"
       ],
-      "cropOffset": { "x": -0.05, "y": 0.29 },
-      "cropScale": 2
+      "cropOffset": { "x": -0.05, "y": 0.3 },
+      "cropScale": 2.3
     },
     {
       "name": "Sora",
