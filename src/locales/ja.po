@@ -13,6 +13,10 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:85
+msgid "(https://start.gg/tournament/[name]/event/[event])"
+msgstr "(https://start.gg/tournament/[大会名]/event/[イベント名])"
+
 #. placeholder {0}: file.name
 #: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:49
 msgid "{0} is too large! (Max 2MB)"
@@ -30,21 +34,21 @@ msgstr "アクセントカラー"
 msgid "Amber"
 msgstr "アンバー"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:70
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:72
 msgid "Any current player and tournament data will be overwritten."
 msgstr "現在の選手と大会データは上書きされます。"
 
 #: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:124
-msgid "Are you sure you want to delete all saved configs? This action cannot be undone."
-msgstr "保存されたすべての設定を削除しますか？この操作は元に戻せません。"
+#~ msgid "Are you sure you want to delete all saved configs? This action cannot be undone."
+#~ msgstr "保存されたすべての設定を削除しますか？この操作は元に戻せません。"
 
 #: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:113
-msgid "Are you sure you want to delete this config? This action cannot be undone."
-msgstr "この設定を削除しますか？この操作は元に戻せません。"
+#~ msgid "Are you sure you want to delete this config? This action cannot be undone."
+#~ msgstr "この設定を削除しますか？この操作は元に戻せません。"
 
 #: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:133
-msgid "Are you sure you want to load this config? This action will overwrite the current config."
-msgstr "この設定を読み込みますか？現在の設定は上書きされます。"
+#~ msgid "Are you sure you want to load this config? This action will overwrite the current config."
+#~ msgstr "この設定を読み込みますか？現在の設定は上書きされます。"
 
 #: src/components/top8/AssetManager/AssetManager.tsx:32
 #: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:75
@@ -96,8 +100,8 @@ msgid "Color Palette"
 msgstr "カラーパレット"
 
 #: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:185
-msgid "Config Manager"
-msgstr "設定マネージャー"
+#~ msgid "Config Manager"
+#~ msgstr "設定マネージャー"
 
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:193
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:166
@@ -129,21 +133,20 @@ msgid "Date"
 msgstr "日付"
 
 #: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:203
-msgid "Delete"
-msgstr "削除"
+#~ msgid "Delete"
+#~ msgstr "削除"
 
 #: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:209
-msgid "Delete All"
-msgstr "すべて削除"
+#~ msgid "Delete All"
+#~ msgstr "すべて削除"
 
 #: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:122
-msgid "Delete All Configs"
-msgstr "すべての設定を削除"
+#~ msgid "Delete All Configs"
+#~ msgstr "すべての設定を削除"
 
-#. placeholder {0}: selectedConfig?.name
 #: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:111
-msgid "Delete Config: {0}"
-msgstr "設定を削除: {0}"
+#~ msgid "Delete Config: {0}"
+#~ msgstr "設定を削除: {0}"
 
 #: src/components/top8/SidePanel/SidePanelNav.tsx:23
 msgid "Design"
@@ -170,6 +173,10 @@ msgstr "英語"
 #: src/components/top8/TextEditor/TextEditor.tsx:83
 msgid "Enter {0}..."
 msgstr "{0}を入力..."
+
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:83
+msgid "Enter the start.gg event URL"
+msgstr "start.ggの大会URLを入れてください"
 
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:136
 msgid "Entrants"
@@ -209,10 +216,10 @@ msgid "Icon"
 msgstr "アイコン"
 
 #: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:213
-msgid "Import"
-msgstr "インポート"
+#~ msgid "Import"
+#~ msgstr "インポート"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:58
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:60
 msgid "Invalid tournament URL!"
 msgstr "無効な大会URLです！"
 
@@ -236,16 +243,15 @@ msgstr "言語"
 msgid "Light"
 msgstr "ライト"
 
-#: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:197
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:91
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:107
 msgid "Load"
 msgstr "取得"
 
 #: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:131
-msgid "Load Config"
-msgstr "設定を読み込む"
+#~ msgid "Load Config"
+#~ msgstr "設定を読み込む"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:68
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:70
 msgid "Load Tournament?"
 msgstr "大会を読み込みますか？"
 
@@ -311,8 +317,8 @@ msgid "Red"
 msgstr "赤"
 
 #: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:194
-msgid "Save Current Config"
-msgstr "現在の設定を保存"
+#~ msgid "Save Current Config"
+#~ msgstr "現在の設定を保存"
 
 #: src/components/top8/AssetSelector/AssetSelector.tsx:69
 msgid "Select"
@@ -323,12 +329,16 @@ msgid "Select Character"
 msgstr "キャラクター選択"
 
 #: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:189
-msgid "Select Config"
-msgstr "設定を選択"
+#~ msgid "Select Config"
+#~ msgstr "設定を選択"
 
 #: src/components/top8/PlayersEditor/CountryDropDown.tsx:44
 msgid "Select Country"
 msgstr "国選択"
+
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:80
+msgid "Show help"
+msgstr ""
 
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:158
 msgid "State"
@@ -396,7 +406,7 @@ msgid "Tournament Name"
 msgstr "大会名"
 
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:175
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:80
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:79
 msgid "Tournament URL"
 msgstr "大会URL"
 
