@@ -40,7 +40,8 @@ type Props = {
 export const TournamentLoader = ({ className }: Props) => {
   const { _ } = useLingui();
   const [url, setUrl] = useState(
-    "https://smash.gg/tournament/no-caps-115-msc-1400/event/ultimate-singles"
+    // "https://smash.gg/tournament/no-caps-115-msc-1400/event/ultimate-singles"
+    ""
   );
   const [error, setError] = useState<boolean>(false);
 
