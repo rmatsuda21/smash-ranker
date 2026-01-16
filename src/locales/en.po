@@ -13,6 +13,10 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:85
+msgid "(https://start.gg/tournament/[name]/event/[event])"
+msgstr ""
+
 #. placeholder {0}: file.name
 #: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:49
 msgid "{0} is too large! (Max 2MB)"
@@ -30,21 +34,21 @@ msgstr "Accent Color"
 msgid "Amber"
 msgstr "Amber"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:70
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:72
 msgid "Any current player and tournament data will be overwritten."
 msgstr "Any current player and tournament data will be overwritten."
 
 #: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:124
-msgid "Are you sure you want to delete all saved configs? This action cannot be undone."
-msgstr "Are you sure you want to delete all saved configs? This action cannot be undone."
+#~ msgid "Are you sure you want to delete all saved configs? This action cannot be undone."
+#~ msgstr "Are you sure you want to delete all saved configs? This action cannot be undone."
 
 #: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:113
-msgid "Are you sure you want to delete this config? This action cannot be undone."
-msgstr "Are you sure you want to delete this config? This action cannot be undone."
+#~ msgid "Are you sure you want to delete this config? This action cannot be undone."
+#~ msgstr "Are you sure you want to delete this config? This action cannot be undone."
 
 #: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:133
-msgid "Are you sure you want to load this config? This action will overwrite the current config."
-msgstr "Are you sure you want to load this config? This action will overwrite the current config."
+#~ msgid "Are you sure you want to load this config? This action will overwrite the current config."
+#~ msgstr "Are you sure you want to load this config? This action will overwrite the current config."
 
 #: src/components/top8/AssetManager/AssetManager.tsx:32
 #: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:75
@@ -96,8 +100,8 @@ msgid "Color Palette"
 msgstr "Color Palette"
 
 #: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:185
-msgid "Config Manager"
-msgstr "Config Manager"
+#~ msgid "Config Manager"
+#~ msgstr "Config Manager"
 
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:193
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:166
@@ -129,21 +133,20 @@ msgid "Date"
 msgstr "Date"
 
 #: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:203
-msgid "Delete"
-msgstr "Delete"
+#~ msgid "Delete"
+#~ msgstr "Delete"
 
 #: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:209
-msgid "Delete All"
-msgstr "Delete All"
+#~ msgid "Delete All"
+#~ msgstr "Delete All"
 
 #: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:122
-msgid "Delete All Configs"
-msgstr "Delete All Configs"
+#~ msgid "Delete All Configs"
+#~ msgstr "Delete All Configs"
 
-#. placeholder {0}: selectedConfig?.name
 #: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:111
-msgid "Delete Config: {0}"
-msgstr "Delete Config: {0}"
+#~ msgid "Delete Config: {0}"
+#~ msgstr "Delete Config: {0}"
 
 #: src/components/top8/SidePanel/SidePanelNav.tsx:23
 msgid "Design"
@@ -170,6 +173,10 @@ msgstr "English"
 #: src/components/top8/TextEditor/TextEditor.tsx:83
 msgid "Enter {0}..."
 msgstr "Enter {0}..."
+
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:83
+msgid "Enter the start.gg event URL"
+msgstr ""
 
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:136
 msgid "Entrants"
@@ -209,10 +216,10 @@ msgid "Icon"
 msgstr "Icon"
 
 #: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:213
-msgid "Import"
-msgstr "Import"
+#~ msgid "Import"
+#~ msgstr "Import"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:58
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:60
 msgid "Invalid tournament URL!"
 msgstr "Invalid tournament URL!"
 
@@ -236,16 +243,15 @@ msgstr "Language"
 msgid "Light"
 msgstr "Light"
 
-#: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:197
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:91
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:107
 msgid "Load"
 msgstr "Load"
 
 #: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:131
-msgid "Load Config"
-msgstr "Load Config"
+#~ msgid "Load Config"
+#~ msgstr "Load Config"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:68
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:70
 msgid "Load Tournament?"
 msgstr "Load Tournament?"
 
@@ -311,8 +317,8 @@ msgid "Red"
 msgstr "Red"
 
 #: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:194
-msgid "Save Current Config"
-msgstr "Save Current Config"
+#~ msgid "Save Current Config"
+#~ msgstr "Save Current Config"
 
 #: src/components/top8/AssetSelector/AssetSelector.tsx:69
 msgid "Select"
@@ -323,12 +329,16 @@ msgid "Select Character"
 msgstr "Select Character"
 
 #: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:189
-msgid "Select Config"
-msgstr "Select Config"
+#~ msgid "Select Config"
+#~ msgstr "Select Config"
 
 #: src/components/top8/PlayersEditor/CountryDropDown.tsx:44
 msgid "Select Country"
 msgstr "Select Country"
+
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:80
+msgid "Show help"
+msgstr ""
 
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:158
 msgid "State"
@@ -396,7 +406,7 @@ msgid "Tournament Name"
 msgstr "Tournament Name"
 
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:175
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:80
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:79
 msgid "Tournament URL"
 msgstr "Tournament URL"
 

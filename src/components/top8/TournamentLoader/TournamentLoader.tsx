@@ -2,6 +2,7 @@ import { useState } from "react";
 import cn from "classnames";
 import { msg } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
+import { FaCircleInfo } from "react-icons/fa6";
 
 import { Button } from "@/components/shared/Button/Button";
 import { Input } from "@/components/shared/Input/Input";
@@ -12,6 +13,7 @@ import { COOKIES } from "@/consts/cookies";
 import { useConfirmation } from "@/hooks/useConfirmation";
 
 import styles from "./TournamentLoader.module.scss";
+import { Trans } from "@lingui/react/macro";
 
 const urlToSlug = (url: string) => {
   const match = url.match(/tournament\/([^/]+)\/event\/([^/]+)/);
@@ -72,12 +74,26 @@ export const TournamentLoader = ({ className }: Props) => {
       cookieName: COOKIES.NEEDS_TOURNAMENT_LOAD_CONFIRMATION,
     });
 
+  const urlLabel = (
+    <span className={styles.labelWithInfo}>
+      <Trans>Tournament URL</Trans>
+      <span className={styles.infoButton} aria-label={_(msg`Show help`)}>
+        <FaCircleInfo />
+        <span className={styles.tooltip}>
+          <Trans>Enter the start.gg event URL</Trans>
+          <br />
+          <Trans>(https://start.gg/tournament/[name]/event/[event])</Trans>
+        </span>
+      </span>
+    </span>
+  );
+
   return (
     <div className={cn(styles.tournamentLoader, className)}>
       <div className={styles.inputContainer}>
         <Input
           className={cn({ [styles.error]: error })}
-          label={_(msg`Tournament URL`)}
+          label={urlLabel}
           id="tournament-url"
           name="tournament-url"
           type="text"
