@@ -16,19 +16,20 @@ import { COOKIES } from "@/consts/cookies";
 import App from "@/App";
 
 (async () => {
-  // Load saved language preference or default to English
-  const savedLanguage = Cookies.get(COOKIES.LANGUAGE) || "en";
+  const supportedLanguages = ["en", "ja"];
+  const browserLanguage = navigator.language.split("-")[0];
+  const defaultLanguage = supportedLanguages.includes(browserLanguage)
+    ? browserLanguage
+    : "en";
+  const savedLanguage = Cookies.get(COOKIES.LANGUAGE) || defaultLanguage;
   await loadCatalog(savedLanguage);
 
-  // Apply saved theme preference
   const savedTheme = Cookies.get(COOKIES.THEME) || "dark";
   document.documentElement.setAttribute("data-theme", savedTheme);
 
-  // Apply saved accent color preference
   const savedAccent = Cookies.get(COOKIES.ACCENT_COLOR) || "pink";
   document.documentElement.setAttribute("data-accent", savedAccent);
 
-  // Register service worker in the background (non-blocking)
   registerServiceWorker();
 
   inject();
