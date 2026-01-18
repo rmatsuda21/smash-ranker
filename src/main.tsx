@@ -9,7 +9,7 @@ import "@/theme.scss";
 import "@/reset.css";
 import "@/index.css";
 
-import { waitForServiceWorker } from "@/utils/waitForServiceWorker";
+import { registerServiceWorker } from "@/utils/waitForServiceWorker";
 import { loadCatalog } from "@/i18n";
 import { COOKIES } from "@/consts/cookies";
 
@@ -28,7 +28,9 @@ import App from "@/App";
   const savedAccent = Cookies.get(COOKIES.ACCENT_COLOR) || "pink";
   document.documentElement.setAttribute("data-accent", savedAccent);
 
-  await waitForServiceWorker();
+  // Register service worker in the background (non-blocking)
+  registerServiceWorker();
+
   inject();
   createRoot(document.getElementById("root")!).render(
     <StrictMode>
