@@ -39,10 +39,7 @@ type Props = {
 
 export const TournamentLoader = ({ className }: Props) => {
   const { _ } = useLingui();
-  const [url, setUrl] = useState(
-    // "https://smash.gg/tournament/no-caps-115-msc-1400/event/ultimate-singles"
-    ""
-  );
+  const [url, setUrl] = useState("");
   const [error, setError] = useState<boolean>(false);
 
   const isFetching = usePlayerStore((state) => state.fetching);
