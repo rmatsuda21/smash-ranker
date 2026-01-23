@@ -29,6 +29,9 @@ const getConditionMap = (
     [DesignPlaceholder.TOURNAMENT_URL]: Boolean(tournament?.url),
     [RenderCondition.TOURNAMENT_ICON]: Boolean(tournament?.iconSrc),
     [RenderCondition.BACKGROUND_IMG]: Boolean(design?.bgAssetId),
+    [RenderCondition.HAS_ALT_CHARACTERS]: Boolean(
+      player?.characters && player.characters.length > 1
+    ),
     [RenderCondition.NOT]: true,
   };
 };

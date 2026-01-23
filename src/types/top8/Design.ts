@@ -31,6 +31,7 @@ export type ElementType =
   | "customImage"
   | "characterImage"
   | "altCharacterImage"
+  | "customAltCharacterImage"
   | "tournamentIcon"
   | "playerFlag";
 
@@ -56,7 +57,12 @@ export interface FlexItemConfig {
 interface BaseElementConfig {
   id?: string;
   position: { x: number; y: number };
-  size?: { width?: number; height?: number };
+  size?: {
+    width?: number;
+    height?: number;
+    maxWidth?: number;
+    maxHeight?: number;
+  };
   scale?: { x: number; y: number };
   rotation?: number;
   offset?: { x: number; y: number };
@@ -186,6 +192,23 @@ export interface AltCharacterImageElementConfig extends BaseElementConfig {
   alignLastRow?: FlexAlign;
 }
 
+export type CharacterImageType = "stock" | "render";
+
+export interface CustomAltCharacterImageElementConfig
+  extends BaseElementConfig {
+  type: "customAltCharacterImage";
+  imageType?: CharacterImageType;
+  elementTemplate?: ElementConfig;
+  gap?: number;
+  rowGap?: number;
+  columnGap?: number;
+  columns?: number;
+  rows?: number;
+  align?: FlexAlign;
+  justify?: FlexAlign;
+  alignLastRow?: FlexAlign;
+}
+
 export interface SvgElementConfig
   extends BaseElementConfig,
     Partial<ComponentProps<typeof Image>> {
@@ -227,6 +250,7 @@ export type ElementConfig =
   | FlexGridElementConfig
   | CharacterImageElementConfig
   | AltCharacterImageElementConfig
+  | CustomAltCharacterImageElementConfig
   | RectElementConfig
   | CustomImageElementConfig
   | SvgElementConfig

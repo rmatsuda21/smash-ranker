@@ -9,6 +9,7 @@ import {
 import {
   createCharacterImageElement,
   createAltCharacterImageElement,
+  createCustomAltCharacterImageElement,
   createPlayerFlagElement,
 } from "./player";
 import {
@@ -27,6 +28,7 @@ export const elementCreators = {
   flexGrid: createFlexGridElement,
   characterImage: createCharacterImageElement,
   altCharacterImage: createAltCharacterImageElement,
+  customAltCharacterImage: createCustomAltCharacterImageElement,
   rect: createRectElement,
   customImage: createCustomImageElement,
   svg: createSvgElement,
@@ -45,6 +47,7 @@ export {
   createBackgroundImageElement,
   createCharacterImageElement,
   createAltCharacterImageElement,
+  createCustomAltCharacterImageElement,
   createPlayerFlagElement,
   createGroupElement,
   createFlexGroupElement,

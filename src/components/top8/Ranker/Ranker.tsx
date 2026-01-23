@@ -34,10 +34,8 @@ export const Ranker = () => {
   return (
     <div className={styles.root}>
       <Header />
-
       <div className={styles.body}>
         <SidePanel className={styles.sidePanel} />
-
         <div className={styles.canvasWrapper}>
           <Suspense fallback={<Skeleton className={styles.canvas} />}>
             <Canvas className={styles.canvas} />

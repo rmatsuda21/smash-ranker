@@ -11,6 +11,7 @@ import type {
   FlexGridElementConfig,
   FlexAlign,
   FlexJustify,
+  CustomAltCharacterImageElementConfig,
 } from "@/types/top8/Design";
 import type { ElementCreator } from "@/types/top8/ElementFactory";
 import { replacePlaceholders } from "@/utils/top8/replacePlaceholderString";
@@ -70,6 +71,67 @@ const getElementMainSize = (
       tempText.destroy();
 
       return measuredWidth;
+    }
+
+    if (element.type === "customAltCharacterImage") {
+      const altEl = element as CustomAltCharacterImageElementConfig;
+      const player = context.player;
+
+      if (!player || player.characters.length <= 1) {
+        return 0;
+      }
+
+      const numAlts = player.characters.length - 1;
+      const columnGap = altEl.gap ?? 5;
+      const rowGap = altEl.rowGap ?? altEl.gap ?? 5;
+      const preferredCellSize = altEl.elementTemplate?.size?.width ?? 70;
+
+      const maxWidth = altEl.size?.maxWidth ?? altEl.size?.width ?? preferredCellSize * numAlts;
+      const maxHeight = altEl.size?.height ?? preferredCellSize;
+
+      let bestColumns = 1;
+      let bestCellSize = 0;
+
+      for (let cols = 1; cols <= numAlts; cols++) {
+        const rows = Math.ceil(numAlts / cols);
+        const maxCellWidth = (maxWidth - (cols - 1) * columnGap) / cols;
+        const maxCellHeight = (maxHeight - (rows - 1) * rowGap) / rows;
+        const cellSize = Math.min(maxCellWidth, maxCellHeight);
+
+        if (cellSize < 10) continue;
+
+        if (cellSize > bestCellSize) {
+          bestCellSize = cellSize;
+          bestColumns = cols;
+        }
+      }
+
+      const cellSize = Math.min(bestCellSize, preferredCellSize);
+      const actualContentWidth = bestColumns * cellSize + (bestColumns - 1) * columnGap;
+
+      return actualContentWidth;
+    }
+
+    if (element.type === "flexGroup" && element.size?.maxWidth !== undefined && element.size?.width === undefined) {
+      const flexEl = element as FlexGroupElementConfig;
+      const flexDirection = flexEl.direction ?? "row";
+      const gap = flexEl.gap ?? 0;
+
+      if (flexDirection === "row" && flexEl.elements) {
+        let contentWidth = 0;
+        const visibleElements = flexEl.elements.filter(
+          (child) => !child.hidden && evaluateElementCondition(child.conditions, context)
+        );
+
+        for (let i = 0; i < visibleElements.length; i++) {
+          contentWidth += getElementMainSize(visibleElements[i], "row", context);
+          if (i < visibleElements.length - 1) {
+            contentWidth += gap;
+          }
+        }
+
+        return Math.min(contentWidth, element.size.maxWidth);
+      }
     }
 
     return element.size?.width ?? 0;
@@ -313,7 +375,19 @@ export const createFlexGroupElement: ElementCreator<FlexGroupElementConfig> = ({
   let crossPosition = 0;
 
   for (const line of orderedLines) {
-    const sizes = applyFlexSizing(line, containerMainSize, gap);
+    const rawSizes = applyFlexSizing(line, containerMainSize, gap);
+
+    // Apply maxWidth/maxHeight constraints to sizes before calculating justify
+    const sizes = rawSizes.map((size, i) => {
+      const child = line[i];
+      if (isRow && child.element.size?.maxWidth !== undefined) {
+        return Math.min(size, child.element.size.maxWidth);
+      } else if (!isRow && child.element.size?.maxHeight !== undefined) {
+        return Math.min(size, child.element.size.maxHeight);
+      }
+      return size;
+    });
+
     const maxCrossSize = Math.max(...line.map((c) => c.crossSize), 0);
     const alignmentCrossSize =
       !wrap && containerCrossSize > 0 ? containerCrossSize : maxCrossSize;
@@ -333,6 +407,7 @@ export const createFlexGroupElement: ElementCreator<FlexGroupElementConfig> = ({
     for (let i = 0; i < line.length; i++) {
       const child = line[i];
       const childMainSize = sizes[i];
+
       const alignOffset = calculateAlignOffset(
         align,
         alignmentCrossSize,
