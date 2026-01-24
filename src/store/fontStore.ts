@@ -5,6 +5,7 @@ import Cookies from "js-cookie";
 import { fetchAndMapFonts } from "@/utils/top8/fetchAndMapFonts";
 import { loadFont } from "@/utils/top8/loadFont";
 import { COOKIES } from "@/consts/cookies";
+import { useHistoryStore } from "@/store/historyStore";
 
 export type Font = {
   fontFamily: string;
@@ -20,7 +21,8 @@ interface FontState {
   fetching: boolean;
   error?: Error;
   dispatch: (action: FontAction) => void;
-  selectFont: (fontFamily: string) => Promise<void>;
+  selectFont: (fontFamily: string, skipHistory?: boolean) => Promise<void>;
+  setSelectedFontFromHistory: (fontFamily: string) => void;
 }
 
 type FontAction =
@@ -92,7 +94,10 @@ const fontReducer = (state: FontState, action: FontAction): FontState => {
   }
 };
 
-const initialState: Omit<FontState, "dispatch" | "selectFont"> = {
+const initialState: Omit<
+  FontState,
+  "dispatch" | "selectFont" | "setSelectedFontFromHistory"
+> = {
   fonts: new Set(),
   selectedFont: "Arial",
   fetching: true,
@@ -106,8 +111,8 @@ export const useFontStore = create<FontState>()(
       dispatch: (action: FontAction) =>
         set((state) => fontReducer(state, action)),
 
-      selectFont: async (fontFamily: string) => {
-        const { fonts, dispatch } = get();
+      selectFont: async (fontFamily: string, skipHistory = false) => {
+        const { fonts, dispatch, selectedFont: previousFont } = get();
         const font = Array.from(fonts).find((f) => f.fontFamily === fontFamily);
 
         if (!font) {
@@ -118,7 +123,16 @@ export const useFontStore = create<FontState>()(
           return;
         }
 
+        const shouldRecordHistory = !skipHistory && fontFamily !== previousFont;
+
         if (font.loaded) {
+          if (shouldRecordHistory) {
+            useHistoryStore.getState().pushAction({
+              type: "SET_FONT",
+              undoData: previousFont,
+              redoData: fontFamily,
+            });
+          }
           dispatch({ type: "SET_SELECTED_FONT", payload: fontFamily });
           return;
         }
@@ -127,6 +141,13 @@ export const useFontStore = create<FontState>()(
 
         try {
           await loadFont(font);
+          if (shouldRecordHistory) {
+            useHistoryStore.getState().pushAction({
+              type: "SET_FONT",
+              undoData: previousFont,
+              redoData: fontFamily,
+            });
+          }
           dispatch({ type: "LOAD_FONT_SUCCESS", payload: font });
         } catch (error) {
           dispatch({
@@ -134,6 +155,21 @@ export const useFontStore = create<FontState>()(
             payload: {
               error: error instanceof Error ? error : new Error(String(error)),
             },
+          });
+        }
+      },
+
+      setSelectedFontFromHistory: (fontFamily: string) => {
+        const { fonts, dispatch } = get();
+        const font = Array.from(fonts).find((f) => f.fontFamily === fontFamily);
+
+        if (!font) return;
+
+        if (font.loaded) {
+          dispatch({ type: "SET_SELECTED_FONT", payload: fontFamily });
+        } else {
+          loadFont(font).then(() => {
+            dispatch({ type: "LOAD_FONT_SUCCESS", payload: font });
           });
         }
       },
