@@ -1,6 +1,7 @@
 import { useRef, useState, useCallback, useEffect, KeyboardEvent } from "react";
 import { createPortal } from "react-dom";
 import cn from "classnames";
+import { useLingui } from "@lingui/react";
 
 import {
   DesignPlaceholder,
@@ -70,6 +71,7 @@ export const RichTextInput = ({
   className,
   placeholder = "Enter text...",
 }: Props) => {
+  const { i18n } = useLingui();
   const [showDropdown, setShowDropdown] = useState(false);
   const [dropdownPosition, setDropdownPosition] = useState({ x: 0, y: 0 });
   const [searchTerm, setSearchTerm] = useState("");
@@ -106,6 +108,13 @@ export const RichTextInput = ({
       lastExternalValue.current = value;
     }
   }, [value]);
+
+  useEffect(() => {
+    if (editorRef.current) {
+      const currentText = htmlToText(editorRef.current);
+      editorRef.current.innerHTML = textToHtml(currentText);
+    }
+  }, [i18n.locale]);
 
   const filteredPlaceholders = PlaceholderLabel.tournamentEntries().filter(
     ([, label]) => label.toLowerCase().includes(searchTerm.toLowerCase())

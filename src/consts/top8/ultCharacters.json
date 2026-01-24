@@ -1124,7 +1124,9 @@
         "Grey",
         "Black",
         "Pink"
-      ]
+      ],
+      "cropOffset": { "x": -0.05, "y": 0.33 },
+      "cropScale": 1.85
     },
     {
       "name": "Chrom",
