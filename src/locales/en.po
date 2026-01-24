@@ -13,7 +13,7 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:85
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:83
 msgid "(https://start.gg/tournament/[name]/event/[event])"
 msgstr "(https://start.gg/tournament/[name]/event/[event])"
 
@@ -38,7 +38,7 @@ msgstr "Accent Color"
 msgid "Amber"
 msgstr "Amber"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:72
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:70
 msgid "Any current player and tournament data will be overwritten."
 msgstr "Any current player and tournament data will be overwritten."
 
@@ -191,7 +191,7 @@ msgstr "English"
 msgid "Enter {0}..."
 msgstr "Enter {0}..."
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:83
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:81
 msgid "Enter the start.gg event URL"
 msgstr "Enter the start.gg event URL"
 
@@ -237,7 +237,7 @@ msgstr "Icon"
 #~ msgid "Import"
 #~ msgstr "Import"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:60
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:58
 msgid "Invalid tournament URL!"
 msgstr "Invalid tournament URL!"
 
@@ -261,7 +261,7 @@ msgstr "Language"
 msgid "Light"
 msgstr "Light"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:107
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:105
 msgid "Load"
 msgstr "Load"
 
@@ -269,7 +269,7 @@ msgstr "Load"
 #~ msgid "Load Config"
 #~ msgstr "Load Config"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:70
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:68
 msgid "Load Tournament?"
 msgstr "Load Tournament?"
 
@@ -363,6 +363,10 @@ msgstr "Quality"
 msgid "Red"
 msgstr "Red"
 
+#: src/components/top8/Ranker/Header/Header.tsx:44
+msgid "Redo"
+msgstr ""
+
 #: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:194
 #~ msgid "Save Current Config"
 #~ msgstr "Save Current Config"
@@ -383,7 +387,7 @@ msgstr "Select Character"
 msgid "Select Country"
 msgstr "Select Country"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:80
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:78
 msgid "Show help"
 msgstr "Show help"
 
@@ -480,7 +484,7 @@ msgid "Tournament State"
 msgstr "Tournament State"
 
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:175
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:79
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:77
 #: src/consts/top8/placeholders.ts:35
 msgid "Tournament URL"
 msgstr "Tournament URL"
@@ -501,3 +505,7 @@ msgstr "Twitter Handle"
 #: src/components/top8/TextEditor/TextEditor.tsx:70
 msgid "Type <0>{</0> to insert a variable!"
 msgstr "Type <0>{</0> to insert a variable!"
+
+#: src/components/top8/Ranker/Header/Header.tsx:34
+msgid "Undo"
+msgstr ""

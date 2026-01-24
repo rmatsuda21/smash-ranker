@@ -2,40 +2,36 @@
   padding-block: 10px;
   display: flex;
 
-  background: linear-gradient(
-    24deg,
-    var(--accent-2),
-    var(--accent-1),
-    var(--accent-2)
-  );
+  background: linear-gradient(24deg,
+      var(--accent-2),
+      var(--accent-1),
+      var(--accent-2));
   border-top: 1px solid var(--accent-1);
   border-bottom: 1px solid var(--accent-1);
 
-  > * {
+  >* {
     border-left: 1px solid var(--accent-4);
     border-right: 1px solid var(--accent-4);
     padding-inline: 14px;
   }
 
-  > *:first-child {
+  >*:first-child {
     border-left: none;
   }
 
-  > *:last-child {
+  >*:last-child {
     border-right: none;
   }
 
   [data-theme="light"] & {
-    background: linear-gradient(
-      24deg,
-      var(--accent-11),
-      var(--accent-12),
-      var(--accent-11)
-    );
+    background: linear-gradient(24deg,
+        var(--accent-11),
+        var(--accent-12),
+        var(--accent-11));
     border-top: 1px solid var(--accent-10);
     border-bottom: 1px solid var(--accent-10);
 
-    > * {
+    >* {
       border-left: 1px solid var(--accent-9);
       border-right: 1px solid var(--accent-9);
     }
@@ -46,6 +42,46 @@
   display: flex;
   align-items: flex-end;
   gap: 10px;
+}
+
+.historyControls {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding-inline: 8px !important;
+}
+
+.historyButton {
+  width: 32px;
+  height: 32px;
+  padding: 0 !important;
+  border-radius: 6px;
+  color: var(--gray-11);
+
+  &:hover:not(:disabled) {
+    color: var(--accent-11);
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.95);
+  }
+
+  &:disabled {
+    opacity: 0.3;
+  }
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  [data-theme="light"] & {
+    color: var(--gray-9);
+
+    &:hover:not(:disabled) {
+      color: var(--accent-9);
+    }
+  }
 }
 
 .tournamentLoader {

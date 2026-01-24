@@ -127,7 +127,8 @@ export const TemplateEditor = ({ className }: Props) => {
     }
 
     if (template) {
-      await selectFont(template.font);
+      // Skip history for font change since SET_DESIGN will clear history anyway
+      await selectFont(template.font, true);
       dispatch({ type: "SET_DESIGN", payload: template.design });
       playerDispatch({ type: "CLEAR_SELECTED_PLAYER" });
     }

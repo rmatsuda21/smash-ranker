@@ -4,6 +4,12 @@ import { Stage } from "konva/lib/Stage";
 
 import { ElementConfig, Design, PlayerDesign } from "@/types/top8/Design";
 import { top8erDesign } from "@/designs/top8er";
+import {
+  useHistoryStore,
+  HistoryActionType,
+  HistoryEntry,
+} from "@/store/historyStore";
+import { useFontStore } from "@/store/fontStore";
 
 interface CanvasState {
   design: Design;
@@ -11,7 +17,7 @@ interface CanvasState {
   editable: boolean;
 }
 
-type CanvasAction =
+export type CanvasAction =
   | { type: "SET_DESIGN"; payload: Design }
   | { type: "SET_STAGE_REF"; payload: Stage | null }
   | { type: "ADD_TOURNAMENT_ELEMENT"; payload: ElementConfig }
@@ -40,11 +46,46 @@ type CanvasAction =
       payload: { id: string; value: { text: string; name: string } };
     };
 
+const HISTORY_ACTION_TYPES: Set<string> = new Set([
+  "SET_BACKGROUND_IMG",
+  "CLEAR_BACKGROUND_IMG",
+  "UPDATE_COLOR_PALETTE",
+]);
+
+const HISTORY_CLEARING_ACTIONS: Set<string> = new Set(["SET_DESIGN"]);
+
 const initialState: CanvasState = {
   design: top8erDesign,
   stageRef: null,
   editable: false,
 };
+
+function captureUndoData(state: CanvasState, action: CanvasAction): unknown {
+  switch (action.type) {
+    case "SET_BACKGROUND_IMG":
+    case "CLEAR_BACKGROUND_IMG":
+      return state.design.bgAssetId;
+    case "UPDATE_COLOR_PALETTE":
+      return {
+        id: action.payload.id,
+        value: state.design.colorPalette?.[action.payload.id],
+      };
+    default:
+      return null;
+  }
+}
+
+function captureRedoData(action: CanvasAction): unknown {
+  switch (action.type) {
+    case "CLEAR_BACKGROUND_IMG":
+      return undefined;
+    case "SET_BACKGROUND_IMG":
+    case "UPDATE_COLOR_PALETTE":
+      return action.payload;
+    default:
+      return null;
+  }
+}
 
 const canvasReducer = (
   state: CanvasState,
@@ -153,16 +194,110 @@ const canvasReducer = (
 };
 
 interface CanvasStore extends CanvasState {
-  dispatch: (action: CanvasAction) => void;
+  dispatch: (action: CanvasAction, skipHistory?: boolean) => void;
+  undo: () => void;
+  redo: () => void;
+}
+
+function applyHistoryEntry(
+  state: CanvasState,
+  entry: HistoryEntry,
+  isUndo: boolean
+): Partial<CanvasState> {
+  const data = isUndo ? entry.undoData : entry.redoData;
+
+  switch (entry.type) {
+    case "SET_BACKGROUND_IMG":
+      return {
+        design: {
+          ...state.design,
+          bgAssetId: data as string | undefined,
+        },
+      };
+
+    case "CLEAR_BACKGROUND_IMG":
+      return {
+        design: {
+          ...state.design,
+          bgAssetId: data as string | undefined,
+        },
+      };
+
+    case "UPDATE_COLOR_PALETTE": {
+      const colorData = data as {
+        id: string;
+        value?: { color: string; name: string };
+      };
+      const newPalette = { ...state.design.colorPalette };
+      if (colorData.value) {
+        newPalette[colorData.id] = colorData.value;
+      } else {
+        delete newPalette[colorData.id];
+      }
+      return {
+        design: {
+          ...state.design,
+          colorPalette: newPalette,
+        },
+      };
+    }
+
+    case "SET_FONT": {
+      const fontFamily = data as string;
+      useFontStore.getState().setSelectedFontFromHistory(fontFamily);
+      return state;
+    }
+
+    default:
+      return state;
+  }
 }
 
 export const useCanvasStore = create<CanvasStore>()(
   devtools(
     persist(
-      (set) => ({
+      (set, get) => ({
         ...initialState,
-        dispatch: (action: CanvasAction) =>
-          set((state) => canvasReducer(state, action), false, action),
+        dispatch: (action: CanvasAction, skipHistory = false) => {
+          const state = get();
+
+          if (HISTORY_CLEARING_ACTIONS.has(action.type)) {
+            useHistoryStore.getState().clearHistory();
+          } else if (!skipHistory && HISTORY_ACTION_TYPES.has(action.type)) {
+            const undoData = captureUndoData(state, action);
+            const redoData = captureRedoData(action);
+
+            useHistoryStore.getState().pushAction({
+              type: action.type as HistoryActionType,
+              undoData,
+              redoData,
+            });
+          }
+
+          set((state) => canvasReducer(state, action), false, action);
+        },
+
+        undo: () => {
+          const entry = useHistoryStore.getState().undo();
+          if (entry) {
+            set(
+              (state) => applyHistoryEntry(state, entry, true),
+              false,
+              "UNDO"
+            );
+          }
+        },
+
+        redo: () => {
+          const entry = useHistoryStore.getState().redo();
+          if (entry) {
+            set(
+              (state) => applyHistoryEntry(state, entry, false),
+              false,
+              "REDO"
+            );
+          }
+        },
       }),
       {
         name: "canvas-store",

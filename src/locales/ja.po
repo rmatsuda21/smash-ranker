@@ -13,7 +13,7 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:85
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:83
 msgid "(https://start.gg/tournament/[name]/event/[event])"
 msgstr "(https://start.gg/tournament/[大会名]/event/[イベント名])"
 
@@ -38,7 +38,7 @@ msgstr "アクセントカラー"
 msgid "Amber"
 msgstr "アンバー"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:72
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:70
 msgid "Any current player and tournament data will be overwritten."
 msgstr "現在の選手と大会データは上書きされます。"
 
@@ -191,7 +191,7 @@ msgstr "英語"
 msgid "Enter {0}..."
 msgstr "{0}を入力..."
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:83
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:81
 msgid "Enter the start.gg event URL"
 msgstr "start.ggの大会URLを入れてください"
 
@@ -237,7 +237,7 @@ msgstr "アイコン"
 #~ msgid "Import"
 #~ msgstr "インポート"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:60
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:58
 msgid "Invalid tournament URL!"
 msgstr "無効な大会URLです！"
 
@@ -261,7 +261,7 @@ msgstr "言語"
 msgid "Light"
 msgstr "ライト"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:107
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:105
 msgid "Load"
 msgstr "取得"
 
@@ -269,7 +269,7 @@ msgstr "取得"
 #~ msgid "Load Config"
 #~ msgstr "設定を読み込む"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:70
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:68
 msgid "Load Tournament?"
 msgstr "大会を読み込みますか？"
 
@@ -363,6 +363,10 @@ msgstr "品質"
 msgid "Red"
 msgstr "赤"
 
+#: src/components/top8/Ranker/Header/Header.tsx:44
+msgid "Redo"
+msgstr "やり直す"
+
 #: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:194
 #~ msgid "Save Current Config"
 #~ msgstr "現在の設定を保存"
@@ -383,7 +387,7 @@ msgstr "キャラクター選択"
 msgid "Select Country"
 msgstr "国選択"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:80
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:78
 msgid "Show help"
 msgstr "ヘルプを表示"
 
@@ -480,7 +484,7 @@ msgid "Tournament State"
 msgstr "大会都道府県"
 
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:175
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:79
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:77
 #: src/consts/top8/placeholders.ts:35
 msgid "Tournament URL"
 msgstr "大会URL"
@@ -501,3 +505,7 @@ msgstr "Xアカウント"
 #: src/components/top8/TextEditor/TextEditor.tsx:70
 msgid "Type <0>{</0> to insert a variable!"
 msgstr "<0>{</0>を入力して関数を入力できます。"
+
+#: src/components/top8/Ranker/Header/Header.tsx:34
+msgid "Undo"
+msgstr "元に戻す"
