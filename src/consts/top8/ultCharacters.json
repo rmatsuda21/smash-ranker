@@ -32,7 +32,13 @@
         "Ludwig"
       ],
       "cropOffset": { "x": 0, "y": 0.2 },
-      "cropScale": 1.5
+      "cropScale": 1.3,
+      "altOverrides": {
+        "1": { "cropOffset": { "x": -0.05, "y": 0.15 }, "cropScale": 1.3 },
+        "2": { "cropOffset": { "x": 0.05, "y": 0.25 }, "cropScale": 1.25 },
+        "4": { "cropOffset": { "x": 0.05, "y": 0.15 }, "cropScale": 1.3 },
+        "6": { "cropOffset": { "x": 0.05, "y": 0.15 }, "cropScale": 1.25 }
+      }
     },
     {
       "name": "Bowser",
@@ -100,7 +106,13 @@
         "Black"
       ],
       "cropOffset": { "x": -0.16, "y": 0.28 },
-      "cropScale": 1.95
+      "cropScale": 1.95,
+      "altOverrides": {
+        "1": { "cropOffset": { "x": -0.08, "y": 0.3 }, "cropScale": 1.95 },
+        "3": { "cropOffset": { "x": -0.08, "y": 0.3 }, "cropScale": 1.95 },
+        "5": { "cropOffset": { "x": -0.08, "y": 0.3 }, "cropScale": 1.95 },
+        "7": { "cropOffset": { "x": -0.08, "y": 0.3 }, "cropScale": 1.95 }
+      }
     },
     {
       "name": "Daisy",
@@ -319,7 +331,13 @@
         "Indigo"
       ],
       "cropOffset": { "x": 0.05, "y": 0.21 },
-      "cropScale": 1.2
+      "cropScale": 1.15,
+      "altOverrides": {
+        "1": { "cropOffset": { "x": -0.02, "y": 0.08 }, "cropScale": 1.05 },
+        "3": { "cropOffset": { "x": -0.02, "y": 0.08 }, "cropScale": 1.05 },
+        "5": { "cropOffset": { "x": -0.02, "y": 0.08 }, "cropScale": 1.05 },
+        "7": { "cropOffset": { "x": -0.02, "y": 0.08 }, "cropScale": 0.95 }
+      }
     },
     {
       "name": "Jigglypuff",
@@ -1282,7 +1300,15 @@
         "Eight Blue"
       ],
       "cropOffset": { "x": -0.15, "y": 0.32 },
-      "cropScale": 2.2
+      "cropScale": 2.2,
+      "altOverrides": {
+        "1": { "cropOffset": { "x": -0.12, "y": 0.25 }, "cropScale": 2.2 },
+        "2": { "cropOffset": { "x": 0.05, "y": 0.28 }, "cropScale": 1.95 },
+        "3": { "cropOffset": { "x": -0.05, "y": 0.32 }, "cropScale": 2.2 },
+        "5": { "cropOffset": { "x": -0.12, "y": 0.25 }, "cropScale": 2.2 },
+        "6": { "cropOffset": { "x": 0.05, "y": 0.28 }, "cropScale": 1.95 },
+        "7": { "cropOffset": { "x": -0.05, "y": 0.32 }, "cropScale": 2.2 }
+      }
     },
     {
       "name": "Banjo-Kazooie",
@@ -1333,7 +1359,13 @@
         "Grey"
       ],
       "cropOffset": { "x": -0.1, "y": 0.22 },
-      "cropScale": 1.5
+      "cropScale": 1.5,
+      "altOverrides": {
+        "1": { "cropOffset": { "x": 0.15, "y": 0.23 }, "cropScale": 1.5 },
+        "3": { "cropOffset": { "x": 0.15, "y": 0.23 }, "cropScale": 1.5 },
+        "5": { "cropOffset": { "x": 0.15, "y": 0.23 }, "cropScale": 1.5 },
+        "7": { "cropOffset": { "x": 0.15, "y": 0.23 }, "cropScale": 1.5 }
+      }
     },
     {
       "name": "Random",
@@ -1428,7 +1460,13 @@
         "Yellow"
       ],
       "cropOffset": { "x": -0.05, "y": 0.3 },
-      "cropScale": 2.3
+      "cropScale": 2.3,
+      "altOverrides": {
+        "1": { "cropOffset": { "x": 0, "y": 0.3 }, "cropScale": 1.9 },
+        "3": { "cropOffset": { "x": 0, "y": 0.3 }, "cropScale": 1.9 },
+        "5": { "cropOffset": { "x": 0, "y": 0.3 }, "cropScale": 1.9 },
+        "7": { "cropOffset": { "x": 0, "y": 0.3 }, "cropScale": 1.9 }
+      }
     },
     {
       "name": "Sora",
@@ -1445,7 +1483,15 @@
         "White"
       ],
       "cropOffset": { "x": 0.05, "y": 0.31 },
-      "cropScale": 1.95
+      "cropScale": 1.95,
+      "altOverrides": {
+        "1": { "cropOffset": { "x": -0.05, "y": 0.25 }, "cropScale": 1.8 },
+        "2": { "cropOffset": { "x": -0.15, "y": 0.2 }, "cropScale": 2 },
+        "3": { "cropOffset": { "x": 0.05, "y": 0.29 }, "cropScale": 2.1 },
+        "5": { "cropOffset": { "x": -0.05, "y": 0.25 }, "cropScale": 1.8 },
+        "6": { "cropOffset": { "x": -0.15, "y": 0.2 }, "cropScale": 2 },
+        "7": { "cropOffset": { "x": 0.05, "y": 0.29 }, "cropScale": 2.1 }
+      }
     }
   ]
 }
