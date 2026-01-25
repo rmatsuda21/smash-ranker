@@ -209,7 +209,10 @@ fetchFonts()
       }
     }
   })
-  .catch((e) => {
+  .catch(() => {
     const dispatch = useFontStore.getState().dispatch;
-    dispatch({ type: "FETCH_FONTS_FAIL", payload: e });
+    dispatch({
+      type: "FETCH_FONTS_FAIL",
+      payload: new Error("Failed to fetch fonts, please refresh the page"),
+    });
   });
