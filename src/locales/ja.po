@@ -121,6 +121,10 @@ msgstr "作成"
 msgid "Create a minimal template with a specific player count."
 msgstr "指定の数の選手でミニマルテンプレを作成"
 
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:179
+msgid "Create New Template"
+msgstr "新規テンプレ作成"
+
 #: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:58
 msgid "Create Template"
 msgstr "テンプレートを作成"
