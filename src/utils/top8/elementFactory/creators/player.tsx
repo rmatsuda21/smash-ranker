@@ -55,7 +55,7 @@ export const createCharacterImageElement: ElementCreator<
       alt: character.alt,
     });
 
-  const characterCrop = getCharacterCrop(character.id);
+  const characterCrop = getCharacterCrop(character.id, character.alt);
   let cropOffset = characterCrop.offset;
   let cropScale = characterCrop.scale;
 
@@ -492,7 +492,7 @@ function renderTemplateElement(
       return null;
     }
 
-    const characterCrop = getCharacterCrop(charEl._altCharacter.id);
+    const characterCrop = getCharacterCrop(charEl._altCharacter.id, charEl._altCharacter.alt);
 
     return (
       <CustomImage
