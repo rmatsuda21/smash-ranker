@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import cn from "classnames";
 import { IoGrid } from "react-icons/io5";
 import { FaList } from "react-icons/fa6";
+import { Trans } from "@lingui/react/macro";
 
 import { useTemplateDB } from "@/hooks/useConfigDb";
 import { Spinner } from "@/components/shared/Spinner/Spinner";
@@ -175,7 +176,7 @@ export const TemplateEditor = ({ className }: Props) => {
     <div className={cn(className, styles.templateEditor)}>
       <div className={styles.header}>
         <Button onClick={() => setIsCreateModalOpen(true)}>
-          Create New Template
+          <Trans>Create New Template</Trans>
         </Button>
 
         <div className={styles.viewMode}>

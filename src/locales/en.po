@@ -121,6 +121,10 @@ msgstr "Create"
 msgid "Create a minimal template with a specific player count."
 msgstr "Create a minimal template with a specific player count."
 
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:179
+msgid "Create New Template"
+msgstr ""
+
 #: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:58
 msgid "Create Template"
 msgstr "Create Template"
