@@ -1425,8 +1425,12 @@
         "Coatless",
         "Coatless Violet"
       ],
-      "cropOffset": { "x": 0, "y": 0.28 },
-      "cropScale": 2.1
+      "cropOffset": { "x": 0, "y": 0.26 },
+      "cropScale": 2.2,
+      "altOverrides": {
+        "6": { "cropOffset": { "x": -0.2, "y": 0.3 }, "cropScale": 1.8 },
+        "7": { "cropOffset": { "x": -0.2, "y": 0.3 }, "cropScale": 1.8 }
+      }
     },
     {
       "name": "Pyra / Mythra",
