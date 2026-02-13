@@ -9,7 +9,11 @@ import { TournamentInfo } from "@/types/top8/Tournament";
 import { usePlayerStore } from "@/store/playerStore";
 import { useTournamentStore } from "@/store/tournamentStore";
 import { assetRepository } from "@/db/repository";
-import { createBlankPlayer, getPlacements } from "@/utils/top8/samplePlayers";
+import {
+  assignPlacementsToPlayers,
+  createBlankPlayer,
+  getPlacements,
+} from "@/utils/top8/samplePlayers";
 
 const DEFAULT_CHARACTER_ID = "1293"; // Puff <3
 const IDB_IMAGES_BASE_URL = "/idb-images/";
@@ -148,7 +152,7 @@ const storeImage = async (fetchedImage: FetchedImage): Promise<string> => {
 };
 
 const storeTournamentImages = async (
-  images: TournamentImage[]
+  images: TournamentImage[],
 ): Promise<StoredImagesMap> => {
   const fetchResults = await Promise.allSettled(images.map(fetchImage));
 
@@ -206,15 +210,16 @@ const parseStandingsToPlayers = (standings: Standings | null): PlayerInfo[] => {
     playersById.set(player.id, player);
   }
 
-  return Array.from(playersById.values()).sort(
-    (a, b) => a.placement - b.placement
+  const sorted = Array.from(playersById.values()).sort(
+    (a, b) => a.placement - b.placement,
   );
+  return assignPlacementsToPlayers(sorted);
 };
 
 const fetchPlayerCharacters = async (
   client: Client,
   slug: string,
-  entrantId: string
+  entrantId: string,
 ): Promise<string[]> => {
   const result = await client
     .query(PlayerSetsQueryDoc, { slug, entrantId })
@@ -234,7 +239,7 @@ const fetchPlayerCharacters = async (
 
 const countCharacterUsage = (
   sets: Sets,
-  entrantId: string
+  entrantId: string,
 ): Map<string, number> => {
   const usageCount = new Map<string, number>();
 
@@ -267,14 +272,14 @@ const sortCharactersByUsage = (usageCount: Map<string, number>): string[] => {
 const addCharactersToPlayers = async (
   client: Client,
   slug: string,
-  players: PlayerInfo[]
+  players: PlayerInfo[],
 ): Promise<void> => {
   await Promise.all(
     players.map(async (player) => {
       const characterIds = await fetchPlayerCharacters(
         client,
         slug,
-        player.entrantId
+        player.entrantId,
       );
 
       player.characters =
@@ -283,12 +288,12 @@ const addCharactersToPlayers = async (
           : [{ id: DEFAULT_CHARACTER_ID, alt: 0 }];
 
       player.id = String(player.id);
-    })
+    }),
   );
 };
 
 const filterValidImages = (
-  images?: TournamentImages | null
+  images?: TournamentImages | null,
 ): TournamentImage[] => {
   if (!images) return [];
 
@@ -297,7 +302,7 @@ const filterValidImages = (
 
 const padPlayersWithBlanks = (
   players: PlayerInfo[],
-  targetCount: number
+  targetCount: number,
 ): PlayerInfo[] => {
   if (players.length >= targetCount) {
     return players;
@@ -315,7 +320,7 @@ const padPlayersWithBlanks = (
 
 const buildTournamentInfo = (
   event: Event,
-  storedImages?: StoredImagesMap
+  storedImages?: StoredImagesMap,
 ): TournamentInfo => {
   const tournament = event.tournament;
 

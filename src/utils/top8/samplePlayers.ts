@@ -29,25 +29,36 @@ export const getPlacements = (playerCount: number): number[] => {
     placements.push(i + 1);
   }
 
-  let currentPlacement = 5;
+  if (placements.length >= playerCount) return placements;
+
+  let placementValue = 5;
   let groupSize = 2;
-  let groupsAtThisSize = 0;
+  let groupsAtCurrentSize = 0;
 
   while (placements.length < playerCount) {
     for (let i = 0; i < groupSize && placements.length < playerCount; i++) {
-      placements.push(currentPlacement);
+      placements.push(placementValue);
     }
-
-    currentPlacement += groupSize;
-    groupsAtThisSize++;
-
-    if (groupsAtThisSize === 2) {
+    placementValue += groupSize;
+    groupsAtCurrentSize++;
+    if (groupsAtCurrentSize === 2) {
       groupSize *= 2;
-      groupsAtThisSize = 0;
+      groupsAtCurrentSize = 0;
     }
   }
 
   return placements;
+};
+
+export const assignPlacementsToPlayers = (
+  players: PlayerInfo[],
+): PlayerInfo[] => {
+  if (players.length === 0) return players;
+  const placements = getPlacements(players.length);
+  return players.map((player, index) => ({
+    ...player,
+    placement: placements[index],
+  }));
 };
 
 export const createSamplePlayers = (count: number): PlayerInfo[] => {
