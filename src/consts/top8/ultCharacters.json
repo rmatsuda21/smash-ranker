@@ -213,8 +213,8 @@
         "Yellow",
         "Red"
       ],
-      "cropOffset": { "x": 0, "y": 0.2 },
-      "cropScale": 1.5
+      "cropOffset": { "x": 0, "y": -0.1 },
+      "cropScale": 1.1
     },
     {
       "name": "Falco",
