@@ -61,6 +61,7 @@ export const TemplatePreview = ({
           design: {
             colorPalette: template.design.colorPalette,
             bgAssetId: template.design.bgAssetId,
+            bgImageDarkness: template.design.bgImageDarkness,
           },
           perfectDraw: false,
           options: {
@@ -73,6 +74,7 @@ export const TemplatePreview = ({
       template.design.background.elements,
       template.design.colorPalette,
       template.design.bgAssetId,
+      template.design.bgImageDarkness,
       template.design.canvasSize,
     ]
   );
@@ -88,6 +90,7 @@ export const TemplatePreview = ({
             colorPalette: template.design.colorPalette,
             textPalette: template.design.textPalette,
             bgAssetId: template.design.bgAssetId,
+            bgImageDarkness: template.design.bgImageDarkness,
           },
           perfectDraw: false,
           options: { disableSelectable: true },
@@ -99,6 +102,7 @@ export const TemplatePreview = ({
       template.design.colorPalette,
       template.design.textPalette,
       template.design.bgAssetId,
+      template.design.bgImageDarkness,
       template.design.canvasSize,
     ]
   );
@@ -129,6 +133,7 @@ export const TemplatePreview = ({
           design: {
             colorPalette: template.design.colorPalette,
             bgAssetId: template.design.bgAssetId,
+            bgImageDarkness: template.design.bgImageDarkness,
           },
           perfectDraw: false,
           options: { disableSelectable: true },
@@ -163,9 +168,11 @@ export const TemplatePreview = ({
     template.design.players,
     template.design.colorPalette,
     template.design.bgAssetId,
+    template.design.bgImageDarkness,
   ]);
 
   const captureImage = useCallback(() => {
+    // TODO: Stop using timeout here and find a more reliable solution
     if (!stageRef.current) {
       setTimeout(() => {
         captureImage();

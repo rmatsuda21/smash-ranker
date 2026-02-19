@@ -4,6 +4,7 @@ import { devtools } from "zustand/middleware";
 export type HistoryActionType =
   | "SET_BACKGROUND_IMG"
   | "CLEAR_BACKGROUND_IMG"
+  | "SET_BACKGROUND_IMAGE_DARKNESS"
   | "UPDATE_COLOR_PALETTE"
   | "SET_FONT";
 

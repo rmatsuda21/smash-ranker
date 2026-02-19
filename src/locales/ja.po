@@ -63,7 +63,7 @@ msgstr "素材"
 msgid "Avatar"
 msgstr "アイコン"
 
-#: src/components/top8/DesignEditor/DesignEditor.tsx:30
+#: src/components/top8/DesignEditor/DesignEditor.tsx:34
 msgid "Background Image"
 msgstr "背景画像"
 
@@ -99,7 +99,7 @@ msgstr "選手を初期化しますか？"
 msgid "Color"
 msgstr "色"
 
-#: src/components/top8/DesignEditor/DesignEditor.tsx:50
+#: src/components/top8/DesignEditor/DesignEditor.tsx:72
 msgid "Color Palette"
 msgstr "カラーパレット"
 
@@ -212,7 +212,7 @@ msgstr "イベント名"
 msgid "Filename"
 msgstr "ファイル名"
 
-#: src/components/top8/DesignEditor/DesignEditor.tsx:23
+#: src/components/top8/DesignEditor/DesignEditor.tsx:27
 msgid "Font"
 msgstr "フォント"
 
@@ -236,6 +236,10 @@ msgstr "グリーン"
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:88
 msgid "Icon"
 msgstr "アイコン"
+
+#: src/components/top8/DesignEditor/DesignEditor.tsx:53
+msgid "Image darkness"
+msgstr "背景画像の明さ"
 
 #: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:213
 #~ msgid "Import"

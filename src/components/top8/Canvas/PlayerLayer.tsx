@@ -121,11 +121,10 @@ const PlayerLayerComponent = ({ onReady }: { onReady?: () => void }) => {
   const colorPalette = useCanvasStore(
     useShallow((state) => state.design.colorPalette)
   );
-  const bgAssetId = useCanvasStore((state) => state.design.bgAssetId);
 
   const design = useMemo(
-    () => ({ colorPalette, bgAssetId }),
-    [colorPalette, bgAssetId]
+    () => ({ colorPalette }),
+    [colorPalette]
   );
 
   const playerConfigs: PlayerDesign[] = useMemo(() => {

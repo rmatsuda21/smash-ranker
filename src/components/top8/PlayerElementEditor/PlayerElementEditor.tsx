@@ -36,6 +36,9 @@ export const PlayerElementEditor = ({ className }: Props) => {
   const colorPalette = useCanvasStore((state) => state.design.colorPalette);
   const textPalette = useCanvasStore((state) => state.design.textPalette);
   const bgAssetId = useCanvasStore((state) => state.design.bgAssetId);
+  const bgImageDarkness = useCanvasStore(
+    (state) => state.design.bgImageDarkness
+  );
 
   const [selectedElementIndex, setSelectedElementIndex] = useState(0);
 
@@ -45,7 +48,7 @@ export const PlayerElementEditor = ({ className }: Props) => {
       containerSize: basePlayer.size,
       player: examplePlayer,
       tournament,
-      design: { colorPalette, textPalette, bgAssetId },
+      design: { colorPalette, textPalette, bgAssetId, bgImageDarkness },
     });
   }, [
     basePlayer.elements,
@@ -55,6 +58,7 @@ export const PlayerElementEditor = ({ className }: Props) => {
     colorPalette,
     textPalette,
     bgAssetId,
+    bgImageDarkness,
   ]);
 
   const handleAddElement = useCallback(

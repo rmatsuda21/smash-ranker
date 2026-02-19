@@ -22,14 +22,17 @@ const BackgroundLayerComponent = ({ onClick, onReady }: Props) => {
     useShallow((state) => state.design.colorPalette)
   );
   const bgAssetId = useCanvasStore((state) => state.design.bgAssetId);
+  const bgImageDarkness = useCanvasStore(
+    (state) => state.design.bgImageDarkness
+  );
   const canvasSize = useCanvasStore(
     useShallow((state) => state.design.canvasSize)
   );
   const selectedFont = useFontStore((state) => state.selectedFont);
 
   const design = useMemo(
-    () => ({ colorPalette, bgAssetId }),
-    [colorPalette, bgAssetId]
+    () => ({ colorPalette, bgAssetId, bgImageDarkness }),
+    [colorPalette, bgAssetId, bgImageDarkness]
   );
 
   const stableOnReady = useMemo(() => () => onReadyRef.current?.(), []);

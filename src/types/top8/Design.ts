@@ -76,8 +76,7 @@ interface BaseElementConfig {
 }
 
 export interface TextElementConfig
-  extends BaseElementConfig,
-    Partial<ComponentProps<typeof Text>> {
+  extends BaseElementConfig, Partial<ComponentProps<typeof Text>> {
   type: "text";
   text?: string;
   textId?: string;
@@ -94,8 +93,7 @@ export interface TextElementConfig
 }
 
 export interface SmartTextElementConfig
-  extends BaseElementConfig,
-    Partial<ComponentProps<typeof Text>> {
+  extends BaseElementConfig, Partial<ComponentProps<typeof Text>> {
   type: "smartText";
   text?: string;
   textId?: string;
@@ -113,22 +111,19 @@ export interface SmartTextElementConfig
 }
 
 export interface ImageElementConfig
-  extends BaseElementConfig,
-    Partial<ComponentProps<typeof Image>> {
+  extends BaseElementConfig, Partial<ComponentProps<typeof Image>> {
   type: "image";
   src: string;
 }
 
 export interface GroupElementConfig
-  extends BaseElementConfig,
-    Partial<ComponentProps<typeof Group>> {
+  extends BaseElementConfig, Partial<ComponentProps<typeof Group>> {
   type: "group";
   elements: ElementConfig[];
 }
 
 export interface FlexGroupElementConfig
-  extends BaseElementConfig,
-    Partial<ComponentProps<typeof Group>> {
+  extends BaseElementConfig, Partial<ComponentProps<typeof Group>> {
   type: "flexGroup";
   elements: ElementConfig[];
   direction?: FlexDirection;
@@ -140,8 +135,7 @@ export interface FlexGroupElementConfig
 }
 
 export interface FlexGridElementConfig
-  extends BaseElementConfig,
-    Partial<ComponentProps<typeof Group>> {
+  extends BaseElementConfig, Partial<ComponentProps<typeof Group>> {
   type: "flexGrid";
   elements: ElementConfig[];
   gap?: number;
@@ -156,16 +150,14 @@ export interface FlexGridElementConfig
 }
 
 export interface RectElementConfig
-  extends BaseElementConfig,
-    Partial<ComponentProps<typeof Rect>> {
+  extends BaseElementConfig, Partial<ComponentProps<typeof Rect>> {
   type: "rect";
   fill?: string;
   cornerRadius?: number | number[];
 }
 
 export interface CustomImageElementConfig
-  extends BaseElementConfig,
-    Partial<ComponentProps<typeof Image>> {
+  extends BaseElementConfig, Partial<ComponentProps<typeof Image>> {
   type: "customImage";
   src: string;
   fillMode?: ImageFillMode;
@@ -173,8 +165,7 @@ export interface CustomImageElementConfig
 }
 
 export interface CharacterImageElementConfig
-  extends BaseElementConfig,
-    Partial<ComponentProps<typeof Image>> {
+  extends BaseElementConfig, Partial<ComponentProps<typeof Image>> {
   type: "characterImage";
   usePlayerAvatar?: boolean;
   shadowEnabled?: boolean;
@@ -194,8 +185,7 @@ export interface AltCharacterImageElementConfig extends BaseElementConfig {
 
 export type CharacterImageType = "stock" | "render";
 
-export interface CustomAltCharacterImageElementConfig
-  extends BaseElementConfig {
+export interface CustomAltCharacterImageElementConfig extends BaseElementConfig {
   type: "customAltCharacterImage";
   imageType?: CharacterImageType;
   elementTemplate?: ElementConfig;
@@ -210,32 +200,28 @@ export interface CustomAltCharacterImageElementConfig
 }
 
 export interface SvgElementConfig
-  extends BaseElementConfig,
-    Partial<ComponentProps<typeof Image>> {
+  extends BaseElementConfig, Partial<ComponentProps<typeof Image>> {
   type: "svg";
   src: string;
   palette: Record<string, string>;
 }
 
 export interface TournamentIconElementConfig
-  extends BaseElementConfig,
-    Partial<ComponentProps<typeof Image>> {
+  extends BaseElementConfig, Partial<ComponentProps<typeof Image>> {
   type: "tournamentIcon";
   fillMode?: ImageFillMode;
   align?: ImageAlign;
 }
 
 export interface BackgroundImageElementConfig
-  extends BaseElementConfig,
-    Partial<ComponentProps<typeof Image>> {
+  extends BaseElementConfig, Partial<ComponentProps<typeof Image>> {
   type: "backgroundImage";
   fillMode?: ImageFillMode;
   align?: ImageAlign;
 }
 
 export interface PlayerFlagElementConfig
-  extends BaseElementConfig,
-    Partial<ComponentProps<typeof Image>> {
+  extends BaseElementConfig, Partial<ComponentProps<typeof Image>> {
   type: "playerFlag";
   fillMode?: ImageFillMode;
   align?: ImageAlign;
@@ -276,6 +262,7 @@ export interface Design {
   colorPalette?: Record<string, { color: string; name: string }>;
   textPalette?: Record<string, { text: string; name: string }>;
   bgAssetId?: string;
+  bgImageDarkness?: number;
   background: LayerDesign;
   tournament: LayerDesign;
   basePlayer: PlayerDesign;

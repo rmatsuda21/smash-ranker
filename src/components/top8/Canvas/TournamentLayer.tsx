@@ -29,6 +29,9 @@ export const TournamentLayer = ({ onReady }: { onReady?: () => void }) => {
     useShallow((state) => state.design.textPalette)
   );
   const bgAssetId = useCanvasStore((state) => state.design.bgAssetId);
+  const bgImageDarkness = useCanvasStore(
+    (state) => state.design.bgImageDarkness
+  );
   const tournament = useTournamentStore((state) => state.info);
   const selectedElementIndex = useTournamentStore(
     (state) => state.selectedElementIndex
@@ -43,8 +46,8 @@ export const TournamentLayer = ({ onReady }: { onReady?: () => void }) => {
   }, [dispatch]);
 
   const design = useMemo(
-    () => ({ colorPalette, textPalette, bgAssetId }),
-    [colorPalette, textPalette, bgAssetId]
+    () => ({ colorPalette, textPalette, bgAssetId, bgImageDarkness }),
+    [colorPalette, textPalette, bgAssetId, bgImageDarkness]
   );
 
   const stableOnReady = useMemo(() => () => onReadyRef.current?.(), []);

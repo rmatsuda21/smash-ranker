@@ -63,7 +63,7 @@ msgstr "Assets"
 msgid "Avatar"
 msgstr "Avatar"
 
-#: src/components/top8/DesignEditor/DesignEditor.tsx:30
+#: src/components/top8/DesignEditor/DesignEditor.tsx:34
 msgid "Background Image"
 msgstr "Background Image"
 
@@ -99,7 +99,7 @@ msgstr "Clear Player?"
 msgid "Color"
 msgstr "Color"
 
-#: src/components/top8/DesignEditor/DesignEditor.tsx:50
+#: src/components/top8/DesignEditor/DesignEditor.tsx:72
 msgid "Color Palette"
 msgstr "Color Palette"
 
@@ -212,7 +212,7 @@ msgstr "Event Name"
 msgid "Filename"
 msgstr "Filename"
 
-#: src/components/top8/DesignEditor/DesignEditor.tsx:23
+#: src/components/top8/DesignEditor/DesignEditor.tsx:27
 msgid "Font"
 msgstr "Font"
 
@@ -236,6 +236,10 @@ msgstr "Green"
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:88
 msgid "Icon"
 msgstr "Icon"
+
+#: src/components/top8/DesignEditor/DesignEditor.tsx:53
+msgid "Image darkness"
+msgstr ""
 
 #: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:213
 #~ msgid "Import"
