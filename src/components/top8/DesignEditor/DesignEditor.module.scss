@@ -16,6 +16,12 @@
   .backgroundImg {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: var(--form-gap);
+  }
+
+  .darknessSlider {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
   }
 }

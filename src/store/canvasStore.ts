@@ -37,6 +37,7 @@ export type CanvasAction =
   | { type: "SET_EDITABLE"; payload: boolean }
   | { type: "CLEAR_BACKGROUND_IMG" }
   | { type: "SET_BACKGROUND_IMG"; payload: string }
+  | { type: "SET_BACKGROUND_IMAGE_DARKNESS"; payload: number }
   | {
       type: "UPDATE_COLOR_PALETTE";
       payload: { id: string; value: { color: string; name: string } };
@@ -49,6 +50,7 @@ export type CanvasAction =
 const HISTORY_ACTION_TYPES: Set<string> = new Set([
   "SET_BACKGROUND_IMG",
   "CLEAR_BACKGROUND_IMG",
+  "SET_BACKGROUND_IMAGE_DARKNESS",
   "UPDATE_COLOR_PALETTE",
 ]);
 
@@ -65,6 +67,8 @@ function captureUndoData(state: CanvasState, action: CanvasAction): unknown {
     case "SET_BACKGROUND_IMG":
     case "CLEAR_BACKGROUND_IMG":
       return state.design.bgAssetId;
+    case "SET_BACKGROUND_IMAGE_DARKNESS":
+      return state.design.bgImageDarkness;
     case "UPDATE_COLOR_PALETTE":
       return {
         id: action.payload.id,
@@ -80,6 +84,7 @@ function captureRedoData(action: CanvasAction): unknown {
     case "CLEAR_BACKGROUND_IMG":
       return undefined;
     case "SET_BACKGROUND_IMG":
+    case "SET_BACKGROUND_IMAGE_DARKNESS":
     case "UPDATE_COLOR_PALETTE":
       return action.payload;
     default:
@@ -89,7 +94,7 @@ function captureRedoData(action: CanvasAction): unknown {
 
 const canvasReducer = (
   state: CanvasState,
-  action: CanvasAction
+  action: CanvasAction,
 ): Partial<CanvasState> => {
   switch (action.type) {
     case "SET_DESIGN":
@@ -119,7 +124,7 @@ const canvasReducer = (
               state.design.tournament?.elements?.map((element, index) =>
                 index === action.payload.index
                   ? action.payload.element
-                  : element
+                  : element,
               ) ?? [],
           },
         },
@@ -129,7 +134,7 @@ const canvasReducer = (
         design: {
           ...state.design,
           players: state.design.players.map((player, index) =>
-            index === action.payload.index ? action.payload.config : player
+            index === action.payload.index ? action.payload.config : player,
           ),
         },
       };
@@ -147,7 +152,7 @@ const canvasReducer = (
           basePlayer: {
             ...state.design.basePlayer,
             elements: state.design.basePlayer.elements.map((element, index) =>
-              index === action.payload.index ? action.payload.element : element
+              index === action.payload.index ? action.payload.element : element,
             ),
           },
         },
@@ -166,6 +171,13 @@ const canvasReducer = (
         design: {
           ...state.design,
           bgAssetId: action.payload,
+        },
+      };
+    case "SET_BACKGROUND_IMAGE_DARKNESS":
+      return {
+        design: {
+          ...state.design,
+          bgImageDarkness: Math.max(0, Math.min(1, action.payload)),
         },
       };
     case "UPDATE_COLOR_PALETTE":
@@ -202,7 +214,7 @@ interface CanvasStore extends CanvasState {
 function applyHistoryEntry(
   state: CanvasState,
   entry: HistoryEntry,
-  isUndo: boolean
+  isUndo: boolean,
 ): Partial<CanvasState> {
   const data = isUndo ? entry.undoData : entry.redoData;
 
@@ -220,6 +232,14 @@ function applyHistoryEntry(
         design: {
           ...state.design,
           bgAssetId: data as string | undefined,
+        },
+      };
+
+    case "SET_BACKGROUND_IMAGE_DARKNESS":
+      return {
+        design: {
+          ...state.design,
+          bgImageDarkness: Math.max(0, Math.min(1, data as number)),
         },
       };
 
@@ -283,7 +303,7 @@ export const useCanvasStore = create<CanvasStore>()(
             set(
               (state) => applyHistoryEntry(state, entry, true),
               false,
-              "UNDO"
+              "UNDO",
             );
           }
         },
@@ -294,7 +314,7 @@ export const useCanvasStore = create<CanvasStore>()(
             set(
               (state) => applyHistoryEntry(state, entry, false),
               false,
-              "REDO"
+              "REDO",
             );
           }
         },
@@ -328,7 +348,7 @@ export const useCanvasStore = create<CanvasStore>()(
 
           return persisted as { design: Design };
         },
-      }
-    )
-  )
+      },
+    ),
+  ),
 );

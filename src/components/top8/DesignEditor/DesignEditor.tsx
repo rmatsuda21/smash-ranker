@@ -5,6 +5,7 @@ import { FontSelect } from "@/components/top8/DesignEditor/FontSelect/FontSelect
 import { useCanvasStore } from "@/store/canvasStore";
 import { ColorPaletteEditor } from "@/components/top8/DesignEditor/ColorPaletteEditor/ColorPaletteEditor";
 import { AssetSelector } from "@/components/top8/AssetSelector/AssetSelector";
+import { Slider } from "@/components/shared/Slider/Slider";
 
 import styles from "./DesignEditor.module.scss";
 
@@ -15,6 +16,9 @@ type Props = {
 export const DesignEditor = ({ className }: Props) => {
   const canvasDispatch = useCanvasStore((state) => state.dispatch);
   const bgAssetId = useCanvasStore((state) => state.design.bgAssetId);
+  const bgImageDarkness = useCanvasStore(
+    (state) => state.design.bgImageDarkness ?? 0
+  );
 
   return (
     <div className={cn(className, styles.wrapper)}>
@@ -43,6 +47,24 @@ export const DesignEditor = ({ className }: Props) => {
             });
           }}
         />
+        {bgAssetId && (
+          <div className={styles.darknessSlider}>
+            <p className={styles.label}>
+              <Trans>Image darkness</Trans>
+            </p>
+            <Slider
+              min={0}
+              max={100}
+              value={Math.round(bgImageDarkness * 100)}
+              onValueChange={(value) => {
+                canvasDispatch({
+                  type: "SET_BACKGROUND_IMAGE_DARKNESS",
+                  payload: value / 100,
+                });
+              }}
+            />
+          </div>
+        )}
       </div>
 
       <div>

@@ -1,4 +1,4 @@
-import { Rect } from "react-konva";
+import { Group, Rect } from "react-konva";
 
 import type {
   ImageElementConfig,
@@ -116,22 +116,38 @@ export const createBackgroundImageElement: ElementCreator<
   BackgroundImageElementConfig
 > = ({ element, index, context }) => {
   const backgroundImgId = context.design?.bgAssetId ?? "";
+  const darkness = context.design?.bgImageDarkness ?? 0;
+  const width = element.size?.width ?? 100;
+  const height = element.size?.height ?? 100;
 
   if (!backgroundImgId) {
     return null;
   }
 
   return (
-    <CustomImage
-      key={element.id ?? `backgroundImage-${index}`}
-      imageSrc={backgroundImgId}
-      x={element.position.x}
-      y={element.position.y}
-      width={element.size?.width ?? 100}
-      height={element.size?.height ?? 100}
-      fillMode={element.fillMode ?? "contain"}
-      align={element.align ?? "center"}
-      perfectDrawEnabled={context.perfectDraw}
-    />
+    <Group key={element.id ?? `backgroundImage-${index}`}>
+      <CustomImage
+        imageSrc={backgroundImgId}
+        x={element.position.x}
+        y={element.position.y}
+        width={width}
+        height={height}
+        fillMode={element.fillMode ?? "contain"}
+        align={element.align ?? "center"}
+        perfectDrawEnabled={context.perfectDraw}
+      />
+      {darkness > 0 && (
+        <Rect
+          x={element.position.x}
+          y={element.position.y}
+          width={width}
+          height={height}
+          fill="#000000"
+          opacity={darkness}
+          listening={false}
+          perfectDrawEnabled={context.perfectDraw}
+        />
+      )}
+    </Group>
   );
 };
