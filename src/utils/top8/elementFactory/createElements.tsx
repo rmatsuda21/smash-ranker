@@ -50,10 +50,10 @@ export const createKonvaElementsInternal = (
 
     const clipFunc = element.clip
       ? (ctx: SceneContext) => {
-          ctx.beginPath();
-          ctx.rect(0, 0, containerSize.width, containerSize.height);
-          ctx.closePath();
-        }
+        ctx.beginPath();
+        ctx.rect(0, 0, containerSize.width, containerSize.height);
+        ctx.closePath();
+      }
       : undefined;
 
     const hasFilters =
@@ -62,13 +62,13 @@ export const createKonvaElementsInternal = (
     if (element.selectable && !disableSelectable) {
       const resetEl = isValidElement(createdEl)
         ? cloneElement(
-            createdEl as ReactElement<{
-              x?: number;
-              y?: number;
-              listening?: boolean;
-            }>,
-            { x: 0, y: 0, listening: false }
-          )
+          createdEl as ReactElement<{
+            x?: number;
+            y?: number;
+            listening?: boolean;
+          }>,
+          { x: 0, y: 0, listening: false }
+        )
         : createdEl;
 
       const childContent = hasFilters ? (
@@ -107,8 +107,8 @@ export const createKonvaElementsInternal = (
       if (hasFilters) {
         const el = isValidElement(createdEl)
           ? cloneElement(createdEl as ReactElement<{ listening?: boolean }>, {
-              listening: isContainer,
-            })
+            listening: isContainer,
+          })
           : createdEl;
 
         result.push(
@@ -125,8 +125,9 @@ export const createKonvaElementsInternal = (
       } else {
         const el = isValidElement(createdEl)
           ? cloneElement(createdEl as ReactElement<{ listening?: boolean }>, {
-              listening: isContainer,
-            })
+            key: createdEl.key ?? element.id ?? `el-${index}`,
+            listening: isContainer,
+          })
           : createdEl;
 
         if (clipFunc) {
