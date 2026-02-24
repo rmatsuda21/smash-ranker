@@ -18,7 +18,7 @@ msgid "(https://start.gg/tournament/[name]/event/[event])"
 msgstr "(https://start.gg/tournament/[name]/event/[event])"
 
 #. placeholder {0}: file.name
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:49
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:58
 msgid "{0} is too large! (Max 2MB)"
 msgstr "{0} is too large! (Max 2MB)"
 
@@ -46,6 +46,10 @@ msgstr "Any current player and tournament data will be overwritten."
 #~ msgid "Are you sure you want to delete all saved configs? This action cannot be undone."
 #~ msgstr "Are you sure you want to delete all saved configs? This action cannot be undone."
 
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:39
+msgid "Are you sure you want to delete this asset?"
+msgstr ""
+
 #: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:113
 #~ msgid "Are you sure you want to delete this config? This action cannot be undone."
 #~ msgstr "Are you sure you want to delete this config? This action cannot be undone."
@@ -55,7 +59,7 @@ msgstr "Any current player and tournament data will be overwritten."
 #~ msgstr "Are you sure you want to load this config? This action will overwrite the current config."
 
 #: src/components/top8/AssetManager/AssetManager.tsx:32
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:75
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:85
 msgid "Assets"
 msgstr "Assets"
 
@@ -164,6 +168,10 @@ msgstr "Date"
 #: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:122
 #~ msgid "Delete All Configs"
 #~ msgstr "Delete All Configs"
+
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:38
+msgid "Delete Asset"
+msgstr ""
 
 #: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:111
 #~ msgid "Delete Config: {0}"

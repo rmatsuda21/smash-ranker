@@ -18,7 +18,7 @@ msgid "(https://start.gg/tournament/[name]/event/[event])"
 msgstr "(https://start.gg/tournament/[大会名]/event/[イベント名])"
 
 #. placeholder {0}: file.name
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:49
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:58
 msgid "{0} is too large! (Max 2MB)"
 msgstr "{0}が容量オーバーです！（最大2MB）"
 
@@ -46,6 +46,10 @@ msgstr "現在の選手と大会データは上書きされます。"
 #~ msgid "Are you sure you want to delete all saved configs? This action cannot be undone."
 #~ msgstr "保存されたすべての設定を削除しますか？この操作は元に戻せません。"
 
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:39
+msgid "Are you sure you want to delete this asset?"
+msgstr "この素材を消しますか？"
+
 #: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:113
 #~ msgid "Are you sure you want to delete this config? This action cannot be undone."
 #~ msgstr "この設定を削除しますか？この操作は元に戻せません。"
@@ -55,7 +59,7 @@ msgstr "現在の選手と大会データは上書きされます。"
 #~ msgstr "この設定を読み込みますか？現在の設定は上書きされます。"
 
 #: src/components/top8/AssetManager/AssetManager.tsx:32
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:75
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:85
 msgid "Assets"
 msgstr "素材"
 
@@ -164,6 +168,10 @@ msgstr "日付"
 #: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:122
 #~ msgid "Delete All Configs"
 #~ msgstr "すべての設定を削除"
+
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:38
+msgid "Delete Asset"
+msgstr "素材消去"
 
 #: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:111
 #~ msgid "Delete Config: {0}"
@@ -480,7 +488,7 @@ msgstr "大会住所"
 
 #: src/consts/top8/renderConditions.ts:13
 #~ msgid "Tournament Icon"
-#~ msgstr ""
+#~ msgstr "大会アイコン"
 
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:104
 #: src/consts/top8/placeholders.ts:28
