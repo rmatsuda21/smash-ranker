@@ -30,7 +30,7 @@ import App from "@/App";
   const savedAccent = Cookies.get(COOKIES.ACCENT_COLOR) || "pink";
   document.documentElement.setAttribute("data-accent", savedAccent);
 
-  registerServiceWorker();
+  await registerServiceWorker();
 
   inject();
   createRoot(document.getElementById("root")!).render(

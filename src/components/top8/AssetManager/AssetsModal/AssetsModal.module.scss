@@ -27,6 +27,7 @@
 
     .deleteButton {
       opacity: 0;
+      pointer-events: none;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -65,6 +66,7 @@
       &:hover {
         .deleteButton {
           opacity: 1;
+          pointer-events: auto;
         }
       }
     }

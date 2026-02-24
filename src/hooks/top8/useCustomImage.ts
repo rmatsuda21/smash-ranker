@@ -3,6 +3,12 @@ import { Image as KonvaImage } from "konva/lib/shapes/Image";
 
 const imageCache = new Map<string, HTMLImageElement>();
 
+const IDB_IMAGE_PREFIX = "/idb-images/";
+const MAX_RETRIES = 3;
+const RETRY_BACKOFF_MS = [500, 1000, 2000];
+
+const isIdbImageUrl = (src: string) => src.startsWith(IDB_IMAGE_PREFIX);
+
 export const useCustomImage = ({
   imageSrc,
   width,
@@ -39,6 +45,9 @@ export const useCustomImage = ({
 
   useEffect(() => {
     const imgRef = ref.current;
+    let cancelled = false;
+    let activeImage: HTMLImageElement | null = null;
+    let retryTimeout: ReturnType<typeof setTimeout> | null = null;
 
     if (imgRef) {
       imgRef.clearCache();
@@ -50,26 +59,49 @@ export const useCustomImage = ({
       return;
     }
 
-    const image = new window.Image();
-    if (imageSrc.startsWith("http://") || imageSrc.startsWith("https://")) {
-      image.crossOrigin = "anonymous";
-    }
-    image.src = imageSrc;
-    image.onload = () => {
-      imageCache.set(imageSrc, image);
-      setImage(image);
-    };
-    image.onerror = (error) => {
-      onErrorRef.current?.(
-        new Error(error instanceof Error ? error.message : "Unknown error")
-      );
-      setImage(undefined);
-      setFinalImage(undefined);
+    const loadImage = (attempt: number) => {
+      if (cancelled) return;
+
+      const image = new window.Image();
+      activeImage = image;
+
+      if (imageSrc.startsWith("http://") || imageSrc.startsWith("https://")) {
+        image.crossOrigin = "anonymous";
+      }
+      image.src = imageSrc;
+      image.onload = () => {
+        if (cancelled) return;
+        imageCache.set(imageSrc, image);
+        setImage(image);
+      };
+      image.onerror = (error) => {
+        if (cancelled) return;
+
+        if (isIdbImageUrl(imageSrc) && attempt < MAX_RETRIES) {
+          retryTimeout = setTimeout(
+            () => loadImage(attempt + 1),
+            RETRY_BACKOFF_MS[attempt] ?? 2000
+          );
+          return;
+        }
+
+        onErrorRef.current?.(
+          new Error(error instanceof Error ? error.message : "Unknown error")
+        );
+        setImage(undefined);
+        setFinalImage(undefined);
+      };
     };
 
+    loadImage(0);
+
     return () => {
-      image.onload = null;
-      image.onerror = null;
+      cancelled = true;
+      if (retryTimeout) clearTimeout(retryTimeout);
+      if (activeImage) {
+        activeImage.onload = null;
+        activeImage.onerror = null;
+      }
       imgRef?.clearCache();
     };
   }, [imageSrc]);

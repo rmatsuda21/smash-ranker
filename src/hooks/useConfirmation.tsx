@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import Cookies from "js-cookie";
 
 import { ConfirmationModal } from "@/components/shared/ConfirmationModal/ConfirmationModal";
@@ -21,11 +21,20 @@ export function useConfirmation<T extends unknown[]>(
   const [isOpen, setIsOpen] = useState(false);
   const [pendingArgs, setPendingArgs] = useState<T | null>(null);
 
+  const onConfirmRef = useRef(onConfirm);
+  onConfirmRef.current = onConfirm;
+
+  const pendingArgsRef = useRef(pendingArgs);
+  pendingArgsRef.current = pendingArgs;
+
+  const configRef = useRef(config);
+  configRef.current = config;
+
   const confirm = useCallback(
     (...args: T) => {
-      if (config.cookieName) {
-        if (Cookies.get(config.cookieName) === "true") {
-          onConfirm(...args);
+      if (configRef.current.cookieName) {
+        if (Cookies.get(configRef.current.cookieName) === "true") {
+          onConfirmRef.current(...args);
           return;
         }
       }
@@ -33,16 +42,16 @@ export function useConfirmation<T extends unknown[]>(
       setPendingArgs(args);
       setIsOpen(true);
     },
-    [config.cookieName, onConfirm]
+    []
   );
 
   const handleConfirm = useCallback(async () => {
-    if (pendingArgs) {
-      await onConfirm(...pendingArgs);
+    if (pendingArgsRef.current) {
+      await onConfirmRef.current(...pendingArgsRef.current);
     }
     setIsOpen(false);
     setPendingArgs(null);
-  }, [onConfirm, pendingArgs]);
+  }, []);
 
   const handleCancel = useCallback(() => {
     setIsOpen(false);
@@ -54,21 +63,14 @@ export function useConfirmation<T extends unknown[]>(
       <ConfirmationModal
         isOpen={isOpen}
         onClose={handleCancel}
-        title={config.title}
-        description={config.description}
+        title={configRef.current.title}
+        description={configRef.current.description}
         onConfirm={handleConfirm}
         onCancel={handleCancel}
-        cookieName={config.cookieName}
+        cookieName={configRef.current.cookieName}
       />
     ),
-    [
-      isOpen,
-      handleCancel,
-      handleConfirm,
-      config.title,
-      config.description,
-      config.cookieName,
-    ]
+    [isOpen, handleCancel, handleConfirm]
   );
 
   return { confirm, ConfirmationDialog };

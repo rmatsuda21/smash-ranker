@@ -7,6 +7,7 @@ import { useLingui } from "@lingui/react";
 
 import { Modal } from "@/components/shared/Modal/Modal";
 import { useAssetDB } from "@/hooks/useAssetDb";
+import { useConfirmation } from "@/hooks/useConfirmation";
 import { FileUploader } from "@/components/shared/FileUploader/FileUploader";
 
 import styles from "./AssetsModal.module.scss";
@@ -30,6 +31,14 @@ export const AssetsModal = ({
   );
 
   const { assets, uploadAsset, deleteAsset, refresh } = useAssetDB();
+
+  const { confirm: confirmDelete, ConfirmationDialog } = useConfirmation(
+    deleteAsset,
+    {
+      title: _(msg`Delete Asset`),
+      description: _(msg`Are you sure you want to delete this asset?`),
+    }
+  );
 
   useEffect(() => {
     if (isOpen) {
@@ -60,12 +69,13 @@ export const AssetsModal = ({
   };
 
   const handleAssetClick = (src: string) => {
-    if (selectedAssetSrc === src) {
-      deleteAsset(src);
-    }
-
     setSelectedAssetSrc(src);
     onSelect?.(src);
+  };
+
+  const handleDeleteClick = (e: React.MouseEvent, id: string) => {
+    e.stopPropagation();
+    confirmDelete(id);
   };
 
   return (
@@ -83,7 +93,10 @@ export const AssetsModal = ({
               })}
               onClick={() => handleAssetClick(asset.src)}
             >
-              <div className={styles.deleteButton}>
+              <div
+                className={styles.deleteButton}
+                onClick={(e) => handleDeleteClick(e, asset.id)}
+              >
                 <RiDeleteBin6Fill />
               </div>
               <img src={URL.createObjectURL(asset.data)} alt={asset.fileName} />
@@ -92,6 +105,7 @@ export const AssetsModal = ({
         </div>
         <FileUploader onChange={handleUpload} multiple />
       </div>
+      <ConfirmationDialog />
     </Modal>
   );
 };
