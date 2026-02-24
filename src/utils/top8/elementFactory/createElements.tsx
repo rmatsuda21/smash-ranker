@@ -125,7 +125,7 @@ export const createKonvaElementsInternal = (
       } else {
         const el = isValidElement(createdEl)
           ? cloneElement(createdEl as ReactElement<{ listening?: boolean }>, {
-            key: createdEl.key ?? element.id ?? `el-${index}`,
+            key: createdEl.key ?? element.id ?? `el-${element.type}-${index}`,
             listening: isContainer,
           })
           : createdEl;
