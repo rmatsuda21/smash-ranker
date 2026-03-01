@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Stage, Layer, Group } from "react-konva";
 import { Stage as KonvaStage } from "konva/lib/Stage";
 import cn from "classnames";
+import { FaTrash } from "react-icons/fa6";
 
 import { DBTemplate } from "@/types/Repository";
 import { createKonvaElements } from "@/utils/top8/elementFactory";
@@ -15,6 +16,7 @@ import styles from "./TemplatePreview.module.scss";
 type Props = {
   template: DBTemplate;
   onClick: () => void;
+  onDelete?: () => void;
   className?: string;
   isLoading?: boolean;
 };
@@ -37,6 +39,7 @@ const sampleTournament: TournamentInfo = {
 export const TemplatePreview = ({
   template,
   onClick,
+  onDelete,
   className,
   isLoading,
 }: Props) => {
@@ -242,6 +245,19 @@ export const TemplatePreview = ({
         <div className={styles.loadingOverlay}>
           <Spinner size={32} />
         </div>
+      )}
+
+      {onDelete && (
+        <button
+          className={styles.deleteButton}
+          onClick={(e) => {
+            e.stopPropagation();
+            onDelete();
+          }}
+          aria-label="Delete template"
+        >
+          <FaTrash size={12} />
+        </button>
       )}
 
       {Tooltip && <Tooltip className={styles.tooltip} />}
