@@ -12,6 +12,9 @@ type Props = {
   disabled?: boolean;
 };
 
+const formatCountryName = (name: string): string =>
+  name.replace(/\s*\([^)]*\)/g, "").replace(/\s+/g, " ").trim();
+
 export const CountryDropDown = ({
   selectedCountry,
   onCountryChange,
@@ -23,7 +26,7 @@ export const CountryDropDown = ({
       ([name, code]) => ({
         id: code,
         value: code,
-        display: startCase(name),
+        display: startCase(formatCountryName(name)),
         imageSrc: `/assets/flags/${code.toLowerCase()}.svg`,
       })
     );
