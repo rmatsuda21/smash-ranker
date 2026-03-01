@@ -2,6 +2,7 @@ import cn from "classnames";
 import { Trans } from "@lingui/react/macro";
 
 import { FontSelect } from "@/components/top8/DesignEditor/FontSelect/FontSelect";
+import { CustomFontManager } from "@/components/top8/DesignEditor/CustomFontManager/CustomFontManager";
 import { useCanvasStore } from "@/store/canvasStore";
 import { ColorPaletteEditor } from "@/components/top8/DesignEditor/ColorPaletteEditor/ColorPaletteEditor";
 import { AssetSelector } from "@/components/top8/AssetSelector/AssetSelector";
@@ -27,6 +28,13 @@ export const DesignEditor = ({ className }: Props) => {
           <Trans>Font</Trans>
         </p>
         <FontSelect />
+      </div>
+
+      <div>
+        <p className={styles.label}>
+          <Trans>Custom Fonts</Trans>
+        </p>
+        <CustomFontManager />
       </div>
 
       <div className={styles.backgroundImg}>
