@@ -81,7 +81,7 @@ const DEFAULT_TEMPLATE_GROUPS: { templates: DBTemplate[]; name: string }[] = [
 ];
 
 export const TemplateEditor = ({ className }: Props) => {
-  const { templates, loading, getTemplateWithId, addTemplate } =
+  const { templates, loading, getTemplateWithId, addTemplate, deleteTemplate } =
     useTemplateDB();
   const [userTemplates, setUserTemplates] = useState<DBTemplate[]>([]);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -165,6 +165,14 @@ export const TemplateEditor = ({ className }: Props) => {
     description: "Your current design will be overwritten!",
   });
 
+  const {
+    confirm: confirmDeleteTemplate,
+    ConfirmationDialog: DeleteTemplateConfirmation,
+  } = useConfirmation(deleteTemplate, {
+    title: "Delete Template?",
+    description: "This template will be permanently deleted.",
+  });
+
   if (loading)
     return (
       <div className={cn(className, styles.loading)}>
@@ -216,11 +224,13 @@ export const TemplateEditor = ({ className }: Props) => {
           templates={userTemplates}
           name="My Templates"
           onTemplateClick={confirmTemplateClick}
+          onDeleteTemplate={confirmDeleteTemplate}
           viewMode={viewMode}
           loadingTemplateId={loadingTemplateId}
         />
       )}
       <TemplateClickConfirmation />
+      <DeleteTemplateConfirmation />
       <CreateTemplateModal
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}

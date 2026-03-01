@@ -13,6 +13,7 @@ type Props = {
   templates: DBTemplate[];
   name: string;
   onTemplateClick: (templateId: string) => void;
+  onDeleteTemplate?: (templateId: string) => void;
   viewMode: "grid" | "list";
   loadingTemplateId: string | null;
   onCreateCustom?: () => void;
@@ -22,6 +23,7 @@ export const TemplateGroup = ({
   templates,
   name,
   onTemplateClick,
+  onDeleteTemplate,
   viewMode,
   loadingTemplateId,
   onCreateCustom,
@@ -52,6 +54,11 @@ export const TemplateGroup = ({
             key={template.id}
             template={template}
             onClick={() => onTemplateClick(template.id)}
+            onDelete={
+              onDeleteTemplate
+                ? () => onDeleteTemplate(template.id)
+                : undefined
+            }
             isLoading={loadingTemplateId === template.id}
           />
         ))}
