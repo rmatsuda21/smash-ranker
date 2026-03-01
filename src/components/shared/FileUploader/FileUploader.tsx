@@ -12,7 +12,21 @@ type Props = {
   value?: string;
   disabled?: boolean;
   multiple?: boolean;
+  accept?: string;
   onChange: (files?: File[]) => void;
+};
+
+const matchesAccept = (file: File, accept: string): boolean => {
+  const types = accept.split(",").map((t) => t.trim());
+  return types.some((type) => {
+    if (type.endsWith("/*")) {
+      return file.type.startsWith(type.slice(0, -1));
+    }
+    if (type.startsWith(".")) {
+      return file.name.toLowerCase().endsWith(type.toLowerCase());
+    }
+    return file.type === type;
+  });
 };
 
 export const FileUploader = ({
@@ -22,6 +36,7 @@ export const FileUploader = ({
   disabled,
   onChange,
   multiple = false,
+  accept = "image/*",
 }: Props) => {
   const [isFileOver, setIsFileOver] = useState(false);
 
@@ -37,8 +52,11 @@ export const FileUploader = ({
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files ?? []);
     if (files.length === 0) return;
-    if (!files.every((file) => file.type.startsWith("image/"))) return;
+    if (!files.every((file) => matchesAccept(file, accept))) return;
     onChange(files);
+    if (inputRef.current) {
+      inputRef.current.value = "";
+    }
   };
 
   const handleButtonClick = () => {
@@ -66,7 +84,7 @@ export const FileUploader = ({
 
       if (
         files.length === 0 ||
-        !files.every((file) => file.type.startsWith("image/"))
+        !files.every((file) => matchesAccept(file, accept))
       ) {
         return;
       }
@@ -105,7 +123,7 @@ export const FileUploader = ({
       element.removeEventListener("dragleave", handleDragLeave);
       element.removeEventListener("dragend", handleDragEnd);
     };
-  }, [onChange, disabled]);
+  }, [onChange, disabled, accept]);
 
   return (
     <label
@@ -118,7 +136,7 @@ export const FileUploader = ({
       <input
         ref={inputRef}
         type="file"
-        accept="image/*"
+        accept={accept}
         id={id}
         name={name}
         onChange={handleChange}

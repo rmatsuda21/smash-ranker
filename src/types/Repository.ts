@@ -22,3 +22,11 @@ export type DBAsset = {
   data: Blob;
   date: Date;
 };
+
+export type DBCustomFont = {
+  id: string;
+  fontFamily: string;
+  fileName: string;
+  data: Blob;
+  date: Date;
+};

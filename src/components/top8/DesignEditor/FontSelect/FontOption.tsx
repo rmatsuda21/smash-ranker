@@ -38,7 +38,11 @@ export const FontOption = memo(({ option }: Props) => {
     };
 
     link.onerror = () => {
-      setError(true);
+      if (document.fonts.check(`16px "${fontFamily}"`)) {
+        setLoaded(true);
+      } else {
+        setError(true);
+      }
     };
 
     document.head.appendChild(link);
