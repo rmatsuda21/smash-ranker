@@ -9,6 +9,7 @@ export type PlayerInfo = {
   name: string;
   characters: CharacerData[];
   country?: string;
+  customFlagSrc?: string;
   twitter?: string;
   placement: number;
   gamerTag: string;

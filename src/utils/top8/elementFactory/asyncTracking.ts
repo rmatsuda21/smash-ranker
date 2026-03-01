@@ -57,7 +57,7 @@ export const countAsyncElements = (
         count += 1;
       }
     } else if (element.type === "playerFlag") {
-      if (context.player?.country) {
+      if (context.player?.customFlagSrc || context.player?.country) {
         count += 1;
       }
     } else if (ASYNC_ELEMENT_TYPES.has(element.type)) {

@@ -536,12 +536,12 @@ export const createPlayerFlagElement: ElementCreator<
 > = ({ element, index, context }) => {
   const { player } = context;
 
-  if (!player?.country) {
+  const flagSrc = player?.customFlagSrc
+    ?? (player?.country ? `/assets/flags/${player.country.toLowerCase()}.svg` : null);
+
+  if (!flagSrc) {
     return null;
   }
-
-  const countryCode = player.country.toLowerCase();
-  const flagSrc = `/assets/flags/${countryCode}.svg`;
 
   return (
     <CustomImage

@@ -125,6 +125,28 @@ export const PlayersEditor = ({ className }: Props) => {
     debouncedUpdatePlayer(newPlayer, selectedPlayerIndex);
   };
 
+  const handleCustomFlagSelect = (src: string) => {
+    if (!tempPlayer) return;
+
+    const newPlayer: PlayerInfo = {
+      ...tempPlayer,
+      customFlagSrc: src,
+    };
+    setTempPlayer(newPlayer);
+    debouncedUpdatePlayer(newPlayer, selectedPlayerIndex);
+  };
+
+  const handleCustomFlagClear = () => {
+    if (!tempPlayer) return;
+
+    const newPlayer: PlayerInfo = {
+      ...tempPlayer,
+      customFlagSrc: undefined,
+    };
+    setTempPlayer(newPlayer);
+    debouncedUpdatePlayer(newPlayer, selectedPlayerIndex);
+  };
+
   const handleClearPlayer = () => {
     if (!tempPlayer) return;
     const blankPlayer = createBlankPlayer(tempPlayer.placement);
@@ -195,6 +217,17 @@ export const PlayersEditor = ({ className }: Props) => {
         <CountryDropDown
           selectedCountry={tempPlayer?.country ?? ""}
           onCountryChange={handleCountryChange}
+          disabled={!selectedPlayer}
+        />
+      </div>
+      <div className={cn({ [styles.disabled]: !selectedPlayer })}>
+        <p className={styles.label}>
+          <Trans>Custom Flag</Trans>
+        </p>
+        <AssetSelector
+          selectedSrc={tempPlayer?.customFlagSrc}
+          onSelect={handleCustomFlagSelect}
+          onClear={handleCustomFlagClear}
           disabled={!selectedPlayer}
         />
       </div>
