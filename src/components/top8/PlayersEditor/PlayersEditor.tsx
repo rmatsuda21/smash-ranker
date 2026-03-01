@@ -115,6 +115,16 @@ export const PlayersEditor = ({ className }: Props) => {
     debouncedUpdatePlayer(newPlayer, selectedPlayerIndex);
   };
 
+  const handlePlacementChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!tempPlayer) return;
+    const newPlayer: PlayerInfo = {
+      ...tempPlayer,
+      placement: parseInt(e.target.value, 10) || 0,
+    };
+    setTempPlayer(newPlayer);
+    debouncedUpdatePlayer(newPlayer, selectedPlayerIndex);
+  };
+
   const handleCountryChange = (country: string) => {
     if (!tempPlayer) return;
     const newPlayer: PlayerInfo = {
@@ -170,6 +180,16 @@ export const PlayersEditor = ({ className }: Props) => {
       <div className={styles.playerSelector}>
         <PlayerSelector />
       </div>
+      <Input
+        id="placement"
+        name="placement"
+        type="number"
+        label={_(msg`Placement`)}
+        value={tempPlayer?.placement ?? ""}
+        onChange={handlePlacementChange}
+        placeholder={_(msg`Placement`)}
+        disabled={!selectedPlayer}
+      />
       <div className={cn({ [styles.disabled]: !selectedPlayer })}>
         <p className={styles.label}>
           <Trans>Characters</Trans>
