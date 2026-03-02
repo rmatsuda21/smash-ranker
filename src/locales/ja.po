@@ -30,11 +30,11 @@ msgstr "参加人数"
 msgid "<0>Ctrl</0>/<1>Cmd</1>+<2>Z</2> to undo and <3>Ctrl</3>/<4>Cmd</4>+<5>Y</5> to redo."
 msgstr "<0>Ctrl</0>/<1>Cmd</1>+<2>Z</2>でUndo、<3>Ctrl</3>/<4>Cmd</4>+<5>Y</5>でRedo。"
 
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:52
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:85
 msgid "Accent Color"
 msgstr "アクセントカラー"
 
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:24
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:35
 msgid "Amber"
 msgstr "アンバー"
 
@@ -63,15 +63,15 @@ msgstr "この素材を消しますか？"
 msgid "Assets"
 msgstr "素材"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:203
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:256
 msgid "Avatar"
 msgstr "アイコン"
 
-#: src/components/top8/DesignEditor/DesignEditor.tsx:34
+#: src/components/top8/DesignEditor/DesignEditor.tsx:42
 msgid "Background Image"
 msgstr "背景画像"
 
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:25
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:36
 msgid "Blue"
 msgstr "ブルー"
 
@@ -79,7 +79,7 @@ msgstr "ブルー"
 msgid "Buy me a coffee"
 msgstr "一杯だけよ"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:153
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:195
 msgid "Characters"
 msgstr "使用キャラ"
 
@@ -91,11 +91,11 @@ msgstr "市区町村"
 msgid "Clear"
 msgstr "クリア"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:217
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:270
 msgid "Clear Player"
 msgstr "選手初期化"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:142
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:174
 msgid "Clear Player?"
 msgstr "選手を初期化しますか？"
 
@@ -103,7 +103,7 @@ msgstr "選手を初期化しますか？"
 msgid "Color"
 msgstr "色"
 
-#: src/components/top8/DesignEditor/DesignEditor.tsx:72
+#: src/components/top8/DesignEditor/DesignEditor.tsx:80
 msgid "Color Palette"
 msgstr "カラーパレット"
 
@@ -111,7 +111,7 @@ msgstr "カラーパレット"
 #~ msgid "Config Manager"
 #~ msgstr "設定マネージャー"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:193
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:235
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:166
 msgid "Country"
 msgstr "国"
@@ -125,7 +125,7 @@ msgstr "作成"
 msgid "Create a minimal template with a specific player count."
 msgstr "指定の数の選手でミニマルテンプレを作成"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:179
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:187
 msgid "Create New Template"
 msgstr "新規テンプレ作成"
 
@@ -141,7 +141,20 @@ msgstr "制作者"
 msgid "Credits & Inspiration"
 msgstr "クレジット & インスピレーション"
 
-#: src/components/top8/TemplateEditor/TemplateGroup.tsx:65
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:112
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:115
+msgid "Custom"
+msgstr ""
+
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:245
+msgid "Custom Flag"
+msgstr ""
+
+#: src/components/top8/DesignEditor/DesignEditor.tsx:35
+msgid "Custom Fonts"
+msgstr ""
+
+#: src/components/top8/TemplateEditor/TemplateGroup.tsx:72
 msgid "Custom Minimal"
 msgstr "自作"
 
@@ -220,7 +233,7 @@ msgstr "イベント名"
 msgid "Filename"
 msgstr "ファイル名"
 
-#: src/components/top8/DesignEditor/DesignEditor.tsx:27
+#: src/components/top8/DesignEditor/DesignEditor.tsx:28
 msgid "Font"
 msgstr "フォント"
 
@@ -232,12 +245,12 @@ msgstr "フォントサイズ"
 msgid "Font Weight"
 msgstr "フォントウェイト"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:175
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:178
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:217
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:220
 msgid "Gamer Tag"
 msgstr "選手名"
 
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:26
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:37
 msgid "Green"
 msgstr "グリーン"
 
@@ -245,7 +258,7 @@ msgstr "グリーン"
 msgid "Icon"
 msgstr "アイコン"
 
-#: src/components/top8/DesignEditor/DesignEditor.tsx:53
+#: src/components/top8/DesignEditor/DesignEditor.tsx:61
 msgid "Image darkness"
 msgstr "背景画像の明さ"
 
@@ -309,7 +322,7 @@ msgstr "珈琲一杯分から！"
 msgid "No text content defined in this design."
 msgstr "このデザインにはテキストが定義されていません。"
 
-#: src/components/top8/PlayersEditor/CountryDropDown.tsx:31
+#: src/components/top8/PlayersEditor/CountryDropDown.tsx:34
 msgid "None"
 msgstr "なし"
 
@@ -325,13 +338,18 @@ msgstr "OK"
 msgid "Original concept & inspiration"
 msgstr "元コンセプトとインスピレーション"
 
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:22
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:33
 msgid "Pink"
 msgstr "ピンク"
 
 #: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:46
 msgid "Pixel Ratio"
 msgstr "ピクセル比"
+
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:187
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:190
+msgid "Placement"
+msgstr ""
 
 #: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:62
 #: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:68
@@ -362,12 +380,12 @@ msgstr "選手タグ"
 msgid "Players"
 msgstr "選手情報"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:165
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:168
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:207
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:210
 msgid "Prefix"
 msgstr "所属"
 
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:27
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:38
 msgid "Purple"
 msgstr "紫"
 
@@ -375,7 +393,7 @@ msgstr "紫"
 msgid "Quality"
 msgstr "品質"
 
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:23
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:34
 msgid "Red"
 msgstr "赤"
 
@@ -399,7 +417,7 @@ msgstr "キャラクター選択"
 #~ msgid "Select Config"
 #~ msgstr "設定を選択"
 
-#: src/components/top8/PlayersEditor/CountryDropDown.tsx:44
+#: src/components/top8/PlayersEditor/CountryDropDown.tsx:47
 msgid "Select Country"
 msgstr "国選択"
 
@@ -446,7 +464,7 @@ msgstr "テキスト"
 msgid "Theme"
 msgstr "テーマ"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:143
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:175
 msgid "This will reset all player data for this slot."
 msgstr "このスロットの選手情報がすべてリセットされます。"
 
@@ -505,8 +523,8 @@ msgstr "大会都道府県"
 msgid "Tournament URL"
 msgstr "大会URL"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:185
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:188
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:227
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:230
 msgid "Twitter"
 msgstr "X（旧ツイッタ）"
 

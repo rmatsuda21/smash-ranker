@@ -30,11 +30,11 @@ msgstr "# of Entrants"
 msgid "<0>Ctrl</0>/<1>Cmd</1>+<2>Z</2> to undo and <3>Ctrl</3>/<4>Cmd</4>+<5>Y</5> to redo."
 msgstr "<0>Ctrl</0>/<1>Cmd</1>+<2>Z</2> to undo and <3>Ctrl</3>/<4>Cmd</4>+<5>Y</5> to redo."
 
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:52
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:85
 msgid "Accent Color"
 msgstr "Accent Color"
 
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:24
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:35
 msgid "Amber"
 msgstr "Amber"
 
@@ -63,15 +63,15 @@ msgstr ""
 msgid "Assets"
 msgstr "Assets"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:203
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:256
 msgid "Avatar"
 msgstr "Avatar"
 
-#: src/components/top8/DesignEditor/DesignEditor.tsx:34
+#: src/components/top8/DesignEditor/DesignEditor.tsx:42
 msgid "Background Image"
 msgstr "Background Image"
 
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:25
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:36
 msgid "Blue"
 msgstr "Blue"
 
@@ -79,7 +79,7 @@ msgstr "Blue"
 msgid "Buy me a coffee"
 msgstr "Buy me a coffee"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:153
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:195
 msgid "Characters"
 msgstr "Characters"
 
@@ -91,11 +91,11 @@ msgstr "City"
 msgid "Clear"
 msgstr "Clear"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:217
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:270
 msgid "Clear Player"
 msgstr "Clear Player"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:142
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:174
 msgid "Clear Player?"
 msgstr "Clear Player?"
 
@@ -103,7 +103,7 @@ msgstr "Clear Player?"
 msgid "Color"
 msgstr "Color"
 
-#: src/components/top8/DesignEditor/DesignEditor.tsx:72
+#: src/components/top8/DesignEditor/DesignEditor.tsx:80
 msgid "Color Palette"
 msgstr "Color Palette"
 
@@ -111,7 +111,7 @@ msgstr "Color Palette"
 #~ msgid "Config Manager"
 #~ msgstr "Config Manager"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:193
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:235
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:166
 msgid "Country"
 msgstr "Country"
@@ -125,7 +125,7 @@ msgstr "Create"
 msgid "Create a minimal template with a specific player count."
 msgstr "Create a minimal template with a specific player count."
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:179
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:187
 msgid "Create New Template"
 msgstr ""
 
@@ -141,7 +141,20 @@ msgstr "Created by"
 msgid "Credits & Inspiration"
 msgstr "Credits & Inspiration"
 
-#: src/components/top8/TemplateEditor/TemplateGroup.tsx:65
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:112
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:115
+msgid "Custom"
+msgstr ""
+
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:245
+msgid "Custom Flag"
+msgstr ""
+
+#: src/components/top8/DesignEditor/DesignEditor.tsx:35
+msgid "Custom Fonts"
+msgstr ""
+
+#: src/components/top8/TemplateEditor/TemplateGroup.tsx:72
 msgid "Custom Minimal"
 msgstr "Custom Minimal"
 
@@ -220,7 +233,7 @@ msgstr "Event Name"
 msgid "Filename"
 msgstr "Filename"
 
-#: src/components/top8/DesignEditor/DesignEditor.tsx:27
+#: src/components/top8/DesignEditor/DesignEditor.tsx:28
 msgid "Font"
 msgstr "Font"
 
@@ -232,12 +245,12 @@ msgstr "Font Size"
 msgid "Font Weight"
 msgstr "Font Weight"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:175
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:178
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:217
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:220
 msgid "Gamer Tag"
 msgstr "Gamer Tag"
 
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:26
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:37
 msgid "Green"
 msgstr "Green"
 
@@ -245,7 +258,7 @@ msgstr "Green"
 msgid "Icon"
 msgstr "Icon"
 
-#: src/components/top8/DesignEditor/DesignEditor.tsx:53
+#: src/components/top8/DesignEditor/DesignEditor.tsx:61
 msgid "Image darkness"
 msgstr ""
 
@@ -309,7 +322,7 @@ msgstr "Many cups of coffee were consumed during development 👀"
 msgid "No text content defined in this design."
 msgstr "No text content defined in this design."
 
-#: src/components/top8/PlayersEditor/CountryDropDown.tsx:31
+#: src/components/top8/PlayersEditor/CountryDropDown.tsx:34
 msgid "None"
 msgstr "None"
 
@@ -325,13 +338,18 @@ msgstr "Okay"
 msgid "Original concept & inspiration"
 msgstr "Original concept & inspiration"
 
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:22
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:33
 msgid "Pink"
 msgstr "Pink"
 
 #: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:46
 msgid "Pixel Ratio"
 msgstr "Pixel Ratio"
+
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:187
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:190
+msgid "Placement"
+msgstr ""
 
 #: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:62
 #: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:68
@@ -362,12 +380,12 @@ msgstr "Player Tag"
 msgid "Players"
 msgstr "Players"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:165
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:168
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:207
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:210
 msgid "Prefix"
 msgstr "Prefix"
 
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:27
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:38
 msgid "Purple"
 msgstr "Purple"
 
@@ -375,7 +393,7 @@ msgstr "Purple"
 msgid "Quality"
 msgstr "Quality"
 
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:23
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:34
 msgid "Red"
 msgstr "Red"
 
@@ -399,7 +417,7 @@ msgstr "Select Character"
 #~ msgid "Select Config"
 #~ msgstr "Select Config"
 
-#: src/components/top8/PlayersEditor/CountryDropDown.tsx:44
+#: src/components/top8/PlayersEditor/CountryDropDown.tsx:47
 msgid "Select Country"
 msgstr "Select Country"
 
@@ -446,7 +464,7 @@ msgstr "Texts"
 msgid "Theme"
 msgstr "Theme"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:143
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:175
 msgid "This will reset all player data for this slot."
 msgstr "This will reset all player data for this slot."
 
@@ -505,8 +523,8 @@ msgstr "Tournament State"
 msgid "Tournament URL"
 msgstr "Tournament URL"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:185
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:188
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:227
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:230
 msgid "Twitter"
 msgstr "Twitter"
 
