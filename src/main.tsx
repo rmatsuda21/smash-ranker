@@ -12,6 +12,7 @@ import "@/index.css";
 import { registerServiceWorker } from "@/utils/waitForServiceWorker";
 import { loadCatalog } from "@/i18n";
 import { COOKIES } from "@/consts/cookies";
+import { applyCustomAccentScale } from "@/utils/generateAccentScale";
 
 import App from "@/App";
 
@@ -29,6 +30,10 @@ import App from "@/App";
 
   const savedAccent = Cookies.get(COOKIES.ACCENT_COLOR) || "pink";
   document.documentElement.setAttribute("data-accent", savedAccent);
+  if (savedAccent === "custom") {
+    const customHex = Cookies.get(COOKIES.CUSTOM_ACCENT_COLOR) || "#ff6600";
+    applyCustomAccentScale(customHex);
+  }
 
   await registerServiceWorker();
 

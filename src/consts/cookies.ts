@@ -10,4 +10,5 @@ export const COOKIES = {
   LANGUAGE: "language",
   THEME: "theme",
   ACCENT_COLOR: "accent-color",
+  CUSTOM_ACCENT_COLOR: "custom-accent-color",
 };

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { FaDroplet, FaCheck } from "react-icons/fa6";
 import Cookies from "js-cookie";
 import cn from "classnames";
@@ -9,13 +9,24 @@ import { useLingui } from "@lingui/react";
 import { COOKIES } from "@/consts/cookies";
 import { useTooltip } from "@/components/shared/Tooltip/useTooltip";
 import { Tooltip } from "@/components/shared/Tooltip/Tooltip";
+import {
+  applyCustomAccentScale,
+  clearCustomAccentScale,
+} from "@/utils/generateAccentScale";
 
 import styles from "./SettingsPanel.module.scss";
 
-type AccentColor = "pink" | "crimson" | "amber" | "blue" | "green" | "purple";
+type AccentColor =
+  | "pink"
+  | "crimson"
+  | "amber"
+  | "blue"
+  | "green"
+  | "purple"
+  | "custom";
 
 const ACCENT_COLORS: {
-  value: AccentColor;
+  value: Exclude<AccentColor, "custom">;
   label: MessageDescriptor;
   color: string;
 }[] = [
@@ -32,18 +43,40 @@ export const AccentColorPicker = () => {
   const [currentAccent, setCurrentAccent] = useState<AccentColor>(
     () => (Cookies.get(COOKIES.ACCENT_COLOR) as AccentColor) || "pink"
   );
+  const [customHex, setCustomHex] = useState(
+    () => Cookies.get(COOKIES.CUSTOM_ACCENT_COLOR) || "#ff6600"
+  );
+  const colorInputRef = useRef<HTMLInputElement>(null);
 
   const [tooltipRef, tooltip] = useTooltip();
 
   useEffect(() => {
     document.documentElement.setAttribute("data-accent", currentAccent);
-  }, [currentAccent]);
+    if (currentAccent === "custom") {
+      applyCustomAccentScale(customHex);
+    } else {
+      clearCustomAccentScale();
+    }
+  }, [currentAccent, customHex]);
 
   const handleAccentChange = (accent: AccentColor) => {
     setCurrentAccent(accent);
     Cookies.set(COOKIES.ACCENT_COLOR, accent, { expires: 365 });
     document.documentElement.setAttribute("data-accent", accent);
   };
+
+  const handleCustomClick = () => {
+    handleAccentChange("custom");
+    colorInputRef.current?.click();
+  };
+
+  const handleColorInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const hex = e.target.value;
+    setCustomHex(hex);
+    Cookies.set(COOKIES.CUSTOM_ACCENT_COLOR, hex, { expires: 365 });
+  };
+
+  const isCustom = currentAccent === "custom";
 
   return (
     <section className={styles.section}>
@@ -71,6 +104,37 @@ export const AccentColorPicker = () => {
             )}
           </button>
         ))}
+        <button
+          className={cn(styles.colorButton, {
+            [styles.selected]: isCustom,
+          })}
+          onClick={handleCustomClick}
+          onMouseEnter={() => tooltip.show(_(msg`Custom`))}
+          onMouseLeave={() => tooltip.hide()}
+          aria-pressed={isCustom}
+          aria-label={_(msg`Custom`)}
+          style={
+            isCustom
+              ? ({ "--swatch-color": customHex } as React.CSSProperties)
+              : undefined
+          }
+        >
+          {isCustom ? (
+            <span className={styles.colorSwatch} />
+          ) : (
+            <span className={styles.rainbowSwatch} />
+          )}
+          {isCustom && <FaCheck className={styles.colorCheck} />}
+        </button>
+        <input
+          ref={colorInputRef}
+          type="color"
+          className={styles.hiddenColorInput}
+          value={customHex}
+          onChange={handleColorInputChange}
+          tabIndex={-1}
+          aria-hidden="true"
+        />
         <Tooltip tooltipRef={tooltipRef} />
       </div>
     </section>
