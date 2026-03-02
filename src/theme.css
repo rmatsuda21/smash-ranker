@@ -1,0 +1,81 @@
+/* Dark theme gray scale — derived from #414141 (lightness only) */
+:root,
+[data-theme="dark"] {
+  --gray-1: hsl(from #414141 h s calc(l * 0.15));
+  --gray-2: hsl(from #414141 h s calc(l * 0.3));
+  --gray-3: hsl(from #414141 h s calc(l * 0.45));
+  --gray-4: hsl(from #414141 h s calc(l * 0.6));
+  --gray-5: hsl(from #414141 h s calc(l * 0.72));
+  --gray-6: hsl(from #414141 h s calc(l * 0.84));
+  --gray-7: hsl(from #414141 h s calc(l * 0.92));
+  --gray-8: hsl(from #414141 h s calc(l * 0.97));
+  --gray-9: #414141;
+  --gray-10: color-mix(in srgb, white 40%, #414141);
+  --gray-11: color-mix(in srgb, white 70%, #414141);
+  --gray-12: color-mix(in srgb, white 90%, #414141);
+
+  color: var(--gray-12);
+}
+
+[data-theme="light"] {
+  --gray-1: #f8f8f8;
+  --gray-2: #f0f0f0;
+  --gray-3: #e8e8e8;
+  --gray-4: #dedede;
+  --gray-5: #d0d0d0;
+  --gray-6: #b8b8b8;
+  --gray-7: #a0a0a0;
+  --gray-8: #787878;
+  --gray-9: #606060;
+  --gray-10: #484848;
+  --gray-11: #383838;
+  --gray-12: #1a1a1a;
+
+  color: var(--gray-12);
+}
+
+:root {
+  --accent-base: #e93d82;
+
+  --accent-1: hsl(from var(--accent-base) h calc(s * 0.4) calc(l * 0.15));
+  --accent-2: hsl(from var(--accent-base) h calc(s * 0.7) calc(l * 0.3));
+  --accent-3: hsl(from var(--accent-base) h calc(s * 0.9) calc(l * 0.45));
+  --accent-4: hsl(from var(--accent-base) h calc(s * 0.95 + 5) calc(l * 0.6));
+  --accent-5: hsl(from var(--accent-base) h calc(s * 0.94 + 6) calc(l * 0.72));
+  --accent-6: hsl(from var(--accent-base) h calc(s * 0.96 + 4) calc(l * 0.84));
+  --accent-7: hsl(from var(--accent-base) h calc(s * 0.98 + 2) calc(l * 0.92));
+  --accent-8: hsl(from var(--accent-base) h calc(s * 0.99 + 1) calc(l * 0.97));
+  --accent-9: var(--accent-base);
+  --accent-10: color-mix(in srgb, white 35%, var(--accent-base));
+  --accent-11: color-mix(in srgb, white 65%, var(--accent-base));
+  --accent-12: color-mix(in srgb, white 88%, var(--accent-base));
+}
+
+[data-accent="pink"] {
+  --accent-base: #e93d82;
+}
+[data-accent="crimson"] {
+  --accent-base: #e5484d;
+}
+[data-accent="amber"] {
+  --accent-base: #f59e0b;
+}
+[data-accent="blue"] {
+  --accent-base: #3b82f6;
+}
+[data-accent="green"] {
+  --accent-base: #10b981;
+}
+[data-accent="purple"] {
+  --accent-base: #8b5cf6;
+}
+
+[data-theme="light"][data-accent="pink"] {
+  --accent-base: #d6409f;
+}
+
+:root {
+  --amber-7: hsl(from #f59e0b h calc(s * 0.98 + 2) calc(l * 0.92));
+  --amber-9: #f59e0b;
+  --crimson-9: #e5484d;
+}

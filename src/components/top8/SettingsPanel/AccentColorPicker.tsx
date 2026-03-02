@@ -9,11 +9,6 @@ import { useLingui } from "@lingui/react";
 import { COOKIES } from "@/consts/cookies";
 import { useTooltip } from "@/components/shared/Tooltip/useTooltip";
 import { Tooltip } from "@/components/shared/Tooltip/Tooltip";
-import {
-  applyCustomAccentScale,
-  clearCustomAccentScale,
-} from "@/utils/generateAccentScale";
-
 import styles from "./SettingsPanel.module.scss";
 
 type AccentColor =
@@ -53,9 +48,9 @@ export const AccentColorPicker = () => {
   useEffect(() => {
     document.documentElement.setAttribute("data-accent", currentAccent);
     if (currentAccent === "custom") {
-      applyCustomAccentScale(customHex);
+      document.documentElement.style.setProperty("--accent-base", customHex);
     } else {
-      clearCustomAccentScale();
+      document.documentElement.style.removeProperty("--accent-base");
     }
   }, [currentAccent, customHex]);
 
