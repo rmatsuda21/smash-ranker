@@ -1,11 +1,14 @@
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { Layout } from "@/components/Layout/Layout";
 import { PageRouter } from "@/components/PageRouter";
 
 function App() {
   return (
-    <Layout>
-      <PageRouter />
-    </Layout>
+    <ErrorBoundary>
+      <Layout>
+        <PageRouter />
+      </Layout>
+    </ErrorBoundary>
   );
 }
 
