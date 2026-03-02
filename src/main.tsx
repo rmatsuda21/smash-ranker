@@ -5,15 +5,13 @@ import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
 import Cookies from "js-cookie";
 
-import "@/theme.scss";
+import "@/theme.css";
 import "@/reset.css";
 import "@/index.css";
 
 import { registerServiceWorker } from "@/utils/waitForServiceWorker";
 import { loadCatalog } from "@/i18n";
 import { COOKIES } from "@/consts/cookies";
-import { applyCustomAccentScale } from "@/utils/generateAccentScale";
-
 import App from "@/App";
 
 (async () => {
@@ -32,7 +30,7 @@ import App from "@/App";
   document.documentElement.setAttribute("data-accent", savedAccent);
   if (savedAccent === "custom") {
     const customHex = Cookies.get(COOKIES.CUSTOM_ACCENT_COLOR) || "#ff6600";
-    applyCustomAccentScale(customHex);
+    document.documentElement.style.setProperty("--accent-base", customHex);
   }
 
   await registerServiceWorker();
