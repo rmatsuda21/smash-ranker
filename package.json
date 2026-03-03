@@ -16,7 +16,8 @@
     "lint:fix": "eslint . --fix",
     "preview": "vite preview",
     "codegen": "graphql-codegen",
-    "codegenwatch": "graphql-codegen --watch"
+    "codegenwatch": "graphql-codegen --watch",
+    "generate:previews": "bunx playwright install chromium --with-deps && bun scripts/generate-previews.ts"
   },
   "dependencies": {
     "@lingui/react": "^5.7.0",
@@ -60,6 +61,7 @@
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^15.15.0",
     "graphql": "^16.10.0",
+    "playwright": "^1.58.2",
     "sass-embedded": "^1.85.1",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.24.1",

@@ -9,7 +9,10 @@ import { createKonvaElements } from "@/utils/top8/elementFactory";
 import { createSamplePlayers } from "@/utils/top8/samplePlayers";
 import { TournamentInfo } from "@/types/top8/Tournament";
 import { useTooltip } from "@/hooks/top8/useTooltip";
+import { isMobile } from "@/utils/isMobile";
+import { previewCache } from "@/db/previewCache";
 import { Spinner } from "@/components/shared/Spinner/Spinner";
+import { defaultPreviews } from "@assets/previews";
 
 import styles from "./TemplatePreview.module.scss";
 
@@ -36,24 +39,91 @@ const sampleTournament: TournamentInfo = {
   url: "https://start.gg/420-69-tournament",
 };
 
-export const TemplatePreview = ({
+const PreviewShell = ({
   template,
   onClick,
   onDelete,
   className,
   isLoading,
-}: Props) => {
+  children,
+}: Props & { children: React.ReactNode }) => {
+  const { Tooltip, handleMouseEnter, handleMouseLeave } = useTooltip({
+    tooltip: template.name,
+  });
+
+  return (
+    <div
+      className={cn(styles.previewContainer, className)}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onClick={onClick}
+    >
+      {children}
+
+      {isLoading && (
+        <div className={styles.loadingOverlay}>
+          <Spinner size={32} />
+        </div>
+      )}
+
+      {onDelete && (
+        <button
+          className={styles.deleteButton}
+          onClick={(e) => {
+            e.stopPropagation();
+            onDelete();
+          }}
+          aria-label="Delete template"
+        >
+          <FaTrash size={12} />
+        </button>
+      )}
+
+      {Tooltip && <Tooltip className={styles.tooltip} />}
+    </div>
+  );
+};
+
+const CachedPreview = ({
+  blob,
+  ...props
+}: Props & { blob: Blob }) => {
+  const [src, setSrc] = useState<string | null>(null);
+
+  useEffect(() => {
+    const url = URL.createObjectURL(blob);
+    setSrc(url);
+    return () => URL.revokeObjectURL(url);
+  }, [blob]);
+
+  return (
+    <PreviewShell {...props}>
+      {src ? (
+        <img
+          src={src}
+          alt="Template preview"
+          className={styles.previewImage}
+        />
+      ) : (
+        <div className={styles.loading}>
+          <Spinner size={32} />
+        </div>
+      )}
+    </PreviewShell>
+  );
+};
+
+const RenderedPreview = (props: Props) => {
+  const { template } = props;
   const [imageDataUrl, setImageDataUrl] = useState<string | null>(null);
   const [isRendering, setIsRendering] = useState(true);
+  const [stageCaptured, setStageCaptured] = useState(false);
   const [isBackgroundReady, setIsBackgroundReady] = useState(false);
   const [isTournamentReady, setIsTournamentReady] = useState(false);
   const [isPlayerReady, setIsPlayerReady] = useState(false);
 
+  const mobile = isMobile();
   const stageRef = useRef<KonvaStage>(null);
-
-  const { Tooltip, handleMouseEnter, handleMouseLeave } = useTooltip({
-    tooltip: template.name,
-  });
 
   const backgroundElements = useMemo(
     () =>
@@ -184,18 +254,33 @@ export const TemplatePreview = ({
     }
 
     try {
-      const dataUrl = stageRef.current.toDataURL({
-        quality: 0.1,
-        mimeType: "image/webp",
-      });
+      const canvas = stageRef.current.toCanvas({ pixelRatio: mobile ? 0.25 : 1 });
+      canvas.toBlob(
+        (blob) => {
+          canvas.width = 0;
+          canvas.height = 0;
 
-      setImageDataUrl(dataUrl);
-      setIsRendering(false);
+          if (blob) {
+            const url = URL.createObjectURL(blob);
+            setImageDataUrl(url);
+
+            previewCache.set(template.id, blob).catch(() => {
+              // Cache write failed — non-critical
+            });
+          }
+
+          setIsRendering(false);
+          setStageCaptured(true);
+        },
+        "image/webp",
+        0.5
+      );
     } catch (error) {
       console.error("Failed to capture canvas:", error);
       setIsRendering(false);
+      setStageCaptured(true);
     }
-  }, []);
+  }, [template.id, mobile]);
 
   useEffect(() => {
     if (isBackgroundReady && isTournamentReady && isPlayerReady) {
@@ -203,24 +288,31 @@ export const TemplatePreview = ({
     }
   }, [isBackgroundReady, isTournamentReady, isPlayerReady, captureImage]);
 
+  useEffect(() => {
+    return () => {
+      if (imageDataUrl) {
+        URL.revokeObjectURL(imageDataUrl);
+      }
+    };
+  }, [imageDataUrl]);
+
   return (
-    <div
-      className={cn(styles.previewContainer, className)}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
-      <div className={styles.hiddenStage}>
-        <Stage
-          ref={stageRef}
-          width={template.design.canvasSize.width}
-          height={template.design.canvasSize.height}
-          listening={false}
-        >
-          <Layer listening={false}>{backgroundElements}</Layer>
-          <Layer listening={false}>{playerElements}</Layer>
-          <Layer listening={false}>{tournamentElements}</Layer>
-        </Stage>
-      </div>
+    <PreviewShell {...props}>
+      {!(mobile && stageCaptured) && (
+        <div className={styles.hiddenStage}>
+          <Stage
+            ref={stageRef}
+            width={template.design.canvasSize.width}
+            height={template.design.canvasSize.height}
+            listening={false}
+            pixelRatio={mobile ? 0.25 : 1}
+          >
+            <Layer listening={false}>{backgroundElements}</Layer>
+            <Layer listening={false}>{playerElements}</Layer>
+            <Layer listening={false}>{tournamentElements}</Layer>
+          </Stage>
+        </div>
+      )}
 
       {isRendering && (
         <div className={styles.loading}>
@@ -233,34 +325,76 @@ export const TemplatePreview = ({
           src={imageDataUrl}
           alt="Template preview"
           className={styles.previewImage}
-          onClick={onClick}
         />
       )}
 
       {!imageDataUrl && !isRendering && (
         <div className={styles.error}>Failed to load preview</div>
       )}
+    </PreviewShell>
+  );
+};
 
-      {isLoading && (
-        <div className={styles.loadingOverlay}>
+export const TemplatePreview = (props: Props) => {
+  const { template } = props;
+
+  const staticSrc = defaultPreviews[template.id];
+  if (staticSrc) {
+    return (
+      <PreviewShell {...props}>
+        <img
+          src={staticSrc}
+          alt="Template preview"
+          className={styles.previewImage}
+        />
+      </PreviewShell>
+    );
+  }
+
+  return <UserTemplatePreview {...props} />;
+};
+
+const UserTemplatePreview = (props: Props) => {
+  const { template } = props;
+  const [cachedBlob, setCachedBlob] = useState<Blob | null | undefined>(
+    template.previewImage ?? undefined
+  );
+
+  useEffect(() => {
+    if (template.previewImage) {
+      setCachedBlob(template.previewImage);
+      return;
+    }
+
+    let cancelled = false;
+    previewCache.get(template.id).then((blob) => {
+      if (!cancelled) {
+        setCachedBlob(blob ?? null);
+      }
+    }).catch(() => {
+      if (!cancelled) {
+        setCachedBlob(null);
+      }
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [template.id, template.previewImage]);
+
+  if (cachedBlob === undefined) {
+    return (
+      <PreviewShell {...props}>
+        <div className={styles.loading}>
           <Spinner size={32} />
         </div>
-      )}
+      </PreviewShell>
+    );
+  }
 
-      {onDelete && (
-        <button
-          className={styles.deleteButton}
-          onClick={(e) => {
-            e.stopPropagation();
-            onDelete();
-          }}
-          aria-label="Delete template"
-        >
-          <FaTrash size={12} />
-        </button>
-      )}
+  if (cachedBlob) {
+    return <CachedPreview {...props} blob={cachedBlob} />;
+  }
 
-      {Tooltip && <Tooltip className={styles.tooltip} />}
-    </div>
-  );
+  return <RenderedPreview {...props} />;
 };
