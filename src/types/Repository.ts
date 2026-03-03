@@ -13,6 +13,7 @@ export type DBTemplate = {
   name: string;
   design: Design;
   font: string;
+  previewImage?: Blob;
 };
 
 export type DBAsset = {

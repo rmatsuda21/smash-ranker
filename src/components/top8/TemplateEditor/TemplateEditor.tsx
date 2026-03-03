@@ -137,14 +137,32 @@ export const TemplateEditor = ({ className }: Props) => {
     setLoadingTemplateId(null);
   };
 
-  const handleCreateTemplate = (name: string) => {
-    addTemplate({
-      name,
-      design: useCanvasStore.getState().design,
-      font: useFontStore.getState().selectedFont,
-    }).then(() => {
-      setIsCreateModalOpen(false);
-    });
+  const handleCreateTemplate = async (name: string) => {
+    const { design, stageRef } = useCanvasStore.getState();
+    const font = useFontStore.getState().selectedFont;
+
+    let previewImage: Blob | undefined;
+    if (stageRef) {
+      try {
+        const canvas = stageRef.toCanvas({ pixelRatio: 0.25 });
+        previewImage = await new Promise<Blob | undefined>((resolve) => {
+          canvas.toBlob(
+            (blob) => {
+              canvas.width = 0;
+              canvas.height = 0;
+              resolve(blob ?? undefined);
+            },
+            "image/webp",
+            0.5
+          );
+        });
+      } catch {
+        // Preview capture failed — save template without preview
+      }
+    }
+
+    await addTemplate({ name, design, font, previewImage });
+    setIsCreateModalOpen(false);
   };
 
   const handleCreateMinimalTemplate = (name: string, playerCount: number) => {
