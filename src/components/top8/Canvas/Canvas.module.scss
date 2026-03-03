@@ -1,3 +1,5 @@
+@use "@/_theme" as *;
+
 .canvasContainer {
   --canvas-padding: 40px;
 
@@ -14,10 +16,13 @@
   }
 
   .scrollArea {
+    position: relative;
+    z-index: 1;
     flex: 1;
     overflow: auto;
     scrollbar-gutter: stable;
     padding: var(--canvas-padding);
+    background: var(--gray-1);
   }
 
   .loader {
@@ -75,6 +80,27 @@
 
     input[type="range"] {
       width: 200px;
+    }
+  }
+}
+
+@include mobile {
+  .canvasContainer {
+    --canvas-padding: 0px;
+
+    .scrollArea {
+      scrollbar-gutter: auto;
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+
+    .controls {
+      gap: 10px;
+      margin: 10px;
+
+      input[type="range"] {
+        width: 120px;
+      }
     }
   }
 }

@@ -17,6 +17,9 @@ export default defineConfig(() => {
       lingui(),
       shouldAnalyze && analyzer(),
     ].filter(Boolean),
+    optimizeDeps: {
+      force: true,
+    },
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "./src"),

@@ -7,7 +7,7 @@
     "node": "22.x"
   },
   "scripts": {
-    "dev": "bunx --bun vite",
+    "dev": "bunx --bun vite --host",
     "build": "tsc -b && bunx --bun vite build",
     "build:analyze": "ANALYZE=true bunx --bun vite build",
     "extract": "lingui extract",

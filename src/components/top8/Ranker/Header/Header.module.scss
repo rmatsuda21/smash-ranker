@@ -1,3 +1,5 @@
+@use "@/_theme" as *;
+
 .header {
   padding-block: 10px;
   display: flex;
@@ -87,5 +89,18 @@
 .tournamentLoader {
   input {
     width: 400px;
+  }
+}
+
+@include mobile {
+  .header {
+    overflow-x: auto;
+    flex-shrink: 0;
+  }
+
+  .tournamentLoader {
+    input {
+      width: 200px;
+    }
   }
 }

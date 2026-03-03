@@ -4,3 +4,9 @@
   font-weight: 600;
   color: var(--accent-9);
 }
+
+@mixin mobile {
+  @media (max-width: 768px) {
+    @content;
+  }
+}
