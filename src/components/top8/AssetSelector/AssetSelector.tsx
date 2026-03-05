@@ -3,7 +3,8 @@ import { FaImage, FaTrash } from "react-icons/fa6";
 import { GrDocumentMissing } from "react-icons/gr";
 import { RxValueNone } from "react-icons/rx";
 import cn from "classnames";
-import { Trans } from "@lingui/react/macro";
+import { useLingui } from "@lingui/react";
+import { msg } from "@lingui/core/macro";
 
 import { AssetsModal } from "@/components/top8/AssetManager/AssetsModal/AssetsModal";
 import { Button } from "@/components/shared/Button/Button";
@@ -24,6 +25,7 @@ export const AssetSelector = ({
   onClear,
   disabled,
 }: Props) => {
+  const { _ } = useLingui();
   const [isOpen, setIsOpen] = useState(false);
   const [img, setImg] = useState<Blob | null>(null);
   const [notFound, setNotFound] = useState(false);
@@ -56,25 +58,31 @@ export const AssetSelector = ({
         className={cn(styles.imgContainer, { [styles.disabled]: disabled })}
         onClick={openModal}
       >
-        {notFound && <GrDocumentMissing size={50} />}
+        {notFound && <GrDocumentMissing size={24} />}
         {!notFound &&
           (img ? (
             <img src={URL.createObjectURL(img)} alt="Background Image" />
           ) : (
-            <RxValueNone color="var(--gray-5)" size={50} />
+            <RxValueNone color="var(--gray-5)" size={24} />
           ))}
       </div>
       <div className={styles.buttons}>
-        <Button onClick={openModal} disabled={disabled}>
-          <FaImage /> <Trans>Select</Trans>
+        <Button
+          size="sm"
+          onClick={openModal}
+          disabled={disabled}
+          tooltip={_(msg`Select`)}
+        >
+          <FaImage />
         </Button>
         <Button
-          onClick={() => {
-            onClear();
-          }}
-          disabled={disabled}
+          size="sm"
+          variant="outline"
+          onClick={() => onClear()}
+          disabled={disabled || !selectedSrc}
+          tooltip={_(msg`Clear`)}
         >
-          <FaTrash /> <Trans>Clear</Trans>
+          <FaTrash />
         </Button>
       </div>
 
