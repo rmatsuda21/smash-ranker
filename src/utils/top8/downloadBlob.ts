@@ -1,28 +1,16 @@
 import { isIOS } from "@/utils/isIOS";
 
-const dataURLtoBlob = (dataURL: string): Blob => {
-  const parts = dataURL.split(",");
-  const mime = parts[0].match(/:(.*?);/)?.[1] || "image/png";
-  const binary = atob(parts[1]);
-  const array = new Uint8Array(binary.length);
-  for (let i = 0; i < binary.length; i++) {
-    array[i] = binary.charCodeAt(i);
-  }
-  return new Blob([array], { type: mime });
-};
-
-export const downloadDataURL = async ({
-  dataURL,
+export const downloadBlob = async ({
+  blob,
   filename,
   mimeType,
 }: {
-  dataURL: string;
+  blob: Blob;
   filename: string;
   mimeType: string;
 }) => {
   if (navigator.share && isIOS()) {
     try {
-      const blob = dataURLtoBlob(dataURL);
       const file = new File([blob], filename, { type: mimeType });
 
       await navigator.share({
@@ -35,9 +23,9 @@ export const downloadDataURL = async ({
     }
   }
 
+  const blobURL = URL.createObjectURL(blob);
+
   if (isIOS()) {
-    const blob = dataURLtoBlob(dataURL);
-    const blobURL = URL.createObjectURL(blob);
     const newWindow = window.open(blobURL, "_blank");
 
     if (newWindow) {
@@ -52,8 +40,9 @@ export const downloadDataURL = async ({
 
   const link = document.createElement("a");
   link.download = filename;
-  link.href = dataURL;
+  link.href = blobURL;
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
+  URL.revokeObjectURL(blobURL);
 };

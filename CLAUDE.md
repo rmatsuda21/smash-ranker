@@ -50,7 +50,7 @@ The Top 8 graphic is rendered via **Konva** (2D canvas) through React-Konva. The
 - **Element factory** (`src/utils/top8/elementFactory/`) — renders each element type to Konva nodes
 - **Placeholder resolution** (`src/utils/top8/resolveText.ts`) — replaces `{{player.name}}`, `{{placement}}`, etc. with real data at render time
 - **Color resolution** (`src/utils/top8/resolveColor.ts`) — maps palette keys to hex values
-- **SVG processing** (`src/utils/top8/fetchAndColorSVG.ts`) — fetches SVGs and recolors them for flags/icons
+- **SVG processing** (`src/hooks/top8/useSvgImage.ts`) — fetches SVGs and recolors them for flags/icons
 
 ### Persistence (IndexedDB)
 

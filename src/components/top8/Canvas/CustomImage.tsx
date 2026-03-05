@@ -2,6 +2,7 @@ import { ComponentProps, memo, useEffect, useRef } from "react";
 import { Image } from "react-konva";
 
 import { useCustomImage } from "@/hooks/top8/useCustomImage";
+import { isMobile } from "@/utils/isMobile";
 
 const BACKDROP_OFFSET = 10;
 
@@ -59,12 +60,18 @@ const CustomImageComponent = ({
     onError: onErrorRef.current,
   });
 
+  const mobile = isMobile();
+
   useEffect(() => {
-    if (ref.current && finalImage) {
+    if (!ref.current || !finalImage) return;
+
+    if (!mobile && shadowOpacity > 0) {
       ref.current.clearCache();
       ref.current.cache();
+    } else {
+      ref.current.clearCache();
     }
-  }, [shadowColor, shadowBlur, shadowOffset, shadowOpacity, finalImage, ref]);
+  }, [shadowColor, shadowBlur, shadowOffset, shadowOpacity, finalImage, ref, mobile]);
 
   if (!finalImage) return null;
 

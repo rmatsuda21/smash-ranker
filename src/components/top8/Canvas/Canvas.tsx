@@ -12,6 +12,7 @@ import { TournamentLayer } from "@/components/top8/Canvas/TournamentLayer";
 import { Spinner } from "@/components/shared/Spinner/Spinner";
 import { Slider } from "@/components/shared/Slider/Slider";
 import { Button } from "@/components/shared/Button/Button";
+import { isMobile } from "@/utils/isMobile";
 
 import styles from "./Canvas.module.scss";
 
@@ -165,6 +166,7 @@ export const Canvas = ({ className }: Props) => {
               ref={stageRef}
               width={canvasSize.width}
               height={canvasSize.height}
+              pixelRatio={isMobile() ? 0.5 : undefined}
               onClick={handleStageClick}
             >
               <BackgroundLayer

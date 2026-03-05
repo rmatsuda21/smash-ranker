@@ -10,7 +10,7 @@ import { useCanvasStore } from "@/store/canvasStore";
 import { usePlayerStore } from "@/store/playerStore";
 import { useTournamentStore } from "@/store/tournamentStore";
 import { DropDownSelect } from "@/components/top8/DropDownSelect/DropDownSelect";
-import { downloadDataURL } from "@/utils/top8/downloadDataURL";
+import { downloadBlob } from "@/utils/top8/downloadBlob";
 import { DownloadOptionModal } from "@/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal";
 
 import styles from "./CanvasDownloader.module.scss";
@@ -57,14 +57,18 @@ export const CanvasDownloader = ({ className }: Props) => {
     await new Promise((resolve) => setTimeout(resolve, 50));
 
     const mimeType = `image/${imgType}`;
-    const dataURL = stageRef.toDataURL({
-      pixelRatio,
-      mimeType,
-      quality,
-    });
+    const canvas = stageRef.toCanvas({ pixelRatio });
+
+    const blob = await new Promise<Blob | null>((resolve) =>
+      canvas.toBlob((b) => resolve(b), mimeType, quality)
+    );
+    canvas.width = 0;
+    canvas.height = 0;
+
+    if (!blob) return;
 
     const finalFilename = `${filename || "ranker"}.${fileExtensions[imgType]}`;
-    downloadDataURL({ dataURL, filename: finalFilename, mimeType });
+    await downloadBlob({ blob, filename: finalFilename, mimeType });
   }, [
     stageRef,
     filename,

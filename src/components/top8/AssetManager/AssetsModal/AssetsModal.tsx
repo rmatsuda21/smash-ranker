@@ -99,7 +99,7 @@ export const AssetsModal = ({
               >
                 <RiDeleteBin6Fill />
               </div>
-              <img src={URL.createObjectURL(asset.data)} alt={asset.fileName} />
+              <img src={asset.src} alt={asset.fileName} />
             </div>
           ))}
         </div>

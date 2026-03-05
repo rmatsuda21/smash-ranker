@@ -4,6 +4,7 @@ import Konva from "konva";
 import { Group as KonvaGroup } from "konva/lib/Group";
 
 import { ElementFilterConfig } from "@/types/top8/Design";
+import { isMobile } from "@/utils/isMobile";
 
 type FilterProps = {
   filters?: any[];
@@ -69,12 +70,14 @@ export const FilteredGroup = ({
     [filtersConfig]
   );
 
+  const mobile = isMobile();
+
   useEffect(() => {
     const node = groupRef.current;
     if (!node) return;
 
     const hasFilters = (filterProps.filters?.length ?? 0) > 0;
-    if (!hasFilters) {
+    if (!hasFilters || mobile) {
       node.clearCache();
       return;
     }
@@ -91,6 +94,7 @@ export const FilteredGroup = ({
     filterProps.blue,
     filterProps.blurRadius,
     invalidateCacheKey,
+    mobile,
   ]);
 
   return (

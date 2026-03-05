@@ -16,6 +16,18 @@ import { defaultPreviews } from "@assets/previews";
 
 import styles from "./TemplatePreview.module.scss";
 
+// Sequential render queue — only one RenderedPreview mounts its Konva Stage at a time
+let currentRender: Promise<void> = Promise.resolve();
+const requestRenderSlot = (): { promise: Promise<void>; release: () => void } => {
+  let release: () => void;
+  const gate = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  const promise = currentRender;
+  currentRender = currentRender.then(() => gate);
+  return { promise, release: release! };
+};
+
 type Props = {
   template: DBTemplate;
   onClick: () => void;
@@ -121,9 +133,27 @@ const RenderedPreview = (props: Props) => {
   const [isBackgroundReady, setIsBackgroundReady] = useState(false);
   const [isTournamentReady, setIsTournamentReady] = useState(false);
   const [isPlayerReady, setIsPlayerReady] = useState(false);
+  const [hasSlot, setHasSlot] = useState(false);
 
   const mobile = isMobile();
   const stageRef = useRef<KonvaStage>(null);
+  const releaseRef = useRef<(() => void) | null>(null);
+
+  // Wait for render slot before mounting the Konva stage
+  useEffect(() => {
+    const { promise, release } = requestRenderSlot();
+    releaseRef.current = release;
+
+    let cancelled = false;
+    promise.then(() => {
+      if (!cancelled) setHasSlot(true);
+    });
+
+    return () => {
+      cancelled = true;
+      release();
+    };
+  }, []);
 
   const backgroundElements = useMemo(
     () =>
@@ -271,6 +301,7 @@ const RenderedPreview = (props: Props) => {
 
           setIsRendering(false);
           setStageCaptured(true);
+          releaseRef.current?.();
         },
         "image/webp",
         0.5
@@ -279,6 +310,7 @@ const RenderedPreview = (props: Props) => {
       console.error("Failed to capture canvas:", error);
       setIsRendering(false);
       setStageCaptured(true);
+      releaseRef.current?.();
     }
   }, [template.id, mobile]);
 
@@ -298,7 +330,7 @@ const RenderedPreview = (props: Props) => {
 
   return (
     <PreviewShell {...props}>
-      {!(mobile && stageCaptured) && (
+      {hasSlot && !stageCaptured && (
         <div className={styles.hiddenStage}>
           <Stage
             ref={stageRef}
@@ -394,6 +426,14 @@ const UserTemplatePreview = (props: Props) => {
 
   if (cachedBlob) {
     return <CachedPreview {...props} blob={cachedBlob} />;
+  }
+
+  if (isMobile()) {
+    return (
+      <PreviewShell {...props}>
+        <div className={styles.placeholder}>{template.name}</div>
+      </PreviewShell>
+    );
   }
 
   return <RenderedPreview {...props} />;

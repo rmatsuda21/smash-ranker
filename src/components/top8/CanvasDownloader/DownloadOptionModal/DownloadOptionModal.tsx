@@ -5,6 +5,7 @@ import { useLingui } from "@lingui/react";
 import { Button } from "@/components/shared/Button/Button";
 import { Input } from "@/components/shared/Input/Input";
 import { Modal } from "@/components/shared/Modal/Modal";
+import { isMobile } from "@/utils/isMobile";
 
 import styles from "./DownloadOptionModal.module.scss";
 
@@ -26,6 +27,8 @@ export const DownloadOptionModal = ({
   setIsOpen,
 }: Props) => {
   const { _ } = useLingui();
+  const mobile = isMobile();
+  const maxPixelRatio = mobile ? 2 : 4;
 
   if (!isOpen) return null;
 
@@ -46,7 +49,13 @@ export const DownloadOptionModal = ({
             label={_(msg`Pixel Ratio`)}
             type="number"
             value={pixelRatio}
-            onChange={(e) => setPixelRatio(Number(e.currentTarget.value))}
+            min={0.5}
+            max={maxPixelRatio}
+            step={0.5}
+            onChange={(e) => {
+              const val = Number(e.currentTarget.value);
+              setPixelRatio(Math.min(Math.max(val, 0.5), maxPixelRatio));
+            }}
           />
         </div>
         <Button onClick={() => setIsOpen(false)}>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaImage, FaTrash } from "react-icons/fa6";
 import { GrDocumentMissing } from "react-icons/gr";
 import { RxValueNone } from "react-icons/rx";
@@ -27,24 +27,41 @@ export const AssetSelector = ({
 }: Props) => {
   const { _ } = useLingui();
   const [isOpen, setIsOpen] = useState(false);
-  const [img, setImg] = useState<Blob | null>(null);
+  const [imgUrl, setImgUrl] = useState<string | null>(null);
   const [notFound, setNotFound] = useState(false);
+  const prevBlobUrl = useRef<string | null>(null);
 
   useEffect(() => {
     if (!selectedSrc) {
-      setImg(null);
+      if (prevBlobUrl.current) {
+        URL.revokeObjectURL(prevBlobUrl.current);
+        prevBlobUrl.current = null;
+      }
+      setImgUrl(null);
       setNotFound(false);
       return;
     }
 
     assetRepository.get(selectedSrc).then((asset) => {
       if (asset?.data) {
-        setImg(asset.data);
+        if (prevBlobUrl.current) {
+          URL.revokeObjectURL(prevBlobUrl.current);
+        }
+        const url = URL.createObjectURL(asset.data);
+        prevBlobUrl.current = url;
+        setImgUrl(url);
       } else {
-        setImg(null);
+        setImgUrl(null);
         setNotFound(true);
       }
     });
+
+    return () => {
+      if (prevBlobUrl.current) {
+        URL.revokeObjectURL(prevBlobUrl.current);
+        prevBlobUrl.current = null;
+      }
+    };
   }, [selectedSrc]);
 
   const openModal = () => {
@@ -60,8 +77,8 @@ export const AssetSelector = ({
       >
         {notFound && <GrDocumentMissing size={24} />}
         {!notFound &&
-          (img ? (
-            <img src={URL.createObjectURL(img)} alt="Background Image" />
+          (imgUrl ? (
+            <img src={imgUrl} alt="Background Image" />
           ) : (
             <RxValueNone color="var(--gray-5)" size={24} />
           ))}

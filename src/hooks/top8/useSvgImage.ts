@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 
-const svgTextCache = new Map<string, string>();
+import { LRUCache } from "@/utils/LRUCache";
+
+const svgTextCache = new LRUCache<string, string>(50);
 
 const serializePalette = (palette: Record<string, string>): string => {
   const keys = Object.keys(palette).sort();
@@ -25,6 +27,7 @@ export const useSvgImage = ({
     () => svgTextCache.get(svgUrl) ?? null
   );
   const currentUrlRef = useRef<string | null>(null);
+  const prevImageRef = useRef<HTMLImageElement | null>(null);
   const onReadyRef = useRef(onReady);
   const onErrorRef = useRef(onError);
 
@@ -85,6 +88,14 @@ export const useSvgImage = ({
 
     const applyColorsAndLoad = () => {
       try {
+        // Clean up previous image to free decoded bitmap memory
+        if (prevImageRef.current) {
+          prevImageRef.current.onload = null;
+          prevImageRef.current.onerror = null;
+          prevImageRef.current.src = "";
+          prevImageRef.current = null;
+        }
+
         const parser = new DOMParser();
         const doc = parser.parseFromString(svgText, "image/svg+xml");
         const svgEl = doc.querySelector("svg");
@@ -119,6 +130,7 @@ export const useSvgImage = ({
         img.onload = () => {
           if (!cancelled) {
             setImage(img);
+            prevImageRef.current = img;
             onReadyRef.current?.();
           }
         };
@@ -149,6 +161,12 @@ export const useSvgImage = ({
     return () => {
       if (currentUrlRef.current) {
         URL.revokeObjectURL(currentUrlRef.current);
+      }
+      if (prevImageRef.current) {
+        prevImageRef.current.onload = null;
+        prevImageRef.current.onerror = null;
+        prevImageRef.current.src = "";
+        prevImageRef.current = null;
       }
     };
   }, []);
