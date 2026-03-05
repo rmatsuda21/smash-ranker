@@ -2,6 +2,8 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+**No manual testing is required for this repo when making changes**
+
 ## Commands
 
 ```bash

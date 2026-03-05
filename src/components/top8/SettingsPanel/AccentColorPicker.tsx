@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { FaDroplet, FaCheck } from "react-icons/fa6";
 import Cookies from "js-cookie";
 import cn from "classnames";
@@ -41,8 +41,6 @@ export const AccentColorPicker = () => {
   const [customHex, setCustomHex] = useState(
     () => Cookies.get(COOKIES.CUSTOM_ACCENT_COLOR) || "#ff6600"
   );
-  const colorInputRef = useRef<HTMLInputElement>(null);
-
   const [tooltipRef, tooltip] = useTooltip();
 
   useEffect(() => {
@@ -58,11 +56,6 @@ export const AccentColorPicker = () => {
     setCurrentAccent(accent);
     Cookies.set(COOKIES.ACCENT_COLOR, accent, { expires: 365 });
     document.documentElement.setAttribute("data-accent", accent);
-  };
-
-  const handleCustomClick = () => {
-    handleAccentChange("custom");
-    colorInputRef.current?.click();
   };
 
   const handleColorInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -99,15 +92,10 @@ export const AccentColorPicker = () => {
             )}
           </button>
         ))}
-        <button
+        <div
           className={cn(styles.colorButton, {
             [styles.selected]: isCustom,
           })}
-          onClick={handleCustomClick}
-          onMouseEnter={() => tooltip.show(_(msg`Custom`))}
-          onMouseLeave={() => tooltip.hide()}
-          aria-pressed={isCustom}
-          aria-label={_(msg`Custom`)}
           style={
             isCustom
               ? ({ "--swatch-color": customHex } as React.CSSProperties)
@@ -120,16 +108,17 @@ export const AccentColorPicker = () => {
             <span className={styles.rainbowSwatch} />
           )}
           {isCustom && <FaCheck className={styles.colorCheck} />}
-        </button>
-        <input
-          ref={colorInputRef}
-          type="color"
-          className={styles.hiddenColorInput}
-          value={customHex}
-          onChange={handleColorInputChange}
-          tabIndex={-1}
-          aria-hidden="true"
-        />
+          <input
+            type="color"
+            className={styles.colorInputOverlay}
+            value={customHex}
+            onClick={() => handleAccentChange("custom")}
+            onChange={handleColorInputChange}
+            onMouseEnter={() => tooltip.show(_(msg`Custom`))}
+            onMouseLeave={() => tooltip.hide()}
+            aria-label={_(msg`Custom`)}
+          />
+        </div>
         <Tooltip tooltipRef={tooltipRef} />
       </div>
     </section>
