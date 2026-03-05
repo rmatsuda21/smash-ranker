@@ -17,6 +17,30 @@
     @include label;
     margin-bottom: 4px;
   }
+
+  .row {
+    display: flex;
+    gap: var(--form-gap);
+
+    > * {
+      flex: 1;
+      min-width: 0;
+    }
+  }
+
+  .placementField {
+    flex: 0 0 80px;
+  }
+
+  .assetRow {
+    display: flex;
+    gap: var(--form-gap);
+
+    > * {
+      flex: 1;
+      min-width: 0;
+    }
+  }
 }
 
 .playerSelector {

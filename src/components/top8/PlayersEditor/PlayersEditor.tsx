@@ -181,15 +181,38 @@ export const PlayersEditor = ({ className }: Props) => {
         <PlayerSelector />
       </div>
       <Input
-        id="placement"
-        name="placement"
-        type="number"
-        label={_(msg`Placement`)}
-        value={tempPlayer?.placement ?? ""}
-        onChange={handlePlacementChange}
-        placeholder={_(msg`Placement`)}
+        id="gamerTag"
+        name="gamerTag"
+        type="text"
+        label={_(msg`Gamer Tag`)}
+        value={tempPlayer?.gamerTag ?? ""}
+        onChange={handleChange}
+        placeholder={_(msg`Gamer Tag`)}
         disabled={!selectedPlayer}
       />
+      <div className={styles.row}>
+        <Input
+          id="prefix"
+          name="prefix"
+          type="text"
+          label={_(msg`Prefix`)}
+          value={tempPlayer?.prefix ?? ""}
+          onChange={handleChange}
+          placeholder={_(msg`Prefix`)}
+          disabled={!selectedPlayer}
+        />
+        <Input
+          className={styles.placementField}
+          id="placement"
+          name="placement"
+          type="number"
+          label={_(msg`Placement`)}
+          value={tempPlayer?.placement ?? ""}
+          onChange={handlePlacementChange}
+          placeholder="#"
+          disabled={!selectedPlayer}
+        />
+      </div>
       <div className={cn({ [styles.disabled]: !selectedPlayer })}>
         <p className={styles.label}>
           <Trans>Characters</Trans>
@@ -200,26 +223,6 @@ export const PlayersEditor = ({ className }: Props) => {
           disabled={!selectedPlayer}
         />
       </div>
-      <Input
-        id="prefix"
-        name="prefix"
-        type="text"
-        label={_(msg`Prefix`)}
-        value={tempPlayer?.prefix ?? ""}
-        onChange={handleChange}
-        placeholder={_(msg`Prefix`)}
-        disabled={!selectedPlayer}
-      />
-      <Input
-        id="gamerTag"
-        name="gamerTag"
-        type="text"
-        label={_(msg`Gamer Tag`)}
-        value={tempPlayer?.gamerTag ?? ""}
-        onChange={handleChange}
-        placeholder={_(msg`Gamer Tag`)}
-        disabled={!selectedPlayer}
-      />
       <Input
         id="twitter"
         name="twitter"
@@ -240,27 +243,29 @@ export const PlayersEditor = ({ className }: Props) => {
           disabled={!selectedPlayer}
         />
       </div>
-      <div className={cn({ [styles.disabled]: !selectedPlayer })}>
-        <p className={styles.label}>
-          <Trans>Custom Flag</Trans>
-        </p>
-        <AssetSelector
-          selectedSrc={tempPlayer?.customFlagSrc}
-          onSelect={handleCustomFlagSelect}
-          onClear={handleCustomFlagClear}
-          disabled={!selectedPlayer}
-        />
-      </div>
-      <div className={cn({ [styles.disabled]: !selectedPlayer })}>
-        <p className={styles.label}>
-          <Trans>Avatar</Trans>
-        </p>
-        <AssetSelector
-          selectedSrc={tempPlayer?.avatarImgSrc}
-          onSelect={handleAssetSelect}
-          onClear={handleClear}
-          disabled={!selectedPlayer}
-        />
+      <div className={styles.assetRow}>
+        <div className={cn({ [styles.disabled]: !selectedPlayer })}>
+          <p className={styles.label}>
+            <Trans>Custom Flag</Trans>
+          </p>
+          <AssetSelector
+            selectedSrc={tempPlayer?.customFlagSrc}
+            onSelect={handleCustomFlagSelect}
+            onClear={handleCustomFlagClear}
+            disabled={!selectedPlayer}
+          />
+        </div>
+        <div className={cn({ [styles.disabled]: !selectedPlayer })}>
+          <p className={styles.label}>
+            <Trans>Avatar</Trans>
+          </p>
+          <AssetSelector
+            selectedSrc={tempPlayer?.avatarImgSrc}
+            onSelect={handleAssetSelect}
+            onClear={handleClear}
+            disabled={!selectedPlayer}
+          />
+        </div>
       </div>
       <Button
         variant="outline"

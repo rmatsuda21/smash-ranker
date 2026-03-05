@@ -1,10 +1,17 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { HexAlphaColorPicker } from "react-colorful";
-import { FaCheck } from "react-icons/fa6";
+import { FaCheck, FaEyeDropper } from "react-icons/fa6";
 import debounce from "lodash/debounce";
 
 import styles from "./ColorInput.module.scss";
+
+declare class EyeDropper {
+  open(options?: { signal?: AbortSignal }): Promise<{ sRGBHex: string }>;
+}
+
+const supportsEyeDropper =
+  typeof window !== "undefined" && "EyeDropper" in window;
 
 const DEBOUNCE_TIME = 100;
 
@@ -115,6 +122,19 @@ export const ColorInput = ({ color, onChange }: Props) => {
     }
   };
 
+  const handleEyeDropper = async () => {
+    try {
+      const dropper = new EyeDropper();
+      const result = await dropper.open();
+      const hex = result.sRGBHex.toLowerCase() + "ff";
+      setInternalColor(hex);
+      setInputValue(hex);
+      onChange(hex);
+    } catch {
+      // User cancelled (Escape) — ignore
+    }
+  };
+
   return (
     <div className={styles.wrapper}>
       <div
@@ -140,6 +160,16 @@ export const ColorInput = ({ color, onChange }: Props) => {
               }}
             />
             <div className={styles.hexInput}>
+              {supportsEyeDropper && (
+                <button
+                  type="button"
+                  onClick={handleEyeDropper}
+                  className={styles.eyeDropperBtn}
+                  aria-label="Pick color from screen"
+                >
+                  <FaEyeDropper size={18} />
+                </button>
+              )}
               <input
                 type="text"
                 value={inputValue}
