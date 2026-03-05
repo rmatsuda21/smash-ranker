@@ -1,14 +1,10 @@
-import { useMemo } from "react";
 import cn from "classnames";
-import debounce from "lodash/debounce";
 
 import { useCanvasStore } from "@/store/canvasStore";
 import { rgbStringToAlphaHex } from "@/utils/top8/rgbStringToHex";
 import { ColorInput } from "@/components/shared/ColorInput/ColorInput";
 
 import styles from "./ColorPaletteEditor.module.scss";
-
-const DEBOUNCE_TIME = 100;
 
 type Props = {
   className?: string;
@@ -18,19 +14,11 @@ export const ColorPaletteEditor = ({ className }: Props) => {
   const palette = useCanvasStore((state) => state.design.colorPalette);
   const dispatch = useCanvasStore((state) => state.dispatch);
 
-  const debouncedDispatch = useMemo(
-    () =>
-      debounce((id: string, color: string, name: string) => {
-        dispatch({
-          type: "UPDATE_COLOR_PALETTE",
-          payload: { id, value: { color, name } },
-        });
-      }, DEBOUNCE_TIME),
-    [dispatch]
-  );
-
   const handleColorChange = (id: string, color: string, name: string) => {
-    debouncedDispatch(id, color, name);
+    dispatch({
+      type: "UPDATE_COLOR_PALETTE",
+      payload: { id, value: { color, name } },
+    });
   };
 
   return (

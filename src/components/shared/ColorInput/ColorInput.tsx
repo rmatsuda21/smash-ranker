@@ -1,9 +1,12 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { HexAlphaColorPicker } from "react-colorful";
 import { FaCheck } from "react-icons/fa6";
+import debounce from "lodash/debounce";
 
 import styles from "./ColorInput.module.scss";
+
+const DEBOUNCE_TIME = 100;
 
 type Props = {
   color: string;
@@ -29,12 +32,23 @@ const normalizeHex = (value: string): string => {
 
 export const ColorInput = ({ color, onChange }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [internalColor, setInternalColor] = useState(color);
   const [inputValue, setInputValue] = useState(color);
   const [position, setPosition] = useState<Position | null>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
   const pickerRef = useRef<HTMLDivElement>(null);
 
+  const debouncedOnChange = useMemo(
+    () => debounce((value: string) => onChange(value), DEBOUNCE_TIME),
+    [onChange]
+  );
+
   useEffect(() => {
+    return () => debouncedOnChange.cancel();
+  }, [debouncedOnChange]);
+
+  useEffect(() => {
+    setInternalColor(color);
     setInputValue(color);
   }, [color]);
 
@@ -106,7 +120,7 @@ export const ColorInput = ({ color, onChange }: Props) => {
       <div
         ref={triggerRef}
         className={styles.color}
-        style={{ backgroundColor: color }}
+        style={{ backgroundColor: internalColor }}
         onClick={handleClick}
       />
       {isOpen &&
@@ -117,7 +131,14 @@ export const ColorInput = ({ color, onChange }: Props) => {
             className={styles.picker}
             style={{ top: position.top, left: position.left }}
           >
-            <HexAlphaColorPicker color={color} onChange={onChange} />
+            <HexAlphaColorPicker
+              color={internalColor}
+              onChange={(value) => {
+                setInternalColor(value);
+                setInputValue(value);
+                debouncedOnChange(value);
+              }}
+            />
             <div className={styles.hexInput}>
               <input
                 type="text"

@@ -25,6 +25,14 @@ export const TextConfigEditor = ({ element, onUpdateElement }: Props) => {
     setElementConfig(element);
   }, [element]);
 
+  const debouncedUpdateElementConfig = useMemo(
+    () =>
+      debounce((config: TextElementConfig | SmartTextElementConfig) => {
+        onUpdateElement(config);
+      }, 100),
+    [onUpdateElement]
+  );
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const type = event.target.type;
     const value =
@@ -53,16 +61,8 @@ export const TextConfigEditor = ({ element, onUpdateElement }: Props) => {
       [name]: value,
     };
     setElementConfig(newConfig);
-    debouncedUpdateElementConfig(newConfig);
+    onUpdateElement(newConfig);
   };
-
-  const debouncedUpdateElementConfig = useMemo(
-    () =>
-      debounce((elementConfig: TextElementConfig | SmartTextElementConfig) => {
-        onUpdateElement(elementConfig);
-      }, 100),
-    [onUpdateElement]
-  );
 
   return (
     <div className={styles.wrapper}>
