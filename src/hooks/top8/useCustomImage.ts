@@ -1,7 +1,19 @@
 import { useEffect, useRef, useState } from "react";
 import { Image as KonvaImage } from "konva/lib/shapes/Image";
 
-const imageCache = new Map<string, HTMLImageElement>();
+import { LRUCache } from "@/utils/LRUCache";
+import { createAsyncQueue } from "@/utils/asyncQueue";
+import { isMobile } from "@/utils/isMobile";
+
+const IMAGE_CACHE_SIZE = isMobile() ? 5 : 30;
+const imageCache = new LRUCache<string, HTMLImageElement>(IMAGE_CACHE_SIZE, (_key, img) => {
+  img.onload = null;
+  img.onerror = null;
+  img.src = "";
+  img.remove();
+});
+
+const toBlobQueue = createAsyncQueue(2);
 
 const IDB_IMAGE_PREFIX = "/idb-images/";
 const MAX_RETRIES = 3;
@@ -111,9 +123,13 @@ export const useCustomImage = ({
 
     let cancelled = false;
     let generatedImg: HTMLImageElement | null = null;
+    let blobUrl: string | null = null;
+
+    // Capture source image in closure before it may be cleared from state
+    const sourceImage = image;
 
     const fitImage = (ctx: CanvasRenderingContext2D) => {
-      const imageAspectRatio = image.width / image.height;
+      const imageAspectRatio = sourceImage.width / sourceImage.height;
       const containerAspectRatio = width / height;
 
       let imgWidth = width;
@@ -161,7 +177,7 @@ export const useCustomImage = ({
         imgY - (scaledHeight - imgHeight) / 2 + cropOffset.y * scaledHeight;
 
       ctx.drawImage(
-        image,
+        sourceImage,
         cropX + offset.x,
         cropY + offset.y,
         scaledWidth,
@@ -169,31 +185,71 @@ export const useCustomImage = ({
       );
     };
 
+    const mobile = isMobile();
+
     const createImage = () => {
-      const canvas = document.createElement("canvas");
-      canvas.width = width;
-      canvas.height = height;
+      toBlobQueue(
+        () =>
+          new Promise<void>((resolve) => {
+            if (cancelled) {
+              resolve();
+              return;
+            }
 
-      const ctx = canvas.getContext("2d");
-      if (!ctx) return;
+            const canvas = document.createElement("canvas");
+            canvas.width = width;
+            canvas.height = height;
 
-      fitImage(ctx);
+            const ctx = canvas.getContext("2d");
+            if (!ctx) {
+              resolve();
+              return;
+            }
 
-      const img = new window.Image();
-      generatedImg = img;
-      img.src = canvas.toDataURL();
-      img.onload = () => {
-        if (cancelled) return;
-        setFinalImage(img);
-        ref.current?.cache();
-        onReadyRef.current?.();
-      };
-      img.onerror = (error) => {
-        if (cancelled) return;
-        onErrorRef.current?.(
-          new Error(error instanceof Error ? error.message : "Unknown error")
-        );
-      };
+            fitImage(ctx);
+
+            canvas.toBlob((blob) => {
+              canvas.width = 0;
+              canvas.height = 0;
+
+              if (cancelled || !blob) {
+                resolve();
+                return;
+              }
+
+              const url = URL.createObjectURL(blob);
+              blobUrl = url;
+
+              const img = new window.Image();
+              generatedImg = img;
+              img.src = url;
+              img.onload = () => {
+                if (cancelled) {
+                  resolve();
+                  return;
+                }
+                setFinalImage(img);
+                if (!mobile) {
+                  ref.current?.cache();
+                }
+                onReadyRef.current?.();
+                resolve();
+              };
+              img.onerror = (error) => {
+                if (cancelled) {
+                  resolve();
+                  return;
+                }
+                onErrorRef.current?.(
+                  new Error(
+                    error instanceof Error ? error.message : "Unknown error"
+                  )
+                );
+                resolve();
+              };
+            });
+          })
+      );
     };
 
     createImage();
@@ -205,6 +261,9 @@ export const useCustomImage = ({
         generatedImg.onload = null;
         generatedImg.onerror = null;
         generatedImg.remove();
+      }
+      if (blobUrl) {
+        URL.revokeObjectURL(blobUrl);
       }
     };
   }, [
@@ -222,7 +281,6 @@ export const useCustomImage = ({
 
   return {
     finalImage,
-    image,
     ref,
   };
 };

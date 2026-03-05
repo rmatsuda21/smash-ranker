@@ -11,6 +11,7 @@ import { useCanvasStore } from "@/store/canvasStore";
 import { PlayerDesign } from "@/types/top8/Design";
 import { useFontStore } from "@/store/fontStore";
 import { PlayerInfo } from "@/types/top8/Player";
+import { isMobile } from "@/utils/isMobile";
 
 type PlayerTransformerLayerProps = {
   players: PlayerInfo[];
@@ -101,12 +102,16 @@ const PlayerTransformerLayer = memo(
   }
 );
 
+const noop = () => {};
+
 const PlayerLayerComponent = ({ onReady }: { onReady?: () => void }) => {
   const readyPlayerCountRef = useRef(0);
   const mainLayerRef = useRef<KonvaLayer>(null);
   const dragLayerRef = useRef<KonvaLayer>(null);
   const onReadyRef = useRef(onReady);
   onReadyRef.current = onReady;
+
+  const mobile = isMobile();
 
   const players = usePlayerStore((state) => state.players);
 
@@ -171,8 +176,8 @@ const PlayerLayerComponent = ({ onReady }: { onReady?: () => void }) => {
               design={design}
               player={player}
               index={index}
-              onDragStart={onPlayerDragStart}
-              onDragEnd={onPlayerDragEnd}
+              onDragStart={mobile ? noop : onPlayerDragStart}
+              onDragEnd={mobile ? noop : onPlayerDragEnd}
               fontFamily={selectedFont}
               editable={editable}
               onReady={handlePlayerReady}
@@ -181,8 +186,8 @@ const PlayerLayerComponent = ({ onReady }: { onReady?: () => void }) => {
         })}
       </Layer>
 
-      <Layer ref={dragLayerRef}></Layer>
-      <PlayerTransformerLayer players={players} mainLayerRef={mainLayerRef} />
+      {!mobile && <Layer ref={dragLayerRef}></Layer>}
+      {!mobile && <PlayerTransformerLayer players={players} mainLayerRef={mainLayerRef} />}
     </>
   );
 };

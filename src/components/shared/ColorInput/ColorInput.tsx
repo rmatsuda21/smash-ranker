@@ -4,6 +4,7 @@ import { HexAlphaColorPicker } from "react-colorful";
 import { FaCheck, FaEyeDropper } from "react-icons/fa6";
 import debounce from "lodash/debounce";
 
+import cn from "classnames";
 import styles from "./ColorInput.module.scss";
 
 declare class EyeDropper {
@@ -18,6 +19,7 @@ const DEBOUNCE_TIME = 100;
 type Props = {
   color: string;
   onChange: (color: string) => void;
+  className?: string;
 };
 
 type Position = {
@@ -37,7 +39,7 @@ const normalizeHex = (value: string): string => {
   return hex;
 };
 
-export const ColorInput = ({ color, onChange }: Props) => {
+export const ColorInput = ({ color, onChange, className }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [internalColor, setInternalColor] = useState(color);
   const [inputValue, setInputValue] = useState(color);
@@ -136,7 +138,7 @@ export const ColorInput = ({ color, onChange }: Props) => {
   };
 
   return (
-    <div className={styles.wrapper}>
+    <div className={cn(styles.wrapper, className)}>
       <div
         ref={triggerRef}
         className={styles.color}
