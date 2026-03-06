@@ -9,6 +9,7 @@ import { useLingui } from "@lingui/react";
 import { COOKIES } from "@/consts/cookies";
 import { useTooltip } from "@/components/shared/Tooltip/useTooltip";
 import { Tooltip } from "@/components/shared/Tooltip/Tooltip";
+import { ColorInput } from "@/components/shared/ColorInput/ColorInput";
 import styles from "./SettingsPanel.module.scss";
 
 type AccentColor =
@@ -58,13 +59,13 @@ export const AccentColorPicker = () => {
     document.documentElement.setAttribute("data-accent", accent);
   };
 
-  const handleColorInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const hex = e.target.value;
+  const handleCustomColorChange = (hex: string) => {
     setCustomHex(hex);
     Cookies.set(COOKIES.CUSTOM_ACCENT_COLOR, hex, { expires: 365 });
+    if (currentAccent !== "custom") {
+      handleAccentChange("custom");
+    }
   };
-
-  const isCustom = currentAccent === "custom";
 
   return (
     <section className={styles.section}>
@@ -94,30 +95,18 @@ export const AccentColorPicker = () => {
         ))}
         <div
           className={cn(styles.colorButton, {
-            [styles.selected]: isCustom,
+            [styles.selected]: currentAccent === "custom",
           })}
-          style={
-            isCustom
-              ? ({ "--swatch-color": customHex } as React.CSSProperties)
-              : undefined
-          }
         >
-          {isCustom ? (
-            <span className={styles.colorSwatch} />
-          ) : (
-            <span className={styles.rainbowSwatch} />
-          )}
-          {isCustom && <FaCheck className={styles.colorCheck} />}
-          <input
-            type="color"
-            className={styles.colorInputOverlay}
-            value={customHex}
+          <ColorInput
+            color={customHex}
+            onChange={handleCustomColorChange}
             onClick={() => handleAccentChange("custom")}
-            onChange={handleColorInputChange}
-            onMouseEnter={() => tooltip.show(_(msg`Custom`))}
-            onMouseLeave={() => tooltip.hide()}
-            aria-label={_(msg`Custom`)}
+            className={styles.customColorInput}
           />
+          {currentAccent === "custom" && (
+            <FaCheck className={styles.colorCheck} />
+          )}
         </div>
         <Tooltip tooltipRef={tooltipRef} />
       </div>
