@@ -19,6 +19,7 @@ const DEBOUNCE_TIME = 100;
 type Props = {
   color: string;
   onChange: (color: string) => void;
+  onClick?: () => void;
   className?: string;
 };
 
@@ -39,7 +40,7 @@ const normalizeHex = (value: string): string => {
   return hex;
 };
 
-export const ColorInput = ({ color, onChange, className }: Props) => {
+export const ColorInput = ({ color, onChange, onClick, className }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [internalColor, setInternalColor] = useState(color);
   const [inputValue, setInputValue] = useState(color);
@@ -102,6 +103,7 @@ export const ColorInput = ({ color, onChange, className }: Props) => {
   }, [isOpen]);
 
   const handleClick = () => {
+    onClick?.();
     setIsOpen(!isOpen);
   };
 
