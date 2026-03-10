@@ -174,23 +174,29 @@ const storeTournamentImages = async (
 };
 
 const isValidStanding = (standing: StandingNode): boolean => {
-  return Boolean(standing?.entrant?.id && standing?.player?.user?.id);
+  return Boolean(standing?.entrant?.id);
 };
 
 const extractPlayerFromStanding = (standing: StandingNode): PlayerInfo => {
-  const player = standing!.player!;
+  const player = standing?.player;
   const entrant = standing!.entrant!;
-  const twitterHandle = player.user?.authorizations?.[0]?.externalUsername;
+  const twitterHandle =
+    player?.user?.authorizations?.[0]?.externalUsername;
 
-  const countryName = player.user?.location?.country;
+  const countryName = player?.user?.location?.country;
   const countryCode = countryList.getCode(countryName ?? "");
 
+  const id = player?.user?.id
+    ? String(player.user.id)
+    : `entrant-${entrant.id}`;
+  const gamerTag = player?.gamerTag || entrant.name || "Unknown";
+
   return {
-    id: player.user!.id as string,
+    id,
     entrantId: entrant.id as string,
-    name: player.gamerTag || "Unknown",
-    gamerTag: player.gamerTag || "Unknown",
-    prefix: player.prefix || undefined,
+    name: gamerTag,
+    gamerTag,
+    prefix: player?.prefix || undefined,
     twitter: twitterHandle || undefined,
     characters: [],
     placement: standing!.placement || 0,
@@ -207,7 +213,7 @@ const parseStandingsToPlayers = (standings: Standings | null): PlayerInfo[] => {
     if (!isValidStanding(standing)) continue;
 
     const player = extractPlayerFromStanding(standing);
-    playersById.set(player.id, player);
+    playersById.set(player.entrantId, player);
   }
 
   const sorted = Array.from(playersById.values()).sort(
