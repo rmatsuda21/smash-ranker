@@ -51,6 +51,40 @@ function calculateAnchorOffsets(
   }
 }
 
+function computeVerticalCorrection(
+  node: KonvaText,
+  text: string,
+  verticalAlign: string | undefined
+): number {
+  if (!verticalAlign || verticalAlign === "top") return 0;
+
+  const metrics = node.measureSize(text) as unknown as TextMetrics;
+
+  const fontAscent = metrics.fontBoundingBoxAscent;
+  const fontDescent = metrics.fontBoundingBoxDescent;
+  const actualAscent = metrics.actualBoundingBoxAscent;
+  const actualDescent = metrics.actualBoundingBoxDescent;
+
+  if (
+    fontAscent === undefined ||
+    fontDescent === undefined ||
+    actualAscent === undefined ||
+    actualDescent === undefined
+  ) {
+    return 0;
+  }
+
+  if (verticalAlign === "middle") {
+    return (fontAscent - fontDescent - (actualAscent - actualDescent)) / 2;
+  }
+
+  if (verticalAlign === "bottom") {
+    return fontDescent - actualDescent;
+  }
+
+  return 0;
+}
+
 function applyNodeTypography(node: KonvaText, props: SmartTextProps) {
   if (props.fontFamily) node.fontFamily(props.fontFamily);
   if (props.fontStyle) node.fontStyle(props.fontStyle);
@@ -101,6 +135,7 @@ export const SmartText = (props: SmartTextProps) => {
     text = "",
     shadowOffset: initialShadowOffset,
     anchor = "topLeft",
+    verticalAlign,
     fontFamily,
     fontStyle,
     padding,
@@ -178,8 +213,11 @@ export const SmartText = (props: SmartTextProps) => {
     const timeoutId = setTimeout(() => {
       setAdjustedFontSize(calculateFontSize());
       const anchorOffset = calculateAnchorOffset();
+      const node = textRef.current;
+      const correction =
+        node && text ? computeVerticalCorrection(node, text, verticalAlign) : 0;
       setOffsetX(anchorOffset.offsetX);
-      setOffsetY(anchorOffset.offsetY);
+      setOffsetY(anchorOffset.offsetY - correction);
       setShadowOffset(calculateShadowOffset());
     }, 0);
 
@@ -193,6 +231,7 @@ export const SmartText = (props: SmartTextProps) => {
     text,
     initialShadowOffset,
     anchor,
+    verticalAlign,
     fontFamily,
     fontStyle,
     padding,
@@ -212,6 +251,7 @@ export const SmartText = (props: SmartTextProps) => {
       shadowOffset={shadowOffset}
       fontFamily={fontFamily}
       fontStyle={fontStyle}
+      verticalAlign={verticalAlign}
       wrap="word"
       {...restProps}
     />
