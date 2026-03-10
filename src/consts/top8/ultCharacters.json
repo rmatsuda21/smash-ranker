@@ -89,7 +89,13 @@
         "Advent Purple"
       ],
       "cropOffset": { "x": 0.15, "y": 0.25 },
-      "cropScale": 1.95
+      "cropScale": 1.95,
+      "altOverrides": {
+        "1": { "cropOffset": { "x": 0, "y": 0.25 }, "cropScale": 1.95 },
+        "3": { "cropOffset": { "x": 0, "y": 0.25 }, "cropScale": 1.95 },
+        "5": { "cropOffset": { "x": 0, "y": 0.25 }, "cropScale": 1.95 },
+        "7": { "cropOffset": { "x": 0, "y": 0.25 }, "cropScale": 1.95 }
+      }
     },
     {
       "name": "Corrin",
