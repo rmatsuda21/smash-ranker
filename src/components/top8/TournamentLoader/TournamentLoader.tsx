@@ -16,7 +16,7 @@ import styles from "./TournamentLoader.module.scss";
 import { Trans } from "@lingui/react/macro";
 
 const urlToSlug = (url: string) => {
-  const match = url.match(/tournament\/([^/]+)\/event\/([^/]+)/);
+  const match = url.trim().match(/tournament\/([^/]+)\/event\/([^/]+)/);
   if (match) {
     return `tournament/${match[1]}/event/${match[2]}`;
   }
