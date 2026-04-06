@@ -30,11 +30,11 @@ msgstr "参加人数"
 msgid "<0>Ctrl</0>/<1>Cmd</1>+<2>Z</2> to undo and <3>Ctrl</3>/<4>Cmd</4>+<5>Y</5> to redo."
 msgstr "<0>Ctrl</0>/<1>Cmd</1>+<2>Z</2>でUndo、<3>Ctrl</3>/<4>Cmd</4>+<5>Y</5>でRedo。"
 
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:85
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:74
 msgid "Accent Color"
 msgstr "アクセントカラー"
 
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:35
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:31
 msgid "Amber"
 msgstr "アンバー"
 
@@ -63,7 +63,7 @@ msgstr "この素材を消しますか？"
 msgid "Assets"
 msgstr "素材"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:256
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:260
 msgid "Avatar"
 msgstr "アイコン"
 
@@ -71,7 +71,7 @@ msgstr "アイコン"
 msgid "Background Image"
 msgstr "背景画像"
 
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:36
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:32
 msgid "Blue"
 msgstr "ブルー"
 
@@ -79,7 +79,7 @@ msgstr "ブルー"
 msgid "Buy me a coffee"
 msgstr "一杯だけよ"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:195
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:218
 msgid "Characters"
 msgstr "使用キャラ"
 
@@ -87,11 +87,11 @@ msgstr "使用キャラ"
 msgid "City"
 msgstr "市区町村"
 
-#: src/components/top8/AssetSelector/AssetSelector.tsx:77
+#: src/components/top8/AssetSelector/AssetSelector.tsx:100
 msgid "Clear"
 msgstr "クリア"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:270
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:275
 msgid "Clear Player"
 msgstr "選手初期化"
 
@@ -111,7 +111,7 @@ msgstr "カラーパレット"
 #~ msgid "Config Manager"
 #~ msgstr "設定マネージャー"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:235
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:238
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:166
 msgid "Country"
 msgstr "国"
@@ -125,7 +125,7 @@ msgstr "作成"
 msgid "Create a minimal template with a specific player count."
 msgstr "指定の数の選手でミニマルテンプレを作成"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:187
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:205
 msgid "Create New Template"
 msgstr "新規テンプレ作成"
 
@@ -143,24 +143,24 @@ msgstr "クレジット & インスピレーション"
 
 #: src/components/top8/SettingsPanel/AccentColorPicker.tsx:112
 #: src/components/top8/SettingsPanel/AccentColorPicker.tsx:115
-msgid "Custom"
-msgstr ""
+#~ msgid "Custom"
+#~ msgstr ""
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:245
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:249
 msgid "Custom Flag"
 msgstr ""
 
 #: src/components/top8/DesignEditor/DesignEditor.tsx:35
 msgid "Custom Fonts"
-msgstr ""
+msgstr "カスタムフォント"
 
 #: src/components/top8/TemplateEditor/TemplateGroup.tsx:72
 msgid "Custom Minimal"
-msgstr "自作"
+msgstr "作成"
 
 #: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:54
 msgid "Custom Minimal Template"
-msgstr "自作ミニマルテンプレ"
+msgstr "自作ミニマルテンプレート"
 
 #: src/components/top8/SettingsPanel/ThemePicker.tsx:20
 msgid "Dark"
@@ -194,12 +194,12 @@ msgstr "素材消去"
 msgid "Design"
 msgstr "デザイン"
 
-#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:107
+#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:111
 msgid "Download"
 msgstr "ダウンロード"
 
-#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:113
-#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:36
+#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:117
+#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:39
 msgid "Download Options"
 msgstr "ダウンロード設定"
 
@@ -229,7 +229,7 @@ msgstr "参加人数"
 msgid "Event Name"
 msgstr "イベント名"
 
-#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:81
+#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:85
 msgid "Filename"
 msgstr "ファイル名"
 
@@ -245,12 +245,12 @@ msgstr "フォントサイズ"
 msgid "Font Weight"
 msgstr "フォントウェイト"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:217
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:220
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:187
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:190
 msgid "Gamer Tag"
 msgstr "選手名"
 
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:37
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:33
 msgid "Green"
 msgstr "グリーン"
 
@@ -330,24 +330,27 @@ msgstr "なし"
 #~ msgid "Not"
 #~ msgstr ""
 
-#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:53
+#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:62
 msgid "Okay"
 msgstr "OK"
+
+#: src/components/shared/FileUploader/FileUploader.tsx:155
+msgid "Or drag and drop"
+msgstr "ドラッグ・ドロップも対応"
 
 #: src/components/top8/InfoPanel/InfoPanel.tsx:101
 msgid "Original concept & inspiration"
 msgstr "元コンセプトとインスピレーション"
 
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:33
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:29
 msgid "Pink"
 msgstr "ピンク"
 
-#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:46
+#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:49
 msgid "Pixel Ratio"
 msgstr "ピクセル比"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:187
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:190
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:209
 msgid "Placement"
 msgstr ""
 
@@ -380,20 +383,20 @@ msgstr "選手タグ"
 msgid "Players"
 msgstr "選手情報"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:207
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:210
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:198
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:201
 msgid "Prefix"
 msgstr "所属"
 
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:38
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:34
 msgid "Purple"
 msgstr "紫"
 
-#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:40
+#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:43
 msgid "Quality"
 msgstr "品質"
 
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:34
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:30
 msgid "Red"
 msgstr "赤"
 
@@ -405,7 +408,7 @@ msgstr "やり直す"
 #~ msgid "Save Current Config"
 #~ msgstr "現在の設定を保存"
 
-#: src/components/top8/AssetSelector/AssetSelector.tsx:69
+#: src/components/top8/AssetSelector/AssetSelector.tsx:91
 msgid "Select"
 msgstr "選択"
 
@@ -523,8 +526,8 @@ msgstr "大会都道府県"
 msgid "Tournament URL"
 msgstr "大会URL"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:227
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:230
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:233
 msgid "Twitter"
 msgstr "X（旧ツイッタ）"
 
@@ -543,3 +546,7 @@ msgstr "<0>{</0>を入力して関数を入力できます。"
 #: src/components/top8/Ranker/Header/Header.tsx:34
 msgid "Undo"
 msgstr "元に戻す"
+
+#: src/components/shared/FileUploader/FileUploader.tsx:153
+msgid "Upload"
+msgstr "ファイル選択"

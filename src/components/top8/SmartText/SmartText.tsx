@@ -51,14 +51,16 @@ function calculateAnchorOffsets(
   }
 }
 
+const VERTICAL_ALIGN_REFERENCE =
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
 function computeVerticalCorrection(
   node: KonvaText,
-  text: string,
   verticalAlign: string | undefined
 ): number {
   if (!verticalAlign || verticalAlign === "top") return 0;
 
-  const metrics = node.measureSize(text) as unknown as TextMetrics;
+  const metrics = node.measureSize(VERTICAL_ALIGN_REFERENCE) as unknown as TextMetrics;
 
   const fontAscent = metrics.fontBoundingBoxAscent;
   const fontDescent = metrics.fontBoundingBoxDescent;
@@ -215,7 +217,7 @@ export const SmartText = (props: SmartTextProps) => {
       const anchorOffset = calculateAnchorOffset();
       const node = textRef.current;
       const correction =
-        node && text ? computeVerticalCorrection(node, text, verticalAlign) : 0;
+        node ? computeVerticalCorrection(node, verticalAlign) : 0;
       setOffsetX(anchorOffset.offsetX);
       setOffsetY(anchorOffset.offsetY - correction);
       setShadowOffset(calculateShadowOffset());
