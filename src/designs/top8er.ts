@@ -38,15 +38,13 @@ const basePlayer: PlayerDesign = {
           size: { width: BASE_PL_SIZE, height: TWIITER_HEIGHT },
         },
         {
-          type: "text",
-          text: "𝕏",
-          fontSize: 50,
-          align: "left",
-          verticalAlign: "top",
-          fontWeight: 900,
-          fill: "playerText",
-          position: { x: 10, y: -5 },
-          size: { width: BASE_PL_SIZE, height: 40 },
+          type: "svg",
+          src: "/assets/x_logo.svg",
+          position: { x: 10, y: 7 },
+          size: { width: 40, height: 40 },
+          palette: {
+            color_1: "playerText",
+          },
         },
         {
           type: "smartText",
