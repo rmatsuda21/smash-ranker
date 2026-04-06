@@ -83,7 +83,7 @@ export const FilteredGroup = ({
     }
 
     const raf = requestAnimationFrame(() => {
-      node.cache();
+      node.cache({ offset: 4 });
     });
 
     return () => cancelAnimationFrame(raf);

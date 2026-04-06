@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { IoIosRemoveCircle } from "react-icons/io";
 import cn from "classnames";
 
+import { Trans } from "@lingui/react/macro";
+
 import { Button } from "@/components/shared/Button/Button";
 
 import styles from "./FileUploader.module.scss";
@@ -148,9 +150,9 @@ export const FileUploader = ({
           onClick={handleButtonClick}
           disabled={disabled}
         >
-          Upload
+          <Trans>Upload</Trans>
         </Button>
-        <span>Or drag and drop</span>
+        <span><Trans>Or drag and drop</Trans></span>
       </div>
       {value && <img src={value} alt="Preview" width={100} />}
       {value && (
