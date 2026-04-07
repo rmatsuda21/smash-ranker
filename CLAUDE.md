@@ -8,6 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ```bash
 bun dev              # Start dev server (Vite, port 5173)
+bun run dev:vercel   # Start dev server via Vercel CLI (enables serverless functions)
 bun run build            # Production build (tsc + vite build)
 bun run build:analyze    # Build with bundle size analysis
 bun lint             # Run ESLint
@@ -62,10 +63,13 @@ The Top 8 graphic is rendered via **Konva** (2D canvas) through React-Konva. The
 
 ### API Integration
 
-- **start.gg GraphQL API** (`https://api.start.gg/gql/alpha`) via urql
-- Auth token via `VITE_START_GG_TOKEN` env var (stored in cookies at runtime)
-- GraphQL types auto-generated into `src/gql/` — do not edit manually; run `bun codegen`
-- Hook: `src/hooks/top8/useFetchResult.ts` — fetches tournament bracket results
+Tournament data can be loaded from **start.gg** or **Challonge**. Platform is auto-detected from the pasted URL.
+
+- **Platform detection** (`src/consts/platforms.ts`) — `detectPlatformAndSlug()` parses URLs for both platforms
+- **start.gg** — GraphQL API (`https://api.start.gg/gql/alpha`) via urql. Auth token via `VITE_START_GG_TOKEN` env var (stored in cookies at runtime). GraphQL types auto-generated into `src/gql/` — do not edit manually; run `bun codegen`. Hook: `src/hooks/top8/useFetchResult.ts`
+- **Challonge** — REST API v1 (`https://api.challonge.com/v1`) proxied through a Vercel serverless function (`api/challonge.ts`) to keep the API key server-side. Hook: `src/hooks/top8/useFetchChallonge.ts`. Uses `include_participants=1` to fetch tournament + participants in a single request.
+
+The Vite dev server includes a `challongeDevProxy` plugin (`vite.config.ts`) that proxies `/api/challonge` requests locally, so Challonge loading works with both `bun dev` and `bun run dev:vercel`.
 
 ### i18n (Lingui)
 
@@ -87,8 +91,15 @@ Configured in `vite.config.ts` and `tsconfig.json`:
 - `@components/` → `src/components/`
 - `@assets/` → `src/assets/`
 
+### Serverless Functions
+
+Vercel serverless functions live in the `api/` directory:
+
+- `api/challonge.ts` — Proxy for Challonge API v1. Accepts `?slug=<tournament_slug>` and returns tournament data with participants.
+
 ### Environment Variables
 
 - `VITE_START_GG_TOKEN` — start.gg API token
 - `VITE_GOOGLE_API_KEY` — Google Fonts API key
 - `START_GG_OAUTH_SECRET` — start.gg OAuth secret (server-side)
+- `CHALLONGE_API_KEY` — Challonge API v1 key (server-side, used by `api/challonge.ts`)

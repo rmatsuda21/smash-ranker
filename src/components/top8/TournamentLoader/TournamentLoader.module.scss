@@ -11,9 +11,11 @@
 }
 
 .error input {
-  color: red;
+  border-color: var(--red-9, red);
+}
 
-  border-color: red;
+.valid input {
+  border-color: var(--green-9, green);
 }
 
 .labelWithInfo {
