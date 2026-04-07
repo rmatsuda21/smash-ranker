@@ -151,7 +151,7 @@ export const TournamentEditor = ({ className }: Props) => {
           name="city"
           id="city"
           type="text"
-          value={tempTournament?.location.city}
+          value={tempTournament?.location.city ?? ""}
           onChange={handleLocationChange}
         />
         <Input
@@ -159,7 +159,7 @@ export const TournamentEditor = ({ className }: Props) => {
           name="state"
           id="state"
           type="text"
-          value={tempTournament?.location.state}
+          value={tempTournament?.location.state ?? ""}
           onChange={handleLocationChange}
         />
         <Input
@@ -167,7 +167,7 @@ export const TournamentEditor = ({ className }: Props) => {
           name="country"
           id="country"
           type="text"
-          value={tempTournament?.location.country}
+          value={tempTournament?.location.country ?? ""}
           onChange={handleLocationChange}
         />
       </div>
