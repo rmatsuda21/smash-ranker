@@ -56,7 +56,7 @@ const basePlayer: PlayerDesign = {
           fontWeight: 600,
           fill: "playerText",
           position: { x: 0, y: 0 },
-          size: { width: BASE_PL_SIZE, height: TWIITER_HEIGHT - 8 },
+          size: { width: BASE_PL_SIZE, height: TWIITER_HEIGHT },
         },
       ],
     },
