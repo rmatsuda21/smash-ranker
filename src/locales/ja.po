@@ -13,13 +13,17 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:71
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:75
 msgid "(https://challonge.com/[tournament])"
 msgstr ""
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:69
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:73
 msgid "(https://start.gg/tournament/[name]/event/[event])"
 msgstr "(https://start.gg/tournament/[大会名]/event/[イベント名])"
+
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:77
+msgid "(https://tonamel.com/competition/[slug])"
+msgstr "(https://tonamel.com/competition/[スラッグ])"
 
 #. placeholder {0}: file.name
 #: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:58
@@ -42,7 +46,7 @@ msgstr "アクセントカラー"
 msgid "Amber"
 msgstr "アンバー"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:56
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:60
 msgid "Any current player and tournament data will be overwritten."
 msgstr "現在の選手と大会データは上書きされます。"
 
@@ -221,8 +225,12 @@ msgid "Enter {0}..."
 msgstr "{0}を入力..."
 
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:67
-msgid "Enter a start.gg or Challonge event URL"
-msgstr ""
+#~ msgid "Enter a start.gg or Challonge event URL"
+#~ msgstr ""
+
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:71
+msgid "Enter a start.gg, Challonge, or Tonamel event URL"
+msgstr "start.gg、Challonge、またはTonamelの大会URLを入れてください"
 
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:81
 #~ msgid "Enter the start.gg event URL"
@@ -298,7 +306,7 @@ msgstr "言語"
 msgid "Light"
 msgstr "ライト"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:97
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:103
 msgid "Load"
 msgstr "取得"
 
@@ -306,7 +314,7 @@ msgstr "取得"
 #~ msgid "Load Config"
 #~ msgstr "設定を読み込む"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:54
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:58
 msgid "Load Tournament?"
 msgstr "大会を読み込みますか？"
 
@@ -432,7 +440,7 @@ msgstr "キャラクター選択"
 msgid "Select Country"
 msgstr "国選択"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:64
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:68
 msgid "Show help"
 msgstr "ヘルプを表示"
 
@@ -529,7 +537,7 @@ msgid "Tournament State"
 msgstr "大会都道府県"
 
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:175
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:63
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:67
 #: src/consts/top8/placeholders.ts:35
 msgid "Tournament URL"
 msgstr "大会URL"

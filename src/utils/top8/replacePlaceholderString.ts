@@ -21,15 +21,17 @@ const getPlaceholderMap = (
     [DesignPlaceholder.TOURNAMENT_NAME]: tournament?.tournamentName,
     [DesignPlaceholder.EVENT_NAME]: tournament?.eventName,
     [DesignPlaceholder.TOURNAMENT_DATE]: formatDate(tournament?.date),
-    [DesignPlaceholder.TOURNAMENT_LOCATION]: `${tournament?.location.city}, ${
-      tournament?.location.state
-    }${
-      tournament?.location.country ? `, ${tournament?.location.country}` : ""
-    }`,
+    [DesignPlaceholder.TOURNAMENT_LOCATION]: [
+      tournament?.location.city,
+      tournament?.location.state,
+      tournament?.location.country,
+    ]
+      .filter(Boolean)
+      .join(", "),
     [DesignPlaceholder.TOURNAMENT_URL]: tournament?.url,
-    [DesignPlaceholder.TOURNAMENT_CITY]: tournament?.location.city,
-    [DesignPlaceholder.TOURNAMENT_STATE]: tournament?.location.state,
-    [DesignPlaceholder.TOURNAMENT_COUNTRY]: tournament?.location.country,
+    [DesignPlaceholder.TOURNAMENT_CITY]: tournament?.location.city ?? "",
+    [DesignPlaceholder.TOURNAMENT_STATE]: tournament?.location.state ?? "",
+    [DesignPlaceholder.TOURNAMENT_COUNTRY]: tournament?.location.country ?? "",
     [DesignPlaceholder.ENTRANTS]: tournament?.entrants?.toString(),
     [DesignPlaceholder.PLAYER_TWITTER]: player?.twitter,
   };
