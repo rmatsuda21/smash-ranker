@@ -8,6 +8,7 @@ import { Button } from "@/components/shared/Button/Button";
 import { Input } from "@/components/shared/Input/Input";
 import { useFetchResult } from "@/hooks/top8/useFetchResult";
 import { useFetchChallonge } from "@/hooks/top8/useFetchChallonge";
+import { useFetchTonamel } from "@/hooks/top8/useFetchTonamel";
 import { usePlayerStore } from "@/store/playerStore";
 import { useTournamentStore } from "@/store/tournamentStore";
 import { COOKIES } from "@/consts/cookies";
@@ -31,6 +32,7 @@ export const TournamentLoader = ({ className }: Props) => {
 
   const { fetchResult } = useFetchResult();
   const { fetchChallonge } = useFetchChallonge();
+  const { fetchTonamel } = useFetchTonamel();
 
   const detected = useMemo(() => detectPlatformAndSlug(url), [url]);
   const isValid = detected !== null;
@@ -44,8 +46,10 @@ export const TournamentLoader = ({ className }: Props) => {
 
     if (detected.platform === "startgg") {
       fetchResult(detected.slug, 24);
-    } else {
+    } else if (detected.platform === "challonge") {
       fetchChallonge(detected.slug, 24);
+    } else if (detected.platform === "tonamel") {
+      fetchTonamel(detected.slug, 24);
     }
   };
 
@@ -64,11 +68,13 @@ export const TournamentLoader = ({ className }: Props) => {
       <span className={styles.infoButton} aria-label={_(msg`Show help`)}>
         <FaCircleInfo />
         <pre className={styles.tooltip}>
-          <Trans>Enter a start.gg or Challonge event URL</Trans>
+          <Trans>Enter a start.gg, Challonge, or Tonamel event URL</Trans>
           <br />
           <Trans>(https://start.gg/tournament/[name]/event/[event])</Trans>
           <br />
           <Trans>(https://challonge.com/[tournament])</Trans>
+          <br />
+          <Trans>(https://tonamel.com/competition/[slug])</Trans>
         </pre>
       </span>
     </span>
