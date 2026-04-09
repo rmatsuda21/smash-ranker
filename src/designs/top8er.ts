@@ -339,7 +339,7 @@ const tournament: LayerDesign = {
           size: { width: TOURNAMENT_ICON_SIZE, height: TOURNAMENT_ICON_SIZE },
           conditions: [RenderCondition.TOURNAMENT_ICON],
           fillMode: "contain",
-          align: "top",
+          align: "center",
         },
         {
           type: "text",
