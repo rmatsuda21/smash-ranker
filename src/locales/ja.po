@@ -483,6 +483,10 @@ msgstr "テキスト"
 msgid "Theme"
 msgstr "テーマ"
 
+#: src/consts/errors.ts:4
+msgid "This tournament has multiple groups without a final bracket, so it doesn't produce a unified Top 8 ranking."
+msgstr ""
+
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:175
 msgid "This will reset all player data for this slot."
 msgstr "このスロットの選手情報がすべてリセットされます。"

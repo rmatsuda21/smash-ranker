@@ -8,6 +8,7 @@ import {
   createBlankPlayer,
   getPlacements,
 } from "@/utils/top8/samplePlayers";
+import { getMultiGroupError } from "@/consts/errors";
 
 const DEFAULT_CHARACTER_ID = "1293";
 const IDB_IMAGES_BASE_URL = "/idb-images/";
@@ -31,6 +32,8 @@ interface TonamelCompetition {
   currentEntry: number;
   imageUrl: string;
   game: { name: string } | null;
+  tournamentStyles?: string[];
+  blockCount?: number;
   placements: TonamelPlacement[];
   participants: TonamelParticipant[];
 }
@@ -175,6 +178,14 @@ export const useFetchTonamel = () => {
 
       if (!data.competition) {
         throw new Error("Competition not found");
+      }
+
+      const blockCount = data.competition.blockCount ?? 0;
+      if (blockCount > 1) {
+        const errorMessage = getMultiGroupError();
+        playerDispatch({ type: "FETCH_PLAYERS_FAIL", payload: errorMessage });
+        alert(errorMessage);
+        return;
       }
 
       const tournamentInfo = await parseTournamentInfo(data.competition, slug);

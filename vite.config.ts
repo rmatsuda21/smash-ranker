@@ -118,6 +118,10 @@ async function tonamelFetchCompetition(slug: string) {
   // Step 2: Try to get placements via tournament -> blocks -> podium
   const placements: Array<{ place: number; displayName: string; playerId: string }> = [];
   const tournaments = competition.tournaments ?? [];
+  const tournamentStyles: string[] = tournaments
+    .map((t: any) => t.style)
+    .filter(Boolean);
+  let blockCount = 0;
 
   if (tournaments.length > 0) {
     const tournamentId = tournaments[0].id;
@@ -144,6 +148,7 @@ async function tonamelFetchCompetition(slug: string) {
     );
 
     const blocks = (blocksData as any).data?.competition?.tournament?.blocks?.edges ?? [];
+    blockCount = blocks.length;
 
     if (blocks.length > 0) {
       const blockId = blocks[0].node.id;
@@ -251,6 +256,8 @@ async function tonamelFetchCompetition(slug: string) {
       currentEntry: publicComp?.currentEntry,
       imageUrl: publicComp?.imageUrl,
       game: publicComp?.game || null,
+      tournamentStyles,
+      blockCount,
       placements,
       participants,
     },

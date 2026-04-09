@@ -141,6 +141,10 @@ async function fetchCompetition(slug: string) {
   }
   const placements: Placement[] = [];
   const tournaments = competition.tournaments ?? [];
+  const tournamentStyles: string[] = tournaments
+    .map((t: any) => t.style)
+    .filter(Boolean);
+  let blockCount = 0;
 
   if (tournaments.length > 0) {
     const tournamentId = tournaments[0].id;
@@ -160,6 +164,7 @@ async function fetchCompetition(slug: string) {
 
     const blocks =
       blocksData.data?.competition?.tournament?.blocks?.edges ?? [];
+    blockCount = blocks.length;
 
     if (blocks.length > 0) {
       const blockId = blocks[0].node.id;
@@ -238,6 +243,8 @@ async function fetchCompetition(slug: string) {
       currentEntry: publicComp?.currentEntry,
       imageUrl: publicComp?.imageUrl,
       game: publicComp?.game || null,
+      tournamentStyles,
+      blockCount,
       placements,
       participants,
     },
