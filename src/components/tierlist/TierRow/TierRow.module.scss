@@ -1,0 +1,50 @@
+@use "@/_theme" as *;
+
+.row {
+  position: relative;
+  display: flex;
+  min-height: 58px;
+  border: 1px solid var(--gray-6);
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--gray-2);
+}
+
+.characters {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  padding: 4px;
+  align-content: flex-start;
+  min-height: 58px;
+}
+
+.settings {
+  display: flex;
+  align-items: center;
+  padding: 0 4px;
+}
+
+.topLayout {
+  flex-direction: column;
+  align-items: flex-start;
+  border: none;
+  background: none;
+  overflow: visible;
+
+  .characters {
+    width: 100%;
+    min-height: 62px;
+    border: 1px solid var(--gray-6);
+    border-radius: 0 4px 4px 4px;
+    background: var(--gray-2);
+    box-sizing: border-box;
+  }
+
+  .settings {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+  }
+}

@@ -19,6 +19,9 @@ export const Home = () => {
             <img src="/favicon.svg" alt="Ranker" /> Ranker
           </Button>
         </Link>
+        <Link to="/tier">
+          <Button>Tier List</Button>
+        </Link>
       </div>
     </div>
   );

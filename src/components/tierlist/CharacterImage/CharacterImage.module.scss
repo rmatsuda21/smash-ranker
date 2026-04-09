@@ -1,0 +1,8 @@
+@use "@/_theme" as *;
+
+.image {
+  display: block;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+}
