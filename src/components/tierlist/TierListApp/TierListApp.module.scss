@@ -1,0 +1,121 @@
+@use "@/_theme" as *;
+
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px 24px;
+  width: 100%;
+  overflow-y: auto;
+
+  @include mobile {
+    padding: 8px 8px 0;
+    gap: 8px;
+  }
+}
+
+.contentRow {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+
+  @include mobile {
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+
+.resizeContainer {
+  position: relative;
+  flex-shrink: 0;
+
+  @include mobile {
+    width: 100% !important;
+  }
+}
+
+.poolSide {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+
+  @include mobile {
+    width: 100%;
+    position: sticky;
+    bottom: 0;
+    z-index: 5;
+  }
+}
+
+.resizeHandle {
+  position: absolute;
+  top: 0;
+  right: -4px;
+  width: 8px;
+  height: 100%;
+  cursor: col-resize;
+  z-index: 10;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 3px;
+    width: 2px;
+    height: 100%;
+    border-radius: 1px;
+    background: transparent;
+    transition: background 0.15s;
+  }
+
+  &:hover::after {
+    background: var(--accent-9);
+  }
+
+  @include mobile {
+    display: none;
+  }
+}
+
+.tierList {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.addTierButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 6px;
+  margin-top: 4px;
+  border: 1px dashed var(--gray-7);
+  border-radius: 4px;
+  background: none;
+  color: var(--gray-10);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    border-color: var(--accent-7);
+    color: var(--accent-9);
+    background: var(--accent-2);
+  }
+}
+
+.dragOverlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: scale(1.05);
+  opacity: 0.9;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+  pointer-events: none;
+  border-radius: 4px;
+  border: 2px solid var(--accent-9);
+  background: var(--gray-3);
+}

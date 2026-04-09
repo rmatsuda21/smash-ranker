@@ -1,0 +1,51 @@
+.picker {
+  position: fixed;
+  z-index: 1100;
+  background: var(--gray-2);
+  border: 1px solid var(--gray-6);
+  border-radius: 8px;
+  padding: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  max-width: 280px;
+}
+
+.title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gray-11);
+  padding: 0 4px 6px;
+  border-bottom: 1px solid var(--gray-5);
+  margin-bottom: 6px;
+}
+
+.alts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.altButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  background: var(--gray-3);
+  cursor: pointer;
+  padding: 2px;
+  transition: border-color 0.15s ease;
+
+  &:hover {
+    border-color: var(--accent-7);
+  }
+
+  &[data-active] {
+    border-color: var(--accent-9);
+    background: var(--gray-4);
+  }
+
+  img {
+    display: block;
+    object-fit: contain;
+  }
+}

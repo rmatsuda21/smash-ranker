@@ -65,9 +65,11 @@ export const ColorInput = ({ color, onChange, onClick, className }: Props) => {
   useLayoutEffect(() => {
     if (isOpen && triggerRef.current) {
       const rect = triggerRef.current.getBoundingClientRect();
+      const pickerWidth = 200;
+      const left = Math.max(8, Math.min(rect.left, window.innerWidth - pickerWidth - 8));
       setPosition({
         top: rect.bottom + 4,
-        left: rect.left,
+        left,
       });
     } else {
       setPosition(null);
@@ -154,6 +156,7 @@ export const ColorInput = ({ color, onChange, onClick, className }: Props) => {
             ref={pickerRef}
             className={styles.picker}
             style={{ top: position.top, left: position.left }}
+            onMouseDown={(e) => e.stopPropagation()}
           >
             <HexAlphaColorPicker
               color={internalColor}
