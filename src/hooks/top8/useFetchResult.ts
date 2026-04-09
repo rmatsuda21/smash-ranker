@@ -14,6 +14,7 @@ import {
   createBlankPlayer,
   getPlacements,
 } from "@/utils/top8/samplePlayers";
+import { getMultiGroupError } from "@/consts/errors";
 
 const DEFAULT_CHARACTER_ID = "1293"; // Puff <3
 const IDB_IMAGES_BASE_URL = "/idb-images/";
@@ -59,6 +60,10 @@ const EventStandingsQueryDoc = graphql(`
         pageInfo {
           total
         }
+      }
+      phases {
+        bracketType
+        groupCount
       }
       standings(query: { perPage: $playerCount, page: 1 }) {
         nodes {
@@ -372,6 +377,26 @@ export const useFetchResult = () => {
     }
 
     const event = result.data.event;
+
+    const phases = event.phases ?? [];
+    const allNonElimination =
+      phases.length > 0 &&
+      phases.every(
+        (phase) =>
+          phase?.bracketType === "ROUND_ROBIN" ||
+          phase?.bracketType === "SWISS",
+      );
+    const hasMultipleGroups = phases.some(
+      (phase) => (phase?.groupCount ?? 0) > 1,
+    );
+
+    if (allNonElimination && hasMultipleGroups) {
+      const errorMessage = getMultiGroupError();
+      playerDispatch({ type: "FETCH_PLAYERS_FAIL", payload: errorMessage });
+      alert(errorMessage);
+      return;
+    }
+
     const validImages = filterValidImages(event.tournament?.images ?? null);
     const players = parseStandingsToPlayers(event.standings?.nodes ?? null);
 
