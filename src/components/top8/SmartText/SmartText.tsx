@@ -51,6 +51,31 @@ function calculateAnchorOffsets(
   }
 }
 
+function measureFromMiddleBaseline(
+  node: KonvaText,
+  text: string
+): { actualAscent: number; actualDescent: number } | null {
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return null;
+
+  ctx.font = `${node.fontStyle()} ${node.fontSize()}px ${node.fontFamily()}`;
+  ctx.textBaseline = "middle";
+  const metrics = ctx.measureText(text);
+
+  if (
+    metrics.actualBoundingBoxAscent === undefined ||
+    metrics.actualBoundingBoxDescent === undefined
+  ) {
+    return null;
+  }
+
+  return {
+    actualAscent: metrics.actualBoundingBoxAscent,
+    actualDescent: metrics.actualBoundingBoxDescent,
+  };
+}
+
 function computeVerticalCorrection(
   node: KonvaText,
   text: string,
@@ -58,24 +83,10 @@ function computeVerticalCorrection(
 ): number {
   if (!verticalAlign || verticalAlign === "top") return 0;
 
-  const metrics = node.measureSize(text);
-
-  const fontAscent = metrics.fontBoundingBoxAscent;
-  const fontDescent = metrics.fontBoundingBoxDescent;
-  const actualAscent = metrics.actualBoundingBoxAscent;
-  const actualDescent = metrics.actualBoundingBoxDescent;
-
-  if (
-    fontAscent === undefined ||
-    fontDescent === undefined ||
-    actualAscent === undefined ||
-    actualDescent === undefined
-  ) {
-    return 0;
-  }
-
   if (verticalAlign === "middle") {
-    return ((actualAscent - actualDescent) - (fontAscent - fontDescent)) / 2;
+    const metrics = measureFromMiddleBaseline(node, text);
+    if (!metrics) return 0;
+    return (metrics.actualAscent - metrics.actualDescent) / 2;
   }
 
   return 0;
