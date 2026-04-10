@@ -15,7 +15,7 @@ msgstr ""
 
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:75
 msgid "(https://challonge.com/[tournament])"
-msgstr ""
+msgstr "(https://challonge.com/[tournament])"
 
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:73
 msgid "(https://start.gg/tournament/[name]/event/[event])"
@@ -23,7 +23,7 @@ msgstr "(https://start.gg/tournament/[name]/event/[event])"
 
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:77
 msgid "(https://tonamel.com/competition/[slug])"
-msgstr ""
+msgstr "(https://tonamel.com/competition/[slug])"
 
 #. placeholder {0}: file.name
 #: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:58
@@ -56,7 +56,7 @@ msgstr "Any current player and tournament data will be overwritten."
 
 #: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:39
 msgid "Are you sure you want to delete this asset?"
-msgstr ""
+msgstr "Are you sure you want to delete this asset?"
 
 #: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:113
 #~ msgid "Are you sure you want to delete this config? This action cannot be undone."
@@ -87,6 +87,11 @@ msgstr "Blue"
 msgid "Buy me a coffee"
 msgstr "Buy me a coffee"
 
+#. placeholder {0}: res.status
+#: src/hooks/top8/useFetchChallonge.ts:41
+msgid "Challonge API error: {0}"
+msgstr "Challonge API error: {0}"
+
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:218
 msgid "Characters"
 msgstr "Characters"
@@ -115,6 +120,10 @@ msgstr "Color"
 msgid "Color Palette"
 msgstr "Color Palette"
 
+#: src/hooks/top8/useFetchTonamel.ts:180
+msgid "Competition not found"
+msgstr "Competition not found"
+
 #: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:185
 #~ msgid "Config Manager"
 #~ msgstr "Config Manager"
@@ -135,7 +144,7 @@ msgstr "Create a minimal template with a specific player count."
 
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:205
 msgid "Create New Template"
-msgstr ""
+msgstr "Create New Template"
 
 #: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:58
 msgid "Create Template"
@@ -156,11 +165,11 @@ msgstr "Credits & Inspiration"
 
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:249
 msgid "Custom Flag"
-msgstr ""
+msgstr "Custom Flag"
 
 #: src/components/top8/DesignEditor/DesignEditor.tsx:35
 msgid "Custom Fonts"
-msgstr ""
+msgstr "Custom Fonts"
 
 #: src/components/top8/TemplateEditor/TemplateGroup.tsx:72
 msgid "Custom Minimal"
@@ -192,13 +201,13 @@ msgstr "Date"
 
 #: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:38
 msgid "Delete Asset"
-msgstr ""
+msgstr "Delete Asset"
 
 #: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:111
 #~ msgid "Delete Config: {0}"
 #~ msgstr "Delete Config: {0}"
 
-#: src/components/top8/SidePanel/SidePanelNav.tsx:23
+#: src/components/top8/SidePanel/SidePanelNav.tsx:28
 msgid "Design"
 msgstr "Design"
 
@@ -230,7 +239,7 @@ msgstr "Enter {0}..."
 
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:71
 msgid "Enter a start.gg, Challonge, or Tonamel event URL"
-msgstr ""
+msgstr "Enter a start.gg, Challonge, or Tonamel event URL"
 
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:81
 #~ msgid "Enter the start.gg event URL"
@@ -244,6 +253,18 @@ msgstr "Entrants"
 #: src/consts/top8/placeholders.ts:29
 msgid "Event Name"
 msgstr "Event Name"
+
+#: src/hooks/top8/useFetchChallonge.ts:120
+msgid "Failed to fetch Challonge tournament"
+msgstr "Failed to fetch Challonge tournament"
+
+#: src/hooks/top8/useFetchTonamel.ts:202
+msgid "Failed to fetch Tonamel tournament"
+msgstr "Failed to fetch Tonamel tournament"
+
+#: src/hooks/top8/useFetchResult.ts:421
+msgid "Failed to fetch tournament data"
+msgstr "Failed to fetch tournament data"
 
 #: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:85
 msgid "Filename"
@@ -276,7 +297,7 @@ msgstr "Icon"
 
 #: src/components/top8/DesignEditor/DesignEditor.tsx:61
 msgid "Image darkness"
-msgstr ""
+msgstr "Image darkness"
 
 #: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:213
 #~ msgid "Import"
@@ -353,7 +374,7 @@ msgstr "Okay"
 
 #: src/components/shared/FileUploader/FileUploader.tsx:155
 msgid "Or drag and drop"
-msgstr ""
+msgstr "Or drag and drop"
 
 #: src/components/top8/InfoPanel/InfoPanel.tsx:101
 msgid "Original concept & inspiration"
@@ -369,7 +390,7 @@ msgstr "Pixel Ratio"
 
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:209
 msgid "Placement"
-msgstr ""
+msgstr "Placement"
 
 #: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:62
 #: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:68
@@ -396,7 +417,7 @@ msgstr "Player Prefix"
 msgid "Player Tag"
 msgstr "Player Tag"
 
-#: src/components/top8/SidePanel/SidePanelNav.tsx:19
+#: src/components/top8/SidePanel/SidePanelNav.tsx:20
 msgid "Players"
 msgstr "Players"
 
@@ -419,7 +440,7 @@ msgstr "Red"
 
 #: src/components/top8/Ranker/Header/Header.tsx:44
 msgid "Redo"
-msgstr ""
+msgstr "Redo"
 
 #: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:194
 #~ msgid "Save Current Config"
@@ -464,7 +485,7 @@ msgstr "Support"
 msgid "Template Name"
 msgstr "Template Name"
 
-#: src/components/top8/SidePanel/SidePanelNav.tsx:35
+#: src/components/top8/SidePanel/SidePanelNav.tsx:36
 msgid "Templates"
 msgstr "Templates"
 
@@ -476,7 +497,7 @@ msgstr "Text"
 msgid "Text content is configured in the design layout."
 msgstr "Text content is configured in the design layout."
 
-#: src/components/top8/SidePanel/SidePanelNav.tsx:27
+#: src/components/top8/SidePanel/SidePanelNav.tsx:32
 msgid "Texts"
 msgstr "Texts"
 
@@ -486,7 +507,7 @@ msgstr "Theme"
 
 #: src/consts/errors.ts:4
 msgid "This tournament has multiple groups without a final bracket, so it doesn't produce a unified Top 8 ranking."
-msgstr ""
+msgstr "This tournament has multiple groups without a final bracket, so it doesn't produce a unified Top 8 ranking."
 
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:175
 msgid "This will reset all player data for this slot."
@@ -504,7 +525,12 @@ msgstr "This will reset all player data for this slot."
 #~ msgid "to undo and"
 #~ msgstr "to undo and"
 
-#: src/components/top8/SidePanel/SidePanelNav.tsx:31
+#. placeholder {0}: res.status
+#: src/hooks/top8/useFetchTonamel.ts:50
+msgid "Tonamel API error: {0}"
+msgstr "Tonamel API error: {0}"
+
+#: src/components/top8/SidePanel/SidePanelNav.tsx:24
 msgid "Tournament"
 msgstr "Tournament"
 
@@ -537,6 +563,10 @@ msgstr "Tournament Full Address"
 msgid "Tournament Name"
 msgstr "Tournament Name"
 
+#: src/hooks/top8/useFetchResult.ts:373
+msgid "Tournament not found"
+msgstr "Tournament not found"
+
 #: src/consts/top8/placeholders.ts:33
 msgid "Tournament State"
 msgstr "Tournament State"
@@ -566,8 +596,8 @@ msgstr "Type <0>{</0> to insert a variable!"
 
 #: src/components/top8/Ranker/Header/Header.tsx:34
 msgid "Undo"
-msgstr ""
+msgstr "Undo"
 
 #: src/components/shared/FileUploader/FileUploader.tsx:153
 msgid "Upload"
-msgstr ""
+msgstr "Upload"

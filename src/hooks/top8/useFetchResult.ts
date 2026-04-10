@@ -2,6 +2,7 @@ import { useClient } from "urql";
 import type { Client } from "urql";
 import * as countryList from "country-list";
 
+import { t } from "@lingui/core/macro";
 import { graphql } from "@/gql";
 import type { EventStandingsQuery, PlayerSetsQuery } from "@/gql/graphql";
 import { PlayerInfo } from "@/types/top8/Player";
@@ -369,7 +370,7 @@ export const useFetchResult = () => {
       .toPromise();
 
     if (result.error || !result.data?.event) {
-      const errorMessage = result.error?.message || "Tournament not found";
+      const errorMessage = result.error?.message || t`Tournament not found`;
       playerDispatch({ type: "FETCH_PLAYERS_FAIL", payload: errorMessage });
       alert(errorMessage);
       return;
@@ -417,7 +418,7 @@ export const useFetchResult = () => {
       console.error("Failed to fetch tournament data:", error);
       playerDispatch({
         type: "FETCH_PLAYERS_FAIL",
-        payload: "Failed to fetch tournament data",
+        payload: t`Failed to fetch tournament data`,
       });
     }
   };
