@@ -338,6 +338,7 @@ msgstr "珈琲一杯分から！"
 msgid "No text content defined in this design."
 msgstr "このデザインにはテキストが定義されていません。"
 
+#: src/components/top8/CharacterEditor/CharacterSelect/CharacterSelect.tsx:34
 #: src/components/top8/PlayersEditor/CountryDropDown.tsx:34
 msgid "None"
 msgstr "なし"
@@ -428,7 +429,7 @@ msgstr "やり直す"
 msgid "Select"
 msgstr "選択"
 
-#: src/components/top8/CharacterEditor/CharacterSelect/CharacterSelect.tsx:49
+#: src/components/top8/CharacterEditor/CharacterSelect/CharacterSelect.tsx:62
 msgid "Select Character"
 msgstr "キャラクター選択"
 

@@ -338,6 +338,7 @@ msgstr "Many cups of coffee were consumed during development 👀"
 msgid "No text content defined in this design."
 msgstr "No text content defined in this design."
 
+#: src/components/top8/CharacterEditor/CharacterSelect/CharacterSelect.tsx:34
 #: src/components/top8/PlayersEditor/CountryDropDown.tsx:34
 msgid "None"
 msgstr "None"
@@ -428,7 +429,7 @@ msgstr ""
 msgid "Select"
 msgstr "Select"
 
-#: src/components/top8/CharacterEditor/CharacterSelect/CharacterSelect.tsx:49
+#: src/components/top8/CharacterEditor/CharacterSelect/CharacterSelect.tsx:62
 msgid "Select Character"
 msgstr "Select Character"
 

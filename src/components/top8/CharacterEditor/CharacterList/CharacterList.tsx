@@ -4,6 +4,7 @@ import cn from "classnames";
 
 import { CharacerData } from "@/types/top8/Player";
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
+import { DEFAULT_ADD_CHARACTER_ID } from "@/consts/top8/characters";
 
 import styles from "./CharacterList.module.scss";
 
@@ -24,7 +25,7 @@ export const CharacterList = ({
 }: Props) => {
   const addCharacter = () => {
     if (!characters) return;
-    onCharactersChange([...characters, { id: "1293", alt: 0 }]);
+    onCharactersChange([...characters, { id: DEFAULT_ADD_CHARACTER_ID, alt: 0 }]);
   };
 
   const removeCharacter = (index: number) => {

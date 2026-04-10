@@ -9,8 +9,7 @@ import {
   getPlacements,
 } from "@/utils/top8/samplePlayers";
 import { getMultiGroupError } from "@/consts/errors";
-
-const DEFAULT_CHARACTER_ID = "1293";
+import { EMPTY_CHARACTER_ID } from "@/consts/top8/characters";
 const IDB_IMAGES_BASE_URL = "/idb-images/";
 
 interface TonamelPlacement {
@@ -64,7 +63,7 @@ const toPlayerInfo = (
   entrantId: playerId || `tonamel-${index}`,
   name: displayName,
   gamerTag: displayName,
-  characters: [{ id: DEFAULT_CHARACTER_ID, alt: 0 as const }],
+  characters: [{ id: EMPTY_CHARACTER_ID, alt: 0 as const }],
   placement,
   prefix: undefined,
   twitter: undefined,

@@ -15,8 +15,7 @@ import {
   getPlacements,
 } from "@/utils/top8/samplePlayers";
 import { getMultiGroupError } from "@/consts/errors";
-
-const DEFAULT_CHARACTER_ID = "1293"; // Puff <3
+import { EMPTY_CHARACTER_ID } from "@/consts/top8/characters";
 const IDB_IMAGES_BASE_URL = "/idb-images/";
 
 interface TournamentImage {
@@ -296,7 +295,7 @@ const addCharactersToPlayers = async (
       player.characters =
         characterIds.length > 0
           ? characterIds.map((id) => ({ id, alt: 0 }))
-          : [{ id: DEFAULT_CHARACTER_ID, alt: 0 }];
+          : [{ id: EMPTY_CHARACTER_ID, alt: 0 }];
 
       player.id = String(player.id);
     }),
