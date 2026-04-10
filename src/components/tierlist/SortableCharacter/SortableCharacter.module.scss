@@ -20,12 +20,6 @@
     opacity: 0.3;
   }
 
-  &.inPool {
-    @include mobile {
-      touch-action: pan-x;
-    }
-  }
-
   @include mobile {
     border-radius: 3px;
   }

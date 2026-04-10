@@ -84,7 +84,7 @@ export const TierListApp = () => {
       activationConstraint: { distance: 5 },
     }),
     useSensor(TouchSensor, {
-      activationConstraint: { delay: 200, tolerance: 5 },
+      activationConstraint: { delay: 200, tolerance: 10 },
     }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
@@ -108,6 +108,8 @@ export const TierListApp = () => {
       const activeInstanceId = active.id as string;
       const overId = over.id as string;
 
+      if (activeInstanceId === overId) return;
+
       const activeContainer = findContainer(activeInstanceId, tiers, pool);
 
       // Determine target container
@@ -118,40 +120,50 @@ export const TierListApp = () => {
         overContainer = findContainer(overId, tiers, pool);
       }
 
-      if (!activeContainer || !overContainer || activeContainer === overContainer) {
-        return;
-      }
+      if (!activeContainer || !overContainer) return;
 
-      // Move between containers
       const overItems =
         overContainer === "pool"
           ? pool
           : tiers.find((t) => t.id === overContainer)?.characterIds ?? [];
 
-      // If hovering over the container itself (empty area), insert at end
-      const overIndex = overItems.indexOf(overId);
-      let insertIndex: number;
-      if (overIndex < 0) {
-        insertIndex = overItems.length;
-      } else {
-        // Use active rect vs over rect to determine direction-aware placement
-        const activeRect = active.rect.current.translated;
-        const overRect = over.rect;
-        if (activeRect && overRect) {
-          const activeCenterX = activeRect.left + activeRect.width / 2;
-          const overCenterX = overRect.left + overRect.width / 2;
-          insertIndex = activeCenterX < overCenterX ? overIndex : overIndex + 1;
-        } else {
-          insertIndex = overIndex;
-        }
-      }
+      if (activeContainer === overContainer) {
+        // Same container reorder
+        const activeIndex = overItems.indexOf(activeInstanceId);
+        const overIndex = overItems.indexOf(overId);
+        if (activeIndex < 0 || overIndex < 0 || activeIndex === overIndex) return;
 
-      dispatch({
-        type: "MOVE_CHARACTER",
-        instanceId: activeInstanceId,
-        toContainer: overContainer,
-        toIndex: insertIndex,
-      });
+        dispatch({
+          type: "MOVE_CHARACTER",
+          instanceId: activeInstanceId,
+          toContainer: overContainer,
+          toIndex: overIndex,
+        });
+      } else {
+        // Cross-container move
+        const overIndex = overItems.indexOf(overId);
+        let insertIndex: number;
+        if (overIndex < 0) {
+          insertIndex = overItems.length;
+        } else {
+          const activeRect = active.rect.current.translated;
+          const overRect = over.rect;
+          if (activeRect && overRect) {
+            const activeCenterX = activeRect.left + activeRect.width / 2;
+            const overCenterX = overRect.left + overRect.width / 2;
+            insertIndex = activeCenterX < overCenterX ? overIndex : overIndex + 1;
+          } else {
+            insertIndex = overIndex;
+          }
+        }
+
+        dispatch({
+          type: "MOVE_CHARACTER",
+          instanceId: activeInstanceId,
+          toContainer: overContainer,
+          toIndex: insertIndex,
+        });
+      }
     },
     [tiers, pool, dispatch]
   );
@@ -166,51 +178,24 @@ export const TierListApp = () => {
       const activeInstanceId = active.id as string;
       const overId = over.id as string;
 
+      // Only handle drops onto empty containers (container IDs, not character IDs)
+      const isContainer = overId === "pool" || tiers.some((t) => t.id === overId);
+      if (!isContainer) return;
+
       const activeContainer = findContainer(activeInstanceId, tiers, pool);
-      if (!activeContainer) return;
+      if (!activeContainer || activeContainer === overId) return;
 
-      // Determine target container
-      let overContainer: string | null = null;
-      if (overId === "pool" || tiers.some((t) => t.id === overId)) {
-        overContainer = overId;
-      } else {
-        overContainer = findContainer(overId, tiers, pool);
-      }
+      const overItems =
+        overId === "pool"
+          ? pool
+          : tiers.find((t) => t.id === overId)?.characterIds ?? [];
 
-      if (!overContainer) return;
-
-      // Same container reorder
-      if (activeContainer === overContainer) {
-        const items =
-          overContainer === "pool"
-            ? pool
-            : tiers.find((t) => t.id === overContainer)?.characterIds ?? [];
-
-        const activeIndex = items.indexOf(activeInstanceId);
-        const overIndex = items.indexOf(overId);
-
-        if (activeIndex !== overIndex && overIndex >= 0) {
-          // Use active rect vs over rect for direction-aware placement
-          const activeRect = active.rect.current.translated;
-          const overRect = over.rect;
-          let targetIndex = overIndex;
-          if (activeRect && overRect) {
-            const activeCenterX = activeRect.left + activeRect.width / 2;
-            const overCenterX = overRect.left + overRect.width / 2;
-            if (activeIndex < overIndex) {
-              targetIndex = activeCenterX < overCenterX ? overIndex - 1 : overIndex;
-            } else {
-              targetIndex = activeCenterX > overCenterX ? overIndex + 1 : overIndex;
-            }
-          }
-          dispatch({
-            type: "MOVE_CHARACTER",
-            instanceId: activeInstanceId,
-            toContainer: overContainer,
-            toIndex: targetIndex,
-          });
-        }
-      }
+      dispatch({
+        type: "MOVE_CHARACTER",
+        instanceId: activeInstanceId,
+        toContainer: overId,
+        toIndex: overItems.length,
+      });
     },
     [tiers, pool, dispatch]
   );
