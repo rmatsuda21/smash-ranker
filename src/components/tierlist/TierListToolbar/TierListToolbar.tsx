@@ -9,6 +9,7 @@ import { Button } from "@/components/shared/Button/Button";
 import { ConfirmationModal } from "@/components/shared/ConfirmationModal/ConfirmationModal";
 import { TierListSettings } from "@/components/tierlist/TierListSettings/TierListSettings";
 import { useTierListStore } from "@/store/tierListStore";
+import { downloadBlob } from "@/utils/top8/downloadBlob";
 
 import styles from "./TierListToolbar.module.scss";
 
@@ -35,10 +36,9 @@ export const TierListToolbar = ({ exportRef }: Props) => {
         filter: (node) =>
           !(node instanceof HTMLElement && node.hasAttribute("data-export-ignore")),
       });
-      const link = document.createElement("a");
-      link.download = "tier-list.png";
-      link.href = dataUrl;
-      link.click();
+      const res = await fetch(dataUrl);
+      const blob = await res.blob();
+      await downloadBlob({ blob, filename: "tier-list.png", mimeType: "image/png" });
     } catch (err) {
       console.error("Export failed:", err);
     } finally {
