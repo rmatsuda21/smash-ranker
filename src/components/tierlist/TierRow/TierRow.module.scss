@@ -18,6 +18,11 @@
   padding: 4px;
   align-content: flex-start;
   min-height: 58px;
+
+  @include mobile {
+    gap: 4px;
+    padding: 6px;
+  }
 }
 
 .settings {

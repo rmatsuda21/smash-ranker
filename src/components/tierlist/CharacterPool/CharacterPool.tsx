@@ -22,22 +22,25 @@ export const CharacterPool = ({ imageMode, onCharacterContextMenu }: Props) => {
     <div className={styles.poolWrapper}>
       <h3 className={styles.title}>Unranked</h3>
       <SortableContext id="pool" items={pool} strategy={rectSortingStrategy}>
-        <div ref={setNodeRef} className={styles.pool}>
-          {pool.map((instanceId) => {
-            const char = characters[instanceId];
-            if (!char) return null;
-            return (
-              <SortableCharacter
-                key={instanceId}
-                character={char}
-                imageMode={imageMode}
-                inPool
-                onContextMenu={(e) => onCharacterContextMenu(instanceId, e)}
-              />
-            );
-          })}
+        <div className={styles.scrollContainer}>
+          <div ref={setNodeRef} className={styles.pool}>
+            {pool.map((instanceId) => {
+              const char = characters[instanceId];
+              if (!char) return null;
+              return (
+                <SortableCharacter
+                  key={instanceId}
+                  character={char}
+                  imageMode={imageMode}
+                  onContextMenu={(e) => onCharacterContextMenu(instanceId, e)}
+                />
+              );
+            })}
+          </div>
+          <div className={styles.scrollZone} />
         </div>
       </SortableContext>
+      <div className={styles.scrollZoneLabel}>← swipe to scroll →</div>
     </div>
   );
 };
