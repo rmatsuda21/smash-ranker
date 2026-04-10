@@ -19,6 +19,7 @@ import cn from "classnames";
 import { TierRow } from "@/components/tierlist/TierRow/TierRow";
 import { CharacterPool } from "@/components/tierlist/CharacterPool/CharacterPool";
 import { TierListToolbar } from "@/components/tierlist/TierListToolbar/TierListToolbar";
+import { TierListTitle } from "@/components/tierlist/TierListTitle/TierListTitle";
 import { CharacterImage } from "@/components/tierlist/CharacterImage/CharacterImage";
 import { AltPicker } from "@/components/tierlist/AltPicker/AltPicker";
 import { useTierListStore } from "@/store/tierListStore";
@@ -64,6 +65,8 @@ export const TierListApp = () => {
   const imageMode = useTierListStore((s) => s.imageMode);
   const layout = useTierListStore((s) => s.layout);
   const labelFont = useTierListStore((s) => s.labelFont);
+  const title = useTierListStore((s) => s.title);
+  const titleAlign = useTierListStore((s) => s.titleAlign);
 
   const tierListWidth = useTierListStore((s) => s.tierListWidth);
 
@@ -254,6 +257,12 @@ export const TierListApp = () => {
         <div className={styles.contentRow}>
           <div className={styles.resizeContainer} style={{ width: tierListWidth }}>
             <div ref={exportRef} className={cn(styles.tierList, layout === "fancy" && styles.fancySpacing)}>
+              <TierListTitle
+                title={title}
+                labelFont={labelFont}
+                titleAlign={titleAlign}
+                onChangeTitle={(t) => dispatch({ type: "SET_TITLE", title: t })}
+              />
               {tiers.map((tier, index) => (
                 <TierRow
                   key={tier.id}

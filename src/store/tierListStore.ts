@@ -8,6 +8,7 @@ import {
   Tier,
   TierCharacter,
   TierListLayout,
+  TitleAlign,
 } from "@/types/tierlist/TierList";
 
 interface TierListState {
@@ -18,6 +19,8 @@ interface TierListState {
   tierListWidth: number;
   layout: TierListLayout;
   labelFont: LabelFont;
+  title: string;
+  titleAlign: TitleAlign;
 }
 
 type TierListAction =
@@ -38,7 +41,9 @@ type TierListAction =
   | { type: "CLEAR_TIERS" }
   | { type: "SET_TIER_LIST_WIDTH"; width: number }
   | { type: "SET_LAYOUT"; layout: TierListLayout }
-  | { type: "SET_LABEL_FONT"; font: Partial<LabelFont> };
+  | { type: "SET_LABEL_FONT"; font: Partial<LabelFont> }
+  | { type: "SET_TITLE"; title: string }
+  | { type: "SET_TITLE_ALIGN"; align: TitleAlign };
 
 const DEFAULT_TIERS: Tier[] = [
   { id: "tier-s", name: "S", color: "#ff7f7f", characterIds: [] },
@@ -80,6 +85,8 @@ const initialState: TierListState = {
   tierListWidth: 600,
   layout: "side",
   labelFont: { family: "inherit", size: 24, weight: 700 },
+  title: "",
+  titleAlign: "center",
 };
 
 const removeCharFromContainers = (
@@ -185,6 +192,8 @@ const tierListReducer = (
         pool,
         characters: chars,
         imageMode: "stock",
+        title: "",
+        titleAlign: "center",
       };
     }
 
@@ -204,6 +213,12 @@ const tierListReducer = (
 
     case "SET_LABEL_FONT":
       return { labelFont: { ...state.labelFont, ...action.font } };
+
+    case "SET_TITLE":
+      return { title: action.title };
+
+    case "SET_TITLE_ALIGN":
+      return { titleAlign: action.align };
 
     default:
       return state;
@@ -233,6 +248,8 @@ export const useTierListStore = create<TierListStore>()(
           tierListWidth: state.tierListWidth,
           layout: state.layout,
           labelFont: state.labelFont,
+          title: state.title,
+          titleAlign: state.titleAlign,
         }),
         version: 1,
       }

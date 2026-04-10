@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import {
+  FaAlignCenter,
+  FaAlignLeft,
+  FaAlignRight,
   FaGear,
   FaImage,
   FaTableCellsLarge,
@@ -43,6 +46,7 @@ export const TierListSettings = () => {
   const layout = useTierListStore((s) => s.layout);
   const imageMode = useTierListStore((s) => s.imageMode);
   const labelFont = useTierListStore((s) => s.labelFont);
+  const titleAlign = useTierListStore((s) => s.titleAlign);
 
   const [isOpen, setIsOpen] = useState(false);
   const [position, setPosition] = useState<{ top: number; left: number } | null>(null);
@@ -128,6 +132,30 @@ export const TierListSettings = () => {
                   onClick={() => dispatch({ type: "SET_IMAGE_MODE", mode: "main" })}
                 >
                   <FaImage size={14} /> Main Art
+                </button>
+              </div>
+            </div>
+
+            <div className={styles.section}>
+              <div className={styles.sectionLabel}>Title Alignment</div>
+              <div className={styles.optionGroup}>
+                <button
+                  className={cn(styles.optionButton, titleAlign === "left" && styles.active)}
+                  onClick={() => dispatch({ type: "SET_TITLE_ALIGN", align: "left" })}
+                >
+                  <FaAlignLeft size={14} /> Left
+                </button>
+                <button
+                  className={cn(styles.optionButton, titleAlign === "center" && styles.active)}
+                  onClick={() => dispatch({ type: "SET_TITLE_ALIGN", align: "center" })}
+                >
+                  <FaAlignCenter size={14} /> Center
+                </button>
+                <button
+                  className={cn(styles.optionButton, titleAlign === "right" && styles.active)}
+                  onClick={() => dispatch({ type: "SET_TITLE_ALIGN", align: "right" })}
+                >
+                  <FaAlignRight size={14} /> Right
                 </button>
               </div>
             </div>
