@@ -26,6 +26,12 @@
   padding: 0 4px;
 }
 
+.fancyLayout {
+  border-radius: 8px;
+  border: none;
+  overflow: hidden;
+}
+
 .topLayout {
   flex-direction: column;
   align-items: flex-start;

@@ -29,8 +29,9 @@ export const TierListToolbar = ({ exportRef }: Props) => {
     await new Promise((r) => requestAnimationFrame(r));
     try {
       const dataUrl = await toPng(exportRef.current, {
-        backgroundColor: "#1a1a2e",
+        backgroundColor: "transparent",
         pixelRatio: 2,
+        skipFonts: true,
         filter: (node) =>
           !(node instanceof HTMLElement && node.hasAttribute("data-export-ignore")),
       });

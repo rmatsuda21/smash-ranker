@@ -10,12 +10,14 @@ import styles from "./SortableCharacter.module.scss";
 type Props = {
   character: TierCharacter;
   imageMode: ImageDisplayMode;
+  inPool?: boolean;
   onContextMenu?: (e: React.MouseEvent) => void;
 };
 
 export const SortableCharacter = ({
   character,
   imageMode,
+  inPool,
   onContextMenu,
 }: Props) => {
   const {
@@ -36,7 +38,10 @@ export const SortableCharacter = ({
     <div
       ref={setNodeRef}
       style={style}
-      className={cn(styles.character, { [styles.dragging]: isDragging })}
+      className={cn(styles.character, {
+        [styles.dragging]: isDragging,
+        [styles.inPool]: inPool,
+      })}
       onContextMenu={onContextMenu}
       {...attributes}
       {...listeners}

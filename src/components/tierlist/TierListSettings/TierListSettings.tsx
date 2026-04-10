@@ -5,7 +5,10 @@ import {
   FaImage,
   FaTableCellsLarge,
   FaTableList,
+  FaWandMagicSparkles,
 } from "react-icons/fa6";
+
+import cn from "classnames";
 
 import {
   DropDownSelect,
@@ -88,19 +91,25 @@ export const TierListSettings = () => {
             style={{ top: position.top, left: position.left }}
           >
             <div className={styles.section}>
-              <div className={styles.sectionLabel}>Label Position</div>
+              <div className={styles.sectionLabel}>Layout</div>
               <div className={styles.optionGroup}>
                 <button
-                  className={`${styles.optionButton} ${layout === "side" ? styles.active : ""}`}
+                  className={cn(styles.optionButton, layout === "side" && styles.active)}
                   onClick={() => dispatch({ type: "SET_LAYOUT", layout: "side" })}
                 >
                   <FaTableList size={14} /> Side
                 </button>
                 <button
-                  className={`${styles.optionButton} ${layout === "top" ? styles.active : ""}`}
+                  className={cn(styles.optionButton, layout === "top" && styles.active)}
                   onClick={() => dispatch({ type: "SET_LAYOUT", layout: "top" })}
                 >
                   <FaTableCellsLarge size={14} /> Top
+                </button>
+                <button
+                  className={cn(styles.optionButton, layout === "fancy" && styles.active)}
+                  onClick={() => dispatch({ type: "SET_LAYOUT", layout: "fancy" })}
+                >
+                  <FaWandMagicSparkles size={14} /> Fancy
                 </button>
               </div>
             </div>
@@ -109,13 +118,13 @@ export const TierListSettings = () => {
               <div className={styles.sectionLabel}>Image Style</div>
               <div className={styles.optionGroup}>
                 <button
-                  className={`${styles.optionButton} ${imageMode === "stock" ? styles.active : ""}`}
+                  className={cn(styles.optionButton, imageMode === "stock" && styles.active)}
                   onClick={() => dispatch({ type: "SET_IMAGE_MODE", mode: "stock" })}
                 >
                   <FaImage size={14} /> Stock
                 </button>
                 <button
-                  className={`${styles.optionButton} ${imageMode === "main" ? styles.active : ""}`}
+                  className={cn(styles.optionButton, imageMode === "main" && styles.active)}
                   onClick={() => dispatch({ type: "SET_IMAGE_MODE", mode: "main" })}
                 >
                   <FaImage size={14} /> Main Art

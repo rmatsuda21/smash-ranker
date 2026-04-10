@@ -14,6 +14,7 @@ import {
 } from "@dnd-kit/core";
 import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { FaPlus } from "react-icons/fa6";
+import cn from "classnames";
 
 import { TierRow } from "@/components/tierlist/TierRow/TierRow";
 import { CharacterPool } from "@/components/tierlist/CharacterPool/CharacterPool";
@@ -267,7 +268,7 @@ export const TierListApp = () => {
       >
         <div className={styles.contentRow}>
           <div className={styles.resizeContainer} style={{ width: tierListWidth }}>
-            <div ref={exportRef} className={styles.tierList}>
+            <div ref={exportRef} className={cn(styles.tierList, layout === "fancy" && styles.fancySpacing)}>
               {tiers.map((tier, index) => (
                 <TierRow
                   key={tier.id}
