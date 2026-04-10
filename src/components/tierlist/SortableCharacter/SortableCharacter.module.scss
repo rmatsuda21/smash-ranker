@@ -8,7 +8,7 @@
   border: 1px solid var(--gray-6);
   background: var(--gray-3);
   cursor: grab;
-  touch-action: pan-y;
+  touch-action: none;
   transition: box-shadow 0.15s ease;
 
   &:hover {
@@ -18,6 +18,12 @@
 
   &.dragging {
     opacity: 0.3;
+  }
+
+  &.inPool {
+    @include mobile {
+      touch-action: pan-x;
+    }
   }
 
   @include mobile {

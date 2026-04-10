@@ -31,6 +31,7 @@ export const CharacterPool = ({ imageMode, onCharacterContextMenu }: Props) => {
                 key={instanceId}
                 character={char}
                 imageMode={imageMode}
+                inPool
                 onContextMenu={(e) => onCharacterContextMenu(instanceId, e)}
               />
             );

@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import cn from "classnames";
 
 import { LabelFont, TierListLayout } from "@/types/tierlist/TierList";
 
@@ -9,10 +10,11 @@ type Props = {
   color: string;
   layout: TierListLayout;
   labelFont: LabelFont;
+  extraStyle?: React.CSSProperties;
   onRename: (name: string) => void;
 };
 
-export const TierLabel = ({ name, color, layout, labelFont, onRename }: Props) => {
+export const TierLabel = ({ name, color, layout, labelFont, extraStyle, onRename }: Props) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editValue, setEditValue] = useState(name);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -38,12 +40,13 @@ export const TierLabel = ({ name, color, layout, labelFont, onRename }: Props) =
 
   return (
     <div
-      className={`${styles.label} ${layout === "top" ? styles.topLabel : ""}`}
+      className={cn(styles.label, layout === "top" && styles.topLabel, layout === "fancy" && styles.fancyLabel)}
       style={{
         backgroundColor: color,
         fontFamily: labelFont.family,
         fontSize: labelFont.size,
         fontWeight: labelFont.weight,
+        ...extraStyle,
       }}
     >
       {isEditing ? (

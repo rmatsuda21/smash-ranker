@@ -13,7 +13,7 @@ export type Tier = {
 
 export type ImageDisplayMode = "stock" | "main";
 
-export type TierListLayout = "side" | "top";
+export type TierListLayout = "side" | "top" | "fancy";
 
 export type LabelFont = {
   family: string;
