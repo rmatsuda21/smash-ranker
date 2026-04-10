@@ -29,7 +29,7 @@ No test runner is configured. Use `bun lint` and `bun build` to validate changes
 
 - `src/App.tsx` — Root with urql GraphQL provider + Lingui i18n provider
 - `src/components/PageRouter.tsx` — Wouter-based routing
-- `/` → home page; `/ranker` → main Top 8 editor
+- `/` → home page; `/ranker` → main Top 8 editor; `/tier` → tier list maker
 
 ### State Management (Zustand)
 
@@ -41,6 +41,19 @@ All stores live in `src/store/` and use Zustand's persist middleware (localStora
 - **editorStore** — UI state (active panel/tab)
 - **historyStore** — undo/redo history stack
 - **fontStore** — custom font loading and registration
+- **tierListStore** — tier list state: tiers, character pool, layout variant, label font settings, image mode
+
+### Tier List (`/tier`)
+
+A drag-and-drop tier list maker for ranking Smash Bros. characters. Built with **@dnd-kit** for sortable drag-and-drop.
+
+- **Components** live in `src/components/tierlist/`
+- **Types** in `src/types/tierlist/TierList.ts` — `Tier`, `TierCharacter`, `TierListLayout` (`"side"` | `"top"`), `LabelFont`, `ImageDisplayMode`
+- **Store** — `src/store/tierListStore.ts` (Zustand + persist to localStorage). Reducer-based with actions like `MOVE_CHARACTER`, `ADD_TIER`, `SET_LAYOUT`, `SET_LABEL_FONT`, etc.
+- **Layout variants** — "side" (label left of row) and "top" (label as tab above row). Controlled via `TierListSettings` popover.
+- **Settings popover** (`TierListSettings`) — label position, image style (stock/main art), font family/weight/size. Uses the shared `DropDownSelect` component.
+- **Export** — renders to PNG via `html-to-image`. Elements with `data-export-ignore` are excluded.
+- **Mobile** — uses `touch-action: pan-y` on sortable characters to allow vertical scrolling while preserving horizontal drag. The `main` element in Layout is the scroll container on mobile. Character pool sticks to the bottom via `position: sticky`.
 
 ### Canvas Rendering
 

@@ -1,4 +1,5 @@
 import ultCharacters from "@/consts/top8/ultCharacters.json";
+import { EMPTY_CHARACTER_ID } from "@/consts/top8/characters";
 
 export type CharacterCrop = {
   offset: { x: number; y: number };
@@ -13,6 +14,7 @@ type AltOverride = {
 type CharacterData = {
   id: string;
   name: string;
+  nameJa?: string;
   alts: number;
   altNames: string[];
   cropOffset?: { x: number; y: number };
@@ -21,14 +23,18 @@ type CharacterData = {
 };
 
 const characterMap = new Map<string, CharacterData>(
-  (ultCharacters.characters as CharacterData[]).map((char) => [char.id, char])
+  (ultCharacters.characters as CharacterData[]).map((char) => [char.id, char]),
 );
 
 export const getCharacterCrop = (
   characterId: string,
-  alt?: number
+  alt?: number,
 ): CharacterCrop => {
   const character = characterMap.get(characterId);
+
+  if (characterId === EMPTY_CHARACTER_ID) {
+    return { offset: { x: 0, y: 0 }, scale: 0.8 };
+  }
 
   if (!character) {
     return { offset: { x: 0, y: 0 }, scale: 1 };

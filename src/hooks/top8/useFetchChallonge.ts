@@ -7,8 +7,7 @@ import {
   createBlankPlayer,
   getPlacements,
 } from "@/utils/top8/samplePlayers";
-
-const DEFAULT_CHARACTER_ID = "1293";
+import { EMPTY_CHARACTER_ID } from "@/consts/top8/characters";
 
 interface ChallongeParticipantWrapper {
   participant: {
@@ -53,7 +52,7 @@ const parseParticipants = (
       entrantId: String(p.id),
       name: p.name,
       gamerTag: p.name,
-      characters: [{ id: DEFAULT_CHARACTER_ID, alt: 0 as const }],
+      characters: [{ id: EMPTY_CHARACTER_ID, alt: 0 as const }],
       placement: p.final_rank ?? p.seed ?? 0,
       prefix: undefined,
       twitter: undefined,

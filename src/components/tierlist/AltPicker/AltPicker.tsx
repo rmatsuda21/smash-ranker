@@ -1,8 +1,10 @@
 import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
+import { useLingui } from "@lingui/react";
 
 import { characters } from "@/consts/top8/ultCharacters.json";
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
+import { getCharacterDisplayName } from "@/utils/top8/getCharacterName";
 import { useTierListStore } from "@/store/tierListStore";
 import { ImageDisplayMode } from "@/types/tierlist/TierList";
 
@@ -21,6 +23,7 @@ export const AltPicker = ({
   imageMode,
   onClose,
 }: Props) => {
+  const { i18n } = useLingui();
   const dispatch = useTierListStore((s) => s.dispatch);
   const character = useTierListStore((s) => s.characters[instanceId]);
   const ref = useRef<HTMLDivElement>(null);
@@ -54,7 +57,7 @@ export const AltPicker = ({
       className={styles.picker}
       style={{ top: position.y, left: position.x }}
     >
-      <div className={styles.title}>{charData.name}</div>
+      <div className={styles.title}>{getCharacterDisplayName(charData.id, i18n.locale)}</div>
       <div className={styles.alts}>
         {Array.from({ length: altCount }, (_, i) => (
           <button

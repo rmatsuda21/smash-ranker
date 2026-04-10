@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef } from "react";
 
 import { characters } from "@/consts/top8/ultCharacters.json";
+import { EMPTY_CHARACTER_ID } from "@/consts/top8/characters";
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
 import { CharacerData } from "@/types/top8/Player";
 import { useTooltip } from "@/hooks/top8/useTooltip";
@@ -56,6 +57,8 @@ const AltOption = ({
 };
 
 const getAltsAndIcons = (characterId?: string) => {
+  if (characterId === EMPTY_CHARACTER_ID) return [];
+
   const character = characters.find((c) => c.id === characterId);
 
   if (!character || !characterId) {
@@ -110,6 +113,8 @@ export const CharacterAltPicker = ({
       );
     }
   }, [selectedCharacter?.alt]);
+
+  if (altsAndIcons.length === 0) return null;
 
   return (
     <div

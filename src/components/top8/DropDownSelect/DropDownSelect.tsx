@@ -18,6 +18,7 @@ export type DropDownItem<T> = {
   id: string;
   display: string;
   imageSrc?: string;
+  searchTerms?: string[];
 };
 
 type Props<T> = {
@@ -140,8 +141,12 @@ export const DropDownSelect = <T,>({
     if (!searchQuery.trim()) return options;
 
     const query = searchQuery.toLowerCase().trim();
-    return options.filter((option) =>
-      option.display.toLowerCase().includes(query)
+    return options.filter(
+      (option) =>
+        option.display.toLowerCase().includes(query) ||
+        option.searchTerms?.some((term) =>
+          term.toLowerCase().includes(query)
+        )
     );
   }, [options, searchQuery]);
 
