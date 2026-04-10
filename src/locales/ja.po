@@ -506,7 +506,7 @@ msgstr "このスロットの選手情報がすべてリセットされます。
 
 #: src/components/top8/SidePanel/SidePanelNav.tsx:31
 msgid "Tournament"
-msgstr "大会"
+msgstr "大会情報"
 
 #: src/components/top8/InfoPanel/InfoPanel.tsx:125
 msgid "Tournament & Player data"
