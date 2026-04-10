@@ -1,3 +1,4 @@
+import { t } from "@lingui/core/macro";
 import { PlayerInfo } from "@/types/top8/Player";
 import { TournamentInfo } from "@/types/top8/Tournament";
 import { usePlayerStore } from "@/store/playerStore";
@@ -37,7 +38,7 @@ const fetchChallongeTournament = async (slug: string): Promise<ChallongeResponse
 
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
-    throw new Error(body.error || `Challonge API error: ${res.status}`);
+    throw new Error(body.error || t`Challonge API error: ${res.status}`);
   }
 
   return res.json();
@@ -116,7 +117,7 @@ export const useFetchChallonge = () => {
       playerDispatch({ type: "FETCH_PLAYERS_SUCCESS", payload: paddedPlayers });
     } catch (error) {
       const message =
-        error instanceof Error ? error.message : "Failed to fetch Challonge tournament";
+        error instanceof Error ? error.message : t`Failed to fetch Challonge tournament`;
       console.error("Challonge fetch error:", error);
       playerDispatch({ type: "FETCH_PLAYERS_FAIL", payload: message });
       alert(message);

@@ -1,3 +1,4 @@
+import { t } from "@lingui/core/macro";
 import { PlayerInfo } from "@/types/top8/Player";
 import { TournamentInfo } from "@/types/top8/Tournament";
 import { usePlayerStore } from "@/store/playerStore";
@@ -46,7 +47,7 @@ const fetchTonamelCompetition = async (slug: string): Promise<TonamelResponse> =
 
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
-    throw new Error(body.error || `Tonamel API error: ${res.status}`);
+    throw new Error(body.error || t`Tonamel API error: ${res.status}`);
   }
 
   return res.json();
@@ -176,7 +177,7 @@ export const useFetchTonamel = () => {
       const data = await fetchTonamelCompetition(slug);
 
       if (!data.competition) {
-        throw new Error("Competition not found");
+        throw new Error(t`Competition not found`);
       }
 
       const blockCount = data.competition.blockCount ?? 0;
@@ -198,7 +199,7 @@ export const useFetchTonamel = () => {
       playerDispatch({ type: "FETCH_PLAYERS_SUCCESS", payload: paddedPlayers });
     } catch (error) {
       const message =
-        error instanceof Error ? error.message : "Failed to fetch Tonamel tournament";
+        error instanceof Error ? error.message : t`Failed to fetch Tonamel tournament`;
       console.error("Tonamel fetch error:", error);
       playerDispatch({ type: "FETCH_PLAYERS_FAIL", payload: message });
       alert(message);

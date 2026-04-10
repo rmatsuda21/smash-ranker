@@ -15,7 +15,7 @@ msgstr ""
 
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:75
 msgid "(https://challonge.com/[tournament])"
-msgstr ""
+msgstr "(https://challonge.com/[大会名])"
 
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:73
 msgid "(https://start.gg/tournament/[name]/event/[event])"
@@ -87,6 +87,11 @@ msgstr "ブルー"
 msgid "Buy me a coffee"
 msgstr "一杯だけよ"
 
+#. placeholder {0}: res.status
+#: src/hooks/top8/useFetchChallonge.ts:41
+msgid "Challonge API error: {0}"
+msgstr "Challonge APIエラー: {0}"
+
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:218
 msgid "Characters"
 msgstr "使用キャラ"
@@ -114,6 +119,10 @@ msgstr "色"
 #: src/components/top8/DesignEditor/DesignEditor.tsx:80
 msgid "Color Palette"
 msgstr "カラーパレット"
+
+#: src/hooks/top8/useFetchTonamel.ts:180
+msgid "Competition not found"
+msgstr "大会が見つかりませんでした"
 
 #: src/components/top8/ConfigManager/ConfigManagerModal/ConfigManagerModal.tsx:185
 #~ msgid "Config Manager"
@@ -156,7 +165,7 @@ msgstr "クレジット & インスピレーション"
 
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:249
 msgid "Custom Flag"
-msgstr ""
+msgstr "カスタムフラッグ"
 
 #: src/components/top8/DesignEditor/DesignEditor.tsx:35
 msgid "Custom Fonts"
@@ -198,7 +207,7 @@ msgstr "素材消去"
 #~ msgid "Delete Config: {0}"
 #~ msgstr "設定を削除: {0}"
 
-#: src/components/top8/SidePanel/SidePanelNav.tsx:23
+#: src/components/top8/SidePanel/SidePanelNav.tsx:28
 msgid "Design"
 msgstr "デザイン"
 
@@ -244,6 +253,18 @@ msgstr "参加人数"
 #: src/consts/top8/placeholders.ts:29
 msgid "Event Name"
 msgstr "イベント名"
+
+#: src/hooks/top8/useFetchChallonge.ts:120
+msgid "Failed to fetch Challonge tournament"
+msgstr "Challonge大会の取得に失敗しました"
+
+#: src/hooks/top8/useFetchTonamel.ts:202
+msgid "Failed to fetch Tonamel tournament"
+msgstr "Tonamel大会の取得に失敗しました"
+
+#: src/hooks/top8/useFetchResult.ts:421
+msgid "Failed to fetch tournament data"
+msgstr "大会データの取得に失敗しました"
 
 #: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:85
 msgid "Filename"
@@ -369,7 +390,7 @@ msgstr "ピクセル比"
 
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:209
 msgid "Placement"
-msgstr ""
+msgstr "順位"
 
 #: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:62
 #: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:68
@@ -396,7 +417,7 @@ msgstr "選手所属"
 msgid "Player Tag"
 msgstr "選手タグ"
 
-#: src/components/top8/SidePanel/SidePanelNav.tsx:19
+#: src/components/top8/SidePanel/SidePanelNav.tsx:20
 msgid "Players"
 msgstr "選手情報"
 
@@ -464,7 +485,7 @@ msgstr "サポート"
 msgid "Template Name"
 msgstr "テンプレ名"
 
-#: src/components/top8/SidePanel/SidePanelNav.tsx:35
+#: src/components/top8/SidePanel/SidePanelNav.tsx:36
 msgid "Templates"
 msgstr "テンプレ"
 
@@ -476,7 +497,7 @@ msgstr "テキスト"
 msgid "Text content is configured in the design layout."
 msgstr "テキストはデザインレイアウトで設定されます。"
 
-#: src/components/top8/SidePanel/SidePanelNav.tsx:27
+#: src/components/top8/SidePanel/SidePanelNav.tsx:32
 msgid "Texts"
 msgstr "テキスト"
 
@@ -486,7 +507,7 @@ msgstr "テーマ"
 
 #: src/consts/errors.ts:4
 msgid "This tournament has multiple groups without a final bracket, so it doesn't produce a unified Top 8 ranking."
-msgstr ""
+msgstr "この大会は複数グループ制のため、統一された順位を生成できません。"
 
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:175
 msgid "This will reset all player data for this slot."
@@ -504,7 +525,12 @@ msgstr "このスロットの選手情報がすべてリセットされます。
 #~ msgid "to undo and"
 #~ msgstr "で元に戻す、"
 
-#: src/components/top8/SidePanel/SidePanelNav.tsx:31
+#. placeholder {0}: res.status
+#: src/hooks/top8/useFetchTonamel.ts:50
+msgid "Tonamel API error: {0}"
+msgstr "Tonamel APIエラー: {0}"
+
+#: src/components/top8/SidePanel/SidePanelNav.tsx:24
 msgid "Tournament"
 msgstr "大会情報"
 
@@ -536,6 +562,10 @@ msgstr "大会住所"
 #: src/consts/top8/placeholders.ts:28
 msgid "Tournament Name"
 msgstr "大会名"
+
+#: src/hooks/top8/useFetchResult.ts:373
+msgid "Tournament not found"
+msgstr "大会が見つかりませんでした"
 
 #: src/consts/top8/placeholders.ts:33
 msgid "Tournament State"
