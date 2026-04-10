@@ -144,6 +144,14 @@
     }
   }
 
+  .divider {
+    width: 70%;
+    height: 2px;
+    background-color: var(--gray-6);
+    margin: 2px 0;
+    flex-shrink: 0;
+  }
+
   .bottomButtons {
     margin-top: auto;
     margin-bottom: 10px;
@@ -219,6 +227,13 @@
       span {
         white-space: nowrap;
       }
+    }
+
+    .divider {
+      width: 2px;
+      height: 70%;
+      align-self: center;
+      margin: 0 2px;
     }
 
     .bottomButtons {

@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { IoPerson, IoTrophy, IoText, IoPencil } from "react-icons/io5";
 import { HiOutlineTemplate } from "react-icons/hi";
 import { FaCircleInfo, FaGear } from "react-icons/fa6";
@@ -19,6 +20,10 @@ const EditorTabLabels: Record<
     label: msg`Players`,
     icon: <IoPerson />,
   },
+  [EditorTab.TOURNAMENT]: {
+    label: msg`Tournament`,
+    icon: <IoTrophy />,
+  },
   [EditorTab.DESIGN]: {
     label: msg`Design`,
     icon: <IoPencil />,
@@ -27,15 +32,19 @@ const EditorTabLabels: Record<
     label: msg`Texts`,
     icon: <IoText />,
   },
-  [EditorTab.TOURNAMENT]: {
-    label: msg`Tournament`,
-    icon: <IoTrophy />,
-  },
   [EditorTab.TEMPLATES]: {
     label: msg`Templates`,
     icon: <HiOutlineTemplate />,
   },
 };
+
+type NavTab = Exclude<EditorTab, EditorTab.CREDIT | EditorTab.SETTINGS>;
+
+const TabGroups: NavTab[][] = [
+  [EditorTab.PLAYERS, EditorTab.TOURNAMENT],
+  [EditorTab.DESIGN, EditorTab.TEXTS],
+  [EditorTab.TEMPLATES],
+];
 
 type Props = {
   activeTab: EditorTab | null;
@@ -47,15 +56,20 @@ export const SidePanelNav = ({ activeTab, onTabChange }: Props) => {
 
   return (
     <div className={cn(styles.nav)}>
-      {Object.entries(EditorTabLabels).map(([key, value]) => (
-        <button
-          key={key}
-          className={cn(styles.tab, { [styles.active]: activeTab === key })}
-          onClick={() => onTabChange(key as EditorTab)}
-        >
-          <div className={styles.icon}>{value.icon}</div>
-          <span>{_(value.label)}</span>
-        </button>
+      {TabGroups.map((group, groupIndex) => (
+        <Fragment key={groupIndex}>
+          {groupIndex > 0 && <div className={styles.divider} />}
+          {group.map((tab) => (
+            <button
+              key={tab}
+              className={cn(styles.tab, { [styles.active]: activeTab === tab })}
+              onClick={() => onTabChange(tab)}
+            >
+              <div className={styles.icon}>{EditorTabLabels[tab].icon}</div>
+              <span>{_(EditorTabLabels[tab].label)}</span>
+            </button>
+          ))}
+        </Fragment>
       ))}
       <div className={styles.bottomButtons}>
         <Button
