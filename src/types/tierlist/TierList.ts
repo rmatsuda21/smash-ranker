@@ -20,3 +20,5 @@ export type LabelFont = {
   size: number;
   weight: number;
 };
+
+export type TitleAlign = "left" | "center" | "right";
