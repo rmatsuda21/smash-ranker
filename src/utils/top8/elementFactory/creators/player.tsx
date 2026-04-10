@@ -13,6 +13,7 @@ import type {
 import type { CharacerData } from "@/types/top8/Player";
 import type { ElementCreator } from "@/types/top8/ElementFactory";
 import { CustomImage } from "@/components/top8/Canvas/CustomImage";
+import { EMPTY_CHARACTER_ID, EMPTY_CHARACTER_DARK_IMG } from "@/consts/top8/characters";
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
 import { getCharacterCrop } from "@/utils/top8/getCharacterCrop";
 import { resolveColor } from "@/utils/top8/resolveColor";
@@ -63,6 +64,10 @@ export const createCharacterImageElement: ElementCreator<
     imageSrc = context.player.avatarImgSrc;
     cropOffset = { x: 0, y: 0 };
     cropScale = 1;
+  }
+
+  if (!isAltCharacter && character.id === EMPTY_CHARACTER_ID && !context.player?.avatarImgSrc) {
+    imageSrc = EMPTY_CHARACTER_DARK_IMG;
   }
 
   return (
