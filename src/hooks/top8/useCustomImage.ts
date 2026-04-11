@@ -5,7 +5,7 @@ import { LRUCache } from "@/utils/LRUCache";
 import { createAsyncQueue } from "@/utils/asyncQueue";
 import { isMobile } from "@/utils/isMobile";
 
-const IMAGE_CACHE_SIZE = isMobile() ? 5 : 30;
+const IMAGE_CACHE_SIZE = 30;
 const imageCache = new LRUCache<string, HTMLImageElement>(IMAGE_CACHE_SIZE, (_key, img) => {
   img.onload = null;
   img.onerror = null;
