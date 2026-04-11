@@ -4,6 +4,9 @@ import {
   FaDownload,
   FaEraser,
 } from "react-icons/fa6";
+import { Trans } from "@lingui/react/macro";
+import { msg } from "@lingui/core/macro";
+import { useLingui } from "@lingui/react";
 
 import { Button } from "@/components/shared/Button/Button";
 import { ConfirmationModal } from "@/components/shared/ConfirmationModal/ConfirmationModal";
@@ -18,6 +21,7 @@ type Props = {
 };
 
 export const TierListToolbar = ({ exportRef }: Props) => {
+  const { _ } = useLingui();
   const dispatch = useTierListStore((s) => s.dispatch);
 
   const [exporting, setExporting] = useState(false);
@@ -61,28 +65,28 @@ export const TierListToolbar = ({ exportRef }: Props) => {
     <div className={styles.toolbar}>
       <TierListSettings />
       <Button size="md" variant="outline" onClick={() => setConfirmAction("clear")}>
-        <FaEraser size={14} /> Clear
+        <FaEraser size={14} /> <Trans>Clear</Trans>
       </Button>
       <Button size="md" variant="outline" onClick={() => setConfirmAction("reset")}>
-        <FaArrowRotateLeft size={14} /> Reset
+        <FaArrowRotateLeft size={14} /> <Trans>Reset</Trans>
       </Button>
       <Button size="md" onClick={handleExport} loading={exporting}>
-        <FaDownload size={14} /> Export PNG
+        <FaDownload size={14} /> <Trans>Save Image</Trans>
       </Button>
 
       <ConfirmationModal
         isOpen={confirmAction === "clear"}
         onClose={() => setConfirmAction(null)}
-        title="Clear Tiers"
-        description="This will move all characters back to the unranked pool. Your tiers will remain."
+        title={_(msg`Clear Tiers`)}
+        description={_(msg`This will move all characters back to the unranked pool. Your tiers will remain.`)}
         onConfirm={handleConfirm}
         onCancel={() => setConfirmAction(null)}
       />
       <ConfirmationModal
         isOpen={confirmAction === "reset"}
         onClose={() => setConfirmAction(null)}
-        title="Reset All"
-        description="This will reset everything to the default state, including tiers and all character placements."
+        title={_(msg`Reset All`)}
+        description={_(msg`This will reset everything to the default state, including tiers and all character placements.`)}
         onConfirm={handleConfirm}
         onCancel={() => setConfirmAction(null)}
       />

@@ -16,6 +16,8 @@ import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { FaPlus } from "react-icons/fa6";
 import cn from "classnames";
 
+import { Trans } from "@lingui/react/macro";
+
 import { TierRow } from "@/components/tierlist/TierRow/TierRow";
 import { CharacterPool } from "@/components/tierlist/CharacterPool/CharacterPool";
 import { TierListToolbar } from "@/components/tierlist/TierListToolbar/TierListToolbar";
@@ -23,6 +25,7 @@ import { TierListTitle } from "@/components/tierlist/TierListTitle/TierListTitle
 import { CharacterImage } from "@/components/tierlist/CharacterImage/CharacterImage";
 import { AltPicker } from "@/components/tierlist/AltPicker/AltPicker";
 import { useTierListStore } from "@/store/tierListStore";
+import { TIER_PALETTES, getColorsForTierCount, DEFAULT_PALETTE_ID } from "@/consts/tierlist/tierPalettes";
 import { preloadCharacterImages } from "@/utils/top8/preloadCharacterImages";
 
 import styles from "./TierListApp.module.scss";
@@ -31,19 +34,6 @@ type AltPickerState = {
   instanceId: string;
   position: { x: number; y: number };
 } | null;
-
-const TIER_COLORS = [
-  "#ff7f7f",
-  "#ffbf7f",
-  "#ffdf7f",
-  "#ffff7f",
-  "#bfff7f",
-  "#7fff7f",
-  "#7fffff",
-  "#7fbfff",
-  "#bf7fff",
-  "#ff7fbf",
-];
 
 const findContainer = (
   instanceId: string,
@@ -67,6 +57,7 @@ export const TierListApp = () => {
   const labelFont = useTierListStore((s) => s.labelFont);
   const title = useTierListStore((s) => s.title);
   const titleAlign = useTierListStore((s) => s.titleAlign);
+  const activePaletteId = useTierListStore((s) => s.activePaletteId);
 
   const tierListWidth = useTierListStore((s) => s.tierListWidth);
 
@@ -74,13 +65,13 @@ export const TierListApp = () => {
   const [altPicker, setAltPicker] = useState<AltPickerState>(null);
   const exportRef = useRef<HTMLDivElement>(null);
   const isResizing = useRef(false);
-  const colorIndexRef = useRef(tiers.length % TIER_COLORS.length);
 
   const handleAddTier = useCallback(() => {
-    const color = TIER_COLORS[colorIndexRef.current % TIER_COLORS.length];
-    colorIndexRef.current++;
-    dispatch({ type: "ADD_TIER", name: "?", color });
-  }, [dispatch]);
+    const palette = TIER_PALETTES.find((p) => p.id === activePaletteId)
+      ?? TIER_PALETTES.find((p) => p.id === DEFAULT_PALETTE_ID)!;
+    const colors = getColorsForTierCount(palette, tiers.length + 1);
+    dispatch({ type: "ADD_TIER", name: "?", color: colors[tiers.length] });
+  }, [dispatch, activePaletteId, tiers.length]);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -281,7 +272,7 @@ export const TierListApp = () => {
               onClick={handleAddTier}
               data-export-ignore
             >
-              <FaPlus size={12} /> Add Tier
+              <FaPlus size={12} /> <Trans>Add Tier</Trans>
             </button>
 
             <div

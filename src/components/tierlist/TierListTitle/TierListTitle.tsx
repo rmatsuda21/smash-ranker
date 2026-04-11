@@ -1,4 +1,7 @@
 import { useRef, useState } from "react";
+import { Trans } from "@lingui/react/macro";
+import { msg } from "@lingui/core/macro";
+import { useLingui } from "@lingui/react";
 
 import { LabelFont, TitleAlign } from "@/types/tierlist/TierList";
 
@@ -12,6 +15,7 @@ type Props = {
 };
 
 export const TierListTitle = ({ title, labelFont, titleAlign, onChangeTitle }: Props) => {
+  const { _ } = useLingui();
   const [isEditing, setIsEditing] = useState(false);
   const [editValue, setEditValue] = useState(title);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -55,7 +59,7 @@ export const TierListTitle = ({ title, labelFont, titleAlign, onChangeTitle }: P
           onChange={(e) => setEditValue(e.target.value)}
           onBlur={handleSubmit}
           onKeyDown={handleKeyDown}
-          placeholder="Enter title"
+          placeholder={_(msg`Enter title`)}
           maxLength={100}
           autoFocus
         />
@@ -71,13 +75,13 @@ export const TierListTitle = ({ title, labelFont, titleAlign, onChangeTitle }: P
         onClick={handleClick}
         data-export-ignore
       >
-        Click to add title
+        <Trans>Click to add title</Trans>
       </div>
     );
   }
 
   return (
-    <div className={styles.titleContainer} style={fontStyle} onClick={handleClick} title="Click to edit title">
+    <div className={styles.titleContainer} style={fontStyle} onClick={handleClick} title={_(msg`Click to edit title`)}>
       {title}
     </div>
   );

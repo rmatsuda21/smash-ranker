@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Cookies from "js-cookie";
+import { Trans } from "@lingui/react/macro";
 
 import { Modal } from "@/components/shared/Modal/Modal";
 import { Button } from "@/components/shared/Button/Button";
@@ -30,7 +31,7 @@ const CookieInput = ({
 
   return (
     <div className={styles.cookieInput}>
-      <span>Don't show again</span>
+      <span><Trans>Don't show again</Trans></span>
       <Input
         type="checkbox"
         onChange={handleCheckboxChange}
@@ -74,10 +75,10 @@ export const ConfirmationModal = ({
         {children}
         <div className={styles.buttons}>
           <Button className={styles.cancelButton} onClick={onCancel}>
-            Cancel
+            <Trans>Cancel</Trans>
           </Button>
           <Button className={styles.confirmButton} onClick={handleConfirm}>
-            Confirm
+            <Trans>Confirm</Trans>
           </Button>
         </div>
       </div>

@@ -1,6 +1,6 @@
 import { i18n } from "@lingui/core";
 
 export async function loadCatalog(locale: string) {
-  const { messages } = await import(`./locales/${locale}.po`);
+  const { messages } = await import(`./locales/${locale}.ts`);
   i18n.loadAndActivate({ locale, messages });
 }

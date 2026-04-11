@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
-import { useLingui } from "@lingui/react";
+import { useLingui } from "@lingui/react/macro";
 
 import { characters } from "@/consts/top8/ultCharacters.json";
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
@@ -23,7 +23,7 @@ export const AltPicker = ({
   imageMode,
   onClose,
 }: Props) => {
-  const { i18n } = useLingui();
+  const { t, i18n } = useLingui();
   const dispatch = useTierListStore((s) => s.dispatch);
   const character = useTierListStore((s) => s.characters[instanceId]);
   const ref = useRef<HTMLDivElement>(null);
@@ -68,7 +68,7 @@ export const AltPicker = ({
               dispatch({ type: "SET_CHARACTER_ALT", instanceId, alt: i });
               onClose();
             }}
-            title={charData.altNames?.[i] ?? `Alt ${i}`}
+            title={charData.altNames?.[i] ?? t`Alt ${i}`}
           >
             <img
               src={getCharImgUrl({
@@ -76,7 +76,7 @@ export const AltPicker = ({
                 alt: i as 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7,
                 type: imageMode,
               })}
-              alt={charData.altNames?.[i] ?? `Alt ${i}`}
+              alt={charData.altNames?.[i] ?? t`Alt ${i}`}
               width={40}
               height={40}
               draggable={false}

@@ -1,5 +1,7 @@
 import { useRef, useState } from "react";
 import cn from "classnames";
+import { msg } from "@lingui/core/macro";
+import { useLingui } from "@lingui/react";
 
 import { LabelFont, TierListLayout } from "@/types/tierlist/TierList";
 
@@ -15,6 +17,7 @@ type Props = {
 };
 
 export const TierLabel = ({ name, color, layout, labelFont, extraStyle, onRename }: Props) => {
+  const { _ } = useLingui();
   const [isEditing, setIsEditing] = useState(false);
   const [editValue, setEditValue] = useState(name);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -61,7 +64,7 @@ export const TierLabel = ({ name, color, layout, labelFont, extraStyle, onRename
           autoFocus
         />
       ) : (
-        <span className={styles.text} onClick={handleClick} title="Click to rename">
+        <span className={styles.text} onClick={handleClick} title={_(msg`Click to rename`)}>
           {name}
         </span>
       )}
