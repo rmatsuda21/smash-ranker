@@ -52,15 +52,18 @@ export const Canvas = ({ className }: Props) => {
 
   const handleFitToWindow = useCallback(() => {
     if (scrollAreaRef.current) {
+      const padding = isMobile() ? 0 : CANVAS_PADDING;
       const availableWidth =
-        scrollAreaRef.current.clientWidth - CANVAS_PADDING * 2;
+        scrollAreaRef.current.clientWidth - padding * 2;
       const availableHeight =
-        scrollAreaRef.current.clientHeight - CANVAS_PADDING * 2;
+        scrollAreaRef.current.clientHeight - padding * 2;
 
       const scaleByWidth = availableWidth / canvasSize.width;
       const scaleByHeight = availableHeight / canvasSize.height;
 
-      setDisplayScale(Math.min(scaleByWidth, scaleByHeight));
+      setDisplayScale(
+        isMobile() ? scaleByWidth : Math.min(scaleByWidth, scaleByHeight),
+      );
     }
   }, [canvasSize.width, canvasSize.height]);
 
@@ -86,7 +89,7 @@ export const Canvas = ({ className }: Props) => {
           "--aspect-ratio": `${canvasSize.width / canvasSize.height}`,
           "--canvas-width": `${canvasSize.width}px`,
           "--canvas-height": `${canvasSize.height}px`,
-          "--canvas-padding": `${CANVAS_PADDING}px`,
+          "--canvas-padding": `${isMobile() ? 0 : CANVAS_PADDING}px`,
         } as React.CSSProperties);
         setCanvasMounted(true);
       }

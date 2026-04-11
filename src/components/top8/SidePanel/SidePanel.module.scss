@@ -247,12 +247,16 @@
 
   .editorsWindow {
     width: 100%;
-    padding-inline: 10px;
   }
 
   .editors {
     min-width: 0;
     overflow-y: auto;
+    padding-bottom: 10px;
+
+    > * {
+      padding-inline: 10px;
+    }
   }
 
   .close {

@@ -95,6 +95,7 @@
 @include mobile {
   .header {
     overflow-x: auto;
+    overflow-y: hidden;
     flex-shrink: 0;
   }
 
