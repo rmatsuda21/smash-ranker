@@ -1,3 +1,5 @@
+@use "@/_theme" as *;
+
 .modal {
   position: fixed;
   top: 0;
@@ -38,4 +40,10 @@
 
   padding: 20px;
   border-radius: 5px;
+
+  @include mobile {
+    width: calc(100vw - 32px);
+    max-height: calc(100svh - 32px);
+    overflow-y: auto;
+  }
 }

@@ -1,3 +1,5 @@
+@use "@/_theme" as *;
+
 .wrapper {
   position: relative;
   display: flex;
@@ -37,6 +39,10 @@
     span {
       font-size: var(--font-size-sm);
       color: var(--gray-11);
+
+      @include mobile {
+        display: none;
+      }
     }
   }
 

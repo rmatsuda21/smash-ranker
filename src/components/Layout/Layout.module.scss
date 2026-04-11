@@ -1,3 +1,5 @@
+@use "@/_theme" as *;
+
 .root {
   display: flex;
   flex-direction: column;
@@ -109,5 +111,11 @@
 
   &.open {
     transform: translateX(0);
+  }
+}
+
+@include mobile {
+  .root main {
+    overflow-y: hidden;
   }
 }

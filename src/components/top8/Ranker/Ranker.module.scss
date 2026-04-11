@@ -33,15 +33,15 @@
     flex-direction: column;
 
     .canvasWrapper {
-      flex: 1;
+      flex: none;
       min-height: 0;
       max-height: none;
     }
 
     .sidePanel {
-      height: auto;
       flex: 1;
       min-height: 0;
+      height: auto;
     }
   }
 }

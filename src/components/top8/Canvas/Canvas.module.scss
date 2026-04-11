@@ -87,20 +87,21 @@
 @include mobile {
   .canvasContainer {
     --canvas-padding: 0px;
+    height: auto;
 
     .scrollArea {
+      flex: none;
       scrollbar-gutter: auto;
-      overflow-x: hidden;
-      overflow-y: auto;
+      overflow: hidden;
+      background: none;
+    }
+
+    .canvasWrapper {
+      margin-inline: 0;
     }
 
     .controls {
-      gap: 10px;
-      margin: 10px;
-
-      input[type="range"] {
-        width: 120px;
-      }
+      display: none;
     }
   }
 }
