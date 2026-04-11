@@ -7,6 +7,9 @@ import {
   FaPalette,
   FaTrash,
 } from "react-icons/fa6";
+import { Trans } from "@lingui/react/macro";
+import { msg } from "@lingui/core/macro";
+import { useLingui } from "@lingui/react";
 
 import { ColorInput } from "@/components/shared/ColorInput/ColorInput";
 import { useTierListStore } from "@/store/tierListStore";
@@ -21,6 +24,7 @@ type Props = {
 };
 
 export const TierSettings = ({ tierId, tierIndex, tierCount, color }: Props) => {
+  const { _ } = useLingui();
   const [isOpen, setIsOpen] = useState(false);
   const [position, setPosition] = useState<{ top: number; left: number } | null>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -78,7 +82,7 @@ export const TierSettings = ({ tierId, tierIndex, tierCount, color }: Props) => 
         ref={buttonRef}
         className={styles.gearButton}
         onClick={handleToggle}
-        aria-label="Tier settings"
+        aria-label={_(msg`Tier settings`)}
       >
         <FaGear size={14} />
       </button>
@@ -93,7 +97,7 @@ export const TierSettings = ({ tierId, tierIndex, tierCount, color }: Props) => 
           >
             <div className={styles.colorRow}>
                   <FaPalette size={12} />
-                  <span>Color</span>
+                  <span><Trans>Color</Trans></span>
                   <ColorInput
                     color={color}
                     onChange={(c) =>
@@ -107,21 +111,21 @@ export const TierSettings = ({ tierId, tierIndex, tierCount, color }: Props) => 
                   onClick={handleMoveUp}
                   disabled={tierIndex === 0}
                 >
-                  <FaArrowUp size={12} /> Move Up
+                  <FaArrowUp size={12} /> <Trans>Move Up</Trans>
                 </button>
                 <button
                   className={styles.menuItem}
                   onClick={handleMoveDown}
                   disabled={tierIndex === tierCount - 1}
                 >
-                  <FaArrowDown size={12} /> Move Down
+                  <FaArrowDown size={12} /> <Trans>Move Down</Trans>
                 </button>
                 <button
                   className={styles.menuItem}
                   onClick={handleDelete}
                   data-danger
                 >
-                  <FaTrash size={12} /> Delete
+                  <FaTrash size={12} /> <Trans>Delete</Trans>
                 </button>
           </div>,
           document.body

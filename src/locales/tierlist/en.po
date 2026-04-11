@@ -1,0 +1,255 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2026-04-10 20:31-0400\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: en\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
+
+#: src/components/tierlist/CharacterPool/CharacterPool.tsx:44
+msgid "← swipe to scroll →"
+msgstr ""
+
+#: src/components/tierlist/TierListApp/TierListApp.tsx:275
+msgid "Add Tier"
+msgstr ""
+
+#: src/components/tierlist/AltPicker/AltPicker.tsx:71
+#: src/components/tierlist/AltPicker/AltPicker.tsx:79
+msgid "Alt {i}"
+msgstr ""
+
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:31
+msgid "Arial"
+msgstr ""
+
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:46
+msgid "Black"
+msgstr ""
+
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:44
+msgid "Bold"
+msgstr ""
+
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:167
+msgid "Center"
+msgstr ""
+
+#: src/components/tierlist/CharacterPool/CharacterPool.tsx:24
+msgid "Character Collection"
+msgstr ""
+
+#: src/consts/tierlist/tierPalettes.ts:14
+msgid "Classic"
+msgstr ""
+
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:68
+msgid "Clear"
+msgstr ""
+
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:80
+msgid "Clear Tiers"
+msgstr ""
+
+#: src/components/tierlist/TierListTitle/TierListTitle.tsx:78
+msgid "Click to add title"
+msgstr ""
+
+#: src/components/tierlist/TierListTitle/TierListTitle.tsx:84
+msgid "Click to edit title"
+msgstr ""
+
+#: src/components/tierlist/TierLabel/TierLabel.tsx:67
+msgid "Click to rename"
+msgstr ""
+
+#: src/components/tierlist/TierSettings/TierSettings.tsx:100
+msgid "Color"
+msgstr ""
+
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:181
+msgid "Color Palette"
+msgstr ""
+
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:35
+msgid "Comic Sans"
+msgstr ""
+
+#: src/consts/tierlist/tierPalettes.ts:38
+msgid "Cool"
+msgstr ""
+
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:34
+msgid "Courier"
+msgstr ""
+
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:30
+msgid "Default"
+msgstr ""
+
+#: src/components/tierlist/TierSettings/TierSettings.tsx:128
+msgid "Delete"
+msgstr ""
+
+#: src/consts/tierlist/tierPalettes.ts:62
+msgid "Earth"
+msgstr ""
+
+#: src/components/tierlist/TierListTitle/TierListTitle.tsx:62
+msgid "Enter title"
+msgstr ""
+
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:74
+#~ msgid "Export PNG"
+#~ msgstr ""
+
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:45
+msgid "Extra Bold"
+msgstr ""
+
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:131
+msgid "Fancy"
+msgstr ""
+
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:234
+msgid "Font Size"
+msgstr ""
+
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:222
+msgid "Font Weight"
+msgstr ""
+
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:33
+msgid "Georgia"
+msgstr ""
+
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:137
+msgid "Image Style"
+msgstr ""
+
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:32
+msgid "Impact"
+msgstr ""
+
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:210
+msgid "Label Font"
+msgstr ""
+
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:113
+msgid "Layout"
+msgstr ""
+
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:161
+msgid "Left"
+msgstr ""
+
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:149
+msgid "Main Art"
+msgstr ""
+
+#: src/consts/tierlist/tierPalettes.ts:46
+msgid "Monochrome"
+msgstr ""
+
+#: src/components/tierlist/TierSettings/TierSettings.tsx:121
+msgid "Move Down"
+msgstr ""
+
+#: src/components/tierlist/TierSettings/TierSettings.tsx:114
+msgid "Move Up"
+msgstr ""
+
+#: src/consts/tierlist/tierPalettes.ts:54
+msgid "Neon"
+msgstr ""
+
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:42
+msgid "Normal"
+msgstr ""
+
+#: src/consts/tierlist/tierPalettes.ts:70
+msgid "Ocean"
+msgstr ""
+
+#: src/consts/tierlist/tierPalettes.ts:22
+msgid "Pastel"
+msgstr ""
+
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:71
+msgid "Reset"
+msgstr ""
+
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:88
+msgid "Reset All"
+msgstr ""
+
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:173
+msgid "Right"
+msgstr ""
+
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:74
+msgid "Save Image"
+msgstr ""
+
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:43
+msgid "Semi-Bold"
+msgstr ""
+
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:101
+msgid "Settings"
+msgstr ""
+
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:119
+msgid "Side"
+msgstr ""
+
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:143
+msgid "Stock"
+msgstr ""
+
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:81
+msgid "This will move all characters back to the unranked pool. Your tiers will remain."
+msgstr ""
+
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:89
+msgid "This will reset everything to the default state, including tiers and all character placements."
+msgstr ""
+
+#: src/components/tierlist/TierSettings/TierSettings.tsx:85
+msgid "Tier settings"
+msgstr ""
+
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:36
+msgid "Times"
+msgstr ""
+
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:155
+msgid "Title Alignment"
+msgstr ""
+
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:125
+msgid "Top"
+msgstr ""
+
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:37
+msgid "Trebuchet"
+msgstr ""
+
+#: src/components/tierlist/CharacterPool/CharacterPool.tsx:24
+#~ msgid "Unranked"
+#~ msgstr ""
+
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:38
+msgid "Verdana"
+msgstr ""
+
+#: src/consts/tierlist/tierPalettes.ts:30
+msgid "Warm"
+msgstr ""

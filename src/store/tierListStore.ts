@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { createJSONStorage, devtools, persist } from "zustand/middleware";
 
 import { characters } from "@/consts/top8/ultCharacters.json";
+import { DEFAULT_PALETTE_ID } from "@/consts/tierlist/tierPalettes";
 import {
   ImageDisplayMode,
   LabelFont,
@@ -21,6 +22,7 @@ interface TierListState {
   labelFont: LabelFont;
   title: string;
   titleAlign: TitleAlign;
+  activePaletteId: string;
 }
 
 type TierListAction =
@@ -43,7 +45,8 @@ type TierListAction =
   | { type: "SET_LAYOUT"; layout: TierListLayout }
   | { type: "SET_LABEL_FONT"; font: Partial<LabelFont> }
   | { type: "SET_TITLE"; title: string }
-  | { type: "SET_TITLE_ALIGN"; align: TitleAlign };
+  | { type: "SET_TITLE_ALIGN"; align: TitleAlign }
+  | { type: "APPLY_PALETTE"; paletteId: string; colors: string[] };
 
 const DEFAULT_TIERS: Tier[] = [
   { id: "tier-s", name: "S", color: "#ff7f7f", characterIds: [] },
@@ -87,6 +90,7 @@ const initialState: TierListState = {
   labelFont: { family: "inherit", size: 24, weight: 700 },
   title: "",
   titleAlign: "center",
+  activePaletteId: DEFAULT_PALETTE_ID,
 };
 
 const removeCharFromContainers = (
@@ -185,6 +189,16 @@ const tierListReducer = (
     case "SET_IMAGE_MODE":
       return { imageMode: action.mode };
 
+    case "APPLY_PALETTE": {
+      return {
+        tiers: state.tiers.map((tier, i) => ({
+          ...tier,
+          color: action.colors[i] ?? tier.color,
+        })),
+        activePaletteId: action.paletteId,
+      };
+    }
+
     case "RESET_ALL": {
       const { characters: chars, pool } = buildInitialCharacters();
       return {
@@ -194,6 +208,7 @@ const tierListReducer = (
         imageMode: "stock",
         title: "",
         titleAlign: "center",
+        activePaletteId: DEFAULT_PALETTE_ID,
       };
     }
 
@@ -250,8 +265,16 @@ export const useTierListStore = create<TierListStore>()(
           labelFont: state.labelFont,
           title: state.title,
           titleAlign: state.titleAlign,
+          activePaletteId: state.activePaletteId,
         }),
-        version: 1,
+        version: 2,
+        migrate: (persisted, version) => {
+          const state = persisted as Record<string, unknown>;
+          if (version < 2) {
+            state.activePaletteId = DEFAULT_PALETTE_ID;
+          }
+          return state as unknown as TierListStore;
+        },
       }
     )
   )

@@ -6,6 +6,7 @@ import {
   useLayoutEffect,
   useCallback,
 } from "react";
+import { createPortal } from "react-dom";
 import { LuChevronsUpDown, LuSearch } from "react-icons/lu";
 import cn from "classnames";
 
@@ -40,6 +41,7 @@ type Props<T> = {
 
 const getDropdownStyles = (
   triggerEl: HTMLButtonElement | null,
+  portalEl: HTMLDivElement | null,
   showAbove: boolean
 ): React.CSSProperties => {
   if (!triggerEl)
@@ -56,10 +58,7 @@ const getDropdownStyles = (
   let bottom;
 
   if (showAbove) {
-    const window = triggerEl.parentElement?.querySelector(
-      "#dropdown-container"
-    );
-    const windowHeight = window?.getBoundingClientRect().height;
+    const windowHeight = portalEl?.getBoundingClientRect().height;
 
     top = dropdownRect ? dropdownRect.top - (windowHeight ?? 0) - 15 : 0;
   } else {
@@ -129,6 +128,7 @@ export const DropDownSelect = <T,>({
 
   const triggerRef = useRef<HTMLButtonElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const portalRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const focusedItemRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -192,9 +192,11 @@ export const DropDownSelect = <T,>({
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node;
       if (
         containerRef.current &&
-        !containerRef.current.contains(event.target as Node)
+        !containerRef.current.contains(target) &&
+        (!portalRef.current || !portalRef.current.contains(target))
       ) {
         closeDropdown();
       }
@@ -290,9 +292,12 @@ export const DropDownSelect = <T,>({
     };
 
     const container = containerRef.current;
+    const portal = portalRef.current;
     container?.addEventListener("keydown", handleKeyDown);
+    portal?.addEventListener("keydown", handleKeyDown);
     return () => {
       container?.removeEventListener("keydown", handleKeyDown);
+      portal?.removeEventListener("keydown", handleKeyDown);
     };
   }, [isOpen, closeDropdown, filteredOptions, handleValueChange]);
 
@@ -335,7 +340,7 @@ export const DropDownSelect = <T,>({
       return triggerRect.bottom + dropdownHeight > viewportHeight;
     };
 
-    setDropdownStyles(getDropdownStyles(triggerRef.current, showAbove));
+    setDropdownStyles(getDropdownStyles(triggerRef.current, portalRef.current, showAbove));
     setShowAbove(calculateShowAbove());
   }, [isOpen, showAbove]);
 
@@ -356,71 +361,75 @@ export const DropDownSelect = <T,>({
         <LuChevronsUpDown className={styles.icon} />
       </button>
 
-      <div
-        id="dropdown-container"
-        className={cn(styles.dropdown, {
-          [styles.open]: isOpen,
-        })}
-        style={dropdownStyles}
-        inert={!isOpen ? true : undefined}
-        role="listbox"
-      >
-        {searchable && (
-          <div className={styles.searchContainer}>
-            <div className={styles.searchInput}>
-              <LuSearch className={styles.searchIcon} />
-              <input
-                ref={searchInputRef}
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder={searchPlaceholder}
-                autoComplete="off"
-                autoCorrect="off"
-                spellCheck={false}
-              />
+      {createPortal(
+        <div
+          ref={portalRef}
+          id="dropdown-container"
+          className={cn(styles.dropdown, {
+            [styles.open]: isOpen,
+          })}
+          style={dropdownStyles}
+          inert={!isOpen ? true : undefined}
+          role="listbox"
+        >
+          {searchable && (
+            <div className={styles.searchContainer}>
+              <div className={styles.searchInput}>
+                <LuSearch className={styles.searchIcon} />
+                <input
+                  ref={searchInputRef}
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder={searchPlaceholder}
+                  autoComplete="off"
+                  autoCorrect="off"
+                  spellCheck={false}
+                />
+              </div>
             </div>
-          </div>
-        )}
-        <div className={styles.window} ref={dropdownRef}>
-          {filteredOptions.length === 0 ? (
-            <div className={styles.noResults}>No results found</div>
-          ) : (
-            filteredOptions.map((option) => {
-              const isSelected = option.value === selectedValue;
-              const onClick = () => handleValueChange(option.value);
-              return (
-                <div
-                  key={option.id}
-                  className={styles.item}
-                  data-state={isSelected ? "checked" : undefined}
-                  onClick={onClick}
-                  role="option"
-                  aria-selected={isSelected}
-                  tabIndex={0}
-                >
-                  {renderOption ? (
-                    renderOption(option, isSelected)
-                  ) : (
-                    <>
-                      {option.imageSrc && (
-                        <img
-                          width={24}
-                          height={24}
-                          src={option.imageSrc}
-                          alt={option.display ?? ""}
-                          loading="lazy"
-                        />
-                      )}
-                      {option.display}
-                    </>
-                  )}
-                </div>
-              );
-            })
           )}
-        </div>
-      </div>
+          <div className={styles.window} ref={dropdownRef}>
+            {filteredOptions.length === 0 ? (
+              <div className={styles.noResults}>No results found</div>
+            ) : (
+              filteredOptions.map((option) => {
+                const isSelected = option.value === selectedValue;
+                const onClick = () => handleValueChange(option.value);
+                return (
+                  <div
+                    key={option.id}
+                    className={styles.item}
+                    data-state={isSelected ? "checked" : undefined}
+                    onClick={onClick}
+                    role="option"
+                    aria-selected={isSelected}
+                    tabIndex={0}
+                  >
+                    {renderOption ? (
+                      renderOption(option, isSelected)
+                    ) : (
+                      <>
+                        {option.imageSrc && (
+                          <img
+                            width={24}
+                            height={24}
+                            src={option.imageSrc}
+                            alt={option.display ?? ""}
+                            loading="lazy"
+                          />
+                        )}
+                        {option.display}
+                      </>
+                    )}
+                  </div>
+                );
+              })
+            )}
+          </div>
+        </div>,
+        document.body
+      )}
       {error && (
         <p className={styles.error}>{`${error?.name}: ${error?.message}`}</p>
       )}
