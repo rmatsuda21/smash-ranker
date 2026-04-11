@@ -371,6 +371,7 @@ export const DropDownSelect = <T,>({
           style={dropdownStyles}
           inert={!isOpen ? true : undefined}
           role="listbox"
+          onMouseDown={(e) => e.stopPropagation()}
         >
           {searchable && (
             <div className={styles.searchContainer}>
