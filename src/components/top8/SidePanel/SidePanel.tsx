@@ -5,6 +5,7 @@ import { Trans } from "@lingui/react/macro";
 
 import { EditorTab } from "@/types/top8/Editor";
 import { useEditorStore } from "@/store/editorStore";
+import { isMobile } from "@/utils/isMobile";
 import { SidePanelNav } from "@/components/top8/SidePanel/SidePanelNav";
 import { InfoPanel } from "@/components/top8/InfoPanel/InfoPanel";
 import { SettingsPanel } from "@/components/top8/SettingsPanel/SettingsPanel";
@@ -53,7 +54,7 @@ export const SidePanel = ({ className }: Props) => {
   const isSidePanelOpen = useEditorStore((state) => state.isSidePanelOpen);
 
   const handleTabChange = (tab: EditorTab) => {
-    if (activeTab === tab) {
+    if (activeTab === tab && !isMobile()) {
       dispatch({ type: "CLOSE_SIDE_PANEL" });
       return;
     }
