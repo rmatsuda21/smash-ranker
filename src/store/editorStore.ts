@@ -6,12 +6,14 @@ import { EditorTab } from "@/types/top8/Editor";
 interface EditorState {
   activeTab: EditorTab | null;
   isSidePanelOpen: boolean;
+  isCanvasExpanded: boolean;
 }
 
 type EditorAction =
   | { type: "SET_ACTIVE_TAB"; payload: EditorTab | null }
   | { type: "SET_IS_SIDE_PANEL_OPEN"; payload: boolean }
-  | { type: "CLOSE_SIDE_PANEL" };
+  | { type: "CLOSE_SIDE_PANEL" }
+  | { type: "TOGGLE_CANVAS_EXPANDED" };
 
 const editorReducer = (
   state: EditorState,
@@ -32,6 +34,8 @@ const editorReducer = (
         isSidePanelOpen: false,
         activeTab: null,
       };
+    case "TOGGLE_CANVAS_EXPANDED":
+      return { isCanvasExpanded: !state.isCanvasExpanded };
     default:
       return state;
   }
@@ -40,6 +44,7 @@ const editorReducer = (
 const initialState: EditorState = {
   activeTab: EditorTab.PLAYERS,
   isSidePanelOpen: true,
+  isCanvasExpanded: false,
 };
 
 interface EditorStore extends EditorState {
