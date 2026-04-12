@@ -118,4 +118,18 @@
   .root main {
     overflow-y: hidden;
   }
+
+  .nav {
+    padding: 4px 10px;
+
+    img {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  .root .icon {
+    width: 24px;
+    height: 24px;
+  }
 }

@@ -90,18 +90,25 @@
     height: auto;
 
     .scrollArea {
-      flex: none;
+      flex: 1;
       scrollbar-gutter: auto;
-      overflow: hidden;
-      background: none;
+      overflow: auto;
+      background: var(--gray-1);
     }
 
     .canvasWrapper {
-      margin-inline: 0;
+      margin-inline: auto;
     }
 
     .controls {
-      display: none;
+      padding: 6px 10px;
+      margin: 0;
+      gap: 10px;
+      border-radius: 0;
+
+      input[type="range"] {
+        width: 120px;
+      }
     }
   }
 }
