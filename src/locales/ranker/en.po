@@ -35,8 +35,8 @@ msgid "# of Entrants"
 msgstr ""
 
 #: src/components/top8/TextEditor/TextEditor.tsx:64
-msgid "<0>Ctrl</0>/<1>Cmd</1>+<2>Z</2> to undo and <3>Ctrl</3>/<4>Cmd</4>+<5>Y</5> to redo."
-msgstr ""
+#~ msgid "<0>Ctrl</0>/<1>Cmd</1>+<2>Z</2> to undo and <3>Ctrl</3>/<4>Cmd</4>+<5>Y</5> to redo."
+#~ msgstr ""
 
 #: src/components/top8/SettingsPanel/AccentColorPicker.tsx:74
 msgid "Accent Color"
@@ -196,15 +196,23 @@ msgid "Download Options"
 msgstr ""
 
 #: src/components/top8/TextEditor/TextEditor.tsx:58
-msgid "Edit the text content displayed in your graphic. Use dynamic variables to insert tournament and player information."
+msgid "Edit the text content displayed in your graphic."
 msgstr ""
+
+#: src/components/top8/TextEditor/TextEditor.tsx:58
+#~ msgid "Edit the text content displayed in your graphic. Tap a variable below each field to insert it."
+#~ msgstr ""
+
+#: src/components/top8/TextEditor/TextEditor.tsx:58
+#~ msgid "Edit the text content displayed in your graphic. Use dynamic variables to insert tournament and player information."
+#~ msgstr ""
 
 #: src/components/top8/SettingsPanel/LanguagePicker.tsx:21
 msgid "English"
 msgstr ""
 
 #. placeholder {0}: name.toLowerCase()
-#: src/components/top8/TextEditor/TextEditor.tsx:83
+#: src/components/top8/TextEditor/TextEditor.tsx:71
 msgid "Enter {0}..."
 msgstr ""
 
@@ -294,7 +302,7 @@ msgstr ""
 msgid "Load Tournament?"
 msgstr ""
 
-#: src/components/top8/SidePanel/SidePanel.tsx:82
+#: src/components/top8/SidePanel/SidePanel.tsx:83
 msgid "Loading Configs..."
 msgstr ""
 
@@ -514,8 +522,8 @@ msgid "Twitter Handle"
 msgstr ""
 
 #: src/components/top8/TextEditor/TextEditor.tsx:70
-msgid "Type <0>{</0> to insert a variable!"
-msgstr ""
+#~ msgid "Type <0>{</0> to insert a variable!"
+#~ msgstr ""
 
 #: src/components/top8/Ranker/Header/Header.tsx:34
 msgid "Undo"

@@ -38,7 +38,7 @@ msgstr ""
 msgid "Bold"
 msgstr ""
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:167
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:168
 msgid "Center"
 msgstr ""
 
@@ -46,7 +46,7 @@ msgstr ""
 msgid "Character Collection"
 msgstr ""
 
-#: src/consts/tierlist/tierPalettes.ts:14
+#: src/consts/tierlist/tierPalettes.ts:15
 msgid "Classic"
 msgstr ""
 
@@ -74,7 +74,7 @@ msgstr ""
 msgid "Color"
 msgstr ""
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:181
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:182
 msgid "Color Palette"
 msgstr ""
 
@@ -82,7 +82,7 @@ msgstr ""
 msgid "Comic Sans"
 msgstr ""
 
-#: src/consts/tierlist/tierPalettes.ts:38
+#: src/consts/tierlist/tierPalettes.ts:39
 msgid "Cool"
 msgstr ""
 
@@ -98,7 +98,7 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: src/consts/tierlist/tierPalettes.ts:62
+#: src/consts/tierlist/tierPalettes.ts:63
 msgid "Earth"
 msgstr ""
 
@@ -114,15 +114,15 @@ msgstr ""
 msgid "Extra Bold"
 msgstr ""
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:131
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:132
 msgid "Fancy"
 msgstr ""
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:234
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:243
 msgid "Font Size"
 msgstr ""
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:222
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:231
 msgid "Font Weight"
 msgstr ""
 
@@ -130,7 +130,7 @@ msgstr ""
 msgid "Georgia"
 msgstr ""
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:137
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:138
 msgid "Image Style"
 msgstr ""
 
@@ -138,23 +138,23 @@ msgstr ""
 msgid "Impact"
 msgstr ""
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:210
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:219
 msgid "Label Font"
 msgstr ""
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:113
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:114
 msgid "Layout"
 msgstr ""
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:161
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:162
 msgid "Left"
 msgstr ""
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:149
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:150
 msgid "Main Art"
 msgstr ""
 
-#: src/consts/tierlist/tierPalettes.ts:46
+#: src/consts/tierlist/tierPalettes.ts:47
 msgid "Monochrome"
 msgstr ""
 
@@ -166,7 +166,7 @@ msgstr ""
 msgid "Move Up"
 msgstr ""
 
-#: src/consts/tierlist/tierPalettes.ts:54
+#: src/consts/tierlist/tierPalettes.ts:55
 msgid "Neon"
 msgstr ""
 
@@ -174,11 +174,11 @@ msgstr ""
 msgid "Normal"
 msgstr ""
 
-#: src/consts/tierlist/tierPalettes.ts:70
+#: src/consts/tierlist/tierPalettes.ts:71
 msgid "Ocean"
 msgstr ""
 
-#: src/consts/tierlist/tierPalettes.ts:22
+#: src/consts/tierlist/tierPalettes.ts:23
 msgid "Pastel"
 msgstr ""
 
@@ -190,7 +190,7 @@ msgstr ""
 msgid "Reset All"
 msgstr ""
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:173
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:174
 msgid "Right"
 msgstr ""
 
@@ -202,15 +202,15 @@ msgstr ""
 msgid "Semi-Bold"
 msgstr ""
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:101
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:102
 msgid "Settings"
 msgstr ""
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:119
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:120
 msgid "Side"
 msgstr ""
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:143
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:144
 msgid "Stock"
 msgstr ""
 
@@ -230,11 +230,11 @@ msgstr ""
 msgid "Times"
 msgstr ""
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:155
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:156
 msgid "Title Alignment"
 msgstr ""
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:125
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:126
 msgid "Top"
 msgstr ""
 
@@ -250,6 +250,6 @@ msgstr ""
 msgid "Verdana"
 msgstr ""
 
-#: src/consts/tierlist/tierPalettes.ts:30
+#: src/consts/tierlist/tierPalettes.ts:31
 msgid "Warm"
 msgstr ""
