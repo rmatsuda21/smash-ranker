@@ -67,6 +67,7 @@ interface BaseElementConfig {
   rotation?: number;
   offset?: { x: number; y: number };
   clip?: boolean;
+  clipCornerRadius?: number;
   name?: string;
   hidden?: boolean;
   conditions?: Condition[];

@@ -454,7 +454,11 @@ function renderTemplateElement(
           groupEl.clip
             ? (ctx) => {
               ctx.beginPath();
-              ctx.rect(0, 0, element.size?.width ?? 0, element.size?.height ?? 0);
+              if (groupEl.clipCornerRadius) {
+                ctx.roundRect(0, 0, element.size?.width ?? 0, element.size?.height ?? 0, groupEl.clipCornerRadius);
+              } else {
+                ctx.rect(0, 0, element.size?.width ?? 0, element.size?.height ?? 0);
+              }
               ctx.closePath();
             }
             : undefined
