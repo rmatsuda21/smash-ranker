@@ -35,8 +35,8 @@ msgid "# of Entrants"
 msgstr "参加人数"
 
 #: src/components/top8/TextEditor/TextEditor.tsx:64
-msgid "<0>Ctrl</0>/<1>Cmd</1>+<2>Z</2> to undo and <3>Ctrl</3>/<4>Cmd</4>+<5>Y</5> to redo."
-msgstr "<0>Ctrl</0>/<1>Cmd</1>+<2>Z</2>でUndo、<3>Ctrl</3>/<4>Cmd</4>+<5>Y</5>でRedo。"
+#~ msgid "<0>Ctrl</0>/<1>Cmd</1>+<2>Z</2> to undo and <3>Ctrl</3>/<4>Cmd</4>+<5>Y</5> to redo."
+#~ msgstr "<0>Ctrl</0>/<1>Cmd</1>+<2>Z</2>でUndo、<3>Ctrl</3>/<4>Cmd</4>+<5>Y</5>でRedo。"
 
 #: src/components/top8/SettingsPanel/AccentColorPicker.tsx:74
 msgid "Accent Color"
@@ -196,15 +196,23 @@ msgid "Download Options"
 msgstr "ダウンロード設定"
 
 #: src/components/top8/TextEditor/TextEditor.tsx:58
-msgid "Edit the text content displayed in your graphic. Use dynamic variables to insert tournament and player information."
-msgstr "画像に表示されるテキストを編集できます。"
+msgid "Edit the text content displayed in your graphic."
+msgstr ""
+
+#: src/components/top8/TextEditor/TextEditor.tsx:58
+#~ msgid "Edit the text content displayed in your graphic. Tap a variable below each field to insert it."
+#~ msgstr ""
+
+#: src/components/top8/TextEditor/TextEditor.tsx:58
+#~ msgid "Edit the text content displayed in your graphic. Use dynamic variables to insert tournament and player information."
+#~ msgstr "画像に表示されるテキストを編集できます。"
 
 #: src/components/top8/SettingsPanel/LanguagePicker.tsx:21
 msgid "English"
 msgstr "英語"
 
 #. placeholder {0}: name.toLowerCase()
-#: src/components/top8/TextEditor/TextEditor.tsx:83
+#: src/components/top8/TextEditor/TextEditor.tsx:71
 msgid "Enter {0}..."
 msgstr "{0}を入力..."
 
@@ -294,7 +302,7 @@ msgstr "取得"
 msgid "Load Tournament?"
 msgstr "大会を読み込みますか？"
 
-#: src/components/top8/SidePanel/SidePanel.tsx:82
+#: src/components/top8/SidePanel/SidePanel.tsx:83
 msgid "Loading Configs..."
 msgstr "読み込み中..."
 
@@ -514,8 +522,8 @@ msgid "Twitter Handle"
 msgstr "Xアカウント"
 
 #: src/components/top8/TextEditor/TextEditor.tsx:70
-msgid "Type <0>{</0> to insert a variable!"
-msgstr "<0>{</0>を入力して関数を入力できます。"
+#~ msgid "Type <0>{</0> to insert a variable!"
+#~ msgstr "<0>{</0>を入力して関数を入力できます。"
 
 #: src/components/top8/Ranker/Header/Header.tsx:34
 msgid "Undo"

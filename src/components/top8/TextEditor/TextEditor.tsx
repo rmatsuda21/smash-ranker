@@ -56,19 +56,7 @@ export const TextEditor = ({ className }: Props) => {
       <div className={styles.description}>
         <p>
           <Trans>
-            Edit the text content displayed in your graphic. Use dynamic
-            variables to insert tournament and player information.
-          </Trans>
-        </p>
-        <p className={styles.tip}>
-          <Trans>
-            <kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>Z</kbd> to undo and{" "}
-            <kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>Y</kbd> to redo.
-          </Trans>
-        </p>
-        <p className={styles.tip}>
-          <Trans>
-            Type <code>{"{"}</code> to insert a variable!
+            Edit the text content displayed in your graphic.
           </Trans>
         </p>
       </div>
