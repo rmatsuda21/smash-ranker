@@ -1,4 +1,9 @@
-import { Design, ElementConfig, LayerDesign, PlayerDesign } from "@/types/top8/Design";
+import {
+  Design,
+  ElementConfig,
+  LayerDesign,
+  PlayerDesign,
+} from "@/types/top8/Design";
 import { DesignPlaceholder } from "@/consts/top8/placeholders";
 import { RenderCondition } from "@/consts/top8/renderConditions";
 
@@ -6,7 +11,7 @@ const CANVAS_WIDTH = 1920;
 const CANVAS_HEIGHT = 1080;
 
 const PADDING = 30;
-const VERT_PADDING = 16;
+const VERT_PADDING = 32;
 const CARD_GAP = 20;
 const TOP_BAR_HEIGHT = 4;
 const PLAYER_AREA_Y = 168;
@@ -24,7 +29,25 @@ const BOTTOM_ROW_Y = PLAYER_AREA_Y + TOP_ROW_SIZE + CARD_GAP;
 
 const TOURNAMENT_ICON_SIZE = 90;
 
-const createPlayerElements = (w: number, h: number): ElementConfig[] => [
+// Element scale per placement tier — tweak these to adjust UI element sizes
+const FIRST_ELEMENT_SCALE = 1.3;
+const TOP_ELEMENT_SCALE = 1.15;
+const BOTTOM_ELEMENT_SCALE = 1.0;
+
+/**
+ * @param s — UI element scale factor (affects text, icons, not card/character)
+ * @param clipGap — overflow distance in local coords (accounts for group scale)
+ * @param noLeftClip — if true, extend left clip generously (for edge cards)
+ * @param noTopClip — if true, extend top clip generously (for top-row cards)
+ */
+const createPlayerElements = (
+  w: number,
+  h: number,
+  s: number = 1,
+  clipGap: number = CARD_GAP,
+  noLeftClip: boolean = false,
+  noTopClip: boolean = false,
+): ElementConfig[] => [
   {
     name: "Card Background",
     type: "rect",
@@ -37,7 +60,7 @@ const createPlayerElements = (w: number, h: number): ElementConfig[] => [
     type: "rect",
     fill: "leftBorder",
     position: { x: 0, y: 0 },
-    size: { width: 2, height: h },
+    size: { width: 5, height: h },
   },
   {
     name: "Character",
@@ -46,7 +69,10 @@ const createPlayerElements = (w: number, h: number): ElementConfig[] => [
     size: { width: w * 1.16, height: h * 1.12 },
     shadowEnabled: false,
     clip: true,
-    clipOffset: { top: Math.ceil(h * 0.15), left: Math.ceil(w * 0.15) },
+    clipOffset: {
+      top: noTopClip ? Math.ceil(h * 0.2) : clipGap,
+      left: noLeftClip ? Math.ceil(w * 0.2) : clipGap,
+    },
   },
   {
     name: "Bottom Gradient",
@@ -66,76 +92,73 @@ const createPlayerElements = (w: number, h: number): ElementConfig[] => [
     name: "Placement",
     type: "text",
     text: DesignPlaceholder.PLAYER_PLACEMENT,
-    fontSize: 72,
-    fontWeight: 900,
+    fontSize: Math.round(80 * s),
+    fontWeight: 500,
     fill: "text",
     stroke: "placementStroke",
-    strokeWidth: 3,
-    shadowBlur: 8,
+    strokeWidth: Math.round(2 * s),
+    shadowBlur: Math.round(8 * s),
     shadowColor: "placementShadow",
-    shadowOffset: { x: 3, y: 3 },
-    position: { x: 12, y: 8 },
+    shadowOffset: { x: Math.round(3 * s), y: Math.round(3 * s) },
+    position: { x: Math.round(15 * s), y: Math.round(8 * s) },
   },
   {
     name: "Prefix",
     type: "smartText",
     text: DesignPlaceholder.PLAYER_PREFIX,
-    fontSize: 22,
-    fontWeight: 600,
+    fontSize: Math.round(20 * s),
+    fontWeight: 400,
     fill: "prefixText",
     anchor: "bottomLeft",
-    position: { x: 14, y: h - 42 },
-    size: { width: w - 28, height: 28 },
+    position: { x: Math.round(14 * s), y: h - Math.round(42 * s) },
+    size: { width: w - Math.round(28 * s), height: Math.round(28 * s) },
     conditions: [DesignPlaceholder.PLAYER_PREFIX],
   },
   {
     name: "Tag",
     type: "smartText",
     text: DesignPlaceholder.PLAYER_TAG,
-    fontSize: 36,
-    fontWeight: 900,
+    fontSize: Math.round(40 * s),
+    fontWeight: 500,
     fill: "text",
     anchor: "bottomLeft",
-    position: { x: 14, y: h - 10 },
-    size: { width: w - 28, height: 44 },
-    conditions: [RenderCondition.NOT, DesignPlaceholder.PLAYER_PREFIX],
-  },
-  {
-    name: "Full Name",
-    type: "smartText",
-    text: DesignPlaceholder.PLAYER_TAG,
-    fontSize: 36,
-    fontWeight: 900,
-    fill: "text",
-    anchor: "bottomLeft",
-    position: { x: 14, y: h - 10 },
-    size: { width: w - 28, height: 44 },
-    conditions: [DesignPlaceholder.PLAYER_PREFIX],
+    position: { x: Math.round(14 * s), y: h - Math.round(10 * s) },
+    size: { width: w - Math.round(28 * s), height: Math.round(44 * s) },
   },
   {
     name: "Alt Characters",
     type: "altCharacterImage",
-    position: { x: w - 200, y: h - 84 },
-    size: { width: 190, height: 36 },
+    position: { x: w - Math.round(200 * s), y: h - Math.round(84 * s) },
+    size: { width: Math.round(190 * s), height: Math.round(36 * s) },
     rows: 1,
-    gap: 4,
+    gap: Math.round(4 * s),
     justify: "end",
   },
   {
     name: "Flag",
     type: "playerFlag",
-    position: { x: w - 44, y: h - 44 },
-    size: { width: 32, height: 32 },
+    position: { x: w - Math.round(44 * s), y: h - Math.round(44 * s) },
+    size: { width: Math.round(32 * s), height: Math.round(32 * s) },
     fillMode: "contain",
     conditions: [DesignPlaceholder.PLAYER_COUNTRY],
   },
 ];
 
+// Bottom row local gap: CARD_GAP / (BOTTOM_ROW_SIZE / BASE_CARD_SIZE)
+const BOTTOM_LOCAL_GAP = Math.ceil(
+  (CARD_GAP * BASE_CARD_SIZE) / BOTTOM_ROW_SIZE,
+);
+
 const basePlayer: PlayerDesign = {
   position: { x: 0, y: 0 },
   size: { width: BASE_CARD_SIZE, height: BASE_CARD_SIZE },
   scale: { x: 1, y: 1 },
-  elements: createPlayerElements(BASE_CARD_SIZE, BASE_CARD_SIZE),
+  elements: createPlayerElements(
+    BASE_CARD_SIZE,
+    BASE_CARD_SIZE,
+    BOTTOM_ELEMENT_SCALE,
+    BOTTOM_LOCAL_GAP,
+  ),
 };
 
 const getScale = (size: number) => ({
@@ -143,26 +166,45 @@ const getScale = (size: number) => ({
   y: size / BASE_CARD_SIZE,
 });
 
+const topRowElements = createPlayerElements(
+  BASE_CARD_SIZE,
+  BASE_CARD_SIZE,
+  TOP_ELEMENT_SCALE,
+  CARD_GAP,
+  false,
+  true,
+);
+
 const players: Partial<PlayerDesign>[] = [
   // 1st place — portrait rectangle
   {
     position: { x: PADDING, y: PLAYER_AREA_Y },
     size: { width: FIRST_PL_WIDTH, height: FIRST_PL_HEIGHT },
     scale: { x: 1, y: 1 },
-    elements: createPlayerElements(FIRST_PL_WIDTH, FIRST_PL_HEIGHT),
+    elements: createPlayerElements(
+      FIRST_PL_WIDTH,
+      FIRST_PL_HEIGHT,
+      FIRST_ELEMENT_SCALE,
+      CARD_GAP,
+      true,
+      true,
+    ),
   },
   // 2nd-4th — top row
   {
     position: { x: RIGHT_X, y: PLAYER_AREA_Y },
     scale: getScale(TOP_ROW_SIZE),
+    elements: topRowElements,
   },
   {
     position: { x: RIGHT_X + TOP_ROW_SIZE + CARD_GAP, y: PLAYER_AREA_Y },
     scale: getScale(TOP_ROW_SIZE),
+    elements: topRowElements,
   },
   {
     position: { x: RIGHT_X + (TOP_ROW_SIZE + CARD_GAP) * 2, y: PLAYER_AREA_Y },
     scale: getScale(TOP_ROW_SIZE),
+    elements: topRowElements,
   },
   // 5th-8th — bottom row
   {
@@ -174,11 +216,17 @@ const players: Partial<PlayerDesign>[] = [
     scale: getScale(BOTTOM_ROW_SIZE),
   },
   {
-    position: { x: RIGHT_X + (BOTTOM_ROW_SIZE + CARD_GAP) * 2, y: BOTTOM_ROW_Y },
+    position: {
+      x: RIGHT_X + (BOTTOM_ROW_SIZE + CARD_GAP) * 2,
+      y: BOTTOM_ROW_Y,
+    },
     scale: getScale(BOTTOM_ROW_SIZE),
   },
   {
-    position: { x: RIGHT_X + (BOTTOM_ROW_SIZE + CARD_GAP) * 3, y: BOTTOM_ROW_Y },
+    position: {
+      x: RIGHT_X + (BOTTOM_ROW_SIZE + CARD_GAP) * 3,
+      y: BOTTOM_ROW_Y,
+    },
     scale: getScale(BOTTOM_ROW_SIZE),
   },
 ];
@@ -239,7 +287,7 @@ const tournament: LayerDesign = {
       name: "Title",
       textId: "titleText",
       fontSize: 70,
-      fontWeight: 900,
+      fontWeight: 500,
       fill: "text",
       position: { x: PADDING, y: VERT_PADDING + TOP_BAR_HEIGHT + 8 },
       size: { width: 1380, height: 80 },
@@ -250,9 +298,9 @@ const tournament: LayerDesign = {
       name: "Date",
       textId: "dateText",
       fontSize: 28,
-      fontWeight: 600,
+      fontWeight: 500,
       fill: "text",
-      position: { x: PADDING, y: 108 },
+      position: { x: PADDING, y: VERT_PADDING + TOP_BAR_HEIGHT + 80 },
       textTransform: "uppercase",
     },
     {
@@ -261,10 +309,13 @@ const tournament: LayerDesign = {
       name: "Location",
       textId: "locationText",
       fontSize: 28,
-      fontWeight: 600,
+      fontWeight: 500,
       fill: "text",
       anchor: "topRight",
-      position: { x: CANVAS_WIDTH - PADDING, y: VERT_PADDING + TOP_BAR_HEIGHT + 8 },
+      position: {
+        x: CANVAS_WIDTH - PADDING,
+        y: VERT_PADDING + TOP_BAR_HEIGHT + 8,
+      },
       textTransform: "uppercase",
     },
     {
@@ -273,10 +324,13 @@ const tournament: LayerDesign = {
       name: "Entrants",
       textId: "entrantsText",
       fontSize: 28,
-      fontWeight: 600,
+      fontWeight: 500,
       fill: "text",
       anchor: "topRight",
-      position: { x: CANVAS_WIDTH - PADDING, y: VERT_PADDING + TOP_BAR_HEIGHT + 40 },
+      position: {
+        x: CANVAS_WIDTH - PADDING,
+        y: VERT_PADDING + TOP_BAR_HEIGHT + 40,
+      },
       textTransform: "uppercase",
     },
     {
