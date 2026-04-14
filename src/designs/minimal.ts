@@ -3,10 +3,11 @@ import { DesignPlaceholder } from "@/consts/top8/placeholders";
 import { RenderCondition } from "@/consts/top8/renderConditions";
 
 const CANVAS_WIDTH = 1200;
-const PADDING = 80;
-const TOURNAMENT_ICON_SIZE = 180;
+const PADDING_BLOCK = 40;
+const PADDING_INLINE = 20;
+const TOURNAMENT_ICON_SIZE = 120;
 const PLAYER_SPACING = 16;
-const PLAYER_WIDTH = CANVAS_WIDTH - PADDING * 2;
+const PLAYER_WIDTH = CANVAS_WIDTH - PADDING_INLINE * 2;
 const PLAYER_HEIGHT = 110;
 const FLAG_SIZE = 44;
 const CHARACTER_IMAGE_SIZE = 90;
@@ -24,7 +25,7 @@ const colorPalette: Design["colorPalette"] = {
 };
 
 const basePlayer: PlayerDesign = {
-  position: { x: PADDING, y: 190 },
+  position: { x: PADDING_INLINE, y: 190 },
   size: { width: PLAYER_WIDTH, height: PLAYER_HEIGHT },
   scale: { x: 1, y: 1 },
   elements: [
@@ -238,7 +239,7 @@ const basePlayer: PlayerDesign = {
 
 const createMinimalDesign = (playerCount: number): Design => {
   const canvasHeight =
-    PADDING * 2 +
+    PADDING_BLOCK * 2 +
     TOURNAMENT_ICON_SIZE +
     PLAYER_HEIGHT * playerCount +
     PLAYER_SPACING * (playerCount - 1);
@@ -267,9 +268,9 @@ const createMinimalDesign = (playerCount: number): Design => {
         type: "flexGroup",
         id: "tournamentHeader",
         name: "Tournament Header",
-        position: { x: PADDING, y: PADDING - 20 },
+        position: { x: PADDING_INLINE, y: PADDING_BLOCK },
         size: {
-          width: CANVAS_WIDTH - PADDING * 2,
+          width: CANVAS_WIDTH - PADDING_INLINE * 2,
           height: TOURNAMENT_ICON_SIZE,
         },
         direction: "row",
@@ -295,12 +296,12 @@ const createMinimalDesign = (playerCount: number): Design => {
             id: "tournamentInfoGroup",
             position: { x: 0, y: 0 },
             size: {
-              width: CANVAS_WIDTH - PADDING * 2 - TOURNAMENT_ICON_SIZE - 20,
+              width: CANVAS_WIDTH - PADDING_INLINE * 2 - TOURNAMENT_ICON_SIZE - 20,
               height: TOURNAMENT_ICON_SIZE,
             },
             direction: "column",
             justify: "center",
-            gap: 20,
+            gap: 8,
             elements: [
               {
                 type: "smartText",
@@ -308,11 +309,11 @@ const createMinimalDesign = (playerCount: number): Design => {
                 name: "Top Right Text",
                 position: { x: 0, y: 0 },
                 textId: "tournamentInfo",
-                fontSize: 32,
+                fontSize: 24,
                 fontWeight: 900,
                 fill: "text",
                 size: {
-                  width: CANVAS_WIDTH - PADDING * 2 - TOURNAMENT_ICON_SIZE - 20,
+                  width: CANVAS_WIDTH - PADDING_INLINE * 2 - TOURNAMENT_ICON_SIZE - 20,
                 },
                 align: "left",
                 selectable: true,
@@ -322,13 +323,13 @@ const createMinimalDesign = (playerCount: number): Design => {
                 id: "topLeftText",
                 name: "Top Left Text",
                 textId: "tournamentName",
-                fontSize: 60,
+                fontSize: 44,
                 fontWeight: 900,
                 fill: "text",
                 align: "left",
                 position: { x: 0, y: 0 },
                 size: {
-                  width: CANVAS_WIDTH - PADDING * 2 - TOURNAMENT_ICON_SIZE - 20,
+                  width: CANVAS_WIDTH - PADDING_INLINE * 2 - TOURNAMENT_ICON_SIZE - 20,
                 },
                 selectable: true,
               },
@@ -343,9 +344,9 @@ const createMinimalDesign = (playerCount: number): Design => {
     id: `player-${index}`,
     name: `Player ${index + 1}`,
     position: {
-      x: PADDING,
+      x: PADDING_INLINE,
       y:
-        PADDING +
+        PADDING_BLOCK +
         TOURNAMENT_ICON_SIZE +
         PLAYER_SPACING +
         index * (PLAYER_HEIGHT + PLAYER_SPACING),

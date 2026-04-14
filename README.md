@@ -5,7 +5,7 @@ The place for all of your Smash Bros. graphic generation tools.
 # 📋 Planned features
 
 - Top 8 graphic generation (WIP)
-- Tierlist generator (TODO)
+- Tierlist generator (WIP)
 - Self placement graphic (TODO)
 
 ## 🔋 Powered By
