@@ -217,8 +217,14 @@ const RenderedPreview = (props: Props) => {
     );
     let readyCount = 0;
 
-    return samplePlayers.map((player, index) => {
-      if (index >= template.design.players.length) return null;
+    const indices = samplePlayers.map((_, i) => i);
+    const renderOrder = template.design.reversePlayerZOrder
+      ? [...indices].reverse()
+      : indices;
+
+    return renderOrder.map((index) => {
+      const player = samplePlayers[index];
+      if (!player || index >= template.design.players.length) return null;
 
       const playerDesign = {
         ...template.design.basePlayer,

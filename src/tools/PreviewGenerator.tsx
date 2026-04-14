@@ -16,6 +16,7 @@ import {
   minimal16Design,
   minimal24Design,
 } from "@/designs/minimal";
+import { kagaribiDesign } from "@/designs/kagaribi";
 
 declare global {
   interface Window {
@@ -56,6 +57,12 @@ const TEMPLATES: DBTemplate[] = [
     name: "Minimal (24 Players)",
     design: minimal24Design,
     font: "Noto Sans JP",
+  },
+  {
+    id: "kagaribi",
+    name: "Kagaribi",
+    design: kagaribiDesign,
+    font: "Dela Gothic One",
   },
 ];
 
@@ -134,8 +141,14 @@ const TemplateRenderer = ({
     );
     let readyCount = 0;
 
-    return samplePlayers.map((player, index) => {
-      if (index >= template.design.players.length) return null;
+    const indices = samplePlayers.map((_, i) => i);
+    const renderOrder = template.design.reversePlayerZOrder
+      ? [...indices].reverse()
+      : indices;
+
+    return renderOrder.map((index) => {
+      const player = samplePlayers[index];
+      if (!player || index >= template.design.players.length) return null;
 
       const playerDesign = {
         ...template.design.basePlayer,
