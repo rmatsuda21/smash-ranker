@@ -55,6 +55,18 @@ A drag-and-drop tier list maker for ranking Smash Bros. characters. Built with *
 - **Export** — renders to PNG via `html-to-image`. Elements with `data-export-ignore` are excluded.
 - **Mobile** — uses `touch-action: pan-y` on sortable characters to allow vertical scrolling while preserving horizontal drag. The `main` element in Layout is the scroll container on mobile. Character pool sticks to the bottom via `position: sticky`.
 
+### TextEditor
+
+The TextEditor panel (`src/components/top8/TextEditor/`) allows users to edit text content displayed in Top 8 graphics. It uses a custom **segment-based rich text input** (no contenteditable).
+
+- **TextEditor.tsx** — Container that reads `design.textPalette` from canvasStore, renders a `RichTextInput` per text item, and debounces (150ms) updates via `UPDATE_TEXT_CONTENT`.
+- **RichTextInput.tsx** — Splits text into alternating **text segments** (auto-sizing `<input>` fields) and **placeholder pill segments** (buttons for `<placeholder>` tokens). Parses placeholders with regex `/<[^>]+>/g`.
+- **Placeholder system** — `src/consts/top8/placeholders.ts` defines `DesignPlaceholder` enum (emoji-based keys like `<📝>`, `<📅>`) and `PlaceholderLabel` for i18n display labels. Only tournament placeholders (not player-specific) are shown in the chip bar.
+- **Input width** — Calculated via `CanvasRenderingContext2D.measureText()`, set imperatively in `useLayoutEffect`.
+- **Keyboard navigation** — Arrow keys move focus between segments; Backspace/Delete at segment boundaries removes adjacent pills.
+- **Lazy loaded** via `React.lazy` in `SidePanel.tsx` under `EditorTab.TEXTS`.
+- **Data flow** — `design.textPalette` → TextEditor → RichTextInput → `UPDATE_TEXT_CONTENT` → canvasStore → `resolveText()` → `replacePlaceholders()` → Konva Text nodes.
+
 ### Canvas Rendering
 
 The Top 8 graphic is rendered via **Konva** (2D canvas) through React-Konva. The canvas tree is driven entirely by the `canvasStore` design state. Key concepts:

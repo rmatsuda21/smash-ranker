@@ -3,6 +3,7 @@ import { Group, Image, Rect, Text } from "react-konva";
 
 import { DesignPlaceholder } from "@/consts/top8/placeholders";
 import { RenderCondition } from "@/consts/top8/renderConditions";
+import { type GradientConfig } from "@/types/top8/Gradient";
 
 export type ImageFillMode = "contain" | "cover";
 type ImageAlign = "center" | "left" | "right" | "top" | "bottom";
@@ -151,9 +152,10 @@ export interface FlexGridElementConfig
 }
 
 export interface RectElementConfig
-  extends BaseElementConfig, Partial<ComponentProps<typeof Rect>> {
+  extends BaseElementConfig,
+    Omit<Partial<ComponentProps<typeof Rect>>, "fill"> {
   type: "rect";
-  fill?: string;
+  fill?: string | GradientConfig;
   cornerRadius?: number | number[];
 }
 
