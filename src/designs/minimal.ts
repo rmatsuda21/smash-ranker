@@ -18,7 +18,8 @@ const colorPalette: Design["colorPalette"] = {
     name: "Character BG",
   },
   characterBorder: { color: "rgb(255, 255, 255)", name: "Character Border" },
-  background: { color: "rgb(0, 0, 0)", name: "Background" },
+  backgroundStart: { color: "rgb(51, 51, 51)", name: "BG Gradient Start" },
+  backgroundEnd: { color: "rgb(0, 0, 0)", name: "BG Gradient End" },
   text: { color: "rgb(255, 255, 255)", name: "Text" },
 };
 
@@ -246,7 +247,14 @@ const createMinimalDesign = (playerCount: number): Design => {
     elements: [
       {
         type: "rect",
-        fill: "background",
+        fill: {
+          type: "linear",
+          angle: 180,
+          colorStops: [
+            { position: 0, color: "backgroundStart" },
+            { position: 1, color: "backgroundEnd" },
+          ],
+        },
         position: { x: 0, y: 0 },
         size: { width: CANVAS_WIDTH, height: canvasHeight },
       },
