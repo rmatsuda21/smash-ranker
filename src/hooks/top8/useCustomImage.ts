@@ -196,9 +196,11 @@ export const useCustomImage = ({
               return;
             }
 
+            const scale = Math.min(window.devicePixelRatio || 1, 2);
+
             const canvas = document.createElement("canvas");
-            canvas.width = width;
-            canvas.height = height;
+            canvas.width = width * scale;
+            canvas.height = height * scale;
 
             const ctx = canvas.getContext("2d");
             if (!ctx) {
@@ -206,6 +208,7 @@ export const useCustomImage = ({
               return;
             }
 
+            ctx.scale(scale, scale);
             fitImage(ctx);
 
             canvas.toBlob((blob) => {
