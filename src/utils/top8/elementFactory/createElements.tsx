@@ -50,11 +50,16 @@ export const createKonvaElementsInternal = (
 
     const clipFunc = element.clip
       ? (ctx: SceneContext) => {
+        const co = element.clipOffset;
+        const cx = -(co?.left ?? 0);
+        const cy = -(co?.top ?? 0);
+        const cw = containerSize.width + (co?.left ?? 0) + (co?.right ?? 0);
+        const ch = containerSize.height + (co?.top ?? 0) + (co?.bottom ?? 0);
         ctx.beginPath();
         if (element.clipCornerRadius) {
-          ctx.roundRect(0, 0, containerSize.width, containerSize.height, element.clipCornerRadius);
+          ctx.roundRect(cx, cy, cw, ch, element.clipCornerRadius);
         } else {
-          ctx.rect(0, 0, containerSize.width, containerSize.height);
+          ctx.rect(cx, cy, cw, ch);
         }
         ctx.closePath();
       }

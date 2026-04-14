@@ -21,7 +21,9 @@ export const createTextElement: ElementCreator<TextElementConfig> = ({
     element.text,
     design?.textPalette
   );
-  const text = replacePlaceholders(resolvedText, context);
+  let text = replacePlaceholders(resolvedText, context);
+  if (element.textTransform === "uppercase") text = text.toUpperCase();
+  else if (element.textTransform === "lowercase") text = text.toLowerCase();
 
   return (
     <Text
@@ -63,7 +65,9 @@ export const createSmartTextElement: ElementCreator<SmartTextElementConfig> = ({
     element.text,
     design?.textPalette
   );
-  const text = replacePlaceholders(resolvedText, context);
+  let text = replacePlaceholders(resolvedText, context);
+  if (element.textTransform === "uppercase") text = text.toUpperCase();
+  else if (element.textTransform === "lowercase") text = text.toLowerCase();
 
   return (
     <SmartText

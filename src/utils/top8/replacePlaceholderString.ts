@@ -5,7 +5,11 @@ const formatDate = (date: Date | string | undefined): string | undefined => {
   if (!date) return undefined;
   const dateObj = typeof date === "string" ? new Date(date) : date;
   if (isNaN(dateObj.getTime())) return undefined;
-  return dateObj.toLocaleDateString();
+  return dateObj.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
 };
 
 const getPlaceholderMap = (

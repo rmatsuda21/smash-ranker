@@ -69,12 +69,15 @@ interface BaseElementConfig {
   offset?: { x: number; y: number };
   clip?: boolean;
   clipCornerRadius?: number;
+  /** Extend clip bounds beyond the container in specific directions (pixels). */
+  clipOffset?: { top?: number; right?: number; bottom?: number; left?: number };
   name?: string;
   hidden?: boolean;
   conditions?: Condition[];
   selectable?: boolean;
   filterEffects?: ElementFilterConfig[];
   flex?: FlexItemConfig;
+  textTransform?: "uppercase" | "lowercase";
 }
 
 export interface TextElementConfig
@@ -272,4 +275,6 @@ export interface Design {
   players: Partial<PlayerDesign>[];
   name: string;
   author?: string;
+  /** Render 1st-place player on top (last in draw order). */
+  reversePlayerZOrder?: boolean;
 }

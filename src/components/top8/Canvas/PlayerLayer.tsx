@@ -120,6 +120,9 @@ const PlayerLayerComponent = ({ onReady }: { onReady?: () => void }) => {
   const editable = useCanvasStore((state) => state.editable);
   const playerLayouts = useCanvasStore((state) => state.design.players);
   const basePlayer = useCanvasStore((state) => state.design.basePlayer);
+  const reversePlayerZOrder = useCanvasStore(
+    (state) => state.design.reversePlayerZOrder
+  );
   const canvasSize = useCanvasStore(
     useShallow((state) => state.design.canvasSize)
   );
@@ -165,7 +168,11 @@ const PlayerLayerComponent = ({ onReady }: { onReady?: () => void }) => {
   return (
     <>
       <Layer ref={mainLayerRef}>
-        {players.map((player, index) => {
+        {(reversePlayerZOrder
+          ? [...players.keys()].reverse()
+          : [...players.keys()]
+        ).map((index) => {
+          const player = players[index];
           if (index >= playerConfigs.length) return null;
 
           return (

@@ -15,6 +15,7 @@ import {
   minimal24Design,
   createMinimalDesign,
 } from "@/designs/minimal";
+import { kagaribiDesign } from "@/designs/kagaribi";
 import { Button } from "@/components/shared/Button/Button";
 import { DBTemplate } from "@/types/Repository";
 import { useCanvasStore } from "@/store/canvasStore";
@@ -46,6 +47,17 @@ const DEFAULT_TEMPLATE_GROUPS: { templates: DBTemplate[]; name: string }[] = [
         name: "Top8er (Square Variant)",
         design: squaresDesign,
         font: "Noto Sans JP",
+      },
+    ],
+  },
+  {
+    name: "Kagaribi",
+    templates: [
+      {
+        id: "kagaribi",
+        name: "Kagaribi",
+        design: kagaribiDesign,
+        font: "Dela Gothic One",
       },
     ],
   },
