@@ -128,11 +128,13 @@ const createPlayerElements = (
   {
     name: "Alt Characters",
     type: "altCharacterImage",
-    position: { x: w - Math.round(200 * s), y: h - Math.round(84 * s) },
-    size: { width: Math.round(190 * s), height: Math.round(36 * s) },
-    rows: 1,
+    position: { x: w - Math.round(270 * s), y: h - Math.round(130 * s) },
+    size: { width: Math.round(260 * s), height: Math.round(90 * s) },
+    columns: 6,
     gap: Math.round(4 * s),
+    align: "end",
     justify: "end",
+    alignLastRow: "end",
   },
   {
     name: "Flag",
