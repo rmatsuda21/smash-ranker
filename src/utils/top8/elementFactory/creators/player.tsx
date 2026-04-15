@@ -159,11 +159,14 @@ export const createCustomAltCharacterImageElement: ElementCreator<
 > = ({ element, index, context }) => {
   const { player } = context;
 
-  if (!player || player.characters.length <= 1) {
-    return null;
-  }
+  if (!player) return null;
 
-  const altCharacters = player.characters.slice(1);
+  const characters = element.includeMainCharacter
+    ? player.characters
+    : player.characters.slice(1);
+
+  if (characters.length === 0) return null;
+
   const imageType = element.imageType ?? "stock";
   const template = element.elementTemplate;
 
@@ -181,7 +184,7 @@ export const createCustomAltCharacterImageElement: ElementCreator<
       alignLastRow = "start",
     } = element;
 
-    const numItems = altCharacters.length;
+    const numItems = characters.length;
     const templateSize = template.size;
 
     // Get preferred cell size from template
@@ -218,14 +221,20 @@ export const createCustomAltCharacterImageElement: ElementCreator<
     const effectiveRows = fixedRows ?? Math.ceil(numItems / effectiveColumns);
 
     // Calculate final cell size (capped by preferred size)
-    let cellWidth = Math.min(bestCellSize, preferredCellSize);
-    let cellHeight = cellWidth; // Keep square
+    let cellWidth: number;
+    let cellHeight: number;
 
-    // Recalculate if fixed columns/rows were specified
-    if (fixedColumns || fixedRows) {
+    if (fixedColumns) {
+      // When columns are fixed, always use the preferred cell size
+      cellWidth = preferredCellSize;
+      cellHeight = preferredCellSize;
+    } else if (fixedRows) {
       const maxCellWidth = (containerWidth - (effectiveColumns - 1) * columnGap) / effectiveColumns;
       const maxCellHeight = (containerHeight - (effectiveRows - 1) * rowGap) / effectiveRows;
       cellWidth = Math.min(maxCellWidth, maxCellHeight, preferredCellSize);
+      cellHeight = cellWidth;
+    } else {
+      cellWidth = Math.min(bestCellSize, preferredCellSize);
       cellHeight = cellWidth;
     }
 
@@ -244,7 +253,7 @@ export const createCustomAltCharacterImageElement: ElementCreator<
     const isLastRowFull = lastRowItemCount === effectiveColumns;
 
     // Transform and render each alt character with the template
-    const transformedElements = altCharacters.map((character, idx) => {
+    const transformedElements = characters.map((character, idx) => {
       const row = Math.floor(idx / effectiveColumns);
       const col = idx % effectiveColumns;
       const isLastRow = row === effectiveRows - 1;
@@ -298,7 +307,7 @@ export const createCustomAltCharacterImageElement: ElementCreator<
     );
   }
 
-  const characterImageElements: ImageElementConfig[] = altCharacters.map(
+  const characterImageElements: ImageElementConfig[] = characters.map(
     (character, altIndex) => {
       const imageSrc = getCharImgUrl({
         characterId: character.id,

@@ -77,23 +77,33 @@ const getElementMainSize = (
       const altEl = element as CustomAltCharacterImageElementConfig;
       const player = context.player;
 
-      if (!player || player.characters.length <= 1) {
-        return 0;
-      }
+      if (!player) return 0;
 
-      const numAlts = player.characters.length - 1;
+      const numItems = altEl.includeMainCharacter
+        ? player.characters.length
+        : player.characters.length - 1;
+
+      if (numItems <= 0) return 0;
+
       const columnGap = altEl.gap ?? 5;
       const rowGap = altEl.rowGap ?? altEl.gap ?? 5;
       const preferredCellSize = altEl.elementTemplate?.size?.width ?? 70;
+      const fixedColumns = altEl.columns;
 
-      const maxWidth = altEl.size?.maxWidth ?? altEl.size?.width ?? preferredCellSize * numAlts;
+      if (fixedColumns) {
+        const cols = Math.min(fixedColumns, numItems);
+        const actualContentWidth = cols * preferredCellSize + (cols - 1) * columnGap;
+        return actualContentWidth;
+      }
+
+      const maxWidth = altEl.size?.maxWidth ?? altEl.size?.width ?? preferredCellSize * numItems;
       const maxHeight = altEl.size?.height ?? preferredCellSize;
 
       let bestColumns = 1;
       let bestCellSize = 0;
 
-      for (let cols = 1; cols <= numAlts; cols++) {
-        const rows = Math.ceil(numAlts / cols);
+      for (let cols = 1; cols <= numItems; cols++) {
+        const rows = Math.ceil(numItems / cols);
         const maxCellWidth = (maxWidth - (cols - 1) * columnGap) / cols;
         const maxCellHeight = (maxHeight - (rows - 1) * rowGap) / rows;
         const cellSize = Math.min(maxCellWidth, maxCellHeight);
@@ -414,11 +424,14 @@ export const createFlexGroupElement: ElementCreator<FlexGroupElementConfig> = ({
         child.crossSize
       );
 
+      const childOffsetX = child.element.position?.x ?? 0;
+      const childOffsetY = child.element.position?.y ?? 0;
+
       const modifiedElement: ElementConfig = {
         ...child.element,
         position: {
-          x: isRow ? mainPosition : crossPosition + alignOffset,
-          y: isRow ? crossPosition + alignOffset : mainPosition,
+          x: (isRow ? mainPosition : crossPosition + alignOffset) + childOffsetX,
+          y: (isRow ? crossPosition + alignOffset : mainPosition) + childOffsetY,
         },
         size: {
           ...child.element.size,

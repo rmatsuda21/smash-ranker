@@ -71,12 +71,24 @@ The TextEditor panel (`src/components/top8/TextEditor/`) allows users to edit te
 
 The Top 8 graphic is rendered via **Konva** (2D canvas) through React-Konva. The canvas tree is driven entirely by the `canvasStore` design state. Key concepts:
 
-- **Designs** (`src/designs/`) — predefined layout templates (`top8er`, `minimal`, `squares`). Each design is a typed object describing all canvas elements.
-- **Element types** — `text`, `smartText`, `image`, `group`, `flexGroup`, `flexGrid`, `rect`, `svg`, `customImage`, `characterImage`, `altCharacterImage`, `tournamentIcon`, `playerFlag`
+- **Designs** (`src/designs/`) — predefined layout templates (`top8er`, `minimal`, `squares`, `kagaribi`). Each design is a typed object describing all canvas elements.
+- **Element types** — `text`, `smartText`, `image`, `group`, `flexGroup`, `flexGrid`, `rect`, `svg`, `customImage`, `characterImage`, `altCharacterImage`, `customAltCharacterImage`, `tournamentIcon`, `playerFlag`
 - **Element factory** (`src/utils/top8/elementFactory/`) — renders each element type to Konva nodes
+- **Flex layout** (`src/utils/top8/elementFactory/creators/layout.tsx`) — `flexGroup` elements lay out children using a flex-like algorithm. `getElementMainSize` measures child widths (text via temporary `KonvaText` nodes). Child `position` values are used as offsets from the flex-computed position. Children with `flex.grow`/`flex.shrink` participate in space distribution.
+- **Dynamic player height** — Opt-in feature (`Design.dynamicPlayerHeight`) that grows player cards at render time when characters exceed one row. Utility: `src/utils/top8/dynamicPlayerHeight.ts`. Hook: `src/hooks/top8/useEffectiveCanvasSize.ts`. Currently enabled only on the minimal template.
+- **FilteredElement** (`src/components/top8/Canvas/FilteredElement.tsx`) — Wraps elements with filter effects (brightness, blur, etc.) in a cached bitmap. Tracks `text`, `fontSize`, `fill`, and `fontFamily` to invalidate the cache. **When adding new dynamic props to filtered elements, ensure they are tracked here.**
 - **Placeholder resolution** (`src/utils/top8/resolveText.ts`) — replaces `{{player.name}}`, `{{placement}}`, etc. with real data at render time
 - **Color resolution** (`src/utils/top8/resolveColor.ts`) — maps palette keys to hex values
 - **SVG processing** (`src/hooks/top8/useSvgImage.ts`) — fetches SVGs and recolors them for flags/icons
+
+### Dynamic Player Height
+
+When `Design.dynamicPlayerHeight` is set, player cards grow taller at render time to accommodate multiple rows of character icons. This is computed without mutating the stored design:
+
+- **Config** — `{ rowHeight, gap, maxPerRow }` on the `Design` type. Only the minimal template uses this.
+- **Utility** — `src/utils/top8/dynamicPlayerHeight.ts` computes per-player height deltas, patches element heights (rect `"primary"`, flexGroup `"main"`, flexGroup `"characterImageGroup"`, customAltCharacterImage `"altCharacterImage"`), and cascades y-position offsets.
+- **Hook** — `src/hooks/top8/useEffectiveCanvasSize.ts` returns canvas size adjusted for total height delta. Used by `Canvas.tsx`, `BackgroundLayer.tsx`, and `PlayerLayer.tsx`.
+- **`customAltCharacterImage`** — Supports `includeMainCharacter: true` to render all characters (main + alts) in a single grid. When `columns` is set, the grid uses fixed column count with the template's preferred cell size (no dynamic resizing). The `getElementMainSize` function in `layout.tsx` also respects `includeMainCharacter` and `columns` for accurate flex width calculation.
 
 ### Persistence (IndexedDB)
 

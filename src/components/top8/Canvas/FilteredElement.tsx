@@ -38,6 +38,7 @@ export const FilteredElement = ({ children, ...rest }: Props) => {
     text?: string;
     fontSize?: number;
     fill?: string;
+    fontFamily?: string;
   }>({});
 
   useEffect(() => {
@@ -54,6 +55,7 @@ export const FilteredElement = ({ children, ...rest }: Props) => {
   const childText = (children as ReactElement<any>).props?.text;
   const childFontSize = (children as ReactElement<any>).props?.fontSize;
   const childFill = (children as ReactElement<any>).props?.fill;
+  const childFontFamily = (children as ReactElement<any>).props?.fontFamily;
 
   useEffect(() => {
     if (!isValidElement(children)) return;
@@ -63,18 +65,20 @@ export const FilteredElement = ({ children, ...rest }: Props) => {
     const hasChanged =
       childText !== prevProps.text ||
       childFontSize !== prevProps.fontSize ||
-      childFill !== prevProps.fill;
+      childFill !== prevProps.fill ||
+      childFontFamily !== prevProps.fontFamily;
 
     prevChildPropsRef.current = {
       text: childText,
       fontSize: childFontSize,
       fill: childFill,
+      fontFamily: childFontFamily,
     };
 
     if (hasChanged) {
       invalidate();
     }
-  }, [children, childText, childFontSize, childFill, invalidate]);
+  }, [children, childText, childFontSize, childFill, childFontFamily, invalidate]);
 
   const handleReady = useCallback(() => {
     childOnReadyRef.current?.();
