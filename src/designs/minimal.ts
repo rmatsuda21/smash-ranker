@@ -2,13 +2,14 @@ import { Design, LayerDesign, PlayerDesign } from "@/types/top8/Design";
 import { DesignPlaceholder } from "@/consts/top8/placeholders";
 import { RenderCondition } from "@/consts/top8/renderConditions";
 
-const CANVAS_WIDTH = 1200;
+const CANVAS_WIDTH = 1000;
 const PADDING_BLOCK = 20;
 const PADDING_INLINE = 20;
 const TOURNAMENT_ICON_SIZE = 120;
 const PLAYER_SPACING = 16;
 const PLAYER_WIDTH = CANVAS_WIDTH - PADDING_INLINE * 2;
 const PLAYER_HEIGHT = 80;
+const PLAYER_PADDING_BLOCK = 10;
 const FLAG_SIZE = 44;
 const CHARACTER_IMAGE_SIZE = 60;
 
@@ -39,12 +40,14 @@ const basePlayer: PlayerDesign = {
       type: "flexGroup",
       id: "main",
       name: "Main",
-      position: { x: 30, y: 0 },
-      size: { width: PLAYER_WIDTH - 60, height: PLAYER_HEIGHT },
+      position: { x: 30, y: PLAYER_PADDING_BLOCK },
+      size: {
+        width: PLAYER_WIDTH - 60,
+        height: PLAYER_HEIGHT,
+      },
       direction: "row",
-      align: "center",
+      justify: "center",
       gap: 20,
-      justify: "space-between",
       elements: [
         {
           type: "smartText",
@@ -52,25 +55,23 @@ const basePlayer: PlayerDesign = {
           fontSize: 60,
           fontWeight: 900,
           fill: "text",
-          align: "left",
-          verticalAlign: "middle",
-          position: { x: 0, y: 0 },
-          size: { width: 50, height: PLAYER_HEIGHT },
+          verticalAlign: "top",
+          position: { x: 0, y: -5 },
+          size: { width: 50, height: CHARACTER_IMAGE_SIZE },
         },
         {
           type: "playerFlag",
           position: { x: 0, y: 0 },
-          size: { width: FLAG_SIZE, height: FLAG_SIZE },
+          size: { width: FLAG_SIZE, height: CHARACTER_IMAGE_SIZE },
           conditions: [DesignPlaceholder.PLAYER_COUNTRY],
           fillMode: "contain",
-          align: "center",
         },
         {
           type: "flexGroup",
           id: "fullNameGroup",
           position: { x: 0, y: 0 },
-          size: { width: 150, height: 40 },
-          justify: "start",
+          size: { width: 150, height: 44 },
+          direction: "row",
           align: "end",
           gap: 10,
           conditions: [DesignPlaceholder.PLAYER_PREFIX],
@@ -81,8 +82,7 @@ const basePlayer: PlayerDesign = {
               text: `${DesignPlaceholder.PLAYER_PREFIX}`,
               id: "fullNameText",
               fontSize: 24,
-              align: "left",
-              verticalAlign: "middle",
+              verticalAlign: "bottom",
               fontWeight: 900,
               fill: "text",
               filterEffects: [{ type: "Brightness", brightness: 0.5 }],
@@ -93,7 +93,6 @@ const basePlayer: PlayerDesign = {
               text: `${DesignPlaceholder.PLAYER_TAG}`,
               id: "tagText",
               fontSize: 40,
-              align: "left",
               verticalAlign: "bottom",
               fontWeight: 900,
               fill: "text",
@@ -110,11 +109,11 @@ const basePlayer: PlayerDesign = {
           conditions: [RenderCondition.NOT, DesignPlaceholder.PLAYER_PREFIX],
           fontSize: 40,
           align: "left",
-          verticalAlign: "middle",
+          verticalAlign: "bottom",
           fontWeight: 900,
           fill: "text",
           position: { x: 0, y: 0 },
-          size: { height: 64 },
+          size: { height: CHARACTER_IMAGE_SIZE },
           flex: { shrink: true, grow: true },
         },
         {
@@ -122,79 +121,31 @@ const basePlayer: PlayerDesign = {
           id: "characterImageGroup",
           position: { x: 0, y: 0 },
           size: {
-            maxWidth: CHARACTER_IMAGE_SIZE * 6 + 10 * 5,
+            maxWidth: CHARACTER_IMAGE_SIZE * 6 + 6 * 5,
             height: CHARACTER_IMAGE_SIZE,
           },
           direction: "row",
-          align: "center",
+          align: "start",
           justify: "end",
           gap: 6,
           clip: true,
           flex: { shrink: true, grow: false },
           elements: [
             {
-              type: "group",
-              position: { x: 0, y: 0 },
-              size: {
-                width: CHARACTER_IMAGE_SIZE,
-                height: CHARACTER_IMAGE_SIZE,
-              },
-              clip: true,
-              clipCornerRadius: 4,
-              elements: [
-                {
-                  type: "rect",
-                  id: "characterBackground",
-                  fill: "characterBackground",
-                  position: { x: 0, y: 0 },
-                  size: {
-                    width: CHARACTER_IMAGE_SIZE,
-                    height: CHARACTER_IMAGE_SIZE,
-                  },
-                  cornerRadius: 4,
-                },
-                {
-                  type: "characterImage",
-                  id: "characterImage",
-                  name: "Character Image",
-                  shadowEnabled: false,
-                  cropScaleMultiplier: 1.2,
-                  position: { x: 0, y: 0 },
-                  size: {
-                    width: CHARACTER_IMAGE_SIZE,
-                    height: CHARACTER_IMAGE_SIZE,
-                  },
-                  flex: { shrink: true, grow: false },
-                },
-                {
-                  type: "rect",
-                  id: "characterBorder",
-                  fill: "transparent",
-                  stroke: "characterBorder",
-                  strokeWidth: 2,
-                  position: { x: 0, y: 0 },
-                  size: {
-                    width: CHARACTER_IMAGE_SIZE,
-                    height: CHARACTER_IMAGE_SIZE,
-                  },
-                  cornerRadius: 4,
-                },
-              ],
-            },
-            {
               type: "customAltCharacterImage",
               id: "altCharacterImage",
+              includeMainCharacter: true,
               position: { x: 0, y: 0 },
               size: {
-                maxWidth: CHARACTER_IMAGE_SIZE * 5 + 10 * 4,
+                maxWidth: CHARACTER_IMAGE_SIZE * 6 + 6 * 5,
                 height: CHARACTER_IMAGE_SIZE,
               },
               imageType: "render",
+              columns: 6,
               gap: 6,
               alignLastRow: "start",
               justify: "start",
-              align: "center",
-              conditions: [RenderCondition.HAS_ALT_CHARACTERS],
+              align: "start",
               flex: { shrink: true, grow: false },
               elementTemplate: {
                 type: "group",
@@ -299,7 +250,8 @@ const createMinimalDesign = (playerCount: number): Design => {
             id: "tournamentInfoGroup",
             position: { x: 0, y: 0 },
             size: {
-              width: CANVAS_WIDTH - PADDING_INLINE * 2 - TOURNAMENT_ICON_SIZE - 20,
+              width:
+                CANVAS_WIDTH - PADDING_INLINE * 2 - TOURNAMENT_ICON_SIZE - 20,
               height: TOURNAMENT_ICON_SIZE,
             },
             direction: "column",
@@ -316,7 +268,11 @@ const createMinimalDesign = (playerCount: number): Design => {
                 fontWeight: 900,
                 fill: "text",
                 size: {
-                  width: CANVAS_WIDTH - PADDING_INLINE * 2 - TOURNAMENT_ICON_SIZE - 20,
+                  width:
+                    CANVAS_WIDTH -
+                    PADDING_INLINE * 2 -
+                    TOURNAMENT_ICON_SIZE -
+                    20,
                 },
                 align: "left",
                 selectable: true,
@@ -332,7 +288,11 @@ const createMinimalDesign = (playerCount: number): Design => {
                 align: "left",
                 position: { x: 0, y: 0 },
                 size: {
-                  width: CANVAS_WIDTH - PADDING_INLINE * 2 - TOURNAMENT_ICON_SIZE - 20,
+                  width:
+                    CANVAS_WIDTH -
+                    PADDING_INLINE * 2 -
+                    TOURNAMENT_ICON_SIZE -
+                    20,
                 },
                 selectable: true,
               },
@@ -380,6 +340,11 @@ const createMinimalDesign = (playerCount: number): Design => {
     tournament,
     basePlayer,
     players,
+    dynamicPlayerHeight: {
+      rowHeight: CHARACTER_IMAGE_SIZE,
+      gap: 6,
+      maxPerRow: 6,
+    },
   };
 };
 

@@ -12,6 +12,8 @@ import { PlayerDesign } from "@/types/top8/Design";
 import { useFontStore } from "@/store/fontStore";
 import { PlayerInfo } from "@/types/top8/Player";
 import { isMobile } from "@/utils/isMobile";
+import { useEffectiveCanvasSize } from "@/hooks/top8/useEffectiveCanvasSize";
+import { computeDynamicPlayerLayout } from "@/utils/top8/dynamicPlayerHeight";
 
 type PlayerTransformerLayerProps = {
   players: PlayerInfo[];
@@ -123,9 +125,10 @@ const PlayerLayerComponent = ({ onReady }: { onReady?: () => void }) => {
   const reversePlayerZOrder = useCanvasStore(
     (state) => state.design.reversePlayerZOrder
   );
-  const canvasSize = useCanvasStore(
-    useShallow((state) => state.design.canvasSize)
+  const dynamicPlayerHeight = useCanvasStore(
+    (state) => state.design.dynamicPlayerHeight
   );
+  const canvasSize = useEffectiveCanvasSize();
   const colorPalette = useCanvasStore(
     useShallow((state) => state.design.colorPalette)
   );
@@ -136,11 +139,20 @@ const PlayerLayerComponent = ({ onReady }: { onReady?: () => void }) => {
   );
 
   const playerConfigs: PlayerDesign[] = useMemo(() => {
+    if (dynamicPlayerHeight) {
+      const { configs } = computeDynamicPlayerLayout(
+        basePlayer,
+        playerLayouts,
+        players,
+        dynamicPlayerHeight,
+      );
+      return configs;
+    }
     return playerLayouts.map((player) => ({
       ...basePlayer,
       ...player,
     }));
-  }, [basePlayer, playerLayouts]);
+  }, [basePlayer, playerLayouts, dynamicPlayerHeight, players]);
 
   const onPlayerDragStart = useCallback((e: KonvaEventObject<MouseEvent>) => {
     const player = e.target;

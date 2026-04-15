@@ -196,6 +196,8 @@ export type CharacterImageType = "stock" | "render";
 export interface CustomAltCharacterImageElementConfig extends BaseElementConfig {
   type: "customAltCharacterImage";
   imageType?: CharacterImageType;
+  /** When true, include the main character as the first grid item. */
+  includeMainCharacter?: boolean;
   elementTemplate?: ElementConfig;
   gap?: number;
   rowGap?: number;
@@ -279,4 +281,10 @@ export interface Design {
   author?: string;
   /** Render 1st-place player on top (last in draw order). */
   reversePlayerZOrder?: boolean;
+  /** When set, player cards grow taller to accommodate extra character icon rows. */
+  dynamicPlayerHeight?: {
+    rowHeight: number;
+    gap: number;
+    maxPerRow: number;
+  };
 }

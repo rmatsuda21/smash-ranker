@@ -13,6 +13,7 @@ import { Spinner } from "@/components/shared/Spinner/Spinner";
 import { Slider } from "@/components/shared/Slider/Slider";
 import { Button } from "@/components/shared/Button/Button";
 import { isMobile } from "@/utils/isMobile";
+import { useEffectiveCanvasSize } from "@/hooks/top8/useEffectiveCanvasSize";
 
 import styles from "./Canvas.module.scss";
 
@@ -36,7 +37,7 @@ export const Canvas = ({ className }: Props) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
-  const canvasSize = useCanvasStore((state) => state.design.canvasSize);
+  const canvasSize = useEffectiveCanvasSize();
   const canvasDispatch = useCanvasStore((state) => state.dispatch);
   const tournamentDispatch = useTournamentStore((state) => state.dispatch);
   const playerDispatch = usePlayerStore((state) => state.dispatch);
