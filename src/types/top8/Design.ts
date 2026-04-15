@@ -175,6 +175,8 @@ export interface CharacterImageElementConfig
   type: "characterImage";
   usePlayerAvatar?: boolean;
   shadowEnabled?: boolean;
+  fillMode?: ImageFillMode;
+  cropScaleMultiplier?: number;
 }
 
 export interface AltCharacterImageElementConfig extends BaseElementConfig {

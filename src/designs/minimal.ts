@@ -3,14 +3,14 @@ import { DesignPlaceholder } from "@/consts/top8/placeholders";
 import { RenderCondition } from "@/consts/top8/renderConditions";
 
 const CANVAS_WIDTH = 1200;
-const PADDING_BLOCK = 40;
+const PADDING_BLOCK = 20;
 const PADDING_INLINE = 20;
 const TOURNAMENT_ICON_SIZE = 120;
 const PLAYER_SPACING = 16;
 const PLAYER_WIDTH = CANVAS_WIDTH - PADDING_INLINE * 2;
-const PLAYER_HEIGHT = 110;
+const PLAYER_HEIGHT = 80;
 const FLAG_SIZE = 44;
-const CHARACTER_IMAGE_SIZE = 90;
+const CHARACTER_IMAGE_SIZE = 60;
 
 const colorPalette: Design["colorPalette"] = {
   primary: { color: "rgba(142, 142, 142, 0.21)", name: "Player BG" },
@@ -55,7 +55,7 @@ const basePlayer: PlayerDesign = {
           align: "left",
           verticalAlign: "middle",
           position: { x: 0, y: 0 },
-          size: { width: PLAYER_HEIGHT - 60, height: PLAYER_HEIGHT },
+          size: { width: 50, height: PLAYER_HEIGHT },
         },
         {
           type: "playerFlag",
@@ -122,13 +122,13 @@ const basePlayer: PlayerDesign = {
           id: "characterImageGroup",
           position: { x: 0, y: 0 },
           size: {
-            maxWidth: CHARACTER_IMAGE_SIZE * 3 + 16 * 2,
+            maxWidth: CHARACTER_IMAGE_SIZE * 6 + 10 * 5,
             height: CHARACTER_IMAGE_SIZE,
           },
           direction: "row",
           align: "center",
           justify: "end",
-          gap: 16,
+          gap: 6,
           clip: true,
           flex: { shrink: true, grow: false },
           elements: [
@@ -140,7 +140,7 @@ const basePlayer: PlayerDesign = {
                 height: CHARACTER_IMAGE_SIZE,
               },
               clip: true,
-              clipCornerRadius: 6,
+              clipCornerRadius: 4,
               elements: [
                 {
                   type: "rect",
@@ -151,13 +151,14 @@ const basePlayer: PlayerDesign = {
                     width: CHARACTER_IMAGE_SIZE,
                     height: CHARACTER_IMAGE_SIZE,
                   },
-                  cornerRadius: 6,
+                  cornerRadius: 4,
                 },
                 {
                   type: "characterImage",
                   id: "characterImage",
                   name: "Character Image",
                   shadowEnabled: false,
+                  cropScaleMultiplier: 1.2,
                   position: { x: 0, y: 0 },
                   size: {
                     width: CHARACTER_IMAGE_SIZE,
@@ -170,13 +171,13 @@ const basePlayer: PlayerDesign = {
                   id: "characterBorder",
                   fill: "transparent",
                   stroke: "characterBorder",
-                  strokeWidth: 4,
+                  strokeWidth: 2,
                   position: { x: 0, y: 0 },
                   size: {
                     width: CHARACTER_IMAGE_SIZE,
                     height: CHARACTER_IMAGE_SIZE,
                   },
-                  cornerRadius: 6,
+                  cornerRadius: 4,
                 },
               ],
             },
@@ -185,11 +186,11 @@ const basePlayer: PlayerDesign = {
               id: "altCharacterImage",
               position: { x: 0, y: 0 },
               size: {
-                maxWidth: CHARACTER_IMAGE_SIZE * 2 + 12,
+                maxWidth: CHARACTER_IMAGE_SIZE * 5 + 10 * 4,
                 height: CHARACTER_IMAGE_SIZE,
               },
               imageType: "render",
-              gap: 16,
+              gap: 6,
               alignLastRow: "start",
               justify: "start",
               align: "center",
@@ -203,19 +204,20 @@ const basePlayer: PlayerDesign = {
                   height: CHARACTER_IMAGE_SIZE,
                 },
                 clip: true,
-                clipCornerRadius: 6,
+                clipCornerRadius: 4,
                 elements: [
                   {
                     type: "rect",
                     id: "altCharacterBackground",
                     fill: "characterBackground",
                     position: { x: 0, y: 0 },
-                    cornerRadius: 6,
+                    cornerRadius: 4,
                   },
                   {
                     type: "characterImage",
                     id: "altCharacterImage",
                     shadowEnabled: false,
+                    cropScaleMultiplier: 1.2,
                     position: { x: 0, y: 0 },
                   },
                   {
@@ -223,9 +225,9 @@ const basePlayer: PlayerDesign = {
                     id: "altCharacterBorder",
                     fill: "transparent",
                     stroke: "characterBorder",
-                    strokeWidth: 4,
+                    strokeWidth: 2,
                     position: { x: 0, y: 0 },
-                    cornerRadius: 6,
+                    cornerRadius: 4,
                   },
                 ],
               },
@@ -241,6 +243,7 @@ const createMinimalDesign = (playerCount: number): Design => {
   const canvasHeight =
     PADDING_BLOCK * 2 +
     TOURNAMENT_ICON_SIZE +
+    PLAYER_SPACING +
     PLAYER_HEIGHT * playerCount +
     PLAYER_SPACING * (playerCount - 1);
 
