@@ -48,13 +48,24 @@ export const createKonvaElementsInternal = (
       createdEl = injectAsyncCallbacks(createdEl, context._asyncTracker);
     }
 
+    // Elements with clipCornerRadius clip to their own bounds (e.g. rounded
+    // character image groups). All other clips use the parent containerSize
+    // (e.g. kagaribi character overflow clipping).
+    const clipToSelf = !!(element.clip && element.clipCornerRadius);
+
     const clipFunc = element.clip
       ? (ctx: SceneContext) => {
         const co = element.clipOffset;
         const cx = -(co?.left ?? 0);
         const cy = -(co?.top ?? 0);
-        const cw = containerSize.width + (co?.left ?? 0) + (co?.right ?? 0);
-        const ch = containerSize.height + (co?.top ?? 0) + (co?.bottom ?? 0);
+        const clipWidth = clipToSelf
+          ? (element.size?.width ?? containerSize.width)
+          : containerSize.width;
+        const clipHeight = clipToSelf
+          ? (element.size?.height ?? containerSize.height)
+          : containerSize.height;
+        const cw = clipWidth + (co?.left ?? 0) + (co?.right ?? 0);
+        const ch = clipHeight + (co?.top ?? 0) + (co?.bottom ?? 0);
         ctx.beginPath();
         if (element.clipCornerRadius) {
           ctx.roundRect(cx, cy, cw, ch, element.clipCornerRadius);
@@ -114,14 +125,19 @@ export const createKonvaElementsInternal = (
         element.type === "flexGrid";
 
       if (hasFilters) {
+        const cloneProps: Record<string, unknown> = { listening: isContainer };
+        if (clipToSelf) {
+          cloneProps.x = 0;
+          cloneProps.y = 0;
+        }
         const el = isValidElement(createdEl)
-          ? cloneElement(createdEl as ReactElement<{ listening?: boolean }>, {
-            listening: isContainer,
-          })
+          ? cloneElement(createdEl as ReactElement<typeof cloneProps>, cloneProps)
           : createdEl;
 
         result.push(
           <FilteredElement
+            x={clipToSelf ? element.position.x : undefined}
+            y={clipToSelf ? element.position.y : undefined}
             draggable={isEditable}
             key={element.id ?? `filtered-${index}`}
             clipFunc={clipFunc}
@@ -140,16 +156,37 @@ export const createKonvaElementsInternal = (
           : createdEl;
 
         if (clipFunc) {
-          result.push(
-            <Group
-              key={element.id ?? `group-${index}`}
-              clipFunc={clipFunc}
-              listening={isContainer}
-              draggable={isEditable}
-            >
-              {el}
-            </Group>
-          );
+          if (clipToSelf) {
+            const resetEl = isValidElement(el)
+              ? cloneElement(
+                el as ReactElement<{ x?: number; y?: number }>,
+                { x: 0, y: 0 }
+              )
+              : el;
+            result.push(
+              <Group
+                key={element.id ?? `group-${index}`}
+                x={element.position.x}
+                y={element.position.y}
+                clipFunc={clipFunc}
+                listening={isContainer}
+                draggable={isEditable}
+              >
+                {resetEl}
+              </Group>
+            );
+          } else {
+            result.push(
+              <Group
+                key={element.id ?? `group-${index}`}
+                clipFunc={clipFunc}
+                listening={isContainer}
+                draggable={isEditable}
+              >
+                {el}
+              </Group>
+            );
+          }
         } else {
           result.push(el);
         }

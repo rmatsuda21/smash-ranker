@@ -58,7 +58,7 @@ export const createCharacterImageElement: ElementCreator<
 
   const characterCrop = getCharacterCrop(character.id, character.alt);
   let cropOffset = characterCrop.offset;
-  let cropScale = characterCrop.scale;
+  let cropScale = characterCrop.scale * (element.cropScaleMultiplier ?? 1);
 
   if (!isAltCharacter && context.player?.avatarImgSrc) {
     imageSrc = context.player.avatarImgSrc;
@@ -86,6 +86,7 @@ export const createCharacterImageElement: ElementCreator<
       shadowOffset={{ x: 15, y: 15 }}
       shadowBlur={element.shadowBlur}
       shadowOpacity={element.shadowOpacity}
+      fillMode={element.fillMode ?? "contain"}
       perfectDrawEnabled={context.perfectDraw}
     />
   );
@@ -502,6 +503,7 @@ function renderTemplateElement(
     }
 
     const characterCrop = getCharacterCrop(charEl._altCharacter.id, charEl._altCharacter.alt);
+    const altCropScale = characterCrop.scale * (charEl.cropScaleMultiplier ?? 1);
 
     return (
       <CustomImage
@@ -512,7 +514,8 @@ function renderTemplateElement(
         height={element.size?.height ?? 100}
         imageSrc={charEl._altImageSrc!}
         cropOffset={characterCrop.offset}
-        cropScale={characterCrop.scale}
+        cropScale={altCropScale}
+        fillMode={charEl.fillMode ?? "contain"}
         hasShadow={charEl.shadowEnabled ?? false}
         shadowColor={resolveColor(charEl.shadowColor, context.design?.colorPalette)}
         shadowBlur={charEl.shadowBlur}
