@@ -291,6 +291,7 @@ const tournament: LayerDesign = {
       fill: "text",
       position: { x: PADDING, y: VERT_PADDING + TOP_BAR_HEIGHT + 8 },
       size: { width: 1380, height: 80 },
+      selectable: true,
     },
     {
       type: "text",
@@ -302,6 +303,7 @@ const tournament: LayerDesign = {
       fill: "text",
       position: { x: PADDING, y: VERT_PADDING + TOP_BAR_HEIGHT + 80 },
       textTransform: "uppercase",
+      selectable: true,
     },
     {
       type: "smartText",
@@ -317,6 +319,7 @@ const tournament: LayerDesign = {
         y: VERT_PADDING + TOP_BAR_HEIGHT + 8,
       },
       textTransform: "uppercase",
+      selectable: true,
     },
     {
       type: "smartText",
@@ -332,6 +335,7 @@ const tournament: LayerDesign = {
         y: VERT_PADDING + TOP_BAR_HEIGHT + 40,
       },
       textTransform: "uppercase",
+      selectable: true,
     },
     {
       type: "smartText",
@@ -343,6 +347,7 @@ const tournament: LayerDesign = {
       fill: "text",
       anchor: "leftMiddle",
       position: { x: PADDING, y: FOOTER_BOTTOM - TOURNAMENT_ICON_SIZE / 2 },
+      selectable: true,
     },
     {
       type: "tournamentIcon",
