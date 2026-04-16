@@ -235,16 +235,44 @@ const players: Partial<PlayerDesign>[] = [
 ];
 
 const colorPalette: Design["colorPalette"] = {
-  bgGradient1: { color: "#000000", name: "Background Dark" },
-  bgGradient2: { color: "#4B0D0D", name: "Background Red" },
-  bgGradient3: { color: "#414141", name: "Background Gray" },
-  cardBg: { color: "rgba(80, 50, 50, 0.4)", name: "Card Background" },
-  text: { color: "#FFFFFF", name: "Text" },
-  prefixText: { color: "rgba(180, 180, 180, 1)", name: "Prefix Text" },
-  placementStroke: { color: "#000000", name: "Placement Stroke" },
-  placementShadow: { color: "rgba(0, 0, 0, 0.8)", name: "Placement Shadow" },
-  leftBorder: { color: "#FFFFFF", name: "Left Border" },
-  topBar: { color: "#FFFFFF", name: "Top Bar" },
+  bgGradient1: {
+    color: "#000000",
+    name: "Background Dark",
+    group: "Background",
+  },
+  bgGradient2: {
+    color: "#4B0D0D",
+    name: "Background Red",
+    group: "Background",
+  },
+  bgGradient3: {
+    color: "#414141",
+    name: "Background Gray",
+    group: "Background",
+  },
+  cardBg: {
+    color: "rgba(80, 50, 50, 0.4)",
+    name: "Card Background",
+    group: "Player",
+  },
+  text: { color: "#FFFFFF", name: "Text", group: "Text" },
+  prefixText: {
+    color: "rgba(180, 180, 180, 1)",
+    name: "Prefix Text",
+    group: "Text",
+  },
+  placementStroke: {
+    color: "#000000",
+    name: "Placement Stroke",
+    group: "Text",
+  },
+  placementShadow: {
+    color: "rgba(0, 0, 0, 0.8)",
+    name: "Placement Shadow",
+    group: "Text",
+  },
+  leftBorder: { color: "#FFFFFF", name: "Left Border", group: "Player" },
+  topBar: { color: "#FFFFFF", name: "Top Bar", group: "Player" },
 };
 
 const background: LayerDesign = {

@@ -248,16 +248,40 @@ const players: Partial<PlayerDesign>[] = [
 ];
 
 const colorPalette: Design["colorPalette"] = {
-  primary: { color: "rgb(179, 0, 0)", name: "Primary" },
-  secondary: { color: "rgb(235, 171, 64)", name: "Secondary" },
-  background: { color: "rgb(0, 0, 0)", name: "Background" },
-  text: { color: "rgb(255, 255, 255)", name: "Text" },
-  textShadow: { color: "rgb(0, 0, 0)", name: "Text Shadow" },
-  placementShadow: { color: "rgb(255, 255, 255)", name: "Placement Shadow" },
-  playerBackground: { color: "rgb(0, 0, 0)", name: "Player Background" },
-  playerText: { color: "rgb(255, 255, 255)", name: "Player Text" },
-  characterShadow: { color: "rgb(255, 0, 0)", name: "Character Shadow" },
-  smashBall: { color: "rgba(255, 255, 255, 0.2)", name: "Smash Ball" },
+  primary: { color: "rgb(179, 0, 0)", name: "Primary", group: "Theme" },
+  secondary: { color: "rgb(235, 171, 64)", name: "Secondary", group: "Theme" },
+  background: {
+    color: "rgb(0, 0, 0)",
+    name: "Background",
+    group: "Background",
+  },
+  smashBall: {
+    color: "rgba(255, 255, 255, 0.2)",
+    name: "Smash Ball",
+    group: "Background",
+  },
+  text: { color: "rgb(255, 255, 255)", name: "Text", group: "Text" },
+  textShadow: { color: "rgb(0, 0, 0)", name: "Text Shadow", group: "Text" },
+  placementShadow: {
+    color: "rgb(255, 255, 255)",
+    name: "Placement Shadow",
+    group: "Text",
+  },
+  playerBackground: {
+    color: "rgb(0, 0, 0)",
+    name: "Player Background",
+    group: "Player",
+  },
+  playerText: {
+    color: "rgb(255, 255, 255)",
+    name: "Player Text",
+    group: "Player",
+  },
+  characterShadow: {
+    color: "rgb(255, 0, 0)",
+    name: "Character Shadow",
+    group: "Player",
+  },
 };
 
 const background: LayerDesign = {

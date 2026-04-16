@@ -14,15 +14,32 @@ const FLAG_SIZE = 44;
 const CHARACTER_IMAGE_SIZE = 60;
 
 const colorPalette: Design["colorPalette"] = {
-  primary: { color: "rgba(142, 142, 142, 0.21)", name: "Player BG" },
+  backgroundStart: {
+    color: "rgb(51, 51, 51)",
+    name: "BG Gradient Start",
+    group: "Background",
+  },
+  backgroundEnd: {
+    color: "rgb(0, 0, 0)",
+    name: "BG Gradient End",
+    group: "Background",
+  },
+  primary: {
+    color: "rgba(142, 142, 142, 0.21)",
+    name: "Player BG",
+    group: "Player",
+  },
   characterBackground: {
     color: "rgb(236, 236, 236)",
     name: "Character BG",
+    group: "Player",
   },
-  characterBorder: { color: "rgb(255, 255, 255)", name: "Character Border" },
-  backgroundStart: { color: "rgb(51, 51, 51)", name: "BG Gradient Start" },
-  backgroundEnd: { color: "rgb(0, 0, 0)", name: "BG Gradient End" },
-  text: { color: "rgb(255, 255, 255)", name: "Text" },
+  characterBorder: {
+    color: "rgb(255, 255, 255)",
+    name: "Character Border",
+    group: "Player",
+  },
+  text: { color: "rgb(255, 255, 255)", name: "Text", group: "Text" },
 };
 
 const basePlayer: PlayerDesign = {

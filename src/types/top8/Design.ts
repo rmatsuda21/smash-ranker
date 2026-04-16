@@ -274,7 +274,7 @@ export interface PlayerDesign extends BaseElementConfig {
 export interface Design {
   canvasSize: { width: number; height: number };
   canvasDisplayScale: number;
-  colorPalette?: Record<string, { color: string; name: string }>;
+  colorPalette?: Record<string, { color: string; name: string; group?: string }>;
   textPalette?: Record<string, { text: string; name: string }>;
   bgAssetId?: string;
   bgImageDarkness?: number;
