@@ -1,6 +1,7 @@
 import { memo, useEffect, useState } from "react";
 
 import { DropDownItem } from "@/components/top8/DropDownSelect/DropDownSelect";
+import { useFontStore } from "@/store/fontStore";
 
 import styles from "./FontOption.module.scss";
 
@@ -18,8 +19,18 @@ export const FontOption = memo(({ option }: Props) => {
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState(false);
   const fontFamily = option.value;
+  const isCustom = useFontStore((state) =>
+    Array.from(state.fonts).some(
+      (f) => f.fontFamily === fontFamily && f.isCustom
+    )
+  );
 
   useEffect(() => {
+    if (isCustom) {
+      setLoaded(true);
+      return;
+    }
+
     const existingLink = document.querySelector(
       `link[data-font-preview="${fontFamily}"]`
     );
