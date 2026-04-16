@@ -17,7 +17,7 @@ import { EMPTY_CHARACTER_ID, EMPTY_CHARACTER_DARK_IMG } from "@/consts/top8/char
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
 import { getCharacterCrop } from "@/utils/top8/getCharacterCrop";
 import { resolveColor } from "@/utils/top8/resolveColor";
-import { createFlexGridElement } from "./layout";
+import { createFlexGridElement, calculateGridAlignOffset, findOptimalSquareGrid } from "./layout";
 
 type CharacterImageWithAltData = CharacterImageElementConfig & {
   _altCharacter?: CharacerData;
@@ -171,141 +171,8 @@ export const createCustomAltCharacterImageElement: ElementCreator<
   const imageType = element.imageType ?? "stock";
   const template = element.elementTemplate;
 
-  // If we have a full element template, we need to manually calculate grid layout
-  // and propagate sizes to nested elements
   if (template) {
-    const {
-      gap = 5,
-      rowGap = gap,
-      columnGap = gap,
-      columns: fixedColumns,
-      rows: fixedRows,
-      align = "start",
-      justify = "start",
-      alignLastRow = "start",
-    } = element;
-
-    const numItems = characters.length;
-    const templateSize = template.size;
-
-    // Get preferred cell size from template
-    const preferredCellSize = templateSize?.width ?? 70;
-
-    // Get container dimensions
-    const containerWidth = element.size?.width ?? element.size?.maxWidth ?? preferredCellSize * numItems;
-    const containerHeight = element.size?.height ?? preferredCellSize;
-
-    // Find optimal grid configuration that maximizes cell size while fitting all items
-    let bestColumns = 1;
-    let bestCellSize = 0;
-
-    for (let cols = 1; cols <= numItems; cols++) {
-      const rows = Math.ceil(numItems / cols);
-
-      // Calculate max cell size that fits in this configuration
-      const maxCellWidth = (containerWidth - (cols - 1) * columnGap) / cols;
-      const maxCellHeight = (containerHeight - (rows - 1) * rowGap) / rows;
-      const cellSize = Math.min(maxCellWidth, maxCellHeight);
-
-      // Skip if cells would be too small (less than 10px)
-      if (cellSize < 10) continue;
-
-      // Choose configuration with largest cell size
-      if (cellSize > bestCellSize) {
-        bestCellSize = cellSize;
-        bestColumns = cols;
-      }
-    }
-
-    // Apply fixed columns/rows if specified
-    const effectiveColumns = fixedColumns ?? bestColumns;
-    const effectiveRows = fixedRows ?? Math.ceil(numItems / effectiveColumns);
-
-    // Calculate final cell size (capped by preferred size)
-    let cellWidth: number;
-    let cellHeight: number;
-
-    if (fixedColumns) {
-      // When columns are fixed, always use the preferred cell size
-      cellWidth = preferredCellSize;
-      cellHeight = preferredCellSize;
-    } else if (fixedRows) {
-      const maxCellWidth = (containerWidth - (effectiveColumns - 1) * columnGap) / effectiveColumns;
-      const maxCellHeight = (containerHeight - (effectiveRows - 1) * rowGap) / effectiveRows;
-      cellWidth = Math.min(maxCellWidth, maxCellHeight, preferredCellSize);
-      cellHeight = cellWidth;
-    } else {
-      cellWidth = Math.min(bestCellSize, preferredCellSize);
-      cellHeight = cellWidth;
-    }
-
-    // Calculate actual content size based on the grid we'll actually render
-    const gridContentWidth = effectiveColumns * cellWidth + (effectiveColumns - 1) * columnGap;
-    const gridContentHeight = effectiveRows * cellHeight + (effectiveRows - 1) * rowGap;
-
-    // Use the actual content size (not the container max size) for proper alignment
-    const actualContainerWidth = gridContentWidth;
-    const actualContainerHeight = Math.min(gridContentHeight, containerHeight);
-
-    const gridOffsetX = calculateGridAlignOffset(justify, actualContainerWidth, gridContentWidth);
-    const gridOffsetY = calculateGridAlignOffset(align, actualContainerHeight, gridContentHeight);
-
-    const lastRowItemCount = numItems % effectiveColumns || effectiveColumns;
-    const isLastRowFull = lastRowItemCount === effectiveColumns;
-
-    // Transform and render each alt character with the template
-    const transformedElements = characters.map((character, idx) => {
-      const row = Math.floor(idx / effectiveColumns);
-      const col = idx % effectiveColumns;
-      const isLastRow = row === effectiveRows - 1;
-
-      let x = col * (cellWidth + columnGap);
-      const y = row * (cellHeight + rowGap);
-
-      // Handle last row alignment
-      if (isLastRow && !isLastRowFull) {
-        const lastRowWidth =
-          lastRowItemCount * cellWidth + (lastRowItemCount - 1) * columnGap;
-        const lastRowOffset = calculateGridAlignOffset(
-          alignLastRow,
-          gridContentWidth,
-          lastRowWidth
-        );
-        x += lastRowOffset;
-      }
-
-      const finalX = gridOffsetX + x;
-      const finalY = gridOffsetY + y;
-
-      // Transform the template for this alt character, propagating the cell size
-      const transformedTemplate = transformTemplateForAltCharacter(
-        template,
-        character,
-        imageType,
-        idx,
-        { width: cellWidth, height: cellHeight }
-      );
-
-      return (
-        <Group
-          key={`custom-alt-wrapper-${idx}`}
-          x={finalX}
-          y={finalY}
-        >
-          {renderTemplateElement(transformedTemplate, idx, context)}
-        </Group>
-      );
-    });
-
-    return (
-      <Group
-        key={element.id ?? `custom-alt-group-${index}`}
-        x={element.position.x}
-        y={element.position.y}
-      >
-        {transformedElements}
-      </Group>
-    );
+    return renderCustomAltWithTemplate(element, template, characters, imageType, index, context);
   }
 
   const characterImageElements: ImageElementConfig[] = characters.map(
@@ -359,131 +226,154 @@ export const createCustomAltCharacterImageElement: ElementCreator<
   );
 };
 
-function calculateGridAlignOffset(
-  alignment: "start" | "center" | "end",
-  containerSize: number,
-  contentSize: number
-): number {
-  switch (alignment) {
-    case "center":
-      return (containerSize - contentSize) / 2;
-    case "end":
-      return containerSize - contentSize;
-    default:
-      return 0;
+function renderCustomAltWithTemplate(
+  element: CustomAltCharacterImageElementConfig,
+  template: ElementConfig,
+  characters: CharacerData[],
+  imageType: "stock" | "render",
+  index: number,
+  context: Parameters<ElementCreator>[0]["context"]
+): React.ReactNode {
+  const {
+    gap = 5,
+    rowGap = gap,
+    columnGap = gap,
+    columns: fixedColumns,
+    rows: fixedRows,
+    align = "start",
+    justify = "start",
+    alignLastRow = "start",
+  } = element;
+
+  const numItems = characters.length;
+  const preferredCellSize = template.size?.width ?? 70;
+
+  const containerWidth = element.size?.width ?? element.size?.maxWidth ?? preferredCellSize * numItems;
+  const containerHeight = element.size?.height ?? preferredCellSize;
+
+  const optimalGrid = findOptimalSquareGrid(numItems, containerWidth, containerHeight, columnGap, rowGap);
+
+  const effectiveColumns = fixedColumns ?? optimalGrid.columns;
+  const effectiveRows = fixedRows ?? Math.ceil(numItems / effectiveColumns);
+
+  let cellWidth: number;
+  let cellHeight: number;
+
+  if (fixedColumns) {
+    cellWidth = preferredCellSize;
+    cellHeight = preferredCellSize;
+  } else if (fixedRows) {
+    const maxCellWidth = (containerWidth - (effectiveColumns - 1) * columnGap) / effectiveColumns;
+    const maxCellHeight = (containerHeight - (effectiveRows - 1) * rowGap) / effectiveRows;
+    cellWidth = Math.min(maxCellWidth, maxCellHeight, preferredCellSize);
+    cellHeight = cellWidth;
+  } else {
+    cellWidth = Math.min(optimalGrid.cellSize, preferredCellSize);
+    cellHeight = cellWidth;
   }
+
+  const gridContentWidth = effectiveColumns * cellWidth + (effectiveColumns - 1) * columnGap;
+  const gridContentHeight = effectiveRows * cellHeight + (effectiveRows - 1) * rowGap;
+
+  const actualContainerWidth = gridContentWidth;
+  const actualContainerHeight = Math.min(gridContentHeight, containerHeight);
+
+  const gridOffsetX = calculateGridAlignOffset(justify, actualContainerWidth, gridContentWidth);
+  const gridOffsetY = calculateGridAlignOffset(align, actualContainerHeight, gridContentHeight);
+
+  const lastRowItemCount = numItems % effectiveColumns || effectiveColumns;
+  const isLastRowFull = lastRowItemCount === effectiveColumns;
+
+  const cellSize = { width: cellWidth, height: cellHeight };
+
+  const renderedElements = characters.map((character, idx) => {
+    const row = Math.floor(idx / effectiveColumns);
+    const col = idx % effectiveColumns;
+    const isLastRow = row === effectiveRows - 1;
+
+    let x = col * (cellWidth + columnGap);
+    const y = row * (cellHeight + rowGap);
+
+    if (isLastRow && !isLastRowFull) {
+      const lastRowWidth =
+        lastRowItemCount * cellWidth + (lastRowItemCount - 1) * columnGap;
+      const lastRowOffset = calculateGridAlignOffset(
+        alignLastRow,
+        gridContentWidth,
+        lastRowWidth
+      );
+      x += lastRowOffset;
+    }
+
+    return (
+      <Group
+        key={`custom-alt-wrapper-${idx}`}
+        x={gridOffsetX + x}
+        y={gridOffsetY + y}
+      >
+        {renderTemplateForCharacter(template, character, imageType, idx, cellSize, context)}
+      </Group>
+    );
+  });
+
+  return (
+    <Group
+      key={element.id ?? `custom-alt-group-${index}`}
+      x={element.position.x}
+      y={element.position.y}
+    >
+      {renderedElements}
+    </Group>
+  );
 }
 
-function transformTemplateForAltCharacter(
+/**
+ * Renders a template element for a specific alt character in a single pass.
+ * Reads from the template without cloning — computes derived values inline.
+ */
+function renderTemplateForCharacter(
   template: ElementConfig,
   character: CharacerData,
   imageType: "stock" | "render",
   altIndex: number,
-  containerSize: { width: number; height: number }
-): ElementConfig {
-  const cloned = JSON.parse(JSON.stringify(template)) as ElementConfig;
-  return transformElement(cloned, character, imageType, altIndex, containerSize);
-}
-
-function transformElement(
-  element: ElementConfig,
-  character: CharacerData,
-  imageType: "stock" | "render",
-  altIndex: number,
-  containerSize: { width: number; height: number }
-): ElementConfig {
-  const elementWithSize = {
-    ...element,
-    size: {
-      width: element.size?.width ?? containerSize.width,
-      height: element.size?.height ?? containerSize.height,
-    },
-  };
-
-  if (element.type === "characterImage") {
-    const imageSrc = getCharImgUrl({
-      characterId: character.id,
-      alt: character.alt,
-      type: imageType === "render" ? "main" : "stock",
-    });
-
-    if (imageType === "render") {
-      return {
-        ...elementWithSize,
-        type: "characterImage",
-        id: element.id ? `${element.id}-alt-${altIndex}` : `alt-char-${altIndex}`,
-        _altCharacter: character,
-        _altImageSrc: imageSrc,
-      } as CharacterImageElementConfig & {
-        _altCharacter: CharacerData;
-        _altImageSrc: string;
-      };
-    } else {
-      return {
-        type: "image",
-        id: element.id ? `${element.id}-alt-${altIndex}` : `alt-char-${altIndex}`,
-        position: element.position,
-        size: elementWithSize.size,
-        src: imageSrc,
-      } as ImageElementConfig;
-    }
-  }
-
-  if ("elements" in element && Array.isArray(element.elements)) {
-    const groupElement = element as GroupElementConfig;
-    return {
-      ...elementWithSize,
-      type: groupElement.type,
-      id: groupElement.id ? `${groupElement.id}-alt-${altIndex}` : undefined,
-      elements: groupElement.elements.map((child) =>
-        transformElement(child, character, imageType, altIndex, containerSize)
-      ),
-    } as GroupElementConfig;
-  }
-
-  return {
-    ...elementWithSize,
-    id: element.id ? `${element.id}-alt-${altIndex}` : undefined,
-  };
-}
-
-function renderTemplateElement(
-  element: ElementConfig,
-  index: number,
+  cellSize: { width: number; height: number },
   context: Parameters<ElementCreator>[0]["context"]
 ): React.ReactNode {
-  if (element.type === "group") {
-    const groupEl = element as GroupElementConfig;
+  const width = template.size?.width ?? cellSize.width;
+  const height = template.size?.height ?? cellSize.height;
+
+  if (template.type === "group") {
+    const groupEl = template as GroupElementConfig;
     return (
       <Group
-        key={element.id ?? `template-group-${index}`}
-        x={element.position.x}
-        y={element.position.y}
-        width={element.size?.width}
-        height={element.size?.height}
+        key={groupEl.id ? `${groupEl.id}-alt-${altIndex}` : `template-group-${altIndex}`}
+        x={template.position.x}
+        y={template.position.y}
+        width={width}
+        height={height}
         clipFunc={
           groupEl.clip
             ? (ctx) => {
               ctx.beginPath();
               if (groupEl.clipCornerRadius) {
-                ctx.roundRect(0, 0, element.size?.width ?? 0, element.size?.height ?? 0, groupEl.clipCornerRadius);
+                ctx.roundRect(0, 0, width, height, groupEl.clipCornerRadius);
               } else {
-                ctx.rect(0, 0, element.size?.width ?? 0, element.size?.height ?? 0);
+                ctx.rect(0, 0, width, height);
               }
               ctx.closePath();
             }
             : undefined
         }
       >
-        {groupEl.elements.map((child, childIndex) =>
-          renderTemplateElement(child, childIndex, context)
+        {groupEl.elements.map((child) =>
+          renderTemplateForCharacter(child, character, imageType, altIndex, cellSize, context)
         )}
       </Group>
     );
   }
 
-  if (element.type === "rect") {
-    const rectEl = element as ElementConfig & {
+  if (template.type === "rect") {
+    const rectEl = template as ElementConfig & {
       fill?: string;
       stroke?: string;
       strokeWidth?: number;
@@ -491,11 +381,11 @@ function renderTemplateElement(
     };
     return (
       <Rect
-        key={element.id ?? `template-rect-${index}`}
-        x={element.position.x}
-        y={element.position.y}
-        width={element.size?.width}
-        height={element.size?.height}
+        key={rectEl.id ? `${rectEl.id}-alt-${altIndex}` : `template-rect-${altIndex}`}
+        x={template.position.x}
+        y={template.position.y}
+        width={width}
+        height={height}
         fill={resolveColor(rectEl.fill, context.design?.colorPalette)}
         stroke={resolveColor(rectEl.stroke, context.design?.colorPalette)}
         strokeWidth={rectEl.strokeWidth}
@@ -505,45 +395,60 @@ function renderTemplateElement(
     );
   }
 
-  if (element.type === "characterImage") {
-    const charEl = element as CharacterImageWithAltData;
+  if (template.type === "characterImage") {
+    const charEl = template as CharacterImageElementConfig;
+    const imageSrc = getCharImgUrl({
+      characterId: character.id,
+      alt: character.alt,
+      type: imageType === "render" ? "main" : "stock",
+    });
 
-    if (!charEl._altCharacter) {
-      return null;
+    if (imageType === "render") {
+      const characterCrop = getCharacterCrop(character.id, character.alt);
+      const cropScale = characterCrop.scale * (charEl.cropScaleMultiplier ?? 1);
+
+      return (
+        <CustomImage
+          key={charEl.id ? `${charEl.id}-alt-${altIndex}` : `alt-char-${altIndex}`}
+          x={template.position.x}
+          y={template.position.y}
+          width={width}
+          height={height}
+          imageSrc={imageSrc}
+          cropOffset={characterCrop.offset}
+          cropScale={cropScale}
+          fillMode={charEl.fillMode ?? "contain"}
+          hasShadow={charEl.shadowEnabled ?? false}
+          shadowColor={resolveColor(charEl.shadowColor, context.design?.colorPalette)}
+          shadowBlur={charEl.shadowBlur}
+          shadowOpacity={charEl.shadowOpacity}
+          perfectDrawEnabled={context.perfectDraw}
+        />
+      );
     }
-
-    const characterCrop = getCharacterCrop(charEl._altCharacter.id, charEl._altCharacter.alt);
-    const altCropScale = characterCrop.scale * (charEl.cropScaleMultiplier ?? 1);
 
     return (
       <CustomImage
-        key={element.id ?? `template-char-${index}`}
-        x={element.position.x}
-        y={element.position.y}
-        width={element.size?.width ?? 100}
-        height={element.size?.height ?? 100}
-        imageSrc={charEl._altImageSrc!}
-        cropOffset={characterCrop.offset}
-        cropScale={altCropScale}
-        fillMode={charEl.fillMode ?? "contain"}
-        hasShadow={charEl.shadowEnabled ?? false}
-        shadowColor={resolveColor(charEl.shadowColor, context.design?.colorPalette)}
-        shadowBlur={charEl.shadowBlur}
-        shadowOpacity={charEl.shadowOpacity}
+        key={charEl.id ? `${charEl.id}-alt-${altIndex}` : `alt-char-${altIndex}`}
+        x={template.position.x}
+        y={template.position.y}
+        width={width}
+        height={height}
+        imageSrc={imageSrc}
         perfectDrawEnabled={context.perfectDraw}
       />
     );
   }
 
-  if (element.type === "image") {
-    const imgEl = element as ImageElementConfig;
+  if (template.type === "image") {
+    const imgEl = template as ImageElementConfig;
     return (
       <CustomImage
-        key={element.id ?? `template-img-${index}`}
-        x={element.position.x}
-        y={element.position.y}
-        width={element.size?.width ?? 100}
-        height={element.size?.height ?? 100}
+        key={imgEl.id ? `${imgEl.id}-alt-${altIndex}` : `template-img-${altIndex}`}
+        x={template.position.x}
+        y={template.position.y}
+        width={width}
+        height={height}
         imageSrc={imgEl.src}
         perfectDrawEnabled={context.perfectDraw}
       />

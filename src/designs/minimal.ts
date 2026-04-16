@@ -70,7 +70,7 @@ const basePlayer: PlayerDesign = {
           type: "flexGroup",
           id: "fullNameGroup",
           position: { x: 0, y: 0 },
-          size: { width: 150, height: 44 },
+          size: { width: 150, height: 46 },
           direction: "row",
           align: "end",
           gap: 10,
@@ -113,7 +113,7 @@ const basePlayer: PlayerDesign = {
           fontWeight: 900,
           fill: "text",
           position: { x: 0, y: 0 },
-          size: { height: CHARACTER_IMAGE_SIZE },
+          size: { width: 150, height: 48 },
           flex: { shrink: true, grow: true },
         },
         {
