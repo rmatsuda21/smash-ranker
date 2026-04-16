@@ -658,6 +658,7 @@ export const createFlexGridElement: ElementCreator<FlexGridElementConfig> = ({
     align = "start",
     justify = "start",
     alignLastRow = "start",
+    flow = "row",
   } = element;
 
   const containerWidth = element.size?.width ?? 0;
@@ -707,30 +708,54 @@ export const createFlexGridElement: ElementCreator<FlexGridElementConfig> = ({
     gridContentHeight
   );
 
-  const lastRowItemCount =
-    visibleChildren.length % grid.columns || grid.columns;
-  const isLastRowFull = lastRowItemCount === grid.columns;
+  const isColumnFlow = flow === "column";
+
+  // For row flow: partial items are in the last row
+  // For column flow: partial items are in the last column
+  const lastGroupItemCount = isColumnFlow
+    ? visibleChildren.length % grid.rows || grid.rows
+    : visibleChildren.length % grid.columns || grid.columns;
+  const isLastGroupFull = isColumnFlow
+    ? lastGroupItemCount === grid.rows
+    : lastGroupItemCount === grid.columns;
 
   const positionedElements: ReactNode[] = [];
 
   for (let i = 0; i < visibleChildren.length; i++) {
     const child = visibleChildren[i];
-    const row = Math.floor(i / grid.columns);
-    const col = i % grid.columns;
+
+    // Row flow: fill left-to-right, then top-to-bottom
+    // Column flow: fill top-to-bottom, then right-to-left (first column on right)
+    const row = isColumnFlow ? i % grid.rows : Math.floor(i / grid.columns);
+    const logicalCol = isColumnFlow ? Math.floor(i / grid.rows) : i % grid.columns;
+    // Reverse column order for column flow so first items appear on the right
+    const col = isColumnFlow ? grid.columns - 1 - logicalCol : logicalCol;
     const isLastRow = row === grid.rows - 1;
+    const isLastCol = isColumnFlow ? logicalCol === grid.columns - 1 : col === grid.columns - 1;
 
     let x = col * (grid.cellWidth + columnGap);
-    const y = row * (grid.cellHeight + rowGap);
+    let y = row * (grid.cellHeight + rowGap);
 
-    if (isLastRow && !isLastRowFull) {
+    if (!isColumnFlow && isLastRow && !isLastGroupFull) {
       const lastRowWidth =
-        lastRowItemCount * grid.cellWidth + (lastRowItemCount - 1) * columnGap;
+        lastGroupItemCount * grid.cellWidth + (lastGroupItemCount - 1) * columnGap;
       const lastRowOffset = calculateGridAlignOffset(
         alignLastRow,
         gridContentWidth,
         lastRowWidth
       );
       x += lastRowOffset;
+    }
+
+    if (isColumnFlow && isLastCol && !isLastGroupFull) {
+      const lastColHeight =
+        lastGroupItemCount * grid.cellHeight + (lastGroupItemCount - 1) * rowGap;
+      const lastColOffset = calculateGridAlignOffset(
+        alignLastRow,
+        gridContentHeight,
+        lastColHeight
+      );
+      y += lastColOffset;
     }
 
     const finalX = gridOffsetX + x;
