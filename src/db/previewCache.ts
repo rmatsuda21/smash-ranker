@@ -20,4 +20,9 @@ export const previewCache = {
     const db = await dbPromise;
     await db.put(STORE_NAME, blob, templateId);
   },
+
+  async clear(): Promise<void> {
+    const db = await dbPromise;
+    await db.clear(STORE_NAME);
+  },
 };

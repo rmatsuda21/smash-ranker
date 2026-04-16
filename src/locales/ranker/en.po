@@ -134,7 +134,7 @@ msgstr ""
 msgid "Create a minimal template with a specific player count."
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:205
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:217
 msgid "Create New Template"
 msgstr ""
 
@@ -401,6 +401,14 @@ msgstr ""
 msgid "Redo"
 msgstr ""
 
+#: src/components/top8/SettingsPanel/ThumbnailRegenButton.tsx:34
+msgid "Regenerate all template preview thumbnails."
+msgstr ""
+
+#: src/components/top8/SettingsPanel/ThumbnailRegenButton.tsx:42
+msgid "Regenerate Thumbnails"
+msgstr ""
+
 #: src/components/top8/AssetSelector/AssetSelector.tsx:91
 msgid "Select"
 msgstr ""
@@ -462,6 +470,10 @@ msgstr ""
 
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:175
 msgid "This will reset all player data for this slot."
+msgstr ""
+
+#: src/components/top8/SettingsPanel/ThumbnailRegenButton.tsx:31
+msgid "Thumbnails"
 msgstr ""
 
 #. placeholder {0}: res.status

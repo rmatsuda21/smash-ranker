@@ -1,6 +1,7 @@
 import { LanguagePicker } from "./LanguagePicker";
 import { ThemePicker } from "./ThemePicker";
 import { AccentColorPicker } from "./AccentColorPicker";
+import { ThumbnailRegenButton } from "./ThumbnailRegenButton";
 
 import styles from "./SettingsPanel.module.scss";
 
@@ -15,6 +16,7 @@ export const SettingsPanel = ({ className }: Props) => {
         <LanguagePicker />
         <ThemePicker />
         <AccentColorPicker />
+        <ThumbnailRegenButton />
       </div>
     </div>
   );

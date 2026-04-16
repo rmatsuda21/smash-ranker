@@ -7,13 +7,15 @@ interface EditorState {
   activeTab: EditorTab | null;
   isSidePanelOpen: boolean;
   isCanvasExpanded: boolean;
+  previewCacheVersion: number;
 }
 
 type EditorAction =
   | { type: "SET_ACTIVE_TAB"; payload: EditorTab | null }
   | { type: "SET_IS_SIDE_PANEL_OPEN"; payload: boolean }
   | { type: "CLOSE_SIDE_PANEL" }
-  | { type: "TOGGLE_CANVAS_EXPANDED" };
+  | { type: "TOGGLE_CANVAS_EXPANDED" }
+  | { type: "INVALIDATE_PREVIEW_CACHE" };
 
 const editorReducer = (
   state: EditorState,
@@ -36,6 +38,8 @@ const editorReducer = (
       };
     case "TOGGLE_CANVAS_EXPANDED":
       return { isCanvasExpanded: !state.isCanvasExpanded };
+    case "INVALIDATE_PREVIEW_CACHE":
+      return { previewCacheVersion: state.previewCacheVersion + 1 };
     default:
       return state;
   }
@@ -45,6 +49,7 @@ const initialState: EditorState = {
   activeTab: EditorTab.PLAYERS,
   isSidePanelOpen: true,
   isCanvasExpanded: false,
+  previewCacheVersion: 0,
 };
 
 interface EditorStore extends EditorState {
