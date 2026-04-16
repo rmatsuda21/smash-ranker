@@ -38,7 +38,7 @@ All stores live in `src/store/` and use Zustand's persist middleware (localStora
 - **canvasStore** — design configuration, color palette, background images, undo/redo
 - **playerStore** — player list, selected player, API fetch status
 - **tournamentStore** — tournament metadata and settings
-- **editorStore** — UI state (active panel/tab)
+- **editorStore** — UI state (active panel/tab, preview cache invalidation)
 - **historyStore** — undo/redo history stack
 - **fontStore** — custom font loading and registration
 - **tierListStore** — tier list state: tiers, character pool, layout variant, label font settings, image mode
@@ -98,6 +98,7 @@ When `Design.dynamicPlayerHeight` is set, player cards grow taller at render tim
 - `src/db/template/` — saved design templates (`DBTemplate`)
 - `src/db/asset/` — custom images/graphics (`DBAsset`, stored as Blobs)
 - `src/db/customFont/` — custom font files (`DBCustomFont`, stored as Blobs)
+- `src/db/previewCache.ts` — separate IndexedDB store for rendered template preview thumbnails (Blobs). Cleared via Settings → "Regenerate Thumbnails" which dispatches `INVALIDATE_PREVIEW_CACHE` to `editorStore`, causing `UserTemplatePreview` components to re-render sequentially.
 
 ### API Integration
 
