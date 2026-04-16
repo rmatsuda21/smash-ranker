@@ -134,7 +134,7 @@ msgstr "作成"
 msgid "Create a minimal template with a specific player count."
 msgstr "指定の数の選手でミニマルテンプレを作成"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:205
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:217
 msgid "Create New Template"
 msgstr "新規テンプレ作成"
 
@@ -401,6 +401,14 @@ msgstr "赤"
 msgid "Redo"
 msgstr "やり直す"
 
+#: src/components/top8/SettingsPanel/ThumbnailRegenButton.tsx:34
+msgid "Regenerate all template preview thumbnails."
+msgstr "テンプレートのプレビュー画像をすべて再生成します。"
+
+#: src/components/top8/SettingsPanel/ThumbnailRegenButton.tsx:42
+msgid "Regenerate Thumbnails"
+msgstr "サムネイルを再生成"
+
 #: src/components/top8/AssetSelector/AssetSelector.tsx:91
 msgid "Select"
 msgstr "選択"
@@ -463,6 +471,10 @@ msgstr "この大会は複数グループ制のため、統一された順位を
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:175
 msgid "This will reset all player data for this slot."
 msgstr "このスロットの選手情報がすべてリセットされます。"
+
+#: src/components/top8/SettingsPanel/ThumbnailRegenButton.tsx:31
+msgid "Thumbnails"
+msgstr "サムネイル"
 
 #. placeholder {0}: res.status
 #: src/hooks/top8/useFetchTonamel.ts:50

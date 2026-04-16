@@ -12,6 +12,7 @@ import { useTooltip } from "@/hooks/top8/useTooltip";
 import { isMobile } from "@/utils/isMobile";
 import { previewCache } from "@/db/previewCache";
 import { Spinner } from "@/components/shared/Spinner/Spinner";
+import { useEditorStore } from "@/store/editorStore";
 import { defaultPreviews } from "@assets/previews";
 
 import styles from "./TemplatePreview.module.scss";
@@ -397,6 +398,16 @@ const UserTemplatePreview = (props: Props) => {
   const [cachedBlob, setCachedBlob] = useState<Blob | null | undefined>(
     template.previewImage ?? undefined
   );
+  const cacheVersion = useEditorStore((s) => s.previewCacheVersion);
+  const isFirstRender = useRef(true);
+
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    setCachedBlob(null);
+  }, [cacheVersion]);
 
   useEffect(() => {
     if (template.previewImage) {
