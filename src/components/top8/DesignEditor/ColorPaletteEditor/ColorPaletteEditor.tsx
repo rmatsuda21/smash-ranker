@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import cn from "classnames";
 
 import { useCanvasStore } from "@/store/canvasStore";
@@ -21,18 +22,40 @@ export const ColorPaletteEditor = ({ className }: Props) => {
     });
   };
 
+  const groups = useMemo(() => {
+    if (!palette) return [];
+    const groupMap = new Map<
+      string,
+      [string, { color: string; name: string }][]
+    >();
+    for (const [id, entry] of Object.entries(palette)) {
+      const groupName = entry.group ?? "";
+      if (!groupMap.has(groupName)) {
+        groupMap.set(groupName, []);
+      }
+      groupMap.get(groupName)!.push([id, entry]);
+    }
+    return Array.from(groupMap.entries());
+  }, [palette]);
+
   return (
     <div className={cn(className, styles.colorPaletteEditor)}>
-      {palette &&
-        Object.entries(palette).map(([id, { color, name }]) => (
-          <div key={id} className={styles.row}>
-            <ColorInput
-              color={rgbStringToAlphaHex(color)}
-              onChange={(color) => handleColorChange(id, color, name)}
-            />
-            <span>{name}</span>
+      {groups.map(([groupName, entries]) => (
+        <div key={groupName} className={styles.group}>
+          {groupName && <p className={styles.groupLabel}>{groupName}</p>}
+          <div className={styles.groupColors}>
+            {entries.map(([id, { color, name }]) => (
+              <div key={id} className={styles.row}>
+                <ColorInput
+                  color={rgbStringToAlphaHex(color)}
+                  onChange={(color) => handleColorChange(id, color, name)}
+                />
+                <span>{name}</span>
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
+      ))}
     </div>
   );
 };

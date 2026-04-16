@@ -79,14 +79,21 @@ function captureUndoData(state: CanvasState, action: CanvasAction): unknown {
   }
 }
 
-function captureRedoData(action: CanvasAction): unknown {
+function captureRedoData(state: CanvasState, action: CanvasAction): unknown {
   switch (action.type) {
     case "CLEAR_BACKGROUND_IMG":
       return undefined;
     case "SET_BACKGROUND_IMG":
     case "SET_BACKGROUND_IMAGE_DARKNESS":
-    case "UPDATE_COLOR_PALETTE":
       return action.payload;
+    case "UPDATE_COLOR_PALETTE":
+      return {
+        id: action.payload.id,
+        value: {
+          ...state.design.colorPalette?.[action.payload.id],
+          ...action.payload.value,
+        },
+      };
     default:
       return null;
   }
@@ -186,7 +193,10 @@ const canvasReducer = (
           ...state.design,
           colorPalette: {
             ...state.design.colorPalette,
-            [action.payload.id]: action.payload.value,
+            [action.payload.id]: {
+              ...state.design.colorPalette?.[action.payload.id],
+              ...action.payload.value,
+            },
           },
         },
       };
@@ -285,7 +295,7 @@ export const useCanvasStore = create<CanvasStore>()(
             useHistoryStore.getState().clearHistory();
           } else if (!skipHistory && HISTORY_ACTION_TYPES.has(action.type)) {
             const undoData = captureUndoData(state, action);
-            const redoData = captureRedoData(action);
+            const redoData = captureRedoData(state, action);
 
             useHistoryStore.getState().pushAction({
               type: action.type as HistoryActionType,
