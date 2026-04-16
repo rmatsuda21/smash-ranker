@@ -99,25 +99,10 @@ const getElementMainSize = (
       const maxWidth = altEl.size?.maxWidth ?? altEl.size?.width ?? preferredCellSize * numItems;
       const maxHeight = altEl.size?.height ?? preferredCellSize;
 
-      let bestColumns = 1;
-      let bestCellSize = 0;
+      const grid = findOptimalSquareGrid(numItems, maxWidth, maxHeight, columnGap, rowGap);
 
-      for (let cols = 1; cols <= numItems; cols++) {
-        const rows = Math.ceil(numItems / cols);
-        const maxCellWidth = (maxWidth - (cols - 1) * columnGap) / cols;
-        const maxCellHeight = (maxHeight - (rows - 1) * rowGap) / rows;
-        const cellSize = Math.min(maxCellWidth, maxCellHeight);
-
-        if (cellSize < 10) continue;
-
-        if (cellSize > bestCellSize) {
-          bestCellSize = cellSize;
-          bestColumns = cols;
-        }
-      }
-
-      const cellSize = Math.min(bestCellSize, preferredCellSize);
-      const actualContentWidth = bestColumns * cellSize + (bestColumns - 1) * columnGap;
+      const cellSize = Math.min(grid.cellSize, preferredCellSize);
+      const actualContentWidth = grid.columns * cellSize + (grid.columns - 1) * columnGap;
 
       return actualContentWidth;
     }
@@ -465,6 +450,38 @@ export const createFlexGroupElement: ElementCreator<FlexGroupElementConfig> = ({
   );
 };
 
+/**
+ * Finds the column count that maximizes square cell size for a given number of items
+ * within a container. Used by both `createCustomAltCharacterImageElement` and
+ * `getElementMainSize` for `customAltCharacterImage` elements.
+ */
+export const findOptimalSquareGrid = (
+  numItems: number,
+  containerWidth: number,
+  containerHeight: number,
+  columnGap: number,
+  rowGap: number,
+): { columns: number; cellSize: number } => {
+  let bestColumns = 1;
+  let bestCellSize = 0;
+
+  for (let cols = 1; cols <= numItems; cols++) {
+    const rows = Math.ceil(numItems / cols);
+    const maxCellWidth = (containerWidth - (cols - 1) * columnGap) / cols;
+    const maxCellHeight = (containerHeight - (rows - 1) * rowGap) / rows;
+    const cellSize = Math.min(maxCellWidth, maxCellHeight);
+
+    if (cellSize < 10) continue;
+
+    if (cellSize > bestCellSize) {
+      bestCellSize = cellSize;
+      bestColumns = cols;
+    }
+  }
+
+  return { columns: bestColumns, cellSize: bestCellSize };
+};
+
 interface GridDimensions {
   rows: number;
   columns: number;
@@ -628,7 +645,7 @@ const collectGridVisibleChildren = (
     []
   );
 
-const calculateGridAlignOffset = (
+export const calculateGridAlignOffset = (
   align: FlexAlign,
   containerSize: number,
   contentSize: number
