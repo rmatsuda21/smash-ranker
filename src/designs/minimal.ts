@@ -55,7 +55,7 @@ const basePlayer: PlayerDesign = {
           fontSize: 60,
           fontWeight: 900,
           fill: "text",
-          verticalAlign: "top",
+          verticalAlign: "middle",
           position: { x: 0, y: -5 },
           size: { width: 50, height: CHARACTER_IMAGE_SIZE },
         },
