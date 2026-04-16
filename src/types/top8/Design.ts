@@ -139,6 +139,8 @@ export interface FlexGroupElementConfig
   wrapDirection?: "start" | "end";
 }
 
+export type FlexGridFlow = "row" | "column";
+
 export interface FlexGridElementConfig
   extends BaseElementConfig, Partial<ComponentProps<typeof Group>> {
   type: "flexGrid";
@@ -152,6 +154,8 @@ export interface FlexGridElementConfig
   align?: FlexAlign;
   justify?: FlexAlign;
   alignLastRow?: FlexAlign;
+  /** Item flow direction. "row" (default): fill left-to-right then top-to-bottom. "column": fill top-to-bottom then left-to-right. */
+  flow?: FlexGridFlow;
 }
 
 export interface RectElementConfig
@@ -189,6 +193,7 @@ export interface AltCharacterImageElementConfig extends BaseElementConfig {
   align?: FlexAlign;
   justify?: FlexAlign;
   alignLastRow?: FlexAlign;
+  flow?: FlexGridFlow;
 }
 
 export type CharacterImageType = "stock" | "render";

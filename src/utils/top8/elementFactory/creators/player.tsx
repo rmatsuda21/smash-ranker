@@ -135,6 +135,7 @@ export const createAltCharacterImageElement: ElementCreator<
     align: element.align,
     justify: element.justify,
     alignLastRow: element.alignLastRow,
+    flow: element.flow,
   };
 
   const flexGrid = createFlexGridElement({
