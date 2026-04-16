@@ -5,7 +5,7 @@ import { RenderCondition } from "@/consts/top8/renderConditions";
 const CANVAS_WIDTH = 1000;
 const PADDING_BLOCK = 20;
 const PADDING_INLINE = 20;
-const TOURNAMENT_ICON_SIZE = 120;
+const TOURNAMENT_ICON_SIZE = 100;
 const PLAYER_SPACING = 16;
 const PLAYER_WIDTH = CANVAS_WIDTH - PADDING_INLINE * 2;
 const PLAYER_HEIGHT = 80;
@@ -69,11 +69,11 @@ const basePlayer: PlayerDesign = {
         {
           type: "smartText",
           text: DesignPlaceholder.PLAYER_PLACEMENT,
-          fontSize: 60,
+          fontSize: 40,
           fontWeight: 900,
           fill: "text",
           verticalAlign: "middle",
-          position: { x: 0, y: -5 },
+          position: { x: 0, y: -3 },
           size: { width: 50, height: CHARACTER_IMAGE_SIZE },
         },
         {
@@ -87,7 +87,7 @@ const basePlayer: PlayerDesign = {
           type: "flexGroup",
           id: "fullNameGroup",
           position: { x: 0, y: 0 },
-          size: { width: 150, height: 46 },
+          size: { width: 150, height: 45 },
           direction: "row",
           align: "end",
           gap: 10,
@@ -98,7 +98,7 @@ const basePlayer: PlayerDesign = {
               type: "smartText",
               text: `${DesignPlaceholder.PLAYER_PREFIX}`,
               id: "fullNameText",
-              fontSize: 24,
+              fontSize: 22,
               verticalAlign: "bottom",
               fontWeight: 900,
               fill: "text",
@@ -109,7 +109,7 @@ const basePlayer: PlayerDesign = {
               type: "smartText",
               text: `${DesignPlaceholder.PLAYER_TAG}`,
               id: "tagText",
-              fontSize: 40,
+              fontSize: 32,
               verticalAlign: "bottom",
               fontWeight: 900,
               fill: "text",
@@ -124,13 +124,13 @@ const basePlayer: PlayerDesign = {
           text: DesignPlaceholder.PLAYER_TAG,
           id: "tagText",
           conditions: [RenderCondition.NOT, DesignPlaceholder.PLAYER_PREFIX],
-          fontSize: 40,
+          fontSize: 32,
           align: "left",
           verticalAlign: "bottom",
           fontWeight: 900,
           fill: "text",
           position: { x: 0, y: 0 },
-          size: { width: 150, height: 48 },
+          size: { width: 150, height: 45 },
           flex: { shrink: true, grow: true },
         },
         {
@@ -299,7 +299,7 @@ const createMinimalDesign = (playerCount: number): Design => {
                 id: "topLeftText",
                 name: "Top Left Text",
                 textId: "tournamentName",
-                fontSize: 44,
+                fontSize: 40,
                 fontWeight: 900,
                 fill: "text",
                 align: "left",
