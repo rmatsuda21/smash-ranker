@@ -5,15 +5,16 @@ import { LRUCache } from "@/utils/LRUCache";
 import { createAsyncQueue } from "@/utils/asyncQueue";
 import { isMobile } from "@/utils/isMobile";
 
-const IMAGE_CACHE_SIZE = 30;
+const IMAGE_CACHE_SIZE = 50;
 const imageCache = new LRUCache<string, HTMLImageElement>(IMAGE_CACHE_SIZE, (_key, img) => {
+  // Only clear event handlers — don't set img.src = "" or call img.remove().
+  // The evicted HTMLImageElement may still be referenced by components via React state.
+  // Destroying it here corrupts the source image before queued toBlob operations run.
   img.onload = null;
   img.onerror = null;
-  img.src = "";
-  img.remove();
 });
 
-const toBlobQueue = createAsyncQueue(2);
+const toBlobQueue = createAsyncQueue(isMobile() ? 3 : 6);
 
 const IDB_IMAGE_PREFIX = "/idb-images/";
 const MAX_RETRIES = 3;
@@ -225,7 +226,6 @@ export const useCustomImage = ({
 
               const img = new window.Image();
               generatedImg = img;
-              img.src = url;
               img.onload = () => {
                 if (cancelled) {
                   resolve();
@@ -250,6 +250,7 @@ export const useCustomImage = ({
                 );
                 resolve();
               };
+              img.src = url;
             });
           })
       );
