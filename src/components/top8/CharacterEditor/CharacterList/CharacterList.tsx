@@ -26,6 +26,7 @@ export const CharacterList = ({
   const addCharacter = () => {
     if (!characters) return;
     onCharactersChange([...characters, { id: DEFAULT_ADD_CHARACTER_ID, alt: 0 }]);
+    setSelectedIndex(characters.length);
   };
 
   const removeCharacter = (index: number) => {
