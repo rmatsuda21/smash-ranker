@@ -13,6 +13,8 @@ import { isMobile } from "@/utils/isMobile";
 import { previewCache } from "@/db/previewCache";
 import { Spinner } from "@/components/shared/Spinner/Spinner";
 import { useEditorStore } from "@/store/editorStore";
+import { useFontStore } from "@/store/fontStore";
+import { loadFont } from "@/utils/top8/loadFont";
 import { defaultPreviews } from "@assets/previews";
 
 import styles from "./TemplatePreview.module.scss";
@@ -135,13 +137,34 @@ const RenderedPreview = (props: Props) => {
   const [isTournamentReady, setIsTournamentReady] = useState(false);
   const [isPlayerReady, setIsPlayerReady] = useState(false);
   const [hasSlot, setHasSlot] = useState(false);
+  const [isFontLoaded, setIsFontLoaded] = useState(false);
 
   const mobile = isMobile();
   const stageRef = useRef<KonvaStage>(null);
   const releaseRef = useRef<(() => void) | null>(null);
+  const fonts = useFontStore((state) => state.fonts);
 
-  // Wait for render slot before mounting the Konva stage
+  // Load the template's font before rendering
   useEffect(() => {
+    const font = Array.from(fonts).find(
+      (f) => f.fontFamily === template.font
+    );
+    if (!font) return;
+
+    if (font.loaded) {
+      setIsFontLoaded(true);
+      return;
+    }
+
+    loadFont(font)
+      .then(() => setIsFontLoaded(true))
+      .catch(() => setIsFontLoaded(true));
+  }, [fonts, template.font]);
+
+  // Wait for render slot before mounting the Konva stage (after font is loaded)
+  useEffect(() => {
+    if (!isFontLoaded) return;
+
     const { promise, release } = requestRenderSlot();
     releaseRef.current = release;
 
@@ -154,13 +177,14 @@ const RenderedPreview = (props: Props) => {
       cancelled = true;
       release();
     };
-  }, []);
+  }, [isFontLoaded]);
 
   const backgroundElements = useMemo(
     () =>
       createKonvaElements(
         template.design.background.elements,
         {
+          fontFamily: template.font,
           containerSize: template.design.canvasSize,
           design: {
             colorPalette: template.design.colorPalette,
@@ -180,6 +204,7 @@ const RenderedPreview = (props: Props) => {
       template.design.bgAssetId,
       template.design.bgImageDarkness,
       template.design.canvasSize,
+      template.font,
     ]
   );
 
@@ -188,6 +213,7 @@ const RenderedPreview = (props: Props) => {
       createKonvaElements(
         template.design.tournament?.elements ?? [],
         {
+          fontFamily: template.font,
           tournament: sampleTournament,
           containerSize: template.design.canvasSize,
           design: {
@@ -208,6 +234,7 @@ const RenderedPreview = (props: Props) => {
       template.design.bgAssetId,
       template.design.bgImageDarkness,
       template.design.canvasSize,
+      template.font,
     ]
   );
 
@@ -235,6 +262,7 @@ const RenderedPreview = (props: Props) => {
       const elements = createKonvaElements(
         playerDesign.elements ?? [],
         {
+          fontFamily: template.font,
           player,
           containerSize: {
             width: playerDesign.size?.width,
@@ -279,6 +307,7 @@ const RenderedPreview = (props: Props) => {
     template.design.colorPalette,
     template.design.bgAssetId,
     template.design.bgImageDarkness,
+    template.font,
   ]);
 
   const captureImage = useCallback(() => {
