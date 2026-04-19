@@ -99,6 +99,7 @@ const TemplateRenderer = ({
       createKonvaElements(
         template.design.background.elements,
         {
+          fontFamily: template.font,
           containerSize: template.design.canvasSize,
           design: {
             colorPalette: template.design.colorPalette,
@@ -118,6 +119,7 @@ const TemplateRenderer = ({
       createKonvaElements(
         template.design.tournament?.elements ?? [],
         {
+          fontFamily: template.font,
           tournament: sampleTournament,
           containerSize: template.design.canvasSize,
           design: {
@@ -158,6 +160,7 @@ const TemplateRenderer = ({
       const elements = createKonvaElements(
         playerDesign.elements ?? [],
         {
+          fontFamily: template.font,
           player,
           containerSize: {
             width: playerDesign.size?.width,
