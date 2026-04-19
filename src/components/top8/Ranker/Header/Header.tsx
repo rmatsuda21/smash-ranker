@@ -1,5 +1,5 @@
 import cn from "classnames";
-import { IoArrowUndo, IoArrowRedo } from "react-icons/io5";
+import { FaUndo, FaRedo } from "react-icons/fa";
 import { msg } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 
@@ -33,7 +33,7 @@ export const Header = () => {
           disabled={!canUndo}
           tooltip={_(msg`Undo`)}
         >
-          <IoArrowUndo />
+          <FaUndo />
         </Button>
         <Button
           className={styles.historyButton}
@@ -43,7 +43,7 @@ export const Header = () => {
           disabled={!canRedo}
           tooltip={_(msg`Redo`)}
         >
-          <IoArrowRedo />
+          <FaRedo />
         </Button>
       </div>
     </div>
