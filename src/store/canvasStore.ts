@@ -3,7 +3,7 @@ import { createJSONStorage, devtools, persist } from "zustand/middleware";
 import { Stage } from "konva/lib/Stage";
 
 import { ElementConfig, Design, PlayerDesign } from "@/types/top8/Design";
-import { top8erDesign } from "@/designs/top8er";
+import { kagaribiDesign } from "@/designs/kagaribi";
 import {
   useHistoryStore,
   HistoryActionType,
@@ -57,7 +57,7 @@ const HISTORY_ACTION_TYPES: Set<string> = new Set([
 const HISTORY_CLEARING_ACTIONS: Set<string> = new Set(["SET_DESIGN"]);
 
 const initialState: CanvasState = {
-  design: top8erDesign,
+  design: kagaribiDesign,
   stageRef: null,
   editable: false,
 };
@@ -338,11 +338,11 @@ export const useCanvasStore = create<CanvasStore>()(
         }),
         migrate: (persisted, version) => {
           if (version < 2) {
-            return { design: top8erDesign };
+            return { design: kagaribiDesign };
           }
 
           if (!persisted || typeof persisted !== "object") {
-            return { design: top8erDesign };
+            return { design: kagaribiDesign };
           }
 
           const persistedAny = persisted as { design?: unknown };
@@ -353,7 +353,7 @@ export const useCanvasStore = create<CanvasStore>()(
             !design?.canvasSize?.height ||
             typeof design?.canvasDisplayScale !== "number"
           ) {
-            return { design: top8erDesign };
+            return { design: kagaribiDesign };
           }
 
           return persisted as { design: Design };

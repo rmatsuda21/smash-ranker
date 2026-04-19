@@ -34,6 +34,17 @@ type Props = {
 
 const DEFAULT_TEMPLATE_GROUPS: { templates: DBTemplate[]; name: string }[] = [
   {
+    name: "Kagaribi",
+    templates: [
+      {
+        id: "kagaribi",
+        name: "Kagaribi",
+        design: kagaribiDesign,
+        font: "Dela Gothic One",
+      },
+    ],
+  },
+  {
     name: "Top8er",
     templates: [
       {
@@ -47,17 +58,6 @@ const DEFAULT_TEMPLATE_GROUPS: { templates: DBTemplate[]; name: string }[] = [
         name: "Top8er (Square Variant)",
         design: squaresDesign,
         font: "Noto Sans JP",
-      },
-    ],
-  },
-  {
-    name: "Kagaribi",
-    templates: [
-      {
-        id: "kagaribi",
-        name: "Kagaribi",
-        design: kagaribiDesign,
-        font: "Dela Gothic One",
       },
     ],
   },
