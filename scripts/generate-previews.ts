@@ -32,7 +32,7 @@ async function main() {
     // 3. Navigate to preview generator page
     console.log("Navigating to preview generator...");
     await page.goto(`${baseUrl}/preview-generator.html`, {
-      waitUntil: "networkidle",
+      waitUntil: "domcontentloaded",
     });
 
     // 4. Wait for previews to be ready
