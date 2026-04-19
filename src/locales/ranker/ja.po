@@ -77,7 +77,7 @@ msgstr "一杯だけよ"
 
 #: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:78
 msgid "Cancel"
-msgstr ""
+msgstr "キャンセル"
 
 #. placeholder {0}: res.status
 #: src/hooks/top8/useFetchChallonge.ts:41
@@ -118,7 +118,7 @@ msgstr "大会が見つかりませんでした"
 
 #: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:81
 msgid "Confirm"
-msgstr ""
+msgstr "確認"
 
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:238
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:166
@@ -134,7 +134,7 @@ msgstr "作成"
 msgid "Create a minimal template with a specific player count."
 msgstr "指定の数の選手でミニマルテンプレを作成"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:217
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:220
 msgid "Create New Template"
 msgstr "新規テンプレ作成"
 
@@ -178,13 +178,17 @@ msgstr "日付"
 msgid "Delete Asset"
 msgstr "素材消去"
 
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:205
+msgid "Delete Template?"
+msgstr "テンプレートを削除しますか？"
+
 #: src/components/top8/SidePanel/SidePanelNav.tsx:28
 msgid "Design"
 msgstr "デザイン"
 
 #: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:34
 msgid "Don't show again"
-msgstr ""
+msgstr "次回から表示しない"
 
 #: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:111
 msgid "Download"
@@ -298,6 +302,10 @@ msgstr "ライト"
 msgid "Load"
 msgstr "取得"
 
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:197
+msgid "Load Template?"
+msgstr "テンプレートを読み込みますか？"
+
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:58
 msgid "Load Tournament?"
 msgstr "大会を読み込みますか？"
@@ -317,6 +325,10 @@ msgstr "素材管理"
 #: src/components/top8/InfoPanel/InfoPanel.tsx:70
 msgid "Many cups of coffee were consumed during development 👀"
 msgstr "珈琲一杯分から！"
+
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:258
+msgid "My Templates"
+msgstr "マイテンプレート"
 
 #: src/components/top8/TextEditor/TextEditor.tsx:44
 msgid "No text content defined in this design."
@@ -464,6 +476,10 @@ msgstr "テキスト"
 msgid "Theme"
 msgstr "テーマ"
 
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:206
+msgid "This template will be permanently deleted."
+msgstr "このテンプレートは完全に削除されます。"
+
 #: src/consts/errors.ts:4
 msgid "This tournament has multiple groups without a final bracket, so it doesn't produce a unified Top 8 ranking."
 msgstr "この大会は複数グループ制のため、統一された順位を生成できません。"
@@ -543,4 +559,8 @@ msgstr "元に戻す"
 
 #: src/components/shared/FileUploader/FileUploader.tsx:153
 msgid "Upload"
-msgstr ""
+msgstr "アップロード"
+
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:198
+msgid "Your current design will be overwritten!"
+msgstr "現在のデザインは上書きされます！"

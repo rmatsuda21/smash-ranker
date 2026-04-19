@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import cn from "classnames";
 import { IoGrid } from "react-icons/io5";
 import { FaList } from "react-icons/fa6";
+import { msg } from "@lingui/core/macro";
+import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 
 import { useTemplateDB } from "@/hooks/useConfigDb";
@@ -93,6 +95,7 @@ const DEFAULT_TEMPLATE_GROUPS: { templates: DBTemplate[]; name: string }[] = [
 ];
 
 export const TemplateEditor = ({ className }: Props) => {
+  const { _ } = useLingui();
   const { templates, loading, getTemplateWithId, addTemplate, deleteTemplate } =
     useTemplateDB();
   const [userTemplates, setUserTemplates] = useState<DBTemplate[]>([]);
@@ -191,16 +194,16 @@ export const TemplateEditor = ({ className }: Props) => {
     confirm: confirmTemplateClick,
     ConfirmationDialog: TemplateClickConfirmation,
   } = useConfirmation(loadTemplate, {
-    title: "Load Template?",
-    description: "Your current design will be overwritten!",
+    title: _(msg`Load Template?`),
+    description: _(msg`Your current design will be overwritten!`),
   });
 
   const {
     confirm: confirmDeleteTemplate,
     ConfirmationDialog: DeleteTemplateConfirmation,
   } = useConfirmation(deleteTemplate, {
-    title: "Delete Template?",
-    description: "This template will be permanently deleted.",
+    title: _(msg`Delete Template?`),
+    description: _(msg`This template will be permanently deleted.`),
   });
 
   if (loading)
@@ -252,7 +255,7 @@ export const TemplateEditor = ({ className }: Props) => {
       {userTemplates.length > 0 && (
         <TemplateGroup
           templates={userTemplates}
-          name="My Templates"
+          name={_(msg`My Templates`)}
           onTemplateClick={confirmTemplateClick}
           onDeleteTemplate={confirmDeleteTemplate}
           viewMode={viewMode}
