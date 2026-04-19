@@ -134,7 +134,7 @@ msgstr ""
 msgid "Create a minimal template with a specific player count."
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:217
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:220
 msgid "Create New Template"
 msgstr ""
 
@@ -176,6 +176,10 @@ msgstr ""
 
 #: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:38
 msgid "Delete Asset"
+msgstr ""
+
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:205
+msgid "Delete Template?"
 msgstr ""
 
 #: src/components/top8/SidePanel/SidePanelNav.tsx:28
@@ -298,6 +302,10 @@ msgstr ""
 msgid "Load"
 msgstr ""
 
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:197
+msgid "Load Template?"
+msgstr ""
+
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:58
 msgid "Load Tournament?"
 msgstr ""
@@ -318,6 +326,10 @@ msgstr ""
 msgid "Many cups of coffee were consumed during development 👀"
 msgstr ""
 
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:258
+msgid "My Templates"
+msgstr ""
+
 #: src/components/top8/TextEditor/TextEditor.tsx:44
 msgid "No text content defined in this design."
 msgstr ""
@@ -333,7 +345,7 @@ msgstr ""
 
 #: src/components/shared/FileUploader/FileUploader.tsx:155
 msgid "Or drag and drop"
-msgstr ""
+msgstr "Or drag and drop"
 
 #: src/components/top8/InfoPanel/InfoPanel.tsx:101
 msgid "Original concept & inspiration"
@@ -464,6 +476,10 @@ msgstr ""
 msgid "Theme"
 msgstr ""
 
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:206
+msgid "This template will be permanently deleted."
+msgstr ""
+
 #: src/consts/errors.ts:4
 msgid "This tournament has multiple groups without a final bracket, so it doesn't produce a unified Top 8 ranking."
 msgstr ""
@@ -543,4 +559,8 @@ msgstr ""
 
 #: src/components/shared/FileUploader/FileUploader.tsx:153
 msgid "Upload"
+msgstr "Upload"
+
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:198
+msgid "Your current design will be overwritten!"
 msgstr ""
