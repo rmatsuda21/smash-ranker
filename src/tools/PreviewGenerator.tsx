@@ -5,6 +5,8 @@ import { Stage as KonvaStage } from "konva/lib/Stage";
 
 import { createKonvaElements } from "@/utils/top8/elementFactory";
 import { createSamplePlayers } from "@/utils/top8/samplePlayers";
+import { fetchFontFamily } from "@/utils/top8/fetchAndMapFonts";
+import { loadFont } from "@/utils/top8/loadFont";
 import { TournamentInfo } from "@/types/top8/Tournament";
 import { DBTemplate } from "@/types/Repository";
 
@@ -246,6 +248,25 @@ const TemplateRenderer = ({
 const PreviewGeneratorApp = () => {
   const capturedRef = useRef<Map<string, string>>(new Map());
   const [done, setDone] = useState(false);
+  const [fontsReady, setFontsReady] = useState(false);
+
+  useEffect(() => {
+    const uniqueFonts = [...new Set(TEMPLATES.map((t) => t.font))];
+    console.log(`Loading fonts: ${uniqueFonts.join(", ")}...`);
+
+    Promise.all(
+      uniqueFonts.map(async (family) => {
+        const font = await fetchFontFamily(family);
+        await loadFont(font);
+        console.log(`Loaded font: ${family}`);
+      })
+    )
+      .then(() => setFontsReady(true))
+      .catch((error) => {
+        console.error("Font loading failed:", error);
+        window.__previewError = `Font loading failed: ${error}`;
+      });
+  }, []);
 
   const handleCaptured = useCallback((id: string, dataUrl: string) => {
     capturedRef.current.set(id, dataUrl);
@@ -271,9 +292,11 @@ const PreviewGeneratorApp = () => {
       <p>
         {done
           ? `Done! Captured ${TEMPLATES.length} previews.`
-          : "Rendering templates..."}
+          : fontsReady
+            ? "Rendering templates..."
+            : "Loading fonts..."}
       </p>
-      {TEMPLATES.map((template) => (
+      {fontsReady && TEMPLATES.map((template) => (
         <TemplateRenderer
           key={template.id}
           template={template}

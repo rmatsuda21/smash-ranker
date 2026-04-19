@@ -17,6 +17,7 @@ bun extract          # Extract Lingui i18n strings
 bun compile          # Compile Lingui i18n catalogs
 bun codegen          # Generate TypeScript types from start.gg GraphQL schema
 bun codegenwatch     # Watch mode for GraphQL codegen
+bun generate:previews # Regenerate built-in template preview WebP images (uses Playwright + preview-generator.html)
 ```
 
 No test runner is configured. Use `bun lint` and `bun build` to validate changes.

@@ -4,6 +4,7 @@ import minimal from "./minimal.webp";
 import minimal_4 from "./minimal-4.webp";
 import minimal_16 from "./minimal-16.webp";
 import minimal_24 from "./minimal-24.webp";
+import kagaribi from "./kagaribi.webp";
 
 export const defaultPreviews: Record<string, string> = {
   "top8er": top8er,
@@ -12,4 +13,5 @@ export const defaultPreviews: Record<string, string> = {
   "minimal-4": minimal_4,
   "minimal-16": minimal_16,
   "minimal-24": minimal_24,
+  "kagaribi": kagaribi,
 };

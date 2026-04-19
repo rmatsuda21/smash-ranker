@@ -5,6 +5,7 @@ import type {
   ElementConfig,
   GroupElementConfig,
   FlexGroupElementConfig,
+  CustomAltCharacterImageElementConfig,
 } from "@/types/top8/Design";
 import type { ElementFactoryContext } from "@/types/top8/ElementFactory";
 import { CustomImage } from "@/components/top8/Canvas/CustomImage";
@@ -47,6 +48,15 @@ export const countAsyncElements = (
       const player = context.player;
       if (player && player.characters.length > 0) {
         count += 1;
+      }
+    } else if (element.type === "customAltCharacterImage") {
+      const player = context.player;
+      if (player) {
+        const el = element as CustomAltCharacterImageElementConfig;
+        const charCount = el.includeMainCharacter
+          ? player.characters.length
+          : Math.max(0, player.characters.length - 1);
+        count += charCount;
       }
     } else if (element.type === "tournamentIcon") {
       if (context.tournament?.iconSrc) {
