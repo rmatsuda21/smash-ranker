@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import cn from "classnames";
+import { Trans } from "@lingui/react";
 
 import { useCanvasStore } from "@/store/canvasStore";
 import { rgbStringToAlphaHex } from "@/utils/top8/rgbStringToHex";
@@ -42,7 +43,11 @@ export const ColorPaletteEditor = ({ className }: Props) => {
     <div className={cn(className, styles.colorPaletteEditor)}>
       {groups.map(([groupName, entries]) => (
         <div key={groupName} className={styles.group}>
-          {groupName && <p className={styles.groupLabel}>{groupName}</p>}
+          {groupName && (
+            <p className={styles.groupLabel}>
+              <Trans id={groupName} message={groupName} />
+            </p>
+          )}
           <div className={styles.groupColors}>
             {entries.map(([id, { color, name }]) => (
               <div key={id} className={styles.row}>
@@ -50,7 +55,9 @@ export const ColorPaletteEditor = ({ className }: Props) => {
                   color={rgbStringToAlphaHex(color)}
                   onChange={(color) => handleColorChange(id, color, name)}
                 />
-                <span>{name}</span>
+                <span>
+                  <Trans id={name} message={name} />
+                </span>
               </div>
             ))}
           </div>

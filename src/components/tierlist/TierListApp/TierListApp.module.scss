@@ -83,6 +83,10 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
+
+  &[data-exporting] [data-export-ignore] {
+    display: none !important;
+  }
 }
 
 .fancySpacing {
