@@ -63,13 +63,76 @@ msgstr ""
 msgid "Avatar"
 msgstr ""
 
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:19
+msgid "Background"
+msgstr ""
+
+#: src/consts/top8/paletteLabels.ts:17
+#~ msgid "Background"
+#~ msgstr ""
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:21
+msgid "Background Dark"
+msgstr ""
+
+#: src/consts/top8/paletteLabels.ts:19
+#~ msgid "Background Dark"
+#~ msgstr ""
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:23
+msgid "Background Gray"
+msgstr ""
+
+#: src/consts/top8/paletteLabels.ts:21
+#~ msgid "Background Gray"
+#~ msgstr ""
+
 #: src/components/top8/DesignEditor/DesignEditor.tsx:42
 msgid "Background Image"
 msgstr ""
 
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:22
+msgid "Background Red"
+msgstr ""
+
+#: src/consts/top8/paletteLabels.ts:20
+#~ msgid "Background Red"
+#~ msgstr ""
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:25
+msgid "BG Gradient End"
+msgstr ""
+
+#: src/consts/top8/paletteLabels.ts:23
+#~ msgid "BG Gradient End"
+#~ msgstr ""
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:24
+msgid "BG Gradient Start"
+msgstr ""
+
+#: src/consts/top8/paletteLabels.ts:22
+#~ msgid "BG Gradient Start"
+#~ msgstr ""
+
 #: src/components/top8/SettingsPanel/AccentColorPicker.tsx:32
 msgid "Blue"
 msgstr ""
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:49
+msgid "Bottom Text"
+msgstr ""
+
+#: src/consts/top8/paletteLabels.ts:47
+#~ msgid "Bottom Text"
+#~ msgstr ""
 
 #: src/components/top8/InfoPanel/InfoPanel.tsx:82
 msgid "Buy me a coffee"
@@ -79,10 +142,46 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:34
+msgid "Card Background"
+msgstr ""
+
+#: src/consts/top8/paletteLabels.ts:32
+#~ msgid "Card Background"
+#~ msgstr ""
+
 #. placeholder {0}: res.status
 #: src/hooks/top8/useFetchChallonge.ts:41
 msgid "Challonge API error: {0}"
 msgstr ""
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:38
+msgid "Character BG"
+msgstr ""
+
+#: src/consts/top8/paletteLabels.ts:36
+#~ msgid "Character BG"
+#~ msgstr ""
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:39
+msgid "Character Border"
+msgstr ""
+
+#: src/consts/top8/paletteLabels.ts:37
+#~ msgid "Character Border"
+#~ msgstr ""
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:33
+msgid "Character Shadow"
+msgstr ""
+
+#: src/consts/top8/paletteLabels.ts:31
+#~ msgid "Character Shadow"
+#~ msgstr ""
 
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:218
 msgid "Characters"
@@ -170,6 +269,11 @@ msgstr ""
 msgid "Dark"
 msgstr ""
 
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:51
+msgid "Date"
+msgstr ""
+
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:121
 msgid "Date"
 msgstr ""
@@ -199,7 +303,7 @@ msgstr ""
 msgid "Download Options"
 msgstr ""
 
-#: src/components/top8/TextEditor/TextEditor.tsx:58
+#: src/components/top8/TextEditor/TextEditor.tsx:59
 msgid "Edit the text content displayed in your graphic."
 msgstr ""
 
@@ -215,13 +319,18 @@ msgstr ""
 msgid "English"
 msgstr ""
 
-#. placeholder {0}: name.toLowerCase()
-#: src/components/top8/TextEditor/TextEditor.tsx:71
+#. placeholder {0}: translatedName.toLowerCase()
+#: src/components/top8/TextEditor/TextEditor.tsx:76
 msgid "Enter {0}..."
 msgstr ""
 
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:71
 msgid "Enter a start.gg, Challonge, or Tonamel event URL"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:53
+msgid "Entrants"
 msgstr ""
 
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:136
@@ -294,6 +403,15 @@ msgstr ""
 msgid "Language"
 msgstr ""
 
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:35
+msgid "Left Border"
+msgstr ""
+
+#: src/consts/top8/paletteLabels.ts:33
+#~ msgid "Left Border"
+#~ msgstr ""
+
 #: src/components/top8/SettingsPanel/ThemePicker.tsx:21
 msgid "Light"
 msgstr ""
@@ -314,6 +432,15 @@ msgstr ""
 msgid "Loading Configs..."
 msgstr ""
 
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:52
+msgid "Location"
+msgstr ""
+
+#: src/consts/top8/paletteLabels.ts:50
+#~ msgid "Location"
+#~ msgstr ""
+
 #: src/components/top8/InfoPanel/InfoPanel.tsx:67
 msgid "Love Smash Ranker? Support the project!"
 msgstr ""
@@ -330,7 +457,7 @@ msgstr ""
 msgid "My Templates"
 msgstr ""
 
-#: src/components/top8/TextEditor/TextEditor.tsx:44
+#: src/components/top8/TextEditor/TextEditor.tsx:45
 msgid "No text content defined in this design."
 msgstr ""
 
@@ -363,6 +490,51 @@ msgstr ""
 msgid "Placement"
 msgstr ""
 
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:28
+msgid "Placement Shadow"
+msgstr ""
+
+#: src/consts/top8/paletteLabels.ts:26
+#~ msgid "Placement Shadow"
+#~ msgstr ""
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:30
+msgid "Placement Stroke"
+msgstr ""
+
+#: src/consts/top8/paletteLabels.ts:28
+#~ msgid "Placement Stroke"
+#~ msgstr ""
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:44
+msgid "Player"
+msgstr ""
+
+#: src/consts/top8/paletteLabels.ts:42
+#~ msgid "Player"
+#~ msgstr ""
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:31
+msgid "Player Background"
+msgstr ""
+
+#: src/consts/top8/paletteLabels.ts:29
+#~ msgid "Player Background"
+#~ msgstr ""
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:37
+msgid "Player BG"
+msgstr ""
+
+#: src/consts/top8/paletteLabels.ts:35
+#~ msgid "Player BG"
+#~ msgstr ""
+
 #: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:62
 #: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:68
 msgid "Player Count"
@@ -388,6 +560,15 @@ msgstr ""
 msgid "Player Tag"
 msgstr ""
 
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:32
+msgid "Player Text"
+msgstr ""
+
+#: src/consts/top8/paletteLabels.ts:30
+#~ msgid "Player Text"
+#~ msgstr ""
+
 #: src/components/top8/SidePanel/SidePanelNav.tsx:20
 msgid "Players"
 msgstr ""
@@ -396,6 +577,24 @@ msgstr ""
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:201
 msgid "Prefix"
 msgstr ""
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:29
+msgid "Prefix Text"
+msgstr ""
+
+#: src/consts/top8/paletteLabels.ts:27
+#~ msgid "Prefix Text"
+#~ msgstr ""
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:17
+msgid "Primary"
+msgstr ""
+
+#: src/consts/top8/paletteLabels.ts:15
+#~ msgid "Primary"
+#~ msgstr ""
 
 #: src/components/top8/SettingsPanel/AccentColorPicker.tsx:34
 msgid "Purple"
@@ -421,6 +620,15 @@ msgstr ""
 msgid "Regenerate Thumbnails"
 msgstr ""
 
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:18
+msgid "Secondary"
+msgstr ""
+
+#: src/consts/top8/paletteLabels.ts:16
+#~ msgid "Secondary"
+#~ msgstr ""
+
 #: src/components/top8/AssetSelector/AssetSelector.tsx:91
 msgid "Select"
 msgstr ""
@@ -436,6 +644,15 @@ msgstr ""
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:68
 msgid "Show help"
 msgstr ""
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:20
+msgid "Smash Ball"
+msgstr ""
+
+#: src/consts/top8/paletteLabels.ts:18
+#~ msgid "Smash Ball"
+#~ msgstr ""
 
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:158
 msgid "State"
@@ -460,16 +677,35 @@ msgstr ""
 msgid "Templates"
 msgstr ""
 
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:26
+msgid "Text"
+msgstr ""
+
 #: src/components/top8/ElementEditor/TextConfigEditor/TextConfigEditor.tsx:70
 msgid "Text"
 msgstr ""
 
-#: src/components/top8/TextEditor/TextEditor.tsx:47
+#: src/components/top8/TextEditor/TextEditor.tsx:48
 msgid "Text content is configured in the design layout."
 msgstr ""
 
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:27
+msgid "Text Shadow"
+msgstr ""
+
+#: src/consts/top8/paletteLabels.ts:25
+#~ msgid "Text Shadow"
+#~ msgstr ""
+
 #: src/components/top8/SidePanel/SidePanelNav.tsx:32
 msgid "Texts"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:42
+msgid "Theme"
 msgstr ""
 
 #: src/components/top8/SettingsPanel/ThemePicker.tsx:44
@@ -492,10 +728,46 @@ msgstr ""
 msgid "Thumbnails"
 msgstr ""
 
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:50
+msgid "Title"
+msgstr ""
+
+#: src/consts/top8/paletteLabels.ts:48
+#~ msgid "Title"
+#~ msgstr ""
+
 #. placeholder {0}: res.status
 #: src/hooks/top8/useFetchTonamel.ts:50
 msgid "Tonamel API error: {0}"
 msgstr ""
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:36
+msgid "Top Bar"
+msgstr ""
+
+#: src/consts/top8/paletteLabels.ts:34
+#~ msgid "Top Bar"
+#~ msgstr ""
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:47
+msgid "Top Left Text"
+msgstr ""
+
+#: src/consts/top8/paletteLabels.ts:45
+#~ msgid "Top Left Text"
+#~ msgstr ""
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:48
+msgid "Top Right Text"
+msgstr ""
+
+#: src/consts/top8/paletteLabels.ts:46
+#~ msgid "Top Right Text"
+#~ msgstr ""
 
 #: src/components/top8/SidePanel/SidePanelNav.tsx:24
 msgid "Tournament"
@@ -519,6 +791,20 @@ msgstr ""
 
 #: src/consts/top8/placeholders.ts:31
 msgid "Tournament Full Address"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:56
+msgid "Tournament Info"
+msgstr ""
+
+#: src/consts/top8/paletteLabels.ts:54
+#~ msgid "Tournament Info"
+#~ msgstr ""
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:55
+msgid "Tournament Name"
 msgstr ""
 
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:104
@@ -560,6 +846,15 @@ msgstr ""
 #: src/components/shared/FileUploader/FileUploader.tsx:153
 msgid "Upload"
 msgstr "Upload"
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:54
+msgid "URL"
+msgstr ""
+
+#: src/consts/top8/paletteLabels.ts:52
+#~ msgid "URL"
+#~ msgstr ""
 
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:198
 msgid "Your current design will be overwritten!"

@@ -3,6 +3,7 @@ import cn from "classnames";
 import debounce from "lodash/debounce";
 import { msg } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
+import { Trans as TransRuntime } from "@lingui/react";
 import { useLingui } from "@lingui/react";
 
 import { useCanvasStore } from "@/store/canvasStore";
@@ -17,7 +18,7 @@ type Props = {
 };
 
 export const TextEditor = ({ className }: Props) => {
-  const { _ } = useLingui();
+  const { i18n, _ } = useLingui();
   const textPalette = useCanvasStore((state) => state.design.textPalette);
   const dispatch = useCanvasStore((state) => state.dispatch);
 
@@ -62,16 +63,21 @@ export const TextEditor = ({ className }: Props) => {
       </div>
 
       <div className={styles.list}>
-        {Object.entries(textPalette).map(([id, { text, name }]) => (
+        {Object.entries(textPalette).map(([id, { text, name }]) => {
+          const translatedName = i18n._(name);
+          return (
           <div key={id} className={styles.item}>
-            <span className={styles.label}>{name}</span>
+            <span className={styles.label}>
+              <TransRuntime id={name} message={name} />
+            </span>
             <RichTextInput
               value={text}
               onChange={(newText) => handleTextChange(id, newText, name)}
-              placeholder={_(msg`Enter ${name.toLowerCase()}...`)}
+              placeholder={_(msg`Enter ${translatedName.toLowerCase()}...`)}
             />
           </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

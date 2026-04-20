@@ -1,9 +1,5 @@
 import { useState } from "react";
-import {
-  FaArrowRotateLeft,
-  FaDownload,
-  FaEraser,
-} from "react-icons/fa6";
+import { FaArrowRotateLeft, FaDownload, FaEraser } from "react-icons/fa6";
 import { Trans } from "@lingui/react/macro";
 import { msg } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
@@ -32,25 +28,38 @@ export const TierListToolbar = ({ exportRef }: Props) => {
     const { toPng } = await import("html-to-image");
     // Yield to let React render the loading state before the heavy work
     await new Promise((r) => requestAnimationFrame(r));
+    const target = exportRef.current;
+    target.setAttribute("data-exporting", "");
+
     try {
-      const dataUrl = await toPng(exportRef.current, {
+      const dataUrl = await toPng(target, {
         backgroundColor: "transparent",
         pixelRatio: 2,
         skipFonts: true,
         filter: (node) =>
-          !(node instanceof HTMLElement && node.hasAttribute("data-export-ignore")),
+          !(
+            node instanceof HTMLElement &&
+            node.hasAttribute("data-export-ignore")
+          ),
       });
       const res = await fetch(dataUrl);
       const blob = await res.blob();
-      await downloadBlob({ blob, filename: "tier-list.png", mimeType: "image/png" });
+      await downloadBlob({
+        blob,
+        filename: "tier-list.png",
+        mimeType: "image/png",
+      });
     } catch (err) {
       console.error("Export failed:", err);
     } finally {
+      target.removeAttribute("data-exporting");
       setExporting(false);
     }
   };
 
-  const [confirmAction, setConfirmAction] = useState<"clear" | "reset" | null>(null);
+  const [confirmAction, setConfirmAction] = useState<"clear" | "reset" | null>(
+    null,
+  );
 
   const handleConfirm = () => {
     if (confirmAction === "clear") {
@@ -64,10 +73,18 @@ export const TierListToolbar = ({ exportRef }: Props) => {
   return (
     <div className={styles.toolbar}>
       <TierListSettings />
-      <Button size="md" variant="outline" onClick={() => setConfirmAction("clear")}>
+      <Button
+        size="md"
+        variant="outline"
+        onClick={() => setConfirmAction("clear")}
+      >
         <FaEraser size={14} /> <Trans>Clear</Trans>
       </Button>
-      <Button size="md" variant="outline" onClick={() => setConfirmAction("reset")}>
+      <Button
+        size="md"
+        variant="outline"
+        onClick={() => setConfirmAction("reset")}
+      >
         <FaArrowRotateLeft size={14} /> <Trans>Reset</Trans>
       </Button>
       <Button size="md" onClick={handleExport} loading={exporting}>
@@ -78,7 +95,9 @@ export const TierListToolbar = ({ exportRef }: Props) => {
         isOpen={confirmAction === "clear"}
         onClose={() => setConfirmAction(null)}
         title={_(msg`Clear Tiers`)}
-        description={_(msg`This will move all characters back to the unranked pool. Your tiers will remain.`)}
+        description={_(
+          msg`This will move all characters back to the unranked pool. Your tiers will remain.`,
+        )}
         onConfirm={handleConfirm}
         onCancel={() => setConfirmAction(null)}
       />
@@ -86,7 +105,9 @@ export const TierListToolbar = ({ exportRef }: Props) => {
         isOpen={confirmAction === "reset"}
         onClose={() => setConfirmAction(null)}
         title={_(msg`Reset All`)}
-        description={_(msg`This will reset everything to the default state, including tiers and all character placements.`)}
+        description={_(
+          msg`This will reset everything to the default state, including tiers and all character placements.`,
+        )}
         onConfirm={handleConfirm}
         onCancel={() => setConfirmAction(null)}
       />
