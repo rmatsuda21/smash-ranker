@@ -111,7 +111,7 @@ const createPlayerElements = (
     fill: "prefixText",
     anchor: "bottomLeft",
     position: { x: Math.round(14 * s), y: h - Math.round(42 * s) },
-    size: { width: w - Math.round(28 * s), height: Math.round(28 * s) },
+    size: { width: w - Math.round(64 * s), height: Math.round(28 * s) },
     conditions: [DesignPlaceholder.PLAYER_PREFIX],
   },
   {
@@ -122,8 +122,9 @@ const createPlayerElements = (
     fontWeight: 500,
     fill: "text",
     anchor: "bottomLeft",
+    verticalAlign: "middle",
     position: { x: Math.round(14 * s), y: h - Math.round(10 * s) },
-    size: { width: w - Math.round(28 * s), height: Math.round(44 * s) },
+    size: { width: w - Math.round(64 * s), height: Math.round(44 * s) },
   },
   {
     name: "Alt Characters",
