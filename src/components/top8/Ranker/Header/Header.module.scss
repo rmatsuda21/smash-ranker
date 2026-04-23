@@ -44,6 +44,10 @@
   display: flex;
   align-items: flex-end;
   gap: 10px;
+
+  button {
+    height: 34px;
+  }
 }
 
 .historyControls {
@@ -53,7 +57,7 @@
   padding-inline: 8px !important;
 }
 
-.historyButton {
+.historyControls .historyButton {
   width: 32px;
   height: 32px;
   padding: 0 !important;

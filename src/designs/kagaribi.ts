@@ -294,19 +294,19 @@ const background: LayerDesign = {
       size: { width: CANVAS_WIDTH, height: CANVAS_HEIGHT },
     },
     {
-      name: "Top Bar",
-      type: "rect",
-      fill: "topBar",
-      position: { x: PADDING, y: VERT_PADDING },
-      size: { width: CANVAS_WIDTH - PADDING * 2, height: TOP_BAR_HEIGHT },
-    },
-    {
       id: "backgroundImage",
       type: "backgroundImage",
       conditions: [RenderCondition.BACKGROUND_IMG],
       position: { x: 0, y: 0 },
       size: { width: CANVAS_WIDTH, height: CANVAS_HEIGHT },
       fillMode: "cover",
+    },
+    {
+      name: "Top Bar",
+      type: "rect",
+      fill: "topBar",
+      position: { x: PADDING, y: VERT_PADDING },
+      size: { width: CANVAS_WIDTH - PADDING * 2, height: TOP_BAR_HEIGHT },
     },
   ],
 };
