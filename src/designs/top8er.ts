@@ -262,19 +262,19 @@ const colorPalette: Design["colorPalette"] = {
   },
   text: { color: "rgb(255, 255, 255)", name: "Text", group: "Text" },
   textShadow: { color: "rgb(0, 0, 0)", name: "Text Shadow", group: "Text" },
-  placementShadow: {
-    color: "rgb(255, 255, 255)",
-    name: "Placement Shadow",
-    group: "Text",
-  },
   playerBackground: {
     color: "rgb(0, 0, 0)",
-    name: "Player Background",
+    name: "Background",
     group: "Player",
   },
   playerText: {
     color: "rgb(255, 255, 255)",
-    name: "Player Text",
+    name: "Text",
+    group: "Player",
+  },
+  placementShadow: {
+    color: "rgb(255, 255, 255)",
+    name: "Placement Shadow",
     group: "Player",
   },
   characterShadow: {

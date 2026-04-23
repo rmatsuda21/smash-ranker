@@ -272,7 +272,7 @@ const colorPalette: Design["colorPalette"] = {
   },
   playerBackground: {
     color: "rgb(0, 0, 0)",
-    name: "Player Background",
+    name: "Background",
     group: "Player",
   },
   characterShadow: {
