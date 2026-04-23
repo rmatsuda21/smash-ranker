@@ -238,17 +238,17 @@ const players: Partial<PlayerDesign>[] = [
 const colorPalette: Design["colorPalette"] = {
   bgGradient1: {
     color: "#000000",
-    name: "Background Dark",
+    name: "Color 1",
     group: "Background",
   },
   bgGradient2: {
     color: "#4B0D0D",
-    name: "Background Red",
+    name: "Color 2",
     group: "Background",
   },
   bgGradient3: {
     color: "#414141",
-    name: "Background Gray",
+    name: "Color 3",
     group: "Background",
   },
   cardBg: {
@@ -259,7 +259,7 @@ const colorPalette: Design["colorPalette"] = {
   text: { color: "#FFFFFF", name: "Text", group: "Text" },
   prefixText: {
     color: "rgba(180, 180, 180, 1)",
-    name: "Prefix Text",
+    name: "Prefix",
     group: "Text",
   },
   placementStroke: {
@@ -273,7 +273,7 @@ const colorPalette: Design["colorPalette"] = {
     group: "Text",
   },
   leftBorder: { color: "#FFFFFF", name: "Left Border", group: "Player" },
-  topBar: { color: "#FFFFFF", name: "Top Bar", group: "Player" },
+  topBar: { color: "#FFFFFF", name: "Top Bar", group: "Background" },
 };
 
 const background: LayerDesign = {

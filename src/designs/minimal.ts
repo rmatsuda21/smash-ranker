@@ -16,17 +16,17 @@ const CHARACTER_IMAGE_SIZE = 60;
 const colorPalette: Design["colorPalette"] = {
   backgroundStart: {
     color: "rgb(51, 51, 51)",
-    name: "BG Gradient Start",
+    name: "Gradient Start",
     group: "Background",
   },
   backgroundEnd: {
     color: "rgb(0, 0, 0)",
-    name: "BG Gradient End",
+    name: "Gradient End",
     group: "Background",
   },
   primary: {
     color: "rgba(142, 142, 142, 0.21)",
-    name: "Player BG",
+    name: "Main BG",
     group: "Player",
   },
   characterBackground: {
