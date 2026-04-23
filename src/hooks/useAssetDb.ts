@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 import { DBAsset } from "@/types/Repository";
 import { assetRepository } from "@/db/repository";
@@ -9,9 +9,9 @@ export const useAssetDB = () => {
   const [assets, setAssets] = useState<DBAsset[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const refresh = async () => {
+  const refresh = useCallback(async () => {
     setAssets(await assetRepository.getAll());
-  };
+  }, []);
 
   useEffect(() => {
     refresh().finally(() => setLoading(false));

@@ -71,7 +71,7 @@ msgid "(https://tonamel.com/competition/[slug])"
 msgstr ""
 
 #. placeholder {0}: file.name
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:58
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:100
 msgid "{0} is too large! (Max 2MB)"
 msgstr ""
 
@@ -95,12 +95,17 @@ msgstr ""
 msgid "Any current player and tournament data will be overwritten."
 msgstr ""
 
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:39
+#. placeholder {0}: markedIds.size
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:72
+msgid "Are you sure you want to delete {0} assets?"
+msgstr ""
+
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:54
 msgid "Are you sure you want to delete this asset?"
 msgstr ""
 
 #: src/components/top8/AssetManager/AssetManager.tsx:32
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:85
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:183
 msgid "Assets"
 msgstr ""
 
@@ -313,16 +318,37 @@ msgstr ""
 msgid "Date"
 msgstr ""
 
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:38
+#: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:222
+msgid "Delete"
+msgstr ""
+
+#. placeholder {0}: markedIds.size
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:213
+msgid "Delete ({0})"
+msgstr ""
+
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:53
 msgid "Delete Asset"
+msgstr ""
+
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:70
+msgid "Delete Assets"
 msgstr ""
 
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:205
 msgid "Delete Template?"
 msgstr ""
 
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:199
+msgid "Deselect All"
+msgstr ""
+
 #: src/components/top8/SidePanel/SidePanelNav.tsx:28
 msgid "Design"
+msgstr ""
+
+#: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:177
+msgid "Dimensions"
 msgstr ""
 
 #: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:34
@@ -389,6 +415,7 @@ msgstr ""
 msgid "Failed to fetch tournament data"
 msgstr ""
 
+#: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:157
 #: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:85
 msgid "Filename"
 msgstr ""
@@ -505,6 +532,10 @@ msgstr ""
 
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:258
 msgid "My Templates"
+msgstr ""
+
+#: src/components/top8/AssetManager/AssetsModal/AssetGrid/AssetGrid.tsx:36
+msgid "No assets yet"
 msgstr ""
 
 #: src/components/top8/TextEditor/TextEditor.tsx:45
@@ -664,8 +695,17 @@ msgstr ""
 #~ msgid "Secondary"
 #~ msgstr ""
 
+#: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:211
 #: src/components/top8/AssetSelector/AssetSelector.tsx:91
 msgid "Select"
+msgstr ""
+
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:201
+msgid "Select All"
+msgstr ""
+
+#: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:79
+msgid "Select an asset to preview"
 msgstr ""
 
 #: src/components/top8/CharacterEditor/CharacterSelect/CharacterSelect.tsx:62
@@ -676,8 +716,16 @@ msgstr ""
 msgid "Select Country"
 msgstr ""
 
+#: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:208
+msgid "Selected"
+msgstr ""
+
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:68
 msgid "Show help"
+msgstr ""
+
+#: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:169
+msgid "Size"
 msgstr ""
 
 #. js-lingui-explicit-id
@@ -870,6 +918,10 @@ msgstr ""
 msgid "Twitter Handle"
 msgstr ""
 
+#: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:163
+msgid "Type"
+msgstr ""
+
 #: src/components/top8/TextEditor/TextEditor.tsx:70
 #~ msgid "Type <0>{</0> to insert a variable!"
 #~ msgstr ""
@@ -879,8 +931,17 @@ msgid "Undo"
 msgstr ""
 
 #: src/components/shared/FileUploader/FileUploader.tsx:153
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:232
 msgid "Upload"
 msgstr "Upload"
+
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:229
+msgid "Upload Assets"
+msgstr ""
+
+#: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:189
+msgid "Uploaded"
+msgstr ""
 
 #. js-lingui-explicit-id
 #: src/consts/top8/paletteLabels.ts:53
@@ -893,4 +954,12 @@ msgstr ""
 
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:198
 msgid "Your current design will be overwritten!"
+msgstr ""
+
+#: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:142
+msgid "Zoom In"
+msgstr ""
+
+#: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:124
+msgid "Zoom Out"
 msgstr ""

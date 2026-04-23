@@ -1,0 +1,138 @@
+@use "@/_theme" as *;
+
+.gridPanel {
+  width: 240px;
+  flex-shrink: 0;
+  overflow-y: auto;
+  border: 1px solid var(--gray-3);
+  border-radius: 5px;
+  padding: 8px;
+
+  @include mobile {
+    width: 100%;
+    max-height: 35svh;
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 52px;
+  gap: 6px;
+  user-select: none;
+
+  @include mobile {
+    grid-auto-rows: auto;
+  }
+}
+
+.thumbnail {
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  overflow: hidden;
+  background-color: var(--gray-2);
+  transition: border-color 0.1s ease-in-out;
+
+  @include mobile {
+    aspect-ratio: 1;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  &:hover {
+    border-color: var(--gray-7);
+
+    .markCheckbox {
+      opacity: 1;
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent-9);
+    outline-offset: 1px;
+  }
+
+  &.previewing {
+    border-color: var(--accent-9);
+    background-color: var(--accent-2);
+  }
+
+  &.marked {
+    border-color: #e5484d;
+
+    .markCheckbox {
+      opacity: 1;
+    }
+  }
+
+  &.selected .checkBadge {
+    display: flex;
+  }
+}
+
+.markCheckbox {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  border: 1.5px solid var(--gray-8);
+  background-color: var(--gray-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.1s ease-in-out;
+  cursor: pointer;
+
+  &.checked {
+    opacity: 1;
+    background-color: #e5484d;
+    border-color: #e5484d;
+  }
+
+  @include mobile {
+    opacity: 1;
+  }
+}
+
+.checkBadge {
+  display: none;
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 16px;
+  height: 16px;
+  background-color: var(--accent-9);
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 100%;
+  min-height: 200px;
+  color: var(--gray-7);
+  font-size: var(--font-size-sm);
+
+  svg {
+    opacity: 0.5;
+  }
+}
