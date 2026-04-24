@@ -73,6 +73,11 @@ export const TierListApp = () => {
   const exportRef = useRef<HTMLDivElement>(null);
   const isResizing = useRef(false);
 
+  const tiersRef = useRef(tiers);
+  tiersRef.current = tiers;
+  const poolRef = useRef(pool);
+  poolRef.current = pool;
+
   const handleAddTier = useCallback(() => {
     const palette = TIER_PALETTES.find((p) => p.id === activePaletteId)
       ?? TIER_PALETTES.find((p) => p.id === DEFAULT_PALETTE_ID)!;
@@ -111,62 +116,54 @@ export const TierListApp = () => {
 
       if (activeInstanceId === overId) return;
 
-      const activeContainer = findContainer(activeInstanceId, tiers, pool);
+      const currentTiers = tiersRef.current;
+      const currentPool = poolRef.current;
+
+      const activeContainer = findContainer(activeInstanceId, currentTiers, currentPool);
 
       // Determine target container
       let overContainer: string | null = null;
-      if (overId === "pool" || tiers.some((t) => t.id === overId)) {
+      if (overId === "pool" || currentTiers.some((t) => t.id === overId)) {
         overContainer = overId;
       } else {
-        overContainer = findContainer(overId, tiers, pool);
+        overContainer = findContainer(overId, currentTiers, currentPool);
       }
 
       if (!activeContainer || !overContainer) return;
 
+      // Same-container reordering is handled visually by SortableContext transforms
+      // and committed in handleDragEnd. Only handle cross-container moves here.
+      if (activeContainer === overContainer) return;
+
       const overItems =
         overContainer === "pool"
-          ? pool
-          : tiers.find((t) => t.id === overContainer)?.characterIds ?? [];
+          ? currentPool
+          : currentTiers.find((t) => t.id === overContainer)?.characterIds ?? [];
 
-      if (activeContainer === overContainer) {
-        // Same container reorder
-        const activeIndex = overItems.indexOf(activeInstanceId);
-        const overIndex = overItems.indexOf(overId);
-        if (activeIndex < 0 || overIndex < 0 || activeIndex === overIndex) return;
-
-        dispatch({
-          type: "MOVE_CHARACTER",
-          instanceId: activeInstanceId,
-          toContainer: overContainer,
-          toIndex: overIndex,
-        });
+      const overIndex = overItems.indexOf(overId);
+      let insertIndex: number;
+      if (overIndex < 0) {
+        insertIndex = overItems.length;
       } else {
-        // Cross-container move
-        const overIndex = overItems.indexOf(overId);
-        let insertIndex: number;
-        if (overIndex < 0) {
-          insertIndex = overItems.length;
+        const activeRect = active.rect.current.translated;
+        const overRect = over.rect;
+        if (activeRect && overRect) {
+          const activeCenterX = activeRect.left + activeRect.width / 2;
+          const overCenterX = overRect.left + overRect.width / 2;
+          insertIndex = activeCenterX < overCenterX ? overIndex : overIndex + 1;
         } else {
-          const activeRect = active.rect.current.translated;
-          const overRect = over.rect;
-          if (activeRect && overRect) {
-            const activeCenterX = activeRect.left + activeRect.width / 2;
-            const overCenterX = overRect.left + overRect.width / 2;
-            insertIndex = activeCenterX < overCenterX ? overIndex : overIndex + 1;
-          } else {
-            insertIndex = overIndex;
-          }
+          insertIndex = overIndex;
         }
-
-        dispatch({
-          type: "MOVE_CHARACTER",
-          instanceId: activeInstanceId,
-          toContainer: overContainer,
-          toIndex: insertIndex,
-        });
       }
+
+      dispatch({
+        type: "MOVE_CHARACTER",
+        instanceId: activeInstanceId,
+        toContainer: overContainer,
+        toIndex: insertIndex,
+      });
     },
-    [tiers, pool, dispatch]
+    [dispatch]
   );
 
   const handleDragEnd = useCallback(
@@ -179,26 +176,48 @@ export const TierListApp = () => {
       const activeInstanceId = active.id as string;
       const overId = over.id as string;
 
-      // Only handle drops onto empty containers (container IDs, not character IDs)
-      const isContainer = overId === "pool" || tiers.some((t) => t.id === overId);
-      if (!isContainer) return;
+      const currentTiers = tiersRef.current;
+      const currentPool = poolRef.current;
 
-      const activeContainer = findContainer(activeInstanceId, tiers, pool);
-      if (!activeContainer || activeContainer === overId) return;
+      const activeContainer = findContainer(activeInstanceId, currentTiers, currentPool);
+      const isContainer = overId === "pool" || currentTiers.some((t) => t.id === overId);
 
-      const overItems =
-        overId === "pool"
-          ? pool
-          : tiers.find((t) => t.id === overId)?.characterIds ?? [];
+      // Drop onto empty container
+      if (isContainer) {
+        if (!activeContainer || activeContainer === overId) return;
+        const overItems =
+          overId === "pool"
+            ? currentPool
+            : currentTiers.find((t) => t.id === overId)?.characterIds ?? [];
+        dispatch({
+          type: "MOVE_CHARACTER",
+          instanceId: activeInstanceId,
+          toContainer: overId,
+          toIndex: overItems.length,
+        });
+        return;
+      }
+
+      // Same-container reorder on drop
+      const overContainer = findContainer(overId, currentTiers, currentPool);
+      if (!activeContainer || !overContainer || activeContainer !== overContainer) return;
+
+      const items =
+        overContainer === "pool"
+          ? currentPool
+          : currentTiers.find((t) => t.id === overContainer)?.characterIds ?? [];
+      const activeIndex = items.indexOf(activeInstanceId);
+      const overIndex = items.indexOf(overId);
+      if (activeIndex < 0 || overIndex < 0 || activeIndex === overIndex) return;
 
       dispatch({
         type: "MOVE_CHARACTER",
         instanceId: activeInstanceId,
-        toContainer: overId,
-        toIndex: overItems.length,
+        toContainer: overContainer,
+        toIndex: overIndex,
       });
     },
-    [tiers, pool, dispatch]
+    [dispatch]
   );
 
   const handleResizePointerDown = useCallback(
