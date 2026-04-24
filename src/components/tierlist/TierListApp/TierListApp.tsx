@@ -25,6 +25,7 @@ import { TierListTitle } from "@/components/tierlist/TierListTitle/TierListTitle
 import { CharacterImage } from "@/components/tierlist/CharacterImage/CharacterImage";
 import { AltPicker } from "@/components/tierlist/AltPicker/AltPicker";
 import { useTierListStore } from "@/store/tierListStore";
+import { useKonamiCode } from "@/hooks/tierlist/useKonamiCode";
 import { TIER_PALETTES, getColorsForTierCount, DEFAULT_PALETTE_ID } from "@/consts/tierlist/tierPalettes";
 import { preloadCharacterImages } from "@/utils/top8/preloadCharacterImages";
 
@@ -60,6 +61,12 @@ export const TierListApp = () => {
   const activePaletteId = useTierListStore((s) => s.activePaletteId);
 
   const tierListWidth = useTierListStore((s) => s.tierListWidth);
+
+  useKonamiCode(
+    useCallback(() => {
+      dispatch({ type: "RANDOMIZE_TIERS", minPerTier: 5 });
+    }, [dispatch])
+  );
 
   const [activeId, setActiveId] = useState<string | null>(null);
   const [altPicker, setAltPicker] = useState<AltPickerState>(null);

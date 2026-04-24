@@ -46,7 +46,8 @@ type TierListAction =
   | { type: "SET_LABEL_FONT"; font: Partial<LabelFont> }
   | { type: "SET_TITLE"; title: string }
   | { type: "SET_TITLE_ALIGN"; align: TitleAlign }
-  | { type: "APPLY_PALETTE"; paletteId: string; colors: string[] };
+  | { type: "APPLY_PALETTE"; paletteId: string; colors: string[] }
+  | { type: "RANDOMIZE_TIERS"; minPerTier: number };
 
 const DEFAULT_TIERS: Tier[] = [
   { id: "tier-s", name: "S", color: "#ff7f7f", characterIds: [] },
@@ -234,6 +235,38 @@ const tierListReducer = (
 
     case "SET_TITLE_ALIGN":
       return { titleAlign: action.align };
+
+    case "RANDOMIZE_TIERS": {
+      const allIds = [
+        ...state.pool,
+        ...state.tiers.flatMap((t) => t.characterIds),
+      ];
+      // Fisher-Yates shuffle
+      for (let i = allIds.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [allIds[i], allIds[j]] = [allIds[j], allIds[i]];
+      }
+      const tierCount = state.tiers.length;
+      const newTiers = state.tiers.map((t) => ({
+        ...t,
+        characterIds: [] as string[],
+      }));
+      // Deal minimum per tier first
+      let cursor = 0;
+      for (let i = 0; i < tierCount; i++) {
+        newTiers[i].characterIds = allIds.slice(
+          cursor,
+          cursor + action.minPerTier
+        );
+        cursor += action.minPerTier;
+      }
+      // Distribute remaining randomly
+      for (let i = cursor; i < allIds.length; i++) {
+        const tierIdx = Math.floor(Math.random() * tierCount);
+        newTiers[tierIdx].characterIds.push(allIds[i]);
+      }
+      return { tiers: newTiers, pool: [] };
+    }
 
     default:
       return state;
