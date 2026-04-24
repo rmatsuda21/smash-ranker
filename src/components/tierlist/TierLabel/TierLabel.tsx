@@ -30,7 +30,7 @@ export const TierLabel = ({ name, color, layout, labelFont, extraStyle, onRename
 
   const handleSubmit = () => {
     const trimmed = editValue.trim();
-    if (trimmed && trimmed !== name) {
+    if (trimmed !== name) {
       onRename(trimmed);
     }
     setIsEditing(false);
