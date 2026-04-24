@@ -33,6 +33,16 @@
   display: flex;
   align-items: center;
   padding: 0 4px;
+  opacity: 0.3;
+  transition: opacity 0.15s ease;
+
+  @include mobile {
+    opacity: 1;
+  }
+}
+
+.row:hover .settings {
+  opacity: 1;
 }
 
 .fancyLayout {
