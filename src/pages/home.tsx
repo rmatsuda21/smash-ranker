@@ -1,6 +1,7 @@
 import { useCallback, useRef } from "react";
 import { Link } from "wouter";
-import { FaTrophy, FaLayerGroup, FaListOl, FaArrowRight } from "react-icons/fa6";
+import { FaTrophy, FaLayerGroup, FaListOl, FaGithub } from "react-icons/fa6";
+import { SiBuymeacoffee } from "react-icons/si";
 
 import styles from "./home.module.scss";
 
@@ -10,11 +11,9 @@ export const Home = () => {
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     const { clientWidth, clientHeight } = e.currentTarget;
-    // -0.5 to 0.5 range, centered
     const x = (e.clientX / clientWidth - 0.5) * 2;
     const y = (e.clientY / clientHeight - 0.5) * 2;
 
-    // Orb 1 follows at 30px range, orb 2 at 20px opposite direction
     if (orb1Ref.current) {
       orb1Ref.current.style.translate = `${x * 30}px ${y * 30}px`;
     }
@@ -28,7 +27,6 @@ export const Home = () => {
       <div ref={orb1Ref} className={styles.orb1} aria-hidden="true" />
       <div ref={orb2Ref} className={styles.orb2} aria-hidden="true" />
 
-      {/* Hero */}
       <section className={styles.hero}>
         <div className={styles.heroContent}>
           <div className={styles.logoWrap}>
@@ -44,7 +42,6 @@ export const Home = () => {
         </div>
       </section>
 
-      {/* Tools */}
       <section className={styles.tools}>
         <h2 className={styles.sectionTitle}>Tools</h2>
         <div className={styles.cardGrid}>
@@ -57,15 +54,12 @@ export const Home = () => {
               <div className={styles.cardIcon}>
                 <FaTrophy />
               </div>
-              <h3 className={styles.cardTitle}>Top 8 Ranker</h3>
+              <h3 className={styles.cardTitle}>Tournament Ranker</h3>
             </div>
             <p className={styles.cardDescription}>
               Generate tournament bracket graphics with custom templates, player
               data, and character art.
             </p>
-            <span className={styles.cardCta}>
-              Get started <FaArrowRight className={styles.ctaArrow} />
-            </span>
           </Link>
 
           <Link
@@ -82,9 +76,6 @@ export const Home = () => {
             <p className={styles.cardDescription}>
               Drag and drop characters to create and export shareable tier lists.
             </p>
-            <span className={styles.cardCta}>
-              Get started <FaArrowRight className={styles.ctaArrow} />
-            </span>
           </Link>
 
           <Link
@@ -102,14 +93,10 @@ export const Home = () => {
               Predict tournament placements and share your bracket picks as a
               graphic.
             </p>
-            <span className={styles.cardCta}>
-              Get started <FaArrowRight className={styles.ctaArrow} />
-            </span>
           </Link>
         </div>
       </section>
 
-      {/* Coming Soon */}
       <section className={styles.roadmap}>
         <div className={styles.roadmapContent}>
           <div className={styles.roadmapBadge}>
@@ -123,6 +110,32 @@ export const Home = () => {
           </p>
         </div>
       </section>
+
+      <footer className={styles.footer}>
+        <p className={styles.copyright}>
+          &copy; {new Date().getFullYear()} Smash Ranker
+        </p>
+        <span className={styles.footerDivider}>&middot;</span>
+        <a
+          href="https://github.com/rmatsuda21/smash-ranker"
+          target="_blank"
+          rel="noopener noreferrer"
+          className={styles.footerLink}
+        >
+          <FaGithub />
+          GitHub
+        </a>
+        <span className={styles.footerDivider}>&middot;</span>
+        <a
+          href="https://buymeacoffee.com/chikyunojin"
+          target="_blank"
+          rel="noopener noreferrer"
+          className={styles.footerLink}
+        >
+          <SiBuymeacoffee />
+          Buy me a coffee
+        </a>
+      </footer>
     </div>
   );
 };

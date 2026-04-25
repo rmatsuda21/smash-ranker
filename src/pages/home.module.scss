@@ -129,7 +129,7 @@
   flex: 1;
   overflow: hidden auto;
   gap: 40px;
-  padding-bottom: 40px;
+  padding-bottom: 10px;
 }
 
 // ==========================================
@@ -192,7 +192,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 60px 20px 40px;
+  padding: 40px 20px 10px;
 }
 
 .heroContent {
@@ -296,8 +296,8 @@
 .card {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding: 20px;
+  gap: 8px;
+  padding: 14px;
   background: var(--gray-1);
   border: 1px solid var(--gray-4);
   border-radius: 8px;
@@ -312,10 +312,6 @@
   &:hover {
     border-color: var(--accent-5);
     background: var(--gray-2);
-
-    .ctaArrow {
-      transform: translateX(4px);
-    }
 
     .cardIcon {
       background: var(--accent-3);
@@ -353,19 +349,6 @@
   font-size: var(--font-size-sm);
   color: var(--gray-10);
   line-height: 1.5;
-}
-
-.cardCta {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: var(--font-size-sm);
-  font-weight: 600;
-  color: var(--accent-9);
-}
-
-.ctaArrow {
-  transition: transform 0.3s ease-in-out;
 }
 
 // ==========================================
@@ -426,17 +409,56 @@
 }
 
 // ==========================================
+// Footer
+// ==========================================
+
+.footer {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: auto;
+  padding: 0 20px;
+  width: 100%;
+}
+
+.footerDivider {
+  color: var(--gray-6);
+}
+
+.footerLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--font-size-xs);
+  color: var(--gray-8);
+  text-decoration: none;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: var(--accent-9);
+  }
+}
+
+.copyright {
+  font-size: var(--font-size-xs);
+  color: var(--gray-8);
+}
+
+// ==========================================
 // Mobile
 // ==========================================
 
 @include mobile {
   .root {
-    gap: 32px;
-    padding-bottom: 32px;
+    gap: 24px;
+    padding-bottom: 10px;
   }
 
   .hero {
-    padding: 40px 16px 24px;
+    padding: 10px 16px 0px;
   }
 
   .orb1 {
