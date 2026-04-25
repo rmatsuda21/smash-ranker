@@ -64,20 +64,22 @@ export const ConfirmationModal = ({
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div className={styles.modal}>
-        <h1>{title}</h1>
-        <p>{description}</p>
-        {cookieName && (
-          <CookieInput
-            isDoNotShowAgain={isDoNotShowAgain}
-            setIsDoNotShowAgain={setIsDoNotShowAgain}
-          />
-        )}
+        <div className={styles.header}>
+          <h3 className={styles.title}>{title}</h3>
+          <p className={styles.description}>{description}</p>
+        </div>
         {children}
         <div className={styles.buttons}>
-          <Button className={styles.cancelButton} onClick={onCancel}>
+          {cookieName && (
+            <CookieInput
+              isDoNotShowAgain={isDoNotShowAgain}
+              setIsDoNotShowAgain={setIsDoNotShowAgain}
+            />
+          )}
+          <Button variant="ghost" onClick={onCancel}>
             <Trans>Cancel</Trans>
           </Button>
-          <Button className={styles.confirmButton} onClick={handleConfirm}>
+          <Button variant="solid" onClick={handleConfirm}>
             <Trans>Confirm</Trans>
           </Button>
         </div>
