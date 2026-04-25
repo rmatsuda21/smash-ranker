@@ -41,7 +41,6 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
     <div className={styles.root}>
       <nav className={styles.nav}>
         <img src="/favicon.svg" alt="Smash Ranker" />
-        <h1>Smash Ranker</h1>
         <div className={styles.actions}>
           <button
             className={styles.gearButton}
