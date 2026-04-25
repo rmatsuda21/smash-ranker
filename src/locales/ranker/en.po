@@ -87,6 +87,10 @@ msgstr ""
 msgid "Accent Color"
 msgstr ""
 
+#: src/components/predict/PredictApp/PredictApp.tsx:33
+msgid "All current predictions will be removed."
+msgstr ""
+
 #: src/components/top8/SettingsPanel/AccentColorPicker.tsx:31
 msgid "Amber"
 msgstr ""
@@ -109,8 +113,16 @@ msgstr ""
 msgid "Assets"
 msgstr ""
 
+#: src/components/predict/ActionBar/ActionBar.tsx:27
+msgid "Auto-fill by seed"
+msgstr ""
+
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:260
 msgid "Avatar"
+msgstr ""
+
+#: src/components/predict/PredictApp/PredictApp.tsx:48
+msgid "Back to Edit"
 msgstr ""
 
 #. js-lingui-explicit-id
@@ -177,6 +189,7 @@ msgstr ""
 #~ msgstr ""
 
 #. placeholder {0}: res.status
+#: src/hooks/predict/useFetchPredictionEntrants.ts:200
 #: src/hooks/top8/useFetchChallonge.ts:41
 msgid "Challonge API error: {0}"
 msgstr ""
@@ -216,6 +229,7 @@ msgstr ""
 msgid "City"
 msgstr ""
 
+#: src/components/predict/PredictApp/PredictApp.tsx:109
 #: src/components/top8/AssetSelector/AssetSelector.tsx:100
 msgid "Clear"
 msgstr ""
@@ -226,6 +240,10 @@ msgstr ""
 
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:174
 msgid "Clear Player?"
+msgstr ""
+
+#: src/components/predict/PredictApp/PredictApp.tsx:32
+msgid "Clear Predictions?"
 msgstr ""
 
 #: src/components/top8/ElementEditor/TextConfigEditor/TextConfigEditor.tsx:78
@@ -251,12 +269,25 @@ msgstr ""
 msgid "Color Palette"
 msgstr ""
 
+#: src/hooks/predict/useFetchPredictionEntrants.ts:237
 #: src/hooks/top8/useFetchTonamel.ts:180
 msgid "Competition not found"
 msgstr ""
 
 #: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:81
 msgid "Confirm"
+msgstr ""
+
+#: src/components/predict/ExportBar/ExportBar.tsx:95
+msgid "Copied!"
+msgstr ""
+
+#: src/components/predict/ExportBar/ExportBar.tsx:91
+msgid "Copy to Clipboard"
+msgstr ""
+
+#: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:54
+msgid "Count"
 msgstr ""
 
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:238
@@ -287,6 +318,10 @@ msgstr ""
 
 #: src/components/top8/InfoPanel/InfoPanel.tsx:89
 msgid "Credits & Inspiration"
+msgstr ""
+
+#: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:22
+msgid "Custom"
 msgstr ""
 
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:249
@@ -364,6 +399,10 @@ msgstr ""
 msgid "Download Options"
 msgstr ""
 
+#: src/components/predict/ExportBar/ExportBar.tsx:85
+msgid "Download PNG"
+msgstr ""
+
 #: src/components/top8/TextEditor/TextEditor.tsx:59
 msgid "Edit the text content displayed in your graphic."
 msgstr ""
@@ -394,6 +433,8 @@ msgstr ""
 msgid "Entrants"
 msgstr ""
 
+#: src/components/predict/EntrantPoolPanel/EntrantPoolPanel.tsx:44
+#: src/components/predict/PredictionWorkspace/PredictionWorkspace.tsx:31
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:136
 msgid "Entrants"
 msgstr ""
@@ -407,8 +448,16 @@ msgstr ""
 msgid "Failed to fetch Challonge tournament"
 msgstr ""
 
+#: src/hooks/predict/useFetchPredictionEntrants.ts:159
+msgid "Failed to fetch seeds"
+msgstr ""
+
 #: src/hooks/top8/useFetchTonamel.ts:202
 msgid "Failed to fetch Tonamel tournament"
+msgstr ""
+
+#: src/hooks/predict/useFetchPredictionEntrants.ts:289
+msgid "Failed to fetch tournament"
 msgstr ""
 
 #: src/hooks/top8/useFetchResult.ts:421
@@ -435,6 +484,10 @@ msgstr ""
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:187
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:190
 msgid "Gamer Tag"
+msgstr ""
+
+#: src/components/predict/ActionBar/ActionBar.tsx:33
+msgid "Generate Graphic"
 msgstr ""
 
 #. js-lingui-explicit-id
@@ -488,6 +541,7 @@ msgstr ""
 msgid "Light"
 msgstr ""
 
+#: src/components/predict/TournamentUrlInput/TournamentUrlInput.tsx:54
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:103
 msgid "Load"
 msgstr ""
@@ -502,6 +556,10 @@ msgstr ""
 
 #: src/components/top8/SidePanel/SidePanel.tsx:83
 msgid "Loading Configs..."
+msgstr ""
+
+#: src/components/predict/PredictApp/PredictApp.tsx:78
+msgid "Loading entrants..."
 msgstr ""
 
 #. js-lingui-explicit-id
@@ -538,6 +596,14 @@ msgstr ""
 msgid "No assets yet"
 msgstr ""
 
+#: src/hooks/predict/useFetchPredictionEntrants.ts:138
+msgid "No phases found for this event"
+msgstr ""
+
+#: src/components/predict/EntrantPoolPanel/EntrantPoolPanel.tsx:66
+msgid "No players found"
+msgstr ""
+
 #: src/components/top8/TextEditor/TextEditor.tsx:45
 msgid "No text content defined in this design."
 msgstr ""
@@ -557,6 +623,10 @@ msgstr "Or drag and drop"
 
 #: src/components/top8/InfoPanel/InfoPanel.tsx:101
 msgid "Original concept & inspiration"
+msgstr ""
+
+#: src/components/predict/PredictApp/PredictApp.tsx:68
+msgid "Paste a tournament URL to predict placements and share your picks."
 msgstr ""
 
 #: src/components/top8/SettingsPanel/AccentColorPicker.tsx:29
@@ -639,6 +709,17 @@ msgstr ""
 msgid "Players"
 msgstr ""
 
+#: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:28
+msgid "Prediction size"
+msgstr ""
+
+#: src/components/predict/PredictApp/PredictApp.tsx:65
+#: src/components/predict/PredictionGraphic/PredictionGraphic.tsx:45
+#: src/components/predict/PredictionListPanel/PredictionListPanel.tsx:82
+#: src/components/predict/PredictionWorkspace/PredictionWorkspace.tsx:39
+msgid "Predictions"
+msgstr ""
+
 #. js-lingui-explicit-id
 #: src/consts/top8/paletteLabels.ts:29
 msgid "Prefix"
@@ -684,6 +765,14 @@ msgstr ""
 
 #: src/components/top8/SettingsPanel/ThumbnailRegenButton.tsx:42
 msgid "Regenerate Thumbnails"
+msgstr ""
+
+#: src/components/predict/PredictApp/PredictApp.tsx:99
+#~ msgid "Reset"
+#~ msgstr ""
+
+#: src/components/predict/EntrantPoolPanel/EntrantPoolPanel.tsx:51
+msgid "Search players..."
 msgstr ""
 
 #. js-lingui-explicit-id
@@ -747,6 +836,10 @@ msgstr ""
 
 #: src/components/top8/InfoPanel/InfoPanel.tsx:64
 msgid "Support"
+msgstr ""
+
+#: src/components/predict/PredictionListPanel/PredictionListPanel.tsx:109
+msgid "Tap entrants to add predictions"
 msgstr ""
 
 #: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:76
@@ -821,8 +914,17 @@ msgstr ""
 #~ msgstr ""
 
 #. placeholder {0}: res.status
+#: src/hooks/predict/useFetchPredictionEntrants.ts:233
 #: src/hooks/top8/useFetchTonamel.ts:50
 msgid "Tonamel API error: {0}"
+msgstr ""
+
+#: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:21
+msgid "Top 16"
+msgstr ""
+
+#: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:20
+msgid "Top 8"
 msgstr ""
 
 #. js-lingui-explicit-id
@@ -885,16 +987,17 @@ msgstr ""
 #~ msgid "Tournament Info"
 #~ msgstr ""
 
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:54
-msgid "Tournament Name"
-msgstr ""
-
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:104
 #: src/consts/top8/placeholders.ts:28
 msgid "Tournament Name"
 msgstr ""
 
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:54
+msgid "Tournament Name"
+msgstr ""
+
+#: src/hooks/predict/useFetchPredictionEntrants.ts:122
 #: src/hooks/top8/useFetchResult.ts:373
 msgid "Tournament not found"
 msgstr ""
@@ -903,6 +1006,7 @@ msgstr ""
 msgid "Tournament State"
 msgstr ""
 
+#: src/components/predict/TournamentUrlInput/TournamentUrlInput.tsx:44
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:175
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:67
 #: src/consts/top8/placeholders.ts:35

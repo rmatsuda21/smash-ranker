@@ -1,0 +1,152 @@
+@use "@/_theme" as *;
+
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+
+  @include mobile {
+    padding: 12px 16px 0;
+    gap: 12px;
+    overflow-y: hidden;
+  }
+}
+
+// ==========================================
+// Empty state
+// ==========================================
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex: 1;
+  text-align: center;
+  padding: 40px 20px;
+
+  @include mobile {
+    padding: 24px 16px;
+    overflow-y: auto;
+  }
+}
+
+.emptyIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  background: var(--accent-2);
+  color: var(--accent-9);
+  font-size: 22px;
+}
+
+.emptyTitle {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--gray-12);
+
+  @include mobile {
+    font-size: 20px;
+  }
+}
+
+.emptyDescription {
+  font-size: var(--font-size-md);
+  color: var(--gray-9);
+  max-width: 360px;
+  line-height: 1.5;
+}
+
+.emptyInput {
+  width: 100%;
+  max-width: 500px;
+  margin-top: 8px;
+}
+
+.loadingHint {
+  font-size: var(--font-size-sm);
+  color: var(--accent-9);
+}
+
+.supportedPlatforms {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--font-size-xs);
+  color: var(--gray-8);
+  margin-top: 4px;
+}
+
+.dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--gray-7);
+}
+
+// ==========================================
+// Loaded state
+// ==========================================
+
+.error {
+  color: var(--red-9, red);
+  font-size: var(--font-size-sm);
+  flex-shrink: 0;
+}
+
+.tournamentHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.tournamentInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.tournamentName {
+  font-size: var(--title-size);
+  font-weight: 700;
+  color: var(--gray-12);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  @include mobile {
+    font-size: 18px;
+  }
+}
+
+.eventName {
+  font-size: var(--font-size-sm);
+  color: var(--gray-9);
+  margin-top: 2px;
+}
+
+// Preview phase needs to scroll on mobile (unlike the input phase)
+.previewRoot {
+  @include mobile {
+    overflow-y: auto;
+    padding-bottom: 72px;
+  }
+}
+
+.previewHeader {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}

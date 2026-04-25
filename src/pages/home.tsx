@@ -1,6 +1,6 @@
 import { useCallback, useRef } from "react";
 import { Link } from "wouter";
-import { FaTrophy, FaLayerGroup, FaArrowRight } from "react-icons/fa6";
+import { FaTrophy, FaLayerGroup, FaListOl, FaArrowRight } from "react-icons/fa6";
 
 import styles from "./home.module.scss";
 
@@ -81,6 +81,26 @@ export const Home = () => {
             </div>
             <p className={styles.cardDescription}>
               Drag and drop characters to create and export shareable tier lists.
+            </p>
+            <span className={styles.cardCta}>
+              Get started <FaArrowRight className={styles.ctaArrow} />
+            </span>
+          </Link>
+
+          <Link
+            to="/predict"
+            className={styles.card}
+            style={{ animationDelay: "0.4s" }}
+          >
+            <div className={styles.cardHeader}>
+              <div className={styles.cardIcon}>
+                <FaListOl />
+              </div>
+              <h3 className={styles.cardTitle}>Predictions</h3>
+            </div>
+            <p className={styles.cardDescription}>
+              Predict tournament placements and share your bracket picks as a
+              graphic.
             </p>
             <span className={styles.cardCta}>
               Get started <FaArrowRight className={styles.ctaArrow} />

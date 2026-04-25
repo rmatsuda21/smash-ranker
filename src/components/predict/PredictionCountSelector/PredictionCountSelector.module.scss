@@ -1,0 +1,43 @@
+@use "@/_theme" as *;
+
+.root {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+
+  @include mobile {
+    gap: 8px;
+  }
+}
+
+.label {
+  @include label;
+  flex-shrink: 0;
+}
+
+.options {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.optionButton {
+  min-width: 60px;
+  height: 34px;
+}
+
+.customInput {
+  width: 64px;
+
+  input {
+    text-align: center;
+    padding: 4px 6px;
+  }
+
+  &.customHidden {
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
