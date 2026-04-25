@@ -1,0 +1,171 @@
+@use "@/_theme" as *;
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.graphic {
+  width: 100%;
+  max-width: 380px;
+  background:
+    radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.03) 1px, transparent 0),
+    linear-gradient(170deg, #1e1e3a 0%, #14142a 100%);
+  background-size: 16px 16px, 100% 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  font-family: "M PLUS Rounded 1c", sans-serif;
+  user-select: none;
+}
+
+// ---- Header ----
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px 10px;
+}
+
+.icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.headerText {
+  flex: 1;
+  min-width: 0;
+}
+
+.tournamentName {
+  font-size: 15px;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.3;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.meta {
+  font-size: 11px;
+  font-weight: 400;
+  color: #6c6c8a;
+  margin: 1px 0 0;
+}
+
+.subtitle {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #7c5cbf;
+  padding: 0 16px 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+// ---- List ----
+
+.list {
+  padding: 6px 10px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.03);
+  position: relative;
+
+  // Gold
+  &[data-rank="1"] {
+    background: linear-gradient(90deg, rgba(255, 215, 0, 0.15) 0%, transparent 75%);
+    .rank { color: #ffd700; }
+    .rankBg { background: rgba(255, 215, 0, 0.15); }
+  }
+
+  // Silver
+  &[data-rank="2"] {
+    background: linear-gradient(90deg, rgba(192, 192, 192, 0.15) 0%, transparent 75%);
+    .rank { color: #d0d0d0; }
+    .rankBg { background: rgba(192, 192, 192, 0.12); }
+  }
+
+  // Bronze
+  &[data-rank="3"] {
+    background: linear-gradient(90deg, rgba(205, 127, 50, 0.15) 0%, transparent 75%);
+    .rank { color: #cd7f32; }
+    .rankBg { background: rgba(205, 127, 50, 0.12); }
+  }
+
+  // 4th+: subtle accent fade
+  &:not([data-rank="1"]):not([data-rank="2"]):not([data-rank="3"]) {
+    background: linear-gradient(90deg, rgba(124, 92, 191, 0.28) 0%, transparent 75%);
+  }
+}
+
+.rankBg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  flex-shrink: 0;
+}
+
+.rank {
+  font-size: 12px;
+  font-weight: 800;
+  color: #8888aa;
+}
+
+.charIcon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+.charPlaceholder {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.name {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 600;
+  color: #e8e8f0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.prefix {
+  font-weight: 400;
+  color: #8888aa;
+}
+
+// ---- Footer ----
+
+.footer {
+  padding: 8px 16px;
+  text-align: center;
+  font-size: 9px;
+  font-weight: 500;
+  color: #4a4a60;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}

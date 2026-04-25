@@ -1,0 +1,97 @@
+@use "@/_theme" as *;
+
+.root {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  min-height: 0;
+
+  @include mobile {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    gap: 0;
+  }
+}
+
+// Mobile tab bar — hidden on desktop
+.tabs {
+  display: none;
+
+  @include mobile {
+    display: flex;
+    gap: 0;
+    border-bottom: 2px solid var(--gray-4);
+    flex-shrink: 0;
+  }
+}
+
+.tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 8px;
+  border: none;
+  background: none;
+  color: var(--gray-9);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.15s ease;
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: transparent;
+    transition: background 0.15s ease;
+  }
+
+  &.active {
+    color: var(--accent-9);
+
+    &::after {
+      background: var(--accent-9);
+    }
+  }
+}
+
+.tabBadge {
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  color: var(--gray-8);
+  background: var(--gray-3);
+  padding: 1px 6px;
+  border-radius: 10px;
+
+  .active & {
+    background: var(--accent-3);
+    color: var(--accent-9);
+  }
+}
+
+.panel {
+  min-width: 0;
+
+  @include mobile {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    padding-top: 12px;
+    position: relative;
+  }
+}
+
+.hiddenMobile {
+  @include mobile {
+    display: none;
+  }
+}

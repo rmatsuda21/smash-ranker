@@ -1,0 +1,36 @@
+@use "@/_theme" as *;
+
+.root {
+  width: 100%;
+  flex-shrink: 0;
+  text-align: left;
+}
+
+.inputRow {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+
+  // Make the Input wrapper fill available space
+  > *:first-child {
+    flex: 1;
+    min-width: 0;
+  }
+
+  input {
+    width: 100% !important;
+  }
+
+  // Match the button height to the input (padding 4+4 + line-height 24 + border 2 = 34px)
+  button {
+    height: 34px;
+  }
+}
+
+.error input {
+  border-color: var(--red-9, red);
+}
+
+.valid input {
+  border-color: var(--green-9, green);
+}

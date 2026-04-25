@@ -22,6 +22,11 @@ const NAV_ITEMS = [
     label: "Tier List",
     href: "/tier",
   },
+  {
+    siteLabel: "Predictions",
+    label: "Predictions",
+    href: "/predict",
+  },
 ];
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {

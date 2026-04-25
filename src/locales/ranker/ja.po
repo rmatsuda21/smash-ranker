@@ -42,6 +42,10 @@ msgstr "参加人数"
 msgid "Accent Color"
 msgstr "アクセントカラー"
 
+#: src/components/predict/PredictApp/PredictApp.tsx:33
+msgid "All current predictions will be removed."
+msgstr "現在の予想がすべて削除されます。"
+
 #: src/components/top8/SettingsPanel/AccentColorPicker.tsx:31
 msgid "Amber"
 msgstr "アンバー"
@@ -64,9 +68,17 @@ msgstr "この素材を消しますか？"
 msgid "Assets"
 msgstr "素材"
 
+#: src/components/predict/ActionBar/ActionBar.tsx:27
+msgid "Auto-fill by seed"
+msgstr "シードで自動入力"
+
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:260
 msgid "Avatar"
 msgstr "アイコン"
+
+#: src/components/predict/PredictApp/PredictApp.tsx:48
+msgid "Back to Edit"
+msgstr "編集に戻る"
 
 #. js-lingui-explicit-id
 #: src/consts/top8/paletteLabels.ts:19
@@ -132,6 +144,7 @@ msgstr "カード背景"
 #~ msgstr "カード背景"
 
 #. placeholder {0}: res.status
+#: src/hooks/predict/useFetchPredictionEntrants.ts:200
 #: src/hooks/top8/useFetchChallonge.ts:41
 msgid "Challonge API error: {0}"
 msgstr "Challonge APIエラー: {0}"
@@ -171,6 +184,7 @@ msgstr "使用キャラ"
 msgid "City"
 msgstr "市区町村"
 
+#: src/components/predict/PredictApp/PredictApp.tsx:109
 #: src/components/top8/AssetSelector/AssetSelector.tsx:100
 msgid "Clear"
 msgstr "クリア"
@@ -182,6 +196,10 @@ msgstr "選手初期化"
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:174
 msgid "Clear Player?"
 msgstr "選手を初期化しますか？"
+
+#: src/components/predict/PredictApp/PredictApp.tsx:32
+msgid "Clear Predictions?"
+msgstr "予想をクリアしますか？"
 
 #: src/components/top8/ElementEditor/TextConfigEditor/TextConfigEditor.tsx:78
 msgid "Color"
@@ -206,6 +224,7 @@ msgstr "カラー 3"
 msgid "Color Palette"
 msgstr "カラーパレット"
 
+#: src/hooks/predict/useFetchPredictionEntrants.ts:237
 #: src/hooks/top8/useFetchTonamel.ts:180
 msgid "Competition not found"
 msgstr "大会が見つかりませんでした"
@@ -213,6 +232,18 @@ msgstr "大会が見つかりませんでした"
 #: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:81
 msgid "Confirm"
 msgstr "確認"
+
+#: src/components/predict/ExportBar/ExportBar.tsx:95
+msgid "Copied!"
+msgstr "コピーしました！"
+
+#: src/components/predict/ExportBar/ExportBar.tsx:91
+msgid "Copy to Clipboard"
+msgstr "クリップボードにコピー"
+
+#: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:54
+msgid "Count"
+msgstr "人数"
 
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:238
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:166
@@ -243,6 +274,10 @@ msgstr "制作者"
 #: src/components/top8/InfoPanel/InfoPanel.tsx:89
 msgid "Credits & Inspiration"
 msgstr "クレジット & インスピレーション"
+
+#: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:22
+msgid "Custom"
+msgstr "カスタム"
 
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:249
 msgid "Custom Flag"
@@ -319,6 +354,10 @@ msgstr "ダウンロード"
 msgid "Download Options"
 msgstr "ダウンロード設定"
 
+#: src/components/predict/ExportBar/ExportBar.tsx:85
+msgid "Download PNG"
+msgstr "PNGをダウンロード"
+
 #: src/components/top8/TextEditor/TextEditor.tsx:59
 msgid "Edit the text content displayed in your graphic."
 msgstr "画像に表示されるテキストを編集できます。"
@@ -349,6 +388,8 @@ msgstr "start.gg、Challonge、またはTonamelの大会URLを入れてくださ
 msgid "Entrants"
 msgstr "参加人数"
 
+#: src/components/predict/EntrantPoolPanel/EntrantPoolPanel.tsx:44
+#: src/components/predict/PredictionWorkspace/PredictionWorkspace.tsx:31
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:136
 msgid "Entrants"
 msgstr "参加人数"
@@ -362,9 +403,17 @@ msgstr "イベント名"
 msgid "Failed to fetch Challonge tournament"
 msgstr "Challonge大会の取得に失敗しました"
 
+#: src/hooks/predict/useFetchPredictionEntrants.ts:159
+msgid "Failed to fetch seeds"
+msgstr "シード情報の取得に失敗しました"
+
 #: src/hooks/top8/useFetchTonamel.ts:202
 msgid "Failed to fetch Tonamel tournament"
 msgstr "Tonamel大会の取得に失敗しました"
+
+#: src/hooks/predict/useFetchPredictionEntrants.ts:289
+msgid "Failed to fetch tournament"
+msgstr "大会情報の取得に失敗しました"
 
 #: src/hooks/top8/useFetchResult.ts:421
 msgid "Failed to fetch tournament data"
@@ -391,6 +440,10 @@ msgstr "フォントウェイト"
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:190
 msgid "Gamer Tag"
 msgstr "選手名"
+
+#: src/components/predict/ActionBar/ActionBar.tsx:33
+msgid "Generate Graphic"
+msgstr "画像を生成"
 
 #. js-lingui-explicit-id
 #: src/consts/top8/paletteLabels.ts:25
@@ -443,6 +496,7 @@ msgstr "左ボーダー"
 msgid "Light"
 msgstr "ライト"
 
+#: src/components/predict/TournamentUrlInput/TournamentUrlInput.tsx:54
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:103
 msgid "Load"
 msgstr "取得"
@@ -458,6 +512,10 @@ msgstr "大会を読み込みますか？"
 #: src/components/top8/SidePanel/SidePanel.tsx:83
 msgid "Loading Configs..."
 msgstr "読み込み中..."
+
+#: src/components/predict/PredictApp/PredictApp.tsx:78
+msgid "Loading entrants..."
+msgstr "参加者を読み込み中..."
 
 #. js-lingui-explicit-id
 #: src/consts/top8/paletteLabels.ts:51
@@ -493,6 +551,14 @@ msgstr "マイテンプレート"
 msgid "No assets yet"
 msgstr "素材がありません"
 
+#: src/hooks/predict/useFetchPredictionEntrants.ts:138
+msgid "No phases found for this event"
+msgstr "このイベントにフェーズが見つかりません"
+
+#: src/components/predict/EntrantPoolPanel/EntrantPoolPanel.tsx:66
+msgid "No players found"
+msgstr "プレイヤーが見つかりません"
+
 #: src/components/top8/TextEditor/TextEditor.tsx:45
 msgid "No text content defined in this design."
 msgstr "このデザインにはテキストが定義されていません。"
@@ -513,6 +579,10 @@ msgstr "ドラッグ・ドロップも対応"
 #: src/components/top8/InfoPanel/InfoPanel.tsx:101
 msgid "Original concept & inspiration"
 msgstr "元コンセプトとインスピレーション"
+
+#: src/components/predict/PredictApp/PredictApp.tsx:68
+msgid "Paste a tournament URL to predict placements and share your picks."
+msgstr "大会URLを貼り付けて順位を予想し、予想を共有しましょう。"
 
 #: src/components/top8/SettingsPanel/AccentColorPicker.tsx:29
 msgid "Pink"
@@ -594,6 +664,17 @@ msgstr "選手タグ"
 msgid "Players"
 msgstr "選手情報"
 
+#: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:28
+msgid "Prediction size"
+msgstr "予想人数"
+
+#: src/components/predict/PredictApp/PredictApp.tsx:65
+#: src/components/predict/PredictionGraphic/PredictionGraphic.tsx:45
+#: src/components/predict/PredictionListPanel/PredictionListPanel.tsx:82
+#: src/components/predict/PredictionWorkspace/PredictionWorkspace.tsx:39
+msgid "Predictions"
+msgstr "順位予想"
+
 #. js-lingui-explicit-id
 #: src/consts/top8/paletteLabels.ts:29
 msgid "Prefix"
@@ -640,6 +721,14 @@ msgstr "テンプレートのプレビュー画像をすべて再生成します
 #: src/components/top8/SettingsPanel/ThumbnailRegenButton.tsx:42
 msgid "Regenerate Thumbnails"
 msgstr "サムネイルを再生成"
+
+#: src/components/predict/PredictApp/PredictApp.tsx:99
+#~ msgid "Reset"
+#~ msgstr "リセット"
+
+#: src/components/predict/EntrantPoolPanel/EntrantPoolPanel.tsx:51
+msgid "Search players..."
+msgstr "プレイヤーを検索..."
 
 #. js-lingui-explicit-id
 #: src/consts/top8/paletteLabels.ts:18
@@ -703,6 +792,10 @@ msgstr "ストックアイコン"
 #: src/components/top8/InfoPanel/InfoPanel.tsx:64
 msgid "Support"
 msgstr "サポート"
+
+#: src/components/predict/PredictionListPanel/PredictionListPanel.tsx:109
+msgid "Tap entrants to add predictions"
+msgstr "参加者をタップして予想に追加"
 
 #: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:76
 #: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:80
@@ -776,9 +869,18 @@ msgstr "タイトル"
 #~ msgstr "タイトル"
 
 #. placeholder {0}: res.status
+#: src/hooks/predict/useFetchPredictionEntrants.ts:233
 #: src/hooks/top8/useFetchTonamel.ts:50
 msgid "Tonamel API error: {0}"
 msgstr "Tonamel APIエラー: {0}"
+
+#: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:21
+msgid "Top 16"
+msgstr "Top 16"
+
+#: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:20
+msgid "Top 8"
+msgstr "Top 8"
 
 #. js-lingui-explicit-id
 #: src/consts/top8/paletteLabels.ts:35
@@ -840,16 +942,17 @@ msgstr "大会情報"
 #~ msgid "Tournament Info"
 #~ msgstr "大会情報"
 
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:54
-msgid "Tournament Name"
-msgstr "大会名"
-
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:104
 #: src/consts/top8/placeholders.ts:28
 msgid "Tournament Name"
 msgstr "大会名"
 
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:54
+msgid "Tournament Name"
+msgstr "大会名"
+
+#: src/hooks/predict/useFetchPredictionEntrants.ts:122
 #: src/hooks/top8/useFetchResult.ts:373
 msgid "Tournament not found"
 msgstr "大会が見つかりませんでした"
@@ -858,6 +961,7 @@ msgstr "大会が見つかりませんでした"
 msgid "Tournament State"
 msgstr "大会都道府県"
 
+#: src/components/predict/TournamentUrlInput/TournamentUrlInput.tsx:44
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:175
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:67
 #: src/consts/top8/placeholders.ts:35

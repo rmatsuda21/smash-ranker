@@ -1,0 +1,67 @@
+@use "@/_theme" as *;
+
+.root {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 10px;
+  border: none;
+  border-radius: 6px;
+  background: var(--gray-2);
+  color: var(--gray-12);
+  cursor: pointer;
+  text-align: left;
+  font-size: var(--font-size-sm);
+  transition: background 0.15s ease;
+  min-height: 40px;
+
+  &:hover:not(:disabled) {
+    background: var(--gray-3);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+.seed {
+  color: var(--gray-9);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  min-width: 32px;
+  flex-shrink: 0;
+}
+
+.charIcon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+.name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.prefix {
+  color: var(--gray-9);
+  font-weight: 400;
+}
+
+.addIcon {
+  flex-shrink: 0;
+  color: var(--accent-9);
+  font-size: 10px;
+  opacity: 0.6;
+  transition: opacity 0.15s ease;
+
+  .root:hover:not(:disabled) & {
+    opacity: 1;
+  }
+}

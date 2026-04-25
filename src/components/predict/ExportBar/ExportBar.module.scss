@@ -1,0 +1,38 @@
+@use "@/_theme" as *;
+
+.root {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 0;
+  flex-wrap: wrap;
+
+  @include mobile {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--gray-1);
+    padding: 12px 16px;
+    z-index: 10;
+
+  }
+}
+
+.copyLabel {
+  position: relative;
+  display: inline-flex;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.copiedOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
