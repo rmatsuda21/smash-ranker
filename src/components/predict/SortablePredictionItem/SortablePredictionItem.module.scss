@@ -77,6 +77,13 @@
   font-weight: 400;
 }
 
+.seed {
+  font-size: var(--font-size-xs);
+  color: var(--gray-8);
+  flex-shrink: 0;
+  font-weight: 400;
+}
+
 .removeButton {
   display: flex;
   align-items: center;

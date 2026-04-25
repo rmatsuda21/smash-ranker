@@ -11,8 +11,7 @@ import { TournamentUrlInput } from "@/components/predict/TournamentUrlInput/Tour
 import { PredictionCountSelector } from "@/components/predict/PredictionCountSelector/PredictionCountSelector";
 import { PredictionWorkspace } from "@/components/predict/PredictionWorkspace/PredictionWorkspace";
 import { ActionBar } from "@/components/predict/ActionBar/ActionBar";
-import { PredictionGraphic } from "@/components/predict/PredictionGraphic/PredictionGraphic";
-import { ExportBar } from "@/components/predict/ExportBar/ExportBar";
+import { PredictionPreview } from "@/components/predict/PredictionPreview/PredictionPreview";
 
 import styles from "./PredictApp.module.scss";
 
@@ -48,8 +47,7 @@ export const PredictApp = () => {
             <Trans>Back to Edit</Trans>
           </Button>
         </div>
-        <PredictionGraphic />
-        <ExportBar />
+        <PredictionPreview />
       </div>
     );
   }

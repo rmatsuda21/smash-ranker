@@ -59,6 +59,7 @@ export const SortablePredictionItem = ({ player, rank, onRemove }: Props) => {
         )}
         {player.name}
       </span>
+      <span className={styles.seed}>Seed {player.seed}</span>
       <button className={styles.removeButton} onClick={() => onRemove(player.id)}>
         <MdClose />
       </button>
@@ -98,6 +99,7 @@ export const PredictionItemOverlay = ({
         )}
         {player.name}
       </span>
+      <span className={styles.seed}>Seed {player.seed}</span>
     </div>
   );
 };
