@@ -87,7 +87,7 @@ msgstr ""
 msgid "Accent Color"
 msgstr ""
 
-#: src/components/predict/PredictApp/PredictApp.tsx:33
+#: src/components/predict/PredictApp/PredictApp.tsx:32
 msgid "All current predictions will be removed."
 msgstr ""
 
@@ -121,7 +121,7 @@ msgstr ""
 msgid "Avatar"
 msgstr ""
 
-#: src/components/predict/PredictApp/PredictApp.tsx:48
+#: src/components/predict/PredictApp/PredictApp.tsx:47
 msgid "Back to Edit"
 msgstr ""
 
@@ -175,7 +175,7 @@ msgstr ""
 msgid "Buy me a coffee"
 msgstr ""
 
-#: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:78
+#: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:80
 msgid "Cancel"
 msgstr ""
 
@@ -229,7 +229,7 @@ msgstr ""
 msgid "City"
 msgstr ""
 
-#: src/components/predict/PredictApp/PredictApp.tsx:109
+#: src/components/predict/PredictApp/PredictApp.tsx:107
 #: src/components/top8/AssetSelector/AssetSelector.tsx:100
 msgid "Clear"
 msgstr ""
@@ -242,7 +242,7 @@ msgstr ""
 msgid "Clear Player?"
 msgstr ""
 
-#: src/components/predict/PredictApp/PredictApp.tsx:32
+#: src/components/predict/PredictApp/PredictApp.tsx:31
 msgid "Clear Predictions?"
 msgstr ""
 
@@ -274,17 +274,21 @@ msgstr ""
 msgid "Competition not found"
 msgstr ""
 
-#: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:81
+#: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:83
 msgid "Confirm"
 msgstr ""
 
-#: src/components/predict/ExportBar/ExportBar.tsx:95
+#: src/components/predict/ExportBar/ExportBar.tsx:65
 msgid "Copied!"
 msgstr ""
 
-#: src/components/predict/ExportBar/ExportBar.tsx:91
-msgid "Copy to Clipboard"
+#: src/components/predict/ExportBar/ExportBar.tsx:60
+msgid "Copy"
 msgstr ""
+
+#: src/components/predict/ExportBar/ExportBar.tsx:91
+#~ msgid "Copy to Clipboard"
+#~ msgstr ""
 
 #: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:54
 msgid "Count"
@@ -390,6 +394,7 @@ msgstr ""
 msgid "Don't show again"
 msgstr ""
 
+#: src/components/predict/ExportBar/ExportBar.tsx:50
 #: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:111
 msgid "Download"
 msgstr ""
@@ -400,8 +405,8 @@ msgid "Download Options"
 msgstr ""
 
 #: src/components/predict/ExportBar/ExportBar.tsx:85
-msgid "Download PNG"
-msgstr ""
+#~ msgid "Download PNG"
+#~ msgstr ""
 
 #: src/components/top8/TextEditor/TextEditor.tsx:59
 msgid "Edit the text content displayed in your graphic."
@@ -464,6 +469,10 @@ msgstr ""
 msgid "Failed to fetch tournament data"
 msgstr ""
 
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:77
+msgid "Failed to generate image"
+msgstr ""
+
 #: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:157
 #: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:85
 msgid "Filename"
@@ -488,6 +497,10 @@ msgstr ""
 
 #: src/components/predict/ActionBar/ActionBar.tsx:33
 msgid "Generate Graphic"
+msgstr ""
+
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:104
+msgid "Generating image..."
 msgstr ""
 
 #. js-lingui-explicit-id
@@ -558,7 +571,7 @@ msgstr ""
 msgid "Loading Configs..."
 msgstr ""
 
-#: src/components/predict/PredictApp/PredictApp.tsx:78
+#: src/components/predict/PredictApp/PredictApp.tsx:76
 msgid "Loading entrants..."
 msgstr ""
 
@@ -625,7 +638,7 @@ msgstr "Or drag and drop"
 msgid "Original concept & inspiration"
 msgstr ""
 
-#: src/components/predict/PredictApp/PredictApp.tsx:68
+#: src/components/predict/PredictApp/PredictApp.tsx:66
 msgid "Paste a tournament URL to predict placements and share your picks."
 msgstr ""
 
@@ -713,7 +726,7 @@ msgstr ""
 msgid "Prediction size"
 msgstr ""
 
-#: src/components/predict/PredictApp/PredictApp.tsx:65
+#: src/components/predict/PredictApp/PredictApp.tsx:63
 #: src/components/predict/PredictionGraphic/PredictionGraphic.tsx:45
 #: src/components/predict/PredictionListPanel/PredictionListPanel.tsx:82
 #: src/components/predict/PredictionWorkspace/PredictionWorkspace.tsx:39
@@ -807,6 +820,10 @@ msgstr ""
 
 #: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:208
 msgid "Selected"
+msgstr ""
+
+#: src/components/Layout/SettingsModal/SettingsModal.tsx:24
+msgid "Settings"
 msgstr ""
 
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:68

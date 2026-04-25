@@ -138,6 +138,8 @@
   animation: rgb-glitch 0.5s ease;
 
   [data-theme="light"] & {
+    animation: rgb-glitch-light 0.5s ease;
+
     @keyframes rgb-glitch-light {
       0%, 100% {
         filter: invert(1) drop-shadow(0 0 0 transparent);
@@ -160,7 +162,6 @@
         transform: translate(-1px, 0);
       }
     }
-    animation: rgb-glitch-light 0.5s ease;
   }
 }
 
@@ -168,13 +169,14 @@
   animation: smash-ball-glow 1.5s linear;
 
   [data-theme="light"] & {
+    animation: smash-ball-glow-light 1.5s linear;
+
     @keyframes smash-ball-glow-light {
       0%, 100% { filter: invert(1) drop-shadow(0 0 4px #ff3030); }
       25% { filter: invert(1) drop-shadow(0 0 6px #30ff30); }
       50% { filter: invert(1) drop-shadow(0 0 4px #3080ff); }
       75% { filter: invert(1) drop-shadow(0 0 6px #ffff30); }
     }
-    animation: smash-ball-glow-light 1.5s linear;
   }
 }
 

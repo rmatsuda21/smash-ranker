@@ -42,7 +42,7 @@ msgstr "参加人数"
 msgid "Accent Color"
 msgstr "アクセントカラー"
 
-#: src/components/predict/PredictApp/PredictApp.tsx:33
+#: src/components/predict/PredictApp/PredictApp.tsx:32
 msgid "All current predictions will be removed."
 msgstr "現在の予想がすべて削除されます。"
 
@@ -76,7 +76,7 @@ msgstr "シードで自動入力"
 msgid "Avatar"
 msgstr "アイコン"
 
-#: src/components/predict/PredictApp/PredictApp.tsx:48
+#: src/components/predict/PredictApp/PredictApp.tsx:47
 msgid "Back to Edit"
 msgstr "編集に戻る"
 
@@ -130,7 +130,7 @@ msgstr "下部テキスト"
 msgid "Buy me a coffee"
 msgstr "一杯だけよ"
 
-#: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:78
+#: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:80
 msgid "Cancel"
 msgstr "キャンセル"
 
@@ -184,7 +184,7 @@ msgstr "使用キャラ"
 msgid "City"
 msgstr "市区町村"
 
-#: src/components/predict/PredictApp/PredictApp.tsx:109
+#: src/components/predict/PredictApp/PredictApp.tsx:107
 #: src/components/top8/AssetSelector/AssetSelector.tsx:100
 msgid "Clear"
 msgstr "クリア"
@@ -197,7 +197,7 @@ msgstr "選手初期化"
 msgid "Clear Player?"
 msgstr "選手を初期化しますか？"
 
-#: src/components/predict/PredictApp/PredictApp.tsx:32
+#: src/components/predict/PredictApp/PredictApp.tsx:31
 msgid "Clear Predictions?"
 msgstr "予想をクリアしますか？"
 
@@ -229,17 +229,21 @@ msgstr "カラーパレット"
 msgid "Competition not found"
 msgstr "大会が見つかりませんでした"
 
-#: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:81
+#: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:83
 msgid "Confirm"
 msgstr "確認"
 
-#: src/components/predict/ExportBar/ExportBar.tsx:95
+#: src/components/predict/ExportBar/ExportBar.tsx:65
 msgid "Copied!"
 msgstr "コピーしました！"
 
+#: src/components/predict/ExportBar/ExportBar.tsx:60
+msgid "Copy"
+msgstr "コピー"
+
 #: src/components/predict/ExportBar/ExportBar.tsx:91
-msgid "Copy to Clipboard"
-msgstr "クリップボードにコピー"
+#~ msgid "Copy to Clipboard"
+#~ msgstr "クリップボードにコピー"
 
 #: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:54
 msgid "Count"
@@ -345,6 +349,7 @@ msgstr "サイズ"
 msgid "Don't show again"
 msgstr "次回から表示しない"
 
+#: src/components/predict/ExportBar/ExportBar.tsx:50
 #: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:111
 msgid "Download"
 msgstr "ダウンロード"
@@ -355,8 +360,8 @@ msgid "Download Options"
 msgstr "ダウンロード設定"
 
 #: src/components/predict/ExportBar/ExportBar.tsx:85
-msgid "Download PNG"
-msgstr "PNGをダウンロード"
+#~ msgid "Download PNG"
+#~ msgstr "PNGをダウンロード"
 
 #: src/components/top8/TextEditor/TextEditor.tsx:59
 msgid "Edit the text content displayed in your graphic."
@@ -419,6 +424,10 @@ msgstr "大会情報の取得に失敗しました"
 msgid "Failed to fetch tournament data"
 msgstr "大会データの取得に失敗しました"
 
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:77
+msgid "Failed to generate image"
+msgstr "画像の生成に失敗しました"
+
 #: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:157
 #: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:85
 msgid "Filename"
@@ -444,6 +453,10 @@ msgstr "選手名"
 #: src/components/predict/ActionBar/ActionBar.tsx:33
 msgid "Generate Graphic"
 msgstr "画像を生成"
+
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:104
+msgid "Generating image..."
+msgstr "画像を生成中..."
 
 #. js-lingui-explicit-id
 #: src/consts/top8/paletteLabels.ts:25
@@ -513,7 +526,7 @@ msgstr "大会を読み込みますか？"
 msgid "Loading Configs..."
 msgstr "読み込み中..."
 
-#: src/components/predict/PredictApp/PredictApp.tsx:78
+#: src/components/predict/PredictApp/PredictApp.tsx:76
 msgid "Loading entrants..."
 msgstr "参加者を読み込み中..."
 
@@ -580,7 +593,7 @@ msgstr "ドラッグ・ドロップも対応"
 msgid "Original concept & inspiration"
 msgstr "元コンセプトとインスピレーション"
 
-#: src/components/predict/PredictApp/PredictApp.tsx:68
+#: src/components/predict/PredictApp/PredictApp.tsx:66
 msgid "Paste a tournament URL to predict placements and share your picks."
 msgstr "大会URLを貼り付けて順位を予想し、予想を共有しましょう。"
 
@@ -668,7 +681,7 @@ msgstr "選手情報"
 msgid "Prediction size"
 msgstr "予想人数"
 
-#: src/components/predict/PredictApp/PredictApp.tsx:65
+#: src/components/predict/PredictApp/PredictApp.tsx:63
 #: src/components/predict/PredictionGraphic/PredictionGraphic.tsx:45
 #: src/components/predict/PredictionListPanel/PredictionListPanel.tsx:82
 #: src/components/predict/PredictionWorkspace/PredictionWorkspace.tsx:39
@@ -763,6 +776,10 @@ msgstr "国選択"
 #: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:208
 msgid "Selected"
 msgstr "選択済み"
+
+#: src/components/Layout/SettingsModal/SettingsModal.tsx:24
+msgid "Settings"
+msgstr ""
 
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:68
 msgid "Show help"
