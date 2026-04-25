@@ -1,89 +1,61 @@
-import { useEffect, useRef, useState } from "react";
-import { Link, useLocation } from "wouter";
-import { IoIosMenu } from "react-icons/io";
-import { MdClose } from "react-icons/md";
-import cn from "classnames";
+import { useCallback, useEffect, useState } from "react";
+import { FaGear } from "react-icons/fa6";
+
+import { HamburgerButton } from "./HamburgerButton/HamburgerButton";
+import { NavOverlay } from "./NavOverlay/NavOverlay";
+import { SettingsModal } from "./SettingsModal/SettingsModal";
 
 import styles from "./Layout.module.scss";
 
-const NAV_ITEMS = [
-  {
-    siteLabel: "",
-    label: "Home",
-    href: "/",
-  },
-  {
-    siteLabel: "Ranker",
-    label: "Ranker",
-    href: "/ranker",
-  },
-  {
-    siteLabel: "Tier List",
-    label: "Tier List",
-    href: "/tier",
-  },
-  {
-    siteLabel: "Predictions",
-    label: "Predictions",
-    href: "/predict",
-  },
-];
-
 export const Layout = ({ children }: { children: React.ReactNode }) => {
-  const [location] = useLocation();
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isNavOpen, setIsNavOpen] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
-  const drawerRef = useRef<HTMLDivElement>(null);
+  const closeNav = useCallback(() => setIsNavOpen(false), []);
+  const closeSettings = useCallback(() => setIsSettingsOpen(false), []);
 
-  const closeDrawer = () => {
-    setIsDrawerOpen(false);
-  };
+  const toggleNav = useCallback(() => {
+    setIsNavOpen((prev) => !prev);
+    setIsSettingsOpen(false);
+  }, []);
 
-  const onMenuClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    e.preventDefault();
-    setIsDrawerOpen((prev) => !prev);
-  };
+  const openSettings = useCallback(() => {
+    setIsSettingsOpen(true);
+    setIsNavOpen(false);
+  }, []);
 
+  // Escape key closes whichever is open
   useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (drawerRef.current && !drawerRef.current.contains(e.target as Node)) {
-        setIsDrawerOpen(false);
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        if (isSettingsOpen) setIsSettingsOpen(false);
+        else if (isNavOpen) setIsNavOpen(false);
       }
     };
 
-    window.addEventListener("click", handleClickOutside);
-    return () => window.removeEventListener("click", handleClickOutside);
-  }, []);
-
-  // const label = useMemo(() => {
-  //   return NAV_ITEMS.find((item) => item.href === location)?.siteLabel ?? "";
-  // }, [location]);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isNavOpen, isSettingsOpen]);
 
   return (
     <div className={styles.root}>
       <nav className={styles.nav}>
         <img src="/favicon.svg" alt="Smash Ranker" />
         <h1>Smash Ranker</h1>
-        <IoIosMenu className={styles.icon} onClick={onMenuClick} />
-      </nav>
-      <div
-        ref={drawerRef}
-        className={cn(styles.drawer, { [styles.open]: isDrawerOpen })}
-      >
-        <MdClose className={styles.icon} onClick={closeDrawer} />
-        {NAV_ITEMS.map((item) => (
-          <Link
-            key={item.href}
-            className={cn({ [styles.active]: location === item.href })}
-            href={item.href}
-            onClick={closeDrawer}
+        <div className={styles.actions}>
+          <button
+            className={styles.gearButton}
+            onClick={openSettings}
+            aria-label="Settings"
           >
-            {item.label}
-          </Link>
-        ))}
-      </div>
+            <FaGear />
+          </button>
+          <HamburgerButton isOpen={isNavOpen} onClick={toggleNav} />
+        </div>
+      </nav>
       <main>{children}</main>
+      <NavOverlay isOpen={isNavOpen} onClose={closeNav} />
+      <SettingsModal isOpen={isSettingsOpen} onClose={closeSettings} />
     </div>
   );
 };

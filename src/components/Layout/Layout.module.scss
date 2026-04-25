@@ -15,21 +15,15 @@
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
   }
-
-  .icon {
-    cursor: pointer;
-    width: 32px;
-    height: 32px;
-    color: var(--accent-9);
-    transition: transform 0.3s ease-in-out;
-
-    &:hover {
-      transform: scale(1.1);
-    }
-  }
 }
 
+// ==========================================
+// Header
+// ==========================================
+
 .nav {
+  position: relative;
+  z-index: 1001;
   padding: 10px 20px;
   display: flex;
   align-items: center;
@@ -50,69 +44,44 @@
   }
 }
 
-.drawer {
-  z-index: 1000;
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 250px;
-  height: 100dvh;
-  background-color: var(--gray-1);
-  transform: translateX(100%);
-  transition: transform 0.3s ease-in-out;
-
-  padding: 15px;
+.actions {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  align-items: center;
+  gap: 4px;
+}
 
-  a {
-    position: relative;
-    color: var(--gray-12);
-    text-decoration: none;
-    font-size: 32px;
-    font-weight: 600;
-    border-radius: 5px;
-    transition: background-color 0.3s ease-in-out;
-    text-transform: uppercase;
-
-    &.active {
-      &:before {
-        background-color: var(--accent-9);
-      }
-    }
-
-    &:before {
-      content: "";
-      z-index: 1000;
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      margin-bottom: -5px;
-      width: 100%;
-      height: 5px;
-      background-color: transparent;
-      transition: background-color 0.15s ease-in-out;
-    }
-
-    &:hover {
-      &:before {
-        background-color: var(--accent-9);
-      }
-    }
-  }
+.gearButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--accent-9);
 
   svg {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    z-index: 1001;
+    width: 18px;
+    height: 18px;
+    transition: transform 0.3s ease;
   }
 
-  &.open {
-    transform: translateX(0);
+  &:hover svg {
+    transform: rotate(45deg);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent-9);
+    outline-offset: 2px;
+    border-radius: 5px;
   }
 }
+
+// ==========================================
+// Mobile
+// ==========================================
 
 @include mobile {
   .root main {
@@ -128,8 +97,13 @@
     }
   }
 
-  .root .icon {
+  .gearButton {
     width: 24px;
     height: 24px;
+
+    svg {
+      width: 14px;
+      height: 14px;
+    }
   }
 }
