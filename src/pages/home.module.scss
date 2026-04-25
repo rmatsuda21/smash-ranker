@@ -1,38 +1,463 @@
-.root {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
+@use "@/_theme" as *;
 
-  padding: 20px;
-  width: 100%;
-  flex: 1;
+// ==========================================
+// Keyframes
+// ==========================================
 
-  h1 {
-    margin-block: 10px;
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-.content {
-  flex: 1;
+@keyframes float1 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(20px, -30px) scale(1.05);
+  }
+  66% {
+    transform: translate(-15px, 20px) scale(0.95);
+  }
+}
+
+@keyframes float2 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(-25px, 15px) scale(0.95);
+  }
+  66% {
+    transform: translate(10px, -25px) scale(1.05);
+  }
+}
+
+@keyframes morphBlob {
+  0%,
+  100% {
+    border-radius: 42% 58% 65% 35% / 45% 55% 45% 55%;
+    transform: rotate(0deg) scale(1);
+  }
+  25% {
+    border-radius: 55% 45% 38% 62% / 60% 35% 65% 40%;
+    transform: rotate(90deg) scale(1.04);
+  }
+  50% {
+    border-radius: 38% 62% 55% 45% / 42% 58% 42% 58%;
+    transform: rotate(180deg) scale(0.97);
+  }
+  75% {
+    border-radius: 62% 38% 45% 55% / 55% 42% 58% 45%;
+    transform: rotate(270deg) scale(1.02);
+  }
+}
+
+@keyframes flicker {
+  0%,
+  100% {
+    border-radius: 45% 55% 60% 40% / 30% 40% 60% 70%;
+    transform: translateY(0) scaleX(1) scaleY(1);
+    opacity: 0.25;
+  }
+  15% {
+    border-radius: 50% 50% 55% 45% / 25% 35% 65% 75%;
+    transform: translateY(-6px) scaleX(0.92) scaleY(1.08);
+    opacity: 0.3;
+  }
+  35% {
+    border-radius: 40% 60% 50% 50% / 28% 42% 58% 72%;
+    transform: translateY(-10px) scaleX(1.05) scaleY(1.12);
+    opacity: 0.2;
+  }
+  55% {
+    border-radius: 55% 45% 45% 55% / 32% 38% 62% 68%;
+    transform: translateY(-4px) scaleX(0.95) scaleY(1.05);
+    opacity: 0.32;
+  }
+  75% {
+    border-radius: 42% 58% 52% 48% / 26% 44% 56% 74%;
+    transform: translateY(-8px) scaleX(1.02) scaleY(1.1);
+    opacity: 0.22;
+  }
+}
+
+@keyframes pulseDot {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+// ==========================================
+// Reduced motion
+// ==========================================
+
+@media (prefers-reduced-motion: reduce) {
+  .heroContent,
+  .card,
+  .roadmap,
+  .orb1,
+  .orb2,
+  .blob,
+  .pulseDot {
+    animation: none !important;
+  }
+}
+
+// ==========================================
+// Root
+// ==========================================
+
+.root {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
+  flex: 1;
+  overflow: hidden auto;
+  gap: 40px;
+  padding-bottom: 40px;
+}
+
+// ==========================================
+// Background blobs
+// ==========================================
+
+.orb1,
+.orb2 {
+  position: fixed;
+  filter: blur(80px);
+  pointer-events: none;
+  opacity: 0.18;
+  z-index: 0;
+  transition: translate 0.6s ease-out;
+}
+
+.orb1 {
+  width: 500px;
+  height: 380px;
+  background: radial-gradient(
+      ellipse at 30% 40%,
+      var(--accent-7) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse at 70% 70%,
+      var(--accent-4) 0%,
+      transparent 55%
+    ),
+    radial-gradient(ellipse at 50% 20%, var(--accent-9) 0%, transparent 50%);
+  top: 5%;
+  left: -120px;
+  animation: float1 10s ease-in-out infinite, morphBlob 14s ease-in-out infinite;
+}
+
+.orb2 {
+  width: 420px;
+  height: 320px;
+  background: radial-gradient(
+      ellipse at 60% 30%,
+      var(--accent-5) 0%,
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse at 25% 65%,
+      var(--accent-8) 0%,
+      transparent 50%
+    ),
+    radial-gradient(ellipse at 70% 80%, var(--accent-3) 0%, transparent 60%);
+  bottom: 0%;
+  right: -100px;
+  animation: float2 13s ease-in-out infinite,
+    morphBlob 16s ease-in-out infinite reverse;
+}
+
+.hero {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  display: flex;
+  align-items: center;
   justify-content: center;
+  padding: 60px 20px 40px;
+}
+
+.heroContent {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+  animation: fadeSlideUp 0.6s ease-out;
+}
+
+.logoWrap {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.blob {
+  position: absolute;
+  left: -10px;
+  right: -10px;
+  bottom: -8px;
+  top: -20px;
+  background: radial-gradient(
+    ellipse at 50% 70%,
+    var(--accent-5) 0%,
+    var(--accent-3) 40%,
+    transparent 70%
+  );
+  filter: blur(6px);
+  animation: flicker 3s ease-in-out infinite;
+}
+
+.heroLogo {
+  position: relative;
+  width: 64px;
+  height: 64px;
+
+  [data-theme="light"] & {
+    filter: invert(1);
+  }
+}
+
+.title {
+  font-size: 40px;
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--gray-12);
+}
+
+.accentText {
+  background: linear-gradient(135deg, var(--accent-9), var(--accent-11));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.tagline {
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--gray-10);
+  max-width: 400px;
+}
+
+// ==========================================
+// Tool Cards
+// ==========================================
+
+.tools {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  max-width: 700px;
+  padding: 0 20px;
+}
+
+.sectionTitle {
+  font-size: var(--font-size-xs);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--gray-8);
+}
+
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  width: 100%;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  background: var(--gray-1);
+  border: 1px solid var(--gray-4);
+  border-radius: 8px;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  transition:
+    border-color 0.3s ease-in-out,
+    background 0.3s ease-in-out;
+  animation: fadeSlideUp 0.5s ease-out backwards;
+
+  &:hover {
+    border-color: var(--accent-5);
+    background: var(--gray-2);
+
+    .ctaArrow {
+      transform: translateX(4px);
+    }
+
+    .cardIcon {
+      background: var(--accent-3);
+    }
+  }
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
   gap: 10px;
 }
 
-.tools {
-  flex: 2;
+.cardIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: var(--accent-2);
+  color: var(--accent-9);
+  font-size: 14px;
+  flex-shrink: 0;
+  transition: background 0.3s ease-in-out;
+}
+
+.cardTitle {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--gray-12);
+}
+
+.cardDescription {
+  font-size: var(--font-size-sm);
+  color: var(--gray-10);
+  line-height: 1.5;
+}
+
+.cardCta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--accent-9);
+}
+
+.ctaArrow {
+  transition: transform 0.3s ease-in-out;
+}
+
+// ==========================================
+// Roadmap / Coming Soon
+// ==========================================
+
+.roadmap {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  padding: 0 20px;
+  animation: fadeSlideUp 0.5s ease-out backwards;
+  animation-delay: 0.4s;
+}
+
+.roadmapContent {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px;
+  text-align: center;
+  max-width: 420px;
+}
 
-  button {
-    img {
-      width: 20px;
-      height: 20px;
-    }
+.roadmapBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 14px;
+  background: var(--accent-1);
+  border: 1px solid var(--accent-4);
+  border-radius: 999px;
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--accent-9);
+}
+
+.pulseDot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-9);
+  animation: pulseDot 2s ease-in-out infinite;
+}
+
+.roadmapTitle {
+  font-size: var(--title-size);
+  font-weight: 700;
+  color: var(--gray-12);
+}
+
+.roadmapDescription {
+  font-size: var(--font-size-md);
+  color: var(--gray-10);
+  line-height: 1.5;
+}
+
+// ==========================================
+// Mobile
+// ==========================================
+
+@include mobile {
+  .root {
+    gap: 32px;
+    padding-bottom: 32px;
+  }
+
+  .hero {
+    padding: 40px 16px 24px;
+  }
+
+  .orb1 {
+    width: 300px;
+    height: 220px;
+  }
+
+  .orb2 {
+    width: 260px;
+    height: 200px;
+  }
+
+  .title {
+    font-size: 32px;
+  }
+
+  .tagline {
+    font-size: 16px;
+  }
+
+  .cardGrid {
+    grid-template-columns: 1fr;
   }
 }
