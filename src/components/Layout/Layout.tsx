@@ -6,18 +6,24 @@ import { NavOverlay } from "./NavOverlay/NavOverlay";
 import { SettingsModal } from "./SettingsModal/SettingsModal";
 
 import styles from "./Layout.module.scss";
+const LOGO_EFFECTS = [
+  "smashHit",
+  "rgbGlitch",
+  "smashBallGlow",
+  "spinBounce",
+] as const;
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
-  const LOGO_EFFECTS = ["smashHit", "rgbGlitch", "smashBallGlow", "spinBounce"] as const;
   const logoEffectIndex = useRef(0);
   const [logoEffect, setLogoEffect] = useState<string | null>(null);
 
   const handleLogoHover = useCallback(() => {
     setLogoEffect(LOGO_EFFECTS[logoEffectIndex.current]);
-    logoEffectIndex.current = (logoEffectIndex.current + 1) % LOGO_EFFECTS.length;
+    logoEffectIndex.current =
+      (logoEffectIndex.current + 1) % LOGO_EFFECTS.length;
   }, []);
 
   const handleAnimationEnd = useCallback(() => {
