@@ -1,14 +1,19 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Link, useLocation } from "wouter";
 import cn from "classnames";
 
+import { useFeatureFlag } from "@/hooks/useFeatureFlags";
+
 import styles from "./NavOverlay.module.scss";
 
-const NAV_ITEMS = [
+type NavItem = { label: string; href: string; flag?: "thumbnail-enabled" };
+
+const NAV_ITEMS: NavItem[] = [
   { label: "Home", href: "/" },
   { label: "Ranker", href: "/ranker" },
   { label: "Tier List", href: "/tier" },
+  { label: "Thumbnail", href: "/thumbnail", flag: "thumbnail-enabled" },
   { label: "Predictions", href: "/predict" },
 ];
 
@@ -24,6 +29,15 @@ export const NavOverlay = ({ isOpen, onClose }: Props) => {
   >("closed");
   const firstLinkRef = useRef<HTMLAnchorElement>(null);
   const closeTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const thumbnailEnabled = useFeatureFlag("thumbnail-enabled");
+  const visibleItems = useMemo(
+    () =>
+      NAV_ITEMS.filter((item) => {
+        if (item.flag === "thumbnail-enabled") return thumbnailEnabled;
+        return true;
+      }),
+    [thumbnailEnabled],
+  );
 
   // Handle mount/unmount with close animation
   useEffect(() => {
@@ -71,7 +85,7 @@ export const NavOverlay = ({ isOpen, onClose }: Props) => {
       })}
     >
       <nav className={styles.nav}>
-        {NAV_ITEMS.map((item, i) => (
+        {visibleItems.map((item, i) => (
           <Link
             key={item.href}
             ref={i === 0 ? firstLinkRef : undefined}

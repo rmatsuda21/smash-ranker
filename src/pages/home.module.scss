@@ -343,6 +343,22 @@
   font-size: var(--font-size-lg);
   font-weight: 700;
   color: var(--gray-12);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cardBadge {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  color: var(--accent-9);
+  background: var(--accent-3);
+  border: 1px solid var(--accent-5);
+  line-height: 1;
 }
 
 .cardDescription {

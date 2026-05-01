@@ -1,4 +1,5 @@
 import { Design } from "./top8/Design";
+import { ThumbnailDesign } from "./thumbnail/ThumbnailDesign";
 
 export interface Store<T> {
   get(id: string): Promise<T | undefined>;
@@ -30,4 +31,13 @@ export type DBCustomFont = {
   fileName: string;
   data: Blob;
   date: Date;
+};
+
+export type DBThumbnailTemplate = {
+  id: string;
+  name: string;
+  design: ThumbnailDesign;
+  font?: string;
+  date: Date;
+  previewImage?: Blob;
 };
