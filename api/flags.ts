@@ -1,4 +1,5 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
+import { flagsClient } from "@vercel/flags-core";
 
 // Vercel Flags evaluator. Uses @vercel/flags-core which reads the FLAGS env
 // var (auto-provisioned when you create a flag in the Vercel dashboard).
@@ -12,31 +13,48 @@ const DEFAULTS: FlagValues = {
   "thumbnail-enabled": false,
 };
 
+// The flags client needs to load its datafile (via stream/poll) before
+// evaluations return real values. Initialize once per warm container — it's
+// cached and reused for subsequent requests.
+let initPromise: Promise<unknown> | null = null;
+const ensureInitialized = () => {
+  if (!initPromise) {
+    initPromise = flagsClient.initialize().catch((e) => {
+      console.error("[flags] initialize failed", e);
+      // Reset so the next request gets to retry.
+      initPromise = null;
+      throw e;
+    });
+  }
+  return initPromise;
+};
+
 export default async function handler(
   _req: VercelRequest,
   res: VercelResponse,
 ) {
-  // Cache at the edge briefly so we don't hammer the flags service on every
-  // page load, but stay responsive to dashboard toggles.
   res.setHeader(
     "Cache-Control",
     "public, max-age=60, stale-while-revalidate=300",
   );
 
   if (!process.env.FLAGS) {
-    // No SDK key configured (local dev without `vercel env pull`, or the
-    // project hasn't created any flags yet). Fall back to defaults so the
-    // client doesn't error.
+    console.warn("[flags] FLAGS env var is missing; returning defaults");
     return res.json(DEFAULTS);
   }
 
   try {
-    const { flagsClient } = await import("@vercel/flags-core");
+    await ensureInitialized();
     const out: FlagValues = { ...DEFAULTS };
     await Promise.all(
       FLAG_KEYS.map(async (key) => {
         const result = await flagsClient.evaluate<boolean>(key, DEFAULTS[key]);
         out[key] = Boolean(result.value);
+        console.log(
+          `[flags] ${key} = ${result.value} (reason: ${result.reason}${
+            result.errorMessage ? `, error: ${result.errorMessage}` : ""
+          })`,
+        );
       }),
     );
     return res.json(out);
