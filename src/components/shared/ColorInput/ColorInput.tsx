@@ -63,18 +63,46 @@ export const ColorInput = ({ color, onChange, onClick, className }: Props) => {
   }, [color]);
 
   useLayoutEffect(() => {
-    if (isOpen && triggerRef.current) {
-      const rect = triggerRef.current.getBoundingClientRect();
-      const pickerWidth = 200;
-      const left = Math.max(8, Math.min(rect.left, window.innerWidth - pickerWidth - 8));
-      setPosition({
-        top: rect.bottom + 4,
-        left,
-      });
-    } else {
+    if (!isOpen || !triggerRef.current) {
       setPosition(null);
+      return;
     }
+    const rect = triggerRef.current.getBoundingClientRect();
+    const pickerWidth = 200;
+    const pickerHeight = pickerRef.current?.offsetHeight ?? 290;
+    const left = Math.max(
+      8,
+      Math.min(rect.left, window.innerWidth - pickerWidth - 8),
+    );
+    const wouldOverflowBottom =
+      rect.bottom + 4 + pickerHeight > window.innerHeight - 8;
+    const top = wouldOverflowBottom
+      ? Math.max(8, rect.top - 4 - pickerHeight)
+      : rect.bottom + 4;
+    setPosition({ top, left });
   }, [isOpen]);
+
+  // After the picker actually mounts, re-measure with its real height — the
+  // first useLayoutEffect runs before pickerRef is attached so it falls back
+  // to an estimate.
+  useEffect(() => {
+    if (!isOpen || !triggerRef.current || !pickerRef.current) return;
+    const rect = triggerRef.current.getBoundingClientRect();
+    const pickerHeight = pickerRef.current.offsetHeight;
+    const pickerWidth = pickerRef.current.offsetWidth || 200;
+    const left = Math.max(
+      8,
+      Math.min(rect.left, window.innerWidth - pickerWidth - 8),
+    );
+    const wouldOverflowBottom =
+      rect.bottom + 4 + pickerHeight > window.innerHeight - 8;
+    const top = wouldOverflowBottom
+      ? Math.max(8, rect.top - 4 - pickerHeight)
+      : rect.bottom + 4;
+    setPosition((prev) =>
+      prev && prev.top === top && prev.left === left ? prev : { top, left },
+    );
+  }, [isOpen, position]);
 
   useEffect(() => {
     if (!isOpen) return;

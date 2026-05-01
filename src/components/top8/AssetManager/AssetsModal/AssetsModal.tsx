@@ -9,7 +9,7 @@ import { Modal } from "@/components/shared/Modal/Modal";
 import { Button } from "@/components/shared/Button/Button";
 import { useAssetDB } from "@/hooks/useAssetDb";
 import { useConfirmation } from "@/hooks/useConfirmation";
-import { DBAsset } from "@/types/Repository";
+import { DBAsset, Store } from "@/types/Repository";
 
 import { AssetGrid } from "./AssetGrid/AssetGrid";
 import { AssetPreview } from "./AssetPreview/AssetPreview";
@@ -21,6 +21,7 @@ type Props = {
   onClose: () => void;
   onSelect?: (src: string) => void;
   selectedSrc?: string;
+  repository?: Store<DBAsset>;
 };
 
 export const AssetsModal = ({
@@ -28,6 +29,7 @@ export const AssetsModal = ({
   onClose,
   onSelect,
   selectedSrc,
+  repository,
 }: Props) => {
   const { _ } = useLingui();
   const [selectedAssetSrc, setSelectedAssetSrc] = useState<string>(
@@ -40,7 +42,7 @@ export const AssetsModal = ({
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const { assets, uploadAsset, deleteAsset, refresh } = useAssetDB();
+  const { assets, uploadAsset, deleteAsset, refresh } = useAssetDB(repository);
 
   const { confirm: confirmDelete, ConfirmationDialog } = useConfirmation(
     async (id: string) => {
@@ -123,6 +125,12 @@ export const AssetsModal = ({
   const handleThumbnailClick = (asset: DBAsset) => {
     setPreviewAsset(asset);
     setZoomLevel(100);
+  };
+
+  const handleThumbnailDoubleClick = (asset: DBAsset) => {
+    if (!onSelect) return;
+    setSelectedAssetSrc(asset.src);
+    onSelect(asset.src);
   };
 
   const handleToggleMark = (id: string, shiftKey: boolean) => {
@@ -241,6 +249,7 @@ export const AssetsModal = ({
             previewAssetId={previewAsset?.id}
             markedIds={markedIds}
             onThumbnailClick={handleThumbnailClick}
+            onThumbnailDoubleClick={handleThumbnailDoubleClick}
             onToggleMark={handleToggleMark}
             onUpload={handleUpload}
           />

@@ -1,13 +1,14 @@
 /// <reference lib="webworker" />
 
 const DB_NAME = "top8-db";
-const DB_VERSION = 3;
-const ASSETS_STORE = "assets";
+const ASSET_STORES = ["assets", "thumbnailAssets"];
 const MISSING_ASSET_PATH = "/assets/missing_asset.svg";
 
+// Open without a version — defers schema control to the main app, so the SW
+// keeps working when the app bumps DB_VERSION and adds new stores.
 const openDatabase = () => {
   return new Promise((resolve, reject) => {
-    const request = indexedDB.open(DB_NAME, DB_VERSION);
+    const request = indexedDB.open(DB_NAME);
 
     request.onerror = () => {
       reject(request.error);
@@ -15,35 +16,48 @@ const openDatabase = () => {
 
     request.onsuccess = () => {
       resolve(request.result);
-    };
-
-    request.onupgradeneeded = (event) => {
-      const db = event.target.result;
-      if (!db.objectStoreNames.contains(ASSETS_STORE)) {
-        const assetsStore = db.createObjectStore(ASSETS_STORE, {
-          keyPath: "id",
-        });
-        assetsStore.createIndex("date", "date");
-      }
     };
   });
 }
 
 const getAsset = async (id) => {
   const db = await openDatabase();
+  const availableStores = ASSET_STORES.filter((name) =>
+    db.objectStoreNames.contains(name),
+  );
+  if (availableStores.length === 0) {
+    db.close();
+    return null;
+  }
 
   return new Promise((resolve, reject) => {
-    const transaction = db.transaction(ASSETS_STORE, "readonly");
-    const store = transaction.objectStore(ASSETS_STORE);
-    const request = store.get(id);
+    let pending = availableStores.length;
+    let found = null;
+    let errored = null;
+    const transaction = db.transaction(availableStores, "readonly");
 
-    request.onerror = () => {
-      reject(request.error);
-    };
+    for (const storeName of availableStores) {
+      const store = transaction.objectStore(storeName);
+      const request = store.get(id);
 
-    request.onsuccess = () => {
-      resolve(request.result);
-    };
+      request.onerror = () => {
+        errored = request.error;
+        pending -= 1;
+        if (pending === 0 && !found) reject(errored);
+      };
+
+      request.onsuccess = () => {
+        if (request.result && !found) {
+          found = request.result;
+        }
+        pending -= 1;
+        if (pending === 0) {
+          if (found) resolve(found);
+          else if (errored) reject(errored);
+          else resolve(null);
+        }
+      };
+    }
 
     transaction.oncomplete = () => {
       db.close();

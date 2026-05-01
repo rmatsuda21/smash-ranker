@@ -7,10 +7,15 @@ import {
   StoreNames,
 } from "idb";
 
-import { DBAsset, DBCustomFont, DBTemplate } from "@/types/Repository";
+import {
+  DBAsset,
+  DBCustomFont,
+  DBTemplate,
+  DBThumbnailTemplate,
+} from "@/types/Repository";
 
 const DB_NAME = "top8-db";
-const DB_VERSION = 3;
+const DB_VERSION = 5;
 
 interface StoreConfig {
   keyPath: string;
@@ -29,6 +34,14 @@ const STORE_CONFIGS = {
   customFonts: {
     keyPath: "id",
     indexes: ["fontFamily", "date"],
+  },
+  thumbnailTemplates: {
+    keyPath: "id",
+    indexes: ["name", "date"],
+  },
+  thumbnailAssets: {
+    keyPath: "id",
+    indexes: ["date", "src"],
   },
 } as const satisfies Record<string, StoreConfig>;
 
@@ -51,6 +64,16 @@ interface Top8DB extends DBSchema {
     key: string;
     value: DBCustomFont;
     indexes: { fontFamily: string; date: Date };
+  };
+  thumbnailTemplates: {
+    key: string;
+    value: DBThumbnailTemplate;
+    indexes: { name: string; date: Date };
+  };
+  thumbnailAssets: {
+    key: string;
+    value: DBAsset;
+    indexes: { date: Date; src: string };
   };
 }
 

@@ -1,0 +1,27 @@
+.wrapper {
+  position: absolute;
+  display: flex;
+  justify-content: stretch;
+  z-index: 5;
+  outline: 2px dashed #3a8eff;
+  outline-offset: 2px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.editor {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  resize: none;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  white-space: pre-wrap;
+  word-break: break-word;
+  field-sizing: content;
+  caret-color: currentColor;
+  box-sizing: content-box;
+  max-height: 100%;
+}

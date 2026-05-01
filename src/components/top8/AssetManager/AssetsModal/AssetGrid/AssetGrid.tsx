@@ -14,6 +14,7 @@ type Props = {
   previewAssetId?: string;
   markedIds: Set<string>;
   onThumbnailClick: (asset: DBAsset) => void;
+  onThumbnailDoubleClick?: (asset: DBAsset) => void;
   onToggleMark: (id: string, shiftKey: boolean) => void;
   onUpload: (files?: File[]) => void;
 };
@@ -24,6 +25,7 @@ export const AssetGrid = ({
   previewAssetId,
   markedIds,
   onThumbnailClick,
+  onThumbnailDoubleClick,
   onToggleMark,
   onUpload,
 }: Props) => {
@@ -59,12 +61,20 @@ export const AssetGrid = ({
                 onThumbnailClick(asset);
               }
             }}
+            onDoubleClick={(e) => {
+              if (e.ctrlKey || e.metaKey || e.shiftKey) return;
+              onThumbnailDoubleClick?.(asset);
+            }}
             role="button"
             tabIndex={0}
             onKeyDown={(e) => {
               if (e.key === "Enter" || e.key === " ") {
                 e.preventDefault();
-                onThumbnailClick(asset);
+                if (e.key === "Enter" && onThumbnailDoubleClick) {
+                  onThumbnailDoubleClick(asset);
+                } else {
+                  onThumbnailClick(asset);
+                }
               }
             }}
           >

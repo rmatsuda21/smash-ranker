@@ -1,13 +1,22 @@
 import { useCallback, useRef } from "react";
 import { Link } from "wouter";
-import { FaTrophy, FaLayerGroup, FaListOl, FaGithub } from "react-icons/fa6";
+import {
+  FaTrophy,
+  FaLayerGroup,
+  FaListOl,
+  FaGithub,
+  FaPhotoFilm,
+} from "react-icons/fa6";
 import { SiBuymeacoffee } from "react-icons/si";
+
+import { useFeatureFlag } from "@/hooks/useFeatureFlags";
 
 import styles from "./home.module.scss";
 
 export const Home = () => {
   const orb1Ref = useRef<HTMLDivElement>(null);
   const orb2Ref = useRef<HTMLDivElement>(null);
+  const thumbnailEnabled = useFeatureFlag("thumbnail-enabled");
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     const { clientWidth, clientHeight } = e.currentTarget;
@@ -78,10 +87,32 @@ export const Home = () => {
             </p>
           </Link>
 
+          {thumbnailEnabled && (
+            <Link
+              to="/thumbnail"
+              className={styles.card}
+              style={{ animationDelay: "0.4s" }}
+            >
+              <div className={styles.cardHeader}>
+                <div className={styles.cardIcon}>
+                  <FaPhotoFilm />
+                </div>
+                <h3 className={styles.cardTitle}>
+                  Thumbnail Maker
+                  <span className={styles.cardBadge}>New</span>
+                </h3>
+              </div>
+              <p className={styles.cardDescription}>
+                Design YouTube thumbnails with free-form layouts, character art,
+                flags, and saveable templates.
+              </p>
+            </Link>
+          )}
+
           <Link
             to="/predict"
             className={styles.card}
-            style={{ animationDelay: "0.4s" }}
+            style={{ animationDelay: "0.55s" }}
           >
             <div className={styles.cardHeader}>
               <div className={styles.cardIcon}>
