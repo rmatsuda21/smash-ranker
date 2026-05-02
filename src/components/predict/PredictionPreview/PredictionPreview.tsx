@@ -1,4 +1,4 @@
-import { useEffect, useState, type RefObject } from "react";
+import { useEffect, useState, type CSSProperties, type RefObject } from "react";
 import cn from "classnames";
 
 import { Trans } from "@lingui/react/macro";
@@ -8,8 +8,22 @@ import { type MessageDescriptor } from "@lingui/core";
 
 import { usePredictionStore } from "@/store/predictionStore";
 import { ExportBar } from "@/components/predict/ExportBar/ExportBar";
+import type { PredictionPalette } from "@/types/predict/PredictionPalette";
 
 import styles from "./PredictionPreview.module.scss";
+
+const paletteToStyleVars = (palette: PredictionPalette): CSSProperties =>
+  ({
+    "--pg-bg-start": palette.bgGradientStart,
+    "--pg-bg-end": palette.bgGradientEnd,
+    "--pg-accent": palette.accent,
+    "--pg-accent-bg": palette.accentRowBg,
+    "--pg-text-1": palette.textPrimary,
+    "--pg-text-2": palette.textSecondary,
+    "--pg-text-muted": palette.textMuted,
+    "--pg-text-foot": palette.textFooter,
+    "--pg-border": palette.borderSubtle,
+  }) as CSSProperties;
 
 export type PredictionPreviewCache = {
   key: string;
@@ -41,12 +55,14 @@ export const PredictionPreview = ({ cacheRef }: Props) => {
   const tournamentDate = usePredictionStore((s) => s.tournamentDate);
   const tournamentIconUrl = usePredictionStore((s) => s.tournamentIconUrl);
   const predictions = usePredictionStore((s) => s.predictions);
+  const palette = usePredictionStore((s) => s.colorPalette);
 
   const payload = {
     tournamentName,
     eventName,
     tournamentDate,
     tournamentIconUrl,
+    palette,
     predictions: predictions.map((p) => ({
       id: p.id,
       name: p.name,
@@ -55,6 +71,7 @@ export const PredictionPreview = ({ cacheRef }: Props) => {
     })),
   };
   const cacheKey = JSON.stringify(payload);
+  const styleVars = paletteToStyleVars(palette);
 
   const cached = cacheRef.current?.key === cacheKey ? cacheRef.current : null;
 
@@ -127,7 +144,7 @@ export const PredictionPreview = ({ cacheRef }: Props) => {
   if (error) {
     return (
       <div className={styles.loading}>
-        <div className={styles.loadingCard}>
+        <div className={styles.loadingCard} style={styleVars}>
           <p className={styles.loadingText}>
             <Trans>Failed to generate image</Trans>
           </p>
@@ -155,7 +172,7 @@ export const PredictionPreview = ({ cacheRef }: Props) => {
 
   return (
     <div className={styles.loading}>
-      <div className={styles.loadingCard}>
+      <div className={styles.loadingCard} style={styleVars}>
         <div className={styles.shimmer} aria-hidden="true" />
         <div className={styles.headerRow}>
           <span className={styles.eyebrow}>
