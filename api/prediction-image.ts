@@ -1,6 +1,7 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { readFileSync } from "fs";
 import { join } from "path";
+import { createHash } from "crypto";
 import satori from "satori";
 import { Resvg } from "@resvg/resvg-js";
 import React from "react";
@@ -13,19 +14,49 @@ const fontBold = readFileSync(
   join(__dirname, "fonts/MPLUSRounded1c-ExtraBold.ttf")
 );
 
-const WIDTH = 380;
-const OUTPUT_WIDTH = 760; // 2x pixel ratio for rasterization
-
-const STOCK_BASE =
-  "https://raw.githubusercontent.com/rmatsuda21/SmashRankerAssets/main/stock";
+const WIDTH = 275;
+const OUTPUT_WIDTH = 550; // 2x pixel ratio for rasterization
 
 const h = React.createElement;
+
+const DATE_FORMATTER = new Intl.DateTimeFormat("en-US", {
+  year: "numeric",
+  month: "short",
+  day: "numeric",
+  timeZone: "UTC",
+});
+
+// Tournament icons vary per request; cap with insertion-order LRU eviction.
+const TOURNAMENT_ICON_CACHE_MAX = 64;
+const tournamentIconCache = new Map<string, string>();
+
+// Final-PNG cache, keyed by sha256(canonical payload). Skips satori+resvg
+// entirely on a hit. Bounded to keep memory in check.
+const PNG_CACHE_MAX = 64;
+const pngCache = new Map<string, Buffer>();
+
+function lruGet<V>(cache: Map<string, V>, key: string): V | undefined {
+  const value = cache.get(key);
+  if (value !== undefined) {
+    cache.delete(key);
+    cache.set(key, value);
+  }
+  return value;
+}
+
+function lruSet<V>(cache: Map<string, V>, key: string, value: V, max: number) {
+  if (cache.has(key)) cache.delete(key);
+  cache.set(key, value);
+  if (cache.size > max) {
+    const oldest = cache.keys().next().value;
+    if (oldest !== undefined) cache.delete(oldest);
+  }
+}
 
 type PredictionPlayer = {
   id: string;
   name: string;
   prefix?: string;
-  characterId: string;
 };
 
 // Duplicated locally — `api/` is built independently from `src/`, so we don't
@@ -65,6 +96,8 @@ type RequestBody = {
 
 // --- Image fetching ---
 
+const FETCH_TIMEOUT_MS = 1500;
+
 async function fetchImageAsDataUrl(
   url: string,
   retries = 1
@@ -72,7 +105,7 @@ async function fetchImageAsDataUrl(
   for (let i = 0; i <= retries; i++) {
     try {
       const ctrl = new AbortController();
-      const t = setTimeout(() => ctrl.abort(), 4000);
+      const t = setTimeout(() => ctrl.abort(), FETCH_TIMEOUT_MS);
       const res = await fetch(url, { signal: ctrl.signal });
       clearTimeout(t);
       if (!res.ok) continue;
@@ -83,30 +116,26 @@ async function fetchImageAsDataUrl(
       // retry
     }
   }
+  console.warn(`[prediction-image] fetch failed after ${retries + 1} attempts: ${url}`);
   return null;
 }
 
-async function fetchAllImages(
-  predictions: PredictionPlayer[],
+async function fetchTournamentIcon(
   tournamentIconUrl: string
-) {
-  const charIds = predictions
-    .map((p) => p.characterId)
-    .filter((id) => id !== "");
-
-  const charUrls = charIds.map((id) => `${STOCK_BASE}/${id}/0.png`);
-
-  const [tournamentIcon, ...charResults] = await Promise.all([
-    tournamentIconUrl ? fetchImageAsDataUrl(tournamentIconUrl) : null,
-    ...charUrls.map(fetchImageAsDataUrl),
-  ]);
-
-  const charMap = new Map<string, string>();
-  charIds.forEach((id, i) => {
-    if (charResults[i]) charMap.set(id, charResults[i]!);
-  });
-
-  return { tournamentIcon, charMap };
+): Promise<string | null> {
+  if (!tournamentIconUrl) return null;
+  const cached = lruGet(tournamentIconCache, tournamentIconUrl);
+  if (cached) return cached;
+  const fetched = await fetchImageAsDataUrl(tournamentIconUrl);
+  if (fetched) {
+    lruSet(
+      tournamentIconCache,
+      tournamentIconUrl,
+      fetched,
+      TOURNAMENT_ICON_CACHE_MAX
+    );
+  }
+  return fetched;
 }
 
 // --- Rank styles ---
@@ -146,27 +175,18 @@ const DOT_PATTERN_SVG = `data:image/svg+xml,${encodeURIComponent(
 function buildGraphic(
   body: RequestBody,
   tournamentIcon: string | null,
-  charMap: Map<string, string>,
   palette: PredictionPalette
 ): React.ReactElement {
   const { tournamentName, eventName, tournamentDate, predictions } = body;
 
   const formattedDate = tournamentDate
-    ? new Date(tournamentDate).toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-        timeZone: "UTC",
-      })
+    ? DATE_FORMATTER.format(new Date(tournamentDate))
     : "";
 
   const meta = [eventName, formattedDate].filter(Boolean).join(" · ");
 
   const rows = predictions.map((player, index) => {
     const rank = index + 1;
-    const charDataUrl = player.characterId
-      ? charMap.get(player.characterId)
-      : null;
 
     return h(
       "div",
@@ -175,7 +195,7 @@ function buildGraphic(
         style: {
           display: "flex",
           alignItems: "center",
-          gap: 3,
+          gap: 8,
           padding: "6px 10px",
           borderRadius: 6,
           backgroundImage: getRowBackground(rank, palette),
@@ -208,15 +228,6 @@ function buildGraphic(
           String(rank)
         )
       ),
-      // Character icon or placeholder
-      charDataUrl
-        ? h("img", {
-            src: charDataUrl,
-            width: 20,
-            height: 20,
-            style: { flexShrink: 0 },
-          })
-        : h("div", { style: { width: 20, height: 20, flexShrink: 0 } }),
       // Player name
       h(
         "div",
@@ -409,24 +420,86 @@ function estimateHeight(predictionCount: number): number {
   );
 }
 
+// --- Cache key ---
+
+// Stable, order-independent stringification of the request body so that
+// semantically equal payloads produce the same hash.
+function canonicalize(body: RequestBody): string {
+  return JSON.stringify({
+    tournamentName: body.tournamentName ?? "",
+    eventName: body.eventName ?? "",
+    tournamentDate: body.tournamentDate ?? "",
+    tournamentIconUrl: body.tournamentIconUrl ?? "",
+    palette: body.palette ?? null,
+    predictions: body.predictions.map((p) => ({
+      id: p.id,
+      name: p.name,
+      prefix: p.prefix ?? "",
+    })),
+  });
+}
+
+function hashPayload(body: RequestBody): string {
+  return createHash("sha256").update(canonicalize(body)).digest("hex");
+}
+
+// --- Payload decoding ---
+
+function decodePayload(encoded: string): RequestBody | null {
+  try {
+    const json = Buffer.from(encoded, "base64url").toString("utf8");
+    const parsed = JSON.parse(json);
+    if (!parsed || typeof parsed !== "object") return null;
+    if (!Array.isArray(parsed.predictions)) return null;
+    return parsed as RequestBody;
+  } catch {
+    return null;
+  }
+}
+
 // --- Handler ---
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  if (req.method !== "POST") {
+  if (req.method !== "GET") {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
   try {
-    const body = req.body as RequestBody;
-
-    if (!body.predictions || !Array.isArray(body.predictions)) {
-      return res.status(400).json({ error: "Missing predictions array" });
+    const encoded = req.query.d;
+    if (typeof encoded !== "string" || encoded.length === 0) {
+      return res.status(400).json({ error: "Missing 'd' query parameter" });
     }
 
-    const { tournamentIcon, charMap } = await fetchAllImages(
-      body.predictions,
-      body.tournamentIconUrl
+    const body = decodePayload(encoded);
+    if (!body) {
+      return res.status(400).json({ error: "Invalid payload" });
+    }
+
+    const hash = hashPayload(body);
+    const etag = `"${hash}"`;
+
+    res.setHeader("Content-Type", "image/png");
+    // GET URLs are content-addressed (different `d` → different URL), so the
+    // CDN can safely cache for a long time. The browser revalidates after
+    // max-age via ETag.
+    res.setHeader(
+      "Cache-Control",
+      "public, max-age=300, s-maxage=86400, stale-while-revalidate=604800"
     );
+    res.setHeader("ETag", etag);
+
+    if (req.headers["if-none-match"] === etag) {
+      res.setHeader("X-Cache", "HIT-ETAG");
+      return res.status(304).end();
+    }
+
+    const cachedPng = lruGet(pngCache, hash);
+    if (cachedPng) {
+      res.setHeader("X-Cache", "HIT");
+      return res.status(200).send(cachedPng);
+    }
+
+    const tournamentIcon = await fetchTournamentIcon(body.tournamentIconUrl);
 
     const palette: PredictionPalette = {
       ...DEFAULT_PALETTE,
@@ -434,7 +507,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     };
 
     const height = estimateHeight(body.predictions.length);
-    const graphic = buildGraphic(body, tournamentIcon, charMap, palette);
+    const graphic = buildGraphic(body, tournamentIcon, palette);
 
     const svg = await satori(graphic, {
       width: WIDTH,
@@ -452,11 +525,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       fitTo: { mode: "width" as const, value: OUTPUT_WIDTH },
       font: { loadSystemFonts: false },
     });
-    const png = resvg.render().asPng();
+    const png = Buffer.from(resvg.render().asPng());
 
-    res.setHeader("Content-Type", "image/png");
-    res.setHeader("Cache-Control", "public, max-age=0, s-maxage=60");
-    return res.status(200).send(Buffer.from(png));
+    lruSet(pngCache, hash, png, PNG_CACHE_MAX);
+    res.setHeader("X-Cache", "MISS");
+    return res.status(200).send(png);
   } catch (error) {
     console.error("Prediction image error:", error);
     return res.status(500).json({ error: "Failed to generate image" });

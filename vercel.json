@@ -21,5 +21,11 @@
     }
   ],
   "devCommand": "bunx --bun vite --host --port $PORT",
-  "bunVersion": "1.x"
+  "bunVersion": "1.x",
+  "functions": {
+    "api/prediction-image.ts": {
+      "memory": 1024,
+      "maxDuration": 30
+    }
+  }
 }

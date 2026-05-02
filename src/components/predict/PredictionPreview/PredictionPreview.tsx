@@ -25,6 +25,16 @@ const paletteToStyleVars = (palette: PredictionPalette): CSSProperties =>
     "--pg-border": palette.borderSubtle,
   }) as CSSProperties;
 
+const base64urlEncode = (text: string): string => {
+  const bytes = new TextEncoder().encode(text);
+  let binary = "";
+  for (const b of bytes) binary += String.fromCharCode(b);
+  return btoa(binary)
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/, "");
+};
+
 export type PredictionPreviewCache = {
   key: string;
   blob: Blob;
@@ -67,10 +77,10 @@ export const PredictionPreview = ({ cacheRef }: Props) => {
       id: p.id,
       name: p.name,
       prefix: p.prefix,
-      characterId: p.characterId,
     })),
   };
   const cacheKey = JSON.stringify(payload);
+  const requestUrl = `/api/prediction-image?d=${base64urlEncode(cacheKey)}`;
   const styleVars = paletteToStyleVars(palette);
 
   const cached = cacheRef.current?.key === cacheKey ? cacheRef.current : null;
@@ -94,11 +104,7 @@ export const PredictionPreview = ({ cacheRef }: Props) => {
 
     const generate = async () => {
       try {
-        const res = await fetch("/api/prediction-image", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: cacheKey,
-        });
+        const res = await fetch(requestUrl);
 
         if (!res.ok || cancelled) {
           if (!cancelled) setError(true);
@@ -127,7 +133,7 @@ export const PredictionPreview = ({ cacheRef }: Props) => {
     return () => {
       cancelled = true;
     };
-  }, [cacheKey, cacheRef]);
+  }, [cacheKey, requestUrl, cacheRef]);
 
   const isLoading = !imageUrl && !error;
   const [taglineIdx, setTaglineIdx] = useState(0);

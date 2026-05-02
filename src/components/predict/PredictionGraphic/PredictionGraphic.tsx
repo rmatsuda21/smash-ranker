@@ -2,8 +2,6 @@ import type { CSSProperties } from "react";
 import { Trans } from "@lingui/react/macro";
 
 import { usePredictionStore } from "@/store/predictionStore";
-import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
-import { EMPTY_CHARACTER_ID } from "@/consts/top8/characters";
 import type { PredictionPalette } from "@/types/predict/PredictionPalette";
 
 import styles from "./PredictionGraphic.module.scss";
@@ -65,20 +63,6 @@ export const PredictionGraphic = () => {
               <div className={styles.rankBg}>
                 <span className={styles.rank}>{index + 1}</span>
               </div>
-              {player.characterId !== EMPTY_CHARACTER_ID ? (
-                <img
-                  className={styles.charIcon}
-                  src={getCharImgUrl({
-                    characterId: player.characterId,
-                    alt: 0,
-                    type: "stock",
-                  })}
-                  alt=""
-                  crossOrigin="anonymous"
-                />
-              ) : (
-                <span className={styles.charPlaceholder} />
-              )}
               <span className={styles.name}>
                 {player.prefix && (
                   <span className={styles.prefix}>{player.prefix} | </span>

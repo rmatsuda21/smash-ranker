@@ -2,8 +2,6 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { MdDragIndicator, MdClose } from "react-icons/md";
 
-import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
-import { EMPTY_CHARACTER_ID } from "@/consts/top8/characters";
 import type { PredictionPlayer } from "@/types/predict/Prediction";
 
 import styles from "./SortablePredictionItem.module.scss";
@@ -42,17 +40,6 @@ export const SortablePredictionItem = ({ player, rank, onRemove }: Props) => {
       <span className={styles.rank} data-rank={rank}>
         {rank}
       </span>
-      {player.characterId !== EMPTY_CHARACTER_ID && (
-        <img
-          className={styles.charIcon}
-          src={getCharImgUrl({
-            characterId: player.characterId,
-            alt: 0,
-            type: "stock",
-          })}
-          alt=""
-        />
-      )}
       <span className={styles.name}>
         {player.prefix && (
           <span className={styles.prefix}>{player.prefix} | </span>
@@ -82,17 +69,6 @@ export const PredictionItemOverlay = ({
       <span className={styles.rank} data-rank={rank}>
         {rank}
       </span>
-      {player.characterId !== EMPTY_CHARACTER_ID && (
-        <img
-          className={styles.charIcon}
-          src={getCharImgUrl({
-            characterId: player.characterId,
-            alt: 0,
-            type: "stock",
-          })}
-          alt=""
-        />
-      )}
       <span className={styles.name}>
         {player.prefix && (
           <span className={styles.prefix}>{player.prefix} | </span>
