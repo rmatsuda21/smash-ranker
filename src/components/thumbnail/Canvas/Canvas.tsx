@@ -553,6 +553,17 @@ export const Canvas = () => {
     setEditingTextId(null);
   };
 
+  const handleViewportPointerDown = useCallback(
+    (e: React.MouseEvent | React.TouchEvent) => {
+      if (e.target !== e.currentTarget) return;
+      if ("button" in e && e.button === 2) return;
+      if ("touches" in e && e.touches.length !== 1) return;
+      clearSelection();
+      setEditingTextId(null);
+    },
+    [clearSelection, setEditingTextId],
+  );
+
   // Stage onMouseDown / onTouchStart attaches per-node handlers; per-node click is what we use
   const handleStageMouseDown = useCallback(
     (e: KonvaEventObject<MouseEvent | TouchEvent>) => {
@@ -754,7 +765,12 @@ export const Canvas = () => {
   };
 
   return (
-    <div ref={viewportRef} className={styles.viewport}>
+    <div
+      ref={viewportRef}
+      className={styles.viewport}
+      onMouseDown={handleViewportPointerDown}
+      onTouchStart={handleViewportPointerDown}
+    >
       <div ref={stageWrapperRef} className={styles.stageWrapper} style={wrapperStyle}>
         <div
           className={styles.stageInner}
