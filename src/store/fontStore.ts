@@ -1,13 +1,13 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-import Cookies from "js-cookie";
 
 import { fetchAndMapFonts } from "@/utils/top8/fetchAndMapFonts";
 import { loadFont } from "@/utils/top8/loadFont";
 import { registerCustomFontFace } from "@/utils/top8/registerCustomFont";
 import { customFontRepository } from "@/db/repository";
-import { COOKIES } from "@/consts/cookies";
-import { useHistoryStore } from "@/store/historyStore";
+import { useCanvasStore } from "@/store/canvasStore";
+
+const DEFAULT_FONT = "Dela Gothic One";
 
 export type Font = {
   fontFamily: string;
@@ -25,7 +25,6 @@ interface FontState {
   error?: Error;
   dispatch: (action: FontAction) => void;
   selectFont: (fontFamily: string, skipHistory?: boolean) => Promise<void>;
-  setSelectedFontFromHistory: (fontFamily: string) => void;
 }
 
 type FontAction =
@@ -68,7 +67,6 @@ const fontReducer = (state: FontState, action: FontAction): FontState => {
         fetching: true,
       };
     case "LOAD_FONT_SUCCESS":
-      Cookies.set(COOKIES.LAST_USED_FONT_FAMILY, action.payload.fontFamily);
       return {
         ...state,
         fetching: false,
@@ -89,7 +87,6 @@ const fontReducer = (state: FontState, action: FontAction): FontState => {
         error: action.payload.error,
       };
     case "SET_SELECTED_FONT":
-      Cookies.set(COOKIES.LAST_USED_FONT_FAMILY, action.payload);
       return {
         ...state,
         selectedFont: action.payload,
@@ -127,12 +124,9 @@ const fontReducer = (state: FontState, action: FontAction): FontState => {
   }
 };
 
-const initialState: Omit<
-  FontState,
-  "dispatch" | "selectFont" | "setSelectedFontFromHistory"
-> = {
+const initialState: Omit<FontState, "dispatch" | "selectFont"> = {
   fonts: new Set(),
-  selectedFont: "Arial",
+  selectedFont: DEFAULT_FONT,
   fetching: true,
   error: undefined,
 };
@@ -156,55 +150,32 @@ export const useFontStore = create<FontState>()(
           return;
         }
 
-        const shouldRecordHistory = !skipHistory && fontFamily !== previousFont;
+        const sameFont = fontFamily === previousFont;
 
-        if (font.loaded) {
-          if (shouldRecordHistory) {
-            useHistoryStore.getState().pushAction({
-              type: "SET_FONT",
-              undoData: previousFont,
-              redoData: fontFamily,
-            });
-          }
-          dispatch({ type: "SET_SELECTED_FONT", payload: fontFamily });
-          return;
-        }
-
-        dispatch({ type: "LOAD_FONT", payload: fontFamily });
-
-        try {
-          await loadFont(font);
-          if (shouldRecordHistory) {
-            useHistoryStore.getState().pushAction({
-              type: "SET_FONT",
-              undoData: previousFont,
-              redoData: fontFamily,
-            });
-          }
-          dispatch({ type: "LOAD_FONT_SUCCESS", payload: font });
-        } catch (error) {
-          dispatch({
-            type: "LOAD_FONT_FAIL",
-            payload: {
-              error: error instanceof Error ? error : new Error(String(error)),
-            },
-          });
-        }
-      },
-
-      setSelectedFontFromHistory: (fontFamily: string) => {
-        const { fonts, dispatch } = get();
-        const font = Array.from(fonts).find((f) => f.fontFamily === fontFamily);
-
-        if (!font) return;
-
-        if (font.loaded) {
-          dispatch({ type: "SET_SELECTED_FONT", payload: fontFamily });
-        } else {
-          loadFont(font).then(() => {
+        if (!font.loaded) {
+          dispatch({ type: "LOAD_FONT", payload: fontFamily });
+          try {
+            await loadFont(font);
             dispatch({ type: "LOAD_FONT_SUCCESS", payload: font });
-          });
+          } catch (error) {
+            dispatch({
+              type: "LOAD_FONT_FAIL",
+              payload: {
+                error:
+                  error instanceof Error ? error : new Error(String(error)),
+              },
+            });
+            return;
+          }
+        } else if (!sameFont) {
+          dispatch({ type: "SET_SELECTED_FONT", payload: fontFamily });
         }
+
+        if (sameFont) return;
+
+        useCanvasStore
+          .getState()
+          .dispatch({ type: "SET_FONT", payload: fontFamily }, skipHistory);
       },
     }),
     { name: "font-store" }
@@ -263,27 +234,25 @@ Promise.allSettled([fetchFonts(), loadCustomFontsFromDB()])
 
     const allFonts = [...customFonts, ...googleFonts];
 
-    if (allFonts.length > 0) {
-      const lastFontFamily = Cookies.get(COOKIES.LAST_USED_FONT_FAMILY);
-      let lastFont = googleFonts[0] ?? allFonts[0];
+    if (allFonts.length === 0) return;
 
-      if (lastFontFamily) {
-        const found = allFonts.find((f) => f.fontFamily === lastFontFamily);
-        if (found) lastFont = found;
-      }
+    const activeFontFamily = useCanvasStore.getState().font;
+    const activeFont =
+      allFonts.find((f) => f.fontFamily === activeFontFamily) ??
+      googleFonts[0] ??
+      allFonts[0];
 
-      if (lastFont.loaded) {
-        dispatch({ type: "LOAD_FONT_SUCCESS", payload: lastFont });
-      } else {
-        const loaded = await loadFont(lastFont);
-        if (loaded) {
-          dispatch({ type: "LOAD_FONT_SUCCESS", payload: lastFont });
-        } else {
-          dispatch({
-            type: "LOAD_FONT_FAIL",
-            payload: { error: new Error("Failed to load font") },
-          });
-        }
+    if (activeFont.loaded) {
+      dispatch({ type: "LOAD_FONT_SUCCESS", payload: activeFont });
+    } else {
+      try {
+        await loadFont(activeFont);
+        dispatch({ type: "LOAD_FONT_SUCCESS", payload: activeFont });
+      } catch {
+        dispatch({
+          type: "LOAD_FONT_FAIL",
+          payload: { error: new Error("Failed to load font") },
+        });
       }
     }
   })
