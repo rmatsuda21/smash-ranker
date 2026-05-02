@@ -652,6 +652,20 @@ const CharacterProperties = ({
           <option value="stock">Stock icon</option>
         </select>
       </div>
+      <div className={styles.row}>
+        <label>Fit</label>
+        <select
+          value={element.fillMode ?? "cover"}
+          onChange={(e) =>
+            update(element.id, element, {
+              fillMode: e.target.value as "contain" | "cover",
+            })
+          }
+        >
+          <option value="cover">Cover (fill, crop)</option>
+          <option value="contain">Contain (fit, no crop)</option>
+        </select>
+      </div>
       <label className={styles.checkbox}>
         <input
           type="checkbox"

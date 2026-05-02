@@ -33,7 +33,7 @@ const CharacterNodeComponent = ({ element, draggable }: Props) => {
     imageSrc: src,
     width: element.width,
     height: element.height,
-    fillMode: "cover",
+    fillMode: element.fillMode ?? "cover",
     align: "center",
     offset: ZERO_OFFSET,
     cropOffset: crop.offset,
