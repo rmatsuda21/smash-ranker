@@ -58,6 +58,7 @@ export type CharacterElement = ThumbnailElementBase & {
   alt: number;
   imageType: "stock" | "main";
   flipX: boolean;
+  fillMode?: "contain" | "cover";
 };
 
 export type FlagElement = ThumbnailElementBase & {
