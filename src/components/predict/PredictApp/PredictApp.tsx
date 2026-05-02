@@ -10,7 +10,8 @@ import { Modal } from "@/components/shared/Modal/Modal";
 import { useConfirmation } from "@/hooks/useConfirmation";
 import { usePredictionStore } from "@/store/predictionStore";
 import { useFetchPredictionEntrants } from "@/hooks/predict/useFetchPredictionEntrants";
-import { detectPlatformAndSlug, slugToUrl, type Platform } from "@/consts/platforms";
+import { detectPlatformAndSlug, slugToUrl } from "@/consts/platforms";
+import { decodeInvite } from "@/utils/predict/inviteCode";
 import { TournamentUrlInput } from "@/components/predict/TournamentUrlInput/TournamentUrlInput";
 import { InviteShareButton } from "@/components/predict/InviteShareButton/InviteShareButton";
 import { PredictionCountSelector } from "@/components/predict/PredictionCountSelector/PredictionCountSelector";
@@ -23,9 +24,6 @@ import {
 } from "@/components/predict/PredictionPreview/PredictionPreview";
 
 import styles from "./PredictApp.module.scss";
-
-const isPlatform = (value: string | null): value is Platform =>
-  value === "startgg" || value === "challonge" || value === "tonamel";
 
 export const PredictApp = () => {
   const { _ } = useLingui();
@@ -48,13 +46,16 @@ export const PredictApp = () => {
     didAutoLoadRef.current = true;
 
     const params = new URLSearchParams(window.location.search);
-    const p = params.get("p");
-    const s = params.get("s");
-    if (!isPlatform(p) || !s) return;
+    const decoded = decodeInvite(params.get("d"));
+    if (!decoded) return;
 
-    if (tournamentUrl && detectPlatformAndSlug(tournamentUrl)?.slug === s) return;
+    if (
+      tournamentUrl &&
+      detectPlatformAndSlug(tournamentUrl)?.slug === decoded.slug
+    )
+      return;
 
-    fetchEntrants(slugToUrl(p, s));
+    fetchEntrants(slugToUrl(decoded.platform, decoded.slug));
   }, [fetchEntrants, tournamentUrl]);
 
   const { confirm: confirmClear, ConfirmationDialog: ClearConfirmation } =
@@ -118,11 +119,7 @@ export const PredictApp = () => {
           </div>
           <div className={styles.headerActions}>
             <InviteShareButton />
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={confirmClear}
-            >
+            <Button variant="ghost" size="sm" onClick={confirmClear}>
               <Trans>Clear</Trans>
             </Button>
           </div>
