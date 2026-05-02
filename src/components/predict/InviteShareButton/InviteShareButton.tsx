@@ -5,6 +5,7 @@ import { FaLink, FaCircleCheck } from "react-icons/fa6";
 import { Button } from "@/components/shared/Button/Button";
 import { detectPlatformAndSlug } from "@/consts/platforms";
 import { usePredictionStore } from "@/store/predictionStore";
+import { encodeInvite } from "@/utils/predict/inviteCode";
 
 import styles from "./InviteShareButton.module.scss";
 
@@ -16,7 +17,7 @@ export const InviteShareButton = () => {
   if (!detected) return null;
 
   const handleCopy = async () => {
-    const inviteUrl = `https://smash-ranker.app/predict?p=${detected.platform}&s=${encodeURIComponent(detected.slug)}`;
+    const inviteUrl = `https://smash-ranker.app/predict?d=${encodeInvite(detected)}`;
 
     try {
       await navigator.clipboard.writeText(inviteUrl);
