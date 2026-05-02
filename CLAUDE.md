@@ -29,20 +29,23 @@ No test runner is configured. Use `bun lint` and `bun build` to validate changes
 ### Routing & Pages
 
 - `src/App.tsx` — Root with urql GraphQL provider + Lingui i18n provider
-- `src/components/PageRouter.tsx` — Wouter-based routing
-- `/` → home page; `/ranker` → main Top 8 editor; `/tier` → tier list maker
+- `src/components/PageRouter.tsx` — Wouter-based routing. Lazy-loads `/tier`, `/predict`, and `/thumbnail` via `React.lazy` + `Suspense`.
+- Routes: `/` → home; `/ranker` → main Top 8 editor; `/tier` → tier list maker; `/predict` → tournament prediction maker; `/thumbnail` → thumbnail/graphic editor (gated by the `thumbnail-enabled` feature flag).
 
 ### State Management (Zustand)
 
-All stores live in `src/store/` and use Zustand's persist middleware (localStorage):
+All stores live in `src/store/` and use Zustand's persist middleware (localStorage) unless noted:
 
 - **canvasStore** — design configuration, color palette, background images, undo/redo
 - **playerStore** — player list, selected player, API fetch status
 - **tournamentStore** — tournament metadata and settings
 - **editorStore** — UI state (active panel/tab, preview cache invalidation)
-- **historyStore** — undo/redo history stack
+- **historyStore** — undo/redo history stack (also used by the thumbnail editor)
 - **fontStore** — custom font loading and registration
 - **tierListStore** — tier list state: tiers, character pool, layout variant, label font settings, image mode
+- **predictionStore** — `/predict` state: tournament metadata, entrant pool, ordered predictions, prediction count, fetch status. Reducer-based.
+- **thumbnailStore** — `/thumbnail` design state: `ThumbnailDesign` element tree (groups + leaves). Reducer-based with custom history integration via `historyStore`.
+- **thumbnailEditorStore** — `/thumbnail` UI state (not persisted): selection, hover, zoom/pan, grid/snap settings, active sidebar tab, Konva `Stage` ref.
 
 ### Tier List (`/tier`)
 
@@ -55,6 +58,39 @@ A drag-and-drop tier list maker for ranking Smash Bros. characters. Built with *
 - **Settings popover** (`TierListSettings`) — label position, image style (stock/main art), font family/weight/size. Uses the shared `DropDownSelect` component.
 - **Export** — renders to PNG via `html-to-image`. Elements with `data-export-ignore` are excluded.
 - **Mobile** — uses `touch-action: pan-y` on sortable characters to allow vertical scrolling while preserving horizontal drag. The `main` element in Layout is the scroll container on mobile. Character pool sticks to the bottom via `position: sticky`.
+
+### Predict (`/predict`)
+
+A tournament prediction maker: paste a tournament URL, fetch the entrant pool, then drag entrants into an ordered predicted-placements list and share the result.
+
+- **Components** live in `src/components/predict/` (`PredictApp`, `TournamentUrlInput`, `EntrantPoolPanel`, `PredictionListPanel`, `PredictionWorkspace`, `SortablePredictionItem`, `PredictionCountSelector`, `ActionBar`, `ExportBar`, `InviteShareButton`, `FetchingState`, `PredictionPreview`, `PredictionGraphic`).
+- **Page** — `src/pages/predict.tsx` provides its own urql `Provider` (separate from `/ranker`'s) so the predict app can talk to start.gg without depending on the ranker provider tree.
+- **Store** — `src/store/predictionStore.ts` (reducer-based). Actions include `FETCH_START`/`SUCCESS`/`FAIL`, `ADD_PREDICTION`, `REMOVE_PREDICTION`, `REORDER_PREDICTIONS`, `SET_PREDICTION_COUNT`, `AUTO_FILL`, `CLEAR_PREDICTIONS`, `RESET`.
+- **Types** — `src/types/predict/Prediction.ts` (`PredictionPlayer`, `PredictionCount`).
+- **Fetching** — `src/hooks/predict/useFetchPredictionEntrants.ts` reuses the same start.gg / Challonge / Tonamel pipeline as `/ranker` (`detectPlatformAndSlug` + per-platform proxies).
+- **Auto-load via URL** — `PredictApp` parses `?p=<platform>&s=<slug>` from `window.location.search` on first mount and triggers `fetchEntrants`. `InviteShareButton` produces the same shareable URL.
+- **Drag-and-drop** — `@dnd-kit` (sortable) for reordering predictions.
+- **Preview & export** — `PredictionPreview` POSTs the prediction payload to `/api/prediction-image` and renders the returned PNG. The result blob/URL are cached on a `cacheRef` so re-opening the modal with the same payload skips a re-render. `ExportBar` handles download/share.
+
+### Thumbnail (`/thumbnail`)
+
+A general-purpose graphic/thumbnail editor (vs-match cards, match banners, etc.) built on Konva with a custom element tree, selection model, and history. Lazy-loaded and gated by the `thumbnail-enabled` feature flag.
+
+- **Components** live in `src/components/thumbnail/` — `Canvas/`, `Sidebar/`, `Toolbar/`, `Elements/`, `Pickers/`, `ContextMenu/`, plus `KeyboardShortcuts.tsx` and `useElementActions.ts`.
+- **Page** — `src/pages/thumbnail/ThumbnailPage.tsx` (default export from `index.tsx`). Clears selection on unmount.
+- **Stores** — `thumbnailStore` (design tree, reducer-based, persisted) and `thumbnailEditorStore` (transient editor state, not persisted).
+- **Element tree** — `src/types/thumbnail/ThumbnailDesign.ts` defines `ThumbnailDesign`, `ThumbnailElement`, and `GroupElement`. Tree operations (`flattenTree`, `findElement`, `insertIntoTree`, `removeAndReturn`, `updateElementInTree`, `applyParentTransform`, `elementLocalToWorld`, `elementWorldToLocal`, `computeBoundingBox`, etc.) live in `src/utils/thumbnail/elementTree.ts`.
+- **Templates** — `src/thumbnails/` (`blank`, `vsMatch`, `matchBanner`, `index`). Default design is `vsMatchTemplate()`.
+- **Sidebar tabs** — `add` | `layers` | `properties` | `templates` | `background` | `settings`.
+- **History** — Integrates with shared `historyStore`. Some actions (`LOAD_DESIGN`, `RESET`, `SET_CANVAS_SIZE`) clear history.
+- **Keyboard shortcuts** — Wired up in `KeyboardShortcuts.tsx`.
+
+### Feature Flags
+
+- **Provider** — `FeatureFlagsProvider` in `src/hooks/useFeatureFlags.tsx` fetches `/api/flags` once on mount and merges the response over local defaults. Expose flags via `useFeatureFlag(key)` / `useFeatureFlags()`.
+- **Local-dev defaults** — In `import.meta.env.DEV`, new flags default to **on** so contributors can work on them without hitting the API; in production they default to **off** until the dashboard says otherwise. Defaults also apply when `/api/flags` is unreachable (e.g. plain `bun dev` without `bun run dev:vercel`).
+- **Backend** — `api/flags.ts` is a Vercel function backed by `@vercel/flags-core`. Exposes `?debug=1` for diagnostic info; cached `public, max-age=60, stale-while-revalidate=300` at the edge. `api/vercel/flags.ts` is the discovery endpoint.
+- **Adding a flag** — Add the key to both `FeatureFlagKey`/`DEFAULT_FLAGS` in `src/hooks/useFeatureFlags.tsx` and `FLAG_KEYS`/`DEFAULTS` in `api/flags.ts`.
 
 ### TextEditor
 
@@ -139,6 +175,9 @@ Vercel serverless functions live in the `api/` directory:
 - `api/challonge.ts` — Proxy for Challonge API v1. Accepts `?slug=<tournament_slug>` and returns tournament data with participants.
 - `api/tonamel.ts` — Proxy for Tonamel GraphQL API. Accepts `?slug=<competition_id>`. Fetches CSRF token, then queries management endpoint for placements and public endpoint for metadata/participants.
 - `api/tonamel-image.ts` — Image proxy for Tonamel tournament icons. Accepts `?url=<image_url>`. Allowlisted hosts: `assets.tonamel.com`, `img.tonamel.com`, `p1-c2db36b0.imageflux.jp`.
+- `api/prediction-image.ts` — POST endpoint that renders a `/predict` graphic server-side. Uses `satori` (JSX → SVG) + `@resvg/resvg-js` (SVG → PNG) at 2× pixel ratio. Bundles M PLUS Rounded 1c fonts from `api/fonts/` and pulls character stock images from the `SmashRankerAssets` GitHub repo.
+- `api/flags.ts` — Feature-flag endpoint backed by `@vercel/flags-core`. Returns `{ "thumbnail-enabled": boolean, ... }`. Falls back to defaults if the `FLAGS` env var is missing. Pass `?debug=1` for evaluation reasons.
+- `api/vercel/flags.ts` — Vercel Flags discovery endpoint.
 
 ### Environment Variables
 
