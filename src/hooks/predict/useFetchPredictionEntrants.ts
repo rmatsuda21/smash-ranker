@@ -4,7 +4,7 @@ import { t } from "@lingui/core/macro";
 
 import { graphql } from "@/gql";
 import { usePredictionStore } from "@/store/predictionStore";
-import { detectPlatformAndSlug } from "@/consts/platforms";
+import { detectPlatformAndSlug, slugToUrl } from "@/consts/platforms";
 import { EMPTY_CHARACTER_ID } from "@/consts/top8/characters";
 import type { PredictionPlayer } from "@/types/predict/Prediction";
 
@@ -280,6 +280,11 @@ export const useFetchPredictionEntrants = () => {
       } else {
         result = await fetchTonamelEntrants(detected.slug);
       }
+
+      // Overwrite with the canonical platform+slug URL so it always
+      // round-trips through detectPlatformAndSlug (start.gg's API returns
+      // tournament URL without the event slug).
+      result.tournamentUrl = slugToUrl(detected.platform, detected.slug);
 
       dispatch({ type: "FETCH_SUCCESS", payload: result });
     } catch (error) {

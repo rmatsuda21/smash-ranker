@@ -1,30 +1,59 @@
+import { useEffect, useRef, useState } from "react";
 import { Trans } from "@lingui/react/macro";
 import { msg } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
-import { MdArrowBack } from "react-icons/md";
 import { FaListOl } from "react-icons/fa6";
 
 import { Button } from "@/components/shared/Button/Button";
+import { Modal } from "@/components/shared/Modal/Modal";
 import { useConfirmation } from "@/hooks/useConfirmation";
 import { usePredictionStore } from "@/store/predictionStore";
+import { useFetchPredictionEntrants } from "@/hooks/predict/useFetchPredictionEntrants";
+import { detectPlatformAndSlug, slugToUrl, type Platform } from "@/consts/platforms";
 import { TournamentUrlInput } from "@/components/predict/TournamentUrlInput/TournamentUrlInput";
+import { InviteShareButton } from "@/components/predict/InviteShareButton/InviteShareButton";
 import { PredictionCountSelector } from "@/components/predict/PredictionCountSelector/PredictionCountSelector";
 import { PredictionWorkspace } from "@/components/predict/PredictionWorkspace/PredictionWorkspace";
 import { ActionBar } from "@/components/predict/ActionBar/ActionBar";
-import { PredictionPreview } from "@/components/predict/PredictionPreview/PredictionPreview";
+import {
+  PredictionPreview,
+  type PredictionPreviewCache,
+} from "@/components/predict/PredictionPreview/PredictionPreview";
 
 import styles from "./PredictApp.module.scss";
 
+const isPlatform = (value: string | null): value is Platform =>
+  value === "startgg" || value === "challonge" || value === "tonamel";
+
 export const PredictApp = () => {
   const { _ } = useLingui();
-  const phase = usePredictionStore((s) => s.phase);
   const entrantPool = usePredictionStore((s) => s.entrantPool);
   const predictions = usePredictionStore((s) => s.predictions);
   const tournamentName = usePredictionStore((s) => s.tournamentName);
+  const tournamentUrl = usePredictionStore((s) => s.tournamentUrl);
   const eventName = usePredictionStore((s) => s.eventName);
   const error = usePredictionStore((s) => s.error);
   const fetching = usePredictionStore((s) => s.fetching);
   const dispatch = usePredictionStore((s) => s.dispatch);
+  const { fetchEntrants } = useFetchPredictionEntrants();
+
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const previewCacheRef = useRef<PredictionPreviewCache | null>(null);
+
+  const didAutoLoadRef = useRef(false);
+  useEffect(() => {
+    if (didAutoLoadRef.current) return;
+    didAutoLoadRef.current = true;
+
+    const params = new URLSearchParams(window.location.search);
+    const p = params.get("p");
+    const s = params.get("s");
+    if (!isPlatform(p) || !s) return;
+
+    if (tournamentUrl && detectPlatformAndSlug(tournamentUrl)?.slug === s) return;
+
+    fetchEntrants(slugToUrl(p, s));
+  }, [fetchEntrants, tournamentUrl]);
 
   const { confirm: confirmClear, ConfirmationDialog: ClearConfirmation } =
     useConfirmation(() => dispatch({ type: "CLEAR_PREDICTIONS" }), {
@@ -33,24 +62,6 @@ export const PredictApp = () => {
     });
 
   const hasData = entrantPool.length > 0 || predictions.length > 0;
-
-  if (phase === "preview") {
-    return (
-      <div className={`${styles.root} ${styles.previewRoot}`}>
-        <div className={styles.previewHeader}>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => dispatch({ type: "SET_PHASE", payload: "input" })}
-          >
-            <MdArrowBack />
-            <Trans>Back to Edit</Trans>
-          </Button>
-        </div>
-        <PredictionPreview />
-      </div>
-    );
-  }
 
   if (!hasData) {
     return (
@@ -99,19 +110,26 @@ export const PredictApp = () => {
           <h2 className={styles.tournamentName}>{tournamentName}</h2>
           {eventName && <p className={styles.eventName}>{eventName}</p>}
         </div>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={confirmClear}
-        >
-          <Trans>Clear</Trans>
-        </Button>
+        <div className={styles.headerActions}>
+          <InviteShareButton />
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={confirmClear}
+          >
+            <Trans>Clear</Trans>
+          </Button>
+        </div>
       </div>
       <ClearConfirmation />
 
       <PredictionCountSelector />
       <PredictionWorkspace />
-      <ActionBar />
+      <ActionBar onGenerate={() => setPreviewOpen(true)} />
+
+      <Modal isOpen={previewOpen} onClose={() => setPreviewOpen(false)}>
+        <PredictionPreview cacheRef={previewCacheRef} />
+      </Modal>
     </div>
   );
 };

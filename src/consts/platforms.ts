@@ -29,3 +29,14 @@ export const detectPlatformAndSlug = (
 
   return null;
 };
+
+export const slugToUrl = (platform: Platform, slug: string): string => {
+  switch (platform) {
+    case "startgg":
+      return `https://start.gg/${slug}`;
+    case "challonge":
+      return `https://challonge.com/${slug}`;
+    case "tonamel":
+      return `https://tonamel.com/competition/${slug}`;
+  }
+};

@@ -26,7 +26,7 @@ msgid "(https://tonamel.com/competition/[slug])"
 msgstr "(https://tonamel.com/competition/[スラッグ])"
 
 #. placeholder {0}: file.name
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:100
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:102
 msgid "{0} is too large! (Max 2MB)"
 msgstr "{0}が容量オーバーです！（最大2MB）"
 
@@ -42,7 +42,7 @@ msgstr "参加人数"
 msgid "Accent Color"
 msgstr "アクセントカラー"
 
-#: src/components/predict/PredictApp/PredictApp.tsx:32
+#: src/components/predict/PredictApp/PredictApp.tsx:61
 msgid "All current predictions will be removed."
 msgstr "現在の予想がすべて削除されます。"
 
@@ -55,20 +55,20 @@ msgid "Any current player and tournament data will be overwritten."
 msgstr "現在の選手と大会データは上書きされます。"
 
 #. placeholder {0}: markedIds.size
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:72
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:74
 msgid "Are you sure you want to delete {0} assets?"
 msgstr "{0}個の素材を削除しますか？"
 
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:54
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:56
 msgid "Are you sure you want to delete this asset?"
 msgstr "この素材を消しますか？"
 
 #: src/components/top8/AssetManager/AssetManager.tsx:32
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:183
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:191
 msgid "Assets"
 msgstr "素材"
 
-#: src/components/predict/ActionBar/ActionBar.tsx:27
+#: src/components/predict/ActionBar/ActionBar.tsx:31
 msgid "Auto-fill by seed"
 msgstr "シードで自動入力"
 
@@ -76,9 +76,9 @@ msgstr "シードで自動入力"
 msgid "Avatar"
 msgstr "アイコン"
 
-#: src/components/predict/PredictApp/PredictApp.tsx:47
-msgid "Back to Edit"
-msgstr "編集に戻る"
+#: src/components/predict/PredictApp/PredictApp.tsx:71
+#~ msgid "Back to Edit"
+#~ msgstr "編集に戻る"
 
 #. js-lingui-explicit-id
 #: src/consts/top8/paletteLabels.ts:19
@@ -129,6 +129,14 @@ msgstr "下部テキスト"
 #: src/components/top8/InfoPanel/InfoPanel.tsx:82
 msgid "Buy me a coffee"
 msgstr "一杯だけよ"
+
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:28
+msgid "Calculating upset odds..."
+msgstr ""
+
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:30
+msgid "Calling it for the record..."
+msgstr ""
 
 #: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:80
 msgid "Cancel"
@@ -184,7 +192,7 @@ msgstr "使用キャラ"
 msgid "City"
 msgstr "市区町村"
 
-#: src/components/predict/PredictApp/PredictApp.tsx:107
+#: src/components/predict/PredictApp/PredictApp.tsx:120
 #: src/components/top8/AssetSelector/AssetSelector.tsx:100
 msgid "Clear"
 msgstr "クリア"
@@ -197,7 +205,7 @@ msgstr "選手初期化"
 msgid "Clear Player?"
 msgstr "選手を初期化しますか？"
 
-#: src/components/predict/PredictApp/PredictApp.tsx:31
+#: src/components/predict/PredictApp/PredictApp.tsx:60
 msgid "Clear Predictions?"
 msgstr "予想をクリアしますか？"
 
@@ -233,7 +241,12 @@ msgstr "大会が見つかりませんでした"
 msgid "Confirm"
 msgstr "確認"
 
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:25
+msgid "Consulting Master Hand..."
+msgstr ""
+
 #: src/components/predict/ExportBar/ExportBar.tsx:65
+#: src/components/predict/InviteShareButton/InviteShareButton.tsx:45
 msgid "Copied!"
 msgstr "コピーしました！"
 
@@ -317,15 +330,15 @@ msgid "Delete"
 msgstr "削除"
 
 #. placeholder {0}: markedIds.size
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:213
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:221
 msgid "Delete ({0})"
 msgstr "削除 ({0})"
 
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:53
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:55
 msgid "Delete Asset"
 msgstr "素材消去"
 
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:70
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:72
 msgid "Delete Assets"
 msgstr "素材を削除"
 
@@ -333,7 +346,7 @@ msgstr "素材を削除"
 msgid "Delete Template?"
 msgstr "テンプレートを削除しますか？"
 
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:199
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:207
 msgid "Deselect All"
 msgstr "全選択解除"
 
@@ -416,7 +429,7 @@ msgstr "シード情報の取得に失敗しました"
 msgid "Failed to fetch Tonamel tournament"
 msgstr "Tonamel大会の取得に失敗しました"
 
-#: src/hooks/predict/useFetchPredictionEntrants.ts:289
+#: src/hooks/predict/useFetchPredictionEntrants.ts:294
 msgid "Failed to fetch tournament"
 msgstr "大会情報の取得に失敗しました"
 
@@ -424,7 +437,7 @@ msgstr "大会情報の取得に失敗しました"
 msgid "Failed to fetch tournament data"
 msgstr "大会データの取得に失敗しました"
 
-#: src/components/predict/PredictionPreview/PredictionPreview.tsx:77
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:132
 msgid "Failed to generate image"
 msgstr "画像の生成に失敗しました"
 
@@ -450,13 +463,17 @@ msgstr "フォントウェイト"
 msgid "Gamer Tag"
 msgstr "選手名"
 
-#: src/components/predict/ActionBar/ActionBar.tsx:33
+#: src/components/predict/ActionBar/ActionBar.tsx:34
 msgid "Generate Graphic"
 msgstr "画像を生成"
 
 #: src/components/predict/PredictionPreview/PredictionPreview.tsx:104
-msgid "Generating image..."
-msgstr "画像を生成中..."
+#~ msgid "Generating image..."
+#~ msgstr "画像を生成中..."
+
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:162
+msgid "Generating prediction"
+msgstr ""
 
 #. js-lingui-explicit-id
 #: src/consts/top8/paletteLabels.ts:25
@@ -526,7 +543,7 @@ msgstr "大会を読み込みますか？"
 msgid "Loading Configs..."
 msgstr "読み込み中..."
 
-#: src/components/predict/PredictApp/PredictApp.tsx:76
+#: src/components/predict/PredictApp/PredictApp.tsx:87
 msgid "Loading entrants..."
 msgstr "参加者を読み込み中..."
 
@@ -538,6 +555,10 @@ msgstr "場所"
 #: src/consts/top8/paletteLabels.ts:50
 #~ msgid "Location"
 #~ msgstr "場所"
+
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:29
+msgid "Locking in picks..."
+msgstr ""
 
 #: src/components/top8/InfoPanel/InfoPanel.tsx:67
 msgid "Love Smash Ranker? Support the project!"
@@ -560,7 +581,7 @@ msgstr "珈琲一杯分から！"
 msgid "My Templates"
 msgstr "マイテンプレート"
 
-#: src/components/top8/AssetManager/AssetsModal/AssetGrid/AssetGrid.tsx:36
+#: src/components/top8/AssetManager/AssetsModal/AssetGrid/AssetGrid.tsx:38
 msgid "No assets yet"
 msgstr "素材がありません"
 
@@ -593,7 +614,7 @@ msgstr "ドラッグ・ドロップも対応"
 msgid "Original concept & inspiration"
 msgstr "元コンセプトとインスピレーション"
 
-#: src/components/predict/PredictApp/PredictApp.tsx:66
+#: src/components/predict/PredictApp/PredictApp.tsx:77
 msgid "Paste a tournament URL to predict placements and share your picks."
 msgstr "大会URLを貼り付けて順位を予想し、予想を共有しましょう。"
 
@@ -677,11 +698,15 @@ msgstr "選手タグ"
 msgid "Players"
 msgstr "選手情報"
 
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:27
+msgid "Polishing trophies..."
+msgstr ""
+
 #: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:28
 msgid "Prediction size"
 msgstr "予想人数"
 
-#: src/components/predict/PredictApp/PredictApp.tsx:63
+#: src/components/predict/PredictApp/PredictApp.tsx:74
 #: src/components/predict/PredictionGraphic/PredictionGraphic.tsx:45
 #: src/components/predict/PredictionListPanel/PredictionListPanel.tsx:82
 #: src/components/predict/PredictionWorkspace/PredictionWorkspace.tsx:39
@@ -718,6 +743,10 @@ msgstr "紫"
 #: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:43
 msgid "Quality"
 msgstr "品質"
+
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:26
+msgid "Reading the tea leaves..."
+msgstr ""
 
 #: src/components/top8/SettingsPanel/AccentColorPicker.tsx:30
 msgid "Red"
@@ -757,7 +786,7 @@ msgstr "サブカラー"
 msgid "Select"
 msgstr "選択"
 
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:201
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:209
 msgid "Select All"
 msgstr "全選択"
 
@@ -779,6 +808,10 @@ msgstr "選択済み"
 
 #: src/components/Layout/SettingsModal/SettingsModal.tsx:24
 msgid "Settings"
+msgstr ""
+
+#: src/components/predict/InviteShareButton/InviteShareButton.tsx:40
+msgid "Share invite"
 msgstr ""
 
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:68
@@ -959,13 +992,13 @@ msgstr "大会情報"
 #~ msgid "Tournament Info"
 #~ msgstr "大会情報"
 
-#: src/components/top8/TournamentConfig/TournamentEditor.tsx:104
-#: src/consts/top8/placeholders.ts:28
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:54
 msgid "Tournament Name"
 msgstr "大会名"
 
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:54
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:104
+#: src/consts/top8/placeholders.ts:28
 msgid "Tournament Name"
 msgstr "大会名"
 
@@ -1007,11 +1040,11 @@ msgid "Undo"
 msgstr "元に戻す"
 
 #: src/components/shared/FileUploader/FileUploader.tsx:153
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:232
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:240
 msgid "Upload"
 msgstr "アップロード"
 
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:229
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:237
 msgid "Upload Assets"
 msgstr "素材をアップロード"
 
