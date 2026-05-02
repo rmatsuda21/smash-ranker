@@ -3,7 +3,6 @@ export type PredictionPlayer = {
   name: string;
   prefix?: string;
   seed: number;
-  characterId: string;
   country?: string;
 };
 

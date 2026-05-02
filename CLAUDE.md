@@ -70,7 +70,7 @@ A tournament prediction maker: paste a tournament URL, fetch the entrant pool, t
 - **Fetching** — `src/hooks/predict/useFetchPredictionEntrants.ts` reuses the same start.gg / Challonge / Tonamel pipeline as `/ranker` (`detectPlatformAndSlug` + per-platform proxies).
 - **Auto-load via URL** — `PredictApp` parses `?p=<platform>&s=<slug>` from `window.location.search` on first mount and triggers `fetchEntrants`. `InviteShareButton` produces the same shareable URL.
 - **Drag-and-drop** — `@dnd-kit` (sortable) for reordering predictions.
-- **Preview & export** — `PredictionPreview` POSTs the prediction payload to `/api/prediction-image` and renders the returned PNG. The result blob/URL are cached on a `cacheRef` so re-opening the modal with the same payload skips a re-render. `ExportBar` handles download/share.
+- **Preview & export** — `PredictionPreview` GETs `/api/prediction-image?d=<base64url(JSON)>` and renders the returned PNG. Encoding the payload into the URL makes responses CDN-cacheable. The result blob/URL are also cached on a `cacheRef` so re-opening the modal with the same payload skips even the network round-trip. `ExportBar` handles download/share.
 
 ### Thumbnail (`/thumbnail`)
 
@@ -175,7 +175,7 @@ Vercel serverless functions live in the `api/` directory:
 - `api/challonge.ts` — Proxy for Challonge API v1. Accepts `?slug=<tournament_slug>` and returns tournament data with participants.
 - `api/tonamel.ts` — Proxy for Tonamel GraphQL API. Accepts `?slug=<competition_id>`. Fetches CSRF token, then queries management endpoint for placements and public endpoint for metadata/participants.
 - `api/tonamel-image.ts` — Image proxy for Tonamel tournament icons. Accepts `?url=<image_url>`. Allowlisted hosts: `assets.tonamel.com`, `img.tonamel.com`, `p1-c2db36b0.imageflux.jp`.
-- `api/prediction-image.ts` — POST endpoint that renders a `/predict` graphic server-side. Uses `satori` (JSX → SVG) + `@resvg/resvg-js` (SVG → PNG) at 2× pixel ratio. Bundles M PLUS Rounded 1c fonts from `api/fonts/` and pulls character stock images from the `SmashRankerAssets` GitHub repo.
+- `api/prediction-image.ts` — GET endpoint that renders a `/predict` graphic server-side. Reads the payload from a base64url-encoded `d` query param so responses are URL-addressed and CDN-cacheable. Uses `satori` (JSX → SVG) + `@resvg/resvg-js` (SVG → PNG) at 2× pixel ratio. Bundles M PLUS Rounded 1c fonts from `api/fonts/` and pulls character stock images from the `SmashRankerAssets` GitHub repo. Module-scope LRU caches dedupe character/icon fetches and rendered PNGs across requests on a warm instance.
 - `api/flags.ts` — Feature-flag endpoint backed by `@vercel/flags-core`. Returns `{ "thumbnail-enabled": boolean, ... }`. Falls back to defaults if the `FLAGS` env var is missing. Pass `?debug=1` for evaluation reasons.
 - `api/vercel/flags.ts` — Vercel Flags discovery endpoint.
 

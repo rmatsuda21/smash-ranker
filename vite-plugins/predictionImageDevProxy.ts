@@ -5,24 +5,26 @@ export function predictionImageDevProxy(): Plugin {
     name: "prediction-image-dev-proxy",
     configureServer(server) {
       server.middlewares.use("/api/prediction-image", async (req, res) => {
-        if (req.method !== "POST") {
+        if (req.method !== "GET") {
           res.statusCode = 405;
           res.end(JSON.stringify({ error: "Method not allowed" }));
           return;
         }
 
-        // Read body
-        const chunks: Buffer[] = [];
-        for await (const chunk of req) chunks.push(chunk as Buffer);
-        const body = JSON.parse(Buffer.concat(chunks).toString());
+        const url = new URL(req.url ?? "/", "http://localhost");
+        const d = url.searchParams.get("d") ?? "";
 
         try {
           const handler = (await import("../api/prediction-image")).default;
 
           // Minimal mock of VercelRequest/VercelResponse
-          const mockReq = { method: "POST", body } as any;
+          const mockReq = {
+            method: "GET",
+            query: { d },
+            headers: req.headers,
+          } as any;
           let statusCode = 200;
-          let headers: Record<string, string> = {};
+          const headers: Record<string, string> = {};
           let responseData: Buffer | string | null = null;
 
           const mockRes = {
@@ -42,6 +44,9 @@ export function predictionImageDevProxy(): Plugin {
               responseData = data;
               return mockRes;
             },
+            end() {
+              return mockRes;
+            },
           } as any;
 
           await handler(mockReq, mockRes);
@@ -50,7 +55,8 @@ export function predictionImageDevProxy(): Plugin {
           for (const [key, value] of Object.entries(headers)) {
             res.setHeader(key, value);
           }
-          res.end(responseData);
+          if (responseData === null) res.end();
+          else res.end(responseData);
         } catch (err) {
           console.error("prediction-image dev proxy error:", err);
           res.statusCode = 500;

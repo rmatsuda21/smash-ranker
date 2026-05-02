@@ -8,7 +8,7 @@
 
 .graphic {
   width: 100%;
-  max-width: 380px;
+  max-width: 275px;
   background:
     radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.03) 1px, transparent 0),
     linear-gradient(170deg, var(--pg-bg-start) 0%, var(--pg-bg-end) 100%);
@@ -129,19 +129,6 @@
   font-size: 12px;
   font-weight: 800;
   color: var(--pg-text-muted);
-}
-
-.charIcon {
-  width: 20px;
-  height: 20px;
-  flex-shrink: 0;
-  object-fit: contain;
-}
-
-.charPlaceholder {
-  width: 20px;
-  height: 20px;
-  flex-shrink: 0;
 }
 
 .name {

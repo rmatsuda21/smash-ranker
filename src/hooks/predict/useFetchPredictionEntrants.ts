@@ -5,7 +5,6 @@ import { t } from "@lingui/core/macro";
 import { graphql } from "@/gql";
 import { usePredictionStore } from "@/store/predictionStore";
 import { detectPlatformAndSlug, slugToUrl } from "@/consts/platforms";
-import { EMPTY_CHARACTER_ID } from "@/consts/top8/characters";
 import type { PredictionPlayer } from "@/types/predict/Prediction";
 import { extractTournamentPalette } from "@/utils/predict/extractTournamentPalette";
 
@@ -178,7 +177,6 @@ const fetchStartgg = async (
         name: participant?.gamerTag || entrant.name || "Unknown",
         prefix: participant?.prefix || undefined,
         seed: node.seedNum ?? 9999,
-        characterId: EMPTY_CHARACTER_ID,
         country: countryCode || undefined,
       });
     }
@@ -209,7 +207,6 @@ const fetchChallongeEntrants = async (
       id: String(p.id),
       name: p.name,
       seed: p.seed ?? 9999,
-      characterId: EMPTY_CHARACTER_ID,
     }))
     .sort((a, b) => a.seed - b.seed);
 
@@ -244,7 +241,6 @@ const fetchTonamelEntrants = async (
       id: p.playerId || `tonamel-${index}`,
       name: p.gameCode || p.name,
       seed: index + 1,
-      characterId: EMPTY_CHARACTER_ID,
       country: p.countryCode || undefined,
     }),
   );
