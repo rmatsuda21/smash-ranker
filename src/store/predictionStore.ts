@@ -6,6 +6,10 @@ import type {
   PredictionCount,
   PredictionPlayer,
 } from "@/types/predict/Prediction";
+import {
+  DEFAULT_PREDICTION_PALETTE,
+  type PredictionPalette,
+} from "@/types/predict/PredictionPalette";
 
 interface PredictionState {
   tournamentName: string;
@@ -13,6 +17,7 @@ interface PredictionState {
   tournamentDate: string;
   tournamentUrl: string;
   tournamentIconUrl: string;
+  colorPalette: PredictionPalette;
 
   entrantPool: PredictionPlayer[];
   predictions: PredictionPlayer[];
@@ -37,6 +42,7 @@ type PredictionAction =
       };
     }
   | { type: "FETCH_FAIL"; payload: string }
+  | { type: "SET_COLOR_PALETTE"; payload: PredictionPalette }
   | { type: "ADD_PREDICTION"; payload: PredictionPlayer }
   | { type: "REMOVE_PREDICTION"; payload: string }
   | { type: "REORDER_PREDICTIONS"; fromIndex: number; toIndex: number }
@@ -52,6 +58,7 @@ const initialState: PredictionState = {
   tournamentDate: "",
   tournamentUrl: "",
   tournamentIconUrl: "",
+  colorPalette: DEFAULT_PREDICTION_PALETTE,
   entrantPool: [],
   predictions: [],
   predictionCount: 8,
@@ -97,12 +104,16 @@ const predictionReducer = (
         tournamentDate: action.payload.tournamentDate,
         tournamentUrl: action.payload.tournamentUrl,
         tournamentIconUrl: action.payload.tournamentIconUrl,
+        colorPalette: DEFAULT_PREDICTION_PALETTE,
         entrantPool: action.payload.entrants,
         predictions: [],
       };
 
     case "FETCH_FAIL":
       return { fetching: false, error: action.payload };
+
+    case "SET_COLOR_PALETTE":
+      return { colorPalette: action.payload };
 
     case "ADD_PREDICTION": {
       const max = getEffectiveCount(state);
@@ -224,6 +235,7 @@ export const usePredictionStore = create<PredictionStore>()(
           tournamentDate: state.tournamentDate,
           tournamentUrl: state.tournamentUrl,
           tournamentIconUrl: state.tournamentIconUrl,
+          colorPalette: state.colorPalette,
           entrantPool: state.entrantPool,
           predictions: state.predictions,
           predictionCount: state.predictionCount,

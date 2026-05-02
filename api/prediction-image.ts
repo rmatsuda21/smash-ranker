@@ -28,12 +28,39 @@ type PredictionPlayer = {
   characterId: string;
 };
 
+// Duplicated locally — `api/` is built independently from `src/`, so we don't
+// import the shared type to keep this function self-contained.
+type PredictionPalette = {
+  bgGradientStart: string;
+  bgGradientEnd: string;
+  accent: string;
+  accentRowBg: string;
+  textPrimary: string;
+  textSecondary: string;
+  textMuted: string;
+  textFooter: string;
+  borderSubtle: string;
+};
+
+const DEFAULT_PALETTE: PredictionPalette = {
+  bgGradientStart: "#1e1e3a",
+  bgGradientEnd: "#14142a",
+  accent: "#7c5cbf",
+  accentRowBg: "rgba(124, 92, 191, 0.28)",
+  textPrimary: "#ffffff",
+  textSecondary: "#e8e8f0",
+  textMuted: "#8888aa",
+  textFooter: "#4a4a60",
+  borderSubtle: "rgba(255, 255, 255, 0.06)",
+};
+
 type RequestBody = {
   tournamentName: string;
   eventName: string;
   tournamentDate: string;
   tournamentIconUrl: string;
   predictions: PredictionPlayer[];
+  palette?: PredictionPalette;
 };
 
 // --- Image fetching ---
@@ -84,21 +111,21 @@ async function fetchAllImages(
 
 // --- Rank styles ---
 
-function getRowBackground(rank: number): string {
+function getRowBackground(rank: number, palette: PredictionPalette): string {
   if (rank === 1)
     return "linear-gradient(90deg, rgba(255, 215, 0, 0.15) 0%, transparent 75%)";
   if (rank === 2)
     return "linear-gradient(90deg, rgba(192, 192, 192, 0.15) 0%, transparent 75%)";
   if (rank === 3)
     return "linear-gradient(90deg, rgba(205, 127, 50, 0.15) 0%, transparent 75%)";
-  return "linear-gradient(90deg, rgba(124, 92, 191, 0.28) 0%, transparent 75%)";
+  return `linear-gradient(90deg, ${palette.accentRowBg} 0%, transparent 75%)`;
 }
 
-function getRankColor(rank: number): string {
+function getRankColor(rank: number, palette: PredictionPalette): string {
   if (rank === 1) return "#ffd700";
   if (rank === 2) return "#d0d0d0";
   if (rank === 3) return "#cd7f32";
-  return "#8888aa";
+  return palette.textMuted;
 }
 
 function getRankBgColor(rank: number): string {
@@ -119,7 +146,8 @@ const DOT_PATTERN_SVG = `data:image/svg+xml,${encodeURIComponent(
 function buildGraphic(
   body: RequestBody,
   tournamentIcon: string | null,
-  charMap: Map<string, string>
+  charMap: Map<string, string>,
+  palette: PredictionPalette
 ): React.ReactElement {
   const { tournamentName, eventName, tournamentDate, predictions } = body;
 
@@ -150,7 +178,7 @@ function buildGraphic(
           gap: 3,
           padding: "6px 10px",
           borderRadius: 6,
-          backgroundImage: getRowBackground(rank),
+          backgroundImage: getRowBackground(rank, palette),
         },
       },
       // Rank badge
@@ -174,7 +202,7 @@ function buildGraphic(
             style: {
               fontSize: 12,
               fontWeight: 800,
-              color: getRankColor(rank),
+              color: getRankColor(rank, palette),
             },
           },
           String(rank)
@@ -199,7 +227,7 @@ function buildGraphic(
             flex: 1,
             fontSize: 13,
             fontWeight: 800,
-            color: "#e8e8f0",
+            color: palette.textSecondary,
             overflow: "hidden",
             textOverflow: "ellipsis",
             whiteSpace: "nowrap" as const,
@@ -212,7 +240,7 @@ function buildGraphic(
                 style: {
                   fontWeight: 400,
                   fontSize: 11,
-                  color: "#8888aa",
+                  color: palette.textMuted,
                   marginRight: 4,
                 },
               },
@@ -232,7 +260,7 @@ function buildGraphic(
         flexDirection: "column" as const,
         width: "100%",
         height: "100%",
-        backgroundImage: "linear-gradient(170deg, #1e1e3a 0%, #14142a 100%)",
+        backgroundImage: `linear-gradient(170deg, ${palette.bgGradientStart} 0%, ${palette.bgGradientEnd} 100%)`,
         borderRadius: 12,
         fontFamily: "M PLUS Rounded 1c",
         position: "relative" as const,
@@ -290,7 +318,7 @@ function buildGraphic(
             style: {
               fontSize: 15,
               fontWeight: 800,
-              color: "#ffffff",
+              color: palette.textPrimary,
               lineHeight: 1.3,
               overflow: "hidden",
               textOverflow: "ellipsis",
@@ -306,7 +334,7 @@ function buildGraphic(
                 style: {
                   fontSize: 11,
                   fontWeight: 400,
-                  color: "#6c6c8a",
+                  color: palette.textMuted,
                   marginTop: 1,
                 },
               },
@@ -323,9 +351,9 @@ function buildGraphic(
           fontSize: 9,
           fontWeight: 800,
           letterSpacing: 2,
-          color: "#7c5cbf",
+          color: palette.accent,
           padding: "0 16px 8px",
-          borderBottom: "1px solid rgba(255, 255, 255, 0.06)",
+          borderBottom: `1px solid ${palette.borderSubtle}`,
         },
       },
       "PREDICTIONS"
@@ -353,8 +381,8 @@ function buildGraphic(
           padding: "8px 16px",
           fontSize: 9,
           fontWeight: 400,
-          color: "#4a4a60",
-          borderTop: "1px solid rgba(255, 255, 255, 0.06)",
+          color: palette.textFooter,
+          borderTop: `1px solid ${palette.borderSubtle}`,
         },
       },
       "smash-ranker.app"
@@ -400,8 +428,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       body.tournamentIconUrl
     );
 
+    const palette: PredictionPalette = {
+      ...DEFAULT_PALETTE,
+      ...(body.palette ?? {}),
+    };
+
     const height = estimateHeight(body.predictions.length);
-    const graphic = buildGraphic(body, tournamentIcon, charMap);
+    const graphic = buildGraphic(body, tournamentIcon, charMap, palette);
 
     const svg = await satori(graphic, {
       width: WIDTH,

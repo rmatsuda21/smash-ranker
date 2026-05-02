@@ -28,10 +28,10 @@
   flex-direction: column;
   gap: 12px;
   padding: 18px 16px 14px;
-  color: #e7e7f5;
+  color: var(--pg-text-2, #e7e7f5);
   background:
     radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.04) 1px, transparent 0),
-    linear-gradient(170deg, #1f1f3d 0%, #14142a 100%);
+    linear-gradient(170deg, var(--pg-bg-start, #1f1f3d) 0%, var(--pg-bg-end, #14142a) 100%);
   background-size: 16px 16px, 100% 100%;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.04),
@@ -80,7 +80,7 @@
   font-size: 10px;
   letter-spacing: 1.4px;
   text-transform: uppercase;
-  color: #8c8cb0;
+  color: var(--pg-text-muted, #8c8cb0);
   font-weight: 600;
 }
 
@@ -89,7 +89,7 @@
   height: 22px;
   font-size: 14px;
   font-weight: 600;
-  color: #d6d6ec;
+  color: var(--pg-text-2, #d6d6ec);
 }
 
 .taglineText {
@@ -186,7 +186,7 @@
   font-size: 12px;
   font-weight: 700;
   background: rgba(255, 255, 255, 0.08);
-  color: #cacae5;
+  color: var(--pg-text-2, #cacae5);
 }
 
 .placement.gold {
@@ -212,14 +212,14 @@
   min-width: 0;
   font-size: 13px;
   font-weight: 500;
-  color: #ececf7;
+  color: var(--pg-text-2, #ececf7);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .prefix {
-  color: #8c8cb0;
+  color: var(--pg-text-muted, #8c8cb0);
   font-weight: 400;
 }
 
@@ -240,7 +240,7 @@
   background: linear-gradient(
     90deg,
     transparent 0%,
-    var(--accent-9, #8b5cf6) 50%,
+    var(--pg-accent, #8b5cf6) 50%,
     transparent 100%
   );
   animation: progressSlide 1.6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
@@ -260,7 +260,7 @@
   z-index: 2;
   font-size: 13px;
   font-weight: 500;
-  color: #6c6c8a;
+  color: var(--pg-text-muted, #6c6c8a);
   letter-spacing: 0.5px;
   text-align: center;
   margin: auto;

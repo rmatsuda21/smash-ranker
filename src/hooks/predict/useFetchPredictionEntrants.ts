@@ -7,6 +7,7 @@ import { usePredictionStore } from "@/store/predictionStore";
 import { detectPlatformAndSlug, slugToUrl } from "@/consts/platforms";
 import { EMPTY_CHARACTER_ID } from "@/consts/top8/characters";
 import type { PredictionPlayer } from "@/types/predict/Prediction";
+import { extractTournamentPalette } from "@/utils/predict/extractTournamentPalette";
 
 // Step 1: Get event metadata + first phase ID
 const EventMetaQueryDoc = graphql(`
@@ -287,6 +288,12 @@ export const useFetchPredictionEntrants = () => {
       result.tournamentUrl = slugToUrl(detected.platform, detected.slug);
 
       dispatch({ type: "FETCH_SUCCESS", payload: result });
+
+      if (result.tournamentIconUrl) {
+        extractTournamentPalette(result.tournamentIconUrl).then((palette) => {
+          dispatch({ type: "SET_COLOR_PALETTE", payload: palette });
+        });
+      }
     } catch (error) {
       const message =
         error instanceof Error
