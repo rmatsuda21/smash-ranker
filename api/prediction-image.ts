@@ -38,16 +38,25 @@ type RequestBody = {
 
 // --- Image fetching ---
 
-async function fetchImageAsDataUrl(url: string): Promise<string | null> {
-  try {
-    const res = await fetch(url);
-    if (!res.ok) return null;
-    const buf = Buffer.from(await res.arrayBuffer());
-    const contentType = res.headers.get("content-type") || "image/png";
-    return `data:${contentType};base64,${buf.toString("base64")}`;
-  } catch {
-    return null;
+async function fetchImageAsDataUrl(
+  url: string,
+  retries = 1
+): Promise<string | null> {
+  for (let i = 0; i <= retries; i++) {
+    try {
+      const ctrl = new AbortController();
+      const t = setTimeout(() => ctrl.abort(), 4000);
+      const res = await fetch(url, { signal: ctrl.signal });
+      clearTimeout(t);
+      if (!res.ok) continue;
+      const buf = Buffer.from(await res.arrayBuffer());
+      const contentType = res.headers.get("content-type") || "image/png";
+      return `data:${contentType};base64,${buf.toString("base64")}`;
+    } catch {
+      // retry
+    }
   }
+  return null;
 }
 
 async function fetchAllImages(
@@ -119,6 +128,7 @@ function buildGraphic(
         year: "numeric",
         month: "short",
         day: "numeric",
+        timeZone: "UTC",
       })
     : "";
 
@@ -137,7 +147,7 @@ function buildGraphic(
         style: {
           display: "flex",
           alignItems: "center",
-          gap: 8,
+          gap: 3,
           padding: "6px 10px",
           borderRadius: 6,
           backgroundImage: getRowBackground(rank),
@@ -185,9 +195,10 @@ function buildGraphic(
         {
           style: {
             display: "flex",
+            alignItems: "baseline",
             flex: 1,
             fontSize: 13,
-            fontWeight: 600,
+            fontWeight: 800,
             color: "#e8e8f0",
             overflow: "hidden",
             textOverflow: "ellipsis",
@@ -197,8 +208,15 @@ function buildGraphic(
         player.prefix
           ? h(
               "span",
-              { style: { fontWeight: 400, color: "#8888aa" } },
-              `${player.prefix} | `
+              {
+                style: {
+                  fontWeight: 400,
+                  fontSize: 11,
+                  color: "#8888aa",
+                  marginRight: 4,
+                },
+              },
+              player.prefix
             )
           : null,
         player.name
@@ -303,7 +321,7 @@ function buildGraphic(
       {
         style: {
           fontSize: 9,
-          fontWeight: 700,
+          fontWeight: 800,
           letterSpacing: 2,
           color: "#7c5cbf",
           padding: "0 16px 8px",
@@ -334,7 +352,7 @@ function buildGraphic(
           justifyContent: "center",
           padding: "8px 16px",
           fontSize: 9,
-          fontWeight: 500,
+          fontWeight: 400,
           color: "#4a4a60",
           borderTop: "1px solid rgba(255, 255, 255, 0.06)",
         },
@@ -394,6 +412,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       ],
     });
 
+    // PNG output is deterministic on Vercel's Linux x64 runtime in production.
+    // Local dev uses platform-specific Resvg binaries (darwin-arm64, win32-x64,
+    // etc.) which may produce subpixel differences from the production binary.
     const resvg = new Resvg(svg, {
       fitTo: { mode: "width" as const, value: OUTPUT_WIDTH },
       font: { loadSystemFonts: false },
