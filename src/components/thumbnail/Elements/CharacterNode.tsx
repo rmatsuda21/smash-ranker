@@ -38,21 +38,20 @@ const CharacterNodeComponent = ({ element, draggable }: Props) => {
     offset: ZERO_OFFSET,
     cropOffset: crop.offset,
     cropScale: crop.scale,
+    flipX: element.flipX,
   });
 
   if (!finalImage) return null;
 
-  const flip = element.flipX ? -1 : 1;
   return (
     <KonvaImage
       ref={ref}
       id={element.id}
       name={element.id}
-      x={element.x + (element.flipX ? element.width : 0)}
+      x={element.x}
       y={element.y}
       width={element.width}
       height={element.height}
-      scaleX={flip}
       rotation={element.rotation}
       opacity={element.opacity}
       visible={element.visible}

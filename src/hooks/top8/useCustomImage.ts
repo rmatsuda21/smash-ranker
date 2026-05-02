@@ -31,6 +31,7 @@ export const useCustomImage = ({
   offset = { x: 0, y: 0 },
   cropOffset = { x: 0, y: 0 },
   cropScale = 1,
+  flipX = false,
   onReady,
   onError,
 }: {
@@ -42,6 +43,7 @@ export const useCustomImage = ({
   offset: { x: number; y: number };
   cropOffset?: { x: number; y: number };
   cropScale?: number;
+  flipX?: boolean;
   onReady?: () => void;
   onError?: (error: Error) => void;
 }) => {
@@ -210,6 +212,10 @@ export const useCustomImage = ({
             }
 
             ctx.scale(scale, scale);
+            if (flipX) {
+              ctx.translate(width, 0);
+              ctx.scale(-1, 1);
+            }
             fitImage(ctx);
 
             canvas.toBlob((blob) => {
@@ -281,6 +287,7 @@ export const useCustomImage = ({
     cropScale,
     fillMode,
     align,
+    flipX,
   ]);
 
   return {

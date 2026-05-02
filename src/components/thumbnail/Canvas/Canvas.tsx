@@ -368,8 +368,6 @@ export const Canvas = () => {
         if (el.type === "shape" && el.shape === "circle") {
           patchX = newX - el.width / 2;
           patchY = newY - el.height / 2;
-        } else if (el.type === "character" && el.flipX) {
-          patchX = newX - el.width;
         }
         updates.push({ id: sid, patch: { x: patchX, y: patchY } });
         undo.push({ id: sid, patch: { x: snap.x, y: snap.y } });
@@ -475,7 +473,7 @@ export const Canvas = () => {
       }
 
       const newWidth = before.width * Math.abs(sx);
-      let newHeight = before.height * Math.abs(sy);
+      const newHeight = before.height * Math.abs(sy);
       // Reset scale on the node back to 1, since width/height are committed
       node.scaleX(1);
       node.scaleY(1);
@@ -483,8 +481,6 @@ export const Canvas = () => {
       if (before.type === "shape" && before.shape === "circle") {
         newX = node.x() - newWidth / 2;
         newY = node.y() - newHeight / 2;
-      } else if (before.type === "character" && before.flipX) {
-        newX = node.x() - newWidth;
       }
 
       const patch: Partial<ThumbnailElement> = {
