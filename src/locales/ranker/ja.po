@@ -42,7 +42,7 @@ msgstr "参加人数"
 msgid "Accent Color"
 msgstr "アクセントカラー"
 
-#: src/components/predict/PredictApp/PredictApp.tsx:61
+#: src/components/predict/PredictApp/PredictApp.tsx:63
 msgid "All current predictions will be removed."
 msgstr "現在の予想がすべて削除されます。"
 
@@ -192,7 +192,7 @@ msgstr "使用キャラ"
 msgid "City"
 msgstr "市区町村"
 
-#: src/components/predict/PredictApp/PredictApp.tsx:120
+#: src/components/predict/PredictApp/PredictApp.tsx:126
 #: src/components/top8/AssetSelector/AssetSelector.tsx:100
 msgid "Clear"
 msgstr "クリア"
@@ -205,7 +205,7 @@ msgstr "選手初期化"
 msgid "Clear Player?"
 msgstr "選手を初期化しますか？"
 
-#: src/components/predict/PredictApp/PredictApp.tsx:60
+#: src/components/predict/PredictApp/PredictApp.tsx:62
 msgid "Clear Predictions?"
 msgstr "予想をクリアしますか？"
 
@@ -261,6 +261,10 @@ msgstr "コピー"
 #: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:54
 msgid "Count"
 msgstr "人数"
+
+#: src/components/predict/FetchingState/FetchingState.tsx:19
+msgid "Counting the contenders..."
+msgstr ""
 
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:238
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:166
@@ -489,6 +493,10 @@ msgstr "グラデーション（始）"
 msgid "Green"
 msgstr "グリーン"
 
+#: src/components/predict/FetchingState/FetchingState.tsx:17
+msgid "Hyping up the bracket..."
+msgstr ""
+
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:88
 msgid "Icon"
 msgstr "アイコン"
@@ -544,8 +552,12 @@ msgid "Loading Configs..."
 msgstr "読み込み中..."
 
 #: src/components/predict/PredictApp/PredictApp.tsx:87
-msgid "Loading entrants..."
-msgstr "参加者を読み込み中..."
+#~ msgid "Loading entrants..."
+#~ msgstr "参加者を読み込み中..."
+
+#: src/components/predict/FetchingState/FetchingState.tsx:56
+msgid "Loading tournament"
+msgstr ""
 
 #. js-lingui-explicit-id
 #: src/consts/top8/paletteLabels.ts:51
@@ -614,7 +626,7 @@ msgstr "ドラッグ・ドロップも対応"
 msgid "Original concept & inspiration"
 msgstr "元コンセプトとインスピレーション"
 
-#: src/components/predict/PredictApp/PredictApp.tsx:77
+#: src/components/predict/PredictApp/PredictApp.tsx:79
 msgid "Paste a tournament URL to predict placements and share your picks."
 msgstr "大会URLを貼り付けて順位を予想し、予想を共有しましょう。"
 
@@ -706,7 +718,7 @@ msgstr ""
 msgid "Prediction size"
 msgstr "予想人数"
 
-#: src/components/predict/PredictApp/PredictApp.tsx:74
+#: src/components/predict/PredictApp/PredictApp.tsx:76
 #: src/components/predict/PredictionGraphic/PredictionGraphic.tsx:45
 #: src/components/predict/PredictionListPanel/PredictionListPanel.tsx:82
 #: src/components/predict/PredictionWorkspace/PredictionWorkspace.tsx:39
@@ -735,6 +747,10 @@ msgstr "メインカラー"
 #: src/consts/top8/paletteLabels.ts:15
 #~ msgid "Primary"
 #~ msgstr "メインカラー"
+
+#: src/components/predict/FetchingState/FetchingState.tsx:15
+msgid "Pulling entrants..."
+msgstr ""
 
 #: src/components/top8/SettingsPanel/AccentColorPicker.tsx:34
 msgid "Purple"
@@ -767,6 +783,10 @@ msgstr "サムネイルを再生成"
 #: src/components/predict/PredictApp/PredictApp.tsx:99
 #~ msgid "Reset"
 #~ msgstr "リセット"
+
+#: src/components/predict/FetchingState/FetchingState.tsx:18
+msgid "Rounding up the squad..."
+msgstr ""
 
 #: src/components/predict/EntrantPoolPanel/EntrantPoolPanel.tsx:51
 msgid "Search players..."
@@ -814,6 +834,10 @@ msgstr ""
 msgid "Share invite"
 msgstr ""
 
+#: src/components/predict/FetchingState/FetchingState.tsx:16
+msgid "Sharpening the seeds..."
+msgstr ""
+
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:68
 msgid "Show help"
 msgstr "ヘルプを表示"
@@ -842,6 +866,10 @@ msgstr "ストックアイコン"
 #: src/components/top8/InfoPanel/InfoPanel.tsx:64
 msgid "Support"
 msgstr "サポート"
+
+#: src/components/predict/FetchingState/FetchingState.tsx:14
+msgid "Talking to the bracket gods..."
+msgstr ""
 
 #: src/components/predict/PredictionListPanel/PredictionListPanel.tsx:109
 msgid "Tap entrants to add predictions"
@@ -992,13 +1020,13 @@ msgstr "大会情報"
 #~ msgid "Tournament Info"
 #~ msgstr "大会情報"
 
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:54
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:104
+#: src/consts/top8/placeholders.ts:28
 msgid "Tournament Name"
 msgstr "大会名"
 
-#: src/components/top8/TournamentConfig/TournamentEditor.tsx:104
-#: src/consts/top8/placeholders.ts:28
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:54
 msgid "Tournament Name"
 msgstr "大会名"
 

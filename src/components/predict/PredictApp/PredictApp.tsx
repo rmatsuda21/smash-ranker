@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import cn from "classnames";
 import { Trans } from "@lingui/react/macro";
 import { msg } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
@@ -15,6 +16,7 @@ import { InviteShareButton } from "@/components/predict/InviteShareButton/Invite
 import { PredictionCountSelector } from "@/components/predict/PredictionCountSelector/PredictionCountSelector";
 import { PredictionWorkspace } from "@/components/predict/PredictionWorkspace/PredictionWorkspace";
 import { ActionBar } from "@/components/predict/ActionBar/ActionBar";
+import { FetchingState } from "@/components/predict/FetchingState/FetchingState";
 import {
   PredictionPreview,
   type PredictionPreviewCache,
@@ -83,9 +85,9 @@ export const PredictApp = () => {
           </div>
           {error && <p className={styles.error}>{error}</p>}
           {fetching && (
-            <p className={styles.loadingHint}>
-              <Trans>Loading entrants...</Trans>
-            </p>
+            <div className={styles.emptyFetching}>
+              <FetchingState mode="inline" />
+            </div>
           )}
           <div className={styles.supportedPlatforms}>
             <span>start.gg</span>
@@ -105,27 +107,34 @@ export const PredictApp = () => {
 
       {error && <p className={styles.error}>{error}</p>}
 
-      <div className={styles.tournamentHeader}>
-        <div className={styles.tournamentInfo}>
-          <h2 className={styles.tournamentName}>{tournamentName}</h2>
-          {eventName && <p className={styles.eventName}>{eventName}</p>}
+      <div
+        className={cn(styles.workspace, fetching && styles.workspaceFetching)}
+        aria-busy={fetching}
+      >
+        <div className={styles.tournamentHeader}>
+          <div className={styles.tournamentInfo}>
+            <h2 className={styles.tournamentName}>{tournamentName}</h2>
+            {eventName && <p className={styles.eventName}>{eventName}</p>}
+          </div>
+          <div className={styles.headerActions}>
+            <InviteShareButton />
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={confirmClear}
+            >
+              <Trans>Clear</Trans>
+            </Button>
+          </div>
         </div>
-        <div className={styles.headerActions}>
-          <InviteShareButton />
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={confirmClear}
-          >
-            <Trans>Clear</Trans>
-          </Button>
-        </div>
-      </div>
-      <ClearConfirmation />
+        <ClearConfirmation />
 
-      <PredictionCountSelector />
-      <PredictionWorkspace />
-      <ActionBar onGenerate={() => setPreviewOpen(true)} />
+        <PredictionCountSelector />
+        <PredictionWorkspace />
+        <ActionBar onGenerate={() => setPreviewOpen(true)} />
+
+        {fetching && <FetchingState mode="overlay" />}
+      </div>
 
       <Modal isOpen={previewOpen} onClose={() => setPreviewOpen(false)}>
         <PredictionPreview cacheRef={previewCacheRef} />

@@ -74,9 +74,10 @@
   margin-top: 8px;
 }
 
-.loadingHint {
-  font-size: var(--font-size-sm);
-  color: var(--accent-9);
+.emptyFetching {
+  width: 100%;
+  max-width: 500px;
+  margin-top: 4px;
 }
 
 .supportedPlatforms {
@@ -103,6 +104,24 @@
   color: var(--red-9, red);
   font-size: var(--font-size-sm);
   flex-shrink: 0;
+}
+
+.workspace {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+  min-height: 0;
+
+  @include mobile {
+    gap: 12px;
+  }
+}
+
+.workspaceFetching {
+  pointer-events: none;
+  user-select: none;
 }
 
 .tournamentHeader {

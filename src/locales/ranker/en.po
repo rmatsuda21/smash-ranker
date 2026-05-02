@@ -87,7 +87,7 @@ msgstr ""
 msgid "Accent Color"
 msgstr ""
 
-#: src/components/predict/PredictApp/PredictApp.tsx:61
+#: src/components/predict/PredictApp/PredictApp.tsx:63
 msgid "All current predictions will be removed."
 msgstr ""
 
@@ -237,7 +237,7 @@ msgstr ""
 msgid "City"
 msgstr ""
 
-#: src/components/predict/PredictApp/PredictApp.tsx:120
+#: src/components/predict/PredictApp/PredictApp.tsx:126
 #: src/components/top8/AssetSelector/AssetSelector.tsx:100
 msgid "Clear"
 msgstr ""
@@ -250,7 +250,7 @@ msgstr ""
 msgid "Clear Player?"
 msgstr ""
 
-#: src/components/predict/PredictApp/PredictApp.tsx:60
+#: src/components/predict/PredictApp/PredictApp.tsx:62
 msgid "Clear Predictions?"
 msgstr ""
 
@@ -305,6 +305,10 @@ msgstr ""
 
 #: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:54
 msgid "Count"
+msgstr ""
+
+#: src/components/predict/FetchingState/FetchingState.tsx:19
+msgid "Counting the contenders..."
 msgstr ""
 
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:238
@@ -534,6 +538,10 @@ msgstr ""
 msgid "Green"
 msgstr ""
 
+#: src/components/predict/FetchingState/FetchingState.tsx:17
+msgid "Hyping up the bracket..."
+msgstr ""
+
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:88
 msgid "Icon"
 msgstr ""
@@ -589,7 +597,11 @@ msgid "Loading Configs..."
 msgstr ""
 
 #: src/components/predict/PredictApp/PredictApp.tsx:87
-msgid "Loading entrants..."
+#~ msgid "Loading entrants..."
+#~ msgstr ""
+
+#: src/components/predict/FetchingState/FetchingState.tsx:56
+msgid "Loading tournament"
 msgstr ""
 
 #. js-lingui-explicit-id
@@ -659,7 +671,7 @@ msgstr "Or drag and drop"
 msgid "Original concept & inspiration"
 msgstr ""
 
-#: src/components/predict/PredictApp/PredictApp.tsx:77
+#: src/components/predict/PredictApp/PredictApp.tsx:79
 msgid "Paste a tournament URL to predict placements and share your picks."
 msgstr ""
 
@@ -751,7 +763,7 @@ msgstr ""
 msgid "Prediction size"
 msgstr ""
 
-#: src/components/predict/PredictApp/PredictApp.tsx:74
+#: src/components/predict/PredictApp/PredictApp.tsx:76
 #: src/components/predict/PredictionGraphic/PredictionGraphic.tsx:45
 #: src/components/predict/PredictionListPanel/PredictionListPanel.tsx:82
 #: src/components/predict/PredictionWorkspace/PredictionWorkspace.tsx:39
@@ -780,6 +792,10 @@ msgstr ""
 #: src/consts/top8/paletteLabels.ts:15
 #~ msgid "Primary"
 #~ msgstr ""
+
+#: src/components/predict/FetchingState/FetchingState.tsx:15
+msgid "Pulling entrants..."
+msgstr ""
 
 #: src/components/top8/SettingsPanel/AccentColorPicker.tsx:34
 msgid "Purple"
@@ -812,6 +828,10 @@ msgstr ""
 #: src/components/predict/PredictApp/PredictApp.tsx:99
 #~ msgid "Reset"
 #~ msgstr ""
+
+#: src/components/predict/FetchingState/FetchingState.tsx:18
+msgid "Rounding up the squad..."
+msgstr ""
 
 #: src/components/predict/EntrantPoolPanel/EntrantPoolPanel.tsx:51
 msgid "Search players..."
@@ -859,6 +879,10 @@ msgstr ""
 msgid "Share invite"
 msgstr ""
 
+#: src/components/predict/FetchingState/FetchingState.tsx:16
+msgid "Sharpening the seeds..."
+msgstr ""
+
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:68
 msgid "Show help"
 msgstr ""
@@ -886,6 +910,10 @@ msgstr ""
 
 #: src/components/top8/InfoPanel/InfoPanel.tsx:64
 msgid "Support"
+msgstr ""
+
+#: src/components/predict/FetchingState/FetchingState.tsx:14
+msgid "Talking to the bracket gods..."
 msgstr ""
 
 #: src/components/predict/PredictionListPanel/PredictionListPanel.tsx:109
@@ -1037,13 +1065,13 @@ msgstr ""
 #~ msgid "Tournament Info"
 #~ msgstr ""
 
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:54
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:104
+#: src/consts/top8/placeholders.ts:28
 msgid "Tournament Name"
 msgstr ""
 
-#: src/components/top8/TournamentConfig/TournamentEditor.tsx:104
-#: src/consts/top8/placeholders.ts:28
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:54
 msgid "Tournament Name"
 msgstr ""
 
