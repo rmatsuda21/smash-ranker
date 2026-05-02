@@ -10,9 +10,13 @@ import {
   HistoryEntry,
 } from "@/store/historyStore";
 import { useFontStore } from "@/store/fontStore";
+import { loadFont } from "@/utils/top8/loadFont";
+
+const DEFAULT_FONT = "Dela Gothic One";
 
 interface CanvasState {
   design: Design;
+  font: string;
   stageRef: Stage | null;
   editable: boolean;
 }
@@ -45,19 +49,22 @@ export type CanvasAction =
   | {
       type: "UPDATE_TEXT_CONTENT";
       payload: { id: string; value: { text: string; name: string } };
-    };
+    }
+  | { type: "SET_FONT"; payload: string };
 
 const HISTORY_ACTION_TYPES: Set<string> = new Set([
   "SET_BACKGROUND_IMG",
   "CLEAR_BACKGROUND_IMG",
   "SET_BACKGROUND_IMAGE_DARKNESS",
   "UPDATE_COLOR_PALETTE",
+  "SET_FONT",
 ]);
 
 const HISTORY_CLEARING_ACTIONS: Set<string> = new Set(["SET_DESIGN"]);
 
 const initialState: CanvasState = {
   design: kagaribiDesign,
+  font: DEFAULT_FONT,
   stageRef: null,
   editable: false,
 };
@@ -74,6 +81,8 @@ function captureUndoData(state: CanvasState, action: CanvasAction): unknown {
         id: action.payload.id,
         value: state.design.colorPalette?.[action.payload.id],
       };
+    case "SET_FONT":
+      return state.font;
     default:
       return null;
   }
@@ -94,6 +103,8 @@ function captureRedoData(state: CanvasState, action: CanvasAction): unknown {
           ...action.payload.value,
         },
       };
+    case "SET_FONT":
+      return action.payload;
     default:
       return null;
   }
@@ -210,6 +221,8 @@ const canvasReducer = (
           },
         },
       };
+    case "SET_FONT":
+      return { font: action.payload };
     default:
       return state;
   }
@@ -274,8 +287,25 @@ function applyHistoryEntry(
 
     case "SET_FONT": {
       const fontFamily = data as string;
-      useFontStore.getState().setSelectedFontFromHistory(fontFamily);
-      return state;
+      const fontStore = useFontStore.getState();
+      const font = Array.from(fontStore.fonts).find(
+        (f) => f.fontFamily === fontFamily,
+      );
+      if (font && !font.loaded) {
+        loadFont(font)
+          .then(() => {
+            fontStore.dispatch({ type: "LOAD_FONT_SUCCESS", payload: font });
+          })
+          .catch(() => {
+            fontStore.dispatch({
+              type: "SET_SELECTED_FONT",
+              payload: fontFamily,
+            });
+          });
+      } else {
+        fontStore.dispatch({ type: "SET_SELECTED_FONT", payload: fontFamily });
+      }
+      return { font: fontFamily };
     }
 
     default:
@@ -331,21 +361,25 @@ export const useCanvasStore = create<CanvasStore>()(
       }),
       {
         name: "canvas-store",
-        version: 2,
+        version: 3,
         storage: createJSONStorage(() => localStorage),
         partialize: (state) => ({
           design: state.design,
+          font: state.font,
         }),
         migrate: (persisted, version) => {
           if (version < 2) {
-            return { design: kagaribiDesign };
+            return { design: kagaribiDesign, font: DEFAULT_FONT };
           }
 
           if (!persisted || typeof persisted !== "object") {
-            return { design: kagaribiDesign };
+            return { design: kagaribiDesign, font: DEFAULT_FONT };
           }
 
-          const persistedAny = persisted as { design?: unknown };
+          const persistedAny = persisted as {
+            design?: unknown;
+            font?: unknown;
+          };
           const design: any = persistedAny.design ?? {};
 
           if (
@@ -353,10 +387,25 @@ export const useCanvasStore = create<CanvasStore>()(
             !design?.canvasSize?.height ||
             typeof design?.canvasDisplayScale !== "number"
           ) {
-            return { design: kagaribiDesign };
+            return { design: kagaribiDesign, font: DEFAULT_FONT };
           }
 
-          return persisted as { design: Design };
+          // v2 → v3: force every returning user to the Kagaribi default font.
+          // Existing font preferences lived in a cookie; this overwrite is
+          // intentional so users currently seeing the default Kagaribi canvas
+          // (rendered with the wrong font due to the original bug) get its
+          // intended font on next load.
+          const font =
+            version < 3 || typeof persistedAny.font !== "string"
+              ? DEFAULT_FONT
+              : (persistedAny.font as string);
+
+          return { design: design as Design, font };
+        },
+        onRehydrateStorage: () => (state) => {
+          if (state?.font) {
+            useFontStore.setState({ selectedFont: state.font });
+          }
         },
       },
     ),

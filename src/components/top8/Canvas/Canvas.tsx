@@ -6,6 +6,7 @@ import cn from "classnames";
 import { useCanvasStore } from "@/store/canvasStore";
 import { usePlayerStore } from "@/store/playerStore";
 import { useTournamentStore } from "@/store/tournamentStore";
+import { useFontStore } from "@/store/fontStore";
 import { BackgroundLayer } from "@/components/top8/Canvas/BackgroundLayer";
 import { PlayerLayer } from "@/components/top8/Canvas/PlayerLayer";
 import { TournamentLayer } from "@/components/top8/Canvas/TournamentLayer";
@@ -14,6 +15,7 @@ import { Slider } from "@/components/shared/Slider/Slider";
 import { Button } from "@/components/shared/Button/Button";
 import { isMobile } from "@/utils/isMobile";
 import { useEffectiveCanvasSize } from "@/hooks/top8/useEffectiveCanvasSize";
+import { loadFont } from "@/utils/top8/loadFont";
 
 import styles from "./Canvas.module.scss";
 
@@ -30,6 +32,7 @@ export const Canvas = ({ className }: Props) => {
   const [isBackgroundReady, setIsBackgroundReady] = useState(false);
   const [isPlayerReady, setIsPlayerReady] = useState(false);
   const [isTournamentReady, setIsTournamentReady] = useState(false);
+  const [isFontLoaded, setIsFontLoaded] = useState(false);
 
   const [displayScale, setDisplayScale] = useState(1);
 
@@ -41,6 +44,39 @@ export const Canvas = ({ className }: Props) => {
   const canvasDispatch = useCanvasStore((state) => state.dispatch);
   const tournamentDispatch = useTournamentStore((state) => state.dispatch);
   const playerDispatch = usePlayerStore((state) => state.dispatch);
+  const selectedFont = useFontStore((state) => state.selectedFont);
+  const fonts = useFontStore((state) => state.fonts);
+
+  useEffect(() => {
+    const font = Array.from(fonts).find(
+      (f) => f.fontFamily === selectedFont,
+    );
+    if (!font) {
+      // Font catalog hasn't loaded yet — wait for the next render.
+      setIsFontLoaded(false);
+      return;
+    }
+
+    if (font.loaded) {
+      setIsFontLoaded(true);
+      return;
+    }
+
+    let cancelled = false;
+    setIsFontLoaded(false);
+    loadFont(font)
+      .then(() => {
+        if (!cancelled) setIsFontLoaded(true);
+      })
+      .catch(() => {
+        // Render anyway with the fallback so the user isn't stuck on a spinner.
+        if (!cancelled) setIsFontLoaded(true);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [fonts, selectedFont]);
 
   const clearSelections = useCallback(() => {
     playerDispatch({ type: "CLEAR_SELECTED_PLAYER" });
@@ -122,10 +158,15 @@ export const Canvas = ({ className }: Props) => {
   }, [canvasDispatch, stageRef]);
 
   useEffect(() => {
-    if (isBackgroundReady && isPlayerReady && isTournamentReady) {
+    if (
+      isBackgroundReady &&
+      isPlayerReady &&
+      isTournamentReady &&
+      isFontLoaded
+    ) {
       setIsDrawingReady(true);
     }
-  }, [isBackgroundReady, isPlayerReady, isTournamentReady]);
+  }, [isBackgroundReady, isPlayerReady, isTournamentReady, isFontLoaded]);
 
   const handleBackgroundReady = useCallback(() => {
     setIsBackgroundReady(true);
@@ -166,20 +207,22 @@ export const Canvas = ({ className }: Props) => {
           style={{ "--display-scale": displayScale } as React.CSSProperties}
         >
           <div className={styles.canvasInner}>
-            <Stage
-              ref={stageRef}
-              width={canvasSize.width}
-              height={canvasSize.height}
-              pixelRatio={isMobile() ? 0.5 : undefined}
-              onClick={handleStageClick}
-            >
-              <BackgroundLayer
+            {isFontLoaded && (
+              <Stage
+                ref={stageRef}
+                width={canvasSize.width}
+                height={canvasSize.height}
+                pixelRatio={isMobile() ? 0.5 : undefined}
                 onClick={handleStageClick}
-                onReady={handleBackgroundReady}
-              />
-              <PlayerLayer onReady={handlePlayerReady} />
-              <TournamentLayer onReady={handleTournamentReady} />
-            </Stage>
+              >
+                <BackgroundLayer
+                  onClick={handleStageClick}
+                  onReady={handleBackgroundReady}
+                />
+                <PlayerLayer onReady={handlePlayerReady} />
+                <TournamentLayer onReady={handleTournamentReady} />
+              </Stage>
+            )}
           </div>
         </div>
       </div>

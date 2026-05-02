@@ -6,7 +6,6 @@ export const COOKIES = {
   DELETE_ALL_CONFIGS: "delete-all-configs",
   LOAD_CONFIG: "load-config",
   LOAD_TEMPLATE: "load-template",
-  LAST_USED_FONT_FAMILY: "last-used-font-family",
   LANGUAGE: "language",
   THEME: "theme",
   ACCENT_COLOR: "accent-color",
