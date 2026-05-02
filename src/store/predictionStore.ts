@@ -4,7 +4,6 @@ import { arrayMove } from "@dnd-kit/sortable";
 
 import type {
   PredictionCount,
-  PredictionPhase,
   PredictionPlayer,
 } from "@/types/predict/Prediction";
 
@@ -20,7 +19,6 @@ interface PredictionState {
 
   predictionCount: PredictionCount;
   customCount: number;
-  phase: PredictionPhase;
   fetching: boolean;
   error: string;
 }
@@ -44,7 +42,6 @@ type PredictionAction =
   | { type: "REORDER_PREDICTIONS"; fromIndex: number; toIndex: number }
   | { type: "SET_PREDICTION_COUNT"; payload: PredictionCount }
   | { type: "SET_CUSTOM_COUNT"; payload: number }
-  | { type: "SET_PHASE"; payload: PredictionPhase }
   | { type: "AUTO_FILL" }
   | { type: "CLEAR_PREDICTIONS" }
   | { type: "RESET" };
@@ -59,7 +56,6 @@ const initialState: PredictionState = {
   predictions: [],
   predictionCount: 8,
   customCount: 8,
-  phase: "input",
   fetching: false,
   error: "",
 };
@@ -103,7 +99,6 @@ const predictionReducer = (
         tournamentIconUrl: action.payload.tournamentIconUrl,
         entrantPool: action.payload.entrants,
         predictions: [],
-        phase: "input",
       };
 
     case "FETCH_FAIL":
@@ -180,9 +175,6 @@ const predictionReducer = (
       return { customCount: clamped };
     }
 
-    case "SET_PHASE":
-      return { phase: action.payload };
-
     case "AUTO_FILL": {
       const max = getEffectiveCount(state);
       const slotsToFill = max - state.predictions.length;
@@ -236,7 +228,6 @@ export const usePredictionStore = create<PredictionStore>()(
           predictions: state.predictions,
           predictionCount: state.predictionCount,
           customCount: state.customCount,
-          phase: state.phase,
         }),
       },
     ),

@@ -1,3 +1,5 @@
+@use "@/_theme" as *;
+
 .captureContainer {
   position: fixed;
   left: -9999px;
@@ -11,40 +13,272 @@
   display: flex;
   justify-content: center;
   flex-shrink: 0;
-  padding: 20px 0;
+  padding: 4px 0;
 }
 
 .loadingCard {
+  position: relative;
   width: 100%;
   max-width: 380px;
   aspect-ratio: 380 / 520;
-  border-radius: 12px;
-  background:
-    radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.03) 1px, transparent 0),
-    linear-gradient(170deg, #1e1e3a 0%, #14142a 100%);
-  background-size: 16px 16px, 100% 100%;
+  border-radius: 14px;
+  overflow: hidden;
+  isolation: isolate;
   display: flex;
   flex-direction: column;
+  gap: 12px;
+  padding: 18px 16px 14px;
+  color: #e7e7f5;
+  background:
+    radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.04) 1px, transparent 0),
+    linear-gradient(170deg, #1f1f3d 0%, #14142a 100%);
+  background-size: 16px 16px, 100% 100%;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 8px 28px rgba(0, 0, 0, 0.35);
+
+  @include mobile {
+    padding: 16px 14px 12px;
+    gap: 10px;
+  }
+}
+
+.shimmer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background: linear-gradient(
+    115deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.06) 50%,
+    transparent 65%
+  );
+  background-size: 220% 100%;
+  animation: shimmerSweep 2.6s linear infinite;
+}
+
+@keyframes shimmerSweep {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -100% 0;
+  }
+}
+
+.headerRow {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.eyebrow {
+  font-size: 10px;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: #8c8cb0;
+  font-weight: 600;
+}
+
+.tagline {
+  position: relative;
+  height: 22px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #d6d6ec;
+}
+
+.taglineText {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  animation: taglineIn 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@keyframes taglineIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.predictionList {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.predictionRow {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 10px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  opacity: 0;
+  transform: translateX(-14px);
+  animation: rowIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  overflow: hidden;
+}
+
+@keyframes rowIn {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.rowShine {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    100deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.08) 50%,
+    transparent 65%
+  );
+  background-size: 220% 100%;
+  background-position: 200% 0;
+  animation: rowShine 3s linear infinite;
+  animation-delay: inherit;
+}
+
+@keyframes rowShine {
+  0% {
+    background-position: 200% 0;
+  }
+  60%,
+  100% {
+    background-position: -120% 0;
+  }
+}
+
+.placement {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
-  animation: pulse 2s ease-in-out infinite;
+  font-size: 12px;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.08);
+  color: #cacae5;
+}
+
+.placement.gold {
+  background: linear-gradient(135deg, #fde68a 0%, #f59e0b 100%);
+  color: #422006;
+  box-shadow: 0 0 14px rgba(245, 158, 11, 0.4);
+}
+
+.placement.silver {
+  background: linear-gradient(135deg, #f1f5f9 0%, #94a3b8 100%);
+  color: #1e293b;
+  box-shadow: 0 0 14px rgba(148, 163, 184, 0.35);
+}
+
+.placement.bronze {
+  background: linear-gradient(135deg, #fdba74 0%, #c2410c 100%);
+  color: #431407;
+  box-shadow: 0 0 14px rgba(194, 65, 12, 0.35);
+}
+
+.name {
+  flex: 1;
+  min-width: 0;
+  font-size: 13px;
+  font-weight: 500;
+  color: #ececf7;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.prefix {
+  color: #8c8cb0;
+  font-weight: 400;
+}
+
+.progressTrack {
+  position: relative;
+  z-index: 2;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.07);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.progressFill {
+  position: absolute;
+  inset: 0;
+  width: 40%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--accent-9, #8b5cf6) 50%,
+    transparent 100%
+  );
+  animation: progressSlide 1.6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes progressSlide {
+  from {
+    transform: translateX(-110%);
+  }
+  to {
+    transform: translateX(260%);
+  }
 }
 
 .loadingText {
+  position: relative;
+  z-index: 2;
   font-size: 13px;
   font-weight: 500;
   color: #6c6c8a;
   letter-spacing: 0.5px;
+  text-align: center;
+  margin: auto;
 }
 
-@keyframes pulse {
-  0%,
-  100% {
-    opacity: 1;
+@media (prefers-reduced-motion: reduce) {
+  .shimmer,
+  .progressFill,
+  .rowShine {
+    animation: none;
   }
-  50% {
-    opacity: 0.7;
+  .predictionRow {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  .taglineText {
+    animation: none;
   }
 }
 

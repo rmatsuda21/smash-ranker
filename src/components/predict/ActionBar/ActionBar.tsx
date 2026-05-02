@@ -5,7 +5,11 @@ import { usePredictionStore } from "@/store/predictionStore";
 
 import styles from "./ActionBar.module.scss";
 
-export const ActionBar = () => {
+type Props = {
+  onGenerate: () => void;
+};
+
+export const ActionBar = ({ onGenerate }: Props) => {
   const predictions = usePredictionStore((s) => s.predictions);
   const predictionCount = usePredictionStore((s) => s.predictionCount);
   const customCount = usePredictionStore((s) => s.customCount);
@@ -26,10 +30,7 @@ export const ActionBar = () => {
       >
         <Trans>Auto-fill by seed</Trans>
       </Button>
-      <Button
-        disabled={!isFull}
-        onClick={() => dispatch({ type: "SET_PHASE", payload: "preview" })}
-      >
+      <Button disabled={!isFull} onClick={onGenerate}>
         <Trans>Generate Graphic</Trans>
       </Button>
     </div>

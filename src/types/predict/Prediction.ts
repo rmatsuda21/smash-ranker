@@ -8,5 +8,3 @@ export type PredictionPlayer = {
 };
 
 export type PredictionCount = 8 | 16 | "custom";
-
-export type PredictionPhase = "input" | "preview";

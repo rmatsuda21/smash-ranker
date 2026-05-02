@@ -113,6 +113,13 @@
   flex-shrink: 0;
 }
 
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
 .tournamentInfo {
   flex: 1;
   min-width: 0;
@@ -135,18 +142,4 @@
   font-size: var(--font-size-sm);
   color: var(--gray-9);
   margin-top: 2px;
-}
-
-// Preview phase needs to scroll on mobile (unlike the input phase)
-.previewRoot {
-  @include mobile {
-    overflow-y: auto;
-    padding-bottom: 72px;
-  }
-}
-
-.previewHeader {
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
 }
