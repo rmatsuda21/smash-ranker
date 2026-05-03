@@ -7,7 +7,7 @@ import { isMobile } from "@/utils/isMobile";
 import { useEditorStore } from "@/store/editorStore";
 import { SidePanel } from "@/components/top8/SidePanel/SidePanel";
 import { Header } from "@/components/top8/Ranker/Header/Header";
-import { Skeleton } from "@/components/shared/Skeleton/Skeleton";
+import { BracketLoader } from "@/components/shared/BracketLoader/BracketLoader";
 
 import styles from "./Ranker.module.scss";
 
@@ -58,7 +58,13 @@ export const Ranker = () => {
             [styles.canvasCollapsed]: mobile && !isCanvasExpanded,
           })}
         >
-          <Suspense fallback={<Skeleton className={styles.canvas} />}>
+          <Suspense
+            fallback={
+              <div className={cn(styles.canvas, styles.canvasFallback)}>
+                <BracketLoader />
+              </div>
+            }
+          >
             <Canvas className={styles.canvas} />
           </Suspense>
         </div>

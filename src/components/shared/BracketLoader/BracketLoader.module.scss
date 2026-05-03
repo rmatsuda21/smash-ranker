@@ -1,0 +1,143 @@
+.wrapper {
+  --loader-size: 280px;
+  --loader-cycle: 2.6s;
+  --loader-color: var(--accent-10);
+  --loader-color-bright: var(--accent-11);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.bracket {
+  display: block;
+  width: var(--loader-size);
+  height: auto;
+  overflow: visible;
+}
+
+.label {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--gray-11);
+  animation: labelPulse var(--loader-cycle) ease-in-out infinite;
+  text-align: center;
+}
+
+.label::after {
+  content: "";
+  display: inline-block;
+  width: 1.4em;
+  text-align: left;
+  animation: labelDots var(--loader-cycle) steps(4) infinite;
+}
+
+@keyframes labelDots {
+  0% { content: ""; }
+  25% { content: "."; }
+  50% { content: ".."; }
+  75% { content: "..."; }
+  100% { content: ""; }
+}
+
+@keyframes labelPulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+// nodes — gentle pulse with a per-round delay so the "tournament" feels
+// like it ripples left to right
+.nodes {
+  circle {
+    fill: var(--loader-color);
+    opacity: 0.45;
+    animation: nodeGlow var(--loader-cycle) ease-in-out infinite;
+  }
+
+  &.r1 circle { animation-delay: 0s; }
+  &.r2 circle { animation-delay: calc(var(--loader-cycle) * 0.22); }
+  &.r3 circle { animation-delay: calc(var(--loader-cycle) * 0.44); }
+}
+
+@keyframes nodeGlow {
+  0%, 60%, 100% { opacity: 0.45; }
+  10%, 30% { opacity: 1; }
+}
+
+// lines — stroke-dashoffset draws each round in sequence
+.lines {
+  fill: none;
+  stroke: var(--loader-color);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+
+  path {
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+    animation: drawLine var(--loader-cycle) ease-in-out infinite;
+  }
+
+  &.r1 path { animation-delay: calc(var(--loader-cycle) * 0.05); }
+  &.r2 path { animation-delay: calc(var(--loader-cycle) * 0.27); }
+  &.r3 path { animation-delay: calc(var(--loader-cycle) * 0.49); }
+}
+
+@keyframes drawLine {
+  0% { stroke-dashoffset: 100; opacity: 0.4; }
+  10%, 85% { stroke-dashoffset: 0; opacity: 1; }
+  100% { stroke-dashoffset: 100; opacity: 0.4; }
+}
+
+// the winner — pops + glows when the bracket "finishes"
+.winner {
+  fill: var(--loader-color-bright);
+  opacity: 0.5;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: winnerPop var(--loader-cycle) ease-in-out infinite;
+  animation-delay: calc(var(--loader-cycle) * 0.7);
+}
+
+@keyframes winnerPop {
+  0%, 60%, 100% {
+    opacity: 0.5;
+    transform: scale(1);
+    filter: drop-shadow(0 0 0 transparent);
+  }
+  72% {
+    opacity: 1;
+    transform: scale(1.6);
+    filter: drop-shadow(0 0 6px var(--loader-color));
+  }
+  86% {
+    opacity: 1;
+    transform: scale(1.15);
+    filter: drop-shadow(0 0 3px var(--loader-color));
+  }
+}
+
+// tiny crown above the winner — fades in at the same moment
+.crown {
+  fill: var(--loader-color-bright);
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center bottom;
+  animation: crownIn var(--loader-cycle) ease-out infinite;
+  animation-delay: calc(var(--loader-cycle) * 0.74);
+}
+
+@keyframes crownIn {
+  0%, 55%, 100% {
+    opacity: 0;
+    transform: translateY(2px) scale(0.6);
+  }
+  68%, 90% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
