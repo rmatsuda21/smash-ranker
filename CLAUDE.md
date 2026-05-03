@@ -41,7 +41,7 @@ All stores live in `src/store/` and use Zustand's persist middleware (localStora
 - **tournamentStore** — tournament metadata and settings
 - **editorStore** — UI state (active panel/tab, preview cache invalidation)
 - **historyStore** — undo/redo history stack (also used by the thumbnail editor)
-- **fontStore** — custom font loading and registration
+- **fontStore** — Fontsource catalog + active font selection. Tracks `selectedFont` (user's pick), `displayedFont` (what's currently rendered, lags during loads), the catalog `fonts` Set, and custom-font registrations. Loading lifecycle is owned by `src/utils/fonts/fontLoader.ts`, not the store.
 - **tierListStore** — tier list state: tiers, character pool, layout variant, label font settings, image mode
 - **predictionStore** — `/predict` state: tournament metadata, entrant pool, ordered predictions, prediction count, fetch status. Reducer-based.
 - **thumbnailStore** — `/thumbnail` design state: `ThumbnailDesign` element tree (groups + leaves). Reducer-based with custom history integration via `historyStore`.
@@ -104,6 +104,20 @@ The TextEditor panel (`src/components/top8/TextEditor/`) allows users to edit te
 - **Lazy loaded** via `React.lazy` in `SidePanel.tsx` under `EditorTab.TEXTS`.
 - **Data flow** — `design.textPalette` → TextEditor → RichTextInput → `UPDATE_TEXT_CONTENT` → canvasStore → `resolveText()` → `replacePlaceholders()` → Konva Text nodes.
 
+### Fonts
+
+Fonts are sourced from **Fontsource** (https://fontsource.org) — no Google Fonts dependency, no API key. Static `@fontsource/<id>` packages are used (not `@fontsource-variable`) so family names match what's stored in user designs. All loading is mediated by a single central loader.
+
+- **Module** — `src/utils/fonts/`:
+  - `catalog.ts` — fetches `https://api.fontsource.org/v1/fonts?subsets=japanese` once on app boot and maps each entry to `{ fontFamily, id, weights, isVariable }`. Also exports `fetchFontMeta(family)` for one-off lookups.
+  - `fontsourceUrls.ts` — URL builders. Canvas CSS = `cdn.jsdelivr.net/npm/@fontsource/<id>@latest/japanese.css`; preview CSS (used by the dropdown) = `…/latin-400.css`.
+  - `fontLoader.ts` — central `loadFamily(family)` with in-flight dedup (`Map<family, Promise>`) and a `fullyLoaded` Set. Injects the CSS `<link>`, then calls `document.fonts.load("<weight> 16px '<family>'", "Aa1 あ漢")` for **every** weight declared in the catalog so all per-weight WOFF2s are fetched before resolving (Fontsource's static japanese.css ships ~1MB per weight with no `unicode-range` chunking — without this, Konva paints with fallback metrics until the user interacts). Also exposes `pickWeight(family, requested)` (W3C closest-weight algorithm) and `composeFontStyle(family, fontWeight, fontStyle)` for element factories.
+  - `weightFallback.ts` — pure W3C font-weight matching algorithm (target 400–500 → search up to 500 then below; target < 400 → descending then ascending; target > 500 → ascending then descending).
+- **Custom fonts** — uploaded via `src/utils/top8/registerCustomFont.ts` (FontFace API + IndexedDB Blob storage). On registration the loader is notified via `registerCustomFamily(family, weights?)` so `isLoaded` returns true and `pickWeight` returns 400.
+- **Element factory integration** — `src/utils/top8/elementFactory/creators/text.tsx` and the flex-layout measurer in `…/creators/layout.tsx` call `composeFontStyle()` to resolve `element.fontWeight`/`element.fontStyle` into a Konva-compatible shorthand (e.g. `"500"` or `"italic 600"`). Konva's `fontStyle` prop accepts the CSS shorthand. **Always emit weight via `composeFontStyle`; do not hand `String(element.fontWeight)` directly to Konva — it conflates weight and italic.**
+- **Font-swap UX** — `Canvas.tsx` watches `selectedFont` and dispatches `SET_DISPLAYED_FONT` only after `loadFamily` resolves. While `selectedFont !== displayedFont`, `BackgroundLayer`/`PlayerLayer`/`TournamentLayer` keep rendering with `displayedFont` and a subtle blurred overlay (`.fontSwapOverlay`, `cursor: wait`) covers the canvas to block interaction. Initial mount shows the full-canvas spinner (`.loader`).
+- **Adding a new consumer** — anything that renders text on canvas should: (1) call `loadFamily(family)` and gate rendering on its resolution, (2) pass the resolved `composeFontStyle(...)` value to the Konva node's `fontStyle` prop. See `Canvas.tsx`, `TemplatePreview.tsx`, `PlayerElementEditor.tsx`, `thumbnail/Elements/TextNode.tsx` for patterns.
+
 ### Canvas Rendering
 
 The Top 8 graphic is rendered via **Konva** (2D canvas) through React-Konva. The canvas tree is driven entirely by the `canvasStore` design state. Key concepts:
@@ -114,7 +128,7 @@ The Top 8 graphic is rendered via **Konva** (2D canvas) through React-Konva. The
 - **Flex layout** (`src/utils/top8/elementFactory/creators/layout.tsx`) — `flexGroup` elements lay out children using a flex-like algorithm. `getElementMainSize` measures child widths (text via temporary `KonvaText` nodes). Child `position` values are used as offsets from the flex-computed position. Children with `flex.grow`/`flex.shrink` participate in space distribution.
 - **FlexGrid flow** — `flexGrid` supports a `flow` property (`"row"` | `"column"`). Default `"row"` fills left-to-right then top-to-bottom. `"column"` fills top-to-bottom in the rightmost column first, then adds new columns to the left. Use with `rows` (not `columns`) to set max items per column. The `alignLastRow` property doubles as last-column alignment in column flow. Both `altCharacterImage` and `customAltCharacterImage` pass `flow` through to their internal flexGrid.
 - **Dynamic player height** — Opt-in feature (`Design.dynamicPlayerHeight`) that grows player cards at render time when characters exceed one row. Utility: `src/utils/top8/dynamicPlayerHeight.ts`. Hook: `src/hooks/top8/useEffectiveCanvasSize.ts`. Currently enabled only on the minimal template.
-- **FilteredElement** (`src/components/top8/Canvas/FilteredElement.tsx`) — Wraps elements with filter effects (brightness, blur, etc.) in a cached bitmap. Tracks `text`, `fontSize`, `fill`, and `fontFamily` to invalidate the cache. **When adding new dynamic props to filtered elements, ensure they are tracked here.**
+- **FilteredElement** (`src/components/top8/Canvas/FilteredElement.tsx`) — Wraps elements with filter effects (brightness, blur, etc.) in a cached bitmap. Tracks `text`, `fontSize`, `fill`, `fontFamily`, and `fontStyle` to invalidate the cache. **When adding new dynamic props to filtered elements, ensure they are tracked here.**
 - **Placeholder resolution** (`src/utils/top8/resolveText.ts`) — replaces `{{player.name}}`, `{{placement}}`, etc. with real data at render time
 - **Color resolution** (`src/utils/top8/resolveColor.ts`) — maps palette keys to hex values
 - **SVG processing** (`src/hooks/top8/useSvgImage.ts`) — fetches SVGs and recolors them for flags/icons
@@ -182,6 +196,5 @@ Vercel serverless functions live in the `api/` directory:
 ### Environment Variables
 
 - `VITE_START_GG_TOKEN` — start.gg API token
-- `VITE_GOOGLE_API_KEY` — Google Fonts API key
 - `START_GG_OAUTH_SECRET` — start.gg OAuth secret (server-side)
 - `CHALLONGE_API_KEY` — Challonge API v1 key (server-side, used by `api/challonge.ts`)

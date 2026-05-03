@@ -15,7 +15,7 @@ import { Slider } from "@/components/shared/Slider/Slider";
 import { Button } from "@/components/shared/Button/Button";
 import { isMobile } from "@/utils/isMobile";
 import { useEffectiveCanvasSize } from "@/hooks/top8/useEffectiveCanvasSize";
-import { loadFont } from "@/utils/top8/loadFont";
+import { loadFamily } from "@/utils/fonts/fontLoader";
 
 import styles from "./Canvas.module.scss";
 
@@ -27,12 +27,10 @@ type Props = {
 
 export const Canvas = ({ className }: Props) => {
   const [canvasStyle, setCanvasStyle] = useState<React.CSSProperties>({});
-  const [canvasMounted, setCanvasMounted] = useState(false);
   const [isDrawingReady, setIsDrawingReady] = useState(false);
   const [isBackgroundReady, setIsBackgroundReady] = useState(false);
   const [isPlayerReady, setIsPlayerReady] = useState(false);
   const [isTournamentReady, setIsTournamentReady] = useState(false);
-  const [isFontLoaded, setIsFontLoaded] = useState(false);
 
   const [displayScale, setDisplayScale] = useState(1);
 
@@ -45,38 +43,28 @@ export const Canvas = ({ className }: Props) => {
   const tournamentDispatch = useTournamentStore((state) => state.dispatch);
   const playerDispatch = usePlayerStore((state) => state.dispatch);
   const selectedFont = useFontStore((state) => state.selectedFont);
-  const fonts = useFontStore((state) => state.fonts);
+  const displayedFont = useFontStore((state) => state.displayedFont);
+  const fontDispatch = useFontStore((state) => state.dispatch);
+  const catalogFetching = useFontStore((state) => state.fetching);
+
+  const isFontLoaded = displayedFont !== "";
+  const isFontSwapping = isFontLoaded && selectedFont !== displayedFont;
 
   useEffect(() => {
-    const font = Array.from(fonts).find(
-      (f) => f.fontFamily === selectedFont,
-    );
-    if (!font) {
-      // Font catalog hasn't loaded yet — wait for the next render.
-      setIsFontLoaded(false);
-      return;
-    }
-
-    if (font.loaded) {
-      setIsFontLoaded(true);
-      return;
-    }
+    if (!selectedFont) return;
+    if (selectedFont === displayedFont) return;
 
     let cancelled = false;
-    setIsFontLoaded(false);
-    loadFont(font)
-      .then(() => {
-        if (!cancelled) setIsFontLoaded(true);
-      })
-      .catch(() => {
-        // Render anyway with the fallback so the user isn't stuck on a spinner.
-        if (!cancelled) setIsFontLoaded(true);
-      });
+    const finish = () => {
+      if (cancelled) return;
+      fontDispatch({ type: "SET_DISPLAYED_FONT", payload: selectedFont });
+    };
+    loadFamily(selectedFont).then(finish).catch(finish);
 
     return () => {
       cancelled = true;
     };
-  }, [fonts, selectedFont]);
+  }, [selectedFont, displayedFont, catalogFetching, fontDispatch]);
 
   const clearSelections = useCallback(() => {
     playerDispatch({ type: "CLEAR_SELECTED_PLAYER" });
@@ -128,7 +116,6 @@ export const Canvas = ({ className }: Props) => {
           "--canvas-height": `${canvasSize.height}px`,
           "--canvas-padding": `${isMobile() ? 0 : CANVAS_PADDING}px`,
         } as React.CSSProperties);
-        setCanvasMounted(true);
       }
     };
 
@@ -149,7 +136,7 @@ export const Canvas = ({ className }: Props) => {
     return () => {
       observer?.disconnect();
     };
-  }, [canvasSize?.width, canvasSize?.height, canvasMounted, handleFitToWindow]);
+  }, [canvasSize?.width, canvasSize?.height, handleFitToWindow]);
 
   useEffect(() => {
     if (stageRef.current) {
@@ -184,16 +171,22 @@ export const Canvas = ({ className }: Props) => {
     setDisplayScale(value);
   }, []);
 
-  if (!canvasSize?.width || !canvasSize?.height) {
-    return null;
+  const canvasReady = Boolean(canvasSize?.width && canvasSize?.height);
+
+  if (!canvasReady) {
+    return (
+      <div className={cn(className, styles.canvasContainer)}>
+        <div className={styles.loader}>
+          <Spinner size={100} />
+        </div>
+      </div>
+    );
   }
 
   return (
     <div
       ref={wrapperRef}
-      className={cn(className, styles.canvasContainer, {
-        [styles.hidden]: !canvasMounted,
-      })}
+      className={cn(className, styles.canvasContainer)}
       style={canvasStyle}
     >
       {!isDrawingReady ? (
@@ -224,6 +217,11 @@ export const Canvas = ({ className }: Props) => {
               </Stage>
             )}
           </div>
+          {isFontSwapping ? (
+            <div className={styles.fontSwapOverlay} aria-live="polite">
+              <Spinner size={48} />
+            </div>
+          ) : null}
         </div>
       </div>
 

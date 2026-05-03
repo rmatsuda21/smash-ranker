@@ -14,7 +14,7 @@ import { previewCache } from "@/db/previewCache";
 import { Spinner } from "@/components/shared/Spinner/Spinner";
 import { useEditorStore } from "@/store/editorStore";
 import { useFontStore } from "@/store/fontStore";
-import { loadFont } from "@/utils/top8/loadFont";
+import { loadFamily } from "@/utils/fonts/fontLoader";
 import { defaultPreviews } from "@assets/previews";
 
 import styles from "./TemplatePreview.module.scss";
@@ -142,24 +142,27 @@ const RenderedPreview = (props: Props) => {
   const mobile = isMobile();
   const stageRef = useRef<KonvaStage>(null);
   const releaseRef = useRef<(() => void) | null>(null);
-  const fonts = useFontStore((state) => state.fonts);
+  const catalogFetching = useFontStore((state) => state.fetching);
 
   // Load the template's font before rendering
   useEffect(() => {
-    const font = Array.from(fonts).find(
-      (f) => f.fontFamily === template.font
-    );
-    if (!font) return;
-
-    if (font.loaded) {
+    if (!template.font) {
       setIsFontLoaded(true);
       return;
     }
-
-    loadFont(font)
-      .then(() => setIsFontLoaded(true))
-      .catch(() => setIsFontLoaded(true));
-  }, [fonts, template.font]);
+    let cancelled = false;
+    setIsFontLoaded(false);
+    loadFamily(template.font)
+      .then(() => {
+        if (!cancelled) setIsFontLoaded(true);
+      })
+      .catch(() => {
+        if (!cancelled) setIsFontLoaded(true);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [template.font, catalogFetching]);
 
   // Wait for render slot before mounting the Konva stage (after font is loaded)
   useEffect(() => {

@@ -1,8 +1,12 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
-import { fetchAndMapFonts } from "@/utils/top8/fetchAndMapFonts";
-import { loadFont } from "@/utils/top8/loadFont";
+import { fetchCatalog } from "@/utils/fonts/catalog";
+import {
+  loadFamily,
+  registerCustomFamily,
+  unregisterCustomFamily,
+} from "@/utils/fonts/fontLoader";
 import { registerCustomFontFace } from "@/utils/top8/registerCustomFont";
 import { customFontRepository } from "@/db/repository";
 import { useCanvasStore } from "@/store/canvasStore";
@@ -11,90 +15,46 @@ const DEFAULT_FONT = "Dela Gothic One";
 
 export type Font = {
   fontFamily: string;
-  variants: string[];
-  files: Record<string, string>;
-  isVariableFont: boolean;
-  loaded: boolean;
+  id?: string;
+  weights: number[];
   isCustom?: boolean;
 };
 
 interface FontState {
   fonts: Set<Font>;
   selectedFont: string;
+  displayedFont: string;
   fetching: boolean;
   error?: Error;
   dispatch: (action: FontAction) => void;
-  selectFont: (fontFamily: string, skipHistory?: boolean) => Promise<void>;
+  selectFont: (fontFamily: string, skipHistory?: boolean) => void;
 }
 
 type FontAction =
-  | { type: "FETCH_FONTS" }
-  | { type: "SET_FONTS"; payload: Font[] }
   | { type: "FETCH_FONTS_SUCCESS"; payload: Font[] }
   | { type: "FETCH_FONTS_FAIL"; payload: Error }
-  | { type: "LOAD_FONT"; payload: string }
-  | {
-      type: "LOAD_FONT_SUCCESS";
-      payload: Font;
-    }
-  | { type: "LOAD_FONT_FAIL"; payload: { error: Error } }
   | { type: "SET_SELECTED_FONT"; payload: string }
-  | { type: "SET_FETCHING"; payload: boolean }
-  | { type: "SET_ERROR"; payload: Error }
+  | { type: "SET_DISPLAYED_FONT"; payload: string }
   | { type: "ADD_CUSTOM_FONTS"; payload: Font[] }
   | { type: "REMOVE_CUSTOM_FONT"; payload: string };
 
 const fontReducer = (state: FontState, action: FontAction): FontState => {
   switch (action.type) {
-    case "SET_FONTS":
-      return { ...state, fonts: new Set(action.payload) };
     case "FETCH_FONTS_SUCCESS": {
-      const existingCustomFonts = Array.from(state.fonts).filter(
-        (f) => f.isCustom
-      );
+      const customFonts = Array.from(state.fonts).filter((f) => f.isCustom);
       return {
         ...state,
         fetching: false,
-        fonts: new Set([...existingCustomFonts, ...action.payload]),
+        fonts: new Set([...customFonts, ...action.payload]),
         error: undefined,
       };
     }
     case "FETCH_FONTS_FAIL":
       return { ...state, fetching: false, error: action.payload };
-    case "LOAD_FONT":
-      return {
-        ...state,
-        fetching: true,
-      };
-    case "LOAD_FONT_SUCCESS":
-      return {
-        ...state,
-        fetching: false,
-        fonts: new Set(
-          Array.from(state.fonts).map((font) =>
-            font.fontFamily === action.payload.fontFamily
-              ? { ...font, loaded: true }
-              : font
-          )
-        ),
-        selectedFont: action.payload.fontFamily,
-        error: undefined,
-      };
-    case "LOAD_FONT_FAIL":
-      return {
-        ...state,
-        fetching: false,
-        error: action.payload.error,
-      };
     case "SET_SELECTED_FONT":
-      return {
-        ...state,
-        selectedFont: action.payload,
-      };
-    case "SET_FETCHING":
-      return { ...state, fetching: action.payload };
-    case "SET_ERROR":
-      return { ...state, error: action.payload };
+      return { ...state, selectedFont: action.payload };
+    case "SET_DISPLAYED_FONT":
+      return { ...state, displayedFont: action.payload };
     case "ADD_CUSTOM_FONTS": {
       const newFamilies = new Set(action.payload.map((f) => f.fontFamily));
       const existing = Array.from(state.fonts).filter(
@@ -106,6 +66,7 @@ const fontReducer = (state: FontState, action: FontAction): FontState => {
       };
     }
     case "REMOVE_CUSTOM_FONT": {
+      const fallbackFont = "Noto Sans JP";
       return {
         ...state,
         fonts: new Set(
@@ -115,8 +76,12 @@ const fontReducer = (state: FontState, action: FontAction): FontState => {
         ),
         selectedFont:
           state.selectedFont === action.payload
-            ? "Noto Sans JP"
+            ? fallbackFont
             : state.selectedFont,
+        displayedFont:
+          state.displayedFont === action.payload
+            ? fallbackFont
+            : state.displayedFont,
       };
     }
     default:
@@ -127,6 +92,7 @@ const fontReducer = (state: FontState, action: FontAction): FontState => {
 const initialState: Omit<FontState, "dispatch" | "selectFont"> = {
   fonts: new Set(),
   selectedFont: DEFAULT_FONT,
+  displayedFont: "",
   fetching: true,
   error: undefined,
 };
@@ -138,54 +104,25 @@ export const useFontStore = create<FontState>()(
       dispatch: (action: FontAction) =>
         set((state) => fontReducer(state, action)),
 
-      selectFont: async (fontFamily: string, skipHistory = false) => {
-        const { fonts, dispatch, selectedFont: previousFont } = get();
-        const font = Array.from(fonts).find((f) => f.fontFamily === fontFamily);
+      selectFont: (fontFamily: string, skipHistory = false) => {
+        const { selectedFont: previous, dispatch } = get();
+        if (fontFamily === previous) return;
 
-        if (!font) {
-          dispatch({
-            type: "SET_ERROR",
-            payload: new Error(`Font "${fontFamily}" not found`),
-          });
-          return;
-        }
-
-        const sameFont = fontFamily === previousFont;
-
-        if (!font.loaded) {
-          dispatch({ type: "LOAD_FONT", payload: fontFamily });
-          try {
-            await loadFont(font);
-            dispatch({ type: "LOAD_FONT_SUCCESS", payload: font });
-          } catch (error) {
-            dispatch({
-              type: "LOAD_FONT_FAIL",
-              payload: {
-                error:
-                  error instanceof Error ? error : new Error(String(error)),
-              },
-            });
-            return;
-          }
-        } else if (!sameFont) {
-          dispatch({ type: "SET_SELECTED_FONT", payload: fontFamily });
-        }
-
-        if (sameFont) return;
-
+        dispatch({ type: "SET_SELECTED_FONT", payload: fontFamily });
         useCanvasStore
           .getState()
           .dispatch({ type: "SET_FONT", payload: fontFamily }, skipHistory);
+
+        loadFamily(fontFamily).catch(() => {
+          // Failure surfaces visually via the active Canvas/Preview consumer's
+          // own load gate; swallow here so we don't trigger an unhandled
+          // rejection from a fire-and-forget call.
+        });
       },
     }),
     { name: "font-store" }
   )
 );
-
-const fetchFonts = async (): Promise<Font[]> => {
-  const fonts = await fetchAndMapFonts({ limit: 100 });
-  return fonts;
-};
 
 const loadCustomFontsFromDB = async (): Promise<Font[]> => {
   const dbFonts = await customFontRepository.getAll();
@@ -194,12 +131,10 @@ const loadCustomFontsFromDB = async (): Promise<Font[]> => {
   for (const dbFont of dbFonts) {
     try {
       await registerCustomFontFace(dbFont.fontFamily, dbFont.data);
+      registerCustomFamily(dbFont.fontFamily);
       fonts.push({
         fontFamily: dbFont.fontFamily,
-        variants: ["regular"],
-        files: {},
-        isVariableFont: false,
-        loaded: true,
+        weights: [400],
         isCustom: true,
       });
     } catch (e) {
@@ -210,50 +145,52 @@ const loadCustomFontsFromDB = async (): Promise<Font[]> => {
   return fonts;
 };
 
-Promise.allSettled([fetchFonts(), loadCustomFontsFromDB()])
-  .then(async ([googleResult, customResult]) => {
+export const removeCustomFont = (fontFamily: string): void => {
+  unregisterCustomFamily(fontFamily);
+  useFontStore.getState().dispatch({
+    type: "REMOVE_CUSTOM_FONT",
+    payload: fontFamily,
+  });
+};
+
+Promise.allSettled([fetchCatalog(), loadCustomFontsFromDB()])
+  .then(async ([catalogResult, customResult]) => {
     const dispatch = useFontStore.getState().dispatch;
 
-    const googleFonts =
-      googleResult.status === "fulfilled" ? googleResult.value : [];
+    const catalogFonts: Font[] =
+      catalogResult.status === "fulfilled"
+        ? catalogResult.value.map((meta) => ({
+            fontFamily: meta.fontFamily,
+            id: meta.id,
+            weights: meta.weights,
+          }))
+        : [];
     const customFonts =
       customResult.status === "fulfilled" ? customResult.value : [];
 
-    if (googleResult.status === "rejected") {
+    if (catalogResult.status === "rejected") {
       dispatch({
         type: "FETCH_FONTS_FAIL",
         payload: new Error("Failed to fetch fonts, please refresh the page"),
       });
     } else {
-      dispatch({ type: "FETCH_FONTS_SUCCESS", payload: googleFonts });
+      dispatch({ type: "FETCH_FONTS_SUCCESS", payload: catalogFonts });
     }
 
     if (customFonts.length > 0) {
       dispatch({ type: "ADD_CUSTOM_FONTS", payload: customFonts });
     }
 
-    const allFonts = [...customFonts, ...googleFonts];
+    const activeFontFamily =
+      useCanvasStore.getState().font ||
+      useFontStore.getState().selectedFont;
 
-    if (allFonts.length === 0) return;
+    dispatch({ type: "SET_SELECTED_FONT", payload: activeFontFamily });
 
-    const activeFontFamily = useCanvasStore.getState().font;
-    const activeFont =
-      allFonts.find((f) => f.fontFamily === activeFontFamily) ??
-      googleFonts[0] ??
-      allFonts[0];
-
-    if (activeFont.loaded) {
-      dispatch({ type: "LOAD_FONT_SUCCESS", payload: activeFont });
-    } else {
-      try {
-        await loadFont(activeFont);
-        dispatch({ type: "LOAD_FONT_SUCCESS", payload: activeFont });
-      } catch {
-        dispatch({
-          type: "LOAD_FONT_FAIL",
-          payload: { error: new Error("Failed to load font") },
-        });
-      }
+    try {
+      await loadFamily(activeFontFamily);
+    } catch (e) {
+      console.warn(`Failed to preload active font "${activeFontFamily}":`, e);
     }
   })
   .catch(() => {

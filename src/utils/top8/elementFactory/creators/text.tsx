@@ -9,6 +9,7 @@ import { SmartText } from "@/components/top8/SmartText/SmartText";
 import { replacePlaceholders } from "@/utils/top8/replacePlaceholderString";
 import { resolveColor } from "@/utils/top8/resolveColor";
 import { resolveText } from "@/utils/top8/resolveText";
+import { composeFontStyle } from "@/utils/fonts/fontLoader";
 
 export const createTextElement: ElementCreator<TextElementConfig> = ({
   element,
@@ -25,6 +26,12 @@ export const createTextElement: ElementCreator<TextElementConfig> = ({
   if (element.textTransform === "uppercase") text = text.toUpperCase();
   else if (element.textTransform === "lowercase") text = text.toLowerCase();
 
+  const fontStyle = composeFontStyle(
+    fontFamily,
+    element.fontWeight,
+    element.fontStyle
+  );
+
   return (
     <Text
       key={element.id ?? `text-${index}`}
@@ -32,7 +39,7 @@ export const createTextElement: ElementCreator<TextElementConfig> = ({
       y={element.position.y}
       fill={resolveColor(element.fill, design?.colorPalette) ?? "white"}
       fontSize={element.fontSize ?? 20}
-      fontStyle={element.fontStyle ?? String(element.fontWeight ?? "normal")}
+      fontStyle={fontStyle}
       fontFamily={fontFamily}
       text={text}
       align={element.align ?? "left"}
@@ -69,6 +76,12 @@ export const createSmartTextElement: ElementCreator<SmartTextElementConfig> = ({
   if (element.textTransform === "uppercase") text = text.toUpperCase();
   else if (element.textTransform === "lowercase") text = text.toLowerCase();
 
+  const fontStyle = composeFontStyle(
+    fontFamily,
+    element.fontWeight,
+    element.fontStyle
+  );
+
   return (
     <SmartText
       key={element.id ?? `smartText-${index}`}
@@ -78,7 +91,7 @@ export const createSmartTextElement: ElementCreator<SmartTextElementConfig> = ({
       height={element.size?.height}
       fill={resolveColor(element.fill, design?.colorPalette) ?? "white"}
       fontSize={element.fontSize ?? 20}
-      fontStyle={element.fontStyle ?? String(element.fontWeight ?? "normal")}
+      fontStyle={fontStyle}
       fontFamily={fontFamily}
       text={text}
       align={element.align ?? "left"}

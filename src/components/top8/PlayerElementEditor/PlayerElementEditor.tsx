@@ -30,7 +30,7 @@ type Props = {
 
 export const PlayerElementEditor = ({ className }: Props) => {
   const basePlayer = useCanvasStore((state) => state.design.basePlayer);
-  const selectedFont = useFontStore((state) => state.selectedFont);
+  const displayedFont = useFontStore((state) => state.displayedFont);
   const tournament = useTournamentStore((state) => state.info);
   const canvasDispatch = useCanvasStore((state) => state.dispatch);
   const colorPalette = useCanvasStore((state) => state.design.colorPalette);
@@ -44,7 +44,7 @@ export const PlayerElementEditor = ({ className }: Props) => {
 
   const konvaElements = useMemo(() => {
     return createKonvaElements(basePlayer.elements, {
-      fontFamily: selectedFont,
+      fontFamily: displayedFont,
       containerSize: basePlayer.size,
       player: examplePlayer,
       tournament,
@@ -52,7 +52,7 @@ export const PlayerElementEditor = ({ className }: Props) => {
     });
   }, [
     basePlayer.elements,
-    selectedFont,
+    displayedFont,
     basePlayer.size,
     tournament,
     colorPalette,

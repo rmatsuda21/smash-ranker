@@ -6,7 +6,7 @@ import {
 } from "@/components/top8/DropDownSelect/DropDownSelect";
 import { useFontStore } from "@/store/fontStore";
 import { FontOption } from "@/components/top8/DesignEditor/FontSelect/FontOption";
-import { ensureSingleFontLoaded } from "@/utils/thumbnail/ensureFontsLoaded";
+import { loadFamily } from "@/utils/fonts/fontLoader";
 
 type Props = {
   value: string;
@@ -37,7 +37,9 @@ export const TextFontSelect = ({ value, onChange }: Props) => {
       onChange(fontFamily);
       // Just load the font so it can render — don't update the global
       // `selectedFont` (that would leak into other templates).
-      void ensureSingleFontLoaded(fontFamily);
+      loadFamily(fontFamily).catch(() => {
+        /* TextNode redraws on resolution and fails open to fallback fonts */
+      });
     },
     [onChange],
   );

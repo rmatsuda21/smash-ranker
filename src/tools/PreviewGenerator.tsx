@@ -5,8 +5,7 @@ import { Stage as KonvaStage } from "konva/lib/Stage";
 
 import { createKonvaElements } from "@/utils/top8/elementFactory";
 import { createSamplePlayers } from "@/utils/top8/samplePlayers";
-import { fetchFontFamily } from "@/utils/top8/fetchAndMapFonts";
-import { loadFont } from "@/utils/top8/loadFont";
+import { loadFamily } from "@/utils/fonts/fontLoader";
 import { TournamentInfo } from "@/types/top8/Tournament";
 import { DBTemplate } from "@/types/Repository";
 
@@ -256,8 +255,7 @@ const PreviewGeneratorApp = () => {
 
     Promise.all(
       uniqueFonts.map(async (family) => {
-        const font = await fetchFontFamily(family);
-        await loadFont(font);
+        await loadFamily(family);
         console.log(`Loaded font: ${family}`);
       })
     )

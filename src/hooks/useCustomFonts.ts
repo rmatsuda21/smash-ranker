@@ -7,6 +7,10 @@ import {
   registerCustomFontFace,
   getFontFamilyFromFileName,
 } from "@/utils/top8/registerCustomFont";
+import {
+  registerCustomFamily,
+  unregisterCustomFamily,
+} from "@/utils/fonts/fontLoader";
 
 export const useCustomFonts = () => {
   const [customFonts, setCustomFonts] = useState<DBCustomFont[]>([]);
@@ -36,6 +40,7 @@ export const useCustomFonts = () => {
       const id = crypto.randomUUID();
 
       await registerCustomFontFace(fontFamily, file);
+      registerCustomFamily(fontFamily);
 
       const dbFont: DBCustomFont = {
         id,
@@ -49,10 +54,7 @@ export const useCustomFonts = () => {
 
       const font: Font = {
         fontFamily,
-        variants: ["regular"],
-        files: {},
-        isVariableFont: false,
-        loaded: true,
+        weights: [400],
         isCustom: true,
       };
 
@@ -76,6 +78,7 @@ export const useCustomFonts = () => {
       );
       facesToDelete.forEach((ff) => document.fonts.delete(ff));
 
+      unregisterCustomFamily(font.fontFamily);
       dispatch({ type: "REMOVE_CUSTOM_FONT", payload: font.fontFamily });
       setCustomFonts((prev) => prev.filter((f) => f.id !== id));
     },
