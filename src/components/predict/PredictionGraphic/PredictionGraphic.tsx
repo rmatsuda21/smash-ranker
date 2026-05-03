@@ -3,6 +3,7 @@ import { Trans } from "@lingui/react/macro";
 
 import { usePredictionStore } from "@/store/predictionStore";
 import type { PredictionPalette } from "@/types/predict/PredictionPalette";
+import { getPlacements } from "@/utils/placements";
 
 import styles from "./PredictionGraphic.module.scss";
 
@@ -38,6 +39,7 @@ export const PredictionGraphic = () => {
     : "";
 
   const meta = [eventName, formattedDate].filter(Boolean).join(" · ");
+  const placements = getPlacements(predictions.length);
 
   return (
     <div className={styles.wrapper} style={paletteToStyleVars(palette)}>
@@ -59,9 +61,13 @@ export const PredictionGraphic = () => {
         <div className={styles.subtitle}><Trans>Predictions</Trans></div>
         <div className={styles.list}>
           {predictions.map((player, index) => (
-            <div key={player.id} className={styles.row} data-rank={index + 1}>
+            <div
+              key={player.id}
+              className={styles.row}
+              data-rank={placements[index]}
+            >
               <div className={styles.rankBg}>
-                <span className={styles.rank}>{index + 1}</span>
+                <span className={styles.rank}>{placements[index]}</span>
               </div>
               <span className={styles.name}>
                 {player.prefix && (
