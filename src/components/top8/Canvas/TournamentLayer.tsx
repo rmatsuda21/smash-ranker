@@ -17,7 +17,7 @@ export const TournamentLayer = ({ onReady }: { onReady?: () => void }) => {
   const onReadyRef = useRef(onReady);
   onReadyRef.current = onReady;
 
-  const selectedFont = useFontStore((state) => state.selectedFont);
+  const displayedFont = useFontStore((state) => state.displayedFont);
   const layout = useCanvasStore((state) => state.design.tournament);
   const canvasSize = useCanvasStore(
     useShallow((state) => state.design.canvasSize)
@@ -57,7 +57,7 @@ export const TournamentLayer = ({ onReady }: { onReady?: () => void }) => {
       createKonvaElements(
         layout?.elements ?? [],
         {
-          fontFamily: selectedFont,
+          fontFamily: displayedFont,
           tournament,
           containerSize: canvasSize,
           design,
@@ -67,7 +67,7 @@ export const TournamentLayer = ({ onReady }: { onReady?: () => void }) => {
       ),
     [
       layout?.elements,
-      selectedFont,
+      displayedFont,
       tournament,
       canvasSize,
       design,

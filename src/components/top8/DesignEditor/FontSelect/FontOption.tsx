@@ -2,6 +2,7 @@ import { memo, useEffect, useState } from "react";
 
 import { DropDownItem } from "@/components/top8/DropDownSelect/DropDownSelect";
 import { useFontStore } from "@/store/fontStore";
+import { fontsourcePreviewCssUrl } from "@/utils/fonts/fontsourceUrls";
 
 import styles from "./FontOption.module.scss";
 
@@ -9,25 +10,28 @@ type Props = {
   option: DropDownItem<string>;
 };
 
-const getGoogleFontPreviewUrl = (fontFamily: string, previewText: string) => {
-  const encodedFamily = encodeURIComponent(fontFamily);
-  const encodedText = encodeURIComponent(previewText);
-  return `https://fonts.googleapis.com/css2?family=${encodedFamily}&text=${encodedText}&display=swap`;
-};
-
 export const FontOption = memo(({ option }: Props) => {
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState(false);
   const fontFamily = option.value;
-  const isCustom = useFontStore((state) =>
-    Array.from(state.fonts).some(
-      (f) => f.fontFamily === fontFamily && f.isCustom
-    )
+  const font = useFontStore((state) =>
+    Array.from(state.fonts).find((f) => f.fontFamily === fontFamily)
   );
+  const isCustom = font?.isCustom ?? false;
+  const fontId = font?.id;
 
   useEffect(() => {
     if (isCustom) {
       setLoaded(true);
+      return;
+    }
+
+    if (!fontId) {
+      if (document.fonts.check(`16px "${fontFamily}"`)) {
+        setLoaded(true);
+      } else {
+        setError(true);
+      }
       return;
     }
 
@@ -41,7 +45,7 @@ export const FontOption = memo(({ option }: Props) => {
 
     const link = document.createElement("link");
     link.rel = "stylesheet";
-    link.href = getGoogleFontPreviewUrl(fontFamily, fontFamily);
+    link.href = fontsourcePreviewCssUrl(fontId);
     link.setAttribute("data-font-preview", fontFamily);
 
     link.onload = () => {
@@ -57,7 +61,7 @@ export const FontOption = memo(({ option }: Props) => {
     };
 
     document.head.appendChild(link);
-  }, [fontFamily]);
+  }, [fontFamily, fontId, isCustom]);
 
   return (
     <span

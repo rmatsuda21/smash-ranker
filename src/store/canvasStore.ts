@@ -10,7 +10,7 @@ import {
   HistoryEntry,
 } from "@/store/historyStore";
 import { useFontStore } from "@/store/fontStore";
-import { loadFont } from "@/utils/top8/loadFont";
+import { loadFamily } from "@/utils/fonts/fontLoader";
 
 const DEFAULT_FONT = "Dela Gothic One";
 
@@ -288,23 +288,10 @@ function applyHistoryEntry(
     case "SET_FONT": {
       const fontFamily = data as string;
       const fontStore = useFontStore.getState();
-      const font = Array.from(fontStore.fonts).find(
-        (f) => f.fontFamily === fontFamily,
-      );
-      if (font && !font.loaded) {
-        loadFont(font)
-          .then(() => {
-            fontStore.dispatch({ type: "LOAD_FONT_SUCCESS", payload: font });
-          })
-          .catch(() => {
-            fontStore.dispatch({
-              type: "SET_SELECTED_FONT",
-              payload: fontFamily,
-            });
-          });
-      } else {
-        fontStore.dispatch({ type: "SET_SELECTED_FONT", payload: fontFamily });
-      }
+      fontStore.dispatch({ type: "SET_SELECTED_FONT", payload: fontFamily });
+      loadFamily(fontFamily).catch(() => {
+        /* failure handled by the Canvas's own load gate */
+      });
       return { font: fontFamily };
     }
 

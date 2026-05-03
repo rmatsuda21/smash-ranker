@@ -17,6 +17,7 @@ import type { ElementCreator } from "@/types/top8/ElementFactory";
 import { replacePlaceholders } from "@/utils/top8/replacePlaceholderString";
 import { evaluateElementCondition } from "@/utils/top8/evaluateElementCondition";
 import { resolveText } from "@/utils/top8/resolveText";
+import { composeFontStyle } from "@/utils/fonts/fontLoader";
 import type { InternalContext } from "../types";
 
 let createKonvaElementsInternal: (
@@ -62,7 +63,11 @@ const getElementMainSize = (
         text: text,
         fontSize: textEl.fontSize ?? 20,
         fontFamily: context.fontFamily ?? "Arial",
-        fontStyle: textEl.fontStyle ?? String(textEl.fontWeight ?? "normal"),
+        fontStyle: composeFontStyle(
+          context.fontFamily ?? "Arial",
+          textEl.fontWeight,
+          textEl.fontStyle
+        ),
         width: textEl.size?.width,
         wrap: "word",
       });

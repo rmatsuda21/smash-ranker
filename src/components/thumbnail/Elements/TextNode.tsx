@@ -4,7 +4,7 @@ import { Text as KonvaTextNode } from "konva/lib/shapes/Text";
 
 import { TextElement } from "@/types/thumbnail/ThumbnailDesign";
 import { useThumbnailEditorStore } from "@/store/thumbnailEditorStore";
-import { useFontStore } from "@/store/fontStore";
+import { loadFamily } from "@/utils/fonts/fontLoader";
 import { computeAutoFitFontSize } from "@/utils/thumbnail/measureText";
 
 type Props = {
@@ -17,7 +17,6 @@ const TextNodeComponent = ({ element, draggable }: Props) => {
   const isEditingThis = useThumbnailEditorStore(
     (s) => s.isEditingTextId === element.id,
   );
-  const fonts = useFontStore((s) => s.fonts);
 
   const effectiveFontSize = useMemo(() => {
     if (!element.autoFit) return element.fontSize;
@@ -33,20 +32,21 @@ const TextNodeComponent = ({ element, draggable }: Props) => {
     element.align,
     element.letterSpacing,
     element.lineHeight,
-    fonts,
     element,
   ]);
 
   useEffect(() => {
-    const node = ref.current;
-    if (!node) return;
-    const fontLoadedTrigger = Array.from(fonts).find(
-      (f) => f.fontFamily === element.fontFamily,
-    )?.loaded;
-    if (fontLoadedTrigger) {
-      node.getLayer()?.batchDraw();
-    }
-  }, [fonts, element.fontFamily]);
+    if (!element.fontFamily) return;
+    let cancelled = false;
+    const redraw = () => {
+      if (cancelled) return;
+      ref.current?.getLayer()?.batchDraw();
+    };
+    loadFamily(element.fontFamily).then(redraw, redraw);
+    return () => {
+      cancelled = true;
+    };
+  }, [element.fontFamily]);
 
   return (
     <KonvaText

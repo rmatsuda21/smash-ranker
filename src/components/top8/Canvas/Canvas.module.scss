@@ -11,10 +11,6 @@
   display: flex;
   flex-direction: column;
 
-  &.hidden {
-    display: none;
-  }
-
   .scrollArea {
     position: relative;
     z-index: 1;
@@ -39,6 +35,7 @@
 
   .canvasWrapper {
     --display-scale: 1;
+    position: relative;
     width: calc(var(--canvas-width) * var(--display-scale));
     height: calc(var(--canvas-height) * var(--display-scale));
     margin-inline: auto;
@@ -48,6 +45,29 @@
       height: var(--canvas-height);
       transform: scale(var(--display-scale));
       transform-origin: top left;
+    }
+
+    .fontSwapOverlay {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+      cursor: wait;
+      animation: fontSwapOverlayIn 120ms ease-out;
+    }
+  }
+
+  @keyframes fontSwapOverlayIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
     }
   }
 

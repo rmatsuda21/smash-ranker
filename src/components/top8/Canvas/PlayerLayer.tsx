@@ -117,7 +117,7 @@ const PlayerLayerComponent = ({ onReady }: { onReady?: () => void }) => {
 
   const players = usePlayerStore((state) => state.players);
 
-  const selectedFont = useFontStore((state) => state.selectedFont);
+  const displayedFont = useFontStore((state) => state.displayedFont);
 
   const editable = useCanvasStore((state) => state.editable);
   const playerLayouts = useCanvasStore((state) => state.design.players);
@@ -197,7 +197,7 @@ const PlayerLayerComponent = ({ onReady }: { onReady?: () => void }) => {
               index={index}
               onDragStart={mobile ? noop : onPlayerDragStart}
               onDragEnd={mobile ? noop : onPlayerDragEnd}
-              fontFamily={selectedFont}
+              fontFamily={displayedFont}
               editable={editable}
               onReady={handlePlayerReady}
             />
