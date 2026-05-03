@@ -19,6 +19,7 @@ import {
 import { Trans } from "@lingui/react/macro";
 
 import { usePredictionStore } from "@/store/predictionStore";
+import { getPlacements } from "@/utils/placements";
 import {
   SortablePredictionItem,
   PredictionItemOverlay,
@@ -68,11 +69,12 @@ export const PredictionListPanel = () => {
     dispatch({ type: "REMOVE_PREDICTION", payload: id });
   };
 
+  const placements = getPlacements(predictions.length);
   const activePlayer = activeId
     ? predictions.find((p) => p.id === activeId)
     : null;
   const activeRank = activePlayer
-    ? predictions.indexOf(activePlayer) + 1
+    ? placements[predictions.indexOf(activePlayer)]
     : 0;
 
   return (
@@ -100,7 +102,7 @@ export const PredictionListPanel = () => {
               <SortablePredictionItem
                 key={player.id}
                 player={player}
-                rank={index + 1}
+                rank={placements[index]}
                 onRemove={handleRemove}
               />
             ))}

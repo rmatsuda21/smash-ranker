@@ -138,6 +138,39 @@ async function fetchTournamentIcon(
   return fetched;
 }
 
+// --- Placements ---
+
+// Standard tournament placement pattern: 1, 2, 3, 4, 5, 5, 7, 7, 9, 9, 9, 9, ...
+// Duplicated from src/utils/placements.ts because api/ functions don't share
+// the client tsconfig path aliases.
+function getPlacements(playerCount: number): number[] {
+  const placements: number[] = [];
+
+  for (let i = 0; i < Math.min(4, playerCount); i++) {
+    placements.push(i + 1);
+  }
+
+  if (placements.length >= playerCount) return placements;
+
+  let placementValue = 5;
+  let groupSize = 2;
+  let groupsAtCurrentSize = 0;
+
+  while (placements.length < playerCount) {
+    for (let i = 0; i < groupSize && placements.length < playerCount; i++) {
+      placements.push(placementValue);
+    }
+    placementValue += groupSize;
+    groupsAtCurrentSize++;
+    if (groupsAtCurrentSize === 2) {
+      groupSize *= 2;
+      groupsAtCurrentSize = 0;
+    }
+  }
+
+  return placements;
+}
+
 // --- Rank styles ---
 
 function getRowBackground(rank: number, palette: PredictionPalette): string {
@@ -184,9 +217,10 @@ function buildGraphic(
     : "";
 
   const meta = [eventName, formattedDate].filter(Boolean).join(" · ");
+  const placements = getPlacements(predictions.length);
 
   const rows = predictions.map((player, index) => {
-    const rank = index + 1;
+    const rank = placements[index];
 
     return h(
       "div",
