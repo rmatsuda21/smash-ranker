@@ -59,13 +59,16 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className={styles.root}>
       <nav className={styles.nav}>
-        <img
-          src="/favicon.svg"
-          alt="Smash Ranker"
-          className={logoEffect ? styles[logoEffect] : undefined}
-          onMouseEnter={handleLogoHover}
-          onAnimationEnd={handleAnimationEnd}
-        />
+        <div className={styles.brand}>
+          <img
+            src="/favicon.svg"
+            alt="Smash Ranker"
+            className={logoEffect ? styles[logoEffect] : undefined}
+            onMouseEnter={handleLogoHover}
+            onAnimationEnd={handleAnimationEnd}
+          />
+          <span className={styles.betaTag}>beta</span>
+        </div>
         <div className={styles.actions}>
           <button
             className={styles.gearButton}

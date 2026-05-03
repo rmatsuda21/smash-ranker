@@ -44,6 +44,25 @@
   }
 }
 
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.betaTag {
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-9);
+  padding: 3px 6px;
+  border: 1px solid color-mix(in srgb, var(--accent-9) 40%, transparent);
+  border-radius: 4px;
+  user-select: none;
+}
+
 .actions {
   display: flex;
   align-items: center;
@@ -200,6 +219,15 @@
       width: 24px;
       height: 24px;
     }
+  }
+
+  .brand {
+    gap: 6px;
+  }
+
+  .betaTag {
+    font-size: 9px;
+    padding: 2px 5px;
   }
 
   .gearButton {
