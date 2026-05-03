@@ -23,6 +23,15 @@
     overflow: hidden;
   }
 
+  .canvasFallback {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    background: var(--gray-1);
+  }
+
   .sidePanel {
     height: 100%;
   }

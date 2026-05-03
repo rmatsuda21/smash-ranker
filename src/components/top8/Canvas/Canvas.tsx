@@ -10,7 +10,7 @@ import { useFontStore } from "@/store/fontStore";
 import { BackgroundLayer } from "@/components/top8/Canvas/BackgroundLayer";
 import { PlayerLayer } from "@/components/top8/Canvas/PlayerLayer";
 import { TournamentLayer } from "@/components/top8/Canvas/TournamentLayer";
-import { Spinner } from "@/components/shared/Spinner/Spinner";
+import { BracketLoader } from "@/components/shared/BracketLoader/BracketLoader";
 import { Slider } from "@/components/shared/Slider/Slider";
 import { Button } from "@/components/shared/Button/Button";
 import { isMobile } from "@/utils/isMobile";
@@ -177,7 +177,7 @@ export const Canvas = ({ className }: Props) => {
     return (
       <div className={cn(className, styles.canvasContainer)}>
         <div className={styles.loader}>
-          <Spinner size={100} />
+          <BracketLoader />
         </div>
       </div>
     );
@@ -191,7 +191,7 @@ export const Canvas = ({ className }: Props) => {
     >
       {!isDrawingReady ? (
         <div className={styles.loader}>
-          <Spinner size={100} />
+          <BracketLoader />
         </div>
       ) : null}
       <div ref={scrollAreaRef} className={styles.scrollArea}>
@@ -219,7 +219,7 @@ export const Canvas = ({ className }: Props) => {
           </div>
           {isFontSwapping ? (
             <div className={styles.fontSwapOverlay} aria-live="polite">
-              <Spinner size={48} />
+              <BracketLoader size={180} label={`Loading ${selectedFont}`} />
             </div>
           ) : null}
         </div>

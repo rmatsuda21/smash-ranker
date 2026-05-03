@@ -4,6 +4,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **No manual testing is required for this repo when making changes**
 
+**Do not spin up the dev server (`bun dev`) to visually verify rendering.** Trust `bun lint` and `bun run build` for correctness; the user will check the browser themselves and report visual issues. Avoid `curl`-ing the dev server — the UI is React-rendered so HTML scrapes won't reveal anything useful.
+
 ## Commands
 
 ```bash
