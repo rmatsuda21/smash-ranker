@@ -1,15 +1,15 @@
 import {
-  useMemo,
-  useState,
-  useRef,
+  useCallback,
   useEffect,
   useLayoutEffect,
-  useCallback,
+  useMemo,
+  useRef,
+  useState,
 } from "react";
-import { createPortal } from "react-dom";
 import { LuChevronsUpDown, LuSearch } from "react-icons/lu";
 import cn from "classnames";
 
+import { Popover } from "@/components/shared/Popover/Popover";
 import { Spinner } from "@/components/shared/Spinner/Spinner";
 
 import styles from "./DropDownSelect.module.scss";
@@ -37,42 +37,6 @@ type Props<T> = {
     option: DropDownItem<T>,
     isSelected?: boolean
   ) => React.ReactNode;
-};
-
-const getDropdownStyles = (
-  triggerEl: HTMLButtonElement | null,
-  portalEl: HTMLDivElement | null,
-  showAbove: boolean
-): React.CSSProperties => {
-  if (!triggerEl)
-    return {
-      width: 0,
-      top: 0,
-      left: 0,
-    };
-
-  const dropdownRect = triggerEl.getBoundingClientRect();
-  const width = dropdownRect ? dropdownRect.width : triggerEl.clientWidth;
-  const left = dropdownRect ? dropdownRect.left : 0;
-  let top;
-  let bottom;
-
-  if (showAbove) {
-    const windowHeight = portalEl?.getBoundingClientRect().height;
-
-    top = dropdownRect ? dropdownRect.top - (windowHeight ?? 0) - 15 : 0;
-  } else {
-    top = dropdownRect ? dropdownRect.top + dropdownRect.height + 5 : 0;
-  }
-
-  const dropdownStyles: React.CSSProperties = {
-    width,
-    top,
-    bottom,
-    left,
-  };
-
-  return dropdownStyles;
 };
 
 const TriggerContent = <T,>({
@@ -122,15 +86,11 @@ export const DropDownSelect = <T,>({
   renderOption,
 }: Props<T>) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [showAbove, setShowAbove] = useState(false);
-  const [dropdownStyles, setDropdownStyles] = useState<React.CSSProperties>({});
   const [searchQuery, setSearchQuery] = useState("");
 
   const triggerRef = useRef<HTMLButtonElement>(null);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  const portalRef = useRef<HTMLDivElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const focusedItemRef = useRef<HTMLDivElement>(null);
+  const windowRef = useRef<HTMLDivElement>(null);
+  const focusedItemRef = useRef<HTMLDivElement | null>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   const selectedOption = useMemo(() => {
@@ -144,9 +104,7 @@ export const DropDownSelect = <T,>({
     return options.filter(
       (option) =>
         option.display.toLowerCase().includes(query) ||
-        option.searchTerms?.some((term) =>
-          term.toLowerCase().includes(query)
-        )
+        option.searchTerms?.some((term) => term.toLowerCase().includes(query))
     );
   }, [options, searchQuery]);
 
@@ -168,51 +126,11 @@ export const DropDownSelect = <T,>({
     setSearchQuery("");
   }, []);
 
-  useLayoutEffect(() => {
-    const calculateShowAbove = () => {
-      if (!triggerRef.current || !dropdownRef.current) return false;
-      const triggerRect = triggerRef.current.getBoundingClientRect();
-      const dropdownHeight = dropdownRef.current.offsetHeight;
-      const viewportHeight = window.innerHeight;
-
-      return triggerRect.bottom + dropdownHeight > viewportHeight;
-    };
-
-    const handleResize = () => {
-      setShowAbove(calculateShowAbove());
-    };
-
-    handleResize();
-
-    document.addEventListener("resize", handleResize);
-    return () => {
-      document.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as Node;
-      if (
-        containerRef.current &&
-        !containerRef.current.contains(target) &&
-        (!portalRef.current || !portalRef.current.contains(target))
-      ) {
-        closeDropdown();
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [closeDropdown]);
-
   useEffect(() => {
     if (!isOpen) return;
 
     const getVisibleItems = () => {
-      return dropdownRef.current?.querySelectorAll(`.${styles.item}`) as
+      return windowRef.current?.querySelectorAll(`.${styles.item}`) as
         | NodeListOf<HTMLDivElement>
         | undefined;
     };
@@ -258,7 +176,7 @@ export const DropDownSelect = <T,>({
 
       switch (e.key) {
         case "Escape":
-          closeDropdown();
+          // Popover dismisses on Escape; we just refocus the trigger.
           triggerRef.current?.focus();
           break;
         case "ArrowUp":
@@ -291,15 +209,9 @@ export const DropDownSelect = <T,>({
       }
     };
 
-    const container = containerRef.current;
-    const portal = portalRef.current;
-    container?.addEventListener("keydown", handleKeyDown);
-    portal?.addEventListener("keydown", handleKeyDown);
-    return () => {
-      container?.removeEventListener("keydown", handleKeyDown);
-      portal?.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [isOpen, closeDropdown, filteredOptions, handleValueChange]);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, filteredOptions, handleValueChange]);
 
   useLayoutEffect(() => {
     if (!isOpen) {
@@ -313,8 +225,8 @@ export const DropDownSelect = <T,>({
       });
     }
 
-    if (dropdownRef.current) {
-      const checkedElement = dropdownRef.current?.querySelector(
+    if (windowRef.current) {
+      const checkedElement = windowRef.current.querySelector(
         '[data-state="checked"]'
       );
       if (checkedElement) {
@@ -330,22 +242,8 @@ export const DropDownSelect = <T,>({
     }
   }, [isOpen, searchQuery]);
 
-  useEffect(() => {
-    const calculateShowAbove = () => {
-      if (!triggerRef.current || !dropdownRef.current) return false;
-      const triggerRect = triggerRef.current.getBoundingClientRect();
-      const dropdownHeight = dropdownRef.current.offsetHeight;
-      const viewportHeight = window.innerHeight;
-
-      return triggerRect.bottom + dropdownHeight > viewportHeight;
-    };
-
-    setDropdownStyles(getDropdownStyles(triggerRef.current, portalRef.current, showAbove));
-    setShowAbove(calculateShowAbove());
-  }, [isOpen, showAbove]);
-
   return (
-    <div className={cn(styles.dropdownSelect, className)} ref={containerRef}>
+    <div className={cn(styles.dropdownSelect, className)}>
       <button
         ref={triggerRef}
         className={styles.trigger}
@@ -361,76 +259,72 @@ export const DropDownSelect = <T,>({
         <LuChevronsUpDown className={styles.icon} />
       </button>
 
-      {createPortal(
-        <div
-          ref={portalRef}
-          id="dropdown-container"
-          className={cn(styles.dropdown, {
-            [styles.open]: isOpen,
-          })}
-          style={dropdownStyles}
-          inert={!isOpen ? true : undefined}
-          role="listbox"
-          onMouseDown={(e) => e.stopPropagation()}
-        >
-          {searchable && (
-            <div className={styles.searchContainer}>
-              <div className={styles.searchInput}>
-                <LuSearch className={styles.searchIcon} />
-                <input
-                  ref={searchInputRef}
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder={searchPlaceholder}
-                  autoComplete="off"
-                  autoCorrect="off"
-                  spellCheck={false}
-                />
-              </div>
+      <Popover
+        anchorRef={triggerRef}
+        open={isOpen}
+        onClose={closeDropdown}
+        placement="bottom-start"
+        offset={5}
+        matchAnchorWidth
+        className={styles.dropdown}
+      >
+        {searchable && (
+          <div className={styles.searchContainer}>
+            <div className={styles.searchInput}>
+              <LuSearch className={styles.searchIcon} />
+              <input
+                ref={searchInputRef}
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder={searchPlaceholder}
+                autoComplete="off"
+                autoCorrect="off"
+                spellCheck={false}
+              />
             </div>
-          )}
-          <div className={styles.window} ref={dropdownRef}>
-            {filteredOptions.length === 0 ? (
-              <div className={styles.noResults}>No results found</div>
-            ) : (
-              filteredOptions.map((option) => {
-                const isSelected = option.value === selectedValue;
-                const onClick = () => handleValueChange(option.value);
-                return (
-                  <div
-                    key={option.id}
-                    className={styles.item}
-                    data-state={isSelected ? "checked" : undefined}
-                    onClick={onClick}
-                    role="option"
-                    aria-selected={isSelected}
-                    tabIndex={0}
-                  >
-                    {renderOption ? (
-                      renderOption(option, isSelected)
-                    ) : (
-                      <>
-                        {option.imageSrc && (
-                          <img
-                            width={24}
-                            height={24}
-                            src={option.imageSrc}
-                            alt={option.display ?? ""}
-                            loading="lazy"
-                          />
-                        )}
-                        {option.display}
-                      </>
-                    )}
-                  </div>
-                );
-              })
-            )}
           </div>
-        </div>,
-        document.body
-      )}
+        )}
+        <div className={styles.window} ref={windowRef} role="listbox">
+          {filteredOptions.length === 0 ? (
+            <div className={styles.noResults}>No results found</div>
+          ) : (
+            filteredOptions.map((option) => {
+              const isSelected = option.value === selectedValue;
+              const onClick = () => handleValueChange(option.value);
+              return (
+                <div
+                  key={option.id}
+                  className={styles.item}
+                  data-state={isSelected ? "checked" : undefined}
+                  onClick={onClick}
+                  role="option"
+                  aria-selected={isSelected}
+                  tabIndex={0}
+                >
+                  {renderOption ? (
+                    renderOption(option, isSelected)
+                  ) : (
+                    <>
+                      {option.imageSrc && (
+                        <img
+                          width={24}
+                          height={24}
+                          src={option.imageSrc}
+                          alt={option.display ?? ""}
+                          loading="lazy"
+                        />
+                      )}
+                      {option.display}
+                    </>
+                  )}
+                </div>
+              );
+            })
+          )}
+        </div>
+      </Popover>
+
       {error && (
         <p className={styles.error}>{`${error?.name}: ${error?.message}`}</p>
       )}

@@ -1,6 +1,11 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
+import {
+  useDismissOnEscape,
+  useDismissOnOutsideClick,
+} from "@/hooks/useDismiss";
+
 import styles from "./ContextMenu.module.scss";
 
 export type ContextMenuItem =
@@ -41,24 +46,18 @@ export const ContextMenu = ({ x, y, items, onClose }: Props) => {
     setPos({ x: nx, y: ny });
   }, [x, y]);
 
+  useDismissOnOutsideClick({
+    enabled: true,
+    refs: [ref],
+    onDismiss: onClose,
+  });
+  useDismissOnEscape({ enabled: true, onDismiss: onClose });
+
   useEffect(() => {
-    const onPointer = (e: MouseEvent) => {
-      if (!ref.current) return;
-      if (!ref.current.contains(e.target as Node)) {
-        onClose();
-      }
-    };
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
     const onScroll = () => onClose();
-    document.addEventListener("mousedown", onPointer);
-    document.addEventListener("keydown", onKey);
     window.addEventListener("scroll", onScroll, true);
     window.addEventListener("blur", onClose);
     return () => {
-      document.removeEventListener("mousedown", onPointer);
-      document.removeEventListener("keydown", onKey);
       window.removeEventListener("scroll", onScroll, true);
       window.removeEventListener("blur", onClose);
     };
@@ -98,9 +97,9 @@ export const ContextMenu = ({ x, y, items, onClose }: Props) => {
               <span className={styles.shortcut}>{item.shortcut}</span>
             ) : null}
           </button>
-        ),
+        )
       )}
     </div>,
-    document.body,
+    document.body
   );
 };

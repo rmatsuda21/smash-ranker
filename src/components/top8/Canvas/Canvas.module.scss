@@ -18,11 +18,11 @@
     overflow: auto;
     scrollbar-gutter: stable;
     padding: var(--canvas-padding);
-    background: var(--gray-1);
+    background: var(--bg-surface);
   }
 
   .loader {
-    background: var(--gray-1);
+    background: var(--bg-surface);
     position: absolute;
     display: flex;
     align-items: center;
@@ -113,7 +113,7 @@
       flex: 1;
       scrollbar-gutter: auto;
       overflow: auto;
-      background: var(--gray-1);
+      background: var(--bg-surface);
     }
 
     .canvasWrapper {

@@ -54,7 +54,7 @@
 .emptyTitle {
   font-size: 24px;
   font-weight: 700;
-  color: var(--gray-12);
+  color: var(--fg-1);
 
   @include mobile {
     font-size: 20px;
@@ -63,7 +63,7 @@
 
 .emptyDescription {
   font-size: var(--font-size-md);
-  color: var(--gray-9);
+  color: var(--fg-4);
   max-width: 360px;
   line-height: 1.5;
 }
@@ -85,7 +85,7 @@
   align-items: center;
   gap: var(--space-2);
   font-size: var(--font-size-xs);
-  color: var(--gray-8);
+  color: var(--fg-muted);
   margin-top: var(--space-1);
 }
 
@@ -147,7 +147,7 @@
 .tournamentName {
   font-size: var(--title-size);
   font-weight: 700;
-  color: var(--gray-12);
+  color: var(--fg-1);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -159,6 +159,6 @@
 
 .eventName {
   font-size: var(--font-size-sm);
-  color: var(--gray-9);
+  color: var(--fg-4);
   margin-top: var(--space-1);
 }

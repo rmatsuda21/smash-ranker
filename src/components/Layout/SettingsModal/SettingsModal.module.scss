@@ -34,7 +34,7 @@
   font-size: var(--title-size);
   font-weight: 700;
   margin: 0;
-  color: var(--gray-12);
+  color: var(--fg-1);
 }
 
 .close {
@@ -48,7 +48,7 @@
   border: none;
   border-radius: var(--radius);
   cursor: pointer;
-  color: var(--gray-10);
+  color: var(--fg-3);
   transition: all var(--duration-base) var(--ease-standard);
 
   svg {
@@ -57,7 +57,7 @@
   }
 
   &:hover {
-    color: var(--gray-12);
+    color: var(--fg-1);
     background-color: var(--gray-4);
   }
 

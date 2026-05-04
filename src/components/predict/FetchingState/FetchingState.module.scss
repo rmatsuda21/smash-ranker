@@ -40,7 +40,7 @@
   padding: var(--space-3) var(--space-4);
   border-radius: var(--radius-lg);
   background: var(--gray-2);
-  border: 1px solid var(--gray-4);
+  border: 1px solid var(--border);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
   overflow: hidden;
   isolation: isolate;
@@ -62,7 +62,7 @@
 .heading {
   font-size: 14px;
   font-weight: 600;
-  color: var(--gray-12);
+  color: var(--fg-1);
   letter-spacing: -0.005em;
 }
 
@@ -70,7 +70,7 @@
   position: relative;
   height: 17px;
   font-size: 12.5px;
-  color: var(--gray-10);
+  color: var(--fg-3);
 }
 
 .taglineText {

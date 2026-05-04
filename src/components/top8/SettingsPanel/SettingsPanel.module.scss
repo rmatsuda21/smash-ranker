@@ -29,13 +29,13 @@
   font-weight: 900;
   letter-spacing: 1px;
   text-transform: uppercase;
-  color: var(--gray-11);
+  color: var(--fg-2);
   margin: 0;
 }
 
 .sectionDesc {
   font-size: var(--font-size-sm);
-  color: var(--gray-10);
+  color: var(--fg-3);
   margin: 0;
   line-height: 1.5;
 }
@@ -56,7 +56,7 @@
   flex: 1;
   padding: var(--space-2) var(--space-3);
   background-color: transparent;
-  border: 1px solid var(--gray-6);
+  border: 1px solid var(--border-strong);
   border-radius: var(--radius);
   cursor: pointer;
   transition: all var(--duration-base) var(--ease-standard);
@@ -94,12 +94,12 @@
 .optionLabel {
   font-size: var(--font-size-sm);
   font-weight: 600;
-  color: var(--gray-12);
+  color: var(--fg-1);
 }
 
 .optionSubLabel {
   font-size: var(--font-size-xs);
-  color: var(--gray-10);
+  color: var(--fg-3);
 
   &::before {
     content: "·";
@@ -109,7 +109,7 @@
 
 .themeIcon {
   font-size: 16px;
-  color: var(--gray-12);
+  color: var(--fg-1);
   display: flex;
 }
 

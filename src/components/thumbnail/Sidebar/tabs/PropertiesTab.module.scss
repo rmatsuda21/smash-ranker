@@ -2,7 +2,7 @@
 
 .empty {
   text-align: center;
-  color: var(--gray-11);
+  color: var(--fg-2);
   font-size: var(--font-size-sm);
   padding: var(--space-6) 0;
 }
@@ -14,14 +14,14 @@
   padding: var(--space-3) 0;
 
   &:not(:last-child) {
-    border-bottom: 1px solid var(--gray-6);
+    border-bottom: 1px solid var(--border-strong);
   }
 
   h4 {
     font-size: var(--font-size-xs);
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    color: var(--gray-11);
+    color: var(--fg-2);
     margin: 0 0 var(--space-1) 0;
     font-weight: 700;
   }
@@ -35,7 +35,7 @@
 
   label {
     font-size: var(--font-size-sm);
-    color: var(--gray-11);
+    color: var(--fg-2);
   }
 
   input[type="number"],
@@ -43,10 +43,10 @@
   select,
   textarea {
     padding: var(--space-2) var(--space-2);
-    background: var(--gray-3);
-    border: 1px solid var(--gray-6);
+    background: var(--bg-raised);
+    border: 1px solid var(--border-strong);
     border-radius: var(--radius-sm);
-    color: var(--gray-12);
+    color: var(--fg-1);
     font-size: var(--font-size-sm);
     min-width: 0;
     width: 100%;
@@ -77,16 +77,16 @@
 
     label {
       font-size: var(--font-size-xs);
-      color: var(--gray-11);
+      color: var(--fg-2);
     }
 
     input,
     select {
       padding: var(--space-2) var(--space-2);
-      background: var(--gray-3);
-      border: 1px solid var(--gray-6);
+      background: var(--bg-raised);
+      border: 1px solid var(--border-strong);
       border-radius: var(--radius-sm);
-      color: var(--gray-12);
+      color: var(--fg-1);
       font-size: var(--font-size-sm);
       width: 100%;
       box-sizing: border-box;
@@ -101,10 +101,10 @@
   button {
     flex: 1;
     padding: var(--space-2);
-    background: var(--gray-3);
-    border: 1px solid var(--gray-6);
+    background: var(--bg-raised);
+    border: 1px solid var(--border-strong);
     border-radius: var(--radius-sm);
-    color: var(--gray-12);
+    color: var(--fg-1);
     cursor: pointer;
     display: flex;
     align-items: center;

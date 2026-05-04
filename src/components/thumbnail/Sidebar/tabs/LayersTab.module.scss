@@ -8,7 +8,7 @@
 
 .empty {
   text-align: center;
-  color: var(--gray-11);
+  color: var(--fg-2);
   font-size: var(--font-size-sm);
   padding: var(--space-6) 0;
 }
@@ -18,8 +18,8 @@
   align-items: center;
   gap: var(--space-2);
   padding: var(--space-2) var(--space-2);
-  background: var(--gray-3);
-  border: 1px solid var(--gray-6);
+  background: var(--bg-raised);
+  border: 1px solid var(--border-strong);
   border-radius: var(--radius-sm);
   font-size: var(--font-size-sm);
   cursor: pointer;
@@ -47,7 +47,7 @@
   .collapseButton {
     background: none;
     border: none;
-    color: var(--gray-11);
+    color: var(--fg-2);
     cursor: pointer;
     padding: var(--space-1);
     display: flex;
@@ -57,7 +57,7 @@
   }
 
   .handle {
-    color: var(--gray-11);
+    color: var(--fg-2);
     cursor: grab;
     flex-shrink: 0;
   }
@@ -81,7 +81,7 @@
     text-overflow: ellipsis;
     background: none;
     border: none;
-    color: var(--gray-12);
+    color: var(--fg-1);
     font-size: var(--font-size-sm);
     padding: 0;
 
@@ -94,13 +94,13 @@
   .iconButton {
     background: none;
     border: none;
-    color: var(--gray-11);
+    color: var(--fg-2);
     cursor: pointer;
     padding: var(--space-1);
     display: flex;
 
     &:hover {
-      color: var(--gray-12);
+      color: var(--fg-1);
     }
   }
 }

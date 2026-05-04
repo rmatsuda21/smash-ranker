@@ -8,7 +8,7 @@
   padding: var(--space-2) var(--space-2);
   border-radius: var(--radius);
   background: var(--gray-2);
-  border: 1px solid var(--gray-4);
+  border: 1px solid var(--border);
   font-size: var(--font-size-sm);
   min-height: 44px;
   touch-action: manipulation;
@@ -24,7 +24,7 @@
   align-items: center;
   justify-content: center;
   cursor: grab;
-  color: var(--gray-8);
+  color: var(--fg-muted);
   font-size: 18px;
   flex-shrink: 0;
   padding: 0;
@@ -43,7 +43,7 @@
   text-align: center;
   flex-shrink: 0;
   font-size: var(--font-size-sm);
-  color: var(--gray-11);
+  color: var(--fg-2);
 
   &[data-rank="1"] {
     color: var(--medal-gold);
@@ -62,17 +62,17 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   font-weight: 500;
-  color: var(--gray-12);
+  color: var(--fg-1);
 }
 
 .prefix {
-  color: var(--gray-9);
+  color: var(--fg-4);
   font-weight: 400;
 }
 
 .seed {
   font-size: var(--font-size-xs);
-  color: var(--gray-8);
+  color: var(--fg-muted);
   flex-shrink: 0;
   font-weight: 400;
 }
@@ -82,7 +82,7 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: var(--gray-8);
+  color: var(--fg-muted);
   font-size: 16px;
   flex-shrink: 0;
   padding: var(--space-1);
@@ -95,6 +95,6 @@
 
   &:hover {
     color: var(--red-9, red);
-    background: var(--gray-3);
+    background: var(--bg-raised);
   }
 }
