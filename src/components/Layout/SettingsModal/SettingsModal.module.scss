@@ -27,7 +27,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: var(--space-5);
 }
 
 .title {
@@ -49,7 +49,7 @@
   border-radius: var(--radius);
   cursor: pointer;
   color: var(--gray-10);
-  transition: all 0.15s ease;
+  transition: all var(--duration-base) var(--ease-standard);
 
   svg {
     width: 20px;
@@ -70,5 +70,5 @@
 .body {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: var(--space-6);
 }

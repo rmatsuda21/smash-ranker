@@ -3,16 +3,16 @@
 .toolbar {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  padding: 12px 0;
+  gap: var(--space-2);
+  padding: var(--space-3) 0;
   align-items: center;
 
   @include mobile {
     overflow-x: auto;
     flex-wrap: nowrap;
     flex-shrink: 0;
-    gap: 6px;
-    padding: 4px 8px;
+    gap: var(--space-2);
+    padding: var(--space-1) var(--space-2);
     max-width: 100%;
     -webkit-overflow-scrolling: touch;
 

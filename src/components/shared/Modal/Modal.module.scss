@@ -6,13 +6,13 @@
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 1000;
+  z-index: var(--z-popover);
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  animation: fadeIn 0.15s ease-in-out;
+  animation: fadeIn var(--duration-base) var(--ease-in-out);
 }
 
 @keyframes fadeIn {
@@ -39,7 +39,7 @@
   border: 1px solid var(--border);
   z-index: 1;
 
-  padding: 20px;
+  padding: var(--space-5);
   border-radius: var(--radius);
 
   @include mobile {

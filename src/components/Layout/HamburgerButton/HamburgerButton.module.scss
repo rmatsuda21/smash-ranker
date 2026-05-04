@@ -3,7 +3,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 6px;
+  gap: var(--space-2);
   width: 32px;
   height: 32px;
   padding: 0;
@@ -17,7 +17,7 @@
     height: 2px;
     background-color: var(--accent-9);
     border-radius: 2px;
-    transition: transform 0.3s ease-in-out;
+    transition: transform var(--duration-slow) var(--ease-in-out);
     transform-origin: center;
   }
 

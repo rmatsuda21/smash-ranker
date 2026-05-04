@@ -4,12 +4,12 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: var(--space-4);
 
   .elementList {
     display: flex;
     flex-wrap: wrap;
-    gap: 3px;
+    gap: var(--space-1);
     max-height: calc(var(--button-height) * 2 + var(--gap));
     overflow-y: auto;
 
@@ -20,7 +20,7 @@
   }
 
   .configSection {
-    padding-top: 10px;
+    padding-top: var(--space-2);
     border-top: 1px solid var(--gray-6);
   }
 }

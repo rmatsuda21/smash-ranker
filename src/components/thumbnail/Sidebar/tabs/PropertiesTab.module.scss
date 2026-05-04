@@ -4,14 +4,14 @@
   text-align: center;
   color: var(--gray-11);
   font-size: var(--font-size-sm);
-  padding: 24px 0;
+  padding: var(--space-6) 0;
 }
 
 .section {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 12px 0;
+  gap: var(--space-2);
+  padding: var(--space-3) 0;
 
   &:not(:last-child) {
     border-bottom: 1px solid var(--gray-6);
@@ -22,7 +22,7 @@
     text-transform: uppercase;
     letter-spacing: 0.5px;
     color: var(--gray-11);
-    margin: 0 0 4px 0;
+    margin: 0 0 var(--space-1) 0;
     font-weight: 700;
   }
 }
@@ -31,7 +31,7 @@
   display: grid;
   grid-template-columns: 80px 1fr;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
 
   label {
     font-size: var(--font-size-sm);
@@ -42,10 +42,10 @@
   input[type="text"],
   select,
   textarea {
-    padding: 6px 8px;
+    padding: var(--space-2) var(--space-2);
     background: var(--gray-3);
     border: 1px solid var(--gray-6);
-    border-radius: 4px;
+    border-radius: var(--radius-sm);
     color: var(--gray-12);
     font-size: var(--font-size-sm);
     min-width: 0;
@@ -68,12 +68,12 @@
 .rowGroup {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 6px;
+  gap: var(--space-2);
 
   > div {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: var(--space-1);
 
     label {
       font-size: var(--font-size-xs);
@@ -82,10 +82,10 @@
 
     input,
     select {
-      padding: 6px 8px;
+      padding: var(--space-2) var(--space-2);
       background: var(--gray-3);
       border: 1px solid var(--gray-6);
-      border-radius: 4px;
+      border-radius: var(--radius-sm);
       color: var(--gray-12);
       font-size: var(--font-size-sm);
       width: 100%;
@@ -96,14 +96,14 @@
 
 .alignButtons {
   display: flex;
-  gap: 4px;
+  gap: var(--space-1);
 
   button {
     flex: 1;
-    padding: 6px;
+    padding: var(--space-2);
     background: var(--gray-3);
     border: 1px solid var(--gray-6);
-    border-radius: 4px;
+    border-radius: var(--radius-sm);
     color: var(--gray-12);
     cursor: pointer;
     display: flex;
@@ -120,26 +120,13 @@
 
 .actions {
   display: flex;
-  gap: 6px;
+  gap: var(--space-2);
   flex-wrap: wrap;
 
   > * {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: var(--space-2);
   }
 }
 
-.checkbox {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: var(--font-size-sm);
-  color: var(--gray-12);
-  cursor: pointer;
-
-  input {
-    cursor: pointer;
-    margin: 0;
-  }
-}

@@ -15,7 +15,7 @@
 
   .label {
     @include label;
-    margin-bottom: 4px;
+    margin-bottom: var(--space-1);
   }
 
   .row {

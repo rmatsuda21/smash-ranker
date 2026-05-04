@@ -1,7 +1,7 @@
 .settings {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: var(--space-6);
   height: 100%;
   overflow-y: auto;
 }
@@ -9,13 +9,13 @@
 .section {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .sectionHeader {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .sectionIcon {
@@ -42,8 +42,8 @@
 
 .optionGrid {
   display: flex;
-  gap: 8px;
-  margin-top: 4px;
+  gap: var(--space-2);
+  margin-top: var(--space-1);
 }
 
 .optionButton {
@@ -51,15 +51,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: var(--space-2);
 
   flex: 1;
-  padding: 8px 14px;
+  padding: var(--space-2) var(--space-3);
   background-color: transparent;
   border: 1px solid var(--gray-6);
   border-radius: var(--radius);
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all var(--duration-base) var(--ease-standard);
 
   &:hover {
     background-color: var(--gray-4);
@@ -103,7 +103,7 @@
 
   &::before {
     content: "·";
-    margin-right: 4px;
+    margin-right: var(--space-1);
   }
 }
 
@@ -125,8 +125,8 @@
 
 .colorGrid {
   display: flex;
-  gap: 8px;
-  margin-top: 4px;
+  gap: var(--space-2);
+  margin-top: var(--space-1);
 }
 
 .colorButton {
@@ -142,7 +142,7 @@
   border: 2px solid transparent;
   border-radius: 50%;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all var(--duration-base) var(--ease-standard);
 
   &:hover {
     transform: scale(0.95);

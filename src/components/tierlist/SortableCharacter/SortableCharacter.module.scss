@@ -4,12 +4,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   border: 1px solid var(--gray-6);
   background: var(--gray-3);
   cursor: grab;
   touch-action: none;
-  transition: box-shadow 0.15s ease;
+  transition: box-shadow var(--duration-base) var(--ease-standard);
 
   &:hover {
     border-color: var(--accent-7);

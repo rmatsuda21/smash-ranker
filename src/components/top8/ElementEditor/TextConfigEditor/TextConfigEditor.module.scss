@@ -3,7 +3,7 @@
 .wrapper {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--space-2);
 
   .label {
     @include label;
@@ -12,8 +12,8 @@
   .grid {
     display: grid;
     grid-template-columns: min-content 75px 1fr;
-    gap: 15px;
-    row-gap: 2px;
+    gap: var(--space-4);
+    row-gap: var(--space-1);
 
     label {
       text-wrap: nowrap;

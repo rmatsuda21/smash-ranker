@@ -1,6 +1,7 @@
 import {
   type ReactNode,
   type RefObject,
+  useCallback,
   useEffect,
   useLayoutEffect,
   useRef,
@@ -11,7 +12,13 @@ import cn from "classnames";
 
 import styles from "./Popover.module.scss";
 
-export type PopoverPlacement = "bottom-start" | "bottom-end" | "bottom";
+export type PopoverPlacement =
+  | "bottom-start"
+  | "bottom-end"
+  | "bottom"
+  | "top-start"
+  | "top-end"
+  | "top";
 
 interface PopoverProps {
   anchorRef: RefObject<HTMLElement | null>;
@@ -20,6 +27,7 @@ interface PopoverProps {
   placement?: PopoverPlacement;
   offset?: number;
   minWidth?: number;
+  flip?: boolean;
   className?: string;
   children: ReactNode;
 }
@@ -38,11 +46,55 @@ export const Popover = ({
   placement = "bottom-start",
   offset = 4,
   minWidth = 220,
+  flip = true,
   className,
   children,
 }: PopoverProps) => {
   const popoverRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState<Position | null>(null);
+
+  const computePosition = useCallback((): Position | null => {
+    const anchor = anchorRef.current;
+    if (!anchor) return null;
+    const rect = anchor.getBoundingClientRect();
+    const popoverEl = popoverRef.current;
+    const popoverWidth = popoverEl?.offsetWidth ?? minWidth;
+    const popoverHeight = popoverEl?.offsetHeight ?? 0;
+
+    const wantsTop = placement.startsWith("top");
+    let isTop = wantsTop;
+    if (flip && popoverHeight > 0) {
+      const bottomSpace = window.innerHeight - rect.bottom - offset;
+      const topSpace = rect.top - offset;
+      if (!wantsTop && bottomSpace < popoverHeight && topSpace > bottomSpace) {
+        isTop = true;
+      } else if (
+        wantsTop &&
+        topSpace < popoverHeight &&
+        bottomSpace > topSpace
+      ) {
+        isTop = false;
+      }
+    }
+
+    const top = isTop
+      ? rect.top - offset - popoverHeight
+      : rect.bottom + offset;
+
+    let left: number;
+    if (placement === "bottom-end" || placement === "top-end") {
+      left = rect.right - popoverWidth;
+    } else if (placement === "bottom" || placement === "top") {
+      left = rect.left + rect.width / 2 - popoverWidth / 2;
+    } else {
+      left = rect.left;
+    }
+    const clampedLeft = Math.max(
+      VIEWPORT_MARGIN,
+      Math.min(left, window.innerWidth - popoverWidth - VIEWPORT_MARGIN)
+    );
+    return { top, left: clampedLeft };
+  }, [anchorRef, placement, offset, minWidth, flip]);
 
   useLayoutEffect(() => {
     if (!open) {
@@ -50,38 +102,24 @@ export const Popover = ({
       return;
     }
 
-    const computePosition = () => {
-      const anchor = anchorRef.current;
-      if (!anchor) return;
-      const rect = anchor.getBoundingClientRect();
-      const popoverWidth = popoverRef.current?.offsetWidth ?? minWidth;
-      const top = rect.bottom + offset;
-      let left: number;
-      switch (placement) {
-        case "bottom-end":
-          left = rect.right - popoverWidth;
-          break;
-        case "bottom":
-          left = rect.left + rect.width / 2 - popoverWidth / 2;
-          break;
-        default:
-          left = rect.left;
-      }
-      const clampedLeft = Math.max(
-        VIEWPORT_MARGIN,
-        Math.min(left, window.innerWidth - popoverWidth - VIEWPORT_MARGIN)
-      );
-      setPosition({ top, left: clampedLeft });
+    const update = () => {
+      const next = computePosition();
+      if (next) setPosition(next);
     };
 
-    computePosition();
-    window.addEventListener("resize", computePosition);
-    window.addEventListener("scroll", computePosition, true);
+    update();
+    // Re-measure once the popover has actually mounted so position reflects
+    // real dimensions, not the minWidth estimate. Without this, smart-flip
+    // can't fire on first open and content-driven width is mispositioned.
+    const rafId = requestAnimationFrame(update);
+    window.addEventListener("resize", update);
+    window.addEventListener("scroll", update, true);
     return () => {
-      window.removeEventListener("resize", computePosition);
-      window.removeEventListener("scroll", computePosition, true);
+      cancelAnimationFrame(rafId);
+      window.removeEventListener("resize", update);
+      window.removeEventListener("scroll", update, true);
     };
-  }, [open, anchorRef, placement, offset, minWidth]);
+  }, [open, computePosition]);
 
   useEffect(() => {
     if (!open) return;

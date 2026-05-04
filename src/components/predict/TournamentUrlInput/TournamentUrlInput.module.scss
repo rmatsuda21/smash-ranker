@@ -8,7 +8,7 @@
 
 .inputRow {
   display: flex;
-  gap: 10px;
+  gap: var(--space-2);
   align-items: flex-end;
 
   // Make the Input wrapper fill available space

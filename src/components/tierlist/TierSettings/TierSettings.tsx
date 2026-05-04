@@ -1,5 +1,4 @@
-import { useEffect, useRef, useState } from "react";
-import { createPortal } from "react-dom";
+import { useRef, useState } from "react";
 import {
   FaArrowDown,
   FaArrowUp,
@@ -12,6 +11,7 @@ import { msg } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 
 import { ColorInput } from "@/components/shared/ColorInput/ColorInput";
+import { Popover } from "@/components/shared/Popover/Popover";
 import { useTierListStore } from "@/store/tierListStore";
 
 import styles from "./TierSettings.module.scss";
@@ -23,44 +23,19 @@ type Props = {
   color: string;
 };
 
-export const TierSettings = ({ tierId, tierIndex, tierCount, color }: Props) => {
+export const TierSettings = ({
+  tierId,
+  tierIndex,
+  tierCount,
+  color,
+}: Props) => {
   const { _ } = useLingui();
   const [isOpen, setIsOpen] = useState(false);
-  const [position, setPosition] = useState<{ top: number; left: number } | null>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
-  const popoverRef = useRef<HTMLDivElement>(null);
   const dispatch = useTierListStore((s) => s.dispatch);
 
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const handleClickOutside = (e: MouseEvent) => {
-      if (!(e.target instanceof Node)) return;
-      if (
-        !buttonRef.current?.contains(e.target) &&
-        !popoverRef.current?.contains(e.target)
-      ) {
-        setIsOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [isOpen]);
-
   const handleToggle = () => {
-    if (!isOpen && buttonRef.current) {
-      const rect = buttonRef.current.getBoundingClientRect();
-      const popoverWidth = 168;
-      const popoverHeight = 180; // approximate popover height
-      const left = Math.min(rect.left, window.innerWidth - popoverWidth - 8);
-
-      const fitsBelow = rect.bottom + 4 + popoverHeight <= window.innerHeight;
-      const top = fitsBelow ? rect.bottom + 4 : rect.top - popoverHeight - 4;
-
-      setPosition({ top: Math.max(8, top), left: Math.max(8, left) });
-    }
-    setIsOpen(!isOpen);
+    setIsOpen((prev) => !prev);
   };
 
   const handleDelete = () => {
@@ -69,11 +44,19 @@ export const TierSettings = ({ tierId, tierIndex, tierCount, color }: Props) => 
   };
 
   const handleMoveUp = () => {
-    dispatch({ type: "MOVE_TIER", fromIndex: tierIndex, toIndex: tierIndex - 1 });
+    dispatch({
+      type: "MOVE_TIER",
+      fromIndex: tierIndex,
+      toIndex: tierIndex - 1,
+    });
   };
 
   const handleMoveDown = () => {
-    dispatch({ type: "MOVE_TIER", fromIndex: tierIndex, toIndex: tierIndex + 1 });
+    dispatch({
+      type: "MOVE_TIER",
+      fromIndex: tierIndex,
+      toIndex: tierIndex + 1,
+    });
   };
 
   return (
@@ -87,49 +70,50 @@ export const TierSettings = ({ tierId, tierIndex, tierCount, color }: Props) => 
         <FaGear size={14} />
       </button>
 
-      {isOpen &&
-        position &&
-        createPortal(
-          <div
-            ref={popoverRef}
-            className={styles.popover}
-            style={{ top: position.top, left: position.left }}
-          >
-            <div className={styles.colorRow}>
-                  <FaPalette size={12} />
-                  <span><Trans>Color</Trans></span>
-                  <ColorInput
-                    color={color}
-                    onChange={(c) =>
-                      dispatch({ type: "RECOLOR_TIER", tierId, color: c })
-                    }
-                    className={styles.colorInput}
-                  />
-                </div>
-                <button
-                  className={styles.menuItem}
-                  onClick={handleMoveUp}
-                  disabled={tierIndex === 0}
-                >
-                  <FaArrowUp size={12} /> <Trans>Move Up</Trans>
-                </button>
-                <button
-                  className={styles.menuItem}
-                  onClick={handleMoveDown}
-                  disabled={tierIndex === tierCount - 1}
-                >
-                  <FaArrowDown size={12} /> <Trans>Move Down</Trans>
-                </button>
-                <button
-                  className={styles.menuItem}
-                  onClick={handleDelete}
-                  data-danger
-                >
-                  <FaTrash size={12} /> <Trans>Delete</Trans>
-                </button>
-          </div>,
-          document.body
-        )}
+      <Popover
+        anchorRef={buttonRef}
+        open={isOpen}
+        onClose={() => setIsOpen(false)}
+        placement="bottom-start"
+        offset={4}
+        minWidth={168}
+        className={styles.popover}
+      >
+        <div className={styles.colorRow}>
+          <FaPalette size={12} />
+          <span>
+            <Trans>Color</Trans>
+          </span>
+          <ColorInput
+            color={color}
+            onChange={(c) =>
+              dispatch({ type: "RECOLOR_TIER", tierId, color: c })
+            }
+            className={styles.colorInput}
+          />
+        </div>
+        <button
+          className={styles.menuItem}
+          onClick={handleMoveUp}
+          disabled={tierIndex === 0}
+        >
+          <FaArrowUp size={12} /> <Trans>Move Up</Trans>
+        </button>
+        <button
+          className={styles.menuItem}
+          onClick={handleMoveDown}
+          disabled={tierIndex === tierCount - 1}
+        >
+          <FaArrowDown size={12} /> <Trans>Move Down</Trans>
+        </button>
+        <button
+          className={styles.menuItem}
+          onClick={handleDelete}
+          data-danger
+        >
+          <FaTrash size={12} /> <Trans>Delete</Trans>
+        </button>
+      </Popover>
     </>
   );
 };

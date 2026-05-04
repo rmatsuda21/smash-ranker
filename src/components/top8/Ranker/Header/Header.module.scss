@@ -1,7 +1,7 @@
 @use "@/_theme" as *;
 
 .header {
-  padding-block: 10px;
+  padding-block: var(--space-2);
   display: flex;
 
   background: linear-gradient(24deg,
@@ -14,7 +14,7 @@
   >* {
     border-left: 1px solid var(--accent-4);
     border-right: 1px solid var(--accent-4);
-    padding-inline: 14px;
+    padding-inline: var(--space-3);
   }
 
   >*:first-child {
@@ -43,7 +43,7 @@
 .item {
   display: flex;
   align-items: flex-end;
-  gap: 10px;
+  gap: var(--space-2);
 
   button {
     height: 34px;
@@ -53,8 +53,8 @@
 .historyControls {
   display: flex;
   align-items: center;
-  gap: 2px;
-  padding-inline: 8px !important;
+  gap: var(--space-1);
+  padding-inline: var(--space-2) !important;
 }
 
 .historyControls .historyButton {

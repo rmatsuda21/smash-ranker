@@ -3,11 +3,11 @@
 .sidePanel {
   display: flex;
   height: 100%;
-  padding-inline: 10px;
+  padding-inline: var(--space-2);
   background-color: var(--gray-3);
-  gap: 20px;
+  gap: var(--space-5);
 
-  transition: background-color 0.3s ease-in-out;
+  transition: background-color var(--duration-slow) var(--ease-in-out);
 
   .hidden {
     display: none;
@@ -37,14 +37,14 @@
   min-height: 0;
   width: 350px;
 
-  transition: width 0.3s ease-in-out;
+  transition: width var(--duration-slow) var(--ease-in-out);
 }
 
 .editors {
-  padding-top: 10px;
+  padding-top: var(--space-2);
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--space-2);
   flex: 1;
   min-height: 0;
 
@@ -73,9 +73,9 @@
   background-color: var(--gray-11);
   border: 1px solid var(--gray-9);
   color: var(--gray-4);
-  border-radius: 10px;
-  transition: background-color 0.1s ease-in-out, border-color 0.1s ease-in-out,
-    color 0.1s ease-in-out;
+  border-radius: var(--radius-md);
+  transition: background-color var(--duration-fast) var(--ease-in-out), border-color var(--duration-fast) var(--ease-in-out),
+    color var(--duration-fast) var(--ease-in-out);
 
   .icon {
     min-width: 15px;
@@ -96,7 +96,7 @@
   align-items: center;
   flex-direction: column;
   height: 100%;
-  gap: 5px;
+  gap: var(--space-1);
 
   button {
     cursor: pointer;
@@ -111,13 +111,13 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 2px;
+    gap: var(--space-1);
 
     .icon {
-      padding: 5px;
+      padding: var(--space-1);
       border-radius: var(--radius);
 
-      transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out;
+      transition: background-color var(--duration-fast) var(--ease-in-out), color var(--duration-fast) var(--ease-in-out);
 
       svg {
         width: 20px;
@@ -148,16 +148,16 @@
     width: 70%;
     height: 2px;
     background-color: var(--gray-6);
-    margin: 2px 0;
+    margin: var(--space-1) 0;
     flex-shrink: 0;
   }
 
   .bottomButtons {
     margin-top: auto;
-    margin-bottom: 10px;
+    margin-bottom: var(--space-2);
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: var(--space-2);
   }
 
   .bottomButton {
@@ -216,12 +216,12 @@
     height: auto;
     overflow-x: auto;
     gap: 0;
-    padding: 4px 10px;
+    padding: var(--space-1) var(--space-2);
 
     button {
       width: auto;
       aspect-ratio: unset;
-      padding: 6px 10px;
+      padding: var(--space-2) var(--space-2);
       flex-shrink: 0;
 
       span {
@@ -233,7 +233,7 @@
       width: 2px;
       height: 70%;
       align-self: center;
-      margin: 0 2px;
+      margin: 0 var(--space-1);
     }
 
     .bottomButtons {
@@ -252,10 +252,10 @@
   .editors {
     min-width: 0;
     overflow-y: auto;
-    padding-bottom: 10px;
+    padding-bottom: var(--space-2);
 
     > * {
-      padding-inline: 10px;
+      padding-inline: var(--space-2);
     }
   }
 

@@ -5,9 +5,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: var(--space-2);
 
-  padding: 10px;
+  padding: var(--space-2);
   border: 1px solid var(--gray-6);
   border-radius: var(--radius);
   background-color: var(--gray-3);
@@ -34,7 +34,7 @@
     align-items: center;
     justify-content: center;
 
-    gap: 3px;
+    gap: var(--space-1);
 
     span {
       font-size: var(--font-size-sm);

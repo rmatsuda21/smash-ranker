@@ -2,13 +2,13 @@
 
 .menu {
   position: fixed;
-  z-index: 9999;
+  z-index: var(--z-max);
   min-width: 220px;
   background: var(--gray-2);
   border: 1px solid var(--gray-6);
   border-radius: var(--radius);
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
-  padding: 4px;
+  padding: var(--space-1);
   display: flex;
   flex-direction: column;
   gap: 1px;
@@ -18,11 +18,11 @@
 .item {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 6px 10px;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-2);
   background: none;
   border: none;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   color: var(--gray-12);
   font-size: var(--font-size-sm);
   cursor: pointer;
@@ -69,7 +69,7 @@
 }
 
 .shortcut {
-  margin-left: 16px;
+  margin-left: var(--space-4);
   font-size: var(--font-size-xs);
   color: var(--gray-10);
   font-variant-numeric: tabular-nums;
@@ -78,5 +78,5 @@
 .separator {
   height: 1px;
   background: var(--gray-6);
-  margin: 4px 0;
+  margin: var(--space-1) 0;
 }

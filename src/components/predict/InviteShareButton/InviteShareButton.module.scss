@@ -2,15 +2,15 @@
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--space-2);
 }
 
 .copyInner {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--space-2);
   opacity: 1;
-  transition: opacity 0.2s ease;
+  transition: opacity var(--duration-base) var(--ease-standard);
 
   &.hidden {
     opacity: 0;
@@ -23,8 +23,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  animation: fadeIn 0.2s ease;
+  gap: var(--space-2);
+  animation: fadeIn var(--duration-base) var(--ease-standard);
 }
 
 @keyframes fadeIn {
