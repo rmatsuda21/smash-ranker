@@ -50,11 +50,11 @@ msgstr ""
 msgid "Classic"
 msgstr ""
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:81
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:166
 msgid "Clear"
 msgstr ""
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:97
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:182
 msgid "Clear Tiers"
 msgstr ""
 
@@ -105,10 +105,6 @@ msgstr ""
 #: src/components/tierlist/TierListTitle/TierListTitle.tsx:62
 msgid "Enter title"
 msgstr ""
-
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:74
-#~ msgid "Export PNG"
-#~ msgstr ""
 
 #: src/components/tierlist/TierListSettings/TierListSettings.tsx:45
 msgid "Extra Bold"
@@ -182,11 +178,11 @@ msgstr ""
 msgid "Pastel"
 msgstr ""
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:88
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:173
 msgid "Reset"
 msgstr ""
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:107
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:192
 msgid "Reset All"
 msgstr ""
 
@@ -194,7 +190,7 @@ msgstr ""
 msgid "Right"
 msgstr ""
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:91
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:176
 msgid "Save Image"
 msgstr ""
 
@@ -214,11 +210,11 @@ msgstr ""
 msgid "Stock"
 msgstr ""
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:99
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:184
 msgid "This will move all characters back to the unranked pool. Your tiers will remain."
 msgstr ""
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:109
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:194
 msgid "This will reset everything to the default state, including tiers and all character placements."
 msgstr ""
 
@@ -241,10 +237,6 @@ msgstr ""
 #: src/components/tierlist/TierListSettings/TierListSettings.tsx:37
 msgid "Trebuchet"
 msgstr ""
-
-#: src/components/tierlist/CharacterPool/CharacterPool.tsx:24
-#~ msgid "Unranked"
-#~ msgstr ""
 
 #: src/components/tierlist/TierListSettings/TierListSettings.tsx:38
 msgid "Verdana"

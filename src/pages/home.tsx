@@ -1,5 +1,6 @@
 import { useCallback, useRef } from "react";
 import { Link } from "wouter";
+import { Trans } from "@lingui/react/macro";
 import {
   FaTrophy,
   FaLayerGroup,
@@ -46,13 +47,15 @@ export const Home = () => {
             Smash <span className={styles.accentText}>Ranker</span>
           </h1>
           <p className={styles.tagline}>
-            Your one-stop site for Smash Bros graphics!
+            <Trans>Your one-stop site for Smash Bros graphics!</Trans>
           </p>
         </div>
       </section>
 
       <section className={styles.tools}>
-        <h2 className={styles.sectionTitle}>Tools</h2>
+        <h2 className={styles.sectionTitle}>
+          <Trans>Tools</Trans>
+        </h2>
         <div className={styles.cardGrid}>
           <Link
             to="/ranker"
@@ -63,11 +66,15 @@ export const Home = () => {
               <div className={styles.cardIcon}>
                 <FaTrophy />
               </div>
-              <h3 className={styles.cardTitle}>Tournament Ranker</h3>
+              <h3 className={styles.cardTitle}>
+                <Trans>Tournament Ranker</Trans>
+              </h3>
             </div>
             <p className={styles.cardDescription}>
-              Generate tournament bracket graphics with custom templates, player
-              data, and character art.
+              <Trans>
+                Easily generate your own tournament graphics with full
+                customization.
+              </Trans>
             </p>
           </Link>
 
@@ -80,10 +87,14 @@ export const Home = () => {
               <div className={styles.cardIcon}>
                 <FaLayerGroup />
               </div>
-              <h3 className={styles.cardTitle}>Tier List Maker</h3>
+              <h3 className={styles.cardTitle}>
+                <Trans>Tier List Maker</Trans>
+              </h3>
             </div>
             <p className={styles.cardDescription}>
-              Drag and drop characters to create and export shareable tier lists.
+              <Trans>
+                Create your own fully customizable character tier lists.
+              </Trans>
             </p>
           </Link>
 
@@ -98,13 +109,16 @@ export const Home = () => {
                   <FaPhotoFilm />
                 </div>
                 <h3 className={styles.cardTitle}>
-                  Thumbnail Maker
-                  <span className={styles.cardBadge}>New</span>
+                  <Trans>Thumbnail Maker</Trans>
+                  <span className={styles.cardBadge}>
+                    <Trans>New</Trans>
+                  </span>
                 </h3>
               </div>
               <p className={styles.cardDescription}>
-                Design YouTube thumbnails with free-form layouts, character art,
-                flags, and saveable templates.
+                <Trans>
+                  Create custom YouTube thumbnails for your Smash sets!
+                </Trans>
               </p>
             </Link>
           )}
@@ -118,11 +132,15 @@ export const Home = () => {
               <div className={styles.cardIcon}>
                 <FaListOl />
               </div>
-              <h3 className={styles.cardTitle}>Predictions</h3>
+              <h3 className={styles.cardTitle}>
+                <Trans>Predictions</Trans>
+              </h3>
             </div>
             <p className={styles.cardDescription}>
-              Predict tournament placements and share your bracket picks as a
-              graphic.
+              <Trans>
+                Like making bracket predictions? Why not share yours with your
+                friends with a cool graphic!
+              </Trans>
             </p>
           </Link>
         </div>
@@ -132,12 +150,13 @@ export const Home = () => {
         <div className={styles.roadmapContent}>
           <div className={styles.roadmapBadge}>
             <span className={styles.pulseDot} />
-            In Development
+            <Trans>In Development</Trans>
           </div>
-          <h2 className={styles.roadmapTitle}>More tools on the way</h2>
+          <h2 className={styles.roadmapTitle}>
+            <Trans>More tools on the way</Trans>
+          </h2>
           <p className={styles.roadmapDescription}>
-            More exciting tools are being built 🔧 Stay
-            tuned!
+            <Trans>I have many exiciting tools on the way 🔧 Stay tuned!</Trans>
           </p>
         </div>
       </section>
@@ -164,7 +183,7 @@ export const Home = () => {
           className={styles.footerLink}
         >
           <SiBuymeacoffee />
-          Buy me a coffee
+          <Trans>Buy me a coffee</Trans>
         </a>
       </footer>
     </div>

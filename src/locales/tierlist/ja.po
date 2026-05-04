@@ -50,11 +50,11 @@ msgstr "未使用キャラ"
 msgid "Classic"
 msgstr "クラシック"
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:81
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:166
 msgid "Clear"
 msgstr "クリア"
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:97
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:182
 msgid "Clear Tiers"
 msgstr "ティアをクリア"
 
@@ -105,10 +105,6 @@ msgstr "アース"
 #: src/components/tierlist/TierListTitle/TierListTitle.tsx:62
 msgid "Enter title"
 msgstr "タイトルを入力"
-
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:74
-#~ msgid "Export PNG"
-#~ msgstr "PNG出力"
 
 #: src/components/tierlist/TierListSettings/TierListSettings.tsx:45
 msgid "Extra Bold"
@@ -182,11 +178,11 @@ msgstr "オーシャン"
 msgid "Pastel"
 msgstr "パステル"
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:88
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:173
 msgid "Reset"
 msgstr "リセット"
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:107
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:192
 msgid "Reset All"
 msgstr "すべてリセット"
 
@@ -194,7 +190,7 @@ msgstr "すべてリセット"
 msgid "Right"
 msgstr "右"
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:91
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:176
 msgid "Save Image"
 msgstr "保存"
 
@@ -214,11 +210,11 @@ msgstr "サイド"
 msgid "Stock"
 msgstr "ストック"
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:99
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:184
 msgid "This will move all characters back to the unranked pool. Your tiers will remain."
 msgstr "すべてのキャラクターが未ランク プールに戻されます。ティアはそのまま残ります。"
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:109
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:194
 msgid "This will reset everything to the default state, including tiers and all character placements."
 msgstr "ティアやキャラクターの配置を含め、すべてが初期状態にリセットされます。"
 
@@ -241,10 +237,6 @@ msgstr "トップ"
 #: src/components/tierlist/TierListSettings/TierListSettings.tsx:37
 msgid "Trebuchet"
 msgstr "Trebuchet"
-
-#: src/components/tierlist/CharacterPool/CharacterPool.tsx:24
-#~ msgid "Unranked"
-#~ msgstr "未ランク"
 
 #: src/components/tierlist/TierListSettings/TierListSettings.tsx:38
 msgid "Verdana"
