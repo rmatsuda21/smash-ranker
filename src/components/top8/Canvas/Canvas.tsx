@@ -34,7 +34,6 @@ export const Canvas = ({ className }: Props) => {
 
   const [displayScale, setDisplayScale] = useState(1);
 
-  const stageRef = useRef<KonvaStage>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
@@ -138,11 +137,12 @@ export const Canvas = ({ className }: Props) => {
     };
   }, [canvasSize?.width, canvasSize?.height, handleFitToWindow]);
 
-  useEffect(() => {
-    if (stageRef.current) {
-      canvasDispatch({ type: "SET_STAGE_REF", payload: stageRef.current });
-    }
-  }, [canvasDispatch, stageRef]);
+  const setStageRef = useCallback(
+    (stage: KonvaStage | null) => {
+      canvasDispatch({ type: "SET_STAGE_REF", payload: stage });
+    },
+    [canvasDispatch],
+  );
 
   useEffect(() => {
     if (
@@ -202,7 +202,7 @@ export const Canvas = ({ className }: Props) => {
           <div className={styles.canvasInner}>
             {isFontLoaded && (
               <Stage
-                ref={stageRef}
+                ref={setStageRef}
                 width={canvasSize.width}
                 height={canvasSize.height}
                 pixelRatio={isMobile() ? 0.5 : undefined}
