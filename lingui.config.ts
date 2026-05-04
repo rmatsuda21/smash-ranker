@@ -6,11 +6,19 @@ const config: LinguiConfig = {
     {
       path: "src/locales/ranker/{locale}",
       include: ["src"],
-      exclude: ["src/components/tierlist/**", "src/consts/tierlist/**"],
+      exclude: [
+        "src/components/tierlist/**",
+        "src/consts/tierlist/**",
+        "src/pages/home.tsx",
+      ],
     },
     {
       path: "src/locales/tierlist/{locale}",
       include: ["src/components/tierlist/**", "src/consts/tierlist/**"],
+    },
+    {
+      path: "src/locales/home/{locale}",
+      include: ["src/pages/home.tsx"],
     },
   ],
   catalogsMergePath: "src/locales/{locale}",
