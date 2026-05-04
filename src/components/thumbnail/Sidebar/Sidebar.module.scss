@@ -10,7 +10,7 @@
 
 .tabs {
   display: flex;
-  border-bottom: 1px solid var(--gray-6);
+  border-bottom: 1px solid var(--border-strong);
   background: var(--gray-2);
   overflow-x: auto;
   scrollbar-width: none;
@@ -30,7 +30,7 @@
   background: none;
   border: none;
   border-bottom: 2px solid transparent;
-  color: var(--gray-11);
+  color: var(--fg-2);
   cursor: pointer;
   font-size: var(--font-size-xs);
   text-transform: uppercase;
@@ -50,8 +50,8 @@
   }
 
   &:hover:not(.active) {
-    background: var(--gray-3);
-    color: var(--gray-12);
+    background: var(--bg-raised);
+    color: var(--fg-1);
   }
 }
 

@@ -5,8 +5,8 @@
   align-items: center;
   justify-content: center;
   border-radius: var(--radius-sm);
-  border: 1px solid var(--gray-6);
-  background: var(--gray-3);
+  border: 1px solid var(--border-strong);
+  background: var(--bg-raised);
   cursor: grab;
   touch-action: none;
   transition: box-shadow var(--duration-base) var(--ease-standard);

@@ -31,7 +31,7 @@
   left: 50%;
   z-index: var(--z-popover);
   background-color: var(--gray-5);
-  color: var(--gray-12);
+  color: var(--fg-1);
 
   width: max-content;
   padding: var(--space-2) var(--space-3);
@@ -52,7 +52,7 @@
   justify-content: center;
   position: relative;
   cursor: help;
-  color: var(--gray-11);
+  color: var(--fg-2);
   font-size: 14px;
   transition: color var(--duration-base) var(--ease-standard);
 

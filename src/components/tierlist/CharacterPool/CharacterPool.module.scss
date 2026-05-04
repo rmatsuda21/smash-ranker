@@ -8,15 +8,15 @@
   @include mobile {
     position: relative;
     gap: 0;
-    border-top: 1px solid var(--gray-6);
-    background: var(--gray-1);
+    border-top: 1px solid var(--border-strong);
+    background: var(--bg-surface);
   }
 }
 
 .title {
   font-size: 16px;
   font-weight: 600;
-  color: var(--gray-11);
+  color: var(--fg-2);
 
   @include mobile {
     font-size: 11px;
@@ -52,7 +52,7 @@
   padding: var(--space-3);
   min-height: 60px;
   background: var(--gray-2);
-  border: 2px dashed var(--gray-6);
+  border: 2px dashed var(--border-strong);
   border-radius: var(--radius-md);
   align-content: flex-start;
 
@@ -104,9 +104,9 @@
     left: 0;
     right: 0;
     height: 24px;
-    background: var(--gray-3);
+    background: var(--bg-raised);
     border-top: 1px solid var(--gray-5);
-    color: var(--gray-8);
+    color: var(--fg-muted);
     font-size: 10px;
     user-select: none;
     pointer-events: none;

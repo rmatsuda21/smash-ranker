@@ -62,7 +62,7 @@
   height: 32px;
   padding: 0 !important;
   border-radius: var(--radius);
-  color: var(--gray-11);
+  color: var(--fg-2);
 
   &:hover:not(:disabled) {
     color: var(--accent-11);
@@ -82,7 +82,7 @@
   }
 
   [data-theme="light"] & {
-    color: var(--gray-9);
+    color: var(--fg-4);
 
     &:hover:not(:disabled) {
       color: var(--accent-9);

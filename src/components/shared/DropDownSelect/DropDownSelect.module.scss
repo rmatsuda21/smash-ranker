@@ -19,11 +19,11 @@
   align-items: center;
   justify-content: space-between;
 
-  background-color: var(--gray-3);
-  border: 1px solid var(--gray-6);
+  background-color: var(--bg-raised);
+  border: 1px solid var(--border-strong);
   padding: var(--input-padding-sm);
   border-radius: var(--radius);
-  color: var(--gray-12);
+  color: var(--fg-1);
   transition: background-color var(--duration-base) var(--ease-standard);
 
   &:hover:not(:disabled) {
@@ -47,40 +47,27 @@
     flex-shrink: 0;
     display: flex;
     align-items: center;
-    color: var(--gray-11);
+    color: var(--fg-2);
     width: 12px;
   }
 }
 
+/* Overrides Popover defaults: tighter padding (search/window own theirs),
+   raised surface, and item-list animation on each open. */
 .dropdown {
-  position: fixed;
-  overflow-y: auto;
-
-  background-color: var(--gray-3);
-  border: 1px solid var(--gray-6);
-  border-radius: var(--radius);
-
-  z-index: var(--z-modal);
-  transform-origin: top center;
-
-  pointer-events: none;
-  visibility: hidden;
-  opacity: 0;
-
-  &.open {
-    pointer-events: auto;
-    visibility: visible;
-    opacity: 1;
-    animation: slideDown 0.15s cubic-bezier(0.16, 1, 0.3, 1);
-  }
+  padding: 0;
+  gap: 0;
+  background: var(--bg-raised);
+  overflow: hidden;
+  animation: slideDown 0.15s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .searchContainer {
   position: sticky;
   top: 0;
   padding: var(--space-2);
-  background-color: var(--gray-3);
-  border-bottom: 1px solid var(--gray-6);
+  background-color: var(--bg-raised);
+  border-bottom: 1px solid var(--border-strong);
   z-index: 1;
 }
 
@@ -91,9 +78,9 @@
   gap: var(--space-2);
   padding: var(--space-2) var(--space-2);
   background-color: var(--gray-2);
-  border: 1px solid var(--gray-6);
+  border: 1px solid var(--border-strong);
   border-radius: var(--radius-sm);
-  color: var(--gray-12);
+  color: var(--fg-1);
   font-size: var(--font-size-sm);
   transition: border-color var(--duration-base) var(--ease-standard);
 
@@ -104,7 +91,7 @@
 
   .searchIcon {
     flex-shrink: 0;
-    color: var(--gray-10);
+    color: var(--fg-3);
     width: 14px;
     height: 14px;
   }
@@ -118,7 +105,7 @@
     font-size: inherit;
 
     &::placeholder {
-      color: var(--gray-9);
+      color: var(--fg-4);
     }
   }
 }
@@ -134,7 +121,7 @@
 .noResults {
   padding: var(--space-3) var(--space-2);
   text-align: center;
-  color: var(--gray-10);
+  color: var(--fg-3);
   font-size: var(--font-size-sm);
 }
 

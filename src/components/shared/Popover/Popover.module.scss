@@ -14,7 +14,7 @@
   @include mobile {
     left: 0 !important;
     right: 0;
-    width: 100%;
+    width: 100% !important;
     min-width: 0 !important;
     border-radius: 0;
     border-left: none;

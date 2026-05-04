@@ -4,7 +4,7 @@
   position: relative;
   display: flex;
   min-height: 58px;
-  border: 1px solid var(--gray-6);
+  border: 1px solid var(--border-strong);
   border-radius: var(--radius-sm);
   overflow: hidden;
   background: var(--gray-2);
@@ -61,7 +61,7 @@
   .characters {
     width: 100%;
     min-height: 62px;
-    border: 1px solid var(--gray-6);
+    border: 1px solid var(--border-strong);
     border-radius: 0 var(--radius-sm) var(--radius-sm) var(--radius-sm);
     background: var(--gray-2);
     box-sizing: border-box;

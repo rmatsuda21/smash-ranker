@@ -38,7 +38,7 @@
 .sectionLabel {
   font-size: 12px;
   font-weight: 600;
-  color: var(--gray-10);
+  color: var(--fg-3);
   padding: 0 var(--space-1);
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -74,7 +74,7 @@
 .sizeValue {
   font-size: 13px;
   font-weight: 600;
-  color: var(--gray-11);
+  color: var(--fg-2);
   min-width: 36px;
   text-align: right;
 }
@@ -86,10 +86,10 @@
   justify-content: center;
   gap: var(--space-2);
   padding: var(--space-2) var(--space-2);
-  border: 1px solid var(--gray-6);
+  border: 1px solid var(--border-strong);
   border-radius: var(--radius-sm);
   background: none;
-  color: var(--gray-11);
+  color: var(--fg-2);
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
@@ -97,7 +97,7 @@
 
   &:hover {
     background: var(--gray-4);
-    color: var(--gray-12);
+    color: var(--fg-1);
   }
 
   &.active {
@@ -143,10 +143,10 @@
   gap: var(--space-2);
   width: 100%;
   padding: var(--space-1) var(--space-2);
-  border: 1px solid var(--gray-6);
+  border: 1px solid var(--border-strong);
   border-radius: var(--radius-sm);
   background: none;
-  color: var(--gray-11);
+  color: var(--fg-2);
   font-size: 12px;
   font-weight: 500;
   cursor: pointer;
@@ -154,7 +154,7 @@
 
   &:hover {
     background: var(--gray-4);
-    color: var(--gray-12);
+    color: var(--fg-1);
   }
 
   &.active {

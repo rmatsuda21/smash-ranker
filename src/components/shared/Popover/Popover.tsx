@@ -2,13 +2,17 @@ import {
   type ReactNode,
   type RefObject,
   useCallback,
-  useEffect,
   useLayoutEffect,
   useRef,
   useState,
 } from "react";
 import { createPortal } from "react-dom";
 import cn from "classnames";
+
+import {
+  useDismissOnEscape,
+  useDismissOnOutsideClick,
+} from "@/hooks/useDismiss";
 
 import styles from "./Popover.module.scss";
 
@@ -28,6 +32,7 @@ interface PopoverProps {
   offset?: number;
   minWidth?: number;
   flip?: boolean;
+  matchAnchorWidth?: boolean;
   className?: string;
   children: ReactNode;
 }
@@ -35,6 +40,7 @@ interface PopoverProps {
 interface Position {
   top: number;
   left: number;
+  width?: number;
 }
 
 const VIEWPORT_MARGIN = 8;
@@ -47,6 +53,7 @@ export const Popover = ({
   offset = 4,
   minWidth = 220,
   flip = true,
+  matchAnchorWidth = false,
   className,
   children,
 }: PopoverProps) => {
@@ -58,7 +65,9 @@ export const Popover = ({
     if (!anchor) return null;
     const rect = anchor.getBoundingClientRect();
     const popoverEl = popoverRef.current;
-    const popoverWidth = popoverEl?.offsetWidth ?? minWidth;
+    const popoverWidth = matchAnchorWidth
+      ? rect.width
+      : (popoverEl?.offsetWidth ?? minWidth);
     const popoverHeight = popoverEl?.offsetHeight ?? 0;
 
     const wantsTop = placement.startsWith("top");
@@ -93,8 +102,12 @@ export const Popover = ({
       VIEWPORT_MARGIN,
       Math.min(left, window.innerWidth - popoverWidth - VIEWPORT_MARGIN)
     );
-    return { top, left: clampedLeft };
-  }, [anchorRef, placement, offset, minWidth, flip]);
+    return {
+      top,
+      left: clampedLeft,
+      width: matchAnchorWidth ? rect.width : undefined,
+    };
+  }, [anchorRef, placement, offset, minWidth, flip, matchAnchorWidth]);
 
   useLayoutEffect(() => {
     if (!open) {
@@ -121,24 +134,12 @@ export const Popover = ({
     };
   }, [open, computePosition]);
 
-  useEffect(() => {
-    if (!open) return;
-    const handleMouseDown = (e: MouseEvent) => {
-      if (!(e.target instanceof Node)) return;
-      if (anchorRef.current?.contains(e.target)) return;
-      if (popoverRef.current?.contains(e.target)) return;
-      onClose();
-    };
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    document.addEventListener("mousedown", handleMouseDown);
-    document.addEventListener("keydown", handleKeyDown);
-    return () => {
-      document.removeEventListener("mousedown", handleMouseDown);
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [open, onClose, anchorRef]);
+  useDismissOnOutsideClick({
+    enabled: open,
+    refs: [anchorRef, popoverRef],
+    onDismiss: onClose,
+  });
+  useDismissOnEscape({ enabled: open, onDismiss: onClose });
 
   if (!open) return null;
 
@@ -150,7 +151,8 @@ export const Popover = ({
       style={{
         top: position?.top ?? 0,
         left: position?.left ?? 0,
-        minWidth,
+        minWidth: position?.width ?? minWidth,
+        width: position?.width,
         visibility: position ? "visible" : "hidden",
       }}
     >
