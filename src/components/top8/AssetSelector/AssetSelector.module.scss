@@ -1,7 +1,7 @@
 .assetSelector {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
 
   .imgContainer {
     display: flex;
@@ -35,20 +35,20 @@
 
   .buttons {
     display: flex;
-    gap: 6px;
+    gap: var(--space-2);
   }
 }
 
 .assetSelectorModal {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--space-2);
 
   .assets {
     display: grid;
     grid-template-columns: repeat(6, 100px);
     grid-auto-rows: 100px;
-    gap: 10px;
+    gap: var(--space-2);
 
     .asset {
       cursor: pointer;

@@ -1,7 +1,7 @@
 .templateEditor {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--space-4);
   flex: 1;
   min-height: 0;
   overflow-y: auto;
@@ -10,7 +10,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 16px;
+    gap: var(--space-4);
   }
 
   .viewMode {
@@ -20,10 +20,10 @@
 
     button {
       &:first-child {
-        border-radius: var(--radius) 0 0 5px;
+        border-radius: var(--radius) 0 0 var(--radius-sm);
       }
       &:last-child {
-        border-radius: 0 5px 5px 0;
+        border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
       }
     }
   }
@@ -31,17 +31,17 @@
   .templateGroup {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: var(--space-2);
 
     .groupHeader {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 8px;
+      gap: var(--space-2);
 
       button {
         height: 16px;
-        padding: 4px 2px;
+        padding: var(--space-1) var(--space-1);
         border-radius: var(--radius);
         cursor: pointer;
 
@@ -61,22 +61,22 @@
   .templates {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: var(--space-4);
     max-height: 100%;
 
-    transition: max-height 0.1s ease-in-out;
+    transition: max-height var(--duration-fast) var(--ease-in-out);
 
     &.grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 16px;
+      gap: var(--space-4);
     }
 
     .template {
       cursor: pointer;
       border: 3px solid var(--gray-9);
       border-radius: var(--radius);
-      transition: border-color 0.1s ease-in-out;
+      transition: border-color var(--duration-fast) var(--ease-in-out);
     }
 
     .template:hover {
@@ -88,13 +88,13 @@
       flex-direction: row;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      padding: 8px 16px;
+      gap: var(--space-2);
+      padding: var(--space-2) var(--space-4);
       background: var(--gray-3);
       color: var(--gray-11);
       font-size: var(--font-size-sm);
       font-weight: 800;
-      transition: all 0.15s ease-in-out;
+      transition: all var(--duration-base) var(--ease-in-out);
 
       &:hover {
         background: var(--gray-4);

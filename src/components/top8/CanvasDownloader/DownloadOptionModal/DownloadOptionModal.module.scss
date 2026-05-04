@@ -1,11 +1,11 @@
 .modal {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--space-2);
 
   .inputs {
     display: flex;
-    gap: 10px;
+    gap: var(--space-2);
 
     input {
       width: 100px;

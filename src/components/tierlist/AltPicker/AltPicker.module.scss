@@ -1,10 +1,10 @@
 .picker {
   position: fixed;
-  z-index: 1100;
+  z-index: var(--z-tooltip);
   background: var(--gray-2);
   border: 1px solid var(--gray-6);
-  border-radius: 8px;
-  padding: 8px;
+  border-radius: var(--radius-md);
+  padding: var(--space-2);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   max-width: 280px;
 }
@@ -13,15 +13,15 @@
   font-size: 13px;
   font-weight: 600;
   color: var(--gray-11);
-  padding: 0 4px 6px;
+  padding: 0 var(--space-1) var(--space-2);
   border-bottom: 1px solid var(--gray-5);
-  margin-bottom: 6px;
+  margin-bottom: var(--space-2);
 }
 
 .alts {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px;
+  gap: var(--space-1);
 }
 
 .altButton {
@@ -29,11 +29,11 @@
   align-items: center;
   justify-content: center;
   border: 2px solid transparent;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   background: var(--gray-3);
   cursor: pointer;
-  padding: 2px;
-  transition: border-color 0.15s ease;
+  padding: var(--space-1);
+  transition: border-color var(--duration-base) var(--ease-standard);
 
   &:hover {
     border-color: var(--accent-7);

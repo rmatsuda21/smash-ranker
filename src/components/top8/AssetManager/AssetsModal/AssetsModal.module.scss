@@ -3,7 +3,7 @@
 .assetsModal {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--space-3);
   width: 720px;
   max-width: 720px;
 
@@ -26,15 +26,15 @@
 .headerActions {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .bulkDeleteButton {
-  color: #e5484d;
-  border-color: #e5484d;
+  color: var(--status-danger);
+  border-color: var(--status-danger);
 
   &:hover:not(:disabled) {
-    background-color: #e5484d;
+    background-color: var(--status-danger);
     color: #fff;
   }
 }
@@ -49,7 +49,7 @@
 
 .body {
   display: flex;
-  gap: 12px;
+  gap: var(--space-3);
   height: 350px;
 
   @include mobile {

@@ -3,8 +3,8 @@
 .section {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 12px 0;
+  gap: var(--space-2);
+  padding: var(--space-3) 0;
   &:not(:last-child) {
     border-bottom: 1px solid var(--gray-6);
   }
@@ -13,7 +13,7 @@
     text-transform: uppercase;
     letter-spacing: 0.5px;
     color: var(--gray-11);
-    margin: 0 0 4px 0;
+    margin: 0 0 var(--space-1) 0;
     font-weight: 700;
     display: flex;
     justify-content: space-between;
@@ -24,28 +24,16 @@
 .grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .card {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  background: var(--gray-3);
-  border: 1px solid var(--gray-6);
-  border-radius: var(--radius);
-  padding: 8px;
-  cursor: pointer;
   position: relative;
-
-  &:hover {
-    border-color: var(--accent-9);
-  }
 
   .preview {
     aspect-ratio: 16 / 9;
     background: var(--gray-4);
-    border-radius: 4px;
+    border-radius: var(--radius-sm);
     overflow: hidden;
 
     img {
@@ -71,7 +59,7 @@
     border: none;
     width: 22px;
     height: 22px;
-    border-radius: 11px;
+    border-radius: var(--radius-md);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -79,7 +67,7 @@
     opacity: 0;
 
     &:hover {
-      background: var(--red-9, #e54d2e);
+      background: var(--status-danger);
     }
   }
 
@@ -90,13 +78,13 @@
 
 .saveBtn {
   display: flex;
-  gap: 6px;
+  gap: var(--space-2);
   align-items: center;
-  padding: 6px 10px;
+  padding: var(--space-2) var(--space-2);
   background: var(--accent-9);
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
   font-size: var(--font-size-sm);
 
@@ -109,5 +97,5 @@
   text-align: center;
   color: var(--gray-11);
   font-size: var(--font-size-sm);
-  padding: 16px 0;
+  padding: var(--space-4) 0;
 }

@@ -36,6 +36,7 @@ import { useElementActions } from "@/components/thumbnail/useElementActions";
 import { getSelectedGroupIds } from "@/utils/thumbnail/groups";
 import { findElement } from "@/utils/thumbnail/elementTree";
 import { Button } from "@/components/shared/Button/Button";
+import { Checkbox } from "@/components/shared/Checkbox/Checkbox";
 
 import styles from "./PropertiesTab.module.scss";
 
@@ -442,33 +443,24 @@ const TextProperties = ({
         </div>
       </div>
       <div className={styles.actions}>
-        <label className={styles.checkbox}>
-          <input
-            type="checkbox"
-            checked={isBold}
-            onChange={(e) => updateFontStyle(e.target.checked, isItalic)}
-          />
-          Bold
-        </label>
-        <label className={styles.checkbox}>
-          <input
-            type="checkbox"
-            checked={isItalic}
-            onChange={(e) => updateFontStyle(isBold, e.target.checked)}
-          />
-          Italic
-        </label>
-      </div>
-      <label className={styles.checkbox}>
-        <input
-          type="checkbox"
-          checked={Boolean(element.autoFit)}
-          onChange={(e) =>
-            update(element.id, element, { autoFit: e.target.checked })
-          }
+        <Checkbox
+          checked={isBold}
+          onChange={(checked) => updateFontStyle(checked, isItalic)}
+          label="Bold"
         />
-        Auto-fit to box (lock size, shrink font to fit)
-      </label>
+        <Checkbox
+          checked={isItalic}
+          onChange={(checked) => updateFontStyle(isBold, checked)}
+          label="Italic"
+        />
+      </div>
+      <Checkbox
+        checked={Boolean(element.autoFit)}
+        onChange={(checked) =>
+          update(element.id, element, { autoFit: checked })
+        }
+        label="Auto-fit to box (lock size, shrink font to fit)"
+      />
       <div className={styles.row}>
         <label>Align</label>
         <div className={styles.alignButtons}>
@@ -666,16 +658,13 @@ const CharacterProperties = ({
           <option value="contain">Contain (fit, no crop)</option>
         </select>
       </div>
-      <label className={styles.checkbox}>
-        <input
-          type="checkbox"
-          checked={element.flipX}
-          onChange={(e) =>
-            update(element.id, element, { flipX: e.target.checked })
-          }
-        />
-        Flip horizontally
-      </label>
+      <Checkbox
+        checked={Boolean(element.flipX)}
+        onChange={(checked) =>
+          update(element.id, element, { flipX: checked })
+        }
+        label="Flip horizontally"
+      />
     </div>
   );
 };

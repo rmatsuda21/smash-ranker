@@ -4,7 +4,7 @@ import { LuEyeOff } from "react-icons/lu";
 import { Condition, ElementConfig } from "@/types/top8/Design";
 import { TextConfigEditor } from "@/components/top8/ElementEditor/TextConfigEditor/TextConfigEditor";
 import { ImageConfigEditor } from "@/components/top8/ElementEditor/ImageConfigEditor";
-import { Input } from "@/components/shared/Input/Input";
+import { Checkbox } from "@/components/shared/Checkbox/Checkbox";
 import { ConditionEditor } from "@/components/top8/ElementEditor/ConditionEditor/ConditionEditor";
 
 import styles from "./ElementConfigEditor.module.scss";
@@ -35,9 +35,9 @@ const SpecificConfigEditor = ({ element, onUpdateElement }: Props) => {
 export const ElementConfigEditor = (props: Props) => {
   const { element } = props;
 
-  const handleInputChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      props.onUpdateElement({ ...element, hidden: event.target.checked });
+  const handleHiddenChange = useCallback(
+    (checked: boolean) => {
+      props.onUpdateElement({ ...element, hidden: checked });
     },
     [element, props]
   );
@@ -52,13 +52,11 @@ export const ElementConfigEditor = (props: Props) => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.basicConfig}>
-        <Input
-          type="checkbox"
+        <Checkbox
           id={`hidden-${element.id}`}
-          name="hidden"
           label={<LuEyeOff size={20} />}
           checked={element.hidden ?? false}
-          onChange={handleInputChange}
+          onChange={handleHiddenChange}
         />
         <ConditionEditor
           conditions={element.conditions}

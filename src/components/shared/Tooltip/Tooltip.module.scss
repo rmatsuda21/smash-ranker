@@ -1,12 +1,12 @@
 .tooltip {
   border-radius: var(--radius);
-  padding: 1px 3px;
+  padding: 1px var(--space-1);
   font-size: var(--font-size-xs);
   font-weight: 900;
 
   display: none;
   position: fixed;
-  z-index: 1000;
+  z-index: var(--z-popover);
   top: 0;
   left: 0;
 

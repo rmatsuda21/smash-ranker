@@ -2,7 +2,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--space-1);
 
   .title {
     font-size: var(--font-size-sm);
@@ -13,7 +13,7 @@
   .conditions {
     display: flex;
     flex-wrap: wrap;
-    gap: 5px;
+    gap: var(--space-1);
   }
 
   .condition {
@@ -28,7 +28,7 @@
 
     border: 1px solid var(--gray-6);
     border-radius: var(--radius);
-    padding: 2px 3px;
+    padding: var(--space-1) var(--space-1);
 
     &.negated {
       background-color: var(--accent-3);

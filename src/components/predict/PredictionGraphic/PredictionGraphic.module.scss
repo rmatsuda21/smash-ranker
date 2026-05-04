@@ -13,7 +13,7 @@
     radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.03) 1px, transparent 0),
     linear-gradient(170deg, var(--pg-bg-start) 0%, var(--pg-bg-end) 100%);
   background-size: 16px 16px, 100% 100%;
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   overflow: hidden;
   font-family: "M PLUS Rounded 1c", sans-serif;
   user-select: none;
@@ -24,14 +24,14 @@
 .header {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 14px 16px 10px;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4) var(--space-2);
 }
 
 .icon {
   width: 40px;
   height: 40px;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   object-fit: cover;
   flex-shrink: 0;
 }
@@ -60,29 +60,29 @@
 }
 
 .subtitle {
-  font-size: 9px;
+  font-size: var(--font-size-2xs);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 2px;
   color: var(--pg-accent);
-  padding: 0 16px 8px;
+  padding: 0 var(--space-4) var(--space-2);
   border-bottom: 1px solid var(--pg-border);
 }
 
 // ---- List ----
 
 .list {
-  padding: 6px 10px 10px;
+  padding: var(--space-2) var(--space-2) var(--space-2);
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: var(--space-1);
 }
 
 .row {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 6px 10px;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-2);
   border-radius: var(--radius);
   background: rgba(255, 255, 255, 0.03);
   position: relative;
@@ -90,21 +90,21 @@
   // Gold
   &[data-rank="1"] {
     background: linear-gradient(90deg, rgba(255, 215, 0, 0.15) 0%, transparent 75%);
-    .rank { color: #ffd700; }
+    .rank { color: var(--medal-gold); }
     .rankBg { background: rgba(255, 215, 0, 0.15); }
   }
 
   // Silver
   &[data-rank="2"] {
     background: linear-gradient(90deg, rgba(192, 192, 192, 0.15) 0%, transparent 75%);
-    .rank { color: #d0d0d0; }
+    .rank { color: var(--medal-silver); }
     .rankBg { background: rgba(192, 192, 192, 0.12); }
   }
 
   // Bronze
   &[data-rank="3"] {
     background: linear-gradient(90deg, rgba(205, 127, 50, 0.15) 0%, transparent 75%);
-    .rank { color: #cd7f32; }
+    .rank { color: var(--medal-bronze); }
     .rankBg { background: rgba(205, 127, 50, 0.12); }
   }
 
@@ -149,9 +149,9 @@
 // ---- Footer ----
 
 .footer {
-  padding: 8px 16px;
+  padding: var(--space-2) var(--space-4);
   text-align: center;
-  font-size: 9px;
+  font-size: var(--font-size-2xs);
   font-weight: 500;
   color: var(--pg-text-foot);
   border-top: 1px solid var(--pg-border);

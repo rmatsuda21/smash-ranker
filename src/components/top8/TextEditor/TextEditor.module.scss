@@ -3,7 +3,7 @@
 .textEditor {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--space-4);
   flex: 1;
   min-height: 0;
   overflow-y: auto;
@@ -28,12 +28,12 @@
   .item {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: var(--space-2);
   }
 }
 
 .empty {
-  padding: 20px;
+  padding: var(--space-5);
   text-align: center;
   color: var(--gray-8);
 
@@ -48,7 +48,7 @@
   }
 
   .hint {
-    margin-top: 8px;
+    margin-top: var(--space-2);
     font-size: var(--font-size-sm);
   }
 }

@@ -21,7 +21,7 @@
 
     outline: 2px solid var(--accent-9);
     transform: translateX(calc(var(--selected-alt) * (100% + var(--alt-gap))));
-    transition: transform 0.15s ease-in-out;
+    transition: transform var(--duration-base) var(--ease-in-out);
   }
 
   &:has(input:disabled) {
@@ -46,7 +46,7 @@
   align-items: center;
   justify-content: center;
 
-  padding: 5px;
+  padding: var(--space-1);
 
   input {
     display: none;
@@ -75,7 +75,7 @@
   border: 1px solid var(--gray-6);
   background-color: var(--gray-3);
   color: var(--gray-11);
-  padding: 2px 4px;
+  padding: var(--space-1) var(--space-1);
   font-size: var(--font-size-xs);
   font-weight: 900;
 }
@@ -83,5 +83,5 @@
 .container,
 .container:before,
 .label {
-  border-radius: 8px;
+  border-radius: var(--radius-md);
 }

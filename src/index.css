@@ -7,15 +7,22 @@
                                       these directly when styling a new
                                       surface; pick a semantic alias below.
 
-   2. Primitive tokens (this file)  — fixed sizes that don't vary by
-                                      theme: font sizes, radii, spacing,
-                                      font family, nav height.
+   2. Primitive tokens (this file)  — fixed values that don't vary by
+                                      theme: font sizes, radii, spacing
+                                      scale, z-index tiers, motion
+                                      durations/easings, font family.
 
    3. Semantic aliases (this file)  — what components should reach for
                                       first (--bg-*, --fg-*, --brand-*,
-                                      --border, --status-*). Re-skinning a
-                                      surface in the future is one edit
-                                      here, not a sweep across modules.
+                                      --border, --status-*, --medal-*).
+                                      Re-skinning a surface in the future
+                                      is one edit here, not a sweep
+                                      across modules.
+
+   Spacing: pure 4px grid. Snap stray values to the nearest token.
+   Z-index: 5 tiers. Don't invent new values; pick the closest tier.
+   Motion: 0.15s + ease is the default. Use --duration-base /
+   --ease-standard unless you have a specific reason.
    ============================================================ */
 
 /* Self-hosted to avoid Google Fonts being blocked. font-display: swap means
@@ -40,6 +47,7 @@
 :root {
   --nav-height: 60px;
 
+  --font-size-2xs: 9px;
   --font-size-xs: 10px;
   --font-size-sm: 12px;
   --font-size-md: 14px;
@@ -54,8 +62,38 @@
   --input-padding-lg: 8px 16px;
   --form-gap: 12px;
 
+  /* Spacing scale (pure 4px grid; snap close values aggressively) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+
+  --radius-sm: 4px;
   --radius: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
   --radius-pill: 999px;
+
+  /* Z-index tiers — pick the closest, don't invent. */
+  --z-raised: 10;
+  --z-popover: 1000;
+  --z-modal: 1001;
+  --z-tooltip: 1100;
+  --z-max: 10000;
+
+  /* Motion */
+  --duration-fast: 0.1s;
+  --duration-base: 0.15s;
+  --duration-slow: 0.3s;
+  --duration-slower: 0.5s;
+
+  --ease-standard: ease;
+  --ease-in-out: ease-in-out;
+  --ease-out: ease-out;
 
   --font-sans:
     "M PLUS Rounded 1c", system-ui, -apple-system, "Segoe UI", Roboto,
@@ -120,14 +158,19 @@
   /* Status */
   --status-warning: var(--amber-9);
   --status-danger: var(--crimson-9);
+
+  /* Medal colors (predict podium) */
+  --medal-gold: #ffd700;
+  --medal-silver: #c0c0c0;
+  --medal-bronze: #cd7f32;
 }
 
 body {
   margin: 0;
   background-color: var(--bg-app);
   transition:
-    background-color 0.2s ease,
-    color 0.2s ease;
+    background-color var(--duration-base) var(--ease-standard),
+    color var(--duration-base) var(--ease-standard);
 
   scrollbar-width: thin;
   scrollbar-color: var(--accent-8) transparent;

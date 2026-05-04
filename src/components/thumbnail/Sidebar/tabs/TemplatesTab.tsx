@@ -14,6 +14,7 @@ import {
   PREVIEW_PIXEL_RATIO,
 } from "@/consts/thumbnail/defaults";
 import { ensureFontsLoaded } from "@/utils/thumbnail/ensureFontsLoaded";
+import { Card } from "@/components/shared/Card/Card";
 
 import { BuiltInTemplatePreview } from "./BuiltInTemplatePreview";
 
@@ -123,8 +124,9 @@ export const TemplatesTab = () => {
         </h4>
         <div className={styles.grid}>
           {BUILT_IN_TEMPLATES.map((tmpl) => (
-            <div
+            <Card
               key={tmpl.id}
+              variant="interactive"
               className={styles.card}
               onClick={() => loadDesign(tmpl.build())}
               onKeyDown={(e) => {
@@ -142,7 +144,7 @@ export const TemplatesTab = () => {
                 ) : null}
               </div>
               <div className={styles.name}>{tmpl.name}</div>
-            </div>
+            </Card>
           ))}
         </div>
         {templatesNeedingPreview.map(({ template, design }) => (
@@ -162,8 +164,9 @@ export const TemplatesTab = () => {
         ) : (
           <div className={styles.grid}>
             {saved.map((tmpl) => (
-              <div
+              <Card
                 key={tmpl.id}
+                variant="interactive"
                 className={styles.card}
                 onClick={() => loadDesign(tmpl.design)}
                 onKeyDown={(e) => {
@@ -192,7 +195,7 @@ export const TemplatesTab = () => {
                 >
                   <FaTrash size={10} />
                 </button>
-              </div>
+              </Card>
             ))}
           </div>
         )}

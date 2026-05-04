@@ -24,6 +24,6 @@
     width: calc(var(--player-width) + var(--padding) * 2);
     height: calc(var(--player-height) + var(--padding) * 2);
     outline: 10px solid white;
-    border-radius: 10px;
+    border-radius: var(--radius-md);
   }
 }

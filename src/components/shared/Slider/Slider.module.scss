@@ -1,12 +1,12 @@
 .wrapper {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: var(--space-1);
 
   &.labelInLine {
     flex-direction: row;
     align-items: center;
-    gap: 6px;
+    gap: var(--space-2);
   }
 
   label {
@@ -60,14 +60,14 @@
       background: var(--accent-9);
       border-radius: 50%;
       border: 1px solid var(--gray-6);
-      transition: background-color 0.15s ease, transform 0.15s ease;
+      transition: background-color var(--duration-base) var(--ease-standard), transform var(--duration-base) var(--ease-standard);
     }
 
     &::-moz-range-thumb {
       background: var(--accent-9);
       border-radius: 50%;
       border: none;
-      transition: background-color 0.15s ease, transform 0.15s ease;
+      transition: background-color var(--duration-base) var(--ease-standard), transform var(--duration-base) var(--ease-standard);
     }
 
     &:hover:not(:disabled) {
