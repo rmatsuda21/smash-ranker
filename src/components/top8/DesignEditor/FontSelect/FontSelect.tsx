@@ -3,7 +3,7 @@ import { useCallback, useMemo } from "react";
 import {
   DropDownItem,
   DropDownSelect,
-} from "@/components/top8/DropDownSelect/DropDownSelect";
+} from "@/components/shared/DropDownSelect/DropDownSelect";
 import { useFontStore } from "@/store/fontStore";
 import { FontOption } from "@/components/top8/DesignEditor/FontSelect/FontOption";
 

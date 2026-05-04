@@ -107,7 +107,7 @@
   text-wrap: nowrap;
 
   padding: 2px 4px;
-  border-radius: 5px;
+  border-radius: var(--radius);
   border: 1px solid var(--gray-6);
   background-color: var(--gray-3);
 

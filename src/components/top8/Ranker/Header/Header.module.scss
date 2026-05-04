@@ -61,7 +61,7 @@
   width: 32px;
   height: 32px;
   padding: 0 !important;
-  border-radius: 6px;
+  border-radius: var(--radius);
   color: var(--gray-11);
 
   &:hover:not(:disabled) {

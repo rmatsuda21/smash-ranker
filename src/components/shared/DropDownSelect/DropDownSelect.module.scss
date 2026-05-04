@@ -22,7 +22,7 @@
   background-color: var(--gray-3);
   border: 1px solid var(--gray-6);
   padding: var(--input-padding-sm);
-  border-radius: 5px;
+  border-radius: var(--radius);
   color: var(--gray-12);
   transition: background-color 0.15s ease;
 
@@ -58,7 +58,7 @@
 
   background-color: var(--gray-3);
   border: 1px solid var(--gray-6);
-  border-radius: 5px;
+  border-radius: var(--radius);
 
   z-index: 1001;
   transform-origin: top center;

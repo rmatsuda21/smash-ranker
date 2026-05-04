@@ -57,7 +57,7 @@
   padding: 8px 14px;
   background-color: transparent;
   border: 1px solid var(--gray-6);
-  border-radius: 6px;
+  border-radius: var(--radius);
   cursor: pointer;
   transition: all 0.15s ease;
 

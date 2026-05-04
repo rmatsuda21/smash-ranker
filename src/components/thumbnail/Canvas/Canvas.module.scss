@@ -16,20 +16,19 @@
 
 .stageInner {
   position: relative;
-  background: #000;
-  box-shadow:
-    0 12px 40px rgba(0, 0, 0, 0.4),
-    0 0 0 1px rgba(255, 255, 255, 0.06);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-strong);
 }
 
 .checkerboard {
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(45deg, rgba(255, 255, 255, 0.04) 25%, transparent 25%),
-    linear-gradient(-45deg, rgba(255, 255, 255, 0.04) 25%, transparent 25%);
+    linear-gradient(45deg, var(--gray-3) 25%, transparent 25%),
+    linear-gradient(-45deg, var(--gray-3) 25%, transparent 25%);
   background-size: 24px 24px;
   pointer-events: none;
+  opacity: 0.5;
 }
 
 .editorOverlay {

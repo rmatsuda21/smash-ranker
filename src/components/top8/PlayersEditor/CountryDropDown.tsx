@@ -4,7 +4,7 @@ import startCase from "lodash/startCase";
 import { msg } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 
-import { DropDownSelect } from "@/components/top8/DropDownSelect/DropDownSelect";
+import { DropDownSelect } from "@/components/shared/DropDownSelect/DropDownSelect";
 
 type Props = {
   selectedCountry: string;

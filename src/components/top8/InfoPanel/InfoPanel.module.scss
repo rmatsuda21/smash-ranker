@@ -41,7 +41,7 @@
     justify-content: center;
     width: 32px;
     height: 32px;
-    border-radius: 6px;
+    border-radius: var(--radius);
     color: var(--gray-11);
     background-color: var(--gray-4);
     transition: color 0.15s ease, background-color 0.15s ease;

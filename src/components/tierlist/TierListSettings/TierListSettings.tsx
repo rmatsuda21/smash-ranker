@@ -1,5 +1,4 @@
-import { useEffect, useRef, useState } from "react";
-import { createPortal } from "react-dom";
+import { useRef, useState } from "react";
 import {
   FaAlignCenter,
   FaAlignLeft,
@@ -20,7 +19,8 @@ import cn from "classnames";
 import {
   DropDownSelect,
   DropDownItem,
-} from "@/components/top8/DropDownSelect/DropDownSelect";
+} from "@/components/shared/DropDownSelect/DropDownSelect";
+import { Popover } from "@/components/shared/Popover/Popover";
 import { useTierListStore } from "@/store/tierListStore";
 import { TIER_PALETTES, getColorsForTierCount } from "@/consts/tierlist/tierPalettes";
 
@@ -64,52 +64,25 @@ export const TierListSettings = () => {
   );
 
   const [isOpen, setIsOpen] = useState(false);
-  const [position, setPosition] = useState<{ top: number; left: number } | null>(null);
   const [paletteScrolledToBottom, setPaletteScrolledToBottom] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const popoverRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const handleClickOutside = (e: MouseEvent) => {
-      if (!(e.target instanceof Node)) return;
-      if (
-        !wrapperRef.current?.contains(e.target) &&
-        !popoverRef.current?.contains(e.target)
-      ) {
-        setIsOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [isOpen]);
-
-  const handleToggle = () => {
-    if (!isOpen && wrapperRef.current) {
-      const rect = wrapperRef.current.getBoundingClientRect();
-      const popoverWidth = 220;
-      const left = Math.min(rect.left, window.innerWidth - popoverWidth - 8);
-      setPosition({ top: rect.bottom + 4, left: Math.max(8, left) });
-    }
-    setIsOpen(!isOpen);
-  };
 
   return (
     <>
-      <div ref={wrapperRef} className={styles.settingsButton} onClick={handleToggle}>
+      <div
+        ref={wrapperRef}
+        className={styles.settingsButton}
+        onClick={() => setIsOpen((v) => !v)}
+      >
         <FaGear size={14} /> <Trans>Settings</Trans>
       </div>
 
-      {isOpen &&
-        position &&
-        createPortal(
-          <div
-            ref={popoverRef}
-            className={styles.popover}
-            style={{ top: position.top, left: position.left }}
-          >
+      <Popover
+        anchorRef={wrapperRef}
+        open={isOpen}
+        onClose={() => setIsOpen(false)}
+        minWidth={260}
+      >
             <div className={styles.section}>
               <div className={styles.sectionLabel}><Trans>Layout</Trans></div>
               <div className={styles.optionGroup}>
@@ -255,9 +228,7 @@ export const TierListSettings = () => {
                 <span className={styles.sizeValue}>{labelFont.size}px</span>
               </div>
             </div>
-          </div>,
-          document.body
-        )}
+      </Popover>
     </>
   );
 };

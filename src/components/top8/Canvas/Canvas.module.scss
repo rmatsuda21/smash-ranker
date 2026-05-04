@@ -78,7 +78,7 @@
     margin: var(--canvas-padding);
     margin-top: 0;
     align-self: center;
-    border-radius: 6px;
+    border-radius: var(--radius);
     background-color: var(--gray-5);
 
     display: flex;

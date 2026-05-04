@@ -21,7 +21,7 @@
     -webkit-appearance: none;
     appearance: none;
     width: 100%;
-    border-radius: 9999px;
+    border-radius: var(--radius-pill);
     cursor: pointer;
 
     background: linear-gradient(
@@ -41,17 +41,17 @@
 
     &::-webkit-slider-runnable-track {
       background: transparent;
-      border-radius: 9999px;
+      border-radius: var(--radius-pill);
     }
 
     &::-moz-range-track {
       background: transparent;
-      border-radius: 9999px;
+      border-radius: var(--radius-pill);
     }
 
     &::-moz-range-progress {
       background: white;
-      border-radius: 9999px;
+      border-radius: var(--radius-pill);
     }
 
     &::-webkit-slider-thumb {

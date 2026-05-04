@@ -16,11 +16,11 @@
   .viewMode {
     width: fit-content;
     border: 1px solid var(--gray-6);
-    border-radius: 5px;
+    border-radius: var(--radius);
 
     button {
       &:first-child {
-        border-radius: 5px 0 0 5px;
+        border-radius: var(--radius) 0 0 5px;
       }
       &:last-child {
         border-radius: 0 5px 5px 0;
@@ -42,7 +42,7 @@
       button {
         height: 16px;
         padding: 4px 2px;
-        border-radius: 5px;
+        border-radius: var(--radius);
         cursor: pointer;
 
         &.collapsed svg {
@@ -75,7 +75,7 @@
     .template {
       cursor: pointer;
       border: 3px solid var(--gray-9);
-      border-radius: 5px;
+      border-radius: var(--radius);
       transition: border-color 0.1s ease-in-out;
     }
 

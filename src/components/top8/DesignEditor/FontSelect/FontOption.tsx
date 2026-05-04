@@ -1,6 +1,6 @@
 import { memo, useEffect, useState } from "react";
 
-import { DropDownItem } from "@/components/top8/DropDownSelect/DropDownSelect";
+import { DropDownItem } from "@/components/shared/DropDownSelect/DropDownSelect";
 import { useFontStore } from "@/store/fontStore";
 import { fontsourcePreviewCssUrl } from "@/utils/fonts/fontsourceUrls";
 

@@ -1,3 +1,23 @@
+/* ============================================================
+   TOKEN LAYERS
+
+   1. Raw scales (theme.css)        — --gray-1..12, --accent-1..12,
+                                      --amber-9, --crimson-9.
+                                      Theme-/accent-aware. Don't reach for
+                                      these directly when styling a new
+                                      surface; pick a semantic alias below.
+
+   2. Primitive tokens (this file)  — fixed sizes that don't vary by
+                                      theme: font sizes, radii, spacing,
+                                      font family, nav height.
+
+   3. Semantic aliases (this file)  — what components should reach for
+                                      first (--bg-*, --fg-*, --brand-*,
+                                      --border, --status-*). Re-skinning a
+                                      surface in the future is one edit
+                                      here, not a sweep across modules.
+   ============================================================ */
+
 /* Self-hosted to avoid Google Fonts being blocked. font-display: swap means
    the browser renders fallback text immediately and swaps in the real face
    once it loads — initial paint is never blocked on the font fetch. */
@@ -16,22 +36,32 @@
   font-display: swap;
 }
 
+/* ----- Primitive tokens ----- */
 :root {
   --nav-height: 60px;
+
   --font-size-xs: 10px;
   --font-size-sm: 12px;
   --font-size-md: 14px;
   --font-size-lg: 16px;
   --font-size-xl: 18px;
   --title-size: 20px;
+  --display-md: 32px;
+  --display-lg: 40px;
+
   --input-padding-sm: 4px 8px;
   --input-padding-md: 6px 12px;
   --input-padding-lg: 8px 16px;
   --form-gap: 12px;
 
-  /* font-family: "Lexend", sans-serif; */
-  /* font-family: "Noto Sans JP", sans-serif; */
-  font-family: "M PLUS Rounded 1c", sans-serif;
+  --radius: 6px;
+  --radius-pill: 999px;
+
+  --font-sans:
+    "M PLUS Rounded 1c", system-ui, -apple-system, "Segoe UI", Roboto,
+    sans-serif;
+
+  font-family: var(--font-sans);
   font-optical-sizing: auto;
 
   @media (prefers-reduced-motion: reduce) {
@@ -55,13 +85,46 @@
 
   *::-webkit-scrollbar-thumb {
     background: var(--accent-8);
-    border-radius: 5px;
+    border-radius: var(--radius);
   }
+}
+
+/* ----- Semantic aliases — reach for these first when styling. ----- */
+:root {
+  /* Surfaces */
+  --bg-app: var(--gray-2);
+  --bg-surface: var(--gray-1);
+  --bg-raised: var(--gray-3);
+  --bg-input: var(--gray-1);
+
+  /* Foregrounds */
+  --fg-1: var(--gray-12);
+  --fg-2: var(--gray-11);
+  --fg-3: var(--gray-10);
+  --fg-4: var(--gray-9);
+  --fg-muted: var(--gray-8);
+
+  /* Borders */
+  --border: var(--gray-4);
+  --border-strong: var(--gray-6);
+
+  /* Brand */
+  --brand: var(--accent-9);
+  --brand-text: var(--accent-9);
+  --brand-hover: var(--accent-10);
+  --brand-active: var(--accent-11);
+  --brand-soft: var(--accent-3);
+  --brand-softer: var(--accent-2);
+  --brand-outline: var(--accent-5);
+
+  /* Status */
+  --status-warning: var(--amber-9);
+  --status-danger: var(--crimson-9);
 }
 
 body {
   margin: 0;
-  background-color: var(--gray-2);
+  background-color: var(--bg-app);
   transition:
     background-color 0.2s ease,
     color 0.2s ease;
@@ -77,7 +140,7 @@ body {
 
   &::-webkit-scrollbar-thumb {
     background: var(--accent-8);
-    border-radius: 5px;
+    border-radius: var(--radius);
   }
 }
 

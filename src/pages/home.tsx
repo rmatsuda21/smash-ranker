@@ -11,6 +11,8 @@ import {
 import { SiBuymeacoffee } from "react-icons/si";
 
 import { useFeatureFlag } from "@/hooks/useFeatureFlags";
+import { Card } from "@/components/shared/Card/Card";
+import { Badge } from "@/components/shared/Badge/Badge";
 
 import styles from "./home.module.scss";
 
@@ -57,8 +59,10 @@ export const Home = () => {
           <Trans>Tools</Trans>
         </h2>
         <div className={styles.cardGrid}>
-          <Link
+          <Card
+            as={Link}
             to="/ranker"
+            variant="interactive"
             className={styles.card}
             style={{ animationDelay: "0.1s" }}
           >
@@ -76,10 +80,12 @@ export const Home = () => {
                 customization.
               </Trans>
             </p>
-          </Link>
+          </Card>
 
-          <Link
+          <Card
+            as={Link}
             to="/tier"
+            variant="interactive"
             className={styles.card}
             style={{ animationDelay: "0.25s" }}
           >
@@ -96,11 +102,13 @@ export const Home = () => {
                 Create your own fully customizable character tier lists.
               </Trans>
             </p>
-          </Link>
+          </Card>
 
           {thumbnailEnabled && (
-            <Link
+            <Card
+              as={Link}
               to="/thumbnail"
+              variant="interactive"
               className={styles.card}
               style={{ animationDelay: "0.4s" }}
             >
@@ -110,9 +118,9 @@ export const Home = () => {
                 </div>
                 <h3 className={styles.cardTitle}>
                   <Trans>Thumbnail Maker</Trans>
-                  <span className={styles.cardBadge}>
+                  <Badge variant="new">
                     <Trans>New</Trans>
-                  </span>
+                  </Badge>
                 </h3>
               </div>
               <p className={styles.cardDescription}>
@@ -120,11 +128,13 @@ export const Home = () => {
                   Create custom YouTube thumbnails for your Smash sets!
                 </Trans>
               </p>
-            </Link>
+            </Card>
           )}
 
-          <Link
+          <Card
+            as={Link}
             to="/predict"
+            variant="interactive"
             className={styles.card}
             style={{ animationDelay: "0.55s" }}
           >
@@ -142,16 +152,15 @@ export const Home = () => {
                 friends with a cool graphic!
               </Trans>
             </p>
-          </Link>
+          </Card>
         </div>
       </section>
 
       <section className={styles.roadmap}>
         <div className={styles.roadmapContent}>
-          <div className={styles.roadmapBadge}>
-            <span className={styles.pulseDot} />
+          <Badge variant="status">
             <Trans>In Development</Trans>
-          </div>
+          </Badge>
           <h2 className={styles.roadmapTitle}>
             <Trans>More tools on the way</Trans>
           </h2>

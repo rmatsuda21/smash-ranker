@@ -8,7 +8,7 @@
   white-space: nowrap;
   font-family: inherit;
   font-weight: 600;
-  border-radius: 5px;
+  border-radius: var(--radius);
   cursor: pointer;
   transition: all 0.15s ease;
 
@@ -44,10 +44,10 @@
   pointer-events: none;
   text-wrap: nowrap;
 
-  border-radius: 5px;
-  border: 1px solid var(--gray-6);
-  background-color: var(--gray-3);
-  color: var(--gray-11);
+  border-radius: var(--radius);
+  border: 1px solid var(--border-strong);
+  background-color: var(--bg-raised);
+  color: var(--fg-2);
   padding: 2px 4px;
   font-size: var(--font-size-xs);
   font-weight: 900;
