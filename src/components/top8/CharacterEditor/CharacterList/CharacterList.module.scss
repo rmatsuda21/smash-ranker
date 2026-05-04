@@ -12,7 +12,7 @@
     min-width: 35px;
     aspect-ratio: 1;
     border: 2px solid var(--gray-6);
-    border-radius: 5px;
+    border-radius: var(--radius);
     padding: 5px;
     background-color: var(--gray-3);
     color: var(--gray-12);

@@ -9,7 +9,7 @@ import { Input } from "@/components/shared/Input/Input";
 import { useCanvasStore } from "@/store/canvasStore";
 import { usePlayerStore } from "@/store/playerStore";
 import { useTournamentStore } from "@/store/tournamentStore";
-import { DropDownSelect } from "@/components/top8/DropDownSelect/DropDownSelect";
+import { DropDownSelect } from "@/components/shared/DropDownSelect/DropDownSelect";
 import { downloadBlob } from "@/utils/top8/downloadBlob";
 import { DownloadOptionModal } from "@/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal";
 

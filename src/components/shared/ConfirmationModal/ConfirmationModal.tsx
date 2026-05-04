@@ -4,7 +4,7 @@ import { Trans } from "@lingui/react/macro";
 
 import { Modal } from "@/components/shared/Modal/Modal";
 import { Button } from "@/components/shared/Button/Button";
-import { Input } from "@/components/shared/Input/Input";
+import { Checkbox } from "@/components/shared/Checkbox/Checkbox";
 
 import styles from "./ConfirmationModal.module.scss";
 
@@ -16,30 +16,6 @@ type Props = {
   onConfirm: () => void;
   onCancel: () => void;
   cookieName?: string;
-};
-
-const CookieInput = ({
-  isDoNotShowAgain,
-  setIsDoNotShowAgain,
-}: {
-  isDoNotShowAgain: boolean;
-  setIsDoNotShowAgain: (isDoNotShowAgain: boolean) => void;
-}) => {
-  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIsDoNotShowAgain(e.currentTarget.checked);
-  };
-
-  return (
-    <div className={styles.cookieInput}>
-      <span><Trans>Don't show again</Trans></span>
-      <Input
-        type="checkbox"
-        onChange={handleCheckboxChange}
-        checked={isDoNotShowAgain}
-        size={12}
-      />
-    </div>
-  );
 };
 
 export const ConfirmationModal = ({
@@ -71,10 +47,14 @@ export const ConfirmationModal = ({
         {children}
         <div className={styles.buttons}>
           {cookieName && (
-            <CookieInput
-              isDoNotShowAgain={isDoNotShowAgain}
-              setIsDoNotShowAgain={setIsDoNotShowAgain}
-            />
+            <div className={styles.cookieInput}>
+              <Checkbox
+                checked={isDoNotShowAgain}
+                onChange={setIsDoNotShowAgain}
+                label={<Trans>Don't show again</Trans>}
+                size="sm"
+              />
+            </div>
           )}
           <Button variant="ghost" onClick={onCancel}>
             <Trans>Cancel</Trans>

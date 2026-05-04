@@ -1,0 +1,23 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  text-decoration: none;
+  color: inherit;
+}
+
+.interactive {
+  cursor: pointer;
+  transition:
+    border-color 0.3s ease-in-out,
+    background 0.3s ease-in-out;
+
+  &:hover {
+    border-color: var(--brand-outline);
+    background: var(--bg-raised);
+  }
+}

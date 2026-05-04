@@ -35,7 +35,7 @@
 
   width: max-content;
   padding: 8px 12px;
-  border-radius: 6px;
+  border-radius: var(--radius);
 
   font-size: var(--font-size-xs);
   font-weight: 500;

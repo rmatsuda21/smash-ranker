@@ -68,7 +68,7 @@
     padding: 0 10px;
     background-color: var(--gray-3);
     border: 1px solid var(--gray-6);
-    border-radius: 5px;
+    border-radius: var(--radius);
 
     span {
       font-size: 14px;
@@ -90,7 +90,7 @@
 
       height: 100%;
       width: auto;
-      border-radius: 5px;
+      border-radius: var(--radius);
 
       background-color: var(--gray-4);
     }

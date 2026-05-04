@@ -20,17 +20,17 @@
     height: var(--size) px;
     padding: var(--input-padding-sm);
     line-height: 24px;
-    background-color: var(--gray-1);
+    background-color: var(--bg-input);
 
-    color: var(--gray-12);
+    color: var(--fg-1);
     font-size: var(--font-size-md);
 
-    border-radius: 5px;
-    border: 1px solid var(--gray-6);
+    border-radius: var(--radius);
+    border: 1px solid var(--border-strong);
 
     &:focus {
-      border-color: var(--accent-9);
-      outline: 1px solid var(--accent-9);
+      border-color: var(--brand);
+      outline: 1px solid var(--brand);
       outline-offset: -2px;
     }
   }
@@ -50,7 +50,7 @@
     padding: 1px;
     width: calc(var(--size) * 1px);
     height: calc(var(--size) * 1px);
-    border-radius: 5px;
+    border-radius: var(--radius);
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -71,8 +71,8 @@
     }
 
     &:checked {
-      background-color: var(--accent-9);
-      border-color: var(--accent-9);
+      background-color: var(--brand);
+      border-color: var(--brand);
 
       &::before {
         content: "✓";
@@ -83,8 +83,8 @@
     }
 
     &:focus {
-      outline: 1px solid var(--accent-9);
-      border-color: var(--accent-9);
+      outline: 1px solid var(--brand);
+      border-color: var(--brand);
     }
   }
 

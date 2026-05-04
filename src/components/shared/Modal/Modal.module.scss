@@ -35,12 +35,12 @@
 }
 
 .content {
-  background-color: var(--gray-1);
-  border: 1px solid var(--gray-4);
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border);
   z-index: 1;
 
   padding: 20px;
-  border-radius: 5px;
+  border-radius: var(--radius);
 
   @include mobile {
     width: calc(100vw - 32px);

@@ -1,5 +1,5 @@
 .tooltip {
-  border-radius: 5px;
+  border-radius: var(--radius);
   padding: 1px 3px;
   font-size: var(--font-size-xs);
   font-weight: 900;

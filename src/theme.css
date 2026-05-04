@@ -14,7 +14,7 @@
   --gray-11: color-mix(in srgb, white 70%, #414141);
   --gray-12: color-mix(in srgb, white 90%, #414141);
 
-  color: var(--gray-12);
+  color: var(--fg-1);
 }
 
 [data-theme="light"] {
@@ -31,7 +31,7 @@
   --gray-11: #383838;
   --gray-12: #1a1a1a;
 
-  color: var(--gray-12);
+  color: var(--fg-1);
 }
 
 :root {

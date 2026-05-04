@@ -1,5 +1,6 @@
 import { useThumbnailEditorStore } from "@/store/thumbnailEditorStore";
 import { useThumbnailStore } from "@/store/thumbnailStore";
+import { Checkbox } from "@/components/shared/Checkbox/Checkbox";
 
 import styles from "./BackgroundTab.module.scss";
 
@@ -22,30 +23,18 @@ export const SettingsTab = () => {
     <div>
       <div className={styles.section}>
         <h4>Snapping</h4>
-        <label className={styles.row}>
+        <div className={styles.row}>
           <span>Snap to elements</span>
-          <input
-            type="checkbox"
-            checked={snapToElements}
-            onChange={(e) => setSnapToElements(e.target.checked)}
-          />
-        </label>
-        <label className={styles.row}>
+          <Checkbox checked={snapToElements} onChange={setSnapToElements} />
+        </div>
+        <div className={styles.row}>
           <span>Snap to grid</span>
-          <input
-            type="checkbox"
-            checked={snapToGrid}
-            onChange={(e) => setSnapToGrid(e.target.checked)}
-          />
-        </label>
-        <label className={styles.row}>
+          <Checkbox checked={snapToGrid} onChange={setSnapToGrid} />
+        </div>
+        <div className={styles.row}>
           <span>Show grid</span>
-          <input
-            type="checkbox"
-            checked={showGrid}
-            onChange={(e) => setShowGrid(e.target.checked)}
-          />
-        </label>
+          <Checkbox checked={showGrid} onChange={setShowGrid} />
+        </div>
         <div className={styles.row}>
           <label>Grid size</label>
           <input

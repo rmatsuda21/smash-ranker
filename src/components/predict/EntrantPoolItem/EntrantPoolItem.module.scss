@@ -7,7 +7,7 @@
   width: 100%;
   padding: 8px 10px;
   border: none;
-  border-radius: 6px;
+  border-radius: var(--radius);
   background: var(--gray-2);
   color: var(--gray-12);
   cursor: pointer;

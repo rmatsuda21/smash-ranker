@@ -6,7 +6,7 @@
   align-items: center;
   gap: 8px;
   padding: 8px 10px;
-  border-radius: 6px;
+  border-radius: var(--radius);
   background: var(--gray-2);
   border: 1px solid var(--gray-4);
   font-size: var(--font-size-sm);

@@ -1,0 +1,57 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  border-radius: var(--radius-pill);
+  color: var(--brand);
+  line-height: 1;
+}
+
+.new {
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 2px 8px;
+  background: var(--brand-soft);
+  border: 1px solid var(--brand-outline);
+}
+
+.info {
+  font-size: var(--font-size-sm);
+  padding: 4px 14px;
+  background: var(--brand-softer);
+  border: 1px solid var(--brand-outline);
+}
+
+.status {
+  font-size: var(--font-size-sm);
+  padding: 4px 14px;
+  background: var(--accent-1);
+  border: 1px solid var(--accent-4);
+}
+
+.dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--brand);
+  animation: pulseDot 2s ease-in-out infinite;
+}
+
+@keyframes pulseDot {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dot {
+    animation: none;
+  }
+}

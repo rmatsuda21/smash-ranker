@@ -9,7 +9,7 @@ import {
   getCharacterDisplayName,
   getCharacterSearchTerms,
 } from "@/utils/top8/getCharacterName";
-import { DropDownSelect } from "@/components/top8/DropDownSelect/DropDownSelect";
+import { DropDownSelect } from "@/components/shared/DropDownSelect/DropDownSelect";
 import { CharacerData } from "@/types/top8/Player";
 
 type Props = {
