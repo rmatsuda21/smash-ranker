@@ -37,7 +37,8 @@ export function tonamelImageProxy(): Plugin {
 
         try {
           const response = await fetch(imageUrl);
-          const contentType = response.headers.get("content-type") || "image/jpeg";
+          const contentType =
+            response.headers.get("content-type") || "image/jpeg";
           const buffer = Buffer.from(await response.arrayBuffer());
 
           res.statusCode = response.status;

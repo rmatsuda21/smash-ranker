@@ -28,7 +28,12 @@ export const Checkbox = ({
   return (
     <label
       htmlFor={inputId}
-      className={cn(styles.wrapper, styles[size], disabled && styles.disabled, className)}
+      className={cn(
+        styles.wrapper,
+        styles[size],
+        disabled && styles.disabled,
+        className,
+      )}
     >
       <input
         id={inputId}

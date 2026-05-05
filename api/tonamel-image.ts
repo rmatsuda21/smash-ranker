@@ -1,6 +1,10 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 
-const ALLOWED_HOSTS = ["assets.tonamel.com", "img.tonamel.com", "p1-c2db36b0.imageflux.jp"];
+const ALLOWED_HOSTS = [
+  "assets.tonamel.com",
+  "img.tonamel.com",
+  "p1-c2db36b0.imageflux.jp",
+];
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "GET") {
@@ -27,7 +31,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const response = await fetch(url);
 
     if (!response.ok) {
-      return res.status(response.status).json({ error: `Upstream error: ${response.status}` });
+      return res
+        .status(response.status)
+        .json({ error: `Upstream error: ${response.status}` });
     }
 
     const contentType = response.headers.get("content-type") || "image/jpeg";

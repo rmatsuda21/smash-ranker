@@ -97,9 +97,9 @@ export const ContextMenu = ({ x, y, items, onClose }: Props) => {
               <span className={styles.shortcut}>{item.shortcut}</span>
             ) : null}
           </button>
-        )
+        ),
       )}
     </div>,
-    document.body
+    document.body,
   );
 };

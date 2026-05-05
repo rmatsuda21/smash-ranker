@@ -81,18 +81,14 @@ export const BackgroundTab = () => {
             <label>Left</label>
             <ColorInput
               color={background.left}
-              onChange={(color) =>
-                update({ ...background, left: color })
-              }
+              onChange={(color) => update({ ...background, left: color })}
             />
           </div>
           <div className={styles.row}>
             <label>Right</label>
             <ColorInput
               color={background.right}
-              onChange={(color) =>
-                update({ ...background, right: color })
-              }
+              onChange={(color) => update({ ...background, right: color })}
             />
           </div>
         </div>

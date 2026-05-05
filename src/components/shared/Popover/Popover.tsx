@@ -100,7 +100,7 @@ export const Popover = ({
     }
     const clampedLeft = Math.max(
       VIEWPORT_MARGIN,
-      Math.min(left, window.innerWidth - popoverWidth - VIEWPORT_MARGIN)
+      Math.min(left, window.innerWidth - popoverWidth - VIEWPORT_MARGIN),
     );
     return {
       top,
@@ -158,6 +158,6 @@ export const Popover = ({
     >
       {children}
     </div>,
-    document.body
+    document.body,
   );
 };

@@ -22,11 +22,7 @@ export const SettingsModal = ({ isOpen, onClose }: Props) => {
       <div className={styles.content}>
         <div className={styles.header}>
           <h2 className={styles.title}>{_(msg`Settings`)}</h2>
-          <button
-            className={styles.close}
-            onClick={onClose}
-            aria-label="Close"
-          >
+          <button className={styles.close} onClick={onClose} aria-label="Close">
             <MdClose />
           </button>
         </div>

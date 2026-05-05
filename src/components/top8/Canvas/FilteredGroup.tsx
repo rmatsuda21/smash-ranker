@@ -25,7 +25,7 @@ const isFilterType =
     f.type === type;
 
 const buildKonvaFilterProps = (
-  filtersConfig?: ElementFilterConfig[]
+  filtersConfig?: ElementFilterConfig[],
 ): FilterProps => {
   if (!filtersConfig || filtersConfig.length === 0) return {};
 
@@ -71,7 +71,7 @@ export const FilteredGroup = ({
   const groupRef = useRef<KonvaGroup>(null);
   const filterProps = useMemo(
     () => buildKonvaFilterProps(filtersConfig),
-    [filtersConfig]
+    [filtersConfig],
   );
 
   const mobile = isMobile();

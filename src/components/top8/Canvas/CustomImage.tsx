@@ -41,7 +41,7 @@ const CustomImageComponent = ({
   align = "center",
   ...rest
 }: Props) => {
-  const shadowOpacity = hasShadow ? _shadowOpacity ?? 1 : 0;
+  const shadowOpacity = hasShadow ? (_shadowOpacity ?? 1) : 0;
   const onReadyRef = useRef(onReady);
   const onErrorRef = useRef(onError);
   onReadyRef.current = onReady;
@@ -71,7 +71,15 @@ const CustomImageComponent = ({
     } else {
       ref.current.clearCache();
     }
-  }, [shadowColor, shadowBlur, shadowOffset, shadowOpacity, finalImage, ref, mobile]);
+  }, [
+    shadowColor,
+    shadowBlur,
+    shadowOffset,
+    shadowOpacity,
+    finalImage,
+    ref,
+    mobile,
+  ]);
 
   if (!finalImage) return null;
 
@@ -94,7 +102,7 @@ const CustomImageComponent = ({
 
 const areOffsetsEqual = (
   a: { x: number; y: number } | undefined,
-  b: { x: number; y: number } | undefined
+  b: { x: number; y: number } | undefined,
 ): boolean => {
   if (a === b) return true;
   if (!a || !b) return false;
@@ -121,5 +129,5 @@ export const CustomImage = memo(
       areOffsetsEqual(prevProps.cropOffset, nextProps.cropOffset) &&
       areOffsetsEqual(prevProps.shadowOffset, nextProps.shadowOffset)
     );
-  }
+  },
 );

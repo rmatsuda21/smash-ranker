@@ -33,7 +33,7 @@ export const AssetsModal = ({
 }: Props) => {
   const { _ } = useLingui();
   const [selectedAssetSrc, setSelectedAssetSrc] = useState<string>(
-    selectedSrc ?? ""
+    selectedSrc ?? "",
   );
   const [previewAsset, setPreviewAsset] = useState<DBAsset | null>(null);
   const [zoomLevel, setZoomLevel] = useState(100);
@@ -54,7 +54,7 @@ export const AssetsModal = ({
     {
       title: _(msg`Delete Asset`),
       description: _(msg`Are you sure you want to delete this asset?`),
-    }
+    },
   );
 
   const { confirm: confirmBulkDelete, ConfirmationDialog: BulkDeleteDialog } =
@@ -71,9 +71,9 @@ export const AssetsModal = ({
       {
         title: _(msg`Delete Assets`),
         description: _(
-          msg`Are you sure you want to delete ${markedIds.size} assets?`
+          msg`Are you sure you want to delete ${markedIds.size} assets?`,
         ),
-      }
+      },
     );
 
   useEffect(() => {
@@ -136,9 +136,7 @@ export const AssetsModal = ({
   const handleToggleMark = (id: string, shiftKey: boolean) => {
     if (shiftKey && lastMarkedIdRef.current) {
       // Range select: mark all assets between last marked and current
-      const lastIdx = assets.findIndex(
-        (a) => a.id === lastMarkedIdRef.current
-      );
+      const lastIdx = assets.findIndex((a) => a.id === lastMarkedIdRef.current);
       const currIdx = assets.findIndex((a) => a.id === id);
       if (lastIdx !== -1 && currIdx !== -1) {
         const start = Math.min(lastIdx, currIdx);

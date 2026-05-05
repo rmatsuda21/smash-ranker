@@ -23,7 +23,7 @@ type SmartTextProps = TextConfig & {
 
 function calculateAnchorOffsets(
   node: KonvaText,
-  anchor: Anchor
+  anchor: Anchor,
 ): { offsetX: number; offsetY: number } {
   const textWidth = node.width();
   const textHeight = node.height();
@@ -53,7 +53,7 @@ function calculateAnchorOffsets(
 
 function measureFromMiddleBaseline(
   node: KonvaText,
-  text: string
+  text: string,
 ): { actualAscent: number; actualDescent: number } | null {
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
@@ -79,7 +79,7 @@ function measureFromMiddleBaseline(
 function computeVerticalCorrection(
   node: KonvaText,
   text: string,
-  verticalAlign: string | undefined
+  verticalAlign: string | undefined,
 ): number {
   if (!verticalAlign || verticalAlign === "top") return 0;
 
@@ -106,7 +106,7 @@ function computeFittedFontSize(
   content: string,
   targetWidth: number,
   baseFontSize: number,
-  props: SmartTextProps
+  props: SmartTextProps,
 ) {
   node.text(content);
   node.fontSize(baseFontSize);
@@ -120,7 +120,7 @@ function computeFittedFontSize(
     const ratio = targetWidth / measuredWidth;
     const nextSize = Math.max(
       Math.floor(currentSize * ratio * SAFETY_MARGIN_RATIO),
-      MIN_FONT_SIZE
+      MIN_FONT_SIZE,
     );
 
     if (nextSize === currentSize) break;
@@ -185,7 +185,7 @@ export const SmartText = (props: SmartTextProps) => {
         text,
         width,
         fontSize,
-        typographyProps
+        typographyProps,
       );
       isCalculatingRef.current = false;
 
@@ -202,7 +202,7 @@ export const SmartText = (props: SmartTextProps) => {
         text,
         _width,
         fontSize,
-        typographyProps
+        typographyProps,
       );
       return {
         x: (initialShadowOffset.x * fitted) / fontSize,
@@ -221,8 +221,9 @@ export const SmartText = (props: SmartTextProps) => {
       setAdjustedFontSize(calculateFontSize());
       const anchorOffset = calculateAnchorOffset();
       const node = textRef.current;
-      const correction =
-        node ? computeVerticalCorrection(node, text, verticalAlign) : 0;
+      const correction = node
+        ? computeVerticalCorrection(node, text, verticalAlign)
+        : 0;
       setOffsetX(anchorOffset.offsetX);
       setOffsetY(anchorOffset.offsetY - correction);
       setShadowOffset(calculateShadowOffset());

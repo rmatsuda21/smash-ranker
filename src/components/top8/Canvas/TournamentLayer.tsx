@@ -20,21 +20,21 @@ export const TournamentLayer = ({ onReady }: { onReady?: () => void }) => {
   const displayedFont = useFontStore((state) => state.displayedFont);
   const layout = useCanvasStore((state) => state.design.tournament);
   const canvasSize = useCanvasStore(
-    useShallow((state) => state.design.canvasSize)
+    useShallow((state) => state.design.canvasSize),
   );
   const colorPalette = useCanvasStore(
-    useShallow((state) => state.design.colorPalette)
+    useShallow((state) => state.design.colorPalette),
   );
   const textPalette = useCanvasStore(
-    useShallow((state) => state.design.textPalette)
+    useShallow((state) => state.design.textPalette),
   );
   const bgAssetId = useCanvasStore((state) => state.design.bgAssetId);
   const bgImageDarkness = useCanvasStore(
-    (state) => state.design.bgImageDarkness
+    (state) => state.design.bgImageDarkness,
   );
   const tournament = useTournamentStore((state) => state.info);
   const selectedElementIndex = useTournamentStore(
-    (state) => state.selectedElementIndex
+    (state) => state.selectedElementIndex,
   );
   const dispatch = useEditorStore((state) => state.dispatch);
 
@@ -47,7 +47,7 @@ export const TournamentLayer = ({ onReady }: { onReady?: () => void }) => {
 
   const design = useMemo(
     () => ({ colorPalette, textPalette, bgAssetId, bgImageDarkness }),
-    [colorPalette, textPalette, bgAssetId, bgImageDarkness]
+    [colorPalette, textPalette, bgAssetId, bgImageDarkness],
   );
 
   const stableOnReady = useMemo(() => () => onReadyRef.current?.(), []);
@@ -63,7 +63,7 @@ export const TournamentLayer = ({ onReady }: { onReady?: () => void }) => {
           design,
           onElementSelect: handleElementSelect,
         },
-        { onAllReady: stableOnReady }
+        { onAllReady: stableOnReady },
       ),
     [
       layout?.elements,
@@ -73,7 +73,7 @@ export const TournamentLayer = ({ onReady }: { onReady?: () => void }) => {
       design,
       handleElementSelect,
       stableOnReady,
-    ]
+    ],
   );
 
   useEffect(() => {

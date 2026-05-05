@@ -15,7 +15,7 @@ export type { CreateKonvaElementsOptions };
 export const createKonvaElements = (
   elements: ElementConfig[],
   context: ElementFactoryContext = {},
-  options?: CreateKonvaElementsOptions
+  options?: CreateKonvaElementsOptions,
 ): ReactNode[] => {
   if (!options?.onAllReady && !options?.onError) {
     return createKonvaElementsInternal(elements, context);
@@ -45,4 +45,3 @@ export const createKonvaElements = (
 
   return createKonvaElementsInternal(elements, internalContext);
 };
-

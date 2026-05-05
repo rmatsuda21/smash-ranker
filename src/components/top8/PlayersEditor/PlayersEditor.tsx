@@ -27,17 +27,17 @@ export const PlayersEditor = ({ className }: Props) => {
   const { _ } = useLingui();
   const players = usePlayerStore((state) => state.players);
   const selectedPlayerIndex = usePlayerStore(
-    (state) => state.selectedPlayerIndex
+    (state) => state.selectedPlayerIndex,
   );
   const dispatch = usePlayerStore((state) => state.dispatch);
 
   const [tempPlayer, setTempPlayer] = useState<PlayerInfo | undefined>(
-    players[selectedPlayerIndex]
+    players[selectedPlayerIndex],
   );
 
   const selectedPlayer = useMemo(
     () => players[selectedPlayerIndex],
-    [players, selectedPlayerIndex]
+    [players, selectedPlayerIndex],
   );
 
   const editingPlayerIndexRef = useRef<number>(selectedPlayerIndex);
@@ -49,7 +49,7 @@ export const PlayersEditor = ({ className }: Props) => {
         type: "UPDATE_PLAYER",
         payload: { index, player },
       });
-    }, 100)
+    }, 100),
   ).current;
 
   useEffect(() => {

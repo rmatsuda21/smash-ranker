@@ -26,7 +26,11 @@ import { CharacterImage } from "@/components/tierlist/CharacterImage/CharacterIm
 import { AltPicker } from "@/components/tierlist/AltPicker/AltPicker";
 import { useTierListStore } from "@/store/tierListStore";
 import { useKonamiCode } from "@/hooks/tierlist/useKonamiCode";
-import { TIER_PALETTES, getColorsForTierCount, DEFAULT_PALETTE_ID } from "@/consts/tierlist/tierPalettes";
+import {
+  TIER_PALETTES,
+  getColorsForTierCount,
+  DEFAULT_PALETTE_ID,
+} from "@/consts/tierlist/tierPalettes";
 import { preloadCharacterImages } from "@/utils/top8/preloadCharacterImages";
 
 import styles from "./TierListApp.module.scss";
@@ -39,7 +43,7 @@ type AltPickerState = {
 const findContainer = (
   instanceId: string,
   tiers: { id: string; characterIds: string[] }[],
-  pool: string[]
+  pool: string[],
 ): string | null => {
   for (const tier of tiers) {
     if (tier.characterIds.includes(instanceId)) return tier.id;
@@ -65,7 +69,7 @@ export const TierListApp = () => {
   useKonamiCode(
     useCallback(() => {
       dispatch({ type: "RANDOMIZE_TIERS", minPerTier: 5 });
-    }, [dispatch])
+    }, [dispatch]),
   );
 
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -79,8 +83,9 @@ export const TierListApp = () => {
   poolRef.current = pool;
 
   const handleAddTier = useCallback(() => {
-    const palette = TIER_PALETTES.find((p) => p.id === activePaletteId)
-      ?? TIER_PALETTES.find((p) => p.id === DEFAULT_PALETTE_ID)!;
+    const palette =
+      TIER_PALETTES.find((p) => p.id === activePaletteId) ??
+      TIER_PALETTES.find((p) => p.id === DEFAULT_PALETTE_ID)!;
     const colors = getColorsForTierCount(palette, tiers.length + 1);
     dispatch({ type: "ADD_TIER", name: "?", color: colors[tiers.length] });
   }, [dispatch, activePaletteId, tiers.length]);
@@ -94,7 +99,7 @@ export const TierListApp = () => {
     }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
-    })
+    }),
   );
 
   useEffect(() => {
@@ -119,7 +124,11 @@ export const TierListApp = () => {
       const currentTiers = tiersRef.current;
       const currentPool = poolRef.current;
 
-      const activeContainer = findContainer(activeInstanceId, currentTiers, currentPool);
+      const activeContainer = findContainer(
+        activeInstanceId,
+        currentTiers,
+        currentPool,
+      );
 
       // Determine target container
       let overContainer: string | null = null;
@@ -138,7 +147,8 @@ export const TierListApp = () => {
       const overItems =
         overContainer === "pool"
           ? currentPool
-          : currentTiers.find((t) => t.id === overContainer)?.characterIds ?? [];
+          : (currentTiers.find((t) => t.id === overContainer)?.characterIds ??
+            []);
 
       const overIndex = overItems.indexOf(overId);
       let insertIndex: number;
@@ -163,7 +173,7 @@ export const TierListApp = () => {
         toIndex: insertIndex,
       });
     },
-    [dispatch]
+    [dispatch],
   );
 
   const handleDragEnd = useCallback(
@@ -179,8 +189,13 @@ export const TierListApp = () => {
       const currentTiers = tiersRef.current;
       const currentPool = poolRef.current;
 
-      const activeContainer = findContainer(activeInstanceId, currentTiers, currentPool);
-      const isContainer = overId === "pool" || currentTiers.some((t) => t.id === overId);
+      const activeContainer = findContainer(
+        activeInstanceId,
+        currentTiers,
+        currentPool,
+      );
+      const isContainer =
+        overId === "pool" || currentTiers.some((t) => t.id === overId);
 
       // Drop onto empty container
       if (isContainer) {
@@ -188,7 +203,7 @@ export const TierListApp = () => {
         const overItems =
           overId === "pool"
             ? currentPool
-            : currentTiers.find((t) => t.id === overId)?.characterIds ?? [];
+            : (currentTiers.find((t) => t.id === overId)?.characterIds ?? []);
         dispatch({
           type: "MOVE_CHARACTER",
           instanceId: activeInstanceId,
@@ -200,12 +215,18 @@ export const TierListApp = () => {
 
       // Same-container reorder on drop
       const overContainer = findContainer(overId, currentTiers, currentPool);
-      if (!activeContainer || !overContainer || activeContainer !== overContainer) return;
+      if (
+        !activeContainer ||
+        !overContainer ||
+        activeContainer !== overContainer
+      )
+        return;
 
       const items =
         overContainer === "pool"
           ? currentPool
-          : currentTiers.find((t) => t.id === overContainer)?.characterIds ?? [];
+          : (currentTiers.find((t) => t.id === overContainer)?.characterIds ??
+            []);
       const activeIndex = items.indexOf(activeInstanceId);
       const overIndex = items.indexOf(overId);
       if (activeIndex < 0 || overIndex < 0 || activeIndex === overIndex) return;
@@ -217,7 +238,7 @@ export const TierListApp = () => {
         toIndex: overIndex,
       });
     },
-    [dispatch]
+    [dispatch],
   );
 
   const handleResizePointerDown = useCallback(
@@ -231,7 +252,7 @@ export const TierListApp = () => {
         const delta = moveEvent.clientX - startX;
         const newWidth = Math.min(
           Math.max(300, startWidth + delta),
-          window.innerWidth - 48
+          window.innerWidth - 48,
         );
         dispatch({ type: "SET_TIER_LIST_WIDTH", width: newWidth });
       };
@@ -245,7 +266,7 @@ export const TierListApp = () => {
       document.addEventListener("pointermove", onPointerMove);
       document.addEventListener("pointerup", onPointerUp);
     },
-    [tierListWidth, dispatch]
+    [tierListWidth, dispatch],
   );
 
   const handleCharacterContextMenu = useCallback(
@@ -256,7 +277,7 @@ export const TierListApp = () => {
         position: { x: e.clientX, y: e.clientY },
       });
     },
-    []
+    [],
   );
 
   const activeChar = activeId ? characters[activeId] : null;
@@ -272,8 +293,17 @@ export const TierListApp = () => {
         onDragEnd={handleDragEnd}
       >
         <div className={styles.contentRow}>
-          <div className={styles.resizeContainer} style={{ width: tierListWidth }}>
-            <div ref={exportRef} className={cn(styles.tierList, layout === "fancy" && styles.fancySpacing)}>
+          <div
+            className={styles.resizeContainer}
+            style={{ width: tierListWidth }}
+          >
+            <div
+              ref={exportRef}
+              className={cn(
+                styles.tierList,
+                layout === "fancy" && styles.fancySpacing,
+              )}
+            >
               <TierListTitle
                 title={title}
                 labelFont={labelFont}

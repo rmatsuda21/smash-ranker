@@ -16,7 +16,7 @@ type UseConfirmationReturn<T extends unknown[]> = {
 
 export function useConfirmation<T extends unknown[]>(
   onConfirm: (...args: T) => void | Promise<void>,
-  config: ConfirmationConfig
+  config: ConfirmationConfig,
 ): UseConfirmationReturn<T> {
   const [isOpen, setIsOpen] = useState(false);
   const [pendingArgs, setPendingArgs] = useState<T | null>(null);
@@ -30,20 +30,17 @@ export function useConfirmation<T extends unknown[]>(
   const configRef = useRef(config);
   configRef.current = config;
 
-  const confirm = useCallback(
-    (...args: T) => {
-      if (configRef.current.cookieName) {
-        if (Cookies.get(configRef.current.cookieName) === "true") {
-          onConfirmRef.current(...args);
-          return;
-        }
+  const confirm = useCallback((...args: T) => {
+    if (configRef.current.cookieName) {
+      if (Cookies.get(configRef.current.cookieName) === "true") {
+        onConfirmRef.current(...args);
+        return;
       }
+    }
 
-      setPendingArgs(args);
-      setIsOpen(true);
-    },
-    []
-  );
+    setPendingArgs(args);
+    setIsOpen(true);
+  }, []);
 
   const handleConfirm = useCallback(async () => {
     if (pendingArgsRef.current) {
@@ -70,7 +67,7 @@ export function useConfirmation<T extends unknown[]>(
         cookieName={configRef.current.cookieName}
       />
     ),
-    [isOpen, handleCancel, handleConfirm]
+    [isOpen, handleCancel, handleConfirm],
   );
 
   return { confirm, ConfirmationDialog };

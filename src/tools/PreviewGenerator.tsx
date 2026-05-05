@@ -110,9 +110,9 @@ const TemplateRenderer = ({
           perfectDraw: false,
           options: { disableSelectable: true },
         },
-        { onAllReady: () => setIsBackgroundReady(true) }
+        { onAllReady: () => setIsBackgroundReady(true) },
       ),
-    [template]
+    [template],
   );
 
   const tournamentElements = useMemo(
@@ -132,15 +132,15 @@ const TemplateRenderer = ({
           perfectDraw: false,
           options: { disableSelectable: true },
         },
-        { onAllReady: () => setIsTournamentReady(true) }
+        { onAllReady: () => setIsTournamentReady(true) },
       ),
-    [template]
+    [template],
   );
 
   const playerElements = useMemo(() => {
     const actualPlayerCount = Math.min(
       samplePlayers.length,
-      template.design.players.length
+      template.design.players.length,
     );
     let readyCount = 0;
 
@@ -182,7 +182,7 @@ const TemplateRenderer = ({
               setIsPlayerReady(true);
             }
           },
-        }
+        },
       );
 
       return (
@@ -226,7 +226,13 @@ const TemplateRenderer = ({
       // Small delay to ensure canvas has fully painted
       setTimeout(captureImage, 200);
     }
-  }, [isBackgroundReady, isTournamentReady, isPlayerReady, captured, captureImage]);
+  }, [
+    isBackgroundReady,
+    isTournamentReady,
+    isPlayerReady,
+    captured,
+    captureImage,
+  ]);
 
   return (
     <div style={{ position: "absolute", left: -9999, top: -9999 }}>
@@ -257,7 +263,7 @@ const PreviewGeneratorApp = () => {
       uniqueFonts.map(async (family) => {
         await loadFamily(family);
         console.log(`Loaded font: ${family}`);
-      })
+      }),
     )
       .then(() => setFontsReady(true))
       .catch((error) => {
@@ -269,7 +275,7 @@ const PreviewGeneratorApp = () => {
   const handleCaptured = useCallback((id: string, dataUrl: string) => {
     capturedRef.current.set(id, dataUrl);
     console.log(
-      `Captured ${id} (${capturedRef.current.size}/${TEMPLATES.length})`
+      `Captured ${id} (${capturedRef.current.size}/${TEMPLATES.length})`,
     );
 
     if (capturedRef.current.size === TEMPLATES.length) {
@@ -294,13 +300,14 @@ const PreviewGeneratorApp = () => {
             ? "Rendering templates..."
             : "Loading fonts..."}
       </p>
-      {fontsReady && TEMPLATES.map((template) => (
-        <TemplateRenderer
-          key={template.id}
-          template={template}
-          onCaptured={handleCaptured}
-        />
-      ))}
+      {fontsReady &&
+        TEMPLATES.map((template) => (
+          <TemplateRenderer
+            key={template.id}
+            template={template}
+            onCaptured={handleCaptured}
+          />
+        ))}
     </div>
   );
 };

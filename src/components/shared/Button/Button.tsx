@@ -41,7 +41,7 @@ export const Button = ({
           styles[size],
           { [styles.fullWidth]: fullWidth },
           { [styles.loading]: loading },
-          className
+          className,
         )}
         disabled={loading || disabled}
         aria-label={tooltip}

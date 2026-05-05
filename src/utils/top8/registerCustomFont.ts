@@ -1,6 +1,6 @@
 export async function registerCustomFontFace(
   fontFamily: string,
-  data: Blob
+  data: Blob,
 ): Promise<void> {
   const buffer = await data.arrayBuffer();
   const fontFace = new FontFace(fontFamily, buffer, {
@@ -12,7 +12,5 @@ export async function registerCustomFontFace(
 }
 
 export function getFontFamilyFromFileName(fileName: string): string {
-  return fileName
-    .replace(/\.(ttf|otf|woff|woff2)$/i, "")
-    .replace(/[-_]/g, " ");
+  return fileName.replace(/\.(ttf|otf|woff|woff2)$/i, "").replace(/[-_]/g, " ");
 }

@@ -130,7 +130,9 @@ const fetchStartgg = async (
     : "";
   const tournamentUrl = event.tournament?.url || "";
   const tournamentIconUrl =
-    event.tournament?.images?.find((img) => img?.type === "profile")?.url?.replace("http://", "https://") || "";
+    event.tournament?.images
+      ?.find((img) => img?.type === "profile")
+      ?.url?.replace("http://", "https://") || "";
 
   // Find the first phase (lowest phaseOrder)
   const phases = (event.phases ?? []).filter(Boolean);
@@ -187,12 +189,17 @@ const fetchStartgg = async (
   // Seeds from phase.seeds should already be in order, but sort to be safe
   allEntrants.sort((a, b) => a.seed - b.seed);
 
-  return { tournamentName, eventName, tournamentDate, tournamentUrl, tournamentIconUrl, entrants: allEntrants };
+  return {
+    tournamentName,
+    eventName,
+    tournamentDate,
+    tournamentUrl,
+    tournamentIconUrl,
+    entrants: allEntrants,
+  };
 };
 
-const fetchChallongeEntrants = async (
-  slug: string,
-): Promise<FetchResult> => {
+const fetchChallongeEntrants = async (slug: string): Promise<FetchResult> => {
   const res = await fetch(`/api/challonge?slug=${encodeURIComponent(slug)}`);
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
@@ -222,9 +229,7 @@ const fetchChallongeEntrants = async (
   };
 };
 
-const fetchTonamelEntrants = async (
-  slug: string,
-): Promise<FetchResult> => {
+const fetchTonamelEntrants = async (slug: string): Promise<FetchResult> => {
   const res = await fetch(`/api/tonamel?slug=${encodeURIComponent(slug)}`);
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
@@ -292,9 +297,7 @@ export const useFetchPredictionEntrants = () => {
       }
     } catch (error) {
       const message =
-        error instanceof Error
-          ? error.message
-          : t`Failed to fetch tournament`;
+        error instanceof Error ? error.message : t`Failed to fetch tournament`;
       console.error("Prediction fetch error:", error);
       dispatch({ type: "FETCH_FAIL", payload: message });
     }

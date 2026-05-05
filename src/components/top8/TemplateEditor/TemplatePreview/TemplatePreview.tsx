@@ -21,7 +21,10 @@ import styles from "./TemplatePreview.module.scss";
 
 // Sequential render queue — only one RenderedPreview mounts its Konva Stage at a time
 let currentRender: Promise<void> = Promise.resolve();
-const requestRenderSlot = (): { promise: Promise<void>; release: () => void } => {
+const requestRenderSlot = (): {
+  promise: Promise<void>;
+  release: () => void;
+} => {
   let release: () => void;
   const gate = new Promise<void>((resolve) => {
     release = resolve;
@@ -99,10 +102,7 @@ const PreviewShell = ({
   );
 };
 
-const CachedPreview = ({
-  blob,
-  ...props
-}: Props & { blob: Blob }) => {
+const CachedPreview = ({ blob, ...props }: Props & { blob: Blob }) => {
   const [src, setSrc] = useState<string | null>(null);
 
   useEffect(() => {
@@ -114,11 +114,7 @@ const CachedPreview = ({
   return (
     <PreviewShell {...props}>
       {src ? (
-        <img
-          src={src}
-          alt="Template preview"
-          className={styles.previewImage}
-        />
+        <img src={src} alt="Template preview" className={styles.previewImage} />
       ) : (
         <div className={styles.loading}>
           <Spinner size={32} />
@@ -199,7 +195,7 @@ const RenderedPreview = (props: Props) => {
             disableSelectable: true,
           },
         },
-        { onAllReady: () => setIsBackgroundReady(true) }
+        { onAllReady: () => setIsBackgroundReady(true) },
       ),
     [
       template.design.background.elements,
@@ -208,7 +204,7 @@ const RenderedPreview = (props: Props) => {
       template.design.bgImageDarkness,
       template.design.canvasSize,
       template.font,
-    ]
+    ],
   );
 
   const tournamentElements = useMemo(
@@ -228,7 +224,7 @@ const RenderedPreview = (props: Props) => {
           perfectDraw: false,
           options: { disableSelectable: true },
         },
-        { onAllReady: () => setIsTournamentReady(true) }
+        { onAllReady: () => setIsTournamentReady(true) },
       ),
     [
       template.design.tournament?.elements,
@@ -238,13 +234,13 @@ const RenderedPreview = (props: Props) => {
       template.design.bgImageDarkness,
       template.design.canvasSize,
       template.font,
-    ]
+    ],
   );
 
   const playerElements = useMemo(() => {
     const actualPlayerCount = Math.min(
       samplePlayers.length,
-      template.design.players.length
+      template.design.players.length,
     );
     let readyCount = 0;
 
@@ -286,7 +282,7 @@ const RenderedPreview = (props: Props) => {
               setIsPlayerReady(true);
             }
           },
-        }
+        },
       );
 
       return (
@@ -323,7 +319,9 @@ const RenderedPreview = (props: Props) => {
     }
 
     try {
-      const canvas = stageRef.current.toCanvas({ pixelRatio: mobile ? 0.25 : 1 });
+      const canvas = stageRef.current.toCanvas({
+        pixelRatio: mobile ? 0.25 : 1,
+      });
       canvas.toBlob(
         (blob) => {
           canvas.width = 0;
@@ -343,7 +341,7 @@ const RenderedPreview = (props: Props) => {
           releaseRef.current?.();
         },
         "image/webp",
-        0.5
+        0.5,
       );
     } catch (error) {
       console.error("Failed to capture canvas:", error);
@@ -428,7 +426,7 @@ export const TemplatePreview = (props: Props) => {
 const UserTemplatePreview = (props: Props) => {
   const { template } = props;
   const [cachedBlob, setCachedBlob] = useState<Blob | null | undefined>(
-    template.previewImage ?? undefined
+    template.previewImage ?? undefined,
   );
   const cacheVersion = useEditorStore((s) => s.previewCacheVersion);
   const isFirstRender = useRef(true);
@@ -448,15 +446,18 @@ const UserTemplatePreview = (props: Props) => {
     }
 
     let cancelled = false;
-    previewCache.get(template.id).then((blob) => {
-      if (!cancelled) {
-        setCachedBlob(blob ?? null);
-      }
-    }).catch(() => {
-      if (!cancelled) {
-        setCachedBlob(null);
-      }
-    });
+    previewCache
+      .get(template.id)
+      .then((blob) => {
+        if (!cancelled) {
+          setCachedBlob(blob ?? null);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setCachedBlob(null);
+        }
+      });
 
     return () => {
       cancelled = true;

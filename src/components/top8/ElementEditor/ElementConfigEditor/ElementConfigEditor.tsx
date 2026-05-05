@@ -39,14 +39,14 @@ export const ElementConfigEditor = (props: Props) => {
     (checked: boolean) => {
       props.onUpdateElement({ ...element, hidden: checked });
     },
-    [element, props]
+    [element, props],
   );
 
   const handleConditionUpdate = useCallback(
     (conditions: Condition[]) => {
       props.onUpdateElement({ ...element, conditions });
     },
-    [element, props]
+    [element, props],
   );
 
   return (

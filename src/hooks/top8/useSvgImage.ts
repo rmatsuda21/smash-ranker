@@ -24,7 +24,7 @@ export const useSvgImage = ({
 }): [HTMLImageElement | undefined] => {
   const [image, setImage] = useState<HTMLImageElement>();
   const [svgText, setSvgText] = useState<string | null>(
-    () => svgTextCache.get(svgUrl) ?? null
+    () => svgTextCache.get(svgUrl) ?? null,
   );
   const currentUrlRef = useRef<string | null>(null);
   const prevImageRef = useRef<HTMLImageElement | null>(null);

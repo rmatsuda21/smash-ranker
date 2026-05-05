@@ -13,7 +13,7 @@ const formatDate = (date: Date | string | undefined): string | undefined => {
 };
 
 const getPlaceholderMap = (
-  context: ElementFactoryContext
+  context: ElementFactoryContext,
 ): Record<DesignPlaceholder, string | undefined> => {
   const { player, tournament } = context;
   return {
@@ -43,11 +43,11 @@ const getPlaceholderMap = (
 
 export const replacePlaceholders = (
   text: string,
-  context: ElementFactoryContext
+  context: ElementFactoryContext,
 ): string => {
   const map = getPlaceholderMap(context);
   return text.replace(
     /<[^>]+>/g,
-    (match) => map[match as DesignPlaceholder] ?? ""
+    (match) => map[match as DesignPlaceholder] ?? "",
   );
 };

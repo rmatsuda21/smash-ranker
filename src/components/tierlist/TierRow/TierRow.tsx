@@ -6,7 +6,12 @@ import { TierLabel } from "@/components/tierlist/TierLabel/TierLabel";
 import { TierSettings } from "@/components/tierlist/TierSettings/TierSettings";
 import { SortableCharacter } from "@/components/tierlist/SortableCharacter/SortableCharacter";
 import { useTierListStore } from "@/store/tierListStore";
-import { LabelFont, Tier, ImageDisplayMode, TierListLayout } from "@/types/tierlist/TierList";
+import {
+  LabelFont,
+  Tier,
+  ImageDisplayMode,
+  TierListLayout,
+} from "@/types/tierlist/TierList";
 
 import styles from "./TierRow.module.scss";
 
@@ -63,7 +68,14 @@ export const TierRow = ({
   const fancyStyles = isFancy ? buildFancyStyles(tier.color) : null;
 
   return (
-    <div className={cn(styles.row, layout === "top" && styles.topLayout, isFancy && styles.fancyLayout)} style={fancyStyles?.row}>
+    <div
+      className={cn(
+        styles.row,
+        layout === "top" && styles.topLayout,
+        isFancy && styles.fancyLayout,
+      )}
+      style={fancyStyles?.row}
+    >
       <TierLabel
         name={tier.name}
         color={tier.color}
@@ -79,7 +91,11 @@ export const TierRow = ({
         items={tier.characterIds}
         strategy={rectSortingStrategy}
       >
-        <div ref={setNodeRef} className={styles.characters} style={fancyStyles?.characters}>
+        <div
+          ref={setNodeRef}
+          className={styles.characters}
+          style={fancyStyles?.characters}
+        >
           {tier.characterIds.map((instanceId) => {
             const char = characters[instanceId];
             if (!char) return null;

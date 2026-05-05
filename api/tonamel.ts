@@ -258,7 +258,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   const slug = req.query.slug as string;
   if (!slug) {
-    return res.status(400).json({ error: "Missing required query param: slug" });
+    return res
+      .status(400)
+      .json({ error: "Missing required query param: slug" });
   }
 
   try {
@@ -266,7 +268,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(200).json(data);
   } catch (error) {
     console.error("Tonamel proxy error:", error);
-    const message = error instanceof Error ? error.message : "Failed to fetch from Tonamel";
+    const message =
+      error instanceof Error ? error.message : "Failed to fetch from Tonamel";
     return res.status(500).json({ error: message });
   }
 }

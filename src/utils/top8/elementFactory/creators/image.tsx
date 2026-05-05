@@ -61,7 +61,7 @@ export const createSvgElement: ElementCreator<SvgElementConfig> = ({
 
   const resolvedPalette = resolvePaletteColors(
     element.palette,
-    design?.colorPalette
+    design?.colorPalette,
   );
 
   return (

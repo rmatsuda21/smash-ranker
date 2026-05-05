@@ -9,7 +9,10 @@ import {
 } from "react-icons/fa6";
 import cn from "classnames";
 
-import { useThumbnailEditorStore, SidebarTab } from "@/store/thumbnailEditorStore";
+import {
+  useThumbnailEditorStore,
+  SidebarTab,
+} from "@/store/thumbnailEditorStore";
 
 import { AddElementTab } from "./tabs/AddElementTab";
 import { LayersTab } from "./tabs/LayersTab";

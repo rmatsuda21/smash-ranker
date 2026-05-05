@@ -5,7 +5,7 @@
 
 export const pickClosestWeight = (
   target: number,
-  available: number[]
+  available: number[],
 ): number => {
   if (available.length === 0) return target;
   if (available.includes(target)) return target;

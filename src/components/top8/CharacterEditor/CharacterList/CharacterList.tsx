@@ -25,7 +25,10 @@ export const CharacterList = ({
 }: Props) => {
   const addCharacter = () => {
     if (!characters) return;
-    onCharactersChange([...characters, { id: DEFAULT_ADD_CHARACTER_ID, alt: 0 }]);
+    onCharactersChange([
+      ...characters,
+      { id: DEFAULT_ADD_CHARACTER_ID, alt: 0 },
+    ]);
     setSelectedIndex(characters.length);
   };
 

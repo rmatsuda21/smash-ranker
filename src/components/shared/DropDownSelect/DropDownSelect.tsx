@@ -35,7 +35,7 @@ type Props<T> = {
   searchPlaceholder?: string;
   renderOption?: (
     option: DropDownItem<T>,
-    isSelected?: boolean
+    isSelected?: boolean,
   ) => React.ReactNode;
 };
 
@@ -104,7 +104,7 @@ export const DropDownSelect = <T,>({
     return options.filter(
       (option) =>
         option.display.toLowerCase().includes(query) ||
-        option.searchTerms?.some((term) => term.toLowerCase().includes(query))
+        option.searchTerms?.some((term) => term.toLowerCase().includes(query)),
     );
   }, [options, searchQuery]);
 
@@ -114,7 +114,7 @@ export const DropDownSelect = <T,>({
       setIsOpen(false);
       setSearchQuery("");
     },
-    [onChange]
+    [onChange],
   );
 
   const toggleDropdown = useCallback(() => {
@@ -227,7 +227,7 @@ export const DropDownSelect = <T,>({
 
     if (windowRef.current) {
       const checkedElement = windowRef.current.querySelector(
-        '[data-state="checked"]'
+        '[data-state="checked"]',
       );
       if (checkedElement) {
         (checkedElement as HTMLElement).scrollIntoView({ block: "start" });

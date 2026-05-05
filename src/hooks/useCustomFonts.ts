@@ -30,7 +30,7 @@ export const useCustomFonts = () => {
 
       const allFonts = useFontStore.getState().fonts;
       const duplicate = Array.from(allFonts).find(
-        (f) => f.fontFamily === fontFamily
+        (f) => f.fontFamily === fontFamily,
       );
       if (duplicate) {
         alert(`Font "${fontFamily}" is already added.`);
@@ -63,7 +63,7 @@ export const useCustomFonts = () => {
 
       return font;
     },
-    [dispatch]
+    [dispatch],
   );
 
   const removeFont = useCallback(
@@ -74,7 +74,7 @@ export const useCustomFonts = () => {
       await customFontRepository.delete(id);
 
       const facesToDelete = Array.from(document.fonts).filter(
-        (ff) => ff.family === font.fontFamily
+        (ff) => ff.family === font.fontFamily,
       );
       facesToDelete.forEach((ff) => document.fonts.delete(ff));
 
@@ -82,7 +82,7 @@ export const useCustomFonts = () => {
       dispatch({ type: "REMOVE_CUSTOM_FONT", payload: font.fontFamily });
       setCustomFonts((prev) => prev.filter((f) => f.id !== id));
     },
-    [dispatch]
+    [dispatch],
   );
 
   return { customFonts, loading, uploadFont, removeFont };

@@ -159,7 +159,8 @@ export interface FlexGridElementConfig
 }
 
 export interface RectElementConfig
-  extends BaseElementConfig,
+  extends
+    BaseElementConfig,
     Omit<Partial<ComponentProps<typeof Rect>>, "fill"> {
   type: "rect";
   fill?: string | GradientConfig;
@@ -274,7 +275,10 @@ export interface PlayerDesign extends BaseElementConfig {
 export interface Design {
   canvasSize: { width: number; height: number };
   canvasDisplayScale: number;
-  colorPalette?: Record<string, { color: string; name: string; group?: string }>;
+  colorPalette?: Record<
+    string,
+    { color: string; name: string; group?: string }
+  >;
   textPalette?: Record<string, { text: string; name: string }>;
   bgAssetId?: string;
   bgImageDarkness?: number;

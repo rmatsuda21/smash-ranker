@@ -26,12 +26,12 @@ export const FontSelect = () => {
     (fontFamily: string) => {
       selectFont(fontFamily);
     },
-    [selectFont]
+    [selectFont],
   );
 
   const renderFontOption = useCallback(
     (option: DropDownItem<string>) => <FontOption option={option} />,
-    []
+    [],
   );
 
   return (

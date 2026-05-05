@@ -181,10 +181,7 @@ export const extractDominantHsl = async (
       continue;
     }
 
-    const hueBin = Math.min(
-      HUE_BINS - 1,
-      Math.floor((hsl.h / 360) * HUE_BINS),
-    );
+    const hueBin = Math.min(HUE_BINS - 1, Math.floor((hsl.h / 360) * HUE_BINS));
     const satBin = hsl.s < 0.5 ? 0 : 1;
     const idx = hueBin * SAT_BINS + satBin;
     const weight = hsl.s * Math.min(hsl.l, 1 - hsl.l);

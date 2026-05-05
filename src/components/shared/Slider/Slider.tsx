@@ -17,7 +17,7 @@ type Props = Omit<
 const getFillPercent = (
   value: string | number | readonly string[] | undefined,
   min: string | number,
-  max: string | number
+  max: string | number,
 ) => {
   if (!value) return "0%";
   const valueNum = Number(value);

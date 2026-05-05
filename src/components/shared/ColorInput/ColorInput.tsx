@@ -26,7 +26,7 @@ type Props = {
 
 const isValidHex = (value: string): boolean => {
   return /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{4}|[0-9A-Fa-f]{6}|[0-9A-Fa-f]{8})$/.test(
-    value
+    value,
   );
 };
 
@@ -44,7 +44,7 @@ export const ColorInput = ({ color, onChange, onClick, className }: Props) => {
 
   const debouncedOnChange = useMemo(
     () => debounce((value: string) => onChange(value), DEBOUNCE_TIME),
-    [onChange]
+    [onChange],
   );
 
   useEffect(() => {

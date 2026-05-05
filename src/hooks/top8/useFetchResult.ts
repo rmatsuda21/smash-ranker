@@ -185,8 +185,7 @@ const isValidStanding = (standing: StandingNode): boolean => {
 const extractPlayerFromStanding = (standing: StandingNode): PlayerInfo => {
   const player = standing?.player;
   const entrant = standing!.entrant!;
-  const twitterHandle =
-    player?.user?.authorizations?.[0]?.externalUsername;
+  const twitterHandle = player?.user?.authorizations?.[0]?.externalUsername;
 
   const countryName = player?.user?.location?.country;
   const countryCode = countryList.getCode(countryName ?? "");

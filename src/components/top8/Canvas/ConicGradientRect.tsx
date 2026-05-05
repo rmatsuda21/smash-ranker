@@ -33,7 +33,7 @@ export const ConicGradientRect = memo(function ConicGradientRect({
 }: ConicGradientRectProps) {
   const resolvedStops = useMemo(
     () => resolveGradientStops(gradient.colorStops, palette),
-    [gradient.colorStops, palette]
+    [gradient.colorStops, palette],
   );
 
   const sceneFunc = useMemo(() => {

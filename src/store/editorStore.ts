@@ -19,7 +19,7 @@ type EditorAction =
 
 const editorReducer = (
   state: EditorState,
-  action: EditorAction
+  action: EditorAction,
 ): Partial<EditorState> => {
   switch (action.type) {
     case "SET_ACTIVE_TAB":
@@ -63,6 +63,6 @@ export const useEditorStore = create<EditorStore>()(
       dispatch: (action: EditorAction) =>
         set((state) => editorReducer(state, action), false, action),
     }),
-    { name: "EditorStore" }
-  )
+    { name: "EditorStore" },
+  ),
 );

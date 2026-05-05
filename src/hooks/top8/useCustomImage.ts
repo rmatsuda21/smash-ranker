@@ -6,13 +6,16 @@ import { createAsyncQueue } from "@/utils/asyncQueue";
 import { isMobile } from "@/utils/isMobile";
 
 const IMAGE_CACHE_SIZE = 50;
-const imageCache = new LRUCache<string, HTMLImageElement>(IMAGE_CACHE_SIZE, (_key, img) => {
-  // Only clear event handlers — don't set img.src = "" or call img.remove().
-  // The evicted HTMLImageElement may still be referenced by components via React state.
-  // Destroying it here corrupts the source image before queued toBlob operations run.
-  img.onload = null;
-  img.onerror = null;
-});
+const imageCache = new LRUCache<string, HTMLImageElement>(
+  IMAGE_CACHE_SIZE,
+  (_key, img) => {
+    // Only clear event handlers — don't set img.src = "" or call img.remove().
+    // The evicted HTMLImageElement may still be referenced by components via React state.
+    // Destroying it here corrupts the source image before queued toBlob operations run.
+    img.onload = null;
+    img.onerror = null;
+  },
+);
 
 const toBlobQueue = createAsyncQueue(isMobile() ? 3 : 6);
 
@@ -49,7 +52,7 @@ export const useCustomImage = ({
 }) => {
   const [finalImage, setFinalImage] = useState<HTMLImageElement>();
   const [image, setImage] = useState<HTMLImageElement | undefined>(() =>
-    imageCache.get(imageSrc)
+    imageCache.get(imageSrc),
   );
   const ref = useRef<KonvaImage>(null);
 
@@ -95,13 +98,13 @@ export const useCustomImage = ({
         if (isIdbImageUrl(imageSrc) && attempt < MAX_RETRIES) {
           retryTimeout = setTimeout(
             () => loadImage(attempt + 1),
-            RETRY_BACKOFF_MS[attempt] ?? 2000
+            RETRY_BACKOFF_MS[attempt] ?? 2000,
           );
           return;
         }
 
         onErrorRef.current?.(
-          new Error(error instanceof Error ? error.message : "Unknown error")
+          new Error(error instanceof Error ? error.message : "Unknown error"),
         );
         setImage(undefined);
         setFinalImage(undefined);
@@ -184,7 +187,7 @@ export const useCustomImage = ({
         cropX + offset.x,
         cropY + offset.y,
         scaledWidth,
-        scaledHeight
+        scaledHeight,
       );
     };
 
@@ -251,14 +254,14 @@ export const useCustomImage = ({
                 }
                 onErrorRef.current?.(
                   new Error(
-                    error instanceof Error ? error.message : "Unknown error"
-                  )
+                    error instanceof Error ? error.message : "Unknown error",
+                  ),
                 );
                 resolve();
               };
               img.src = url;
             });
-          })
+          }),
       );
     };
 

@@ -8,10 +8,10 @@ import React from "react";
 
 // Cached at module scope for warm starts
 const fontRegular = readFileSync(
-  join(__dirname, "fonts/MPLUSRounded1c-Regular.ttf")
+  join(__dirname, "fonts/MPLUSRounded1c-Regular.ttf"),
 );
 const fontBold = readFileSync(
-  join(__dirname, "fonts/MPLUSRounded1c-ExtraBold.ttf")
+  join(__dirname, "fonts/MPLUSRounded1c-ExtraBold.ttf"),
 );
 
 const WIDTH = 275;
@@ -100,7 +100,7 @@ const FETCH_TIMEOUT_MS = 1500;
 
 async function fetchImageAsDataUrl(
   url: string,
-  retries = 1
+  retries = 1,
 ): Promise<string | null> {
   for (let i = 0; i <= retries; i++) {
     try {
@@ -116,12 +116,14 @@ async function fetchImageAsDataUrl(
       // retry
     }
   }
-  console.warn(`[prediction-image] fetch failed after ${retries + 1} attempts: ${url}`);
+  console.warn(
+    `[prediction-image] fetch failed after ${retries + 1} attempts: ${url}`,
+  );
   return null;
 }
 
 async function fetchTournamentIcon(
-  tournamentIconUrl: string
+  tournamentIconUrl: string,
 ): Promise<string | null> {
   if (!tournamentIconUrl) return null;
   const cached = lruGet(tournamentIconCache, tournamentIconUrl);
@@ -132,7 +134,7 @@ async function fetchTournamentIcon(
       tournamentIconCache,
       tournamentIconUrl,
       fetched,
-      TOURNAMENT_ICON_CACHE_MAX
+      TOURNAMENT_ICON_CACHE_MAX,
     );
   }
   return fetched;
@@ -200,7 +202,7 @@ function getRankBgColor(rank: number): string {
 // --- Dot pattern SVG ---
 
 const DOT_PATTERN_SVG = `data:image/svg+xml,${encodeURIComponent(
-  '<svg width="16" height="16" xmlns="http://www.w3.org/2000/svg"><circle cx="1" cy="1" r="1" fill="rgba(255,255,255,0.03)"/></svg>'
+  '<svg width="16" height="16" xmlns="http://www.w3.org/2000/svg"><circle cx="1" cy="1" r="1" fill="rgba(255,255,255,0.03)"/></svg>',
 )}`;
 
 // --- JSX builder ---
@@ -208,7 +210,7 @@ const DOT_PATTERN_SVG = `data:image/svg+xml,${encodeURIComponent(
 function buildGraphic(
   body: RequestBody,
   tournamentIcon: string | null,
-  palette: PredictionPalette
+  palette: PredictionPalette,
 ): React.ReactElement {
   const { tournamentName, eventName, tournamentDate, predictions } = body;
 
@@ -259,8 +261,8 @@ function buildGraphic(
               color: getRankColor(rank, palette),
             },
           },
-          String(rank)
-        )
+          String(rank),
+        ),
       ),
       // Player name
       h(
@@ -289,11 +291,11 @@ function buildGraphic(
                   marginRight: 4,
                 },
               },
-              player.prefix
+              player.prefix,
             )
           : null,
-        player.name
-      )
+        player.name,
+      ),
     );
   });
 
@@ -370,7 +372,7 @@ function buildGraphic(
               whiteSpace: "nowrap" as const,
             },
           },
-          tournamentName
+          tournamentName,
         ),
         meta
           ? h(
@@ -383,10 +385,10 @@ function buildGraphic(
                   marginTop: 1,
                 },
               },
-              meta
+              meta,
             )
-          : null
-      )
+          : null,
+      ),
     ),
     // Subtitle
     h(
@@ -401,7 +403,7 @@ function buildGraphic(
           borderBottom: `1px solid ${palette.borderSubtle}`,
         },
       },
-      "PREDICTIONS"
+      "PREDICTIONS",
     ),
     // Prediction list
     h(
@@ -414,7 +416,7 @@ function buildGraphic(
           padding: "6px 10px 10px",
         },
       },
-      ...rows
+      ...rows,
     ),
     // Footer
     h(
@@ -430,8 +432,8 @@ function buildGraphic(
           borderTop: `1px solid ${palette.borderSubtle}`,
         },
       },
-      "smash-ranker.app"
-    )
+      "smash-ranker.app",
+    ),
   );
 }
 
@@ -518,7 +520,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // max-age via ETag.
     res.setHeader(
       "Cache-Control",
-      "public, max-age=300, s-maxage=86400, stale-while-revalidate=604800"
+      "public, max-age=300, s-maxage=86400, stale-while-revalidate=604800",
     );
     res.setHeader("ETag", etag);
 

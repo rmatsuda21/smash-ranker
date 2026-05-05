@@ -29,7 +29,7 @@ export const SelectableElement = ({
       if (!contentRef.current) return null;
       const parent = contentRef.current.getParent();
       return contentRef.current.getClientRect(
-        parent ? { relativeTo: parent } : undefined
+        parent ? { relativeTo: parent } : undefined,
       );
     };
 

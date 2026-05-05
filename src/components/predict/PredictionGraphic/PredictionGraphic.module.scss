@@ -10,9 +10,15 @@
   width: 100%;
   max-width: 275px;
   background:
-    radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.03) 1px, transparent 0),
+    radial-gradient(
+      circle at 1px 1px,
+      rgba(255, 255, 255, 0.03) 1px,
+      transparent 0
+    ),
     linear-gradient(170deg, var(--pg-bg-start) 0%, var(--pg-bg-end) 100%);
-  background-size: 16px 16px, 100% 100%;
+  background-size:
+    16px 16px,
+    100% 100%;
   border-radius: var(--radius-lg);
   overflow: hidden;
   font-family: "M PLUS Rounded 1c", sans-serif;
@@ -89,23 +95,47 @@
 
   // Gold
   &[data-rank="1"] {
-    background: linear-gradient(90deg, rgba(255, 215, 0, 0.15) 0%, transparent 75%);
-    .rank { color: var(--medal-gold); }
-    .rankBg { background: rgba(255, 215, 0, 0.15); }
+    background: linear-gradient(
+      90deg,
+      rgba(255, 215, 0, 0.15) 0%,
+      transparent 75%
+    );
+    .rank {
+      color: var(--medal-gold);
+    }
+    .rankBg {
+      background: rgba(255, 215, 0, 0.15);
+    }
   }
 
   // Silver
   &[data-rank="2"] {
-    background: linear-gradient(90deg, rgba(192, 192, 192, 0.15) 0%, transparent 75%);
-    .rank { color: var(--medal-silver); }
-    .rankBg { background: rgba(192, 192, 192, 0.12); }
+    background: linear-gradient(
+      90deg,
+      rgba(192, 192, 192, 0.15) 0%,
+      transparent 75%
+    );
+    .rank {
+      color: var(--medal-silver);
+    }
+    .rankBg {
+      background: rgba(192, 192, 192, 0.12);
+    }
   }
 
   // Bronze
   &[data-rank="3"] {
-    background: linear-gradient(90deg, rgba(205, 127, 50, 0.15) 0%, transparent 75%);
-    .rank { color: var(--medal-bronze); }
-    .rankBg { background: rgba(205, 127, 50, 0.12); }
+    background: linear-gradient(
+      90deg,
+      rgba(205, 127, 50, 0.15) 0%,
+      transparent 75%
+    );
+    .rank {
+      color: var(--medal-bronze);
+    }
+    .rankBg {
+      background: rgba(205, 127, 50, 0.12);
+    }
   }
 
   // 4th+: subtle accent fade

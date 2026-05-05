@@ -91,9 +91,7 @@ export const Canvas = () => {
   const dispatch = useThumbnailStore((s) => s.dispatch);
   const pushHistory = useThumbnailStore((s) => s.pushHistory);
 
-  const selectedIds = useThumbnailEditorStore(
-    useShallow((s) => s.selectedIds),
-  );
+  const selectedIds = useThumbnailEditorStore(useShallow((s) => s.selectedIds));
   const setSelectedIds = useThumbnailEditorStore((s) => s.setSelectedIds);
   const clearSelection = useThumbnailEditorStore((s) => s.clearSelection);
   const setActiveSidebarTab = useThumbnailEditorStore(
@@ -189,8 +187,7 @@ export const Canvas = () => {
       if (!stageNode || target === stageNode) return;
       const id = target.name();
       if (!id || !findById(id)) return;
-      const isShift =
-        "shiftKey" in e.evt && (e.evt as MouseEvent).shiftKey;
+      const isShift = "shiftKey" in e.evt && (e.evt as MouseEvent).shiftKey;
       e.cancelBubble = true;
       const expanded = expandSelectionToGroups([id], design.elements);
       if (isShift) {
@@ -349,9 +346,7 @@ export const Canvas = () => {
       const redo: Array<{ id: string; patch: Partial<ThumbnailElement> }> = [];
 
       const ids =
-        selectedIds.includes(id) && selectedIds.length > 0
-          ? selectedIds
-          : [id];
+        selectedIds.includes(id) && selectedIds.length > 0 ? selectedIds : [id];
 
       for (const sid of ids) {
         const node = stageNode.findOne(`#${sid}`);
@@ -433,8 +428,7 @@ export const Canvas = () => {
   const handleTransformEnd = useCallback(() => {
     setGuides([]);
     if (!stage) return;
-    const updates: Array<{ id: string; patch: Partial<ThumbnailElement> }> =
-      [];
+    const updates: Array<{ id: string; patch: Partial<ThumbnailElement> }> = [];
     const undo: Array<{ id: string; patch: Partial<ThumbnailElement> }> = [];
     const redo: Array<{ id: string; patch: Partial<ThumbnailElement> }> = [];
     for (const id of selectedIds) {
@@ -513,7 +507,8 @@ export const Canvas = () => {
 
   // ---- Inline text editor ----
 
-  const editingElement = isEditingTextId != null ? findById(isEditingTextId) : null;
+  const editingElement =
+    isEditingTextId != null ? findById(isEditingTextId) : null;
   const editingTextElement =
     editingElement && editingElement.type === "text" ? editingElement : null;
 
@@ -545,7 +540,10 @@ export const Canvas = () => {
       pushHistory({
         type: "THUMBNAIL_ELEMENT_UPDATE",
         undoData: [
-          { id: editingTextElement.id, patch: { text: editingTextElement.text } },
+          {
+            id: editingTextElement.id,
+            patch: { text: editingTextElement.text },
+          },
         ],
         redoData: [{ id: editingTextElement.id, patch: { text } }],
       });
@@ -771,7 +769,11 @@ export const Canvas = () => {
       onMouseDown={handleViewportPointerDown}
       onTouchStart={handleViewportPointerDown}
     >
-      <div ref={stageWrapperRef} className={styles.stageWrapper} style={wrapperStyle}>
+      <div
+        ref={stageWrapperRef}
+        className={styles.stageWrapper}
+        style={wrapperStyle}
+      >
         <div
           className={styles.stageInner}
           style={{

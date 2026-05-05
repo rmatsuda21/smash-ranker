@@ -98,9 +98,7 @@ const TextSegment = ({
       fontRef.current = getFontFromElement(localRef.current);
     }
     const w =
-      value && fontRef.current
-        ? getTextWidth(value, fontRef.current) + 8
-        : 6;
+      value && fontRef.current ? getTextWidth(value, fontRef.current) + 8 : 6;
     spanRef.current.style.flexBasis = `${w}px`;
   }, [value, isSole]);
 
@@ -215,7 +213,7 @@ export const RichTextInput = ({
   const segments = useMemo(() => parseSegments(localValue), [localValue]);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const pendingFocusRef = useRef<{ index: number; cursor: number } | null>(
-    null
+    null,
   );
   const focusedIndexRef = useRef(0);
   const cursorRef = useRef(0);
@@ -224,7 +222,7 @@ export const RichTextInput = ({
 
   const textCount = useMemo(
     () => segments.filter((s) => s.type === "text").length,
-    [segments]
+    [segments],
   );
 
   // Apply pending focus after render
@@ -259,7 +257,7 @@ export const RichTextInput = ({
 
   const handleTextChange = (segIndex: number, newText: string) => {
     const newSegments = segments.map((seg, i) =>
-      i === segIndex ? { ...seg, value: newText } : seg
+      i === segIndex ? { ...seg, value: newText } : seg,
     );
     updateValue(serialize(newSegments));
   };
@@ -355,10 +353,7 @@ export const RichTextInput = ({
   };
 
   const handleInsertChip = (chipValue: DesignPlaceholder) => {
-    const textInputIndex = Math.min(
-      focusedIndexRef.current,
-      textCount - 1
-    );
+    const textInputIndex = Math.min(focusedIndexRef.current, textCount - 1);
     const segIndex = getSegIndex(textInputIndex);
     if (segIndex === -1) return;
 

@@ -104,7 +104,7 @@ export const TemplateEditor = ({ className }: Props) => {
     useState(false);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [loadingTemplateId, setLoadingTemplateId] = useState<string | null>(
-    null
+    null,
   );
 
   const dispatch = useCanvasStore((state) => state.dispatch);
@@ -114,12 +114,12 @@ export const TemplateEditor = ({ className }: Props) => {
   useEffect(() => {
     const fetchTemplates = async () => {
       const _templates = await Promise.all(
-        templates.map((template) => getTemplateWithId(template.id))
+        templates.map((template) => getTemplateWithId(template.id)),
       );
       setUserTemplates(
         _templates
           .map((template) => template)
-          .filter((template) => template !== undefined) as DBTemplate[]
+          .filter((template) => template !== undefined) as DBTemplate[],
       );
     };
 
@@ -132,11 +132,11 @@ export const TemplateEditor = ({ className }: Props) => {
     let template: DBTemplate | undefined;
     if (
       DEFAULT_TEMPLATE_GROUPS.some((group) =>
-        group.templates.some((template) => template.id === id)
+        group.templates.some((template) => template.id === id),
       )
     ) {
       template = DEFAULT_TEMPLATE_GROUPS.find((group) =>
-        group.templates.some((template) => template.id === id)
+        group.templates.some((template) => template.id === id),
       )!.templates.find((template) => template.id === id)!;
     } else {
       template = await getTemplateWithId(id);
@@ -168,7 +168,7 @@ export const TemplateEditor = ({ className }: Props) => {
               resolve(blob ?? undefined);
             },
             "image/webp",
-            0.5
+            0.5,
           );
         });
       } catch {

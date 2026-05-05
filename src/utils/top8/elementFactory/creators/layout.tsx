@@ -22,11 +22,11 @@ import type { InternalContext } from "../types";
 
 let createKonvaElementsInternal: (
   elements: ElementConfig[],
-  context: InternalContext
+  context: InternalContext,
 ) => ReactNode[];
 
 export const setCreateKonvaElementsInternal = (
-  fn: typeof createKonvaElementsInternal
+  fn: typeof createKonvaElementsInternal,
 ) => {
   createKonvaElementsInternal = fn;
 };
@@ -44,7 +44,7 @@ interface FlexChildInfo {
 const getElementMainSize = (
   element: ElementConfig,
   direction: "row" | "column",
-  context: InternalContext
+  context: InternalContext,
 ): number => {
   const basis = element.flex?.basis;
   if (basis !== undefined) return basis;
@@ -55,7 +55,7 @@ const getElementMainSize = (
       const resolvedText = resolveText(
         textEl.textId,
         textEl.text,
-        context.design?.textPalette
+        context.design?.textPalette,
       );
       const text = replacePlaceholders(resolvedText, context);
 
@@ -66,7 +66,7 @@ const getElementMainSize = (
         fontStyle: composeFontStyle(
           context.fontFamily ?? "Arial",
           textEl.fontWeight,
-          textEl.fontStyle
+          textEl.fontStyle,
         ),
         width: textEl.size?.width,
         wrap: "word",
@@ -97,22 +97,37 @@ const getElementMainSize = (
 
       if (fixedColumns) {
         const cols = Math.min(fixedColumns, numItems);
-        const actualContentWidth = cols * preferredCellSize + (cols - 1) * columnGap;
+        const actualContentWidth =
+          cols * preferredCellSize + (cols - 1) * columnGap;
         return actualContentWidth;
       }
 
-      const maxWidth = altEl.size?.maxWidth ?? altEl.size?.width ?? preferredCellSize * numItems;
+      const maxWidth =
+        altEl.size?.maxWidth ??
+        altEl.size?.width ??
+        preferredCellSize * numItems;
       const maxHeight = altEl.size?.height ?? preferredCellSize;
 
-      const grid = findOptimalSquareGrid(numItems, maxWidth, maxHeight, columnGap, rowGap);
+      const grid = findOptimalSquareGrid(
+        numItems,
+        maxWidth,
+        maxHeight,
+        columnGap,
+        rowGap,
+      );
 
       const cellSize = Math.min(grid.cellSize, preferredCellSize);
-      const actualContentWidth = grid.columns * cellSize + (grid.columns - 1) * columnGap;
+      const actualContentWidth =
+        grid.columns * cellSize + (grid.columns - 1) * columnGap;
 
       return actualContentWidth;
     }
 
-    if (element.type === "flexGroup" && element.size?.maxWidth !== undefined && element.size?.width === undefined) {
+    if (
+      element.type === "flexGroup" &&
+      element.size?.maxWidth !== undefined &&
+      element.size?.width === undefined
+    ) {
       const flexEl = element as FlexGroupElementConfig;
       const flexDirection = flexEl.direction ?? "row";
       const gap = flexEl.gap ?? 0;
@@ -120,11 +135,17 @@ const getElementMainSize = (
       if (flexDirection === "row" && flexEl.elements) {
         let contentWidth = 0;
         const visibleElements = flexEl.elements.filter(
-          (child) => !child.hidden && evaluateElementCondition(child.conditions, context)
+          (child) =>
+            !child.hidden &&
+            evaluateElementCondition(child.conditions, context),
         );
 
         for (let i = 0; i < visibleElements.length; i++) {
-          contentWidth += getElementMainSize(visibleElements[i], "row", context);
+          contentWidth += getElementMainSize(
+            visibleElements[i],
+            "row",
+            context,
+          );
           if (i < visibleElements.length - 1) {
             contentWidth += gap;
           }
@@ -149,7 +170,7 @@ const getElementMainSize = (
 
 const getElementCrossSize = (
   element: ElementConfig,
-  direction: "row" | "column"
+  direction: "row" | "column",
 ): number => {
   if (direction === "row") {
     if (element.size?.height === undefined) {
@@ -166,7 +187,7 @@ const getElementCrossSize = (
 const collectVisibleChildren = (
   elements: ElementConfig[],
   direction: "row" | "column",
-  context: InternalContext
+  context: InternalContext,
 ): FlexChildInfo[] =>
   elements.reduce<FlexChildInfo[]>((acc, child, i) => {
     if (child.hidden || !evaluateElementCondition(child.conditions, context)) {
@@ -188,7 +209,7 @@ const buildFlexLines = (
   children: FlexChildInfo[],
   containerMainSize: number,
   gap: number,
-  wrap: boolean
+  wrap: boolean,
 ): FlexChildInfo[][] => {
   if (!wrap || containerMainSize <= 0) {
     return [children];
@@ -225,7 +246,7 @@ const buildFlexLines = (
 const applyFlexSizing = (
   line: FlexChildInfo[],
   containerMainSize: number,
-  gap: number
+  gap: number,
 ): number[] => {
   const sizes = line.map((child) => child.mainSize);
   const totalGaps = gap * (line.length - 1);
@@ -247,7 +268,7 @@ const applyFlexSizing = (
     // Shrink
     const shrinkable = line.reduce(
       (acc, child, i) => (child.flexShrink ? acc + sizes[i] : acc),
-      0
+      0,
     );
     if (shrinkable > 0) {
       const shrinkAmount = Math.min(-remainingSpace, shrinkable);
@@ -255,7 +276,7 @@ const applyFlexSizing = (
         if (child.flexShrink) {
           sizes[i] = Math.max(
             0,
-            sizes[i] - shrinkAmount * (sizes[i] / shrinkable)
+            sizes[i] - shrinkAmount * (sizes[i] / shrinkable),
           );
         }
       });
@@ -270,7 +291,7 @@ const calculateJustifyOffset = (
   containerSize: number,
   contentSize: number,
   totalGaps: number,
-  itemCount: number
+  itemCount: number,
 ): { offset: number; spaceBetween: number } => {
   const freeSpace = containerSize - contentSize - totalGaps;
 
@@ -293,7 +314,7 @@ const calculateJustifyOffset = (
 const calculateAlignOffset = (
   align: FlexAlign,
   alignmentSize: number,
-  childSize: number
+  childSize: number,
 ): number => {
   switch (align) {
     case "center":
@@ -312,7 +333,7 @@ export const createGroupElement: ElementCreator<GroupElementConfig> = ({
 }) => {
   const konvaElements = createKonvaElementsInternal(
     element.elements,
-    context as InternalContext
+    context as InternalContext,
   );
 
   return (
@@ -344,16 +365,16 @@ export const createFlexGroupElement: ElementCreator<FlexGroupElementConfig> = ({
 
   const isRow = direction === "row";
   const containerMainSize = isRow
-    ? element.size?.width ?? 0
-    : element.size?.height ?? 0;
+    ? (element.size?.width ?? 0)
+    : (element.size?.height ?? 0);
   const containerCrossSize = isRow
-    ? element.size?.height ?? 0
-    : element.size?.width ?? 0;
+    ? (element.size?.height ?? 0)
+    : (element.size?.width ?? 0);
 
   const visibleChildren = collectVisibleChildren(
     element.elements,
     direction,
-    context as InternalContext
+    context as InternalContext,
   );
 
   if (visibleChildren.length === 0) {
@@ -399,7 +420,7 @@ export const createFlexGroupElement: ElementCreator<FlexGroupElementConfig> = ({
       containerMainSize,
       totalContentSize,
       totalGaps,
-      line.length
+      line.length,
     );
 
     let mainPosition = Math.max(0, offset);
@@ -411,7 +432,7 @@ export const createFlexGroupElement: ElementCreator<FlexGroupElementConfig> = ({
       const alignOffset = calculateAlignOffset(
         align,
         alignmentCrossSize,
-        child.crossSize
+        child.crossSize,
       );
 
       const childOffsetX = child.element.position?.x ?? 0;
@@ -420,8 +441,10 @@ export const createFlexGroupElement: ElementCreator<FlexGroupElementConfig> = ({
       const modifiedElement: ElementConfig = {
         ...child.element,
         position: {
-          x: (isRow ? mainPosition : crossPosition + alignOffset) + childOffsetX,
-          y: (isRow ? crossPosition + alignOffset : mainPosition) + childOffsetY,
+          x:
+            (isRow ? mainPosition : crossPosition + alignOffset) + childOffsetX,
+          y:
+            (isRow ? crossPosition + alignOffset : mainPosition) + childOffsetY,
         },
         size: {
           ...child.element.size,
@@ -432,8 +455,8 @@ export const createFlexGroupElement: ElementCreator<FlexGroupElementConfig> = ({
       positionedElements.push(
         ...createKonvaElementsInternal(
           [modifiedElement],
-          context as InternalContext
-        )
+          context as InternalContext,
+        ),
       );
 
       mainPosition += childMainSize + (spaceBetween || gap);
@@ -503,7 +526,7 @@ const calculateOptimalGrid = (
   rowGap: number,
   fixedColumns?: number,
   fixedRows?: number,
-  aspectRatio?: number
+  aspectRatio?: number,
 ): GridDimensions => {
   if (numChildren === 0) {
     return { rows: 0, columns: 0, cellWidth: 0, cellHeight: 0, fillRatio: 0 };
@@ -511,7 +534,7 @@ const calculateOptimalGrid = (
 
   const calculateCellSize = (
     rows: number,
-    cols: number
+    cols: number,
   ): { cellWidth: number; cellHeight: number } => {
     const totalColumnGaps = (cols - 1) * columnGap;
     const totalRowGaps = (rows - 1) * rowGap;
@@ -544,7 +567,7 @@ const calculateOptimalGrid = (
     rows: number,
     cols: number,
     cellWidth: number,
-    cellHeight: number
+    cellHeight: number,
   ): number => {
     const usedCells = Math.min(numChildren, rows * cols);
     const totalCellArea = cellWidth * cellHeight * usedCells;
@@ -555,7 +578,7 @@ const calculateOptimalGrid = (
   if (fixedColumns !== undefined && fixedRows !== undefined) {
     const { cellWidth, cellHeight } = calculateCellSize(
       fixedRows,
-      fixedColumns
+      fixedColumns,
     );
     return {
       rows: fixedRows,
@@ -566,7 +589,7 @@ const calculateOptimalGrid = (
         fixedRows,
         fixedColumns,
         cellWidth,
-        cellHeight
+        cellHeight,
       ),
     };
   }
@@ -634,7 +657,7 @@ const calculateOptimalGrid = (
 
 const collectGridVisibleChildren = (
   elements: ElementConfig[],
-  context: InternalContext
+  context: InternalContext,
 ): { element: ElementConfig; originalIndex: number }[] =>
   elements.reduce<{ element: ElementConfig; originalIndex: number }[]>(
     (acc, child, i) => {
@@ -647,13 +670,13 @@ const collectGridVisibleChildren = (
       acc.push({ element: child, originalIndex: i });
       return acc;
     },
-    []
+    [],
   );
 
 export const calculateGridAlignOffset = (
   align: FlexAlign,
   containerSize: number,
-  contentSize: number
+  contentSize: number,
 ): number => {
   switch (align) {
     case "center":
@@ -688,7 +711,7 @@ export const createFlexGridElement: ElementCreator<FlexGridElementConfig> = ({
 
   const visibleChildren = collectGridVisibleChildren(
     element.elements,
-    context as InternalContext
+    context as InternalContext,
   );
 
   if (visibleChildren.length === 0) {
@@ -711,7 +734,7 @@ export const createFlexGridElement: ElementCreator<FlexGridElementConfig> = ({
     rowGap,
     fixedColumns,
     fixedRows,
-    aspectRatio
+    aspectRatio,
   );
 
   const gridContentWidth =
@@ -722,12 +745,12 @@ export const createFlexGridElement: ElementCreator<FlexGridElementConfig> = ({
   const gridOffsetX = calculateGridAlignOffset(
     justify,
     containerWidth,
-    gridContentWidth
+    gridContentWidth,
   );
   const gridOffsetY = calculateGridAlignOffset(
     align,
     containerHeight,
-    gridContentHeight
+    gridContentHeight,
   );
 
   const isColumnFlow = flow === "column";
@@ -749,33 +772,39 @@ export const createFlexGridElement: ElementCreator<FlexGridElementConfig> = ({
     // Row flow: fill left-to-right, then top-to-bottom
     // Column flow: fill top-to-bottom, then right-to-left (first column on right)
     const row = isColumnFlow ? i % grid.rows : Math.floor(i / grid.columns);
-    const logicalCol = isColumnFlow ? Math.floor(i / grid.rows) : i % grid.columns;
+    const logicalCol = isColumnFlow
+      ? Math.floor(i / grid.rows)
+      : i % grid.columns;
     // Reverse column order for column flow so first items appear on the right
     const col = isColumnFlow ? grid.columns - 1 - logicalCol : logicalCol;
     const isLastRow = row === grid.rows - 1;
-    const isLastCol = isColumnFlow ? logicalCol === grid.columns - 1 : col === grid.columns - 1;
+    const isLastCol = isColumnFlow
+      ? logicalCol === grid.columns - 1
+      : col === grid.columns - 1;
 
     let x = col * (grid.cellWidth + columnGap);
     let y = row * (grid.cellHeight + rowGap);
 
     if (!isColumnFlow && isLastRow && !isLastGroupFull) {
       const lastRowWidth =
-        lastGroupItemCount * grid.cellWidth + (lastGroupItemCount - 1) * columnGap;
+        lastGroupItemCount * grid.cellWidth +
+        (lastGroupItemCount - 1) * columnGap;
       const lastRowOffset = calculateGridAlignOffset(
         alignLastRow,
         gridContentWidth,
-        lastRowWidth
+        lastRowWidth,
       );
       x += lastRowOffset;
     }
 
     if (isColumnFlow && isLastCol && !isLastGroupFull) {
       const lastColHeight =
-        lastGroupItemCount * grid.cellHeight + (lastGroupItemCount - 1) * rowGap;
+        lastGroupItemCount * grid.cellHeight +
+        (lastGroupItemCount - 1) * rowGap;
       const lastColOffset = calculateGridAlignOffset(
         alignLastRow,
         gridContentHeight,
-        lastColHeight
+        lastColHeight,
       );
       y += lastColOffset;
     }
@@ -796,8 +825,8 @@ export const createFlexGridElement: ElementCreator<FlexGridElementConfig> = ({
     positionedElements.push(
       ...createKonvaElementsInternal(
         [modifiedElement],
-        context as InternalContext
-      )
+        context as InternalContext,
+      ),
     );
   }
 

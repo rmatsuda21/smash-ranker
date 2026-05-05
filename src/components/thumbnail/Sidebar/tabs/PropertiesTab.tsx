@@ -44,7 +44,11 @@ const useUpdate = () => {
   const dispatch = useThumbnailStore((s) => s.dispatch);
   const pushHistory = useThumbnailStore((s) => s.pushHistory);
   return useCallback(
-    (id: string, before: ThumbnailElement, patch: Partial<ThumbnailElement>) => {
+    (
+      id: string,
+      before: ThumbnailElement,
+      patch: Partial<ThumbnailElement>,
+    ) => {
       const undoPatch: Partial<ThumbnailElement> = Object.fromEntries(
         Object.keys(patch).map((k) => [
           k,
@@ -69,8 +73,12 @@ const useRemove = () => {
   const clearSelection = useThumbnailEditorStore((s) => s.clearSelection);
   return (ids: string[]) => {
     const removed = design.elements
-      .map((element, index) => (ids.includes(element.id) ? { element, index } : null))
-      .filter((x): x is { element: ThumbnailElement; index: number } => Boolean(x));
+      .map((element, index) =>
+        ids.includes(element.id) ? { element, index } : null,
+      )
+      .filter((x): x is { element: ThumbnailElement; index: number } =>
+        Boolean(x),
+      );
     dispatch({ type: "REMOVE_ELEMENTS", payload: { ids } });
     pushHistory({
       type: "THUMBNAIL_ELEMENT_REMOVE",
@@ -203,7 +211,11 @@ const SingleElementProperties = ({
   duplicate,
 }: {
   element: ThumbnailElement;
-  update: (id: string, before: ThumbnailElement, patch: Partial<ThumbnailElement>) => void;
+  update: (
+    id: string,
+    before: ThumbnailElement,
+    patch: Partial<ThumbnailElement>,
+  ) => void;
   remove: () => void;
   duplicate: () => void;
 }) => {
@@ -249,7 +261,11 @@ const CommonProperties = ({
   update,
 }: {
   element: ThumbnailElement;
-  update: (id: string, before: ThumbnailElement, patch: Partial<ThumbnailElement>) => void;
+  update: (
+    id: string,
+    before: ThumbnailElement,
+    patch: Partial<ThumbnailElement>,
+  ) => void;
 }) => {
   return (
     <div className={styles.section}>
@@ -308,7 +324,11 @@ const TransformProperties = ({
   update,
 }: {
   element: ThumbnailElement;
-  update: (id: string, before: ThumbnailElement, patch: Partial<ThumbnailElement>) => void;
+  update: (
+    id: string,
+    before: ThumbnailElement,
+    patch: Partial<ThumbnailElement>,
+  ) => void;
 }) => {
   return (
     <div className={styles.section}>
@@ -381,7 +401,11 @@ const TextProperties = ({
   update,
 }: {
   element: TextElement;
-  update: (id: string, before: ThumbnailElement, patch: Partial<ThumbnailElement>) => void;
+  update: (
+    id: string,
+    before: ThumbnailElement,
+    patch: Partial<ThumbnailElement>,
+  ) => void;
 }) => {
   const isBold = element.fontStyle.includes("bold");
   const isItalic = element.fontStyle.includes("italic");
@@ -410,9 +434,7 @@ const TextProperties = ({
         <label>Font</label>
         <TextFontSelect
           value={element.fontFamily}
-          onChange={(fontFamily) =>
-            update(element.id, element, { fontFamily })
-          }
+          onChange={(fontFamily) => update(element.id, element, { fontFamily })}
         />
       </div>
       <div className={styles.rowGroup}>
@@ -565,7 +587,11 @@ const ImageProperties = ({
   update,
 }: {
   element: ImageElement;
-  update: (id: string, before: ThumbnailElement, patch: Partial<ThumbnailElement>) => void;
+  update: (
+    id: string,
+    before: ThumbnailElement,
+    patch: Partial<ThumbnailElement>,
+  ) => void;
 }) => {
   return (
     <div className={styles.section}>
@@ -612,7 +638,11 @@ const CharacterProperties = ({
   update,
 }: {
   element: CharacterElement;
-  update: (id: string, before: ThumbnailElement, patch: Partial<ThumbnailElement>) => void;
+  update: (
+    id: string,
+    before: ThumbnailElement,
+    patch: Partial<ThumbnailElement>,
+  ) => void;
 }) => {
   return (
     <div className={styles.section}>
@@ -628,7 +658,9 @@ const CharacterProperties = ({
       </div>
       <CharacterAltPicker
         selectedCharacter={{ id: element.characterId, alt: element.alt as 0 }}
-        onAltChange={(alt) => update(element.id, element, { alt: alt as number })}
+        onAltChange={(alt) =>
+          update(element.id, element, { alt: alt as number })
+        }
       />
       <div className={styles.row}>
         <label>Image type</label>
@@ -660,9 +692,7 @@ const CharacterProperties = ({
       </div>
       <Checkbox
         checked={Boolean(element.flipX)}
-        onChange={(checked) =>
-          update(element.id, element, { flipX: checked })
-        }
+        onChange={(checked) => update(element.id, element, { flipX: checked })}
         label="Flip horizontally"
       />
     </div>
@@ -674,7 +704,11 @@ const FlagProperties = ({
   update,
 }: {
   element: FlagElement;
-  update: (id: string, before: ThumbnailElement, patch: Partial<ThumbnailElement>) => void;
+  update: (
+    id: string,
+    before: ThumbnailElement,
+    patch: Partial<ThumbnailElement>,
+  ) => void;
 }) => {
   return (
     <div className={styles.section}>
@@ -692,7 +726,11 @@ const TournamentIconProperties = ({
   update,
 }: {
   element: TournamentIconElement;
-  update: (id: string, before: ThumbnailElement, patch: Partial<ThumbnailElement>) => void;
+  update: (
+    id: string,
+    before: ThumbnailElement,
+    patch: Partial<ThumbnailElement>,
+  ) => void;
 }) => {
   return (
     <div className={styles.section}>
@@ -725,7 +763,11 @@ const ShapeProperties = ({
   update,
 }: {
   element: ShapeElement;
-  update: (id: string, before: ThumbnailElement, patch: Partial<ThumbnailElement>) => void;
+  update: (
+    id: string,
+    before: ThumbnailElement,
+    patch: Partial<ThumbnailElement>,
+  ) => void;
 }) => {
   return (
     <div className={styles.section}>

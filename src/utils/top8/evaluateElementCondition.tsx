@@ -3,13 +3,15 @@ import { RenderCondition } from "@/consts/top8/renderConditions";
 import { ElementFactoryContext } from "@/types/top8/ElementFactory";
 
 const getConditionMap = (
-  context: ElementFactoryContext
+  context: ElementFactoryContext,
 ): Record<DesignPlaceholder | RenderCondition, boolean> => {
   const { player, tournament, design } = context;
   return {
     [DesignPlaceholder.PLAYER_TWITTER]: Boolean(player?.twitter),
     [DesignPlaceholder.PLAYER_PLACEMENT]: Boolean(player?.placement),
-    [DesignPlaceholder.PLAYER_COUNTRY]: Boolean(player?.customFlagSrc || player?.country),
+    [DesignPlaceholder.PLAYER_COUNTRY]: Boolean(
+      player?.customFlagSrc || player?.country,
+    ),
     [DesignPlaceholder.PLAYER_NAME]: Boolean(player?.name),
     [DesignPlaceholder.PLAYER_TAG]: Boolean(player?.gamerTag),
     [DesignPlaceholder.PLAYER_PREFIX]: Boolean(player?.prefix),
@@ -24,13 +26,13 @@ const getConditionMap = (
     [DesignPlaceholder.TOURNAMENT_CITY]: Boolean(tournament?.location.city),
     [DesignPlaceholder.TOURNAMENT_STATE]: Boolean(tournament?.location.state),
     [DesignPlaceholder.TOURNAMENT_COUNTRY]: Boolean(
-      tournament?.location.country
+      tournament?.location.country,
     ),
     [DesignPlaceholder.TOURNAMENT_URL]: Boolean(tournament?.url),
     [RenderCondition.TOURNAMENT_ICON]: Boolean(tournament?.iconSrc),
     [RenderCondition.BACKGROUND_IMG]: Boolean(design?.bgAssetId),
     [RenderCondition.HAS_ALT_CHARACTERS]: Boolean(
-      player?.characters && player.characters.length > 1
+      player?.characters && player.characters.length > 1,
     ),
     [RenderCondition.NOT]: true,
   };
@@ -38,7 +40,7 @@ const getConditionMap = (
 
 export const evaluateElementCondition = (
   conditions: (DesignPlaceholder | RenderCondition)[] | undefined,
-  context: ElementFactoryContext
+  context: ElementFactoryContext,
 ) => {
   if (!conditions) return true;
 

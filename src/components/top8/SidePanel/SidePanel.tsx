@@ -15,33 +15,33 @@ import styles from "./SidePanel.module.scss";
 const PlayersEditor = lazy(() =>
   import("@/components/top8/PlayersEditor/PlayersEditor").then((module) => ({
     default: module.PlayersEditor,
-  }))
+  })),
 );
 
 const DesignEditor = lazy(() =>
   import("@/components/top8/DesignEditor/DesignEditor").then((module) => ({
     default: module.DesignEditor,
-  }))
+  })),
 );
 
 const TournamentEditor = lazy(() =>
   import("@/components/top8/TournamentConfig/TournamentEditor").then(
     (module) => ({
       default: module.TournamentEditor,
-    })
-  )
+    }),
+  ),
 );
 
 const TextEditor = lazy(() =>
   import("@/components/top8/TextEditor/TextEditor").then((module) => ({
     default: module.TextEditor,
-  }))
+  })),
 );
 
 const TemplateEditor = lazy(() =>
   import("@/components/top8/TemplateEditor/TemplateEditor").then((module) => ({
     default: module.TemplateEditor,
-  }))
+  })),
 );
 
 type Props = {

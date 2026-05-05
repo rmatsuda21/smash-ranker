@@ -77,10 +77,8 @@ export const Canvas = ({ className }: Props) => {
   const handleFitToWindow = useCallback(() => {
     if (scrollAreaRef.current) {
       const padding = isMobile() ? 0 : CANVAS_PADDING;
-      const availableWidth =
-        scrollAreaRef.current.clientWidth - padding * 2;
-      const availableHeight =
-        scrollAreaRef.current.clientHeight - padding * 2;
+      const availableWidth = scrollAreaRef.current.clientWidth - padding * 2;
+      const availableHeight = scrollAreaRef.current.clientHeight - padding * 2;
 
       const scaleByWidth = availableWidth / canvasSize.width;
       const scaleByHeight = availableHeight / canvasSize.height;

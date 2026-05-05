@@ -14,7 +14,12 @@ type Props = {
   onChangeTitle: (title: string) => void;
 };
 
-export const TierListTitle = ({ title, labelFont, titleAlign, onChangeTitle }: Props) => {
+export const TierListTitle = ({
+  title,
+  labelFont,
+  titleAlign,
+  onChangeTitle,
+}: Props) => {
   const { _ } = useLingui();
   const [isEditing, setIsEditing] = useState(false);
   const [editValue, setEditValue] = useState(title);
@@ -39,7 +44,11 @@ export const TierListTitle = ({ title, labelFont, titleAlign, onChangeTitle }: P
     if (e.key === "Escape") setIsEditing(false);
   };
 
-  const alignToJustify = { left: "flex-start", center: "center", right: "flex-end" } as const;
+  const alignToJustify = {
+    left: "flex-start",
+    center: "center",
+    right: "flex-end",
+  } as const;
 
   const fontStyle: React.CSSProperties = {
     fontFamily: labelFont.family,
@@ -81,7 +90,12 @@ export const TierListTitle = ({ title, labelFont, titleAlign, onChangeTitle }: P
   }
 
   return (
-    <div className={styles.titleContainer} style={fontStyle} onClick={handleClick} title={_(msg`Click to edit title`)}>
+    <div
+      className={styles.titleContainer}
+      style={fontStyle}
+      onClick={handleClick}
+      title={_(msg`Click to edit title`)}
+    >
       {title}
     </div>
   );

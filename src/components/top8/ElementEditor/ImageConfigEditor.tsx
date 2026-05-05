@@ -28,7 +28,7 @@ export const ImageConfigEditor = ({ element, onUpdateElement }: Props) => {
       debounce((elementConfig: ImageElementConfig) => {
         onUpdateElement(elementConfig);
       }, 100),
-    [onUpdateElement]
+    [onUpdateElement],
   );
 
   return (

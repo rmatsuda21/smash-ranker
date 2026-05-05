@@ -13,7 +13,7 @@ import styles from "./TextConfigEditor.module.scss";
 type Props = {
   element: TextElementConfig | SmartTextElementConfig;
   onUpdateElement: (
-    element: TextElementConfig | SmartTextElementConfig
+    element: TextElementConfig | SmartTextElementConfig,
   ) => void;
 };
 
@@ -30,7 +30,7 @@ export const TextConfigEditor = ({ element, onUpdateElement }: Props) => {
       debounce((config: TextElementConfig | SmartTextElementConfig) => {
         onUpdateElement(config);
       }, 100),
-    [onUpdateElement]
+    [onUpdateElement],
   );
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

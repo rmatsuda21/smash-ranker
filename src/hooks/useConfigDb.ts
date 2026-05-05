@@ -5,7 +5,7 @@ import { templateRepository } from "@/db/repository";
 
 export const useTemplateDB = () => {
   const [templates, setTemplates] = useState<{ id: string; name: string }[]>(
-    []
+    [],
   );
   const [loading, setLoading] = useState(true);
 
@@ -14,8 +14,8 @@ export const useTemplateDB = () => {
       await templateRepository
         .getAll()
         .then((configs) =>
-          configs.map((config) => ({ id: config.id, name: config.name }))
-        )
+          configs.map((config) => ({ id: config.id, name: config.name })),
+        ),
     );
   };
 

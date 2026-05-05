@@ -168,10 +168,7 @@ const predictionReducer = (
       const clamped = Math.max(1, Math.min(action.payload, 64));
       const currentCount = state.predictions.length;
 
-      if (
-        state.predictionCount === "custom" &&
-        currentCount > clamped
-      ) {
+      if (state.predictionCount === "custom" && currentCount > clamped) {
         const removed = state.predictions.slice(clamped);
         let newPool = state.entrantPool;
         for (const player of removed) {

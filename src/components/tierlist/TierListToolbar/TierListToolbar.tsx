@@ -73,7 +73,8 @@ export const TierListToolbar = ({ exportRef }: Props) => {
         visibleChildren.reduce(
           (sum, c) => sum + c.getBoundingClientRect().height,
           0,
-        ) + Math.max(0, visibleChildren.length - 1) * gapCss;
+        ) +
+        Math.max(0, visibleChildren.length - 1) * gapCss;
       const contentPx = Math.min(
         Math.round(contentCss * PIXEL_RATIO),
         sourceCanvas.height,
@@ -115,8 +116,9 @@ export const TierListToolbar = ({ exportRef }: Props) => {
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       // letterSpacing is supported in modern Chromium/Safari/Firefox.
-      (ctx as CanvasRenderingContext2D & { letterSpacing?: string }).letterSpacing =
-        `${WATERMARK_LETTER_SPACING_CSS_PX * PIXEL_RATIO}px`;
+      (
+        ctx as CanvasRenderingContext2D & { letterSpacing?: string }
+      ).letterSpacing = `${WATERMARK_LETTER_SPACING_CSS_PX * PIXEL_RATIO}px`;
       ctx.fillText(
         "smash-ranker.app",
         composed.width / 2,

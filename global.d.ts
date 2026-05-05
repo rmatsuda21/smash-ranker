@@ -24,7 +24,9 @@ interface FileSystemFileHandle {
 
 declare global {
   interface Window {
-    showSaveFilePicker(options?: SaveFilePickerOptions): Promise<FileSystemFileHandle>;
+    showSaveFilePicker(
+      options?: SaveFilePickerOptions,
+    ): Promise<FileSystemFileHandle>;
   }
 }
 

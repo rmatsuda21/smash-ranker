@@ -29,7 +29,7 @@ type TournamentAction =
 
 const tournamentReducer = (
   state: TournamentState,
-  action: TournamentAction
+  action: TournamentAction,
 ): Partial<TournamentState> => {
   switch (action.type) {
     case "SET_TOURNAMENT_NAME":
@@ -108,7 +108,7 @@ export const useTournamentStore = create<TournamentStore>()(
       {
         name: "tournament-store",
         storage: createJSONStorage(() => localStorage),
-      }
-    )
-  )
+      },
+    ),
+  ),
 );
