@@ -306,6 +306,7 @@ const RenderedPreview = (props: Props) => {
     template.design.colorPalette,
     template.design.bgAssetId,
     template.design.bgImageDarkness,
+    template.design.reversePlayerZOrder,
     template.font,
   ]);
 

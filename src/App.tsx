@@ -1,7 +1,7 @@
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { Layout } from "@/components/Layout/Layout";
 import { PageRouter } from "@/components/PageRouter";
-import { FeatureFlagsProvider } from "@/hooks/useFeatureFlags";
+import { FeatureFlagsProvider } from "@/components/FeatureFlagsProvider";
 
 function App() {
   return (
