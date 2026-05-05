@@ -18,7 +18,7 @@ export const DesignEditor = ({ className }: Props) => {
   const canvasDispatch = useCanvasStore((state) => state.dispatch);
   const bgAssetId = useCanvasStore((state) => state.design.bgAssetId);
   const bgImageDarkness = useCanvasStore(
-    (state) => state.design.bgImageDarkness ?? 0
+    (state) => state.design.bgImageDarkness ?? 0,
   );
 
   return (

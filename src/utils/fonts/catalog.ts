@@ -28,7 +28,8 @@ type FontsourceFontResponse = {
 const mapResponse = (data: FontsourceFontResponse): FontMeta => ({
   fontFamily: data.family,
   id: data.id,
-  weights: data.weights.length > 0 ? [...data.weights].sort((a, b) => a - b) : [400],
+  weights:
+    data.weights.length > 0 ? [...data.weights].sort((a, b) => a - b) : [400],
   isVariable: data.variable,
 });
 

@@ -60,7 +60,7 @@ const PlayerComponent = ({
       });
       onDragEnd(e);
     },
-    [onDragEnd, index, config, canvasDispatch]
+    [onDragEnd, index, config, canvasDispatch],
   );
 
   const handleGroupClick = useCallback(
@@ -72,7 +72,7 @@ const PlayerComponent = ({
         payload: EditorTab.PLAYERS,
       });
     },
-    [index, dispatch, editorDispatch]
+    [index, dispatch, editorDispatch],
   );
 
   const dragBoundFunc = useCallback(
@@ -83,20 +83,20 @@ const PlayerComponent = ({
           Math.min(
             pos.x,
             canvasSize.width -
-              (config.size?.width ?? 0) * (config.scale?.x ?? 1)
-          )
+              (config.size?.width ?? 0) * (config.scale?.x ?? 1),
+          ),
         ),
         y: Math.max(
           0,
           Math.min(
             pos.y,
             canvasSize.height -
-              (config.size?.height ?? 0) * (config.scale?.y ?? 1)
-          )
+              (config.size?.height ?? 0) * (config.scale?.y ?? 1),
+          ),
         ),
       };
     },
-    [canvasSize.width, canvasSize.height, config.size, config.scale]
+    [canvasSize.width, canvasSize.height, config.size, config.scale],
   );
 
   const containerSize = useMemo(
@@ -104,7 +104,7 @@ const PlayerComponent = ({
       width: config.size?.width,
       height: config.size?.height,
     }),
-    [config.size?.width, config.size?.height]
+    [config.size?.width, config.size?.height],
   );
 
   const stableOnReady = useMemo(() => () => onReadyRef.current?.(), []);
@@ -119,9 +119,9 @@ const PlayerComponent = ({
           containerSize,
           design,
         },
-        { onAllReady: stableOnReady }
+        { onAllReady: stableOnReady },
       ),
-    [config.elements, fontFamily, player, containerSize, design, stableOnReady]
+    [config.elements, fontFamily, player, containerSize, design, stableOnReady],
   );
 
   return (

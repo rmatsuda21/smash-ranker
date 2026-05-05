@@ -58,7 +58,9 @@ export const PredictionGraphic = () => {
             {meta && <p className={styles.meta}>{meta}</p>}
           </div>
         </div>
-        <div className={styles.subtitle}><Trans>Predictions</Trans></div>
+        <div className={styles.subtitle}>
+          <Trans>Predictions</Trans>
+        </div>
         <div className={styles.list}>
           {predictions.map((player, index) => (
             <div

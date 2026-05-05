@@ -23,7 +23,7 @@ type PlayerAction =
 
 const playerReducer = (
   state: PlayerState,
-  action: PlayerAction
+  action: PlayerAction,
 ): Partial<PlayerState> => {
   switch (action.type) {
     case "SET_PLAYERS":
@@ -31,7 +31,7 @@ const playerReducer = (
     case "UPDATE_PLAYER":
       return {
         players: state.players.map((p, i) =>
-          i === action.payload.index ? action.payload.player : p
+          i === action.payload.index ? action.payload.player : p,
         ),
       };
     case "SET_SELECTED_PLAYER_INDEX":
@@ -72,7 +72,7 @@ export const usePlayerStore = create<PlayerStore>()(
         dispatch: (action: PlayerAction) =>
           set((state) => playerReducer(state, action), false, action),
       }),
-      { name: "player-store", storage: createJSONStorage(() => localStorage) }
-    )
-  )
+      { name: "player-store", storage: createJSONStorage(() => localStorage) },
+    ),
+  ),
 );

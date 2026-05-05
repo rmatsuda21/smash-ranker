@@ -98,7 +98,7 @@ export const CharacterAltPicker = ({
       wrapperRef.current.style.setProperty("--num-alts", String(alts.length));
       wrapperRef.current.style.setProperty(
         "--selected-alt",
-        String(selectedCharacter?.alt)
+        String(selectedCharacter?.alt),
       );
     }
 
@@ -109,7 +109,7 @@ export const CharacterAltPicker = ({
     if (wrapperRef.current) {
       wrapperRef.current.style.setProperty(
         "--selected-alt",
-        String(selectedCharacter?.alt || 0)
+        String(selectedCharacter?.alt || 0),
       );
     }
   }, [selectedCharacter?.alt]);

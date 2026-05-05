@@ -42,7 +42,9 @@ interface TonamelResponse {
   competition: TonamelCompetition | null;
 }
 
-const fetchTonamelCompetition = async (slug: string): Promise<TonamelResponse> => {
+const fetchTonamelCompetition = async (
+  slug: string,
+): Promise<TonamelResponse> => {
   const res = await fetch(`/api/tonamel?slug=${encodeURIComponent(slug)}`);
 
   if (!res.ok) {
@@ -87,7 +89,13 @@ const parseParticipants = (competition: TonamelCompetition): PlayerInfo[] => {
       if (players.length >= 8) break;
       const country = countryByPlayerId.get(placement.playerId);
       players.push(
-        toPlayerInfo(placement.displayName, placement.playerId, country, placement.place, index++),
+        toPlayerInfo(
+          placement.displayName,
+          placement.playerId,
+          country,
+          placement.place,
+          index++,
+        ),
       );
     }
   } else {
@@ -105,7 +113,9 @@ const parseParticipants = (competition: TonamelCompetition): PlayerInfo[] => {
 };
 
 /** Fetch a Tonamel image via our proxy and store in IndexedDB to avoid CORS issues. */
-const storeTonamelImage = async (imageUrl: string): Promise<string | undefined> => {
+const storeTonamelImage = async (
+  imageUrl: string,
+): Promise<string | undefined> => {
   try {
     const proxyUrl = `/api/tonamel-image?url=${encodeURIComponent(imageUrl)}`;
     const response = await fetch(proxyUrl);
@@ -199,7 +209,9 @@ export const useFetchTonamel = () => {
       playerDispatch({ type: "FETCH_PLAYERS_SUCCESS", payload: paddedPlayers });
     } catch (error) {
       const message =
-        error instanceof Error ? error.message : t`Failed to fetch Tonamel tournament`;
+        error instanceof Error
+          ? error.message
+          : t`Failed to fetch Tonamel tournament`;
       console.error("Tonamel fetch error:", error);
       playerDispatch({ type: "FETCH_PLAYERS_FAIL", payload: message });
       alert(message);

@@ -58,7 +58,7 @@ export const TournamentEditor = ({ className }: Props) => {
           payload: tournament,
         });
       }, DEBOUNCE_TIME),
-    [dispatch]
+    [dispatch],
   );
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

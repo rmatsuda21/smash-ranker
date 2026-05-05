@@ -13,11 +13,18 @@ import type {
 import type { CharacerData } from "@/types/top8/Player";
 import type { ElementCreator } from "@/types/top8/ElementFactory";
 import { CustomImage } from "@/components/top8/Canvas/CustomImage";
-import { EMPTY_CHARACTER_ID, EMPTY_CHARACTER_DARK_IMG } from "@/consts/top8/characters";
+import {
+  EMPTY_CHARACTER_ID,
+  EMPTY_CHARACTER_DARK_IMG,
+} from "@/consts/top8/characters";
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
 import { getCharacterCrop } from "@/utils/top8/getCharacterCrop";
 import { resolveColor } from "@/utils/top8/resolveColor";
-import { createFlexGridElement, calculateGridAlignOffset, findOptimalSquareGrid } from "./layout";
+import {
+  createFlexGridElement,
+  calculateGridAlignOffset,
+  findOptimalSquareGrid,
+} from "./layout";
 
 type CharacterImageWithAltData = CharacterImageElementConfig & {
   _altCharacter?: CharacerData;
@@ -52,9 +59,9 @@ export const createCharacterImageElement: ElementCreator<
   let imageSrc = isAltCharacter
     ? elementWithAlt._altImageSrc!
     : getCharImgUrl({
-      characterId: character.id,
-      alt: character.alt,
-    });
+        characterId: character.id,
+        alt: character.alt,
+      });
 
   const characterCrop = getCharacterCrop(character.id, character.alt);
   let cropOffset = characterCrop.offset;
@@ -66,7 +73,11 @@ export const createCharacterImageElement: ElementCreator<
     cropScale = 1;
   }
 
-  if (!isAltCharacter && character.id === EMPTY_CHARACTER_ID && !context.player?.avatarImgSrc) {
+  if (
+    !isAltCharacter &&
+    character.id === EMPTY_CHARACTER_ID &&
+    !context.player?.avatarImgSrc
+  ) {
     imageSrc = EMPTY_CHARACTER_DARK_IMG;
   }
 
@@ -117,7 +128,7 @@ export const createAltCharacterImageElement: ElementCreator<
         position: { x: 0, y: 0 },
         src: imageSrc,
       };
-    }
+    },
   );
 
   const flexGridElement: FlexGridElementConfig = {
@@ -172,7 +183,14 @@ export const createCustomAltCharacterImageElement: ElementCreator<
   const template = element.elementTemplate;
 
   if (template) {
-    return renderCustomAltWithTemplate(element, template, characters, imageType, index, context);
+    return renderCustomAltWithTemplate(
+      element,
+      template,
+      characters,
+      imageType,
+      index,
+      context,
+    );
   }
 
   const characterImageElements: ImageElementConfig[] = characters.map(
@@ -189,7 +207,7 @@ export const createCustomAltCharacterImageElement: ElementCreator<
         position: { x: 0, y: 0 },
         src: imageSrc,
       };
-    }
+    },
   );
 
   const flexGridElement: FlexGridElementConfig = {
@@ -232,7 +250,7 @@ function renderCustomAltWithTemplate(
   characters: CharacerData[],
   imageType: "stock" | "render",
   index: number,
-  context: Parameters<ElementCreator>[0]["context"]
+  context: Parameters<ElementCreator>[0]["context"],
 ): React.ReactNode {
   const {
     gap = 5,
@@ -248,10 +266,19 @@ function renderCustomAltWithTemplate(
   const numItems = characters.length;
   const preferredCellSize = template.size?.width ?? 70;
 
-  const containerWidth = element.size?.width ?? element.size?.maxWidth ?? preferredCellSize * numItems;
+  const containerWidth =
+    element.size?.width ??
+    element.size?.maxWidth ??
+    preferredCellSize * numItems;
   const containerHeight = element.size?.height ?? preferredCellSize;
 
-  const optimalGrid = findOptimalSquareGrid(numItems, containerWidth, containerHeight, columnGap, rowGap);
+  const optimalGrid = findOptimalSquareGrid(
+    numItems,
+    containerWidth,
+    containerHeight,
+    columnGap,
+    rowGap,
+  );
 
   const effectiveColumns = fixedColumns ?? optimalGrid.columns;
   const effectiveRows = fixedRows ?? Math.ceil(numItems / effectiveColumns);
@@ -263,8 +290,10 @@ function renderCustomAltWithTemplate(
     cellWidth = preferredCellSize;
     cellHeight = preferredCellSize;
   } else if (fixedRows) {
-    const maxCellWidth = (containerWidth - (effectiveColumns - 1) * columnGap) / effectiveColumns;
-    const maxCellHeight = (containerHeight - (effectiveRows - 1) * rowGap) / effectiveRows;
+    const maxCellWidth =
+      (containerWidth - (effectiveColumns - 1) * columnGap) / effectiveColumns;
+    const maxCellHeight =
+      (containerHeight - (effectiveRows - 1) * rowGap) / effectiveRows;
     cellWidth = Math.min(maxCellWidth, maxCellHeight, preferredCellSize);
     cellHeight = cellWidth;
   } else {
@@ -272,14 +301,24 @@ function renderCustomAltWithTemplate(
     cellHeight = cellWidth;
   }
 
-  const gridContentWidth = effectiveColumns * cellWidth + (effectiveColumns - 1) * columnGap;
-  const gridContentHeight = effectiveRows * cellHeight + (effectiveRows - 1) * rowGap;
+  const gridContentWidth =
+    effectiveColumns * cellWidth + (effectiveColumns - 1) * columnGap;
+  const gridContentHeight =
+    effectiveRows * cellHeight + (effectiveRows - 1) * rowGap;
 
   const actualContainerWidth = gridContentWidth;
   const actualContainerHeight = Math.min(gridContentHeight, containerHeight);
 
-  const gridOffsetX = calculateGridAlignOffset(justify, actualContainerWidth, gridContentWidth);
-  const gridOffsetY = calculateGridAlignOffset(align, actualContainerHeight, gridContentHeight);
+  const gridOffsetX = calculateGridAlignOffset(
+    justify,
+    actualContainerWidth,
+    gridContentWidth,
+  );
+  const gridOffsetY = calculateGridAlignOffset(
+    align,
+    actualContainerHeight,
+    gridContentHeight,
+  );
 
   const lastRowItemCount = numItems % effectiveColumns || effectiveColumns;
   const isLastRowFull = lastRowItemCount === effectiveColumns;
@@ -300,7 +339,7 @@ function renderCustomAltWithTemplate(
       const lastRowOffset = calculateGridAlignOffset(
         alignLastRow,
         gridContentWidth,
-        lastRowWidth
+        lastRowWidth,
       );
       x += lastRowOffset;
     }
@@ -311,7 +350,14 @@ function renderCustomAltWithTemplate(
         x={gridOffsetX + x}
         y={gridOffsetY + y}
       >
-        {renderTemplateForCharacter(template, character, imageType, idx, cellSize, context)}
+        {renderTemplateForCharacter(
+          template,
+          character,
+          imageType,
+          idx,
+          cellSize,
+          context,
+        )}
       </Group>
     );
   });
@@ -337,7 +383,7 @@ function renderTemplateForCharacter(
   imageType: "stock" | "render",
   altIndex: number,
   cellSize: { width: number; height: number },
-  context: Parameters<ElementCreator>[0]["context"]
+  context: Parameters<ElementCreator>[0]["context"],
 ): React.ReactNode {
   const width = template.size?.width ?? cellSize.width;
   const height = template.size?.height ?? cellSize.height;
@@ -346,7 +392,11 @@ function renderTemplateForCharacter(
     const groupEl = template as GroupElementConfig;
     return (
       <Group
-        key={groupEl.id ? `${groupEl.id}-alt-${altIndex}` : `template-group-${altIndex}`}
+        key={
+          groupEl.id
+            ? `${groupEl.id}-alt-${altIndex}`
+            : `template-group-${altIndex}`
+        }
         x={template.position.x}
         y={template.position.y}
         width={width}
@@ -354,19 +404,26 @@ function renderTemplateForCharacter(
         clipFunc={
           groupEl.clip
             ? (ctx) => {
-              ctx.beginPath();
-              if (groupEl.clipCornerRadius) {
-                ctx.roundRect(0, 0, width, height, groupEl.clipCornerRadius);
-              } else {
-                ctx.rect(0, 0, width, height);
+                ctx.beginPath();
+                if (groupEl.clipCornerRadius) {
+                  ctx.roundRect(0, 0, width, height, groupEl.clipCornerRadius);
+                } else {
+                  ctx.rect(0, 0, width, height);
+                }
+                ctx.closePath();
               }
-              ctx.closePath();
-            }
             : undefined
         }
       >
         {groupEl.elements.map((child) =>
-          renderTemplateForCharacter(child, character, imageType, altIndex, cellSize, context)
+          renderTemplateForCharacter(
+            child,
+            character,
+            imageType,
+            altIndex,
+            cellSize,
+            context,
+          ),
         )}
       </Group>
     );
@@ -381,7 +438,11 @@ function renderTemplateForCharacter(
     };
     return (
       <Rect
-        key={rectEl.id ? `${rectEl.id}-alt-${altIndex}` : `template-rect-${altIndex}`}
+        key={
+          rectEl.id
+            ? `${rectEl.id}-alt-${altIndex}`
+            : `template-rect-${altIndex}`
+        }
         x={template.position.x}
         y={template.position.y}
         width={width}
@@ -409,7 +470,9 @@ function renderTemplateForCharacter(
 
       return (
         <CustomImage
-          key={charEl.id ? `${charEl.id}-alt-${altIndex}` : `alt-char-${altIndex}`}
+          key={
+            charEl.id ? `${charEl.id}-alt-${altIndex}` : `alt-char-${altIndex}`
+          }
           x={template.position.x}
           y={template.position.y}
           width={width}
@@ -419,7 +482,10 @@ function renderTemplateForCharacter(
           cropScale={cropScale}
           fillMode={charEl.fillMode ?? "contain"}
           hasShadow={charEl.shadowEnabled ?? false}
-          shadowColor={resolveColor(charEl.shadowColor, context.design?.colorPalette)}
+          shadowColor={resolveColor(
+            charEl.shadowColor,
+            context.design?.colorPalette,
+          )}
           shadowBlur={charEl.shadowBlur}
           shadowOpacity={charEl.shadowOpacity}
           perfectDrawEnabled={context.perfectDraw}
@@ -429,7 +495,9 @@ function renderTemplateForCharacter(
 
     return (
       <CustomImage
-        key={charEl.id ? `${charEl.id}-alt-${altIndex}` : `alt-char-${altIndex}`}
+        key={
+          charEl.id ? `${charEl.id}-alt-${altIndex}` : `alt-char-${altIndex}`
+        }
         x={template.position.x}
         y={template.position.y}
         width={width}
@@ -444,7 +512,9 @@ function renderTemplateForCharacter(
     const imgEl = template as ImageElementConfig;
     return (
       <CustomImage
-        key={imgEl.id ? `${imgEl.id}-alt-${altIndex}` : `template-img-${altIndex}`}
+        key={
+          imgEl.id ? `${imgEl.id}-alt-${altIndex}` : `template-img-${altIndex}`
+        }
         x={template.position.x}
         y={template.position.y}
         width={width}
@@ -463,8 +533,11 @@ export const createPlayerFlagElement: ElementCreator<
 > = ({ element, index, context }) => {
   const { player } = context;
 
-  const flagSrc = player?.customFlagSrc
-    ?? (player?.country ? `/assets/flags/${player.country.toLowerCase()}.svg` : null);
+  const flagSrc =
+    player?.customFlagSrc ??
+    (player?.country
+      ? `/assets/flags/${player.country.toLowerCase()}.svg`
+      : null);
 
   if (!flagSrc) {
     return null;

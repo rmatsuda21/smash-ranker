@@ -65,7 +65,8 @@ const labelFor = (el: ThumbnailElement) => {
   if (el.type === "text") return el.text || "Text";
   if (el.type === "character") return `Character (${el.characterId})`;
   if (el.type === "flag") return `Flag (${el.country})`;
-  if (el.type === "shape") return el.shape === "circle" ? "Circle" : "Rectangle";
+  if (el.type === "shape")
+    return el.shape === "circle" ? "Circle" : "Rectangle";
   if (el.type === "group") return "Group";
   return el.type;
 };
@@ -86,9 +87,7 @@ const ElementRow = ({
   const sortable = useSortable({ id: element.id });
   const selectedIds = useThumbnailEditorStore((s) => s.selectedIds);
   const setSelectedIds = useThumbnailEditorStore((s) => s.setSelectedIds);
-  const toggleSelectedId = useThumbnailEditorStore(
-    (s) => s.toggleSelectedId,
-  );
+  const toggleSelectedId = useThumbnailEditorStore((s) => s.toggleSelectedId);
   const setActiveSidebarTab = useThumbnailEditorStore(
     (s) => s.setActiveSidebarTab,
   );
@@ -228,9 +227,7 @@ const GroupRow = ({
   const sortable = useSortable({ id: group.id });
   const selectedIds = useThumbnailEditorStore((s) => s.selectedIds);
   const setSelectedIds = useThumbnailEditorStore((s) => s.setSelectedIds);
-  const toggleSelectedId = useThumbnailEditorStore(
-    (s) => s.toggleSelectedId,
-  );
+  const toggleSelectedId = useThumbnailEditorStore((s) => s.toggleSelectedId);
   const setActiveSidebarTab = useThumbnailEditorStore(
     (s) => s.setActiveSidebarTab,
   );
@@ -368,7 +365,9 @@ const renderTree = (
         />,
       );
       if (!isCollapsed) {
-        out.push(...renderTree(el.children, depth + 1, collapsed, setCollapsed));
+        out.push(
+          ...renderTree(el.children, depth + 1, collapsed, setCollapsed),
+        );
       }
     } else {
       out.push(<ElementRow key={el.id} element={el} depth={depth} />);

@@ -96,7 +96,7 @@ const initialState: TierListState = {
 
 const removeCharFromContainers = (
   state: TierListState,
-  instanceId: string
+  instanceId: string,
 ): TierListState => {
   return {
     ...state,
@@ -110,7 +110,7 @@ const removeCharFromContainers = (
 
 const tierListReducer = (
   state: TierListState,
-  action: TierListAction
+  action: TierListAction,
 ): Partial<TierListState> => {
   switch (action.type) {
     case "MOVE_CHARACTER": {
@@ -155,14 +155,14 @@ const tierListReducer = (
     case "RENAME_TIER":
       return {
         tiers: state.tiers.map((t) =>
-          t.id === action.tierId ? { ...t, name: action.name } : t
+          t.id === action.tierId ? { ...t, name: action.name } : t,
         ),
       };
 
     case "RECOLOR_TIER":
       return {
         tiers: state.tiers.map((t) =>
-          t.id === action.tierId ? { ...t, color: action.color } : t
+          t.id === action.tierId ? { ...t, color: action.color } : t,
         ),
       };
 
@@ -256,7 +256,7 @@ const tierListReducer = (
       for (let i = 0; i < tierCount; i++) {
         newTiers[i].characterIds = allIds.slice(
           cursor,
-          cursor + action.minPerTier
+          cursor + action.minPerTier,
         );
         cursor += action.minPerTier;
       }
@@ -308,7 +308,7 @@ export const useTierListStore = create<TierListStore>()(
           }
           return state as unknown as TierListStore;
         },
-      }
-    )
-  )
+      },
+    ),
+  ),
 );

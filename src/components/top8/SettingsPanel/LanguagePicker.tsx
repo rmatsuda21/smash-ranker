@@ -25,7 +25,7 @@ const LANGUAGES: {
 export const LanguagePicker = () => {
   const { _ } = useLingui();
   const [currentLanguage, setCurrentLanguage] = useState<Language>(
-    () => (Cookies.get(COOKIES.LANGUAGE) as Language) || "en"
+    () => (Cookies.get(COOKIES.LANGUAGE) as Language) || "en",
   );
 
   const handleLanguageChange = async (language: Language) => {

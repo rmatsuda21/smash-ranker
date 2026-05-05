@@ -14,7 +14,7 @@ import styles from "./Ranker.module.scss";
 const Canvas = lazy(() =>
   import("@/components/top8/Canvas/Canvas").then((module) => ({
     default: module.Canvas,
-  }))
+  })),
 );
 
 export const Ranker = () => {

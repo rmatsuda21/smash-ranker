@@ -41,6 +41,6 @@ import App from "@/App";
       <I18nProvider i18n={i18n}>
         <App />
       </I18nProvider>
-    </StrictMode>
+    </StrictMode>,
   );
 })();

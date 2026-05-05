@@ -1,5 +1,5 @@
 const colorStringToRgba = (
-  color: string
+  color: string,
 ): { r: number; g: number; b: number; a: number } => {
   const trimmed = color.trim().toLowerCase();
 
@@ -33,7 +33,7 @@ const colorStringToRgba = (
 
   if (trimmed.startsWith("rgb")) {
     const match = trimmed.match(
-      /rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(?:,\s*([\d.]+)\s*)?\)/
+      /rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(?:,\s*([\d.]+)\s*)?\)/,
     );
     if (match) {
       return {
@@ -47,7 +47,7 @@ const colorStringToRgba = (
 
   if (trimmed.startsWith("hsl")) {
     const match = trimmed.match(
-      /hsla?\(\s*([\d.]+)\s*,\s*([\d.]+)%\s*,\s*([\d.]+)%\s*(?:,\s*([\d.]+)\s*)?\)/
+      /hsla?\(\s*([\d.]+)\s*,\s*([\d.]+)%\s*,\s*([\d.]+)%\s*(?:,\s*([\d.]+)\s*)?\)/,
     );
     if (match) {
       const h = Number(match[1]) / 360;

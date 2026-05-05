@@ -44,7 +44,9 @@
     border-radius: var(--radius);
     color: var(--fg-2);
     background-color: var(--gray-4);
-    transition: color var(--duration-base) var(--ease-standard), background-color var(--duration-base) var(--ease-standard);
+    transition:
+      color var(--duration-base) var(--ease-standard),
+      background-color var(--duration-base) var(--ease-standard);
 
     svg {
       width: 18px;
@@ -111,7 +113,9 @@
   font-weight: 700;
   text-decoration: none;
   border-radius: var(--radius-md);
-  transition: transform var(--duration-base) var(--ease-standard), filter var(--duration-base) var(--ease-standard);
+  transition:
+    transform var(--duration-base) var(--ease-standard),
+    filter var(--duration-base) var(--ease-standard);
 
   svg {
     width: 14px;
@@ -143,7 +147,9 @@
   font-weight: 700;
   text-decoration: none;
   border-radius: var(--radius-md);
-  transition: transform var(--duration-base) var(--ease-standard), filter var(--duration-base) var(--ease-standard);
+  transition:
+    transform var(--duration-base) var(--ease-standard),
+    filter var(--duration-base) var(--ease-standard);
 
   svg {
     width: 14px;

@@ -121,6 +121,6 @@ export const useHistoryStore = create<HistoryStore>()(
         });
       },
     }),
-    { name: "HistoryStore" }
-  )
+    { name: "HistoryStore" },
+  ),
 );

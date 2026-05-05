@@ -106,11 +106,7 @@ export const TierSettings = ({
         >
           <FaArrowDown size={12} /> <Trans>Move Down</Trans>
         </button>
-        <button
-          className={styles.menuItem}
-          onClick={handleDelete}
-          data-danger
-        >
+        <button className={styles.menuItem} onClick={handleDelete} data-danger>
           <FaTrash size={12} /> <Trans>Delete</Trans>
         </button>
       </Popover>

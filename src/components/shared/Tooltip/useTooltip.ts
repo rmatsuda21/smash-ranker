@@ -6,7 +6,7 @@ type TooltipApi = {
 };
 
 export const useTooltip = (
-  listenerRef?: React.RefObject<HTMLElement | null>
+  listenerRef?: React.RefObject<HTMLElement | null>,
 ): [React.RefObject<HTMLDivElement | null>, TooltipApi] => {
   const tooltipRef = useRef<HTMLDivElement>(null);
 

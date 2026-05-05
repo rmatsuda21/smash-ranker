@@ -37,7 +37,7 @@ export const CanvasDownloader = ({ className }: Props) => {
   const dispatch = usePlayerStore((state) => state.dispatch);
   const tournamentDispatch = useTournamentStore((state) => state.dispatch);
   const tournamentName = useTournamentStore(
-    (state) => state.info.tournamentName
+    (state) => state.info.tournamentName,
   );
 
   useEffect(() => {
@@ -60,7 +60,7 @@ export const CanvasDownloader = ({ className }: Props) => {
     const canvas = stageRef.toCanvas({ pixelRatio });
 
     const blob = await new Promise<Blob | null>((resolve) =>
-      canvas.toBlob((b) => resolve(b), mimeType, quality)
+      canvas.toBlob((b) => resolve(b), mimeType, quality),
     );
     canvas.width = 0;
     canvas.height = 0;

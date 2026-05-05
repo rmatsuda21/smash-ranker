@@ -58,7 +58,7 @@ const fontReducer = (state: FontState, action: FontAction): FontState => {
     case "ADD_CUSTOM_FONTS": {
       const newFamilies = new Set(action.payload.map((f) => f.fontFamily));
       const existing = Array.from(state.fonts).filter(
-        (f) => !newFamilies.has(f.fontFamily)
+        (f) => !newFamilies.has(f.fontFamily),
       );
       return {
         ...state,
@@ -71,8 +71,8 @@ const fontReducer = (state: FontState, action: FontAction): FontState => {
         ...state,
         fonts: new Set(
           Array.from(state.fonts).filter(
-            (f) => f.fontFamily !== action.payload
-          )
+            (f) => f.fontFamily !== action.payload,
+          ),
         ),
         selectedFont:
           state.selectedFont === action.payload
@@ -120,8 +120,8 @@ export const useFontStore = create<FontState>()(
         });
       },
     }),
-    { name: "font-store" }
-  )
+    { name: "font-store" },
+  ),
 );
 
 const loadCustomFontsFromDB = async (): Promise<Font[]> => {
@@ -182,8 +182,7 @@ Promise.allSettled([fetchCatalog(), loadCustomFontsFromDB()])
     }
 
     const activeFontFamily =
-      useCanvasStore.getState().font ||
-      useFontStore.getState().selectedFont;
+      useCanvasStore.getState().font || useFontStore.getState().selectedFont;
 
     dispatch({ type: "SET_SELECTED_FONT", payload: activeFontFamily });
 

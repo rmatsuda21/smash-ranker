@@ -37,7 +37,7 @@ export const PlayerElementEditor = ({ className }: Props) => {
   const textPalette = useCanvasStore((state) => state.design.textPalette);
   const bgAssetId = useCanvasStore((state) => state.design.bgAssetId);
   const bgImageDarkness = useCanvasStore(
-    (state) => state.design.bgImageDarkness
+    (state) => state.design.bgImageDarkness,
   );
 
   const [selectedElementIndex, setSelectedElementIndex] = useState(0);
@@ -70,14 +70,14 @@ export const PlayerElementEditor = ({ className }: Props) => {
         },
       });
     },
-    [canvasDispatch, basePlayer.elements]
+    [canvasDispatch, basePlayer.elements],
   );
 
   const handleElementSelect = useCallback(
     (index: number) => {
       setSelectedElementIndex(index);
     },
-    [setSelectedElementIndex]
+    [setSelectedElementIndex],
   );
 
   const handleUpdateElement = useCallback(
@@ -87,7 +87,7 @@ export const PlayerElementEditor = ({ className }: Props) => {
         payload: { index: selectedElementIndex, element },
       });
     },
-    [canvasDispatch, selectedElementIndex]
+    [canvasDispatch, selectedElementIndex],
   );
 
   return (

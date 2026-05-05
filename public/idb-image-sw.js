@@ -18,7 +18,7 @@ const openDatabase = () => {
       resolve(request.result);
     };
   });
-}
+};
 
 const getAsset = async (id) => {
   const db = await openDatabase();
@@ -63,8 +63,7 @@ const getAsset = async (id) => {
       db.close();
     };
   });
-}
-
+};
 
 const createBlobResponse = (blob) => {
   return new Response(blob, {
@@ -74,7 +73,7 @@ const createBlobResponse = (blob) => {
       "Content-Length": blob.size.toString(),
     },
   });
-}
+};
 
 const missingAssetResponse = async () => {
   try {
@@ -86,7 +85,7 @@ const missingAssetResponse = async () => {
       headers: { "Content-Type": "text/plain" },
     });
   }
-}
+};
 
 const handleImageRequest = async (imageId) => {
   try {
@@ -101,7 +100,7 @@ const handleImageRequest = async (imageId) => {
     console.error("[IDB Image SW] Error fetching asset:", error);
     return missingAssetResponse();
   }
-}
+};
 
 self.addEventListener("install", () => {
   console.log("[IDB Image SW] Installing...");
@@ -131,4 +130,3 @@ self.addEventListener("fetch", (event) => {
     }
   }
 });
-

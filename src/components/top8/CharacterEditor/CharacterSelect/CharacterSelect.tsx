@@ -73,5 +73,5 @@ export const CharacterSelect = memo(
       prevProps.disabled === nextProps.disabled &&
       prevProps.onValueChange === nextProps.onValueChange
     );
-  }
+  },
 );

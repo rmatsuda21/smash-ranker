@@ -12,9 +12,7 @@ export const SettingsTab = () => {
   const gridSize = useThumbnailEditorStore((s) => s.gridSize);
   const setGridSize = useThumbnailEditorStore((s) => s.setGridSize);
   const snapToElements = useThumbnailEditorStore((s) => s.snapToElements);
-  const setSnapToElements = useThumbnailEditorStore(
-    (s) => s.setSnapToElements,
-  );
+  const setSnapToElements = useThumbnailEditorStore((s) => s.setSnapToElements);
 
   const canvasSize = useThumbnailStore((s) => s.design.canvasSize);
   const dispatch = useThumbnailStore((s) => s.dispatch);

@@ -6,7 +6,7 @@ import { flattenTree } from "./elementTree";
 // element. Does NOT mutate the global selectedFont — fonts are tied to the
 // individual elements that use them, not to a global "active font".
 export const ensureFontsLoaded = async (
-  design: ThumbnailDesign
+  design: ThumbnailDesign,
 ): Promise<void> => {
   const families = new Set<string>();
   for (const el of flattenTree(design.elements)) {
@@ -20,7 +20,7 @@ export const ensureFontsLoaded = async (
     Array.from(families).map((family) =>
       loadFamily(family).catch((e) => {
         console.warn(`Failed to load font "${family}"`, e);
-      })
-    )
+      }),
+    ),
   );
 };

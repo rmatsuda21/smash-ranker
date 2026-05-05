@@ -20,7 +20,9 @@ type Props = PropsWithChildren<
 
 export const FilteredElement = ({ children, ...rest }: Props) => {
   const [contentVersion, setContentVersion] = useState(0);
-  const invalidateTimeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const invalidateTimeoutRef = useRef<
+    ReturnType<typeof setTimeout> | undefined
+  >(undefined);
 
   const invalidate = useCallback(() => {
     clearTimeout(invalidateTimeoutRef.current);

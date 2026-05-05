@@ -9,7 +9,7 @@ import { resolveColor } from "@/utils/top8/resolveColor";
 /** Resolve palette key references in gradient stops */
 export const resolveGradientStops = (
   stops: GradientColorStop[],
-  palette?: Design["colorPalette"]
+  palette?: Design["colorPalette"],
 ): GradientColorStop[] =>
   stops.map((s) => ({
     position: Math.max(0, Math.min(1, s.position)),
@@ -18,7 +18,7 @@ export const resolveGradientStops = (
 
 /** Flatten resolved stops to Konva's [pos, color, pos, color, ...] format */
 export const toKonvaColorStops = (
-  stops: GradientColorStop[]
+  stops: GradientColorStop[],
 ): (number | string)[] => stops.flatMap((s) => [s.position, s.color]);
 
 /**
@@ -29,7 +29,7 @@ export const toKonvaColorStops = (
 export const linearAngleToPoints = (
   angleDeg: number,
   width: number,
-  height: number
+  height: number,
 ): { start: { x: number; y: number }; end: { x: number; y: number } } => {
   // Convert CSS angle to math angle (radians)
   // CSS 0° = up (negative y), clockwise. Math 0° = right, counter-clockwise.
@@ -49,7 +49,8 @@ export const linearAngleToPoints = (
   const halfLength =
     absDx < 1e-10 && absDy < 1e-10
       ? 0
-      : (absDx * width + absDy * height) / (2 * (absDx * absDx + absDy * absDy));
+      : (absDx * width + absDy * height) /
+        (2 * (absDx * absDx + absDy * absDy));
 
   return {
     start: { x: cx - dx * halfLength, y: cy + dy * halfLength },
@@ -62,7 +63,7 @@ export const resolveLinearGradientProps = (
   config: LinearGradientConfig,
   width: number,
   height: number,
-  palette?: Design["colorPalette"]
+  palette?: Design["colorPalette"],
 ) => {
   const resolved = resolveGradientStops(config.colorStops, palette);
   const { start, end } = linearAngleToPoints(config.angle, width, height);
@@ -78,7 +79,7 @@ export const resolveRadialGradientProps = (
   config: RadialGradientConfig,
   width: number,
   height: number,
-  palette?: Design["colorPalette"]
+  palette?: Design["colorPalette"],
 ) => {
   const resolved = resolveGradientStops(config.colorStops, palette);
   const cx = (config.center?.x ?? 0.5) * width;

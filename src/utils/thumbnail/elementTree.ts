@@ -279,7 +279,13 @@ export const applyParentTransform = (
 // coordinates.
 export const elementLocalToWorld = (
   element: ThumbnailElement,
-  ancestors: { x: number; y: number; rotation: number; scaleX?: number; scaleY?: number }[],
+  ancestors: {
+    x: number;
+    y: number;
+    rotation: number;
+    scaleX?: number;
+    scaleY?: number;
+  }[],
 ): ThumbnailElement => {
   // ancestors are root-first (e.g. [Outer, Inner]). Apply innermost first so
   // we walk outward toward world.
@@ -294,7 +300,13 @@ export const elementLocalToWorld = (
 // ancestors (root-first order) into the innermost ancestor's local frame.
 export const elementWorldToLocal = (
   element: ThumbnailElement,
-  ancestors: { x: number; y: number; rotation: number; scaleX?: number; scaleY?: number }[],
+  ancestors: {
+    x: number;
+    y: number;
+    rotation: number;
+    scaleX?: number;
+    scaleY?: number;
+  }[],
 ): ThumbnailElement => {
   let result = element;
   for (const ancestor of ancestors) {
@@ -328,7 +340,8 @@ export const applyInverseParentTransform = (
   const rotatedY = dx * sin + dy * cos;
   const localX = sx === 0 ? 0 : rotatedX / sx;
   const localY = sy === 0 ? 0 : rotatedY / sy;
-  const localRotation = ((child.rotation - parent.rotation) % 360 + 360) % 360;
+  const localRotation =
+    (((child.rotation - parent.rotation) % 360) + 360) % 360;
 
   return {
     ...child,

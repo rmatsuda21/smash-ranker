@@ -19,7 +19,7 @@ export const createRectElement: ElementCreator<RectElementConfig> = ({
   const key = element.id ?? `rect-${index}`;
   const stroke = resolveColor(
     element.stroke as string | undefined,
-    design?.colorPalette
+    design?.colorPalette,
   );
 
   // Gradient fill
@@ -70,7 +70,7 @@ export const createRectElement: ElementCreator<RectElementConfig> = ({
         fill,
         w,
         h,
-        design?.colorPalette
+        design?.colorPalette,
       );
       return (
         <Rect
@@ -93,7 +93,7 @@ export const createRectElement: ElementCreator<RectElementConfig> = ({
         fill,
         w,
         h,
-        design?.colorPalette
+        design?.colorPalette,
       );
       return (
         <Rect

@@ -57,7 +57,7 @@ export const AssetPreview = ({
     const scale = Math.min(
       clientWidth / meta.width,
       clientHeight / meta.height,
-      1 // don't upscale small images
+      1, // don't upscale small images
     );
     setFitScale(scale);
   }, [meta]);
@@ -177,11 +177,7 @@ export const AssetPreview = ({
             <Trans>Dimensions</Trans>
           </span>
           <span className={styles.detailValue}>
-            {meta ? (
-              `${meta.width} x ${meta.height}`
-            ) : (
-              <Spinner size={12} />
-            )}
+            {meta ? `${meta.width} x ${meta.height}` : <Spinner size={12} />}
           </span>
         </div>
         <div className={styles.detailRow}>

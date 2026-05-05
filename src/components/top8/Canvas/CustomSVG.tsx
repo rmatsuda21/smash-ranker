@@ -58,7 +58,7 @@ const CustomSVGComponent = ({
 
 const arePaletteEqual = (
   prevPalette: Record<string, string>,
-  nextPalette: Record<string, string>
+  nextPalette: Record<string, string>,
 ): boolean => {
   const prevKeys = Object.keys(prevPalette);
   const nextKeys = Object.keys(nextPalette);

@@ -16,7 +16,14 @@ type Props = {
   onRename: (name: string) => void;
 };
 
-export const TierLabel = ({ name, color, layout, labelFont, extraStyle, onRename }: Props) => {
+export const TierLabel = ({
+  name,
+  color,
+  layout,
+  labelFont,
+  extraStyle,
+  onRename,
+}: Props) => {
   const { _ } = useLingui();
   const [isEditing, setIsEditing] = useState(false);
   const [editValue, setEditValue] = useState(name);
@@ -43,7 +50,11 @@ export const TierLabel = ({ name, color, layout, labelFont, extraStyle, onRename
 
   return (
     <div
-      className={cn(styles.label, layout === "top" && styles.topLabel, layout === "fancy" && styles.fancyLabel)}
+      className={cn(
+        styles.label,
+        layout === "top" && styles.topLabel,
+        layout === "fancy" && styles.fancyLabel,
+      )}
       style={{
         backgroundColor: color,
         fontFamily: labelFont.family,
@@ -64,7 +75,11 @@ export const TierLabel = ({ name, color, layout, labelFont, extraStyle, onRename
           autoFocus
         />
       ) : (
-        <span className={styles.text} onClick={handleClick} title={_(msg`Click to rename`)}>
+        <span
+          className={styles.text}
+          onClick={handleClick}
+          title={_(msg`Click to rename`)}
+        >
           {name}
         </span>
       )}

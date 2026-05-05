@@ -60,14 +60,18 @@
       background: var(--accent-9);
       border-radius: 50%;
       border: 1px solid var(--border-strong);
-      transition: background-color var(--duration-base) var(--ease-standard), transform var(--duration-base) var(--ease-standard);
+      transition:
+        background-color var(--duration-base) var(--ease-standard),
+        transform var(--duration-base) var(--ease-standard);
     }
 
     &::-moz-range-thumb {
       background: var(--accent-9);
       border-radius: 50%;
       border: none;
-      transition: background-color var(--duration-base) var(--ease-standard), transform var(--duration-base) var(--ease-standard);
+      transition:
+        background-color var(--duration-base) var(--ease-standard),
+        transform var(--duration-base) var(--ease-standard);
     }
 
     &:hover:not(:disabled) {

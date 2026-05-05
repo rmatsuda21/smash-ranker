@@ -13,7 +13,10 @@ type Props = {
 };
 
 const formatCountryName = (name: string): string =>
-  name.replace(/\s*\([^)]*\)/g, "").replace(/\s+/g, " ").trim();
+  name
+    .replace(/\s*\([^)]*\)/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
 
 export const CountryDropDown = ({
   selectedCountry,
@@ -28,10 +31,13 @@ export const CountryDropDown = ({
         value: code,
         display: startCase(formatCountryName(name)),
         imageSrc: `/assets/flags/${code.toLowerCase()}.svg`,
-      })
+      }),
     );
 
-    return [{ id: "none", value: "", display: _(msg`None`) }, ...countryOptions];
+    return [
+      { id: "none", value: "", display: _(msg`None`) },
+      ...countryOptions,
+    ];
   }, [_]);
 
   const handleChange = (country: string) => {

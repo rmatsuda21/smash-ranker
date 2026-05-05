@@ -24,7 +24,9 @@
   border: 1px solid var(--border-strong);
   border-radius: var(--radius);
   background: transparent;
-  transition: background-color var(--duration-base) var(--ease-standard), border-color var(--duration-base) var(--ease-standard);
+  transition:
+    background-color var(--duration-base) var(--ease-standard),
+    border-color var(--duration-base) var(--ease-standard);
 
   &::before {
     content: "✓";

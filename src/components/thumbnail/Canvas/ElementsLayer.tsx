@@ -12,11 +12,7 @@ export const ElementsLayer = ({ elements, draggable }: Props) => {
   return (
     <Layer>
       {elements.map((element) => (
-        <ElementNode
-          key={element.id}
-          element={element}
-          draggable={draggable}
-        />
+        <ElementNode key={element.id} element={element} draggable={draggable} />
       ))}
     </Layer>
   );

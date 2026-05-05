@@ -29,7 +29,11 @@ export const AssetPickerButton = ({
         type="button"
         className={styles.preview}
         onClick={() => setIsOpen(true)}
-        aria-label={hasSrc ? `Change ${label.toLowerCase()}` : `Pick ${label.toLowerCase()}`}
+        aria-label={
+          hasSrc
+            ? `Change ${label.toLowerCase()}`
+            : `Pick ${label.toLowerCase()}`
+        }
       >
         {hasSrc ? (
           <>

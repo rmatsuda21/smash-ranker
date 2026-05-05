@@ -30,11 +30,7 @@ export const SortablePredictionItem = ({ player, rank, onRemove }: Props) => {
 
   return (
     <div ref={setNodeRef} style={style} className={styles.root}>
-      <button
-        className={styles.dragHandle}
-        {...attributes}
-        {...listeners}
-      >
+      <button className={styles.dragHandle} {...attributes} {...listeners}>
         <MdDragIndicator />
       </button>
       <span className={styles.rank} data-rank={rank}>
@@ -47,7 +43,10 @@ export const SortablePredictionItem = ({ player, rank, onRemove }: Props) => {
         {player.name}
       </span>
       <span className={styles.seed}>Seed {player.seed}</span>
-      <button className={styles.removeButton} onClick={() => onRemove(player.id)}>
+      <button
+        className={styles.removeButton}
+        onClick={() => onRemove(player.id)}
+      >
         <MdClose />
       </button>
     </div>

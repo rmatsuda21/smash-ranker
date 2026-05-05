@@ -5,7 +5,7 @@ import { useCanvasStore } from "@/store/canvasStore";
 export const PlayerSelector = () => {
   const playerCount = useCanvasStore((state) => state.design.players.length);
   const selectedPlayerIndex = usePlayerStore(
-    (state) => state.selectedPlayerIndex
+    (state) => state.selectedPlayerIndex,
   );
   const dispatch = usePlayerStore((state) => state.dispatch);
 

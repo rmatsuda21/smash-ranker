@@ -57,7 +57,9 @@ export const AltPicker = ({
       className={styles.picker}
       style={{ top: position.y, left: position.x }}
     >
-      <div className={styles.title}>{getCharacterDisplayName(charData.id, i18n.locale)}</div>
+      <div className={styles.title}>
+        {getCharacterDisplayName(charData.id, i18n.locale)}
+      </div>
       <div className={styles.alts}>
         {Array.from({ length: altCount }, (_, i) => (
           <button
@@ -85,6 +87,6 @@ export const AltPicker = ({
         ))}
       </div>
     </div>,
-    document.body
+    document.body,
   );
 };

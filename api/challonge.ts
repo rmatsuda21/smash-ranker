@@ -14,7 +14,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   const slug = req.query.slug as string;
   if (!slug) {
-    return res.status(400).json({ error: "Missing required query param: slug" });
+    return res
+      .status(400)
+      .json({ error: "Missing required query param: slug" });
   }
 
   const url = `${CHALLONGE_API_BASE}/tournaments/${slug}.json?api_key=${encodeURIComponent(apiKey)}&include_participants=1`;

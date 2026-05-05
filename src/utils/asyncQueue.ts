@@ -12,10 +12,12 @@ export const createAsyncQueue = (concurrency: number) => {
   return <T>(fn: () => Promise<T>): Promise<T> =>
     new Promise<T>((resolve, reject) => {
       queue.push(() => {
-        fn().then(resolve, reject).finally(() => {
-          running--;
-          next();
-        });
+        fn()
+          .then(resolve, reject)
+          .finally(() => {
+            running--;
+            next();
+          });
       });
       next();
     });

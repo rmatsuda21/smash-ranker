@@ -36,7 +36,7 @@ const PlayerTransformerLayer = memo(
     } | null>(null);
 
     const selectedPlayerIndex = usePlayerStore(
-      (state) => state.selectedPlayerIndex
+      (state) => state.selectedPlayerIndex,
     );
     const editable = useCanvasStore((state) => state.editable);
 
@@ -101,7 +101,7 @@ const PlayerTransformerLayer = memo(
         <Transformer name="player-transformer" ref={trRef} visible={editable} />
       </Layer>
     );
-  }
+  },
 );
 
 const noop = () => {};
@@ -123,20 +123,17 @@ const PlayerLayerComponent = ({ onReady }: { onReady?: () => void }) => {
   const playerLayouts = useCanvasStore((state) => state.design.players);
   const basePlayer = useCanvasStore((state) => state.design.basePlayer);
   const reversePlayerZOrder = useCanvasStore(
-    (state) => state.design.reversePlayerZOrder
+    (state) => state.design.reversePlayerZOrder,
   );
   const dynamicPlayerHeight = useCanvasStore(
-    (state) => state.design.dynamicPlayerHeight
+    (state) => state.design.dynamicPlayerHeight,
   );
   const canvasSize = useEffectiveCanvasSize();
   const colorPalette = useCanvasStore(
-    useShallow((state) => state.design.colorPalette)
+    useShallow((state) => state.design.colorPalette),
   );
 
-  const design = useMemo(
-    () => ({ colorPalette }),
-    [colorPalette]
-  );
+  const design = useMemo(() => ({ colorPalette }), [colorPalette]);
 
   const playerConfigs: PlayerDesign[] = useMemo(() => {
     if (dynamicPlayerHeight) {
@@ -206,7 +203,9 @@ const PlayerLayerComponent = ({ onReady }: { onReady?: () => void }) => {
       </Layer>
 
       {!mobile && <Layer ref={dragLayerRef}></Layer>}
-      {!mobile && <PlayerTransformerLayer players={players} mainLayerRef={mainLayerRef} />}
+      {!mobile && (
+        <PlayerTransformerLayer players={players} mainLayerRef={mainLayerRef} />
+      )}
     </>
   );
 };

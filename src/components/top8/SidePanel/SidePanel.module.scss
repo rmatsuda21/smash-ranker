@@ -74,7 +74,9 @@
   border: 1px solid var(--gray-9);
   color: var(--gray-4);
   border-radius: var(--radius-md);
-  transition: background-color var(--duration-fast) var(--ease-in-out), border-color var(--duration-fast) var(--ease-in-out),
+  transition:
+    background-color var(--duration-fast) var(--ease-in-out),
+    border-color var(--duration-fast) var(--ease-in-out),
     color var(--duration-fast) var(--ease-in-out);
 
   .icon {
@@ -117,7 +119,9 @@
       padding: var(--space-1);
       border-radius: var(--radius);
 
-      transition: background-color var(--duration-fast) var(--ease-in-out), color var(--duration-fast) var(--ease-in-out);
+      transition:
+        background-color var(--duration-fast) var(--ease-in-out),
+        color var(--duration-fast) var(--ease-in-out);
 
       svg {
         width: 20px;

@@ -17,7 +17,7 @@ import { elementCreators } from "./creators";
 
 export const countAsyncElements = (
   elements: ElementConfig[],
-  context: ElementFactoryContext
+  context: ElementFactoryContext,
 ): number => {
   let count = 0;
 
@@ -32,12 +32,12 @@ export const countAsyncElements = (
     if (element.type === "group") {
       count += countAsyncElements(
         (element as GroupElementConfig).elements,
-        context
+        context,
       );
     } else if (element.type === "flexGroup") {
       count += countAsyncElements(
         (element as FlexGroupElementConfig).elements,
-        context
+        context,
       );
     } else if (element.type === "altCharacterImage") {
       const player = context.player;
@@ -80,7 +80,7 @@ export const countAsyncElements = (
 
 export const injectAsyncCallbacks = (
   node: ReactNode,
-  tracker: AsyncLoadTracker
+  tracker: AsyncLoadTracker,
 ): ReactNode => {
   if (!isValidElement(node)) return node;
 
@@ -108,7 +108,7 @@ export const injectAsyncCallbacks = (
       {
         onReady: handleReady,
         onError: handleError,
-      }
+      },
     );
   }
 

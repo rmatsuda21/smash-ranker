@@ -91,7 +91,9 @@
   border-radius: var(--radius-sm);
   min-width: 28px;
   min-height: 28px;
-  transition: color var(--duration-base) var(--ease-standard), background var(--duration-base) var(--ease-standard);
+  transition:
+    color var(--duration-base) var(--ease-standard),
+    background var(--duration-base) var(--ease-standard);
 
   &:hover {
     color: var(--red-9, red);

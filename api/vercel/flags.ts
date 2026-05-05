@@ -24,10 +24,7 @@ const DEFINITIONS = {
   },
 };
 
-export default async function handler(
-  req: VercelRequest,
-  res: VercelResponse,
-) {
+export default async function handler(req: VercelRequest, res: VercelResponse) {
   const access = await verifyAccess(
     (req.headers["authorization"] as string | undefined) ?? null,
   );

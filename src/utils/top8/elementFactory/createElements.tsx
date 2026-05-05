@@ -14,7 +14,7 @@ import { injectAsyncCallbacks } from "./asyncTracking";
 
 export const createKonvaElementsInternal = (
   elements: ElementConfig[],
-  context: InternalContext
+  context: InternalContext,
 ): ReactNode[] => {
   const result: ReactNode[] = [];
   const containerSize = context.containerSize ?? { width: 100, height: 100 };
@@ -55,25 +55,25 @@ export const createKonvaElementsInternal = (
 
     const clipFunc = element.clip
       ? (ctx: SceneContext) => {
-        const co = element.clipOffset;
-        const cx = -(co?.left ?? 0);
-        const cy = -(co?.top ?? 0);
-        const clipWidth = clipToSelf
-          ? (element.size?.width ?? containerSize.width)
-          : containerSize.width;
-        const clipHeight = clipToSelf
-          ? (element.size?.height ?? containerSize.height)
-          : containerSize.height;
-        const cw = clipWidth + (co?.left ?? 0) + (co?.right ?? 0);
-        const ch = clipHeight + (co?.top ?? 0) + (co?.bottom ?? 0);
-        ctx.beginPath();
-        if (element.clipCornerRadius) {
-          ctx.roundRect(cx, cy, cw, ch, element.clipCornerRadius);
-        } else {
-          ctx.rect(cx, cy, cw, ch);
+          const co = element.clipOffset;
+          const cx = -(co?.left ?? 0);
+          const cy = -(co?.top ?? 0);
+          const clipWidth = clipToSelf
+            ? (element.size?.width ?? containerSize.width)
+            : containerSize.width;
+          const clipHeight = clipToSelf
+            ? (element.size?.height ?? containerSize.height)
+            : containerSize.height;
+          const cw = clipWidth + (co?.left ?? 0) + (co?.right ?? 0);
+          const ch = clipHeight + (co?.top ?? 0) + (co?.bottom ?? 0);
+          ctx.beginPath();
+          if (element.clipCornerRadius) {
+            ctx.roundRect(cx, cy, cw, ch, element.clipCornerRadius);
+          } else {
+            ctx.rect(cx, cy, cw, ch);
+          }
+          ctx.closePath();
         }
-        ctx.closePath();
-      }
       : undefined;
 
     const hasFilters =
@@ -82,13 +82,13 @@ export const createKonvaElementsInternal = (
     if (element.selectable && !disableSelectable) {
       const resetEl = isValidElement(createdEl)
         ? cloneElement(
-          createdEl as ReactElement<{
-            x?: number;
-            y?: number;
-            listening?: boolean;
-          }>,
-          { x: 0, y: 0, listening: false }
-        )
+            createdEl as ReactElement<{
+              x?: number;
+              y?: number;
+              listening?: boolean;
+            }>,
+            { x: 0, y: 0, listening: false },
+          )
         : createdEl;
 
       const childContent = hasFilters ? (
@@ -116,7 +116,7 @@ export const createKonvaElementsInternal = (
           name={element.name ?? `element-${index}`}
         >
           {childContent}
-        </SelectableElement>
+        </SelectableElement>,
       );
     } else {
       const isContainer =
@@ -131,7 +131,10 @@ export const createKonvaElementsInternal = (
           cloneProps.y = 0;
         }
         const el = isValidElement(createdEl)
-          ? cloneElement(createdEl as ReactElement<typeof cloneProps>, cloneProps)
+          ? cloneElement(
+              createdEl as ReactElement<typeof cloneProps>,
+              cloneProps,
+            )
           : createdEl;
 
         result.push(
@@ -145,23 +148,23 @@ export const createKonvaElementsInternal = (
             filtersConfig={element.filterEffects}
           >
             {el}
-          </FilteredElement>
+          </FilteredElement>,
         );
       } else {
         const el = isValidElement(createdEl)
           ? cloneElement(createdEl as ReactElement<{ listening?: boolean }>, {
-            key: createdEl.key ?? element.id ?? `el-${element.type}-${index}`,
-            listening: isContainer,
-          })
+              key: createdEl.key ?? element.id ?? `el-${element.type}-${index}`,
+              listening: isContainer,
+            })
           : createdEl;
 
         if (clipFunc) {
           if (clipToSelf) {
             const resetEl = isValidElement(el)
-              ? cloneElement(
-                el as ReactElement<{ x?: number; y?: number }>,
-                { x: 0, y: 0 }
-              )
+              ? cloneElement(el as ReactElement<{ x?: number; y?: number }>, {
+                  x: 0,
+                  y: 0,
+                })
               : el;
             result.push(
               <Group
@@ -173,7 +176,7 @@ export const createKonvaElementsInternal = (
                 draggable={isEditable}
               >
                 {resetEl}
-              </Group>
+              </Group>,
             );
           } else {
             result.push(
@@ -184,7 +187,7 @@ export const createKonvaElementsInternal = (
                 draggable={isEditable}
               >
                 {el}
-              </Group>
+              </Group>,
             );
           }
         } else {

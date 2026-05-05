@@ -20,6 +20,6 @@ export const Modal = ({
       </div>
     ) : null,
     document.getElementById("root")!.children[0] ||
-      document.getElementById("root")!
+      document.getElementById("root")!,
   );
 };

@@ -15,7 +15,7 @@ export const FontOption = memo(({ option }: Props) => {
   const [error, setError] = useState(false);
   const fontFamily = option.value;
   const font = useFontStore((state) =>
-    Array.from(state.fonts).find((f) => f.fontFamily === fontFamily)
+    Array.from(state.fonts).find((f) => f.fontFamily === fontFamily),
   );
   const isCustom = font?.isCustom ?? false;
   const fontId = font?.id;
@@ -36,7 +36,7 @@ export const FontOption = memo(({ option }: Props) => {
     }
 
     const existingLink = document.querySelector(
-      `link[data-font-preview="${fontFamily}"]`
+      `link[data-font-preview="${fontFamily}"]`,
     );
     if (existingLink) {
       setLoaded(true);

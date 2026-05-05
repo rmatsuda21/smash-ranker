@@ -70,7 +70,11 @@ async function fetchCompetition(slug: string) {
   if (!competition) throw new Error("Competition not found");
 
   // Step 2: Try to get placements via tournament -> blocks -> podium
-  const placements: Array<{ place: number; displayName: string; playerId: string }> = [];
+  const placements: Array<{
+    place: number;
+    displayName: string;
+    playerId: string;
+  }> = [];
   const tournaments = competition.tournaments ?? [];
   const tournamentStyles: string[] = tournaments
     .map((t: any) => t.style)
@@ -101,7 +105,8 @@ async function fetchCompetition(slug: string) {
       slug,
     );
 
-    const blocks = (blocksData as any).data?.competition?.tournament?.blocks?.edges ?? [];
+    const blocks =
+      (blocksData as any).data?.competition?.tournament?.blocks?.edges ?? [];
     blockCount = blocks.length;
 
     if (blocks.length > 0) {
@@ -141,7 +146,9 @@ async function fetchCompetition(slug: string) {
         slug,
       );
 
-      const podiumEdges = (podiumData as any).data?.competition?.tournament?.block?.podium?.edges ?? [];
+      const podiumEdges =
+        (podiumData as any).data?.competition?.tournament?.block?.podium
+          ?.edges ?? [];
 
       for (const edge of podiumEdges) {
         const node = edge.node;
@@ -190,7 +197,12 @@ async function fetchCompetition(slug: string) {
 
   const publicComp = (publicData as any).data?.competition;
 
-  const participants: Array<{ playerId: string; name: string; countryCode?: string; gameCode?: string }> = [];
+  const participants: Array<{
+    playerId: string;
+    name: string;
+    countryCode?: string;
+    gameCode?: string;
+  }> = [];
   const participantEdges = publicComp?.participants?.edges ?? [];
 
   for (const edge of participantEdges) {

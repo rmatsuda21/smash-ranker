@@ -23,7 +23,7 @@ const CharacterEditorComponent = ({
   const [characterIndex, setCharacterIndex] = useState(0);
   const selectedCharacter = useMemo(
     () => characters[characterIndex],
-    [characters, characterIndex]
+    [characters, characterIndex],
   );
 
   useEffect(() => {
@@ -40,8 +40,8 @@ const CharacterEditorComponent = ({
 
     onCharactersChange(
       characters.map((char, i) =>
-        i === characterIndex ? { id: characterId, alt: 0 } : char
-      )
+        i === characterIndex ? { id: characterId, alt: 0 } : char,
+      ),
     );
   };
 
@@ -50,8 +50,8 @@ const CharacterEditorComponent = ({
 
     onCharactersChange(
       characters.map((char, i) =>
-        i === characterIndex ? { id: selectedCharacter.id, alt } : char
-      )
+        i === characterIndex ? { id: selectedCharacter.id, alt } : char,
+      ),
     );
   };
 
@@ -87,5 +87,5 @@ export const CharacterEditor = memo(
       prevProps.onCharactersChange === nextProps.onCharactersChange &&
       prevProps.className === nextProps.className
     );
-  }
+  },
 );

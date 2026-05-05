@@ -12,7 +12,7 @@ type Props = {
 export const ElementPanel = ({ className }: Props) => {
   const tournamentLayout = useCanvasStore((state) => state.design.tournament);
   const selectedElementIndex = useTournamentStore(
-    (state) => state.selectedElementIndex
+    (state) => state.selectedElementIndex,
   );
   const canvasDispatch = useCanvasStore((state) => state.dispatch);
   const tournamentDispatch = useTournamentStore((state) => state.dispatch);
@@ -24,7 +24,7 @@ export const ElementPanel = ({ className }: Props) => {
         payload: element,
       });
     },
-    [canvasDispatch]
+    [canvasDispatch],
   );
 
   const handleElementSelect = useCallback(
@@ -34,7 +34,7 @@ export const ElementPanel = ({ className }: Props) => {
         payload: index,
       });
     },
-    [tournamentDispatch]
+    [tournamentDispatch],
   );
 
   const handleUpdateElement = useCallback(
@@ -44,7 +44,7 @@ export const ElementPanel = ({ className }: Props) => {
         payload: { index: selectedElementIndex, element },
       });
     },
-    [canvasDispatch, selectedElementIndex]
+    [canvasDispatch, selectedElementIndex],
   );
 
   return (

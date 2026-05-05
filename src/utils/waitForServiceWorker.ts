@@ -12,7 +12,7 @@ const waitForController = (): Promise<void> => {
         clearTimeout(timeout);
         resolve();
       },
-      { once: true }
+      { once: true },
     );
   });
 };
@@ -25,7 +25,7 @@ const requestClaim = (registration: ServiceWorkerRegistration): void => {
 };
 
 const waitForActivation = (
-  registration: ServiceWorkerRegistration
+  registration: ServiceWorkerRegistration,
 ): Promise<void> => {
   const sw = registration.installing ?? registration.waiting;
   if (!sw) return Promise.resolve();
@@ -53,9 +53,8 @@ export const registerServiceWorker = async (): Promise<void> => {
   }
 
   try {
-    const registration = await navigator.serviceWorker.register(
-      "/idb-image-sw.js"
-    );
+    const registration =
+      await navigator.serviceWorker.register("/idb-image-sw.js");
     console.log("[IDB Image SW] Registered:", registration.scope);
 
     if (registration.active) {

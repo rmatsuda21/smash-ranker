@@ -21,7 +21,9 @@ export const CharacterPool = ({ imageMode, onCharacterContextMenu }: Props) => {
 
   return (
     <div className={styles.poolWrapper}>
-      <h3 className={styles.title}><Trans>Character Collection</Trans></h3>
+      <h3 className={styles.title}>
+        <Trans>Character Collection</Trans>
+      </h3>
       <SortableContext id="pool" items={pool} strategy={rectSortingStrategy}>
         <div className={styles.scrollContainer}>
           <div ref={setNodeRef} className={styles.pool}>
@@ -41,7 +43,9 @@ export const CharacterPool = ({ imageMode, onCharacterContextMenu }: Props) => {
           <div className={styles.scrollZone} />
         </div>
       </SortableContext>
-      <div className={styles.scrollZoneLabel}><Trans>← swipe to scroll →</Trans></div>
+      <div className={styles.scrollZoneLabel}>
+        <Trans>← swipe to scroll →</Trans>
+      </div>
     </div>
   );
 };

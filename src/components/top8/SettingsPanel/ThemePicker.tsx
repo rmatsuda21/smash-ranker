@@ -24,7 +24,7 @@ const THEMES: {
 export const ThemePicker = () => {
   const { _ } = useLingui();
   const [currentTheme, setCurrentTheme] = useState<Theme>(
-    () => (Cookies.get(COOKIES.THEME) as Theme) || "dark"
+    () => (Cookies.get(COOKIES.THEME) as Theme) || "dark",
   );
 
   useEffect(() => {

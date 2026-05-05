@@ -31,7 +31,7 @@ const whenCatalogReady = (): Promise<void> => {
 const injectCanvasCss = (family: string, cssUrl: string): Promise<void> =>
   new Promise((resolve, reject) => {
     const existing = document.querySelector(
-      `link[data-canvas-font="${family}"]`
+      `link[data-canvas-font="${family}"]`,
     );
     if (existing) {
       resolve();
@@ -75,10 +75,11 @@ export const pickWeight = (family: string, requested: number): number =>
 export const composeFontStyle = (
   family: string,
   fontWeight: number | string | undefined,
-  fontStyleRaw: string | undefined
+  fontStyleRaw: string | undefined,
 ): string => {
   const styleLower = fontStyleRaw?.toLowerCase() ?? "";
-  const isItalic = styleLower.includes("italic") || styleLower.includes("oblique");
+  const isItalic =
+    styleLower.includes("italic") || styleLower.includes("oblique");
 
   let requested: number;
   if (typeof fontWeight === "number") {
@@ -103,7 +104,7 @@ export const composeFontStyle = (
 
 export const registerCustomFamily = (
   family: string,
-  weights: number[] = [400]
+  weights: number[] = [400],
 ): void => {
   customFamilies.set(family, weights);
   fullyLoaded.add(family);
@@ -121,7 +122,7 @@ export const unregisterCustomFamily = (family: string): void => {
 // FontFace registration timing inside the FontFaceSet.
 const loadAllWeights = async (
   family: string,
-  weights: number[]
+  weights: number[],
 ): Promise<void> => {
   if (weights.length === 0) {
     try {
@@ -138,8 +139,8 @@ const loadAllWeights = async (
         .load(`${weight} 16px "${family}"`, SAMPLE_TEXT)
         .catch(() => {
           /* individual weight failures shouldn't block the rest */
-        })
-    )
+        }),
+    ),
   );
 };
 

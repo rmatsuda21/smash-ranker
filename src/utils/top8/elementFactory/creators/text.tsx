@@ -20,7 +20,7 @@ export const createTextElement: ElementCreator<TextElementConfig> = ({
   const resolvedText = resolveText(
     element.textId,
     element.text,
-    design?.textPalette
+    design?.textPalette,
   );
   let text = replacePlaceholders(resolvedText, context);
   if (element.textTransform === "uppercase") text = text.toUpperCase();
@@ -29,7 +29,7 @@ export const createTextElement: ElementCreator<TextElementConfig> = ({
   const fontStyle = composeFontStyle(
     fontFamily,
     element.fontWeight,
-    element.fontStyle
+    element.fontStyle,
   );
 
   return (
@@ -53,7 +53,7 @@ export const createTextElement: ElementCreator<TextElementConfig> = ({
       shadowOpacity={element.shadowOpacity}
       stroke={resolveColor(
         element.stroke as string | undefined,
-        design?.colorPalette
+        design?.colorPalette,
       )}
       strokeWidth={element.strokeWidth}
       perfectDrawEnabled={context.perfectDraw}
@@ -70,7 +70,7 @@ export const createSmartTextElement: ElementCreator<SmartTextElementConfig> = ({
   const resolvedText = resolveText(
     element.textId,
     element.text,
-    design?.textPalette
+    design?.textPalette,
   );
   let text = replacePlaceholders(resolvedText, context);
   if (element.textTransform === "uppercase") text = text.toUpperCase();
@@ -79,7 +79,7 @@ export const createSmartTextElement: ElementCreator<SmartTextElementConfig> = ({
   const fontStyle = composeFontStyle(
     fontFamily,
     element.fontWeight,
-    element.fontStyle
+    element.fontStyle,
   );
 
   return (
@@ -103,11 +103,10 @@ export const createSmartTextElement: ElementCreator<SmartTextElementConfig> = ({
       shadowOpacity={element.shadowOpacity}
       stroke={resolveColor(
         element.stroke as string | undefined,
-        design?.colorPalette
+        design?.colorPalette,
       )}
       strokeWidth={element.strokeWidth}
       perfectDrawEnabled={context.perfectDraw}
     />
   );
 };
-

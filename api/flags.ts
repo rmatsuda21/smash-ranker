@@ -16,10 +16,7 @@ type DebugEntry = {
   errorMessage?: string;
 };
 
-export default async function handler(
-  req: VercelRequest,
-  res: VercelResponse,
-) {
+export default async function handler(req: VercelRequest, res: VercelResponse) {
   // Cache briefly at the edge so every page nav doesn't hammer the function,
   // but stay responsive to dashboard toggles.
   res.setHeader(
@@ -54,10 +51,7 @@ export default async function handler(
         // value undefined when the flag can't be resolved (cold start, missing
         // from embedded snapshot, etc.). The returned object always carries
         // `reason` and optionally `errorMessage` for diagnostics.
-        const result = await flagsClient.evaluate<boolean>(
-          key,
-          DEFAULTS[key],
-        );
+        const result = await flagsClient.evaluate<boolean>(key, DEFAULTS[key]);
         out[key] = Boolean(result.value);
         debugInfo[key] = {
           value: out[key],

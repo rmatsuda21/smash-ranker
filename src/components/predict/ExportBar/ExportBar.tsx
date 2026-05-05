@@ -55,7 +55,9 @@ export const ExportBar = ({ blob }: Props) => {
         className={copied ? styles.copied : undefined}
       >
         <span className={styles.copyLabel}>
-          <span className={`${styles.copyInner} ${copied ? styles.hidden : ""}`}>
+          <span
+            className={`${styles.copyInner} ${copied ? styles.hidden : ""}`}
+          >
             <FaCopy />
             <Trans>Copy</Trans>
           </span>

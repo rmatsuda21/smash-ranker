@@ -54,7 +54,7 @@ export const useTooltip = ({ tooltip, delay = DEFAULT_DELAY }: Options) => {
         }, delay);
       }
     },
-    [tooltip, delay]
+    [tooltip, delay],
   );
 
   const handleMouseLeave = useCallback(() => {

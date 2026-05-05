@@ -37,10 +37,10 @@ const ACCENT_COLORS: {
 export const AccentColorPicker = () => {
   const { _ } = useLingui();
   const [currentAccent, setCurrentAccent] = useState<AccentColor>(
-    () => (Cookies.get(COOKIES.ACCENT_COLOR) as AccentColor) || "pink"
+    () => (Cookies.get(COOKIES.ACCENT_COLOR) as AccentColor) || "pink",
   );
   const [customHex, setCustomHex] = useState(
-    () => Cookies.get(COOKIES.CUSTOM_ACCENT_COLOR) || "#ff6600"
+    () => Cookies.get(COOKIES.CUSTOM_ACCENT_COLOR) || "#ff6600",
   );
   const [tooltipRef, tooltip] = useTooltip();
 

@@ -30,7 +30,7 @@ export const TextEditor = ({ className }: Props) => {
           payload: { id, value: { text, name } },
         });
       }, DEBOUNCE_TIME),
-    [dispatch]
+    [dispatch],
   );
 
   const handleTextChange = (id: string, text: string, name: string) => {
@@ -56,9 +56,7 @@ export const TextEditor = ({ className }: Props) => {
     <div className={cn(className, styles.textEditor)}>
       <div className={styles.description}>
         <p>
-          <Trans>
-            Edit the text content displayed in your graphic.
-          </Trans>
+          <Trans>Edit the text content displayed in your graphic.</Trans>
         </p>
       </div>
 
@@ -66,16 +64,16 @@ export const TextEditor = ({ className }: Props) => {
         {Object.entries(textPalette).map(([id, { text, name }]) => {
           const translatedName = i18n._(name);
           return (
-          <div key={id} className={styles.item}>
-            <span className={styles.label}>
-              <TransRuntime id={name} message={name} />
-            </span>
-            <RichTextInput
-              value={text}
-              onChange={(newText) => handleTextChange(id, newText, name)}
-              placeholder={_(msg`Enter ${translatedName.toLowerCase()}...`)}
-            />
-          </div>
+            <div key={id} className={styles.item}>
+              <span className={styles.label}>
+                <TransRuntime id={name} message={name} />
+              </span>
+              <RichTextInput
+                value={text}
+                onChange={(newText) => handleTextChange(id, newText, name)}
+                placeholder={_(msg`Enter ${translatedName.toLowerCase()}...`)}
+              />
+            </div>
           );
         })}
       </div>

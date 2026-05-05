@@ -95,7 +95,7 @@ const createStore = (db: IDBPDatabase<Top8DB>, name: StoreName) => {
 const validateStore = (
   db: IDBPDatabase<Top8DB>,
   transaction: UpgradeTransaction,
-  name: StoreName
+  name: StoreName,
 ) => {
   const config = STORE_CONFIGS[name];
 
@@ -119,7 +119,7 @@ const createAllStores = (db: IDBPDatabase<Top8DB>) => {
 
 const validateAllStores = (
   db: IDBPDatabase<Top8DB>,
-  transaction: UpgradeTransaction
+  transaction: UpgradeTransaction,
 ) => {
   for (const name of EXPECTED_STORES) {
     validateStore(db, transaction, name);
@@ -129,7 +129,7 @@ const validateAllStores = (
 const performUpgrade = (
   db: IDBPDatabase<Top8DB>,
   oldVersion: number,
-  transaction: UpgradeTransaction
+  transaction: UpgradeTransaction,
 ) => {
   console.log(`Upgrading database from version ${oldVersion} to ${DB_VERSION}`);
 
@@ -157,7 +157,7 @@ const deleteAndRecreateDatabase = async (): Promise<IDBPDatabase<Top8DB>> => {
   await deleteDB(DB_NAME, {
     blocked() {
       console.warn(
-        "Database deletion blocked. Please close other tabs using this app."
+        "Database deletion blocked. Please close other tabs using this app.",
       );
     },
   });
@@ -177,7 +177,7 @@ const openDatabase = async (): Promise<IDBPDatabase<Top8DB>> => {
       },
       blocked() {
         console.warn(
-          "Database upgrade blocked. Please close other tabs using this app."
+          "Database upgrade blocked. Please close other tabs using this app.",
         );
       },
       blocking() {

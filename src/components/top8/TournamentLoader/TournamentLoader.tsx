@@ -57,7 +57,7 @@ export const TournamentLoader = ({ className }: Props) => {
     useConfirmation(loadTournament, {
       title: _(msg`Load Tournament?`),
       description: _(
-        msg`Any current player and tournament data will be overwritten.`
+        msg`Any current player and tournament data will be overwritten.`,
       ),
       cookieName: COOKIES.NEEDS_TOURNAMENT_LOAD_CONFIRMATION,
     });
@@ -95,11 +95,7 @@ export const TournamentLoader = ({ className }: Props) => {
           value={url}
           onChange={(e) => setUrl(e.currentTarget.value)}
         />
-        <Button
-          loading={isFetching}
-          disabled={!isValid}
-          onClick={confirmLoad}
-        >
+        <Button loading={isFetching} disabled={!isValid} onClick={confirmLoad}>
           {_(msg`Load`)}
         </Button>
       </div>

@@ -165,9 +165,13 @@ const reducer = (
         return {
           design: {
             ...state.design,
-            elements: updateElementInTree(state.design.elements, ctx.parent.id, {
-              children: siblings,
-            } as Partial<ThumbnailElement>),
+            elements: updateElementInTree(
+              state.design.elements,
+              ctx.parent.id,
+              {
+                children: siblings,
+              } as Partial<ThumbnailElement>,
+            ),
           },
         };
       }
@@ -213,27 +217,39 @@ const reducer = (
       return {
         design: {
           ...state.design,
-          elements: updateElementInTree(state.design.elements, action.payload.id, {
-            visible: action.payload.visible,
-          } as Partial<ThumbnailElement>),
+          elements: updateElementInTree(
+            state.design.elements,
+            action.payload.id,
+            {
+              visible: action.payload.visible,
+            } as Partial<ThumbnailElement>,
+          ),
         },
       };
     case "SET_LOCKED":
       return {
         design: {
           ...state.design,
-          elements: updateElementInTree(state.design.elements, action.payload.id, {
-            locked: action.payload.locked,
-          } as Partial<ThumbnailElement>),
+          elements: updateElementInTree(
+            state.design.elements,
+            action.payload.id,
+            {
+              locked: action.payload.locked,
+            } as Partial<ThumbnailElement>,
+          ),
         },
       };
     case "RENAME_ELEMENT":
       return {
         design: {
           ...state.design,
-          elements: updateElementInTree(state.design.elements, action.payload.id, {
-            name: action.payload.name,
-          } as Partial<ThumbnailElement>),
+          elements: updateElementInTree(
+            state.design.elements,
+            action.payload.id,
+            {
+              name: action.payload.name,
+            } as Partial<ThumbnailElement>,
+          ),
         },
       };
     case "GROUP_ELEMENTS": {
@@ -245,7 +261,8 @@ const reducer = (
       const remaining = top.filter((el) => !ids.includes(el.id));
       const bbox = computeBoundingBox(toGroup);
       const groupChildren = toGroup.map(
-        (el) => ({ ...el, x: el.x - bbox.x, y: el.y - bbox.y }) as ThumbnailElement,
+        (el) =>
+          ({ ...el, x: el.x - bbox.x, y: el.y - bbox.y }) as ThumbnailElement,
       );
       const insertIndex = top.findIndex((el) => ids.includes(el.id));
       const newGroup: GroupElement = {
@@ -290,9 +307,13 @@ const reducer = (
       return {
         design: {
           ...state.design,
-          elements: updateElementInTree(state.design.elements, action.payload.id, {
-            name: action.payload.name,
-          } as Partial<ThumbnailElement>),
+          elements: updateElementInTree(
+            state.design.elements,
+            action.payload.id,
+            {
+              name: action.payload.name,
+            } as Partial<ThumbnailElement>,
+          ),
         },
       };
     default:
@@ -330,9 +351,7 @@ const applyHistoryEntry = (
     case "THUMBNAIL_ELEMENT_ADD": {
       const payload = data as AddPayload | null;
       if (isUndo) {
-        const undoIds = new Set([
-          (entry.redoData as AddPayload).element.id,
-        ]);
+        const undoIds = new Set([(entry.redoData as AddPayload).element.id]);
         return {
           design: {
             ...state.design,
@@ -418,7 +437,9 @@ const applyHistoryEntry = (
       };
     }
     case "THUMBNAIL_STRUCTURE": {
-      return { design: { ...state.design, elements: data as StructuralSnapshot } };
+      return {
+        design: { ...state.design, elements: data as StructuralSnapshot },
+      };
     }
     default:
       return state;
@@ -472,7 +493,8 @@ const migrateFromFlatGroupId = (
     const justEls = members.map((m) => m.el);
     const bbox = computeBoundingBox(justEls);
     const childrenRel = justEls.map(
-      (el) => ({ ...el, x: el.x - bbox.x, y: el.y - bbox.y }) as ThumbnailElement,
+      (el) =>
+        ({ ...el, x: el.x - bbox.x, y: el.y - bbox.y }) as ThumbnailElement,
     );
     const group: GroupElement = {
       id: gid,
@@ -583,7 +605,15 @@ export const allElementsFlat = (design: ThumbnailDesign) =>
 
 type ElementSnapshot = Pick<
   ThumbnailElement,
-  "id" | "x" | "y" | "width" | "height" | "rotation" | "opacity" | "visible" | "locked"
+  | "id"
+  | "x"
+  | "y"
+  | "width"
+  | "height"
+  | "rotation"
+  | "opacity"
+  | "visible"
+  | "locked"
 >;
 export type { ElementSnapshot };
 

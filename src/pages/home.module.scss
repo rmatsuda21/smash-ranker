@@ -138,39 +138,28 @@
 .orb1 {
   width: 500px;
   height: 380px;
-  background: radial-gradient(
-      ellipse at 30% 40%,
-      var(--accent-7) 0%,
-      transparent 60%
-    ),
-    radial-gradient(
-      ellipse at 70% 70%,
-      var(--accent-4) 0%,
-      transparent 55%
-    ),
+  background:
+    radial-gradient(ellipse at 30% 40%, var(--accent-7) 0%, transparent 60%),
+    radial-gradient(ellipse at 70% 70%, var(--accent-4) 0%, transparent 55%),
     radial-gradient(ellipse at 50% 20%, var(--accent-9) 0%, transparent 50%);
   top: 5%;
   left: -120px;
-  animation: float1 10s ease-in-out infinite, morphBlob 14s ease-in-out infinite;
+  animation:
+    float1 10s ease-in-out infinite,
+    morphBlob 14s ease-in-out infinite;
 }
 
 .orb2 {
   width: 420px;
   height: 320px;
-  background: radial-gradient(
-      ellipse at 60% 30%,
-      var(--accent-5) 0%,
-      transparent 55%
-    ),
-    radial-gradient(
-      ellipse at 25% 65%,
-      var(--accent-8) 0%,
-      transparent 50%
-    ),
+  background:
+    radial-gradient(ellipse at 60% 30%, var(--accent-5) 0%, transparent 55%),
+    radial-gradient(ellipse at 25% 65%, var(--accent-8) 0%, transparent 50%),
     radial-gradient(ellipse at 70% 80%, var(--accent-3) 0%, transparent 60%);
   bottom: 0%;
   right: -100px;
-  animation: float2 13s ease-in-out infinite,
+  animation:
+    float2 13s ease-in-out infinite,
     morphBlob 16s ease-in-out infinite reverse;
 }
 

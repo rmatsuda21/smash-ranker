@@ -24,9 +24,9 @@ type Props = {
 
 export const NavOverlay = ({ isOpen, onClose }: Props) => {
   const [location] = useLocation();
-  const [renderState, setRenderState] = useState<
-    "closed" | "open" | "closing"
-  >("closed");
+  const [renderState, setRenderState] = useState<"closed" | "open" | "closing">(
+    "closed",
+  );
   const firstLinkRef = useRef<HTMLAnchorElement>(null);
   const closeTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const thumbnailEnabled = useFeatureFlag("thumbnail-enabled");
@@ -46,10 +46,7 @@ export const NavOverlay = ({ isOpen, onClose }: Props) => {
       setRenderState("open");
     } else if (renderState === "open") {
       setRenderState("closing");
-      closeTimerRef.current = setTimeout(
-        () => setRenderState("closed"),
-        200,
-      );
+      closeTimerRef.current = setTimeout(() => setRenderState("closed"), 200);
     }
   }, [isOpen, renderState]);
 

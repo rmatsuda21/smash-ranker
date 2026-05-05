@@ -18,24 +18,24 @@ const BackgroundLayerComponent = ({ onClick, onReady }: Props) => {
   onReadyRef.current = onReady;
 
   const backgroundElements = useCanvasStore(
-    (state) => state.design.background.elements
+    (state) => state.design.background.elements,
   );
   const colorPalette = useCanvasStore(
-    useShallow((state) => state.design.colorPalette)
+    useShallow((state) => state.design.colorPalette),
   );
   const bgAssetId = useCanvasStore((state) => state.design.bgAssetId);
   const bgImageDarkness = useCanvasStore(
-    (state) => state.design.bgImageDarkness
+    (state) => state.design.bgImageDarkness,
   );
   const originalCanvasSize = useCanvasStore(
-    useShallow((state) => state.design.canvasSize)
+    useShallow((state) => state.design.canvasSize),
   );
   const effectiveCanvasSize = useEffectiveCanvasSize();
   const selectedFont = useFontStore((state) => state.selectedFont);
 
   const design = useMemo(
     () => ({ colorPalette, bgAssetId, bgImageDarkness }),
-    [colorPalette, bgAssetId, bgImageDarkness]
+    [colorPalette, bgAssetId, bgImageDarkness],
   );
 
   const stableOnReady = useMemo(() => () => onReadyRef.current?.(), []);
@@ -46,11 +46,18 @@ const BackgroundLayerComponent = ({ onClick, onReady }: Props) => {
       return backgroundElements;
     return backgroundElements.map((el: ElementConfig) => {
       if (el.type === "rect" && el.size?.height === originalCanvasSize.height) {
-        return { ...el, size: { ...el.size, height: effectiveCanvasSize.height } };
+        return {
+          ...el,
+          size: { ...el.size, height: effectiveCanvasSize.height },
+        };
       }
       return el;
     });
-  }, [backgroundElements, originalCanvasSize.height, effectiveCanvasSize.height]);
+  }, [
+    backgroundElements,
+    originalCanvasSize.height,
+    effectiveCanvasSize.height,
+  ]);
 
   const konvaElements = useMemo(
     () =>
@@ -61,9 +68,15 @@ const BackgroundLayerComponent = ({ onClick, onReady }: Props) => {
           design,
           fontFamily: selectedFont,
         },
-        { onAllReady: stableOnReady }
+        { onAllReady: stableOnReady },
       ),
-    [adjustedElements, design, effectiveCanvasSize, selectedFont, stableOnReady]
+    [
+      adjustedElements,
+      design,
+      effectiveCanvasSize,
+      selectedFont,
+      stableOnReady,
+    ],
   );
 
   return (

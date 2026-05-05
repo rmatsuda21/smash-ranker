@@ -48,7 +48,7 @@ const PlayerItem = ({
 export const PlayerList = ({ className }: Props) => {
   const players = usePlayerStore((state) => state.players);
   const selectedPlayerIndex = usePlayerStore(
-    (state) => state.selectedPlayerIndex
+    (state) => state.selectedPlayerIndex,
   );
   const dispatch = usePlayerStore((state) => state.dispatch);
 

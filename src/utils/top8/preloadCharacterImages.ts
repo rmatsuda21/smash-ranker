@@ -15,7 +15,7 @@ const preloadBatch = async (urls: string[]): Promise<void> => {
         urls.map(async (url) => {
           const cached = await cache.match(url);
           if (!cached) uncachedUrls.push(url);
-        })
+        }),
       );
 
       if (uncachedUrls.length > 0) {
@@ -29,14 +29,14 @@ const preloadBatch = async (urls: string[]): Promise<void> => {
 
   await Promise.all(
     urls.map((url) =>
-      fetch(url, { priority: "low" } as RequestInit).catch(() => {})
-    )
+      fetch(url, { priority: "low" } as RequestInit).catch(() => {}),
+    ),
   );
 };
 
 const scheduleIdleWork = (
   callback: () => void,
-  timeout = 2000
+  timeout = 2000,
 ): Promise<void> => {
   return new Promise((resolve) => {
     if ("requestIdleCallback" in window) {
@@ -45,7 +45,7 @@ const scheduleIdleWork = (
           callback();
           resolve();
         },
-        { timeout }
+        { timeout },
       );
     } else {
       // Fallback for Safari
@@ -63,7 +63,7 @@ export const preloadCharacterImages = async (): Promise<void> => {
       characterId: character.id,
       alt: 0 as CharacerData["alt"],
       type: "stock",
-    })
+    }),
   );
 
   for (let i = 0; i < urls.length; i += BATCH_SIZE) {

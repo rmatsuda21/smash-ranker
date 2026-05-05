@@ -6,10 +6,7 @@ import { NUDGE_PX, NUDGE_PX_LARGE } from "@/consts/thumbnail/defaults";
 import { ThumbnailElement } from "@/types/thumbnail/ThumbnailDesign";
 import { uuid } from "@/utils/thumbnail/uuid";
 import { getSelectedGroupIds } from "@/utils/thumbnail/groups";
-import {
-  findElement,
-  flattenTree,
-} from "@/utils/thumbnail/elementTree";
+import { findElement, flattenTree } from "@/utils/thumbnail/elementTree";
 
 const isEditableElement = (target: EventTarget | null) => {
   if (!(target instanceof HTMLElement)) return false;
@@ -114,7 +111,9 @@ export const KeyboardShortcuts = () => {
         if (selectedIds.length === 0) return;
         e.preventDefault();
         const beforeIds = storeState.design.elements.map((el) => el.id);
-        const idSet = new Set(selectedIds.filter((id) => beforeIds.includes(id)));
+        const idSet = new Set(
+          selectedIds.filter((id) => beforeIds.includes(id)),
+        );
         if (idSet.size === 0) return;
         const nextIds =
           e.key === "]"
@@ -144,7 +143,10 @@ export const KeyboardShortcuts = () => {
         return;
       }
 
-      if ((e.key === "Delete" || e.key === "Backspace") && selectedIds.length > 0) {
+      if (
+        (e.key === "Delete" || e.key === "Backspace") &&
+        selectedIds.length > 0
+      ) {
         e.preventDefault();
         const before = storeState.design.elements;
         storeState.dispatch({
@@ -178,7 +180,8 @@ export const KeyboardShortcuts = () => {
         const elementMap = new Map(elementsAll.map((el) => [el.id, el]));
         const updates = selectedIds
           .map((id) => {
-            const el = elementMap.get(id) ?? findElement(storeState.design.elements, id);
+            const el =
+              elementMap.get(id) ?? findElement(storeState.design.elements, id);
             return el
               ? {
                   id,

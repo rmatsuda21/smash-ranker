@@ -54,9 +54,7 @@ export const InlineTextEditor = ({
     fontWeight: isBold ? "bold" : "normal",
     fontStyle: isItalic ? "italic" : "normal",
     color: element.fill,
-    letterSpacing: element.letterSpacing
-      ? `${element.letterSpacing}px`
-      : "0",
+    letterSpacing: element.letterSpacing ? `${element.letterSpacing}px` : "0",
     lineHeight: element.lineHeight ?? 1,
     textAlign: element.align,
   };

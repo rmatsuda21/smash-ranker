@@ -7,7 +7,10 @@ export interface ElementFactoryContext {
   fontFamily?: string;
   player?: PlayerInfo;
   tournament?: TournamentInfo;
-  design?: Pick<Design, "colorPalette" | "textPalette" | "bgAssetId" | "bgImageDarkness">;
+  design?: Pick<
+    Design,
+    "colorPalette" | "textPalette" | "bgAssetId" | "bgImageDarkness"
+  >;
   containerSize?: { width: number; height: number };
   onElementSelect?: () => void;
   options?: {

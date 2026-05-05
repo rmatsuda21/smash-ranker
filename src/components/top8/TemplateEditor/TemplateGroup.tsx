@@ -55,9 +55,7 @@ export const TemplateGroup = ({
             template={template}
             onClick={() => onTemplateClick(template.id)}
             onDelete={
-              onDeleteTemplate
-                ? () => onDeleteTemplate(template.id)
-                : undefined
+              onDeleteTemplate ? () => onDeleteTemplate(template.id) : undefined
             }
             isLoading={loadingTemplateId === template.id}
           />

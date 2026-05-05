@@ -99,7 +99,7 @@ export const FileUploader = ({
       e.preventDefault();
       if (!e.dataTransfer) return;
       const fileItems = [...e.dataTransfer.items].filter(
-        (item) => item.kind === "file"
+        (item) => item.kind === "file",
       );
       if (fileItems.length > 0) {
         setIsFileOver(true);
@@ -152,7 +152,9 @@ export const FileUploader = ({
         >
           <Trans>Upload</Trans>
         </Button>
-        <span><Trans>Or drag and drop</Trans></span>
+        <span>
+          <Trans>Or drag and drop</Trans>
+        </span>
       </div>
       {value && <img src={value} alt="Preview" width={100} />}
       {value && (

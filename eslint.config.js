@@ -18,7 +18,7 @@ export default tseslint.config(
     plugins: {
       "react-hooks": reactHooks,
       "react-refresh": reactRefresh,
-      lingui: pluginLingui
+      lingui: pluginLingui,
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
@@ -28,5 +28,5 @@ export default tseslint.config(
       ],
       "@typescript-eslint/no-explicit-any": "off",
     },
-  }
+  },
 );

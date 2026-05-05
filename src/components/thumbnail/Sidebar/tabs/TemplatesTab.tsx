@@ -10,9 +10,7 @@ import { BUILT_IN_TEMPLATES, BuiltInTemplate } from "@/thumbnails";
 import { stageToBlob } from "@/utils/thumbnail/exportPng";
 import { uuid } from "@/utils/thumbnail/uuid";
 import { ThumbnailDesign } from "@/types/thumbnail/ThumbnailDesign";
-import {
-  PREVIEW_PIXEL_RATIO,
-} from "@/consts/thumbnail/defaults";
+import { PREVIEW_PIXEL_RATIO } from "@/consts/thumbnail/defaults";
 import { ensureFontsLoaded } from "@/utils/thumbnail/ensureFontsLoaded";
 import { Card } from "@/components/shared/Card/Card";
 
@@ -41,9 +39,9 @@ export const TemplatesTab = () => {
     Array<{ template: BuiltInTemplate; design: ThumbnailDesign }>
   >(
     () =>
-      BUILT_IN_TEMPLATES.filter(
-        (t) => !builtInPreviewCache.has(t.id),
-      ).map((t) => ({ template: t, design: t.build() })),
+      BUILT_IN_TEMPLATES.filter((t) => !builtInPreviewCache.has(t.id)).map(
+        (t) => ({ template: t, design: t.build() }),
+      ),
     [],
   );
 

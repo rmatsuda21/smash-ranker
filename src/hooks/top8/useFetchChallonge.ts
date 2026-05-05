@@ -31,10 +31,10 @@ interface ChallongeResponse {
   };
 }
 
-const fetchChallongeTournament = async (slug: string): Promise<ChallongeResponse> => {
-  const res = await fetch(
-    `/api/challonge?slug=${encodeURIComponent(slug)}`,
-  );
+const fetchChallongeTournament = async (
+  slug: string,
+): Promise<ChallongeResponse> => {
+  const res = await fetch(`/api/challonge?slug=${encodeURIComponent(slug)}`);
 
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
@@ -117,7 +117,9 @@ export const useFetchChallonge = () => {
       playerDispatch({ type: "FETCH_PLAYERS_SUCCESS", payload: paddedPlayers });
     } catch (error) {
       const message =
-        error instanceof Error ? error.message : t`Failed to fetch Challonge tournament`;
+        error instanceof Error
+          ? error.message
+          : t`Failed to fetch Challonge tournament`;
       console.error("Challonge fetch error:", error);
       playerDispatch({ type: "FETCH_PLAYERS_FAIL", payload: message });
       alert(message);

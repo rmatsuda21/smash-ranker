@@ -22,13 +22,13 @@ type Props = {
 
 const isPlaceholder = (condition: Condition): boolean => {
   return Object.values(DesignPlaceholder).some((placeholder) =>
-    condition.includes(placeholder)
+    condition.includes(placeholder),
   );
 };
 
 const isRenderCondition = (condition: Condition): boolean => {
   return Object.values(RenderCondition).some((renderCondition) =>
-    condition.includes(renderCondition)
+    condition.includes(renderCondition),
   );
 };
 
@@ -50,7 +50,7 @@ const getConditionLabel = (condition: Condition, negated: boolean): string => {
 };
 
 const applyNegationToConditions = (
-  conditions: Condition[]
+  conditions: Condition[],
 ): { condition: Condition; negated: boolean }[] => {
   const negatedConditions: { condition: Condition; negated: boolean }[] = [];
   let negated = false;
