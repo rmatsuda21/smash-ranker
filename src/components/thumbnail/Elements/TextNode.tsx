@@ -21,19 +21,7 @@ const TextNodeComponent = ({ element, draggable }: Props) => {
   const effectiveFontSize = useMemo(() => {
     if (!element.autoFit) return element.fontSize;
     return computeAutoFitFontSize(element);
-  }, [
-    element.autoFit,
-    element.text,
-    element.fontFamily,
-    element.fontStyle,
-    element.fontSize,
-    element.width,
-    element.height,
-    element.align,
-    element.letterSpacing,
-    element.lineHeight,
-    element,
-  ]);
+  }, [element]);
 
   useEffect(() => {
     if (!element.fontFamily) return;
