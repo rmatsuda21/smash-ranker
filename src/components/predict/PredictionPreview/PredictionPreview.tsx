@@ -1,4 +1,10 @@
-import { useEffect, useState, type CSSProperties, type RefObject } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type RefObject,
+} from "react";
 import cn from "classnames";
 
 import { Trans } from "@lingui/react/macro";
@@ -88,6 +94,10 @@ export const PredictionPreview = ({ cacheRef }: Props) => {
   const [imageUrl, setImageUrl] = useState<string | null>(cached?.url ?? null);
   const [blob, setBlob] = useState<Blob | null>(cached?.blob ?? null);
   const [error, setError] = useState(false);
+  const [atBottom, setAtBottom] = useState(true);
+  const [taglineIdx, setTaglineIdx] = useState(0);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const sentinelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (cacheRef.current?.key === cacheKey) {
@@ -135,8 +145,21 @@ export const PredictionPreview = ({ cacheRef }: Props) => {
     };
   }, [cacheKey, requestUrl, cacheRef]);
 
+  useEffect(() => {
+    if (!imageUrl) return;
+    const root = scrollRef.current;
+    const sentinel = sentinelRef.current;
+    if (!root || !sentinel) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setAtBottom(entry.isIntersecting),
+      { root, threshold: 0 },
+    );
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [imageUrl]);
+
   const isLoading = !imageUrl && !error;
-  const [taglineIdx, setTaglineIdx] = useState(0);
   useEffect(() => {
     if (!isLoading) return;
     if (prefersReducedMotion()) return;
@@ -163,10 +186,20 @@ export const PredictionPreview = ({ cacheRef }: Props) => {
     return (
       <>
         <div className={styles.imageWrapper}>
-          <img
-            className={styles.image}
-            src={imageUrl}
-            alt="Prediction graphic"
+          <div className={styles.scrollArea} ref={scrollRef}>
+            <img
+              className={styles.image}
+              src={imageUrl}
+              alt="Prediction graphic"
+            />
+            <div ref={sentinelRef} className={styles.scrollSentinel} />
+          </div>
+          <div
+            className={cn(
+              styles.scrollFade,
+              atBottom && styles.scrollFadeHidden,
+            )}
+            aria-hidden="true"
           />
         </div>
         <ExportBar blob={blob} />
