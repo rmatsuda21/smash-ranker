@@ -26,6 +26,11 @@ No test runner is configured. Use `bun lint` and `bun build` to validate changes
 
 **After making changes, always run `bunx prettier --write <changed files>` to format, then `bun lint` to surface any new lint errors before reporting the work as done.** Prettier config lives in `.prettierrc` and the ignore list in `.prettierignore` (auto-generated files in `src/gql/` and `src/locales/*.ts` plus vendored `.agents/` content are excluded).
 
+## Commit messages
+
+- Keep messages short and simple — a single lowercase line describing the change, matching the existing `git log` style.
+- Never add a `Co-Authored-By` trailer. Do not credit Claude as a co-author.
+
 ## Architecture
 
 **Smash Ranker** is a tournament graphic generator for Super Smash Bros. events, currently focused on Top 8 bracket graphics. Built with React 19 + TypeScript, Vite, and deployed to Vercel.
