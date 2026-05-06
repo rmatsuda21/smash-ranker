@@ -16,9 +16,9 @@
       ],
       "cropOffset": {
         "x": 0,
-        "y": 0.26
+        "y": 0.25
       },
-      "cropScale": 2,
+      "cropScale": 2.15,
       "nameJa": "ベヨネッタ"
     },
     {
@@ -37,9 +37,9 @@
       ],
       "cropOffset": {
         "x": 0,
-        "y": 0.2
+        "y": 0.18
       },
-      "cropScale": 1.3,
+      "cropScale": 1.4,
       "altOverrides": {
         "1": {
           "cropOffset": {
@@ -68,6 +68,13 @@
             "y": 0.15
           },
           "cropScale": 1.25
+        },
+        "7": {
+          "cropOffset": {
+            "x": 0,
+            "y": 0.18
+          },
+          "cropScale": 1.25
         }
       },
       "nameJa": "クッパ Jr."
@@ -87,10 +94,10 @@
         "Blue"
       ],
       "cropOffset": {
-        "x": -0.05,
-        "y": -0.05
+        "x": -0.07,
+        "y": -0.02
       },
-      "cropScale": 1.1,
+      "cropScale": 1.35,
       "nameJa": "クッパ"
     },
     {
@@ -109,9 +116,9 @@
       ],
       "cropOffset": {
         "x": 0,
-        "y": 0.25
+        "y": 0.27
       },
-      "cropScale": 1.7,
+      "cropScale": 1.9,
       "nameJa": "キャプテン・ファルコン"
     },
     {
@@ -132,35 +139,35 @@
         "x": 0.15,
         "y": 0.25
       },
-      "cropScale": 1.95,
+      "cropScale": 2.1,
       "altOverrides": {
         "1": {
           "cropOffset": {
-            "x": 0,
+            "x": -0.02,
             "y": 0.25
           },
-          "cropScale": 1.95
+          "cropScale": 2.2
         },
         "3": {
           "cropOffset": {
-            "x": 0,
+            "x": -0.02,
             "y": 0.25
           },
-          "cropScale": 1.95
+          "cropScale": 2.2
         },
         "5": {
           "cropOffset": {
-            "x": 0,
+            "x": -0.02,
             "y": 0.25
           },
-          "cropScale": 1.95
+          "cropScale": 2.2
         },
         "7": {
           "cropOffset": {
-            "x": 0,
+            "x": -0.02,
             "y": 0.25
           },
-          "cropScale": 1.95
+          "cropScale": 2.2
         }
       },
       "nameJa": "クラウド"
@@ -183,33 +190,33 @@
         "x": -0.16,
         "y": 0.28
       },
-      "cropScale": 1.95,
+      "cropScale": 2.1,
       "altOverrides": {
         "1": {
           "cropOffset": {
             "x": -0.08,
-            "y": 0.3
+            "y": 0.29
           },
           "cropScale": 1.95
         },
         "3": {
           "cropOffset": {
             "x": -0.08,
-            "y": 0.3
+            "y": 0.29
           },
           "cropScale": 1.95
         },
         "5": {
           "cropOffset": {
             "x": -0.08,
-            "y": 0.3
+            "y": 0.29
           },
           "cropScale": 1.95
         },
         "7": {
           "cropOffset": {
             "x": -0.08,
-            "y": 0.3
+            "y": 0.29
           },
           "cropScale": 1.95
         }
@@ -253,9 +260,9 @@
       ],
       "cropOffset": {
         "x": -0.07,
-        "y": 0.23
+        "y": 0.21
       },
-      "cropScale": 1.85,
+      "cropScale": 2.2,
       "nameJa": "ブラックピット"
     },
     {
@@ -273,10 +280,10 @@
         "Cyan"
       ],
       "cropOffset": {
-        "x": 0,
-        "y": 0.1
+        "x": -0.05,
+        "y": 0.12
       },
-      "cropScale": 1.1,
+      "cropScale": 1.35,
       "nameJa": "ディディーコング"
     },
     {
@@ -295,7 +302,7 @@
       ],
       "cropOffset": {
         "x": 0,
-        "y": 0.2
+        "y": 0.175
       },
       "cropScale": 1.35,
       "nameJa": "ドンキーコング"
@@ -399,10 +406,10 @@
         "Grey"
       ],
       "cropOffset": {
-        "x": 0.03,
-        "y": 0.3
+        "x": 0.05,
+        "y": 0.28
       },
-      "cropScale": 1.9,
+      "cropScale": 2.1,
       "nameJa": "ガノンドロフ"
     },
     {
@@ -421,9 +428,9 @@
       ],
       "cropOffset": {
         "x": 0.1,
-        "y": 0.2
+        "y": 0.18
       },
-      "cropScale": 1.4,
+      "cropScale": 1.6,
       "nameJa": "ゲッコウガ"
     },
     {
@@ -440,6 +447,11 @@
         "White",
         "Orange"
       ],
+      "cropOffset": {
+        "x": 0,
+        "y": 0
+      },
+      "cropScale": 1.2,
       "nameJa": "アイスクライマー"
     },
     {
@@ -458,9 +470,9 @@
       ],
       "cropOffset": {
         "x": 0.1,
-        "y": 0.28
+        "y": 0.27
       },
-      "cropScale": 1.8,
+      "cropScale": 1.95,
       "nameJa": "アイク"
     },
     {
@@ -479,37 +491,37 @@
       ],
       "cropOffset": {
         "x": 0.05,
-        "y": 0.21
+        "y": 0.17
       },
-      "cropScale": 1.15,
+      "cropScale": 1.3,
       "altOverrides": {
         "1": {
           "cropOffset": {
-            "x": -0.02,
-            "y": 0.08
+            "x": -0.1,
+            "y": 0.05
           },
-          "cropScale": 1.05
+          "cropScale": 1.2
         },
         "3": {
           "cropOffset": {
-            "x": -0.02,
-            "y": 0.08
+            "x": -0.1,
+            "y": 0.05
           },
-          "cropScale": 1.05
+          "cropScale": 1.2
         },
         "5": {
           "cropOffset": {
-            "x": -0.02,
-            "y": 0.08
+            "x": -0.1,
+            "y": 0.05
           },
-          "cropScale": 1.05
+          "cropScale": 1.2
         },
         "7": {
           "cropOffset": {
-            "x": -0.02,
-            "y": 0.08
+            "x": -0.1,
+            "y": 0.05
           },
-          "cropScale": 0.95
+          "cropScale": 1.2
         }
       },
       "nameJa": "インクリング"
@@ -528,6 +540,11 @@
         "Nurse",
         "Glasses"
       ],
+      "cropOffset": {
+        "x": -0.02,
+        "y": 0
+      },
+      "cropScale": 1.1,
       "nameJa": "プリン"
     },
     {
@@ -546,9 +563,9 @@
       ],
       "cropOffset": {
         "x": -0.04,
-        "y": 0.18
+        "y": 0.14
       },
-      "cropScale": 1.2,
+      "cropScale": 1.25,
       "nameJa": "デデデ"
     },
     {
@@ -590,7 +607,7 @@
         "x": 0.02,
         "y": 0.15
       },
-      "cropScale": 1.5,
+      "cropScale": 1.7,
       "nameJa": "リンク"
     },
     {
@@ -653,7 +670,7 @@
         "x": 0,
         "y": 0.15
       },
-      "cropScale": 1.1,
+      "cropScale": 1.15,
       "nameJa": "リュカ"
     },
     {
@@ -672,9 +689,9 @@
       ],
       "cropOffset": {
         "x": 0,
-        "y": 0.29
+        "y": 0.3
       },
-      "cropScale": 1.8,
+      "cropScale": 2.35,
       "nameJa": "ルキナ"
     },
     {
@@ -692,10 +709,10 @@
         "Yellow"
       ],
       "cropOffset": {
-        "x": -0.08,
+        "x": -0.1,
         "y": 0.18
       },
-      "cropScale": 1.2,
+      "cropScale": 1.3,
       "nameJa": "ルイージ"
     },
     {
@@ -713,10 +730,10 @@
         "White"
       ],
       "cropOffset": {
-        "x": 0.25,
+        "x": 0.21,
         "y": 0.2
       },
-      "cropScale": 1.2,
+      "cropScale": 1.5,
       "nameJa": "マリオ"
     },
     {
@@ -735,9 +752,9 @@
       ],
       "cropOffset": {
         "x": 0,
-        "y": 0.29
+        "y": 0.31
       },
-      "cropScale": 1.9,
+      "cropScale": 2.8,
       "nameJa": "マルス"
     },
     {
@@ -777,9 +794,9 @@
       ],
       "cropOffset": {
         "x": 0,
-        "y": -0.2
+        "y": -0.15
       },
-      "cropScale": 1.1,
+      "cropScale": 1.6,
       "nameJa": "メタナイト"
     },
     {
@@ -800,7 +817,7 @@
         "x": -0.1,
         "y": 0.25
       },
-      "cropScale": 1.5,
+      "cropScale": 1.7,
       "nameJa": "ミュウツー"
     },
     {
@@ -852,9 +869,9 @@
       ],
       "cropOffset": {
         "x": 0,
-        "y": -0.05
+        "y": 0.05
       },
-      "cropScale": 0.9,
+      "cropScale": 1.3,
       "nameJa": "ピクミン&オリマー"
     },
     {
@@ -875,7 +892,7 @@
         "x": 0.05,
         "y": 0.1
       },
-      "cropScale": 1,
+      "cropScale": 1.2,
       "nameJa": "パックマン"
     },
     {
@@ -894,9 +911,9 @@
       ],
       "cropOffset": {
         "x": 0,
-        "y": 0.25
+        "y": 0.225
       },
-      "cropScale": 1.9,
+      "cropScale": 2.3,
       "nameJa": "パルテナ"
     },
     {
@@ -938,7 +955,7 @@
         "x": 0.09,
         "y": 0.08
       },
-      "cropScale": 1.05,
+      "cropScale": 1.1,
       "nameJa": "ピチュー"
     },
     {
@@ -978,9 +995,9 @@
       ],
       "cropOffset": {
         "x": 0.05,
-        "y": 0.22
+        "y": 0.18
       },
-      "cropScale": 1.7,
+      "cropScale": 1.9,
       "nameJa": "ピット"
     },
     {
@@ -998,10 +1015,10 @@
         "Purple"
       ],
       "cropOffset": {
-        "x": 0.05,
-        "y": 0.15
+        "x": 0.03,
+        "y": 0.13
       },
-      "cropScale": 1.4,
+      "cropScale": 1.7,
       "nameJa": "ポケモントレーナー"
     },
     {
@@ -1022,7 +1039,7 @@
         "x": 0.1,
         "y": 0.1
       },
-      "cropScale": 1.1,
+      "cropScale": 1.6,
       "nameJa": "リドリー"
     },
     {
@@ -1043,7 +1060,7 @@
         "x": -0.1,
         "y": 0.24
       },
-      "cropScale": 1.2,
+      "cropScale": 1.4,
       "nameJa": "ロボット"
     },
     {
@@ -1085,7 +1102,7 @@
         "x": 0.05,
         "y": 0.23
       },
-      "cropScale": 1.3,
+      "cropScale": 1.45,
       "nameJa": "ロゼッタ&チコ"
     },
     {
@@ -1106,7 +1123,7 @@
         "x": 0.1,
         "y": 0.25
       },
-      "cropScale": 1.85,
+      "cropScale": 1.95,
       "nameJa": "ロイ"
     },
     {
@@ -1145,10 +1162,10 @@
         "Black"
       ],
       "cropOffset": {
-        "x": 0.05,
-        "y": 0.28
+        "x": 0.02,
+        "y": 0.27
       },
-      "cropScale": 1.85,
+      "cropScale": 2,
       "nameJa": "サムス"
     },
     {
@@ -1208,10 +1225,10 @@
         "Brown"
       ],
       "cropOffset": {
-        "x": -0.1,
+        "x": -0.05,
         "y": 0.3
       },
-      "cropScale": 1.9,
+      "cropScale": 2.1,
       "nameJa": "スネーク"
     },
     {
@@ -1295,7 +1312,7 @@
         "x": 0.05,
         "y": 0.16
       },
-      "cropScale": 1.2,
+      "cropScale": 1.35,
       "nameJa": "ワリオ"
     },
     {
@@ -1313,10 +1330,10 @@
         "Male Yellow"
       ],
       "cropOffset": {
-        "x": 0.05,
+        "x": 0,
         "y": 0.27
       },
-      "cropScale": 1.65,
+      "cropScale": 1.85,
       "nameJa": "Wii Fit トレーナー"
     },
     {
@@ -1335,7 +1352,7 @@
       ],
       "cropOffset": {
         "x": -0.05,
-        "y": 0.275
+        "y": 0.18
       },
       "cropScale": 1.4,
       "nameJa": "ウルフ"
@@ -1355,7 +1372,7 @@
         "Crafted"
       ],
       "cropOffset": {
-        "x": 0,
+        "x": -0.05,
         "y": 0.165
       },
       "cropScale": 1.1,
@@ -1376,10 +1393,10 @@
         "Black"
       ],
       "cropOffset": {
-        "x": -0.05,
-        "y": 0.18
+        "x": -0.1,
+        "y": 0.17
       },
-      "cropScale": 1.4,
+      "cropScale": 1.5,
       "nameJa": "こどもリンク"
     },
     {
@@ -1398,9 +1415,9 @@
       ],
       "cropOffset": {
         "x": 0,
-        "y": 0.245
+        "y": 0.26
       },
-      "cropScale": 1.55,
+      "cropScale": 1.9,
       "nameJa": "ゼルダ"
     },
     {
@@ -1421,7 +1438,7 @@
         "x": 0.05,
         "y": 0.275
       },
-      "cropScale": 1.8,
+      "cropScale": 2,
       "nameJa": "ゼロスーツサムス"
     },
     {
@@ -1461,9 +1478,9 @@
       ],
       "cropOffset": {
         "x": 0.1,
-        "y": 0.23
+        "y": 0.18
       },
-      "cropScale": 1.4,
+      "cropScale": 1.5,
       "nameJa": "ガオガエン"
     },
     {
@@ -1481,10 +1498,10 @@
         "White"
       ],
       "cropOffset": {
-        "x": -0.04,
-        "y": 0.18
+        "x": 0,
+        "y": 0.16
       },
-      "cropScale": 1.3,
+      "cropScale": 1.4,
       "nameJa": "キングクルール"
     },
     {
@@ -1503,9 +1520,9 @@
       ],
       "cropOffset": {
         "x": -0.05,
-        "y": 0.33
+        "y": 0.315
       },
-      "cropScale": 1.85,
+      "cropScale": 2.1,
       "nameJa": "ダークサムス"
     },
     {
@@ -1524,9 +1541,9 @@
       ],
       "cropOffset": {
         "x": 0.15,
-        "y": 0.25
+        "y": 0.26
       },
-      "cropScale": 1.9,
+      "cropScale": 2.2,
       "nameJa": "クロム"
     },
     {
@@ -1547,7 +1564,7 @@
         "x": -0.07,
         "y": 0.29
       },
-      "cropScale": 1.9,
+      "cropScale": 2,
       "nameJa": "ケン"
     },
     {
@@ -1568,7 +1585,7 @@
         "x": 0.05,
         "y": 0.28
       },
-      "cropScale": 1.9,
+      "cropScale": 2.25,
       "nameJa": "シモン"
     },
     {
@@ -1589,7 +1606,7 @@
         "x": 0,
         "y": 0.25
       },
-      "cropScale": 2,
+      "cropScale": 2.2,
       "nameJa": "リヒター"
     },
     {
@@ -1652,10 +1669,10 @@
         "Blue"
       ],
       "cropOffset": {
-        "x": -0.1,
-        "y": 0.22
+        "x": -0.15,
+        "y": 0.17
       },
-      "cropScale": 1.15,
+      "cropScale": 1.18,
       "nameJa": "パックンフラワー"
     },
     {
@@ -1674,9 +1691,9 @@
       ],
       "cropOffset": {
         "x": 0,
-        "y": 0.28
+        "y": 0.295
       },
-      "cropScale": 1.85,
+      "cropScale": 2.25,
       "nameJa": "ジョーカー"
     },
     {
@@ -1697,42 +1714,42 @@
         "x": -0.15,
         "y": 0.32
       },
-      "cropScale": 2.2,
+      "cropScale": 2.45,
       "altOverrides": {
         "1": {
           "cropOffset": {
             "x": -0.12,
             "y": 0.25
           },
-          "cropScale": 2.2
+          "cropScale": 2.45
         },
         "2": {
           "cropOffset": {
             "x": 0.05,
             "y": 0.28
           },
-          "cropScale": 1.95
+          "cropScale": 2.2
         },
         "3": {
           "cropOffset": {
             "x": -0.05,
             "y": 0.32
           },
-          "cropScale": 2.2
+          "cropScale": 2.45
         },
         "5": {
           "cropOffset": {
             "x": -0.12,
             "y": 0.25
           },
-          "cropScale": 2.2
+          "cropScale": 2.45
         },
         "6": {
           "cropOffset": {
             "x": 0.05,
             "y": 0.28
           },
-          "cropScale": 1.95
+          "cropScale": 2.2
         },
         "7": {
           "cropOffset": {
@@ -1759,8 +1776,8 @@
         "Green"
       ],
       "cropOffset": {
-        "x": 0.08,
-        "y": 0.1
+        "x": 0.12,
+        "y": 0.06
       },
       "cropScale": 1.5,
       "nameJa": "バンジョー&カズーイ"
@@ -1783,7 +1800,7 @@
         "x": 0,
         "y": 0.275
       },
-      "cropScale": 1.75,
+      "cropScale": 1.8,
       "nameJa": "テリー"
     },
     {
@@ -1802,16 +1819,16 @@
       ],
       "cropOffset": {
         "x": -0.1,
-        "y": 0.22
+        "y": 0.3
       },
-      "cropScale": 1.5,
+      "cropScale": 2.05,
       "altOverrides": {
         "1": {
           "cropOffset": {
             "x": 0.15,
-            "y": 0.23
+            "y": 0.28
           },
-          "cropScale": 1.5
+          "cropScale": 2.05
         },
         "3": {
           "cropOffset": {
@@ -1846,7 +1863,7 @@
         "x": 0,
         "y": -0.05
       },
-      "cropScale": 0.6,
+      "cropScale": 0.8,
       "nameJa": "ランダム"
     },
     {
@@ -1886,7 +1903,7 @@
       ],
       "cropOffset": {
         "x": 0,
-        "y": 0.275
+        "y": 0.25
       },
       "cropScale": 1.4,
       "nameJa": "スティーブ"
@@ -1907,23 +1924,23 @@
       ],
       "cropOffset": {
         "x": 0,
-        "y": 0.26
+        "y": 0.25
       },
-      "cropScale": 2.2,
+      "cropScale": 2.3,
       "altOverrides": {
         "6": {
           "cropOffset": {
-            "x": -0.2,
+            "x": -0.22,
             "y": 0.3
           },
-          "cropScale": 1.8
+          "cropScale": 2.1
         },
         "7": {
           "cropOffset": {
-            "x": -0.2,
+            "x": -0.22,
             "y": 0.3
           },
-          "cropScale": 1.8
+          "cropScale": 2.1
         }
       },
       "nameJa": "セフィロス"
@@ -1944,10 +1961,52 @@
       ],
       "cropOffset": {
         "x": 0.05,
-        "y": 0.23
+        "y": 0.24
       },
-      "cropScale": 1.85,
+      "cropScale": 2.35,
       "nameJa": "ホムラ/ヒカリ"
+    },
+    {
+      "name": "Pyra",
+      "id": "1795_p",
+      "alts": 8,
+      "altNames": [
+        "Default",
+        "Green",
+        "Swapped",
+        "Gormotti",
+        "Black",
+        "Blue",
+        "Saturated",
+        "Metal"
+      ],
+      "cropOffset": {
+        "x": -0.07,
+        "y": 0.19
+      },
+      "cropScale": 2.5,
+      "nameJa": "ホムラ"
+    },
+    {
+      "name": "Mythra",
+      "id": "1795_m",
+      "alts": 8,
+      "altNames": [
+        "Default",
+        "Green",
+        "Swapped",
+        "Gormotti",
+        "Black",
+        "Blue",
+        "Saturated",
+        "Metal"
+      ],
+      "cropOffset": {
+        "x": 0.18,
+        "y": 0.17
+      },
+      "cropScale": 2.35,
+      "nameJa": "ヒカリ"
     },
     {
       "name": "Kazuya",
@@ -1964,17 +2023,17 @@
         "Yellow"
       ],
       "cropOffset": {
-        "x": -0.05,
-        "y": 0.3
+        "x": -0.1,
+        "y": 0.29
       },
       "cropScale": 2.3,
       "altOverrides": {
         "1": {
           "cropOffset": {
-            "x": 0,
+            "x": -0.05,
             "y": 0.3
           },
-          "cropScale": 1.9
+          "cropScale": 2
         },
         "3": {
           "cropOffset": {
@@ -2057,10 +2116,10 @@
         },
         "7": {
           "cropOffset": {
-            "x": 0.05,
+            "x": 0,
             "y": 0.29
           },
-          "cropScale": 2.1
+          "cropScale": 2.25
         }
       },
       "nameJa": "ソラ"
