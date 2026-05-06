@@ -59,6 +59,9 @@ const tournamentReducer = (
         info: {
           ...state.info,
           ...action.payload,
+          ...(action.payload.url !== undefined && {
+            url: action.payload.url.replace(/^(https?:\/\/)?(www\.)/i, ""),
+          }),
         },
       };
     case "SET_FETCHING":
