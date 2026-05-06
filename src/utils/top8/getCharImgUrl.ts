@@ -12,7 +12,5 @@ export const getCharImgUrl = ({
 }) => {
   if (characterId === EMPTY_CHARACTER_ID) return "/favicon.svg";
 
-  return `https://raw.githubusercontent.com/rmatsuda21/SmashRankerAssets/main/${type}/${characterId}/${alt}.${
-    type === "main" ? "webp" : "png"
-  }`;
+  return `https://raw.githubusercontent.com/rmatsuda21/SmashRankerAssets/main/${type}/${characterId}/${alt}.webp`;
 };
