@@ -13,36 +13,36 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/components/tierlist/CharacterPool/CharacterPool.tsx:44
+#: src/components/tierlist/CharacterPool/CharacterPool.tsx:47
 msgid "← swipe to scroll →"
 msgstr "← スワイプでスクロール →"
 
-#: src/components/tierlist/TierListApp/TierListApp.tsx:301
+#: src/components/tierlist/TierListApp/TierListApp.tsx:331
 msgid "Add Tier"
 msgstr "ティア追加"
 
-#: src/components/tierlist/AltPicker/AltPicker.tsx:71
-#: src/components/tierlist/AltPicker/AltPicker.tsx:79
+#: src/components/tierlist/AltPicker/AltPicker.tsx:73
+#: src/components/tierlist/AltPicker/AltPicker.tsx:81
 msgid "Alt {i}"
 msgstr "カラー {i}"
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:31
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:38
 msgid "Arial"
 msgstr "Arial"
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:46
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:65
 msgid "Black"
 msgstr "ブラック"
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:44
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:63
 msgid "Bold"
 msgstr "ボールド"
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:168
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:193
 msgid "Center"
 msgstr "中央"
 
-#: src/components/tierlist/CharacterPool/CharacterPool.tsx:24
+#: src/components/tierlist/CharacterPool/CharacterPool.tsx:25
 msgid "Character Collection"
 msgstr "未使用キャラ"
 
@@ -50,183 +50,183 @@ msgstr "未使用キャラ"
 msgid "Classic"
 msgstr "クラシック"
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:166
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:168
 msgid "Clear"
 msgstr "クリア"
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:182
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:184
 msgid "Clear Tiers"
 msgstr "ティアをクリア"
 
-#: src/components/tierlist/TierListTitle/TierListTitle.tsx:78
+#: src/components/tierlist/TierListTitle/TierListTitle.tsx:87
 msgid "Click to add title"
 msgstr "クリックしてタイトルを追加"
 
-#: src/components/tierlist/TierListTitle/TierListTitle.tsx:84
+#: src/components/tierlist/TierListTitle/TierListTitle.tsx:97
 msgid "Click to edit title"
 msgstr "クリックしてタイトルを編集"
 
-#: src/components/tierlist/TierLabel/TierLabel.tsx:67
+#: src/components/tierlist/TierLabel/TierLabel.tsx:81
 msgid "Click to rename"
 msgstr "クリックして名前を変更"
 
-#: src/components/tierlist/TierSettings/TierSettings.tsx:100
+#: src/components/tierlist/TierSettings/TierSettings.tsx:85
 msgid "Color"
 msgstr "色"
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:182
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:213
 msgid "Color Palette"
 msgstr "カラーパレット"
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:35
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:45
 msgid "Comic Sans"
 msgstr "Comic Sans"
 
-#: src/consts/tierlist/tierPalettes.ts:39
+#: src/consts/tierlist/tierPalettes.ts:63
 msgid "Cool"
 msgstr "クール"
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:34
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:41
 msgid "Courier"
 msgstr "Courier"
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:30
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:37
 msgid "Default"
 msgstr "デフォルト"
 
-#: src/components/tierlist/TierSettings/TierSettings.tsx:128
+#: src/components/tierlist/TierSettings/TierSettings.tsx:110
 msgid "Delete"
 msgstr "削除"
 
-#: src/consts/tierlist/tierPalettes.ts:63
+#: src/consts/tierlist/tierPalettes.ts:111
 msgid "Earth"
 msgstr "アース"
 
-#: src/components/tierlist/TierListTitle/TierListTitle.tsx:62
+#: src/components/tierlist/TierListTitle/TierListTitle.tsx:71
 msgid "Enter title"
 msgstr "タイトルを入力"
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:45
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:64
 msgid "Extra Bold"
 msgstr "エキストラボールド"
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:132
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:135
 msgid "Fancy"
 msgstr "ファンシー"
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:243
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:294
 msgid "Font Size"
 msgstr "フォントサイズ"
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:231
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:280
 msgid "Font Weight"
 msgstr "フォントウェイト"
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:33
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:40
 msgid "Georgia"
 msgstr "Georgia"
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:138
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:142
 msgid "Image Style"
 msgstr "画像スタイル"
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:32
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:39
 msgid "Impact"
 msgstr "Impact"
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:219
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:266
 msgid "Label Font"
 msgstr "ラベルフォント"
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:114
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:107
 msgid "Layout"
 msgstr "レイアウト"
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:162
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:182
 msgid "Left"
 msgstr "左"
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:150
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:163
 msgid "Main Art"
 msgstr "メインアート"
 
-#: src/consts/tierlist/tierPalettes.ts:47
+#: src/consts/tierlist/tierPalettes.ts:79
 msgid "Monochrome"
 msgstr "モノクロ"
 
-#: src/components/tierlist/TierSettings/TierSettings.tsx:121
+#: src/components/tierlist/TierSettings/TierSettings.tsx:107
 msgid "Move Down"
 msgstr "下に移動"
 
-#: src/components/tierlist/TierSettings/TierSettings.tsx:114
+#: src/components/tierlist/TierSettings/TierSettings.tsx:100
 msgid "Move Up"
 msgstr "上に移動"
 
-#: src/consts/tierlist/tierPalettes.ts:55
+#: src/consts/tierlist/tierPalettes.ts:95
 msgid "Neon"
 msgstr "ネオン"
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:42
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:61
 msgid "Normal"
 msgstr "ノーマル"
 
-#: src/consts/tierlist/tierPalettes.ts:71
+#: src/consts/tierlist/tierPalettes.ts:127
 msgid "Ocean"
 msgstr "オーシャン"
 
-#: src/consts/tierlist/tierPalettes.ts:23
+#: src/consts/tierlist/tierPalettes.ts:31
 msgid "Pastel"
 msgstr "パステル"
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:173
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:175
 msgid "Reset"
 msgstr "リセット"
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:192
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:194
 msgid "Reset All"
 msgstr "すべてリセット"
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:174
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:204
 msgid "Right"
 msgstr "右"
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:176
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:178
 msgid "Save Image"
 msgstr "保存"
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:43
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:62
 msgid "Semi-Bold"
 msgstr "セミボールド"
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:102
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:96
 msgid "Settings"
 msgstr "設定"
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:120
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:117
 msgid "Side"
 msgstr "サイド"
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:144
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:154
 msgid "Stock"
 msgstr "ストック"
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:184
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:186
 msgid "This will move all characters back to the unranked pool. Your tiers will remain."
 msgstr "すべてのキャラクターが未ランク プールに戻されます。ティアはそのまま残ります。"
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:194
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:196
 msgid "This will reset everything to the default state, including tiers and all character placements."
 msgstr "ティアやキャラクターの配置を含め、すべてが初期状態にリセットされます。"
 
-#: src/components/tierlist/TierSettings/TierSettings.tsx:85
+#: src/components/tierlist/TierSettings/TierSettings.tsx:68
 msgid "Tier settings"
 msgstr "ティア設定"
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:36
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:47
 msgid "Times"
 msgstr "Times"
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:156
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:170
 msgid "Title Alignment"
 msgstr "タイトル配置"
 
@@ -234,14 +234,14 @@ msgstr "タイトル配置"
 msgid "Top"
 msgstr "トップ"
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:37
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:51
 msgid "Trebuchet"
 msgstr "Trebuchet"
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:38
+#: src/components/tierlist/TierListSettings/TierListSettings.tsx:53
 msgid "Verdana"
 msgstr "Verdana"
 
-#: src/consts/tierlist/tierPalettes.ts:31
+#: src/consts/tierlist/tierPalettes.ts:47
 msgid "Warm"
 msgstr "ウォーム"

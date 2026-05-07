@@ -34,6 +34,26 @@ msgstr ""
 msgid "# of Entrants"
 msgstr ""
 
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:60
+msgid "16 Player Variant"
+msgstr ""
+
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:102
+msgid "16 Players"
+msgstr ""
+
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:108
+msgid "24 Players"
+msgstr ""
+
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:96
+msgid "4 Players"
+msgstr ""
+
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:90
+msgid "8 Players"
+msgstr ""
+
 #: src/components/top8/SettingsPanel/AccentColorPicker.tsx:74
 msgid "Accent Color"
 msgstr ""
@@ -60,7 +80,7 @@ msgid "Are you sure you want to delete this asset?"
 msgstr ""
 
 #: src/components/top8/AssetManager/AssetManager.tsx:32
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:191
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:189
 msgid "Assets"
 msgstr ""
 
@@ -94,15 +114,15 @@ msgstr ""
 msgid "Buy me a coffee"
 msgstr ""
 
-#: src/components/predict/PredictionPreview/PredictionPreview.tsx:52
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:58
 msgid "Calculating upset odds..."
 msgstr ""
 
-#: src/components/predict/PredictionPreview/PredictionPreview.tsx:54
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:60
 msgid "Calling it for the record..."
 msgstr ""
 
-#: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:80
+#: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:60
 msgid "Cancel"
 msgstr ""
 
@@ -112,7 +132,7 @@ msgid "Card Background"
 msgstr ""
 
 #. placeholder {0}: res.status
-#: src/hooks/predict/useFetchPredictionEntrants.ts:199
+#: src/hooks/predict/useFetchPredictionEntrants.ts:206
 #: src/hooks/top8/useFetchChallonge.ts:41
 msgid "Challonge API error: {0}"
 msgstr ""
@@ -180,25 +200,25 @@ msgstr ""
 msgid "Color Palette"
 msgstr ""
 
-#: src/hooks/predict/useFetchPredictionEntrants.ts:235
-#: src/hooks/top8/useFetchTonamel.ts:180
+#: src/hooks/predict/useFetchPredictionEntrants.ts:240
+#: src/hooks/top8/useFetchTonamel.ts:190
 msgid "Competition not found"
 msgstr ""
 
-#: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:83
+#: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:63
 msgid "Confirm"
 msgstr ""
 
-#: src/components/predict/PredictionPreview/PredictionPreview.tsx:49
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:55
 msgid "Consulting Master Hand..."
 msgstr ""
 
-#: src/components/predict/ExportBar/ExportBar.tsx:65
+#: src/components/predict/ExportBar/ExportBar.tsx:67
 #: src/components/predict/InviteShareButton/InviteShareButton.tsx:46
 msgid "Copied!"
 msgstr ""
 
-#: src/components/predict/ExportBar/ExportBar.tsx:60
+#: src/components/predict/ExportBar/ExportBar.tsx:62
 msgid "Copy"
 msgstr ""
 
@@ -224,7 +244,7 @@ msgstr ""
 msgid "Create a minimal template with a specific player count."
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:220
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:249
 msgid "Create New Template"
 msgstr ""
 
@@ -252,7 +272,7 @@ msgstr ""
 msgid "Custom Fonts"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateGroup.tsx:72
+#: src/components/top8/TemplateEditor/TemplateGroup.tsx:70
 msgid "Custom Minimal"
 msgstr ""
 
@@ -273,12 +293,12 @@ msgstr ""
 msgid "Date"
 msgstr ""
 
-#: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:222
+#: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:218
 msgid "Delete"
 msgstr ""
 
 #. placeholder {0}: markedIds.size
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:221
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:219
 msgid "Delete ({0})"
 msgstr ""
 
@@ -290,11 +310,11 @@ msgstr ""
 msgid "Delete Assets"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:205
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:234
 msgid "Delete Template?"
 msgstr ""
 
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:207
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:205
 msgid "Deselect All"
 msgstr ""
 
@@ -306,7 +326,7 @@ msgstr ""
 msgid "Dimensions"
 msgstr ""
 
-#: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:34
+#: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:54
 msgid "Don't show again"
 msgstr ""
 
@@ -329,7 +349,7 @@ msgid "English"
 msgstr ""
 
 #. placeholder {0}: translatedName.toLowerCase()
-#: src/components/top8/TextEditor/TextEditor.tsx:76
+#: src/components/top8/TextEditor/TextEditor.tsx:74
 msgid "Enter {0}..."
 msgstr ""
 
@@ -353,27 +373,27 @@ msgstr ""
 msgid "Event Name"
 msgstr ""
 
-#: src/hooks/top8/useFetchChallonge.ts:120
+#: src/hooks/top8/useFetchChallonge.ts:122
 msgid "Failed to fetch Challonge tournament"
 msgstr ""
 
-#: src/hooks/predict/useFetchPredictionEntrants.ts:159
+#: src/hooks/predict/useFetchPredictionEntrants.ts:161
 msgid "Failed to fetch seeds"
 msgstr ""
 
-#: src/hooks/top8/useFetchTonamel.ts:202
+#: src/hooks/top8/useFetchTonamel.ts:214
 msgid "Failed to fetch Tonamel tournament"
 msgstr ""
 
-#: src/hooks/predict/useFetchPredictionEntrants.ts:297
+#: src/hooks/predict/useFetchPredictionEntrants.ts:300
 msgid "Failed to fetch tournament"
 msgstr ""
 
-#: src/hooks/top8/useFetchResult.ts:421
+#: src/hooks/top8/useFetchResult.ts:420
 msgid "Failed to fetch tournament data"
 msgstr ""
 
-#: src/components/predict/PredictionPreview/PredictionPreview.tsx:155
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:178
 msgid "Failed to generate image"
 msgstr ""
 
@@ -403,7 +423,7 @@ msgstr ""
 msgid "Generate Graphic"
 msgstr ""
 
-#: src/components/predict/PredictionPreview/PredictionPreview.tsx:185
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:218
 msgid "Generating prediction"
 msgstr ""
 
@@ -445,6 +465,10 @@ msgstr ""
 msgid "Join the official server for help, feedback, and updates!"
 msgstr ""
 
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:50
+msgid "Kagaribi"
+msgstr ""
+
 #: src/components/top8/SettingsPanel/LanguagePicker.tsx:41
 msgid "Language"
 msgstr ""
@@ -459,11 +483,11 @@ msgid "Light"
 msgstr ""
 
 #: src/components/predict/TournamentUrlInput/TournamentUrlInput.tsx:54
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:103
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:99
 msgid "Load"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:197
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:226
 msgid "Load Template?"
 msgstr ""
 
@@ -484,7 +508,7 @@ msgstr ""
 msgid "Location"
 msgstr ""
 
-#: src/components/predict/PredictionPreview/PredictionPreview.tsx:53
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:59
 msgid "Locking in picks..."
 msgstr ""
 
@@ -505,7 +529,11 @@ msgstr ""
 msgid "Many cups of coffee were consumed during development 👀"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:258
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:86
+msgid "Minimal"
+msgstr ""
+
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:287
 msgid "My Templates"
 msgstr ""
 
@@ -513,7 +541,7 @@ msgstr ""
 msgid "No assets yet"
 msgstr ""
 
-#: src/hooks/predict/useFetchPredictionEntrants.ts:138
+#: src/hooks/predict/useFetchPredictionEntrants.ts:140
 msgid "No phases found for this event"
 msgstr ""
 
@@ -526,7 +554,7 @@ msgid "No text content defined in this design."
 msgstr ""
 
 #: src/components/top8/CharacterEditor/CharacterSelect/CharacterSelect.tsx:34
-#: src/components/top8/PlayersEditor/CountryDropDown.tsx:34
+#: src/components/top8/PlayersEditor/CountryDropDown.tsx:38
 msgid "None"
 msgstr ""
 
@@ -534,9 +562,14 @@ msgstr ""
 msgid "Okay"
 msgstr ""
 
-#: src/components/shared/FileUploader/FileUploader.tsx:155
+#: src/components/shared/FileUploader/FileUploader.tsx:156
 msgid "Or drag and drop"
 msgstr "Or drag and drop"
+
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:54
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:72
+msgid "Original"
+msgstr ""
 
 #: src/components/top8/InfoPanel/InfoPanel.tsx:101
 msgid "Original concept & inspiration"
@@ -602,7 +635,7 @@ msgstr ""
 msgid "Players"
 msgstr ""
 
-#: src/components/predict/PredictionPreview/PredictionPreview.tsx:51
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:57
 msgid "Polishing trophies..."
 msgstr ""
 
@@ -611,7 +644,7 @@ msgid "Prediction size"
 msgstr ""
 
 #: src/components/predict/PredictApp/PredictApp.tsx:77
-#: src/components/predict/PredictionGraphic/PredictionGraphic.tsx:61
+#: src/components/predict/PredictionGraphic/PredictionGraphic.tsx:62
 #: src/components/predict/PredictionListPanel/PredictionListPanel.tsx:84
 #: src/components/predict/PredictionWorkspace/PredictionWorkspace.tsx:39
 msgid "Predictions"
@@ -644,7 +677,7 @@ msgstr ""
 msgid "Quality"
 msgstr ""
 
-#: src/components/predict/PredictionPreview/PredictionPreview.tsx:50
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:56
 msgid "Reading the tea leaves..."
 msgstr ""
 
@@ -652,7 +685,7 @@ msgstr ""
 msgid "Red"
 msgstr ""
 
-#: src/components/top8/Ranker/Header/Header.tsx:44
+#: src/components/top8/Ranker/Header/Header.tsx:34
 msgid "Redo"
 msgstr ""
 
@@ -677,12 +710,12 @@ msgstr ""
 msgid "Secondary"
 msgstr ""
 
-#: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:211
+#: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:207
 #: src/components/top8/AssetSelector/AssetSelector.tsx:91
 msgid "Select"
 msgstr ""
 
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:209
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:207
 msgid "Select All"
 msgstr ""
 
@@ -694,11 +727,11 @@ msgstr ""
 msgid "Select Character"
 msgstr ""
 
-#: src/components/top8/PlayersEditor/CountryDropDown.tsx:47
+#: src/components/top8/PlayersEditor/CountryDropDown.tsx:53
 msgid "Select Country"
 msgstr ""
 
-#: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:208
+#: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:204
 msgid "Selected"
 msgstr ""
 
@@ -725,6 +758,10 @@ msgstr ""
 #. js-lingui-explicit-id
 #: src/consts/top8/paletteLabels.ts:20
 msgid "Smash Ball"
+msgstr ""
+
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:78
+msgid "Square Variant"
 msgstr ""
 
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:158
@@ -789,7 +826,7 @@ msgstr ""
 msgid "Theme"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:206
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:235
 msgid "This template will be permanently deleted."
 msgstr ""
 
@@ -811,8 +848,8 @@ msgid "Title"
 msgstr ""
 
 #. placeholder {0}: res.status
-#: src/hooks/predict/useFetchPredictionEntrants.ts:231
-#: src/hooks/top8/useFetchTonamel.ts:50
+#: src/hooks/predict/useFetchPredictionEntrants.ts:236
+#: src/hooks/top8/useFetchTonamel.ts:52
 msgid "Tonamel API error: {0}"
 msgstr ""
 
@@ -837,6 +874,10 @@ msgstr ""
 #. js-lingui-explicit-id
 #: src/consts/top8/paletteLabels.ts:47
 msgid "Top Right Text"
+msgstr ""
+
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:68
+msgid "Top8er"
 msgstr ""
 
 #: src/components/top8/SidePanel/SidePanelNav.tsx:24
@@ -868,18 +909,18 @@ msgstr ""
 msgid "Tournament Info"
 msgstr ""
 
-#: src/components/top8/TournamentConfig/TournamentEditor.tsx:104
-#: src/consts/top8/placeholders.ts:28
-msgid "Tournament Name"
-msgstr ""
-
 #. js-lingui-explicit-id
 #: src/consts/top8/paletteLabels.ts:54
 msgid "Tournament Name"
 msgstr ""
 
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:104
+#: src/consts/top8/placeholders.ts:28
+msgid "Tournament Name"
+msgstr ""
+
 #: src/hooks/predict/useFetchPredictionEntrants.ts:122
-#: src/hooks/top8/useFetchResult.ts:373
+#: src/hooks/top8/useFetchResult.ts:372
 msgid "Tournament not found"
 msgstr ""
 
@@ -907,20 +948,20 @@ msgstr ""
 msgid "Type"
 msgstr ""
 
-#: src/components/top8/Ranker/Header/Header.tsx:34
+#: src/components/top8/Ranker/Header/Header.tsx:30
 msgid "Undo"
 msgstr ""
 
 #: src/components/shared/FileUploader/FileUploader.tsx:153
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:240
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:238
 msgid "Upload"
 msgstr "Upload"
 
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:237
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:235
 msgid "Upload Assets"
 msgstr ""
 
-#: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:189
+#: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:185
 msgid "Uploaded"
 msgstr ""
 
@@ -929,7 +970,7 @@ msgstr ""
 msgid "URL"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:198
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:227
 msgid "Your current design will be overwritten!"
 msgstr ""
 

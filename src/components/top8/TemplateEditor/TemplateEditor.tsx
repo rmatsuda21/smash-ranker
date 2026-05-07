@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import cn from "classnames";
 import { IoGrid } from "react-icons/io5";
 import { FaList } from "react-icons/fa6";
+import type { MessageDescriptor } from "@lingui/core";
 import { msg } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
@@ -35,65 +36,76 @@ type Props = {
   className?: string;
 };
 
-const DEFAULT_TEMPLATE_GROUPS: { templates: DBTemplate[]; name: string }[] = [
+type DefaultTemplate = Omit<DBTemplate, "name"> & { name: MessageDescriptor };
+
+type DefaultTemplateGroup = {
+  id: string;
+  name: MessageDescriptor;
+  templates: DefaultTemplate[];
+};
+
+const DEFAULT_TEMPLATE_GROUPS: DefaultTemplateGroup[] = [
   {
-    name: "Kagaribi",
+    id: "kagaribi",
+    name: msg`Kagaribi`,
     templates: [
       {
         id: "kagaribi",
-        name: "Kagaribi",
+        name: msg`Original`,
         design: kagaribiDesign,
         font: "Dela Gothic One",
       },
       {
         id: "kagaribi-16",
-        name: "Kagaribi (16 Players)",
+        name: msg`16 Player Variant`,
         design: kagaribi16Design,
         font: "Dela Gothic One",
       },
     ],
   },
   {
-    name: "Top8er",
+    id: "top8er",
+    name: msg`Top8er`,
     templates: [
       {
         id: "top8er",
-        name: "Top8er",
+        name: msg`Original`,
         design: top8erDesign,
         font: "Noto Sans JP",
       },
       {
         id: "top8er-squares",
-        name: "Top8er (Square Variant)",
+        name: msg`Square Variant`,
         design: squaresDesign,
         font: "Noto Sans JP",
       },
     ],
   },
   {
-    name: "Minimal",
+    id: "minimal",
+    name: msg`Minimal`,
     templates: [
       {
         id: "minimal",
-        name: "Minimal",
+        name: msg`8 Players`,
         design: minimalDesign,
         font: "Noto Sans JP",
       },
       {
         id: "minimal-4",
-        name: "Minimal (4 Players)",
+        name: msg`4 Players`,
         design: minimal4Design,
         font: "Noto Sans JP",
       },
       {
         id: "minimal-16",
-        name: "Minimal (16 Players)",
+        name: msg`16 Players`,
         design: minimal16Design,
         font: "Noto Sans JP",
       },
       {
         id: "minimal-24",
-        name: "Minimal (24 Players)",
+        name: msg`24 Players`,
         design: minimal24Design,
         font: "Noto Sans JP",
       },
@@ -133,18 +145,28 @@ export const TemplateEditor = ({ className }: Props) => {
     fetchTemplates();
   }, [templates, getTemplateWithId]);
 
+  const templateGroups = useMemo(
+    () =>
+      DEFAULT_TEMPLATE_GROUPS.map((group) => ({
+        id: group.id,
+        name: _(group.name),
+        templates: group.templates.map<DBTemplate>((template) => ({
+          ...template,
+          name: _(template.name),
+        })),
+      })),
+    [_],
+  );
+
   const loadTemplate = async (id: string) => {
     setLoadingTemplateId(id);
 
     let template: DBTemplate | undefined;
-    if (
-      DEFAULT_TEMPLATE_GROUPS.some((group) =>
-        group.templates.some((template) => template.id === id),
-      )
-    ) {
-      template = DEFAULT_TEMPLATE_GROUPS.find((group) =>
-        group.templates.some((template) => template.id === id),
-      )!.templates.find((template) => template.id === id)!;
+    const defaultTemplate = templateGroups
+      .flatMap((group) => group.templates)
+      .find((t) => t.id === id);
+    if (defaultTemplate) {
+      template = defaultTemplate;
     } else {
       template = await getTemplateWithId(id);
     }
@@ -244,16 +266,16 @@ export const TemplateEditor = ({ className }: Props) => {
           </Button>
         </div>
       </div>
-      {DEFAULT_TEMPLATE_GROUPS.map((group) => (
+      {templateGroups.map((group) => (
         <TemplateGroup
-          key={group.name}
+          key={group.id}
           templates={group.templates}
           name={group.name}
           onTemplateClick={confirmTemplateClick}
           viewMode={viewMode}
           loadingTemplateId={loadingTemplateId}
           onCreateCustom={
-            group.name === "Minimal"
+            group.id === "minimal"
               ? () => setIsCreateMinimalModalOpen(true)
               : undefined
           }
