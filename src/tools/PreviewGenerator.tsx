@@ -19,6 +19,7 @@ import {
   minimal24Design,
 } from "@/designs/minimal";
 import { kagaribiDesign } from "@/designs/kagaribi";
+import { kagaribi16Design } from "@/designs/kagaribi16";
 
 declare global {
   interface Window {
@@ -64,6 +65,12 @@ const TEMPLATES: DBTemplate[] = [
     id: "kagaribi",
     name: "Kagaribi",
     design: kagaribiDesign,
+    font: "Dela Gothic One",
+  },
+  {
+    id: "kagaribi-16",
+    name: "Kagaribi (16 Players)",
+    design: kagaribi16Design,
     font: "Dela Gothic One",
   },
 ];

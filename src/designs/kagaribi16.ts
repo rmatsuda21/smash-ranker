@@ -1,0 +1,660 @@
+import {
+  Design,
+  ElementConfig,
+  LayerDesign,
+  PlayerDesign,
+} from "@/types/top8/Design";
+import { DesignPlaceholder } from "@/consts/top8/placeholders";
+import { RenderCondition } from "@/consts/top8/renderConditions";
+
+const CANVAS_WIDTH = 1920;
+const CANVAS_HEIGHT = 1080;
+
+const PADDING = 30;
+const VERT_PADDING = 32;
+const CARD_GAP = 20;
+const TOP_BAR_HEIGHT = 4;
+const PLAYER_AREA_Y = 168;
+const FOOTER_BOTTOM = CANVAS_HEIGHT - VERT_PADDING;
+
+// Total player-area width (1858px) matches the original Kagaribi so right
+// padding (32px) stays the same.
+const FIRST_PL_WIDTH = 350;
+const RIGHT_CARD_WIDTH = 345;
+const RIGHT_CARD_HEIGHT = 80;
+
+// Middle area = total - 1st place - right col - 2 gaps = 1123px.
+// Top row (3 squares + 2 gaps): TOP_ROW_SIZE = (1123 - 40) / 3 = 361.
+// Bottom row (4 + 3 gaps): exact would be 265.75 → 266 (1px overhang past
+// the top row's right edge — imperceptible).
+const TOP_ROW_SIZE = 361;
+const BOTTOM_ROW_SIZE = 266;
+
+// 8 stacked horizontal cards span the full right column. 1st place height is
+// derived from this so its top/bottom align with the right column exactly:
+// 8 * 80 + 7 * 20 = 780.
+const FIRST_PL_HEIGHT = 8 * RIGHT_CARD_HEIGHT + 7 * CARD_GAP;
+
+// Bottom row fills the rest of the vertical space below the top row so its
+// bottom aligns with the 1st place card and the right column.
+const BOTTOM_ROW_HEIGHT = FIRST_PL_HEIGHT - TOP_ROW_SIZE - CARD_GAP;
+
+const BASE_CARD_SIZE = TOP_ROW_SIZE;
+
+const RIGHT_X = PADDING + FIRST_PL_WIDTH + CARD_GAP;
+const BOTTOM_ROW_Y = PLAYER_AREA_Y + TOP_ROW_SIZE + CARD_GAP;
+const RIGHT_COL_X = RIGHT_X + 3 * TOP_ROW_SIZE + 3 * CARD_GAP;
+
+const TOURNAMENT_ICON_SIZE = 90;
+
+// Element scale per placement tier — tweak these to adjust UI element sizes
+const FIRST_ELEMENT_SCALE = 1.3;
+const TOP_ELEMENT_SCALE = 1.15;
+const BOTTOM_ELEMENT_SCALE = 1.0;
+
+/**
+ * Card layout for placements 1–8. Character image uses width-based fill
+ * (default "contain"): on tall portrait cards (1st place, 5–8) the image
+ * fills the card width and aspect-fits vertically, leaving some empty space
+ * at the top/bottom — the original Kagaribi look. Alt area is clamped to
+ * fit narrow cards while keeping the placement number's left side clear,
+ * and uses a consistent 5px inset from the card edges (matching the flag).
+ *
+ * @param s — UI element scale factor
+ * @param clipGap — overflow distance in local coords
+ * @param noLeftClip — extend left clip generously (for edge cards)
+ * @param noTopClip — extend top clip generously (for top-row cards)
+ */
+const createPlayerElements = (
+  w: number,
+  h: number,
+  s: number = 1,
+  clipGap: number = CARD_GAP,
+  noLeftClip: boolean = false,
+  noTopClip: boolean = false,
+  altHeightOverride?: number,
+  altRows: number = 5,
+): ElementConfig[] => {
+  // 5px padding between alt area and card edges. Reserve space on the left
+  // for the placement number (~100*s px) so alt never overlaps it on narrow
+  // cards.
+  const edgePad = 5;
+  const placementSpace = Math.round(100 * s);
+  const altMaxAvail = Math.max(0, w - placementSpace - edgePad);
+  const altSize = Math.max(40, Math.min(Math.round(268 * s), altMaxAvail));
+  // Alt is a square area by default. Pass `altHeightOverride` to make it
+  // taller (useful on tall cards like 1st place where the alt cells would
+  // otherwise be cramped because the width is what limits altSize).
+  const altHeight = altHeightOverride ?? altSize;
+  const altX = w - altSize - edgePad;
+
+  return [
+    {
+      name: "Card Background",
+      type: "rect",
+      fill: "cardBg",
+      position: { x: 0, y: 0 },
+      size: { width: w, height: h },
+    },
+    {
+      name: "Left Border",
+      type: "rect",
+      fill: "leftBorder",
+      position: { x: 0, y: 0 },
+      size: { width: 5, height: h },
+    },
+    {
+      name: "Character",
+      type: "characterImage",
+      position: { x: -w * 0.08, y: -h * 0.12 },
+      size: { width: w * 1.16, height: h * 1.12 },
+      shadowEnabled: false,
+      clip: true,
+      clipOffset: {
+        top: noTopClip ? Math.ceil(h * 0.2) : clipGap,
+        left: noLeftClip ? Math.ceil(w * 0.2) : clipGap,
+      },
+    },
+    {
+      name: "Bottom Gradient",
+      type: "rect",
+      fill: {
+        type: "linear",
+        angle: 180,
+        colorStops: [
+          { position: 0, color: "rgba(0, 0, 0, 0)" },
+          { position: 1, color: "rgba(0, 0, 0, 0.85)" },
+        ],
+      },
+      position: { x: 0, y: h * 0.8 },
+      size: { width: w, height: h * 0.2 },
+    },
+    {
+      name: "Placement",
+      type: "text",
+      text: DesignPlaceholder.PLAYER_PLACEMENT,
+      fontSize: Math.round(70 * s),
+      fontWeight: 500,
+      fill: "text",
+      stroke: "placementStroke",
+      strokeWidth: Math.round(2 * s),
+      shadowBlur: Math.round(8 * s),
+      shadowColor: "placementShadow",
+      shadowOffset: { x: Math.round(3 * s), y: Math.round(3 * s) },
+      position: { x: Math.round(15 * s), y: Math.round(8 * s) },
+    },
+    {
+      name: "Prefix",
+      type: "smartText",
+      text: DesignPlaceholder.PLAYER_PREFIX,
+      fontSize: Math.round(15 * s),
+      fontWeight: 400,
+      fill: "prefixText",
+      anchor: "bottomLeft",
+      position: { x: Math.round(14 * s), y: h - Math.round(32 * s) },
+      size: { width: w - Math.round(64 * s), height: Math.round(28 * s) },
+      conditions: [DesignPlaceholder.PLAYER_PREFIX],
+    },
+    {
+      name: "Tag",
+      type: "smartText",
+      text: DesignPlaceholder.PLAYER_TAG,
+      fontSize: Math.round(35 * s),
+      fontWeight: 500,
+      fill: "text",
+      anchor: "bottomLeft",
+      verticalAlign: "middle",
+      position: { x: Math.round(14 * s), y: h - Math.round(5 * s) },
+      size: { width: w - Math.round(64 * s), height: Math.round(44 * s) },
+    },
+    {
+      name: "Alt Characters",
+      type: "altCharacterImage",
+      position: { x: altX, y: Math.round(8 * s) },
+      size: { width: altSize, height: altHeight },
+      rows: altRows,
+      gap: Math.round(4 * s),
+      flow: "column",
+      align: "start",
+      justify: "end",
+      alignLastRow: "start",
+    },
+    {
+      name: "Flag",
+      type: "playerFlag",
+      position: {
+        x: w - Math.round(32 * s) - edgePad,
+        y: h - Math.round(32 * s) - edgePad,
+      },
+      size: { width: Math.round(32 * s), height: Math.round(32 * s) },
+      fillMode: "contain",
+      conditions: [DesignPlaceholder.PLAYER_COUNTRY],
+    },
+  ];
+};
+
+const createHorizontalPlayerElements = (): ElementConfig[] => {
+  const w = RIGHT_CARD_WIDTH;
+  const h = RIGHT_CARD_HEIGHT;
+  const charSize = h;
+  const altHeight = 15;
+  const edgePad = 2;
+  // Alt characters can stretch across the full card width (minus 5px insets
+  // on either side). Right-justified, so icons stack from the right and
+  // additional icons extend leftward.
+  const altMaxWidth = w - edgePad * 2;
+  const leftPad = 14;
+  // Fixed-width placement slot so single- and double-digit numbers (e.g. 9
+  // and 13) right-align within the same column, keeping the prefix/tag
+  // start positions consistent across cards.
+  const placementWidth = 40;
+
+  return [
+    {
+      name: "Card Background",
+      type: "rect",
+      fill: "cardBg",
+      position: { x: 0, y: 0 },
+      size: { width: w, height: h },
+    },
+    // Country flag rendered as a faded background on the LEFT side of the
+    // card. Whole flag is drawn (contain mode, left-aligned) with 10px of
+    // block padding inset from the card top and bottom.
+    {
+      name: "Country Flag Background",
+      type: "playerFlag",
+      position: { x: 15, y: 15 },
+      size: { width: (h - 30) * 1.33, height: h - 30 },
+      fillMode: "cover",
+      align: "left",
+      opacity: 0.25,
+      conditions: [DesignPlaceholder.PLAYER_COUNTRY],
+    },
+    {
+      name: "Left Border",
+      type: "rect",
+      fill: "leftBorder",
+      position: { x: 0, y: 0 },
+      size: { width: 5, height: h },
+    },
+    // Character is rendered BEFORE the inline flex below so the tag (drawn
+    // by the flex) can overlap the character image when the player name is
+    // long. SmartText shrinks the tag font dynamically when its slot can't
+    // fit the full natural width.
+    {
+      name: "Character",
+      type: "characterImage",
+      position: { x: w - charSize * 1.5, y: 0 },
+      size: { width: charSize * 2, height: charSize },
+      shadowEnabled: false,
+      clip: true,
+      clipOffset: {
+        top: h,
+        left: charSize * 2,
+      },
+    },
+    {
+      name: "Inline Layout",
+      type: "flexGroup",
+      direction: "row",
+      align: "center",
+      gap: 8,
+      position: { x: leftPad, y: 0 },
+      size: { width: w - leftPad, height: h },
+      elements: [
+        {
+          name: "Placement",
+          type: "smartText",
+          text: DesignPlaceholder.PLAYER_PLACEMENT,
+          fontSize: 25,
+          fontWeight: 400,
+          fill: "text",
+          stroke: "placementStroke",
+          strokeWidth: 1,
+          shadowBlur: 4,
+          shadowColor: "placementShadow",
+          shadowOffset: { x: 1, y: 1 },
+          align: "right",
+          verticalAlign: "middle",
+          position: { x: 0, y: 0 },
+          size: { width: placementWidth, height: 36 },
+        },
+        {
+          // Inner flex sized to the tag's height and bottom-aligns its
+          // children, so prefix shares the tag's baseline. The outer flex
+          // (align: "center") then centers this whole sub-row vertically in
+          // the card, which keeps the tag visually centered.
+          name: "Name",
+          type: "flexGroup",
+          direction: "row",
+          align: "end",
+          gap: 4,
+          position: { x: 0, y: 0 },
+          size: { height: 22 },
+          flex: { grow: true, shrink: true },
+          elements: [
+            {
+              name: "Prefix",
+              type: "smartText",
+              text: DesignPlaceholder.PLAYER_PREFIX,
+              fontSize: 12,
+              fontWeight: 400,
+              fill: "prefixText",
+              verticalAlign: "bottom",
+              conditions: [DesignPlaceholder.PLAYER_PREFIX],
+              position: { x: 0, y: 0 },
+              size: { height: 14 },
+            },
+            {
+              name: "Tag",
+              type: "smartText",
+              text: DesignPlaceholder.PLAYER_TAG,
+              fontSize: 22,
+              fontWeight: 400,
+              fill: "text",
+              verticalAlign: "bottom",
+              shadowColor: "placementShadow",
+              shadowBlur: 3,
+              shadowOffset: { x: 1, y: 1 },
+              flex: { shrink: true },
+              position: { x: 0, y: 0 },
+              size: { height: 22 },
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: "Alt Characters",
+      type: "altCharacterImage",
+      position: { x: w - altMaxWidth - edgePad, y: h - altHeight - edgePad },
+      size: { width: altMaxWidth, height: altHeight },
+      rows: 1,
+      gap: 2,
+      flow: "row",
+      align: "end",
+      justify: "end",
+    },
+  ];
+};
+
+const BOTTOM_LOCAL_GAP = Math.ceil(
+  (CARD_GAP * BASE_CARD_SIZE) / BOTTOM_ROW_SIZE,
+);
+
+const basePlayer: PlayerDesign = {
+  position: { x: 0, y: 0 },
+  size: { width: BASE_CARD_SIZE, height: BASE_CARD_SIZE },
+  scale: { x: 1, y: 1 },
+  elements: createPlayerElements(
+    BASE_CARD_SIZE,
+    BASE_CARD_SIZE,
+    BOTTOM_ELEMENT_SCALE,
+    BOTTOM_LOCAL_GAP,
+  ),
+};
+
+const getScale = (size: number) => ({
+  x: size / BASE_CARD_SIZE,
+  y: size / BASE_CARD_SIZE,
+});
+
+const topRowElements = createPlayerElements(
+  BASE_CARD_SIZE,
+  BASE_CARD_SIZE,
+  TOP_ELEMENT_SCALE,
+  CARD_GAP,
+  false,
+  true,
+);
+
+// 5-8 cards are narrower than the original Kagaribi bottom row, so a sub-1
+// element scale keeps the placement number, prefix, and tag from feeling
+// oversized for the available width.
+const BOTTOM_ROW_ELEMENT_SCALE = 0.8;
+
+const bottomRowElements = createPlayerElements(
+  BOTTOM_ROW_SIZE,
+  BOTTOM_ROW_HEIGHT,
+  BOTTOM_ROW_ELEMENT_SCALE,
+  CARD_GAP,
+);
+
+const horizontalElements = createHorizontalPlayerElements();
+
+const players: Partial<PlayerDesign>[] = [
+  // 1st place — portrait rectangle
+  {
+    position: { x: PADDING, y: PLAYER_AREA_Y },
+    size: { width: FIRST_PL_WIDTH, height: FIRST_PL_HEIGHT },
+    scale: { x: 1, y: 1 },
+    elements: createPlayerElements(
+      FIRST_PL_WIDTH,
+      FIRST_PL_HEIGHT,
+      FIRST_ELEMENT_SCALE,
+      CARD_GAP,
+      true,
+      true,
+      Math.round(500 * FIRST_ELEMENT_SCALE),
+      12,
+    ),
+  },
+  // 2nd-4th — top row squares
+  {
+    position: { x: RIGHT_X, y: PLAYER_AREA_Y },
+    scale: getScale(TOP_ROW_SIZE),
+    elements: topRowElements,
+  },
+  {
+    position: { x: RIGHT_X + TOP_ROW_SIZE + CARD_GAP, y: PLAYER_AREA_Y },
+    scale: getScale(TOP_ROW_SIZE),
+    elements: topRowElements,
+  },
+  {
+    position: { x: RIGHT_X + (TOP_ROW_SIZE + CARD_GAP) * 2, y: PLAYER_AREA_Y },
+    scale: getScale(TOP_ROW_SIZE),
+    elements: topRowElements,
+  },
+  // 5th-8th — bottom row, 266×399 portrait
+  {
+    position: { x: RIGHT_X, y: BOTTOM_ROW_Y },
+    size: { width: BOTTOM_ROW_SIZE, height: BOTTOM_ROW_HEIGHT },
+    scale: { x: 1, y: 1 },
+    elements: bottomRowElements,
+  },
+  {
+    position: {
+      x: RIGHT_X + BOTTOM_ROW_SIZE + CARD_GAP,
+      y: BOTTOM_ROW_Y,
+    },
+    size: { width: BOTTOM_ROW_SIZE, height: BOTTOM_ROW_HEIGHT },
+    scale: { x: 1, y: 1 },
+    elements: bottomRowElements,
+  },
+  {
+    position: {
+      x: RIGHT_X + (BOTTOM_ROW_SIZE + CARD_GAP) * 2,
+      y: BOTTOM_ROW_Y,
+    },
+    size: { width: BOTTOM_ROW_SIZE, height: BOTTOM_ROW_HEIGHT },
+    scale: { x: 1, y: 1 },
+    elements: bottomRowElements,
+  },
+  {
+    position: {
+      x: RIGHT_X + (BOTTOM_ROW_SIZE + CARD_GAP) * 3,
+      y: BOTTOM_ROW_Y,
+    },
+    size: { width: BOTTOM_ROW_SIZE, height: BOTTOM_ROW_HEIGHT },
+    scale: { x: 1, y: 1 },
+    elements: bottomRowElements,
+  },
+  // 9th-16th — vertically stacked horizontal cards
+  ...Array.from({ length: 8 }, (_, i) => ({
+    position: {
+      x: RIGHT_COL_X,
+      y: PLAYER_AREA_Y + i * (RIGHT_CARD_HEIGHT + CARD_GAP),
+    },
+    size: { width: RIGHT_CARD_WIDTH, height: RIGHT_CARD_HEIGHT },
+    scale: { x: 1, y: 1 },
+    elements: horizontalElements,
+  })),
+];
+
+const colorPalette: Design["colorPalette"] = {
+  bgGradient1: {
+    color: "#000000",
+    name: "Color 1",
+    group: "Background",
+  },
+  bgGradient2: {
+    color: "#4B0D0D",
+    name: "Color 2",
+    group: "Background",
+  },
+  bgGradient3: {
+    color: "#414141",
+    name: "Color 3",
+    group: "Background",
+  },
+  cardBg: {
+    color: "rgba(80, 50, 50, 0.4)",
+    name: "Card Background",
+    group: "Player",
+  },
+  text: { color: "#FFFFFF", name: "Text", group: "Text" },
+  prefixText: {
+    color: "rgba(180, 180, 180, 1)",
+    name: "Prefix",
+    group: "Text",
+  },
+  placementStroke: {
+    color: "#000000",
+    name: "Placement Stroke",
+    group: "Text",
+  },
+  placementShadow: {
+    color: "rgba(0, 0, 0, 0.8)",
+    name: "Placement Shadow",
+    group: "Text",
+  },
+  leftBorder: { color: "#FFFFFF", name: "Left Border", group: "Player" },
+  topBar: { color: "#FFFFFF", name: "Top Bar", group: "Background" },
+};
+
+const background: LayerDesign = {
+  elements: [
+    {
+      type: "rect",
+      fill: {
+        type: "angular",
+        colorStops: [
+          { position: 0, color: "bgGradient2" },
+          { position: 0.24, color: "bgGradient1" },
+          { position: 0.42, color: "bgGradient2" },
+          { position: 0.73, color: "bgGradient3" },
+          { position: 1.0, color: "bgGradient2" },
+        ],
+      },
+      position: { x: 0, y: 0 },
+      size: { width: CANVAS_WIDTH, height: CANVAS_HEIGHT },
+    },
+    {
+      id: "backgroundImage",
+      type: "backgroundImage",
+      conditions: [RenderCondition.BACKGROUND_IMG],
+      position: { x: 0, y: 0 },
+      size: { width: CANVAS_WIDTH, height: CANVAS_HEIGHT },
+      fillMode: "cover",
+    },
+    {
+      name: "Top Bar",
+      type: "rect",
+      fill: "topBar",
+      position: { x: PADDING, y: VERT_PADDING },
+      size: { width: CANVAS_WIDTH - PADDING * 2, height: TOP_BAR_HEIGHT },
+    },
+  ],
+};
+
+const tournament: LayerDesign = {
+  elements: [
+    {
+      type: "smartText",
+      id: "titleText",
+      name: "Title",
+      textId: "titleText",
+      fontSize: 70,
+      fontWeight: 500,
+      fill: "text",
+      position: { x: PADDING, y: VERT_PADDING + TOP_BAR_HEIGHT + 8 },
+      size: { width: 1380, height: 80 },
+      selectable: true,
+    },
+    {
+      type: "text",
+      id: "dateText",
+      name: "Date",
+      textId: "dateText",
+      fontSize: 28,
+      fontWeight: 500,
+      fill: "text",
+      position: { x: PADDING, y: VERT_PADDING + TOP_BAR_HEIGHT + 80 },
+      textTransform: "uppercase",
+      selectable: true,
+    },
+    {
+      type: "smartText",
+      id: "locationText",
+      name: "Location",
+      textId: "locationText",
+      fontSize: 28,
+      fontWeight: 500,
+      fill: "text",
+      anchor: "topRight",
+      position: {
+        x: CANVAS_WIDTH - PADDING,
+        y: VERT_PADDING + TOP_BAR_HEIGHT + 8,
+      },
+      textTransform: "uppercase",
+      selectable: true,
+    },
+    {
+      type: "smartText",
+      id: "entrantsText",
+      name: "Entrants",
+      textId: "entrantsText",
+      fontSize: 28,
+      fontWeight: 500,
+      fill: "text",
+      anchor: "topRight",
+      position: {
+        x: CANVAS_WIDTH - PADDING,
+        y: VERT_PADDING + TOP_BAR_HEIGHT + 40,
+      },
+      textTransform: "uppercase",
+      selectable: true,
+    },
+    {
+      type: "smartText",
+      id: "urlText",
+      name: "URL",
+      textId: "urlText",
+      fontSize: 22,
+      fontWeight: 400,
+      fill: "text",
+      anchor: "leftMiddle",
+      position: { x: PADDING, y: FOOTER_BOTTOM - TOURNAMENT_ICON_SIZE / 2 },
+      selectable: true,
+    },
+    {
+      type: "tournamentIcon",
+      id: "tournamentIcon",
+      name: "Tournament Icon",
+      conditions: [RenderCondition.TOURNAMENT_ICON],
+      position: {
+        x: CANVAS_WIDTH - PADDING - TOURNAMENT_ICON_SIZE,
+        y: FOOTER_BOTTOM - TOURNAMENT_ICON_SIZE,
+      },
+      size: { width: TOURNAMENT_ICON_SIZE, height: TOURNAMENT_ICON_SIZE },
+      fillMode: "contain",
+    },
+  ],
+};
+
+export const kagaribi16Design: Design = {
+  name: "Kagaribi (16 Players)",
+  canvasSize: {
+    width: CANVAS_WIDTH,
+    height: CANVAS_HEIGHT,
+  },
+  canvasDisplayScale: 0.5,
+  colorPalette,
+  textPalette: {
+    titleText: {
+      text: DesignPlaceholder.TOURNAMENT_NAME,
+      name: "Title",
+    },
+    dateText: {
+      text: DesignPlaceholder.TOURNAMENT_DATE,
+      name: "Date",
+    },
+    locationText: {
+      text: `@${DesignPlaceholder.TOURNAMENT_STATE}, ${DesignPlaceholder.TOURNAMENT_COUNTRY}`,
+      name: "Location",
+    },
+    entrantsText: {
+      text: `${DesignPlaceholder.ENTRANTS} PLAYERS`,
+      name: "Entrants",
+    },
+    urlText: {
+      text: DesignPlaceholder.TOURNAMENT_URL,
+      name: "URL",
+    },
+  },
+  background,
+  tournament,
+  basePlayer,
+  players,
+  reversePlayerZOrder: true,
+};

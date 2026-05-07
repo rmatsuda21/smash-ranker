@@ -553,6 +553,7 @@ export const createPlayerFlagElement: ElementCreator<
       imageSrc={flagSrc}
       fillMode={element.fillMode ?? "contain"}
       align={element.align ?? "center"}
+      opacity={element.opacity}
       perfectDrawEnabled={context.perfectDraw}
     />
   );

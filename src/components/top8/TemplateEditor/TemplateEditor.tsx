@@ -18,6 +18,7 @@ import {
   createMinimalDesign,
 } from "@/designs/minimal";
 import { kagaribiDesign } from "@/designs/kagaribi";
+import { kagaribi16Design } from "@/designs/kagaribi16";
 import { Button } from "@/components/shared/Button/Button";
 import { DBTemplate } from "@/types/Repository";
 import { useCanvasStore } from "@/store/canvasStore";
@@ -42,6 +43,12 @@ const DEFAULT_TEMPLATE_GROUPS: { templates: DBTemplate[]; name: string }[] = [
         id: "kagaribi",
         name: "Kagaribi",
         design: kagaribiDesign,
+        font: "Dela Gothic One",
+      },
+      {
+        id: "kagaribi-16",
+        name: "Kagaribi (16 Players)",
+        design: kagaribi16Design,
         font: "Dela Gothic One",
       },
     ],
