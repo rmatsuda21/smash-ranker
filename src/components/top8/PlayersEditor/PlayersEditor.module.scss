@@ -45,24 +45,24 @@
 
 .playerSelector {
   display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(32px, auto);
-  background-color: var(--bg-raised);
-  border: 1px solid var(--gray-3);
-  gap: 1px;
+  grid-template-columns: repeat(auto-fit, minmax(36px, 1fr));
+  gap: var(--space-1);
   flex-shrink: 0;
 
-  overflow-x: auto;
-  white-space: nowrap;
-
   button {
-    border-radius: 0;
-    background-color: var(--bg-surface);
+    padding: var(--input-padding-sm);
+  }
+}
 
-    &:global(.selected) {
-      background-color: var(--accent-9);
-      color: #fff;
-    }
+.unselected {
+  background-color: var(--bg-surface);
+  border-color: var(--border);
+  color: var(--fg-2);
+
+  &:hover:not(:disabled) {
+    background-color: var(--bg-raised);
+    border-color: var(--border-strong);
+    color: var(--fg-1);
   }
 }
 
@@ -70,6 +70,8 @@
   .playerSelector {
     position: sticky;
     top: 0;
-    z-index: 10;
+    z-index: var(--z-raised);
+    background-color: var(--bg-raised);
+    padding: var(--space-1) 0;
   }
 }
