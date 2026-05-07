@@ -34,6 +34,26 @@ msgstr "{0}が容量オーバーです！（最大2MB）"
 msgid "# of Entrants"
 msgstr "参加人数"
 
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:60
+msgid "16 Player Variant"
+msgstr "16人用"
+
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:102
+msgid "16 Players"
+msgstr "16人用"
+
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:108
+msgid "24 Players"
+msgstr "24人用"
+
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:96
+msgid "4 Players"
+msgstr "4人用"
+
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:90
+msgid "8 Players"
+msgstr "8人用"
+
 #: src/components/top8/SettingsPanel/AccentColorPicker.tsx:74
 msgid "Accent Color"
 msgstr "アクセントカラー"
@@ -60,7 +80,7 @@ msgid "Are you sure you want to delete this asset?"
 msgstr "この素材を消しますか？"
 
 #: src/components/top8/AssetManager/AssetManager.tsx:32
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:191
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:189
 msgid "Assets"
 msgstr "素材"
 
@@ -94,15 +114,15 @@ msgstr "下部テキスト"
 msgid "Buy me a coffee"
 msgstr "一杯だけよ"
 
-#: src/components/predict/PredictionPreview/PredictionPreview.tsx:52
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:58
 msgid "Calculating upset odds..."
 msgstr ""
 
-#: src/components/predict/PredictionPreview/PredictionPreview.tsx:54
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:60
 msgid "Calling it for the record..."
 msgstr ""
 
-#: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:80
+#: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:60
 msgid "Cancel"
 msgstr "キャンセル"
 
@@ -112,7 +132,7 @@ msgid "Card Background"
 msgstr "カード背景"
 
 #. placeholder {0}: res.status
-#: src/hooks/predict/useFetchPredictionEntrants.ts:199
+#: src/hooks/predict/useFetchPredictionEntrants.ts:206
 #: src/hooks/top8/useFetchChallonge.ts:41
 msgid "Challonge API error: {0}"
 msgstr "Challonge APIエラー: {0}"
@@ -180,25 +200,25 @@ msgstr "カラー 3"
 msgid "Color Palette"
 msgstr "カラーパレット"
 
-#: src/hooks/predict/useFetchPredictionEntrants.ts:235
-#: src/hooks/top8/useFetchTonamel.ts:180
+#: src/hooks/predict/useFetchPredictionEntrants.ts:240
+#: src/hooks/top8/useFetchTonamel.ts:190
 msgid "Competition not found"
 msgstr "大会が見つかりませんでした"
 
-#: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:83
+#: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:63
 msgid "Confirm"
 msgstr "確認"
 
-#: src/components/predict/PredictionPreview/PredictionPreview.tsx:49
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:55
 msgid "Consulting Master Hand..."
 msgstr ""
 
-#: src/components/predict/ExportBar/ExportBar.tsx:65
+#: src/components/predict/ExportBar/ExportBar.tsx:67
 #: src/components/predict/InviteShareButton/InviteShareButton.tsx:46
 msgid "Copied!"
 msgstr "コピー完了"
 
-#: src/components/predict/ExportBar/ExportBar.tsx:60
+#: src/components/predict/ExportBar/ExportBar.tsx:62
 msgid "Copy"
 msgstr "コピー"
 
@@ -224,7 +244,7 @@ msgstr "作成"
 msgid "Create a minimal template with a specific player count."
 msgstr "指定の数の選手でミニマルテンプレを作成"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:220
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:249
 msgid "Create New Template"
 msgstr "新規テンプレ作成"
 
@@ -252,7 +272,7 @@ msgstr "カスタムフラッグ"
 msgid "Custom Fonts"
 msgstr "カスタムフォント"
 
-#: src/components/top8/TemplateEditor/TemplateGroup.tsx:72
+#: src/components/top8/TemplateEditor/TemplateGroup.tsx:70
 msgid "Custom Minimal"
 msgstr "作成"
 
@@ -273,12 +293,12 @@ msgstr "日付"
 msgid "Date"
 msgstr "日付"
 
-#: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:222
+#: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:218
 msgid "Delete"
 msgstr "削除"
 
 #. placeholder {0}: markedIds.size
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:221
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:219
 msgid "Delete ({0})"
 msgstr "削除 ({0})"
 
@@ -290,11 +310,11 @@ msgstr "素材消去"
 msgid "Delete Assets"
 msgstr "素材を削除"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:205
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:234
 msgid "Delete Template?"
 msgstr "テンプレートを削除しますか？"
 
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:207
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:205
 msgid "Deselect All"
 msgstr "全選択解除"
 
@@ -306,7 +326,7 @@ msgstr "デザイン"
 msgid "Dimensions"
 msgstr "サイズ"
 
-#: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:34
+#: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:54
 msgid "Don't show again"
 msgstr "次回から表示しない"
 
@@ -329,7 +349,7 @@ msgid "English"
 msgstr "英語"
 
 #. placeholder {0}: translatedName.toLowerCase()
-#: src/components/top8/TextEditor/TextEditor.tsx:76
+#: src/components/top8/TextEditor/TextEditor.tsx:74
 msgid "Enter {0}..."
 msgstr "{0}を入力..."
 
@@ -353,27 +373,27 @@ msgstr "参加人数"
 msgid "Event Name"
 msgstr "イベント名"
 
-#: src/hooks/top8/useFetchChallonge.ts:120
+#: src/hooks/top8/useFetchChallonge.ts:122
 msgid "Failed to fetch Challonge tournament"
 msgstr "Challonge大会の取得に失敗しました"
 
-#: src/hooks/predict/useFetchPredictionEntrants.ts:159
+#: src/hooks/predict/useFetchPredictionEntrants.ts:161
 msgid "Failed to fetch seeds"
 msgstr "シード情報の取得に失敗しました"
 
-#: src/hooks/top8/useFetchTonamel.ts:202
+#: src/hooks/top8/useFetchTonamel.ts:214
 msgid "Failed to fetch Tonamel tournament"
 msgstr "Tonamel大会の取得に失敗しました"
 
-#: src/hooks/predict/useFetchPredictionEntrants.ts:297
+#: src/hooks/predict/useFetchPredictionEntrants.ts:300
 msgid "Failed to fetch tournament"
 msgstr "大会情報の取得に失敗しました"
 
-#: src/hooks/top8/useFetchResult.ts:421
+#: src/hooks/top8/useFetchResult.ts:420
 msgid "Failed to fetch tournament data"
 msgstr "大会データの取得に失敗しました"
 
-#: src/components/predict/PredictionPreview/PredictionPreview.tsx:155
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:178
 msgid "Failed to generate image"
 msgstr "画像の生成に失敗しました"
 
@@ -403,7 +423,7 @@ msgstr "選手名"
 msgid "Generate Graphic"
 msgstr "画像を生成"
 
-#: src/components/predict/PredictionPreview/PredictionPreview.tsx:185
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:218
 msgid "Generating prediction"
 msgstr ""
 
@@ -445,6 +465,10 @@ msgstr "参加"
 msgid "Join the official server for help, feedback, and updates!"
 msgstr "公式サーバーで情報発信を行なってます！"
 
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:50
+msgid "Kagaribi"
+msgstr "篝火"
+
 #: src/components/top8/SettingsPanel/LanguagePicker.tsx:41
 msgid "Language"
 msgstr "言語"
@@ -459,11 +483,11 @@ msgid "Light"
 msgstr "ライト"
 
 #: src/components/predict/TournamentUrlInput/TournamentUrlInput.tsx:54
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:103
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:99
 msgid "Load"
 msgstr "取得"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:197
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:226
 msgid "Load Template?"
 msgstr "テンプレートを読み込みますか？"
 
@@ -484,7 +508,7 @@ msgstr ""
 msgid "Location"
 msgstr "場所"
 
-#: src/components/predict/PredictionPreview/PredictionPreview.tsx:53
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:59
 msgid "Locking in picks..."
 msgstr ""
 
@@ -505,15 +529,19 @@ msgstr "素材管理"
 msgid "Many cups of coffee were consumed during development 👀"
 msgstr "珈琲一杯分から！"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:258
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:86
+msgid "Minimal"
+msgstr "ミニマル"
+
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:287
 msgid "My Templates"
-msgstr "マイテンプレート"
+msgstr "マイテンプレ"
 
 #: src/components/top8/AssetManager/AssetsModal/AssetGrid/AssetGrid.tsx:38
 msgid "No assets yet"
 msgstr "素材がありません"
 
-#: src/hooks/predict/useFetchPredictionEntrants.ts:138
+#: src/hooks/predict/useFetchPredictionEntrants.ts:140
 msgid "No phases found for this event"
 msgstr "このイベントにフェーズが見つかりません"
 
@@ -526,7 +554,7 @@ msgid "No text content defined in this design."
 msgstr "このデザインにはテキストが定義されていません。"
 
 #: src/components/top8/CharacterEditor/CharacterSelect/CharacterSelect.tsx:34
-#: src/components/top8/PlayersEditor/CountryDropDown.tsx:34
+#: src/components/top8/PlayersEditor/CountryDropDown.tsx:38
 msgid "None"
 msgstr "なし"
 
@@ -534,9 +562,14 @@ msgstr "なし"
 msgid "Okay"
 msgstr "OK"
 
-#: src/components/shared/FileUploader/FileUploader.tsx:155
+#: src/components/shared/FileUploader/FileUploader.tsx:156
 msgid "Or drag and drop"
 msgstr "ドラッグ・ドロップも対応"
+
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:54
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:72
+msgid "Original"
+msgstr "オリジナル"
 
 #: src/components/top8/InfoPanel/InfoPanel.tsx:101
 msgid "Original concept & inspiration"
@@ -602,7 +635,7 @@ msgstr "選手タグ"
 msgid "Players"
 msgstr "選手情報"
 
-#: src/components/predict/PredictionPreview/PredictionPreview.tsx:51
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:57
 msgid "Polishing trophies..."
 msgstr ""
 
@@ -611,7 +644,7 @@ msgid "Prediction size"
 msgstr "予想人数"
 
 #: src/components/predict/PredictApp/PredictApp.tsx:77
-#: src/components/predict/PredictionGraphic/PredictionGraphic.tsx:61
+#: src/components/predict/PredictionGraphic/PredictionGraphic.tsx:62
 #: src/components/predict/PredictionListPanel/PredictionListPanel.tsx:84
 #: src/components/predict/PredictionWorkspace/PredictionWorkspace.tsx:39
 msgid "Predictions"
@@ -644,7 +677,7 @@ msgstr "紫"
 msgid "Quality"
 msgstr "品質"
 
-#: src/components/predict/PredictionPreview/PredictionPreview.tsx:50
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:56
 msgid "Reading the tea leaves..."
 msgstr ""
 
@@ -652,7 +685,7 @@ msgstr ""
 msgid "Red"
 msgstr "赤"
 
-#: src/components/top8/Ranker/Header/Header.tsx:44
+#: src/components/top8/Ranker/Header/Header.tsx:34
 msgid "Redo"
 msgstr "やり直す"
 
@@ -677,12 +710,12 @@ msgstr "プレイヤーを検索..."
 msgid "Secondary"
 msgstr "サブカラー"
 
-#: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:211
+#: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:207
 #: src/components/top8/AssetSelector/AssetSelector.tsx:91
 msgid "Select"
 msgstr "選択"
 
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:209
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:207
 msgid "Select All"
 msgstr "全選択"
 
@@ -694,11 +727,11 @@ msgstr "素材を選択してプレビュー"
 msgid "Select Character"
 msgstr "キャラクター選択"
 
-#: src/components/top8/PlayersEditor/CountryDropDown.tsx:47
+#: src/components/top8/PlayersEditor/CountryDropDown.tsx:53
 msgid "Select Country"
 msgstr "国選択"
 
-#: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:208
+#: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:204
 msgid "Selected"
 msgstr "選択済み"
 
@@ -726,6 +759,10 @@ msgstr "容量"
 #: src/consts/top8/paletteLabels.ts:20
 msgid "Smash Ball"
 msgstr "スマッシュボール"
+
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:78
+msgid "Square Variant"
+msgstr "スクエアバリアント"
 
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:158
 msgid "State"
@@ -789,7 +826,7 @@ msgstr "テーマ"
 msgid "Theme"
 msgstr "テーマ"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:206
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:235
 msgid "This template will be permanently deleted."
 msgstr "このテンプレートは完全に削除されます。"
 
@@ -811,8 +848,8 @@ msgid "Title"
 msgstr "タイトル"
 
 #. placeholder {0}: res.status
-#: src/hooks/predict/useFetchPredictionEntrants.ts:231
-#: src/hooks/top8/useFetchTonamel.ts:50
+#: src/hooks/predict/useFetchPredictionEntrants.ts:236
+#: src/hooks/top8/useFetchTonamel.ts:52
 msgid "Tonamel API error: {0}"
 msgstr "Tonamel APIエラー: {0}"
 
@@ -838,6 +875,10 @@ msgstr "左上テキスト"
 #: src/consts/top8/paletteLabels.ts:47
 msgid "Top Right Text"
 msgstr "右上テキスト"
+
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:68
+msgid "Top8er"
+msgstr "Top8er"
 
 #: src/components/top8/SidePanel/SidePanelNav.tsx:24
 msgid "Tournament"
@@ -868,18 +909,18 @@ msgstr "大会住所"
 msgid "Tournament Info"
 msgstr "大会情報"
 
-#: src/components/top8/TournamentConfig/TournamentEditor.tsx:104
-#: src/consts/top8/placeholders.ts:28
-msgid "Tournament Name"
-msgstr "大会名"
-
 #. js-lingui-explicit-id
 #: src/consts/top8/paletteLabels.ts:54
 msgid "Tournament Name"
 msgstr "大会名"
 
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:104
+#: src/consts/top8/placeholders.ts:28
+msgid "Tournament Name"
+msgstr "大会名"
+
 #: src/hooks/predict/useFetchPredictionEntrants.ts:122
-#: src/hooks/top8/useFetchResult.ts:373
+#: src/hooks/top8/useFetchResult.ts:372
 msgid "Tournament not found"
 msgstr "大会が見つかりませんでした"
 
@@ -907,20 +948,20 @@ msgstr "Xアカウント"
 msgid "Type"
 msgstr "形式"
 
-#: src/components/top8/Ranker/Header/Header.tsx:34
+#: src/components/top8/Ranker/Header/Header.tsx:30
 msgid "Undo"
 msgstr "元に戻す"
 
 #: src/components/shared/FileUploader/FileUploader.tsx:153
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:240
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:238
 msgid "Upload"
 msgstr "アップロード"
 
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:237
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:235
 msgid "Upload Assets"
 msgstr "素材をアップロード"
 
-#: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:189
+#: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:185
 msgid "Uploaded"
 msgstr "アップロード日"
 
@@ -929,7 +970,7 @@ msgstr "アップロード日"
 msgid "URL"
 msgstr "URL"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:198
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:227
 msgid "Your current design will be overwritten!"
 msgstr "現在のデザインは上書きされます！"
 

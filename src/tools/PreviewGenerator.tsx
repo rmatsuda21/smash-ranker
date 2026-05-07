@@ -30,46 +30,51 @@ declare global {
 }
 
 const TEMPLATES: DBTemplate[] = [
-  { id: "top8er", name: "Top8er", design: top8erDesign, font: "Noto Sans JP" },
+  {
+    id: "top8er",
+    name: "Original",
+    design: top8erDesign,
+    font: "Noto Sans JP",
+  },
   {
     id: "top8er-squares",
-    name: "Top8er (Square Variant)",
+    name: "Square Variant",
     design: squaresDesign,
     font: "Noto Sans JP",
   },
   {
     id: "minimal",
-    name: "Minimal",
+    name: "8 Players",
     design: minimalDesign,
     font: "Noto Sans JP",
   },
   {
     id: "minimal-4",
-    name: "Minimal (4 Players)",
+    name: "4 Players",
     design: minimal4Design,
     font: "Noto Sans JP",
   },
   {
     id: "minimal-16",
-    name: "Minimal (16 Players)",
+    name: "16 Players",
     design: minimal16Design,
     font: "Noto Sans JP",
   },
   {
     id: "minimal-24",
-    name: "Minimal (24 Players)",
+    name: "24 Players",
     design: minimal24Design,
     font: "Noto Sans JP",
   },
   {
     id: "kagaribi",
-    name: "Kagaribi",
+    name: "Original",
     design: kagaribiDesign,
     font: "Dela Gothic One",
   },
   {
     id: "kagaribi-16",
-    name: "Kagaribi (16 Players)",
+    name: "16 Player Variant",
     design: kagaribi16Design,
     font: "Dela Gothic One",
   },

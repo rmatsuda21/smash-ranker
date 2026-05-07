@@ -623,7 +623,7 @@ const tournament: LayerDesign = {
 };
 
 export const kagaribi16Design: Design = {
-  name: "Kagaribi (16 Players)",
+  name: "16 Player Variant",
   canvasSize: {
     width: CANVAS_WIDTH,
     height: CANVAS_HEIGHT,
