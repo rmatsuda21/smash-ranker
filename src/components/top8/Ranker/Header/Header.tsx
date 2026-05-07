@@ -1,5 +1,5 @@
 import cn from "classnames";
-import { FaUndo, FaRedo } from "react-icons/fa";
+import { FaArrowRotateLeft, FaArrowRotateRight } from "react-icons/fa6";
 import { msg } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 
@@ -25,25 +25,13 @@ export const Header = () => {
       <CanvasDownloader className={styles.item} />
       <AssetManager className={styles.item} />
       <div className={cn(styles.item, styles.historyControls)}>
-        <Button
-          className={styles.historyButton}
-          variant="ghost"
-          size="sm"
-          onClick={undo}
-          disabled={!canUndo}
-          tooltip={_(msg`Undo`)}
-        >
-          <FaUndo />
+        <Button onClick={undo} disabled={!canUndo}>
+          <FaArrowRotateLeft size={16} />
+          {_(msg`Undo`)}
         </Button>
-        <Button
-          className={styles.historyButton}
-          variant="ghost"
-          size="sm"
-          onClick={redo}
-          disabled={!canRedo}
-          tooltip={_(msg`Redo`)}
-        >
-          <FaRedo />
+        <Button onClick={redo} disabled={!canRedo}>
+          <FaArrowRotateRight size={16} />
+          {_(msg`Redo`)}
         </Button>
       </div>
     </div>
