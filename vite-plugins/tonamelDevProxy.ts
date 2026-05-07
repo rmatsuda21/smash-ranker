@@ -48,7 +48,7 @@ async function queryGraphQL(
   return res.json();
 }
 
-async function fetchCompetition(slug: string) {
+async function fetchCompetition(slug: string, podiumLimit: number) {
   const { token, cookies } = await fetchCsrfToken();
 
   // Step 1: Get tournament IDs from management endpoint
@@ -139,7 +139,12 @@ async function fetchCompetition(slug: string) {
           competitionId: slug,
           tournamentId,
           blockId,
-          filter: { first: 20, after: "", last: 20, before: "" },
+          filter: {
+            first: podiumLimit,
+            after: "",
+            last: podiumLimit,
+            before: "",
+          },
         },
         token,
         cookies,
@@ -244,8 +249,17 @@ export function tonamelDevProxy(): Plugin {
           return;
         }
 
+        const playerCountParam = parseInt(
+          url.searchParams.get("playerCount") ?? "",
+          10,
+        );
+        const podiumLimit =
+          Number.isFinite(playerCountParam) && playerCountParam > 0
+            ? Math.min(playerCountParam, 256)
+            : 20;
+
         try {
-          const data = await fetchCompetition(slug);
+          const data = await fetchCompetition(slug, podiumLimit);
           res.statusCode = 200;
           res.setHeader("Content-Type", "application/json");
           res.end(JSON.stringify(data));

@@ -117,7 +117,7 @@ async function queryGraphQL(
   return res.json();
 }
 
-async function fetchCompetition(slug: string) {
+async function fetchCompetition(slug: string, podiumLimit: number) {
   const { token, cookies } = await fetchCsrfToken();
 
   // Step 1: Get competition info + tournament IDs from management endpoint
@@ -176,7 +176,12 @@ async function fetchCompetition(slug: string) {
           competitionId: slug,
           tournamentId,
           blockId,
-          filter: { first: 20, after: "", last: 20, before: "" },
+          filter: {
+            first: podiumLimit,
+            after: "",
+            last: podiumLimit,
+            before: "",
+          },
         },
         token,
         cookies,
@@ -263,8 +268,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       .json({ error: "Missing required query param: slug" });
   }
 
+  const playerCountParam = parseInt(req.query.playerCount as string, 10);
+  const podiumLimit =
+    Number.isFinite(playerCountParam) && playerCountParam > 0
+      ? Math.min(playerCountParam, 256)
+      : 20;
+
   try {
-    const data = await fetchCompetition(slug);
+    const data = await fetchCompetition(slug, podiumLimit);
     return res.status(200).json(data);
   } catch (error) {
     console.error("Tonamel proxy error:", error);

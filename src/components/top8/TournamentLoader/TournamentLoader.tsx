@@ -9,6 +9,7 @@ import { Input } from "@/components/shared/Input/Input";
 import { useFetchResult } from "@/hooks/top8/useFetchResult";
 import { useFetchChallonge } from "@/hooks/top8/useFetchChallonge";
 import { useFetchTonamel } from "@/hooks/top8/useFetchTonamel";
+import { useCanvasStore } from "@/store/canvasStore";
 import { usePlayerStore } from "@/store/playerStore";
 import { useTournamentStore } from "@/store/tournamentStore";
 import { COOKIES } from "@/consts/cookies";
@@ -17,6 +18,10 @@ import { detectPlatformAndSlug } from "@/consts/platforms";
 
 import styles from "./TournamentLoader.module.scss";
 import { Trans } from "@lingui/react/macro";
+
+// Overfetch so users can switch to larger templates without re-loading.
+// 32 keeps the start.gg standings query well under the 1000 complexity cap.
+const MIN_FETCH_COUNT = 32;
 
 type Props = {
   className?: string;
@@ -29,6 +34,9 @@ export const TournamentLoader = ({ className }: Props) => {
   const isFetching = usePlayerStore((state) => state.fetching);
   const playerDispatch = usePlayerStore((state) => state.dispatch);
   const tournamentDispatch = useTournamentStore((state) => state.dispatch);
+  const designPlayerCount = useCanvasStore(
+    (state) => state.design.players.length,
+  );
 
   const { fetchResult } = useFetchResult();
   const { fetchChallonge } = useFetchChallonge();
@@ -44,12 +52,14 @@ export const TournamentLoader = ({ className }: Props) => {
     playerDispatch({ type: "CLEAR_SELECTED_PLAYER" });
     tournamentDispatch({ type: "CLEAR_SELECTED_ELEMENT" });
 
+    const fetchCount = Math.max(designPlayerCount, MIN_FETCH_COUNT);
+
     if (detected.platform === "startgg") {
-      fetchResult(detected.slug, 24);
+      fetchResult(detected.slug, fetchCount);
     } else if (detected.platform === "challonge") {
-      fetchChallonge(detected.slug, 24);
+      fetchChallonge(detected.slug, fetchCount);
     } else if (detected.platform === "tonamel") {
-      fetchTonamel(detected.slug, 24);
+      fetchTonamel(detected.slug, fetchCount);
     }
   };
 

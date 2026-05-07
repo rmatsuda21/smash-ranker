@@ -44,8 +44,11 @@ interface TonamelResponse {
 
 const fetchTonamelCompetition = async (
   slug: string,
+  playerCount: number,
 ): Promise<TonamelResponse> => {
-  const res = await fetch(`/api/tonamel?slug=${encodeURIComponent(slug)}`);
+  const res = await fetch(
+    `/api/tonamel?slug=${encodeURIComponent(slug)}&playerCount=${playerCount}`,
+  );
 
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
@@ -184,7 +187,7 @@ export const useFetchTonamel = () => {
     playerDispatch({ type: "FETCH_PLAYERS" });
 
     try {
-      const data = await fetchTonamelCompetition(slug);
+      const data = await fetchTonamelCompetition(slug, playerCount);
 
       if (!data.competition) {
         throw new Error(t`Competition not found`);
