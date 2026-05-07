@@ -49,14 +49,14 @@ export const CreateMinimalTemplateModal = ({
   }, [isOpen, playerCount, theme, _]);
 
   const handleCreate = () => {
-    if (playerCount < 1 || playerCount > 64) return;
+    if (playerCount < 1 || playerCount > 32) return;
     createTemplate(templateName, playerCount, theme);
   };
 
   const handlePlayerCountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value, 10);
     if (!isNaN(value)) {
-      setPlayerCount(Math.max(1, Math.min(64, value)));
+      setPlayerCount(Math.max(1, Math.min(32, value)));
     }
   };
 
@@ -89,7 +89,7 @@ export const CreateMinimalTemplateModal = ({
             <Input
               type="number"
               min={1}
-              max={64}
+              max={32}
               placeholder={_(msg`Player Count`)}
               value={playerCount}
               onChange={handlePlayerCountChange}
@@ -111,7 +111,7 @@ export const CreateMinimalTemplateModal = ({
 
         <Button
           onClick={handleCreate}
-          disabled={playerCount < 1 || playerCount > 64}
+          disabled={playerCount < 1 || playerCount > 32}
         >
           <IoMdCreate /> <Trans>Create</Trans>
         </Button>
