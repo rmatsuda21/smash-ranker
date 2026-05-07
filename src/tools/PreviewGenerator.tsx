@@ -13,10 +13,10 @@ import { DBTemplate } from "@/types/Repository";
 import { top8erDesign } from "@/designs/top8er";
 import { squaresDesign } from "@/designs/squares";
 import {
-  minimalDesign,
-  minimal4Design,
-  minimal16Design,
-  minimal24Design,
+  minimalDarkDesign,
+  minimal4DarkDesign,
+  minimalLightDesign,
+  minimal4LightDesign,
 } from "@/designs/minimal";
 import { kagaribiDesign } from "@/designs/kagaribi";
 import { kagaribi16Design } from "@/designs/kagaribi16";
@@ -43,27 +43,27 @@ const TEMPLATES: DBTemplate[] = [
     font: "Noto Sans JP",
   },
   {
-    id: "minimal",
-    name: "8 Players",
-    design: minimalDesign,
+    id: "minimal-dark",
+    name: "8 Players (Dark)",
+    design: minimalDarkDesign,
     font: "Noto Sans JP",
   },
   {
-    id: "minimal-4",
-    name: "4 Players",
-    design: minimal4Design,
+    id: "minimal-4-dark",
+    name: "4 Players (Dark)",
+    design: minimal4DarkDesign,
     font: "Noto Sans JP",
   },
   {
-    id: "minimal-16",
-    name: "16 Players",
-    design: minimal16Design,
+    id: "minimal-light",
+    name: "8 Players (Light)",
+    design: minimalLightDesign,
     font: "Noto Sans JP",
   },
   {
-    id: "minimal-24",
-    name: "24 Players",
-    design: minimal24Design,
+    id: "minimal-4-light",
+    name: "4 Players (Light)",
+    design: minimal4LightDesign,
     font: "Noto Sans JP",
   },
   {

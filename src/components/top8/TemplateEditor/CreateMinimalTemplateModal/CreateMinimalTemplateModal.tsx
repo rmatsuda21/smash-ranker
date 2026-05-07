@@ -7,13 +7,22 @@ import { useLingui } from "@lingui/react";
 import { Modal } from "@/components/shared/Modal/Modal";
 import { Input } from "@/components/shared/Input/Input";
 import { Button } from "@/components/shared/Button/Button";
+import {
+  RadioGroup,
+  type RadioGroupOption,
+} from "@/components/shared/RadioGroup/RadioGroup";
+import type { MinimalTheme } from "@/designs/minimal";
 
 import styles from "./CreateMinimalTemplateModal.module.scss";
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  createTemplate: (name: string, playerCount: number) => void;
+  createTemplate: (
+    name: string,
+    playerCount: number,
+    theme: MinimalTheme,
+  ) => void;
 };
 
 export const CreateMinimalTemplateModal = ({
@@ -24,20 +33,24 @@ export const CreateMinimalTemplateModal = ({
   const { _ } = useLingui();
   const [templateName, setTemplateName] = useState("");
   const [playerCount, setPlayerCount] = useState(8);
+  const [theme, setTheme] = useState<MinimalTheme>("dark");
+
+  const themeOptions: RadioGroupOption<MinimalTheme>[] = [
+    { value: "dark", label: _(msg`Dark`) },
+    { value: "light", label: _(msg`Light`) },
+  ];
 
   useEffect(() => {
-    if (isOpen) {
-      setTemplateName(`Minimal (${playerCount} Players)`);
-    }
-  }, [isOpen, playerCount]);
-
-  useEffect(() => {
-    setTemplateName(`Minimal (${playerCount} Players)`);
-  }, [playerCount]);
+    const name =
+      theme === "dark"
+        ? _(msg`${playerCount} Players (Dark)`)
+        : _(msg`${playerCount} Players (Light)`);
+    setTemplateName(name);
+  }, [isOpen, playerCount, theme, _]);
 
   const handleCreate = () => {
     if (playerCount < 1 || playerCount > 64) return;
-    createTemplate(templateName, playerCount);
+    createTemplate(templateName, playerCount, theme);
   };
 
   const handlePlayerCountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,18 +70,31 @@ export const CreateMinimalTemplateModal = ({
           <Trans>Create a minimal template with a specific player count.</Trans>
         </p>
 
-        <div className={styles.field}>
-          <span className={styles.label}>
-            <Trans>Player Count</Trans>
-          </span>
-          <Input
-            type="number"
-            min={1}
-            max={64}
-            placeholder={_(msg`Player Count`)}
-            value={playerCount}
-            onChange={handlePlayerCountChange}
-          />
+        <div className={styles.row}>
+          <div className={styles.field}>
+            <span className={styles.label}>
+              <Trans>Theme</Trans>
+            </span>
+            <RadioGroup
+              options={themeOptions}
+              value={theme}
+              onChange={setTheme}
+            />
+          </div>
+
+          <div className={styles.field}>
+            <span className={styles.label}>
+              <Trans>Player Count</Trans>
+            </span>
+            <Input
+              type="number"
+              min={1}
+              max={64}
+              placeholder={_(msg`Player Count`)}
+              value={playerCount}
+              onChange={handlePlayerCountChange}
+            />
+          </div>
         </div>
 
         <div className={styles.field}>
