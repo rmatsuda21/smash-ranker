@@ -12,11 +12,12 @@ import { Spinner } from "@/components/shared/Spinner/Spinner";
 import { top8erDesign } from "@/designs/top8er";
 import { squaresDesign } from "@/designs/squares";
 import {
-  minimalDesign,
-  minimal4Design,
-  minimal16Design,
-  minimal24Design,
+  minimalDarkDesign,
+  minimal4DarkDesign,
+  minimalLightDesign,
+  minimal4LightDesign,
   createMinimalDesign,
+  type MinimalTheme,
 } from "@/designs/minimal";
 import { kagaribiDesign } from "@/designs/kagaribi";
 import { kagaribi16Design } from "@/designs/kagaribi16";
@@ -86,27 +87,27 @@ const DEFAULT_TEMPLATE_GROUPS: DefaultTemplateGroup[] = [
     name: msg`Minimal`,
     templates: [
       {
-        id: "minimal",
-        name: msg`8 Players`,
-        design: minimalDesign,
+        id: "minimal-dark",
+        name: msg`8 Players (Dark)`,
+        design: minimalDarkDesign,
         font: "Noto Sans JP",
       },
       {
-        id: "minimal-4",
-        name: msg`4 Players`,
-        design: minimal4Design,
+        id: "minimal-4-dark",
+        name: msg`4 Players (Dark)`,
+        design: minimal4DarkDesign,
         font: "Noto Sans JP",
       },
       {
-        id: "minimal-16",
-        name: msg`16 Players`,
-        design: minimal16Design,
+        id: "minimal-light",
+        name: msg`8 Players (Light)`,
+        design: minimalLightDesign,
         font: "Noto Sans JP",
       },
       {
-        id: "minimal-24",
-        name: msg`24 Players`,
-        design: minimal24Design,
+        id: "minimal-4-light",
+        name: msg`4 Players (Light)`,
+        design: minimal4LightDesign,
         font: "Noto Sans JP",
       },
     ],
@@ -189,10 +190,14 @@ export const TemplateEditor = ({ className }: Props) => {
     setIsCreateModalOpen(false);
   };
 
-  const handleCreateMinimalTemplate = (name: string, playerCount: number) => {
+  const handleCreateMinimalTemplate = (
+    name: string,
+    playerCount: number,
+    theme: MinimalTheme,
+  ) => {
     addTemplate({
       name,
-      design: createMinimalDesign(playerCount),
+      design: createMinimalDesign(playerCount, theme),
       font: "Noto Sans JP",
     }).then(() => {
       setIsCreateMinimalModalOpen(false);

@@ -2,20 +2,23 @@ import { Design, LayerDesign, PlayerDesign } from "@/types/top8/Design";
 import { DesignPlaceholder } from "@/consts/top8/placeholders";
 import { RenderCondition } from "@/consts/top8/renderConditions";
 
-const CANVAS_WIDTH = 1000;
-const PADDING_BLOCK = 20;
-const PADDING_INLINE = 20;
+const CANVAS_WIDTH = 800;
+const PADDING_BLOCK = 12;
+const PADDING_INLINE = 12;
 const TOURNAMENT_ICON_SIZE = 100;
-const PLAYER_SPACING = 16;
+const PLAYER_SPACING = 8;
 const PLAYER_WIDTH = CANVAS_WIDTH - PADDING_INLINE * 2;
-const PLAYER_HEIGHT = 80;
+const PLAYER_HEIGHT = 68;
 const PLAYER_PADDING_BLOCK = 10;
-const FLAG_SIZE = 44;
-const CHARACTER_IMAGE_SIZE = 60;
+const PLAYER_PADDING_LEFT = 20;
+const FLAG_SIZE = 36;
+const CHARACTER_IMAGE_SIZE = 48;
 
-const colorPalette: Design["colorPalette"] = {
+export type MinimalTheme = "dark" | "light";
+
+const darkPalette: Design["colorPalette"] = {
   backgroundStart: {
-    color: "rgb(51, 51, 51)",
+    color: "rgb(25, 25, 25)",
     name: "Gradient Start",
     group: "Background",
   },
@@ -42,6 +45,40 @@ const colorPalette: Design["colorPalette"] = {
   text: { color: "rgb(255, 255, 255)", name: "Text", group: "Text" },
 };
 
+const lightPalette: Design["colorPalette"] = {
+  backgroundStart: {
+    color: "rgb(245, 245, 245)",
+    name: "Gradient Start",
+    group: "Background",
+  },
+  backgroundEnd: {
+    color: "rgb(220, 220, 220)",
+    name: "Gradient End",
+    group: "Background",
+  },
+  primary: {
+    color: "rgba(0, 0, 0, 0.08)",
+    name: "Main BG",
+    group: "Player",
+  },
+  characterBackground: {
+    color: "rgb(255, 255, 255)",
+    name: "Character BG",
+    group: "Player",
+  },
+  characterBorder: {
+    color: "rgb(40, 40, 40)",
+    name: "Character Border",
+    group: "Player",
+  },
+  text: { color: "rgb(20, 20, 20)", name: "Text", group: "Text" },
+};
+
+const palettes: Record<MinimalTheme, Design["colorPalette"]> = {
+  dark: darkPalette,
+  light: lightPalette,
+};
+
 const basePlayer: PlayerDesign = {
   position: { x: PADDING_INLINE, y: 190 },
   size: { width: PLAYER_WIDTH, height: PLAYER_HEIGHT },
@@ -57,9 +94,9 @@ const basePlayer: PlayerDesign = {
       type: "flexGroup",
       id: "main",
       name: "Main",
-      position: { x: 30, y: PLAYER_PADDING_BLOCK },
+      position: { x: PLAYER_PADDING_LEFT, y: PLAYER_PADDING_BLOCK },
       size: {
-        width: PLAYER_WIDTH - 60,
+        width: PLAYER_WIDTH - PLAYER_PADDING_LEFT - PLAYER_PADDING_BLOCK,
         height: PLAYER_HEIGHT,
       },
       direction: "row",
@@ -72,9 +109,10 @@ const basePlayer: PlayerDesign = {
           fontSize: 40,
           fontWeight: 900,
           fill: "text",
+          align: "left",
           verticalAlign: "middle",
           position: { x: 0, y: -3 },
-          size: { width: 50, height: CHARACTER_IMAGE_SIZE },
+          size: { width: 30, height: CHARACTER_IMAGE_SIZE },
         },
         {
           type: "playerFlag",
@@ -86,11 +124,11 @@ const basePlayer: PlayerDesign = {
         {
           type: "flexGroup",
           id: "fullNameGroup",
-          position: { x: 0, y: 0 },
-          size: { width: 150, height: 45 },
+          position: { x: 0, y: -6 },
+          size: { height: 45 },
           direction: "row",
           align: "end",
-          gap: 10,
+          gap: 3,
           conditions: [DesignPlaceholder.PLAYER_PREFIX],
           flex: { grow: true },
           elements: [
@@ -98,7 +136,7 @@ const basePlayer: PlayerDesign = {
               type: "smartText",
               text: `${DesignPlaceholder.PLAYER_PREFIX}`,
               id: "fullNameText",
-              fontSize: 22,
+              fontSize: 18,
               verticalAlign: "bottom",
               fontWeight: 900,
               fill: "text",
@@ -109,7 +147,7 @@ const basePlayer: PlayerDesign = {
               type: "smartText",
               text: `${DesignPlaceholder.PLAYER_TAG}`,
               id: "tagText",
-              fontSize: 32,
+              fontSize: 28,
               verticalAlign: "bottom",
               fontWeight: 900,
               fill: "text",
@@ -124,13 +162,13 @@ const basePlayer: PlayerDesign = {
           text: DesignPlaceholder.PLAYER_TAG,
           id: "tagText",
           conditions: [RenderCondition.NOT, DesignPlaceholder.PLAYER_PREFIX],
-          fontSize: 32,
+          fontSize: 28,
           align: "left",
           verticalAlign: "bottom",
           fontWeight: 900,
           fill: "text",
-          position: { x: 0, y: 0 },
-          size: { width: 150, height: 45 },
+          position: { x: 0, y: -6 },
+          size: { height: 45 },
           flex: { shrink: true, grow: true },
         },
         {
@@ -207,7 +245,10 @@ const basePlayer: PlayerDesign = {
   ],
 };
 
-const createMinimalDesign = (playerCount: number): Design => {
+const createMinimalDesign = (
+  playerCount: number,
+  theme: MinimalTheme = "dark",
+): Design => {
   const canvasHeight =
     PADDING_BLOCK * 2 +
     TOURNAMENT_ICON_SIZE +
@@ -342,7 +383,7 @@ const createMinimalDesign = (playerCount: number): Design => {
       height: canvasHeight,
     },
     canvasDisplayScale: 0.25,
-    colorPalette,
+    colorPalette: palettes[theme],
     textPalette: {
       tournamentName: {
         text: `${DesignPlaceholder.TOURNAMENT_NAME}`,
@@ -365,9 +406,9 @@ const createMinimalDesign = (playerCount: number): Design => {
   };
 };
 
-export const minimalDesign = createMinimalDesign(8);
-export const minimal4Design = createMinimalDesign(4);
-export const minimal16Design = createMinimalDesign(16);
-export const minimal24Design = createMinimalDesign(24);
+export const minimalDarkDesign = createMinimalDesign(8, "dark");
+export const minimal4DarkDesign = createMinimalDesign(4, "dark");
+export const minimalLightDesign = createMinimalDesign(8, "light");
+export const minimal4LightDesign = createMinimalDesign(4, "light");
 
 export { createMinimalDesign };
