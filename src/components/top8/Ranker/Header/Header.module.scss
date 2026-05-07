@@ -55,43 +55,7 @@
 }
 
 .historyControls {
-  display: flex;
-  align-items: center;
   gap: var(--space-1);
-  padding-inline: var(--space-2) !important;
-}
-
-.historyControls .historyButton {
-  width: 32px;
-  height: 32px;
-  padding: 0 !important;
-  border-radius: var(--radius);
-  color: var(--fg-2);
-
-  &:hover:not(:disabled) {
-    color: var(--accent-11);
-  }
-
-  &:active:not(:disabled) {
-    transform: scale(0.95);
-  }
-
-  &:disabled {
-    opacity: 0.3;
-  }
-
-  svg {
-    width: 18px;
-    height: 18px;
-  }
-
-  [data-theme="light"] & {
-    color: var(--fg-4);
-
-    &:hover:not(:disabled) {
-      color: var(--accent-9);
-    }
-  }
 }
 
 .tournamentLoader {
