@@ -3,23 +3,70 @@
 .createTemplateModal {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: var(--space-4);
+  width: 420px;
+  max-width: 100%;
 }
 
 .title {
   font-size: var(--title-size);
   font-weight: 800;
+  margin: 0;
+}
+
+.previewWrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--bg-raised), var(--bg-app));
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.previewImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.previewPlaceholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.previewEmpty {
+  font-size: var(--font-size-sm);
+  color: var(--fg-3);
+}
+
+.caption {
+  font-size: var(--font-size-sm);
+  color: var(--fg-3);
+  text-align: center;
+  margin-top: calc(var(--space-3) * -1);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
 }
 
 .label {
   @include label;
 }
 
-.description {
-  font-size: var(--font-size-md);
-  margin-bottom: var(--space-2);
-}
-
-.input {
-  width: 100%;
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  margin-top: var(--space-1);
 }
