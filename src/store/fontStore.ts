@@ -2,11 +2,7 @@ import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
 import { fetchCatalog } from "@/utils/fonts/catalog";
-import {
-  loadFamily,
-  registerCustomFamily,
-  unregisterCustomFamily,
-} from "@/utils/fonts/fontLoader";
+import { loadFamily, registerCustomFamily } from "@/utils/fonts/fontLoader";
 import { registerCustomFontFace } from "@/utils/top8/registerCustomFont";
 import { customFontRepository } from "@/db/repository";
 import { useCanvasStore } from "@/store/canvasStore";
@@ -143,14 +139,6 @@ const loadCustomFontsFromDB = async (): Promise<Font[]> => {
   }
 
   return fonts;
-};
-
-export const removeCustomFont = (fontFamily: string): void => {
-  unregisterCustomFamily(fontFamily);
-  useFontStore.getState().dispatch({
-    type: "REMOVE_CUSTOM_FONT",
-    payload: fontFamily,
-  });
 };
 
 Promise.allSettled([fetchCatalog(), loadCustomFontsFromDB()])

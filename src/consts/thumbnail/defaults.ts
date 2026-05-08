@@ -9,7 +9,6 @@ export const MAX_ZOOM = 4;
 export const DEFAULT_FONT_SIZE = 64;
 export const DEFAULT_TEXT_FILL = "#FFFFFF";
 export const DEFAULT_SHAPE_FILL = "#3a8eff";
-export const DEFAULT_BACKGROUND_COLOR = "#1a1a1a";
 
 export const NUDGE_PX = 1;
 export const NUDGE_PX_LARGE = 10;

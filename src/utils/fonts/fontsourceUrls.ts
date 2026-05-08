@@ -6,12 +6,6 @@ export const FONTSOURCE_CATALOG_URL = (() => {
   return url.toString();
 })();
 
-export const familyToFontsourceId = (family: string): string =>
-  family.toLowerCase().trim().replace(/\s+/g, "-");
-
-export const fontsourceMetaUrl = (id: string): string =>
-  `${FONTSOURCE_API}/${id}`;
-
 export const fontsourceCanvasCssUrl = (id: string): string =>
   `https://cdn.jsdelivr.net/npm/@fontsource/${id}@latest/japanese.css`;
 
