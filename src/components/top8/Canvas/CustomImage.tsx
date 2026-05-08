@@ -65,12 +65,15 @@ const CustomImageComponent = ({
   useEffect(() => {
     if (!ref.current || !finalImage) return;
 
-    if (!mobile && shadowOpacity > 0) {
+    if (mobile) {
       ref.current.clearCache();
-      ref.current.cache();
-    } else {
-      ref.current.clearCache();
+      return;
     }
+
+    // Desktop: always cache after the image is ready so subsequent re-renders
+    // blit a pre-rasterized bitmap instead of re-running the image draw path.
+    ref.current.clearCache();
+    ref.current.cache();
   }, [
     shadowColor,
     shadowBlur,

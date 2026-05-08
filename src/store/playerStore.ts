@@ -51,7 +51,7 @@ const playerReducer = (
   }
 };
 
-const defaultPlayers = createSamplePlayers(8);
+const defaultPlayers = createSamplePlayers(32);
 
 const initialState: PlayerState = {
   players: defaultPlayers,

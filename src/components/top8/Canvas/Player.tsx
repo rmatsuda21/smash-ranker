@@ -149,11 +149,11 @@ const PlayerComponent = ({
 export const Player = memo(PlayerComponent, (prevProps, nextProps) => {
   return (
     prevProps.index === nextProps.index &&
-    isEqual(prevProps.player, nextProps.player) &&
-    isEqual(prevProps.config, nextProps.config) &&
-    isEqual(prevProps.canvasSize, nextProps.canvasSize) &&
-    isEqual(prevProps.design, nextProps.design) &&
+    prevProps.canvasSize === nextProps.canvasSize &&
+    prevProps.design === nextProps.design &&
     prevProps.fontFamily === nextProps.fontFamily &&
-    prevProps.editable === nextProps.editable
+    prevProps.editable === nextProps.editable &&
+    isEqual(prevProps.player, nextProps.player) &&
+    isEqual(prevProps.config, nextProps.config)
   );
 });
