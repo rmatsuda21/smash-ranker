@@ -1,0 +1,50 @@
+.tracker {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-xs);
+  color: var(--fg-muted);
+  text-decoration: none;
+  transition: color var(--duration-base) var(--ease-standard);
+
+  &:hover {
+    color: var(--accent-9);
+  }
+}
+
+.clockSpin {
+  animation: clockSpin 1.6s linear infinite;
+  transform-origin: center;
+}
+
+.skeletonBar {
+  display: inline-block;
+  width: 96px;
+  height: 0.85em;
+  border-radius: var(--radius-pill);
+  background: var(--gray-6);
+  animation: trackerPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes clockSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes trackerPulse {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .clockSpin,
+  .skeletonBar {
+    animation: none;
+  }
+}
