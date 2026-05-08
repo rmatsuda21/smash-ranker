@@ -92,7 +92,27 @@ type RequestBody = {
   tournamentIconUrl: string;
   predictions: PredictionPlayer[];
   palette?: PredictionPalette;
+  locale?: string;
 };
+
+type SubtitleStyle = { text: string; letterSpacing: number };
+
+const SUBTITLE_BY_LOCALE: Record<string, SubtitleStyle> = {
+  ja: { text: "順位予想", letterSpacing: 0 },
+};
+const DEFAULT_SUBTITLE: SubtitleStyle = {
+  text: "PREDICTIONS",
+  letterSpacing: 2,
+};
+
+function resolveSubtitle(locale: string | undefined): SubtitleStyle {
+  if (!locale) return DEFAULT_SUBTITLE;
+  return (
+    SUBTITLE_BY_LOCALE[locale] ??
+    SUBTITLE_BY_LOCALE[locale.split("-")[0]] ??
+    DEFAULT_SUBTITLE
+  );
+}
 
 // --- Image fetching ---
 
@@ -212,7 +232,9 @@ function buildGraphic(
   tournamentIcon: string | null,
   palette: PredictionPalette,
 ): React.ReactElement {
-  const { tournamentName, eventName, tournamentDate, predictions } = body;
+  const { tournamentName, eventName, tournamentDate, predictions, locale } =
+    body;
+  const subtitle = resolveSubtitle(locale);
 
   const formattedDate = tournamentDate
     ? DATE_FORMATTER.format(new Date(tournamentDate))
@@ -270,7 +292,7 @@ function buildGraphic(
         {
           style: {
             display: "flex",
-            alignItems: "baseline",
+            alignItems: "center",
             flex: 1,
             fontSize: 13,
             fontWeight: 800,
@@ -288,7 +310,7 @@ function buildGraphic(
                   fontWeight: 400,
                   fontSize: 11,
                   color: palette.textMuted,
-                  marginRight: 4,
+                  marginRight: 2,
                 },
               },
               player.prefix,
@@ -397,13 +419,13 @@ function buildGraphic(
         style: {
           fontSize: 9,
           fontWeight: 800,
-          letterSpacing: 2,
+          letterSpacing: subtitle.letterSpacing,
           color: palette.accent,
           padding: "0 16px 8px",
           borderBottom: `1px solid ${palette.borderSubtle}`,
         },
       },
-      "PREDICTIONS",
+      subtitle.text,
     ),
     // Prediction list
     h(
@@ -467,6 +489,7 @@ function canonicalize(body: RequestBody): string {
     tournamentDate: body.tournamentDate ?? "",
     tournamentIconUrl: body.tournamentIconUrl ?? "",
     palette: body.palette ?? null,
+    locale: body.locale ?? "",
     predictions: body.predictions.map((p) => ({
       id: p.id,
       name: p.name,

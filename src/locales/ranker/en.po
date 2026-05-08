@@ -13,15 +13,15 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:75
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:85
 msgid "(https://challonge.com/[tournament])"
 msgstr ""
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:73
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:83
 msgid "(https://start.gg/tournament/[name]/event/[event])"
 msgstr ""
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:77
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:87
 msgid "(https://tonamel.com/competition/[slug])"
 msgstr ""
 
@@ -90,7 +90,7 @@ msgstr ""
 msgid "Amber"
 msgstr ""
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:60
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:70
 msgid "Any current player and tournament data will be overwritten."
 msgstr ""
 
@@ -226,7 +226,7 @@ msgid "Color Palette"
 msgstr ""
 
 #: src/hooks/predict/useFetchPredictionEntrants.ts:240
-#: src/hooks/top8/useFetchTonamel.ts:190
+#: src/hooks/top8/useFetchTonamel.ts:193
 msgid "Competition not found"
 msgstr ""
 
@@ -379,7 +379,7 @@ msgstr ""
 msgid "Enter {0}..."
 msgstr ""
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:71
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:81
 msgid "Enter a start.gg, Challonge, or Tonamel event URL"
 msgstr ""
 
@@ -407,7 +407,7 @@ msgstr ""
 msgid "Failed to fetch seeds"
 msgstr ""
 
-#: src/hooks/top8/useFetchTonamel.ts:214
+#: src/hooks/top8/useFetchTonamel.ts:217
 msgid "Failed to fetch Tonamel tournament"
 msgstr ""
 
@@ -419,7 +419,7 @@ msgstr ""
 msgid "Failed to fetch tournament data"
 msgstr ""
 
-#: src/components/predict/PredictionPreview/PredictionPreview.tsx:178
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:179
 msgid "Failed to generate image"
 msgstr ""
 
@@ -449,7 +449,7 @@ msgstr ""
 msgid "Generate Graphic"
 msgstr ""
 
-#: src/components/predict/PredictionPreview/PredictionPreview.tsx:218
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:219
 msgid "Generating prediction"
 msgstr ""
 
@@ -510,7 +510,7 @@ msgid "Light"
 msgstr ""
 
 #: src/components/predict/TournamentUrlInput/TournamentUrlInput.tsx:54
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:99
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:109
 msgid "Load"
 msgstr ""
 
@@ -518,7 +518,7 @@ msgstr ""
 msgid "Load Template?"
 msgstr ""
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:58
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:68
 msgid "Load Tournament?"
 msgstr ""
 
@@ -683,7 +683,6 @@ msgid "Prediction size"
 msgstr ""
 
 #: src/components/predict/PredictApp/PredictApp.tsx:77
-#: src/components/predict/PredictionGraphic/PredictionGraphic.tsx:62
 #: src/components/predict/PredictionListPanel/PredictionListPanel.tsx:84
 #: src/components/predict/PredictionWorkspace/PredictionWorkspace.tsx:39
 msgid "Predictions"
@@ -790,7 +789,7 @@ msgstr ""
 msgid "Sharpening the seeds..."
 msgstr ""
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:68
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:78
 msgid "Show help"
 msgstr ""
 
@@ -897,7 +896,7 @@ msgstr ""
 
 #. placeholder {0}: res.status
 #: src/hooks/predict/useFetchPredictionEntrants.ts:236
-#: src/hooks/top8/useFetchTonamel.ts:52
+#: src/hooks/top8/useFetchTonamel.ts:55
 msgid "Tonamel API error: {0}"
 msgstr ""
 
@@ -957,13 +956,13 @@ msgstr ""
 msgid "Tournament Info"
 msgstr ""
 
-#: src/components/top8/TournamentConfig/TournamentEditor.tsx:104
-#: src/consts/top8/placeholders.ts:28
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:54
 msgid "Tournament Name"
 msgstr ""
 
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:54
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:104
+#: src/consts/top8/placeholders.ts:28
 msgid "Tournament Name"
 msgstr ""
 
@@ -978,7 +977,7 @@ msgstr ""
 
 #: src/components/predict/TournamentUrlInput/TournamentUrlInput.tsx:44
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:175
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:67
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:77
 #: src/consts/top8/placeholders.ts:35
 msgid "Tournament URL"
 msgstr ""

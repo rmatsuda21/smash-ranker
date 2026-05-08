@@ -65,7 +65,7 @@ const prefersReducedMotion = () =>
   window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 export const PredictionPreview = ({ cacheRef }: Props) => {
-  const { _ } = useLingui();
+  const { _, i18n } = useLingui();
   const tournamentName = usePredictionStore((s) => s.tournamentName);
   const eventName = usePredictionStore((s) => s.eventName);
   const tournamentDate = usePredictionStore((s) => s.tournamentDate);
@@ -79,6 +79,7 @@ export const PredictionPreview = ({ cacheRef }: Props) => {
     tournamentDate,
     tournamentIconUrl,
     palette,
+    locale: i18n.locale,
     predictions: predictions.map((p) => ({
       id: p.id,
       name: p.name,
