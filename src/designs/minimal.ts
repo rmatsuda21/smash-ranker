@@ -43,6 +43,7 @@ const darkPalette: Design["colorPalette"] = {
     group: "Player",
   },
   text: { color: "rgb(255, 255, 255)", name: "Text", group: "Text" },
+  prefixText: { color: "rgb(128, 128, 128)", name: "Prefix", group: "Text" },
 };
 
 const lightPalette: Design["colorPalette"] = {
@@ -72,6 +73,7 @@ const lightPalette: Design["colorPalette"] = {
     group: "Player",
   },
   text: { color: "rgb(20, 20, 20)", name: "Text", group: "Text" },
+  prefixText: { color: "rgb(120, 120, 120)", name: "Prefix", group: "Text" },
 };
 
 const palettes: Record<MinimalTheme, Design["colorPalette"]> = {
@@ -139,8 +141,7 @@ const basePlayer: PlayerDesign = {
               fontSize: 18,
               verticalAlign: "bottom",
               fontWeight: 900,
-              fill: "text",
-              filterEffects: [{ type: "Brightness", brightness: 0.5 }],
+              fill: "prefixText",
               position: { x: 0, y: 0 },
             },
             {
