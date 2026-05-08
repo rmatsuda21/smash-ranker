@@ -22,7 +22,6 @@ import {
   elementWorldToLocal,
   findElement,
   findElementWithContext,
-  flattenTree,
   getAncestors,
   insertIntoTree,
   isDescendantOf,
@@ -44,9 +43,6 @@ const HISTORY_CLEARING_ACTIONS = new Set<ThumbnailAction["type"]>([
   "RESET",
   "SET_CANVAS_SIZE",
 ]);
-
-const isGroup = (el: ThumbnailElement): el is GroupElement =>
-  el.type === "group";
 
 const reducer = (
   state: ThumbnailState,
@@ -589,20 +585,6 @@ export const useThumbnailStore = create<ThumbnailStore>()(
   ),
 );
 
-export const newDesign = (
-  partial?: Partial<ThumbnailDesign>,
-): ThumbnailDesign => ({
-  id: uuid(),
-  name: "Untitled",
-  canvasSize: { width: 1280, height: 720 },
-  background: { type: "color", color: "#1a1a1a" },
-  elements: [],
-  ...partial,
-});
-
-export const allElementsFlat = (design: ThumbnailDesign) =>
-  flattenTree(design.elements);
-
 type ElementSnapshot = Pick<
   ThumbnailElement,
   | "id"
@@ -616,5 +598,3 @@ type ElementSnapshot = Pick<
   | "locked"
 >;
 export type { ElementSnapshot };
-
-export { isGroup };

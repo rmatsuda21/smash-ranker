@@ -1,8 +1,4 @@
-import {
-  FONTSOURCE_CATALOG_URL,
-  familyToFontsourceId,
-  fontsourceMetaUrl,
-} from "./fontsourceUrls";
+import { FONTSOURCE_CATALOG_URL } from "./fontsourceUrls";
 
 export type FontMeta = {
   fontFamily: string;
@@ -43,14 +39,4 @@ export const fetchCatalog = async (): Promise<FontMeta[]> => {
     .filter((font) => font.subsets.includes("japanese"))
     .map(mapResponse)
     .sort((a, b) => a.fontFamily.localeCompare(b.fontFamily));
-};
-
-export const fetchFontMeta = async (family: string): Promise<FontMeta> => {
-  const id = familyToFontsourceId(family);
-  const response = await fetch(fontsourceMetaUrl(id));
-  if (!response.ok) {
-    throw new Error(`Failed to fetch font "${family}": ${response.statusText}`);
-  }
-  const data: FontsourceFontResponse = await response.json();
-  return mapResponse(data);
 };
