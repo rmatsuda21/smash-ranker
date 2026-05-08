@@ -1,8 +1,23 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 
 import { LRUCache } from "@/utils/LRUCache";
+import { isMobile } from "@/utils/isMobile";
 
 const svgTextCache = new LRUCache<string, string>(50);
+
+const RECOLORED_CACHE_SIZE = isMobile() ? 30 : 80;
+type RecoloredEntry = { url: string; image: HTMLImageElement };
+const recoloredCache = new LRUCache<string, RecoloredEntry>(
+  RECOLORED_CACHE_SIZE,
+  (_key, entry) => {
+    // Only clear handlers — the HTMLImageElement may still be referenced by
+    // a mounted component via React state. Don't revoke the blob URL or clear
+    // src; those would corrupt in-use renders. The blob URL leak is bounded
+    // by the cache size and fully released on browser tab close.
+    entry.image.onload = null;
+    entry.image.onerror = null;
+  },
+);
 
 const serializePalette = (palette: Record<string, string>): string => {
   const keys = Object.keys(palette).sort();
@@ -85,17 +100,22 @@ export const useSvgImage = ({
     }
 
     let cancelled = false;
+    const cacheKey = `${svgUrl}::${paletteKey}`;
+
+    const cached = recoloredCache.get(cacheKey);
+    if (cached) {
+      // Cached entry is owned by the LRU; don't track it locally so the
+      // unmount cleanup doesn't revoke a still-shared URL or clear a still-
+      // referenced image.
+      currentUrlRef.current = null;
+      prevImageRef.current = null;
+      setImage(cached.image);
+      onReadyRef.current?.();
+      return;
+    }
 
     const applyColorsAndLoad = () => {
       try {
-        // Clean up previous image to free decoded bitmap memory
-        if (prevImageRef.current) {
-          prevImageRef.current.onload = null;
-          prevImageRef.current.onerror = null;
-          prevImageRef.current.src = "";
-          prevImageRef.current = null;
-        }
-
         const parser = new DOMParser();
         const doc = parser.parseFromString(svgText, "image/svg+xml");
         const svgEl = doc.querySelector("svg");
@@ -116,10 +136,6 @@ export const useSvgImage = ({
 
         const blob = new Blob([modifiedSvgText], { type: "image/svg+xml" });
         const url = URL.createObjectURL(blob);
-
-        if (currentUrlRef.current) {
-          URL.revokeObjectURL(currentUrlRef.current);
-        }
         currentUrlRef.current = url;
 
         const img = new Image();
@@ -128,11 +144,14 @@ export const useSvgImage = ({
         }
 
         img.onload = () => {
-          if (!cancelled) {
-            setImage(img);
-            prevImageRef.current = img;
-            onReadyRef.current?.();
-          }
+          if (cancelled) return;
+          recoloredCache.set(cacheKey, { url, image: img });
+          // Hand ownership of url + image to the cache. Clearing the local
+          // refs keeps the unmount cleanup from corrupting cached entries.
+          currentUrlRef.current = null;
+          prevImageRef.current = null;
+          setImage(img);
+          onReadyRef.current?.();
         };
 
         img.onerror = () => {
@@ -155,7 +174,7 @@ export const useSvgImage = ({
     return () => {
       cancelled = true;
     };
-  }, [svgText, paletteKey, crossOrigin, palette]);
+  }, [svgText, svgUrl, paletteKey, crossOrigin, palette]);
 
   useEffect(() => {
     return () => {

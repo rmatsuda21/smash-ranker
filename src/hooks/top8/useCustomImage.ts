@@ -2,22 +2,18 @@ import { useEffect, useRef, useState } from "react";
 import { Image as KonvaImage } from "konva/lib/shapes/Image";
 
 import { LRUCache } from "@/utils/LRUCache";
-import { createAsyncQueue } from "@/utils/asyncQueue";
 import { isMobile } from "@/utils/isMobile";
 
-const IMAGE_CACHE_SIZE = 50;
+const IMAGE_CACHE_SIZE = isMobile() ? 50 : 200;
 const imageCache = new LRUCache<string, HTMLImageElement>(
   IMAGE_CACHE_SIZE,
   (_key, img) => {
     // Only clear event handlers — don't set img.src = "" or call img.remove().
     // The evicted HTMLImageElement may still be referenced by components via React state.
-    // Destroying it here corrupts the source image before queued toBlob operations run.
     img.onload = null;
     img.onerror = null;
   },
 );
-
-const toBlobQueue = createAsyncQueue(isMobile() ? 3 : 6);
 
 const IDB_IMAGE_PREFIX = "/idb-images/";
 const MAX_RETRIES = 3;
@@ -50,7 +46,7 @@ export const useCustomImage = ({
   onReady?: () => void;
   onError?: (error: Error) => void;
 }) => {
-  const [finalImage, setFinalImage] = useState<HTMLImageElement>();
+  const [finalImage, setFinalImage] = useState<CanvasImageSource>();
   const [image, setImage] = useState<HTMLImageElement | undefined>(() =>
     imageCache.get(imageSrc),
   );
@@ -127,10 +123,6 @@ export const useCustomImage = ({
   useEffect(() => {
     if (!image) return;
 
-    let cancelled = false;
-    let generatedImg: HTMLImageElement | null = null;
-    let blobUrl: string | null = null;
-
     // Capture source image in closure before it may be cleared from state
     const sourceImage = image;
 
@@ -191,94 +183,24 @@ export const useCustomImage = ({
       );
     };
 
-    const mobile = isMobile();
+    const scale = Math.min(window.devicePixelRatio || 1, 2);
 
-    const createImage = () => {
-      toBlobQueue(
-        () =>
-          new Promise<void>((resolve) => {
-            if (cancelled) {
-              resolve();
-              return;
-            }
+    const canvas = document.createElement("canvas");
+    canvas.width = width * scale;
+    canvas.height = height * scale;
 
-            const scale = Math.min(window.devicePixelRatio || 1, 2);
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
 
-            const canvas = document.createElement("canvas");
-            canvas.width = width * scale;
-            canvas.height = height * scale;
+    ctx.scale(scale, scale);
+    if (flipX) {
+      ctx.translate(width, 0);
+      ctx.scale(-1, 1);
+    }
+    fitImage(ctx);
 
-            const ctx = canvas.getContext("2d");
-            if (!ctx) {
-              resolve();
-              return;
-            }
-
-            ctx.scale(scale, scale);
-            if (flipX) {
-              ctx.translate(width, 0);
-              ctx.scale(-1, 1);
-            }
-            fitImage(ctx);
-
-            canvas.toBlob((blob) => {
-              canvas.width = 0;
-              canvas.height = 0;
-
-              if (cancelled || !blob) {
-                resolve();
-                return;
-              }
-
-              const url = URL.createObjectURL(blob);
-              blobUrl = url;
-
-              const img = new window.Image();
-              generatedImg = img;
-              img.onload = () => {
-                if (cancelled) {
-                  resolve();
-                  return;
-                }
-                setFinalImage(img);
-                if (!mobile) {
-                  ref.current?.cache();
-                }
-                onReadyRef.current?.();
-                resolve();
-              };
-              img.onerror = (error) => {
-                if (cancelled) {
-                  resolve();
-                  return;
-                }
-                onErrorRef.current?.(
-                  new Error(
-                    error instanceof Error ? error.message : "Unknown error",
-                  ),
-                );
-                resolve();
-              };
-              img.src = url;
-            });
-          }),
-      );
-    };
-
-    createImage();
-
-    return () => {
-      cancelled = true;
-      if (generatedImg) {
-        generatedImg.src = "";
-        generatedImg.onload = null;
-        generatedImg.onerror = null;
-        generatedImg.remove();
-      }
-      if (blobUrl) {
-        URL.revokeObjectURL(blobUrl);
-      }
-    };
+    setFinalImage(canvas);
+    onReadyRef.current?.();
   }, [
     image,
     width,
