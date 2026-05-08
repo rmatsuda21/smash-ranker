@@ -13,6 +13,7 @@ import { SiBuymeacoffee } from "react-icons/si";
 import { useFeatureFlag } from "@/hooks/useFeatureFlags";
 import { Card } from "@/components/shared/Card/Card";
 import { Badge } from "@/components/shared/Badge/Badge";
+import { LastUpdateTracker } from "@/components/home/LastUpdateTracker";
 
 import styles from "./home.module.scss";
 
@@ -184,6 +185,8 @@ export const Home = () => {
           <FaGithub />
           GitHub
         </a>
+        <span className={styles.footerDivider}>&middot;</span>
+        <LastUpdateTracker />
         <span className={styles.footerDivider}>&middot;</span>
         <a
           href="https://buymeacoffee.com/chikyunojin"

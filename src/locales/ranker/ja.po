@@ -13,6 +13,171 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:19
+#~ msgid "Background"
+#~ msgstr "背景"
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:48
+#~ msgid "Bottom Text"
+#~ msgstr "下部テキスト"
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:33
+#~ msgid "Card Background"
+#~ msgstr "カード背景"
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:37
+#~ msgid "Character BG"
+#~ msgstr "キャラクター背景"
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:38
+#~ msgid "Character Border"
+#~ msgstr "キャラクターボーダー"
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:32
+#~ msgid "Character Shadow"
+#~ msgstr "キャラクターシャドウ"
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:21
+#~ msgid "Color 1"
+#~ msgstr "カラー 1"
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:22
+#~ msgid "Color 2"
+#~ msgstr "カラー 2"
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:23
+#~ msgid "Color 3"
+#~ msgstr "カラー 3"
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:50
+#~ msgid "Date"
+#~ msgstr "日付"
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:52
+#~ msgid "Entrants"
+#~ msgstr "参加人数"
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:25
+#~ msgid "Gradient End"
+#~ msgstr "グラデーション（終）"
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:24
+#~ msgid "Gradient Start"
+#~ msgstr "グラデーション（始）"
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:34
+#~ msgid "Left Border"
+#~ msgstr "左ボーダー"
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:51
+#~ msgid "Location"
+#~ msgstr "場所"
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:31
+#~ msgid "Main BG"
+#~ msgstr "メイン背景"
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:28
+#~ msgid "Placement Shadow"
+#~ msgstr "順位シャドウ"
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:30
+#~ msgid "Placement Stroke"
+#~ msgstr "順位ストローク"
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:43
+#~ msgid "Player"
+#~ msgstr "プレイヤー"
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:29
+#~ msgid "Prefix"
+#~ msgstr "所属"
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:17
+#~ msgid "Primary"
+#~ msgstr "メインカラー"
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:18
+#~ msgid "Secondary"
+#~ msgstr "サブカラー"
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:20
+#~ msgid "Smash Ball"
+#~ msgstr "スマッシュボール"
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:26
+#~ msgid "Text"
+#~ msgstr "テキスト"
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:27
+#~ msgid "Text Shadow"
+#~ msgstr "テキストシャドウ"
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:41
+#~ msgid "Theme"
+#~ msgstr "テーマ"
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:49
+#~ msgid "Title"
+#~ msgstr "タイトル"
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:35
+#~ msgid "Top Bar"
+#~ msgstr "トップバー"
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:46
+#~ msgid "Top Left Text"
+#~ msgstr "左上テキスト"
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:47
+#~ msgid "Top Right Text"
+#~ msgstr "右上テキスト"
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:55
+#~ msgid "Tournament Info"
+#~ msgstr "大会情報"
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:54
+#~ msgid "Tournament Name"
+#~ msgstr "大会名"
+
+#. js-lingui-explicit-id
+#: src/consts/top8/paletteLabels.ts:53
+#~ msgid "URL"
+#~ msgstr "URL"
+
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:85
 msgid "(https://challonge.com/[tournament])"
 msgstr "(https://challonge.com/[大会名])"
@@ -116,11 +281,6 @@ msgstr "シードで自動入力"
 msgid "Avatar"
 msgstr "アイコン"
 
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:19
-msgid "Background"
-msgstr "背景"
-
 #: src/components/top8/DesignEditor/DesignEditor.tsx:42
 msgid "Background Image"
 msgstr "背景画像"
@@ -128,11 +288,6 @@ msgstr "背景画像"
 #: src/components/top8/SettingsPanel/AccentColorPicker.tsx:32
 msgid "Blue"
 msgstr "ブルー"
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:48
-msgid "Bottom Text"
-msgstr "下部テキスト"
 
 #: src/components/top8/InfoPanel/InfoPanel.tsx:82
 msgid "Buy me a coffee"
@@ -151,31 +306,11 @@ msgstr ""
 msgid "Cancel"
 msgstr "キャンセル"
 
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:33
-msgid "Card Background"
-msgstr "カード背景"
-
 #. placeholder {0}: res.status
 #: src/hooks/predict/useFetchPredictionEntrants.ts:206
 #: src/hooks/top8/useFetchChallonge.ts:41
 msgid "Challonge API error: {0}"
 msgstr "Challonge APIエラー: {0}"
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:37
-msgid "Character BG"
-msgstr "キャラクター背景"
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:38
-msgid "Character Border"
-msgstr "キャラクターボーダー"
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:32
-msgid "Character Shadow"
-msgstr "キャラクターシャドウ"
 
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:218
 msgid "Characters"
@@ -203,23 +338,8 @@ msgid "Clear Predictions?"
 msgstr "予想をクリアしますか？"
 
 #: src/components/top8/ElementEditor/TextConfigEditor/TextConfigEditor.tsx:78
-msgid "Color"
-msgstr "色"
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:21
-msgid "Color 1"
-msgstr "カラー 1"
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:22
-msgid "Color 2"
-msgstr "カラー 2"
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:23
-msgid "Color 3"
-msgstr "カラー 3"
+#~ msgid "Color"
+#~ msgstr "色"
 
 #: src/components/top8/DesignEditor/DesignEditor.tsx:80
 msgid "Color Palette"
@@ -310,11 +430,6 @@ msgstr "自作ミニマルテンプレート"
 msgid "Dark"
 msgstr "ダーク"
 
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:50
-msgid "Date"
-msgstr "日付"
-
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:121
 msgid "Date"
 msgstr "日付"
@@ -383,11 +498,6 @@ msgstr "{0}を入力..."
 msgid "Enter a start.gg, Challonge, or Tonamel event URL"
 msgstr "start.gg、Challonge、またはTonamelの大会URLを入れてください"
 
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:52
-msgid "Entrants"
-msgstr "参加人数"
-
 #: src/components/predict/EntrantPoolPanel/EntrantPoolPanel.tsx:44
 #: src/components/predict/PredictionWorkspace/PredictionWorkspace.tsx:31
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:136
@@ -433,12 +543,12 @@ msgid "Font"
 msgstr "フォント"
 
 #: src/components/top8/ElementEditor/TextConfigEditor/TextConfigEditor.tsx:79
-msgid "Font Size"
-msgstr "フォントサイズ"
+#~ msgid "Font Size"
+#~ msgstr "フォントサイズ"
 
 #: src/components/top8/ElementEditor/TextConfigEditor/TextConfigEditor.tsx:80
-msgid "Font Weight"
-msgstr "フォントウェイト"
+#~ msgid "Font Weight"
+#~ msgstr "フォントウェイト"
 
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:187
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:190
@@ -452,16 +562,6 @@ msgstr "画像を生成"
 #: src/components/predict/PredictionPreview/PredictionPreview.tsx:219
 msgid "Generating prediction"
 msgstr ""
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:25
-msgid "Gradient End"
-msgstr "グラデーション（終）"
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:24
-msgid "Gradient Start"
-msgstr "グラデーション（始）"
 
 #: src/components/top8/SettingsPanel/AccentColorPicker.tsx:33
 msgid "Green"
@@ -499,11 +599,6 @@ msgstr "篝火"
 msgid "Language"
 msgstr "言語"
 
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:34
-msgid "Left Border"
-msgstr "左ボーダー"
-
 #: src/components/top8/SettingsPanel/ThemePicker.tsx:21
 #: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:40
 msgid "Light"
@@ -530,11 +625,6 @@ msgstr "読み込み中..."
 msgid "Loading tournament"
 msgstr ""
 
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:51
-msgid "Location"
-msgstr "場所"
-
 #: src/components/predict/PredictionPreview/PredictionPreview.tsx:59
 msgid "Locking in picks..."
 msgstr ""
@@ -542,11 +632,6 @@ msgstr ""
 #: src/components/top8/InfoPanel/InfoPanel.tsx:67
 msgid "Love Smash Ranker? Support the project!"
 msgstr "応援クラファン実施中です。"
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:31
-msgid "Main BG"
-msgstr "メイン背景"
 
 #: src/components/top8/AssetManager/AssetManager.tsx:34
 msgid "Manage Assets"
@@ -630,21 +715,6 @@ msgstr "ピクセル比"
 msgid "Placement"
 msgstr "順位"
 
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:28
-msgid "Placement Shadow"
-msgstr "順位シャドウ"
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:30
-msgid "Placement Stroke"
-msgstr "順位ストローク"
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:43
-msgid "Player"
-msgstr "プレイヤー"
-
 #: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:87
 #: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:93
 msgid "Player Count"
@@ -688,11 +758,6 @@ msgstr "予想人数"
 msgid "Predictions"
 msgstr "順位予想"
 
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:29
-msgid "Prefix"
-msgstr "所属"
-
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:198
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:201
 msgid "Prefix"
@@ -701,11 +766,6 @@ msgstr "所属"
 #: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:133
 msgid "Preview of your saved template"
 msgstr ""
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:17
-msgid "Primary"
-msgstr "メインカラー"
 
 #: src/components/predict/FetchingState/FetchingState.tsx:15
 msgid "Pulling entrants..."
@@ -746,11 +806,6 @@ msgstr ""
 #: src/components/predict/EntrantPoolPanel/EntrantPoolPanel.tsx:51
 msgid "Search players..."
 msgstr "プレイヤーを検索..."
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:18
-msgid "Secondary"
-msgstr "サブカラー"
 
 #: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:207
 #: src/components/top8/AssetSelector/AssetSelector.tsx:91
@@ -797,11 +852,6 @@ msgstr "ヘルプを表示"
 msgid "Size"
 msgstr "容量"
 
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:20
-msgid "Smash Ball"
-msgstr "スマッシュボール"
-
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:79
 msgid "Square Variant"
 msgstr "スクエアバリアント"
@@ -841,32 +891,17 @@ msgstr ""
 msgid "Templates"
 msgstr "テンプレ"
 
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:26
-msgid "Text"
-msgstr "テキスト"
-
 #: src/components/top8/ElementEditor/TextConfigEditor/TextConfigEditor.tsx:70
-msgid "Text"
-msgstr "テキスト"
+#~ msgid "Text"
+#~ msgstr "テキスト"
 
 #: src/components/top8/TextEditor/TextEditor.tsx:48
 msgid "Text content is configured in the design layout."
 msgstr "テキストはデザインレイアウトで設定されます。"
 
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:27
-msgid "Text Shadow"
-msgstr "テキストシャドウ"
-
 #: src/components/top8/SidePanel/SidePanelNav.tsx:32
 msgid "Texts"
 msgstr "テキスト"
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:41
-msgid "Theme"
-msgstr "テーマ"
 
 #: src/components/top8/SettingsPanel/ThemePicker.tsx:44
 #: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:76
@@ -889,11 +924,6 @@ msgstr "このスロットの選手情報がすべてリセットされます。
 msgid "Thumbnails"
 msgstr "サムネイル"
 
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:49
-msgid "Title"
-msgstr "タイトル"
-
 #. placeholder {0}: res.status
 #: src/hooks/predict/useFetchPredictionEntrants.ts:236
 #: src/hooks/top8/useFetchTonamel.ts:55
@@ -907,21 +937,6 @@ msgstr "Top 16"
 #: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:20
 msgid "Top 8"
 msgstr "Top 8"
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:35
-msgid "Top Bar"
-msgstr "トップバー"
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:46
-msgid "Top Left Text"
-msgstr "左上テキスト"
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:47
-msgid "Top Right Text"
-msgstr "右上テキスト"
 
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:69
 msgid "Top8er"
@@ -950,16 +965,6 @@ msgstr "大会日付"
 #: src/consts/top8/placeholders.ts:31
 msgid "Tournament Full Address"
 msgstr "大会住所"
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:55
-msgid "Tournament Info"
-msgstr "大会情報"
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:54
-msgid "Tournament Name"
-msgstr "大会名"
 
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:104
 #: src/consts/top8/placeholders.ts:28
@@ -999,6 +1004,11 @@ msgstr "形式"
 msgid "Undo"
 msgstr "元に戻す"
 
+#. placeholder {0}: formatRelative(state.date, i18n.locale)
+#: src/components/home/LastUpdateTracker.tsx:84
+msgid "Updated {0}"
+msgstr "更新: {0}"
+
 #: src/components/shared/FileUploader/FileUploader.tsx:153
 #: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:238
 msgid "Upload"
@@ -1011,11 +1021,6 @@ msgstr "素材をアップロード"
 #: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:185
 msgid "Uploaded"
 msgstr "アップロード日"
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:53
-msgid "URL"
-msgstr "URL"
 
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:212
 msgid "Your current design will be overwritten!"
