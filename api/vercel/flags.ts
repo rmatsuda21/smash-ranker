@@ -1,3 +1,5 @@
+import "../_instrument";
+
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { verifyAccess, version } from "flags";
 

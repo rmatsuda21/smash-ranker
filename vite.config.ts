@@ -57,6 +57,15 @@ export default defineConfig(() => {
           project: process.env.SENTRY_PROJECT,
           authToken: process.env.SENTRY_AUTH_TOKEN,
           telemetry: false,
+          release: {
+            name: process.env.VERCEL_GIT_COMMIT_SHA,
+          },
+          sourcemaps: {
+            // Delete .map files after upload so they aren't served from the
+            // Vercel build output (defense-in-depth on top of `sourcemap:
+            // "hidden"`, which already strips the //# sourceMappingURL=).
+            filesToDeleteAfterUpload: ["./dist/**/*.map"],
+          },
         }),
       shouldAnalyze && analyzer(),
     ].filter(Boolean),

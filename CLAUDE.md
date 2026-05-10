@@ -211,6 +211,8 @@ Vercel serverless functions live in the `api/` directory:
 - `SENTRY_DSN` — Sentry DSN for `api/*` functions (server-side).
 - `SENTRY_AUTH_TOKEN` — Build-time only. Enables source-map upload via `@sentry/vite-plugin`. Without it, the build succeeds and emits no source maps.
 - `SENTRY_ORG`, `SENTRY_PROJECT` — Required when `SENTRY_AUTH_TOKEN` is set.
+- `VITE_POSTHOG_KEY` — PostHog project API key (public; embedded in the bundle). Drives `logEvent` product analytics. Leave unset locally to silence PostHog during `bun dev`.
+- `VITE_POSTHOG_HOST` — Optional PostHog ingestion host. Defaults to `https://us.i.posthog.com`; set to `https://eu.i.posthog.com` if your project lives in the EU region.
 
 ### Observability
 
@@ -218,15 +220,18 @@ Errors and analytics flow through three helpers in `src/utils/observability/`:
 
 - `logError(error, context?)` — `console.error` + Sentry exception capture. Use for unexpected failures.
 - `logWarning(message, context?)` — `console.warn` + Sentry message capture at warning level. Use for recoverable conditions (silent fallbacks, missing config, swallowed catches).
-- `logEvent(name, props?)` — `track()` from `@vercel/analytics`. Use for product analytics (`tournament_loaded`, `template_selected`, `export_png`, `route_view`, etc.).
+- `logEvent(name, props?)` — `posthog.capture(...)`. Use for product analytics (`tournament_loaded`, `template_selected`, `export_png`, `route_view`, etc.). PostHog is the analytics backend because Vercel Web Analytics restricts custom events to Pro+; pageview tracking still flows through `@vercel/analytics`'s `inject()` (free on Hobby).
 
-`<ErrorBoundary>` (`src/components/ErrorBoundary.tsx`) reports React render errors to Sentry. `<ToastProvider>` (`src/components/Toast/`) provides `useToast().showToast(message, { variant })` for non-modal user-visible errors — prefer it over `alert()`. `@vercel/speed-insights/react` is mounted in `src/App.tsx` for Web Vitals.
+PostHog is initialized in `src/utils/observability/analytics.ts` with `autocapture: false`, `capture_pageview: false`, session recording + surveys disabled, and is opted-out in `import.meta.env.DEV`.
+
+`<ErrorBoundary>` (`src/components/ErrorBoundary.tsx`) catches React render-phase errors and reports them to Sentry. React 19's root-level `onUncaughtError` / `onCaughtError` / `onRecoverableError` handlers are wired via `Sentry.reactErrorHandler()` in `src/main.tsx` to catch errors that escape the boundary. `<ToastProvider>` (`src/components/Toast/`) exposes `useToast().showToast(message, { variant })` for non-modal user-visible errors — prefer it over `alert()`. `@vercel/speed-insights/react` is mounted in `src/App.tsx` for Web Vitals.
+
+`api/_instrument.ts` initializes `@sentry/node` at module load. Every `api/*` function MUST `import "./_instrument";` (or `import "../_instrument";` for nested entries) as its **first line**, before any other imports. `@sentry/node`'s OpenTelemetry-based auto-instrumentation only patches modules imported AFTER `Sentry.init`; initializing later means HTTP/fetch instruments never attach.
 
 Vercel functions wrap their default export with `withLogging("<name>", handler)` from `api/_lib/withLogging.ts`, which:
 
 - Emits one structured JSON log line per request (`fn`, `requestId`, `status`, `durationMs`, `path`).
-- Initializes `@sentry/node` once at module scope (Fluid Compute reuses instances).
-- Captures unhandled exceptions to Sentry with `fn` + `requestId` tags, sets the `x-request-id` response header, and flushes Sentry via `waitUntil`.
+- Captures unhandled exceptions to Sentry with `fn` + `requestId` tags, sets the `x-request-id` response header, and flushes Sentry via `waitUntil(Sentry.flush(2000))`.
 - Exports `addBreadcrumb(category, message, data?)` and `captureFnException(err, tags)` for handlers that catch and respond themselves (e.g. `api/tonamel.ts`).
 
-When adding a new `api/*` function, wrap the default export with `withLogging`.
+When adding a new `api/*` function: (1) make `import "./_instrument";` the very first line, then (2) wrap the default export with `withLogging`.

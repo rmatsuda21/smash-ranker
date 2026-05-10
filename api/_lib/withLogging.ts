@@ -2,15 +2,10 @@ import * as Sentry from "@sentry/node";
 import { waitUntil } from "@vercel/functions";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 
-if (process.env.SENTRY_DSN && !Sentry.isInitialized()) {
-  Sentry.init({
-    dsn: process.env.SENTRY_DSN,
-    environment: process.env.VERCEL_ENV ?? "development",
-    release: process.env.VERCEL_GIT_COMMIT_SHA,
-    tracesSampleRate: 0,
-    integrations: [],
-  });
-}
+// Sentry initialization lives in `api/_instrument.ts`, which must be imported
+// as the first line of each function entry. Auto-instrumentation only attaches
+// to modules imported AFTER `Sentry.init`, so initializing here (which is
+// imported alongside the handler's other imports) would be too late.
 
 export type Handler = (
   req: VercelRequest,
