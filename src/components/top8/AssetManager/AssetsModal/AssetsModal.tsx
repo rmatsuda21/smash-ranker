@@ -10,7 +10,7 @@ import { Button } from "@/components/shared/Button/Button";
 import { useAssetDB } from "@/hooks/useAssetDb";
 import { useConfirmation } from "@/hooks/useConfirmation";
 import { DBAsset, Store } from "@/types/Repository";
-import { logEvent } from "@/utils/observability/log";
+import { logEvent, setPerson } from "@/utils/observability/log";
 
 import { AssetGrid } from "./AssetGrid/AssetGrid";
 import { AssetPreview } from "./AssetPreview/AssetPreview";
@@ -110,10 +110,11 @@ export const AssetsModal = ({
         data: blob,
         date: new Date(),
       });
-      logEvent("custom_asset_uploaded", {
-        type: file.type || "unknown",
-        sizeKb: Math.round(file.size / 1024),
+      logEvent("custom_asset_upload", {
+        mime_type: file.type || "unknown",
+        size_kb: Math.round(file.size / 1024),
       });
+      setPerson({ has_uploaded_custom_asset: true });
     }
   };
 

@@ -12,7 +12,7 @@ import {
 import { getMultiGroupError } from "@/consts/errors";
 import { EMPTY_CHARACTER_ID } from "@/consts/top8/characters";
 import { useToast } from "@/components/Toast";
-import { logError, logEvent, logWarning } from "@/utils/observability/log";
+import { logEvent, logWarning } from "@/utils/observability/log";
 const IDB_IMAGES_BASE_URL = "/idb-images/";
 
 interface TonamelPlacement {
@@ -205,9 +205,9 @@ export const useFetchTonamel = () => {
         const errorMessage = getMultiGroupError();
         playerDispatch({ type: "FETCH_PLAYERS_FAIL", payload: errorMessage });
         showToast(errorMessage, { variant: "error" });
-        logEvent("tournament_fetch_failed", {
-          platform: "tonamel",
-          kind: "multi-group",
+        logEvent("tournament_fetch_fail", {
+          tournament_platform: "tonamel",
+          failure_kind: "multi_group",
         });
         return;
       }
@@ -221,19 +221,23 @@ export const useFetchTonamel = () => {
       const players = parseParticipants(data.competition);
       const paddedPlayers = padPlayersWithBlanks(players, playerCount);
       playerDispatch({ type: "FETCH_PLAYERS_SUCCESS", payload: paddedPlayers });
-      logEvent("tournament_loaded", {
-        platform: "tonamel",
-        playerCount,
+      logEvent("tournament_load", {
+        tournament_platform: "tonamel",
+        player_count: playerCount,
       });
     } catch (error) {
       const message =
         error instanceof Error
           ? error.message
           : t`Failed to fetch Tonamel tournament`;
-      logError(error, { area: "tournament-fetch", platform: "tonamel", slug });
+      // Don't Sentry-capture: most failures here are user-input errors (bad
+      // competition id). Real upstream Tonamel bugs land in api/tonamel.ts's
+      // Sentry capture instead.
       playerDispatch({ type: "FETCH_PLAYERS_FAIL", payload: message });
       showToast(message, { variant: "error" });
-      logEvent("tournament_fetch_failed", { platform: "tonamel" });
+      logEvent("tournament_fetch_fail", {
+        tournament_platform: "tonamel",
+      });
     }
   };
 

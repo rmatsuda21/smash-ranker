@@ -15,6 +15,7 @@ import { useTournamentStore } from "@/store/tournamentStore";
 import { COOKIES } from "@/consts/cookies";
 import { useConfirmation } from "@/hooks/useConfirmation";
 import { detectPlatformAndSlug } from "@/consts/platforms";
+import { logEvent } from "@/utils/observability/log";
 
 import styles from "./TournamentLoader.module.scss";
 import { Trans } from "@lingui/react/macro";
@@ -53,6 +54,11 @@ export const TournamentLoader = ({ className }: Props) => {
     tournamentDispatch({ type: "CLEAR_SELECTED_ELEMENT" });
 
     const fetchCount = Math.max(designPlayerCount, MIN_FETCH_COUNT);
+
+    logEvent("tournament_url_submit", {
+      tournament_platform: detected.platform,
+      surface: "ranker",
+    });
 
     if (detected.platform === "startgg") {
       fetchResult(detected.slug, fetchCount);

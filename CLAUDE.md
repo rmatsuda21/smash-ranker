@@ -220,7 +220,8 @@ Errors and analytics flow through three helpers in `src/utils/observability/`:
 
 - `logError(error, context?)` — `console.error` + Sentry exception capture. Use for unexpected failures.
 - `logWarning(message, context?)` — `console.warn` + Sentry message capture at warning level. Use for recoverable conditions (silent fallbacks, missing config, swallowed catches).
-- `logEvent(name, props?)` — `posthog.capture(...)`. Use for product-specific analytics (`tournament_loaded`, `template_selected`, `export_png`, etc.). PostHog is the analytics backend because Vercel Web Analytics restricts custom events to Pro+; the dual setup is intentional — `@vercel/analytics`'s `inject()` continues to power Vercel's pageviews dashboard (free on Hobby), and PostHog handles custom events plus its own SPA `$pageview` capture.
+- `logEvent(name, props?)` — `posthog.capture(...)` typed against the event registry in `src/utils/analytics/events.ts`. Use for product-specific outcome events (`tournament_load`, `graphic_export_complete`, etc.). PostHog is the analytics backend because Vercel Web Analytics restricts custom events to Pro+; the dual setup is intentional — `@vercel/analytics`'s `inject()` continues to power Vercel's pageviews dashboard (free on Hobby), and PostHog handles custom events plus its own SPA `$pageview` capture.
+- `setPersonOnce(props)` / `setPerson(props)` — write person-level state (`first_export_at`, `has_uploaded_custom_font`, etc.). Counts (e.g. total exports) belong to the event stream — query via `count()` over `graphic_export_complete` in PostHog Insights. Person properties are for _state_ (booleans, first/last timestamps).
 
 PostHog is initialized in `src/utils/observability/analytics.ts`:
 
@@ -229,6 +230,22 @@ PostHog is initialized in `src/utils/observability/analytics.ts`:
 - Slim core bundle (`posthog-js/dist/module.slim`) drops session-replay, surveys, and rarely-used extensions for ~30KB gzipped savings. We don't mount `<PostHogProvider>` because we use no PostHog hooks today; if we ever need `usePostHog` / `useFeatureFlagEnabled`, switch the import back to `posthog-js` (full) and add the Provider — slim's types aren't assignable to the React bindings.
 - Super-properties registered via `posthog.register({ app_environment, commit_sha })` so every event carries deployment context.
 - Init early-returns under `import.meta.env.DEV` so `bun dev` doesn't ship to the prod project. Vercel preview deploys are PROD builds and DO report.
+- `posthog.identify(getClientId())` runs at init with a stable UUID persisted in `localStorage` (`smash-ranker:client-id`). Without this, every cache wipe creates a new "person" and breaks cohort/funnel views.
+- `before_send` strips sensitive query params (`s`, `slug`) from `$current_url` and `$referrer` before they leave the browser — predict deep-link URLs contain tournament slugs that are organizer/event data.
+- `ip: false` and `disable_external_dependency_loading: true` for privacy: no IP capture, no lazy-loading of toolbar/recorder scripts.
+
+**Event/property conventions** (per `src/utils/analytics/events.ts`):
+
+- Events follow `<object>_<verb>` in present tense, snake_case. `tournament_load` not `tournament_loaded`. `graphic_export_complete` not `export_png`.
+- Properties use snake_case, namespaced by domain (`tournament_platform`, `export_format`, `export_surface`, `failure_kind`, `size_kb`, `duration_ms`).
+- Booleans prefixed with `has_` / `is_`. Timestamps suffixed with `_at` (ISO string) or `_ms` (relative).
+- All event names are typed via `EventName` in the registry — adding an event means updating the union, then call sites get type errors until they pass valid props.
+
+**Sentry vs PostHog separation:**
+
+- Sentry receives **bugs**: unexpected exceptions, post-process failures, IndexedDB corruption.
+- PostHog receives **outcomes**: success/failure events with rate-queryable properties (`tournament_fetch_fail` with `failure_kind`).
+- We deliberately do NOT Sentry-capture user-input failures (bad slugs, 404s) from tournament-fetch hooks — those inflate Sentry exception counts without aiding triage. Real upstream issues land in the api/\* function-side Sentry captures, which is the authoritative source for upstream/server bugs.
 
 `<ErrorBoundary>` (`src/components/ErrorBoundary.tsx`) catches React render-phase errors and reports them to Sentry. React 19's root-level `onUncaughtError` / `onCaughtError` / `onRecoverableError` handlers are wired via `Sentry.reactErrorHandler()` in `src/main.tsx` to catch errors that escape the boundary. `<ToastProvider>` (`src/components/Toast/`) exposes `useToast().showToast(message, { variant })` for non-modal user-visible errors — prefer it over `alert()`. `@vercel/speed-insights/react` is mounted in `src/App.tsx` for Web Vitals.
 

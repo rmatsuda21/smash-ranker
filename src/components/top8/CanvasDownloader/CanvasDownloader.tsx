@@ -12,7 +12,7 @@ import { DropDownSelect } from "@/components/shared/DropDownSelect/DropDownSelec
 import { downloadBlob } from "@/utils/top8/downloadBlob";
 import { exportCanvasToPngBlob } from "@/utils/top8/exportCanvas";
 import { DownloadOptionModal } from "@/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal";
-import { logEvent } from "@/utils/observability/log";
+import { logEvent, setPerson, setPersonOnce } from "@/utils/observability/log";
 
 import styles from "./CanvasDownloader.module.scss";
 
@@ -51,18 +51,51 @@ export const CanvasDownloader = ({ className }: Props) => {
     if (!stageRef) return;
 
     const mimeType = `image/${imgType}`;
-    const blob = await exportCanvasToPngBlob({
-      stageRef,
-      pixelRatio,
-      mimeType,
-      quality,
+    const startedAt = performance.now();
+    logEvent("graphic_export_start", {
+      export_surface: "ranker",
+      export_format: imgType,
+      pixel_ratio: pixelRatio,
     });
+    let blob: Blob | null = null;
+    try {
+      blob = await exportCanvasToPngBlob({
+        stageRef,
+        pixelRatio,
+        mimeType,
+        quality,
+      });
+    } catch (error) {
+      logEvent("graphic_export_fail", {
+        export_surface: "ranker",
+        export_format: imgType,
+        failure_kind: "render_threw",
+        duration_ms: Math.round(performance.now() - startedAt),
+      });
+      throw error;
+    }
 
-    if (!blob) return;
+    if (!blob) {
+      logEvent("graphic_export_fail", {
+        export_surface: "ranker",
+        export_format: imgType,
+        failure_kind: "blob_null",
+        duration_ms: Math.round(performance.now() - startedAt),
+      });
+      return;
+    }
 
     const finalFilename = `${filename || "ranker"}.${fileExtensions[imgType]}`;
     await downloadBlob({ blob, filename: finalFilename, mimeType });
-    logEvent("export_png", { surface: "ranker", format: imgType, pixelRatio });
+    logEvent("graphic_export_complete", {
+      export_surface: "ranker",
+      export_format: imgType,
+      pixel_ratio: pixelRatio,
+      duration_ms: Math.round(performance.now() - startedAt),
+    });
+    const now = new Date().toISOString();
+    setPersonOnce({ first_export_at: now });
+    setPerson({ has_exported: true, last_export_at: now });
   }, [stageRef, filename, imgType, quality, pixelRatio]);
 
   return (

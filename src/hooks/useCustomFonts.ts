@@ -11,7 +11,7 @@ import {
   registerCustomFamily,
   unregisterCustomFamily,
 } from "@/utils/fonts/fontLoader";
-import { logEvent } from "@/utils/observability/log";
+import { logEvent, setPerson } from "@/utils/observability/log";
 
 export const useCustomFonts = () => {
   const [customFonts, setCustomFonts] = useState<DBCustomFont[]>([]);
@@ -35,6 +35,10 @@ export const useCustomFonts = () => {
       );
       if (duplicate) {
         alert(`Font "${fontFamily}" is already added.`);
+        logEvent("custom_font_upload_fail", {
+          failure_kind: "duplicate_family",
+          size_kb: Math.round(file.size / 1024),
+        });
         return null;
       }
 
@@ -61,9 +65,10 @@ export const useCustomFonts = () => {
 
       dispatch({ type: "ADD_CUSTOM_FONTS", payload: [font] });
       setCustomFonts((prev) => [...prev, dbFont]);
-      logEvent("custom_font_uploaded", {
-        sizeKb: Math.round(file.size / 1024),
+      logEvent("custom_font_upload", {
+        size_kb: Math.round(file.size / 1024),
       });
+      setPerson({ has_uploaded_custom_font: true });
 
       return font;
     },

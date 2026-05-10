@@ -9,6 +9,7 @@ import { isMobile } from "@/utils/isMobile";
 import { SidePanelNav } from "@/components/top8/SidePanel/SidePanelNav";
 import { InfoPanel } from "@/components/top8/InfoPanel/InfoPanel";
 import { SettingsPanel } from "@/components/top8/SettingsPanel/SettingsPanel";
+import { logEvent } from "@/utils/observability/log";
 
 import styles from "./SidePanel.module.scss";
 
@@ -61,6 +62,10 @@ export const SidePanel = ({ className }: Props) => {
 
     dispatch({ type: "SET_ACTIVE_TAB", payload: tab });
     dispatch({ type: "SET_IS_SIDE_PANEL_OPEN", payload: true });
+    logEvent("panel_switch", {
+      surface: "ranker",
+      panel: tab,
+    });
   };
 
   const handleClose = () => {

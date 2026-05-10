@@ -10,7 +10,7 @@ import {
 } from "@/utils/top8/samplePlayers";
 import { EMPTY_CHARACTER_ID } from "@/consts/top8/characters";
 import { useToast } from "@/components/Toast";
-import { logError, logEvent } from "@/utils/observability/log";
+import { logEvent } from "@/utils/observability/log";
 
 interface ChallongeParticipantWrapper {
   participant: {
@@ -118,23 +118,23 @@ export const useFetchChallonge = () => {
       const players = parseParticipants(data.tournament.participants ?? []);
       const paddedPlayers = padPlayersWithBlanks(players, playerCount);
       playerDispatch({ type: "FETCH_PLAYERS_SUCCESS", payload: paddedPlayers });
-      logEvent("tournament_loaded", {
-        platform: "challonge",
-        playerCount,
+      logEvent("tournament_load", {
+        tournament_platform: "challonge",
+        player_count: playerCount,
       });
     } catch (error) {
       const message =
         error instanceof Error
           ? error.message
           : t`Failed to fetch Challonge tournament`;
-      logError(error, {
-        area: "tournament-fetch",
-        platform: "challonge",
-        slug,
-      });
+      // Don't Sentry-capture: most failures here are user-input errors (404
+      // on bad slug). The api/challonge.ts wrapper captures real upstream
+      // bugs. Surface as a product event for rate tracking instead.
       playerDispatch({ type: "FETCH_PLAYERS_FAIL", payload: message });
       showToast(message, { variant: "error" });
-      logEvent("tournament_fetch_failed", { platform: "challonge" });
+      logEvent("tournament_fetch_fail", {
+        tournament_platform: "challonge",
+      });
     }
   };
 
