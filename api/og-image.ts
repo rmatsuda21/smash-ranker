@@ -9,11 +9,16 @@ import { Resvg } from "@resvg/resvg-js";
 import React from "react";
 
 import { addBreadcrumb, withLogging } from "./_lib/withLogging";
+import { parseImageUrl } from "./_lib/validate";
 import {
   decodeInvite,
   fetchTournamentMeta,
   type TournamentMeta,
 } from "./_lib/tournamentMeta";
+
+// Invite codes are short (version + platform char + compact slug); cap the
+// raw query length to bound work before decode.
+const MAX_INVITE_LENGTH = 512;
 
 const fontRegular = readFileSync(
   join(__dirname, "fonts/MPLUSRounded1c-Regular.ttf"),
@@ -75,6 +80,15 @@ const fetchImageAsDataUrl = async (url: string): Promise<string | null> => {
 
 const fetchIcon = async (iconUrl: string | null): Promise<string | null> => {
   if (!iconUrl) return null;
+  // Validate the upstream-supplied URL before fetching. Returns null on any
+  // disallowed URL (private IP, non-https, etc.) so a malicious tournament
+  // listing can't make this function probe internal services or burn time
+  // on slow non-image hosts.
+  try {
+    parseImageUrl(iconUrl);
+  } catch {
+    return null;
+  }
   const cached = lruGet(iconCache, iconUrl);
   if (cached) return cached;
   const fetched = await fetchImageAsDataUrl(iconUrl);
@@ -320,6 +334,9 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
   const encoded = req.query.d;
   if (typeof encoded !== "string" || encoded.length === 0) {
     return res.status(400).json({ error: "Missing 'd' query parameter" });
+  }
+  if (encoded.length > MAX_INVITE_LENGTH) {
+    return res.status(400).json({ error: "Invite too long" });
   }
 
   const invite = decodeInvite(encoded);

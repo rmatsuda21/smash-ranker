@@ -2,6 +2,9 @@ import "./_instrument";
 
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 
+import { respondClientError } from "./_lib/errors";
+import { assertSameOrigin } from "./_lib/origin";
+import { parsePlayerCount, parseSlug } from "./_lib/validate";
 import {
   addBreadcrumb,
   captureFnException,
@@ -308,21 +311,23 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const slug = req.query.slug as string;
-  if (!slug) {
-    return res
-      .status(400)
-      .json({ error: "Missing required query param: slug" });
+  let slug: string;
+  let podiumLimit: number;
+  try {
+    assertSameOrigin(req);
+    slug = parseSlug(req.query.slug);
+    podiumLimit = parsePlayerCount(req.query.playerCount);
+  } catch (err) {
+    if (respondClientError(res, err)) return;
+    throw err;
   }
-
-  const playerCountParam = parseInt(req.query.playerCount as string, 10);
-  const podiumLimit =
-    Number.isFinite(playerCountParam) && playerCountParam > 0
-      ? Math.min(playerCountParam, 256)
-      : 20;
 
   try {
     const data = await fetchCompetition(slug, podiumLimit);
+    res.setHeader(
+      "Cache-Control",
+      "public, s-maxage=60, stale-while-revalidate=300, stale-if-error=86400",
+    );
     return res.status(200).json(data);
   } catch (error) {
     captureFnException(error, { fn: "tonamel" });
