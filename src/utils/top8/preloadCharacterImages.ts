@@ -1,6 +1,7 @@
 import { characters } from "@/consts/top8/ultCharacters.json";
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
 import { CharacerData } from "@/types/top8/Player";
+import { logWarning } from "@/utils/observability/log";
 
 const CACHE_NAME = "character-stocks-v1";
 const BATCH_SIZE = 10;
@@ -22,8 +23,10 @@ const preloadBatch = async (urls: string[]): Promise<void> => {
         await cache.addAll(uncachedUrls);
       }
       return;
-    } catch {
-      console.error("Error caching character stock images");
+    } catch (error) {
+      logWarning("Error caching character stock images", {
+        error: error instanceof Error ? error.message : String(error),
+      });
     }
   }
 

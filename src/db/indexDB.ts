@@ -14,6 +14,7 @@ import {
   DBTemplate,
   DBThumbnailTemplate,
 } from "@/types/Repository";
+import { logError, logWarning } from "@/utils/observability/log";
 
 const DB_NAME = "top8-db";
 const DB_VERSION = 6;
@@ -154,7 +155,7 @@ const performUpgrade = (
 const validateDatabase = (db: IDBPDatabase<Top8DB>): boolean => {
   for (const storeName of EXPECTED_STORES) {
     if (!db.objectStoreNames.contains(storeName)) {
-      console.warn(`Missing object store: ${storeName}`);
+      logWarning(`Missing object store: ${storeName}`, { storeName });
       return false;
     }
   }
@@ -162,11 +163,11 @@ const validateDatabase = (db: IDBPDatabase<Top8DB>): boolean => {
 };
 
 const deleteAndRecreateDatabase = async (): Promise<IDBPDatabase<Top8DB>> => {
-  console.warn("Database is corrupted. Deleting and recreating...");
+  logWarning("Database is corrupted. Deleting and recreating...");
 
   await deleteDB(DB_NAME, {
     blocked() {
-      console.warn(
+      logWarning(
         "Database deletion blocked. Please close other tabs using this app.",
       );
     },
@@ -186,12 +187,12 @@ const openDatabase = async (): Promise<IDBPDatabase<Top8DB>> => {
         performUpgrade(db, oldVersion, transaction);
       },
       blocked() {
-        console.warn(
+        logWarning(
           "Database upgrade blocked. Please close other tabs using this app.",
         );
       },
       blocking() {
-        console.warn("This connection is blocking a database upgrade.");
+        logWarning("This connection is blocking a database upgrade.");
       },
     });
 
@@ -202,7 +203,7 @@ const openDatabase = async (): Promise<IDBPDatabase<Top8DB>> => {
 
     return db;
   } catch (error) {
-    console.error("Failed to open database:", error);
+    logError(error, { area: "indexdb-open" });
 
     if (
       error instanceof Error &&

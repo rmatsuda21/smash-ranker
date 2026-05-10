@@ -17,6 +17,7 @@ import {
   MIN_ZOOM,
 } from "@/consts/thumbnail/defaults";
 import { downloadStageAsPng } from "@/utils/thumbnail/exportPng";
+import { logEvent } from "@/utils/observability/log";
 
 import styles from "./Toolbar.module.scss";
 
@@ -56,6 +57,7 @@ export const Toolbar = () => {
           .replace(/[^\w\s-]/g, "")
           .replace(/\s+/g, "_");
         downloadStageAsPng(stage, fileName);
+        logEvent("export_png", { surface: "thumbnail" });
         if (wasShowingGrid) setShowGrid(true);
       });
     });

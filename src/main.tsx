@@ -12,35 +12,44 @@ import "@/index.css";
 import { registerServiceWorker } from "@/utils/waitForServiceWorker";
 import { loadCatalog } from "@/i18n";
 import { COOKIES } from "@/consts/cookies";
+import { initSentry } from "@/utils/observability/sentry";
+import { logError } from "@/utils/observability/log";
 import App from "@/App";
 
+initSentry();
+
 (async () => {
-  const supportedLanguages = ["en", "ja"];
-  const browserLanguage = navigator.language.split("-")[0];
-  const defaultLanguage = supportedLanguages.includes(browserLanguage)
-    ? browserLanguage
-    : "en";
-  const savedLanguage = Cookies.get(COOKIES.LANGUAGE) || defaultLanguage;
-  await loadCatalog(savedLanguage);
+  try {
+    const supportedLanguages = ["en", "ja"];
+    const browserLanguage = navigator.language.split("-")[0];
+    const defaultLanguage = supportedLanguages.includes(browserLanguage)
+      ? browserLanguage
+      : "en";
+    const savedLanguage = Cookies.get(COOKIES.LANGUAGE) || defaultLanguage;
+    await loadCatalog(savedLanguage);
 
-  const savedTheme = Cookies.get(COOKIES.THEME) || "dark";
-  document.documentElement.setAttribute("data-theme", savedTheme);
+    const savedTheme = Cookies.get(COOKIES.THEME) || "dark";
+    document.documentElement.setAttribute("data-theme", savedTheme);
 
-  const savedAccent = Cookies.get(COOKIES.ACCENT_COLOR) || "pink";
-  document.documentElement.setAttribute("data-accent", savedAccent);
-  if (savedAccent === "custom") {
-    const customHex = Cookies.get(COOKIES.CUSTOM_ACCENT_COLOR) || "#ff6600";
-    document.documentElement.style.setProperty("--accent-base", customHex);
+    const savedAccent = Cookies.get(COOKIES.ACCENT_COLOR) || "pink";
+    document.documentElement.setAttribute("data-accent", savedAccent);
+    if (savedAccent === "custom") {
+      const customHex = Cookies.get(COOKIES.CUSTOM_ACCENT_COLOR) || "#ff6600";
+      document.documentElement.style.setProperty("--accent-base", customHex);
+    }
+
+    await registerServiceWorker();
+
+    inject();
+    createRoot(document.getElementById("root")!).render(
+      <StrictMode>
+        <I18nProvider i18n={i18n}>
+          <App />
+        </I18nProvider>
+      </StrictMode>,
+    );
+  } catch (error) {
+    logError(error, { stage: "bootstrap" });
+    throw error;
   }
-
-  await registerServiceWorker();
-
-  inject();
-  createRoot(document.getElementById("root")!).render(
-    <StrictMode>
-      <I18nProvider i18n={i18n}>
-        <App />
-      </I18nProvider>
-    </StrictMode>,
-  );
 })();

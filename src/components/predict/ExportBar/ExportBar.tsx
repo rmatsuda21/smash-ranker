@@ -5,6 +5,7 @@ import { Button } from "@/components/shared/Button/Button";
 import { ConfirmableButton } from "@/components/shared/ConfirmableButton/ConfirmableButton";
 import { usePredictionStore } from "@/store/predictionStore";
 import { downloadBlob } from "@/utils/top8/downloadBlob";
+import { logEvent } from "@/utils/observability/log";
 
 import styles from "./ExportBar.module.scss";
 
@@ -27,13 +28,13 @@ export const ExportBar = ({ blob }: Props) => {
       normalizeFilename(tournamentName) || "predictions"
     }-predictions.png`;
     await downloadBlob({ blob, filename, mimeType: "image/png" });
+    logEvent("export_png", { surface: "predict" });
   };
 
   const handleCopy = async () => {
     if (!blob) return false;
-    await navigator.clipboard.write([
-      new ClipboardItem({ "image/png": blob }),
-    ]);
+    await navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]);
+    logEvent("export_share", { surface: "predict", method: "clipboard" });
   };
 
   return (

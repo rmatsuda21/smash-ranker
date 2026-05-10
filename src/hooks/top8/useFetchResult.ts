@@ -17,6 +17,8 @@ import {
 } from "@/utils/top8/samplePlayers";
 import { getMultiGroupError } from "@/consts/errors";
 import { EMPTY_CHARACTER_ID } from "@/consts/top8/characters";
+import { useToast } from "@/components/Toast";
+import { logError, logEvent } from "@/utils/observability/log";
 const IDB_IMAGES_BASE_URL = "/idb-images/";
 
 interface TournamentImage {
@@ -168,10 +170,10 @@ const storeTournamentImages = async (
         const src = await storeImage(result.value);
         storedImages.set(result.value.type, src);
       } catch (error) {
-        console.error("Failed to store tournament image:", error);
+        logError(error, { area: "tournament-image-store" });
       }
     } else {
-      console.error("Failed to fetch tournament image:", result.reason);
+      logError(result.reason, { area: "tournament-image-fetch" });
     }
   }
 
@@ -238,7 +240,14 @@ const fetchPlayerCharacters = async (
   const nodes = result.data?.event?.sets?.nodes;
 
   if (result.error || !nodes) {
-    console.error("Error fetching player characters:", result.error);
+    if (result.error) {
+      logError(result.error, {
+        area: "tournament-fetch",
+        platform: "startgg",
+        step: "player-characters",
+        entrantId,
+      });
+    }
     return [];
   }
 
@@ -360,6 +369,7 @@ export const useFetchResult = () => {
   const client = useClient();
   const playerDispatch = usePlayerStore((state) => state.dispatch);
   const tournamentDispatch = useTournamentStore((state) => state.dispatch);
+  const { showToast } = useToast();
 
   const fetchResult = async (slug: string, playerCount: number = 8) => {
     playerDispatch({ type: "FETCH_PLAYERS" });
@@ -371,7 +381,18 @@ export const useFetchResult = () => {
     if (result.error || !result.data?.event) {
       const errorMessage = result.error?.message || t`Tournament not found`;
       playerDispatch({ type: "FETCH_PLAYERS_FAIL", payload: errorMessage });
-      alert(errorMessage);
+      showToast(errorMessage, { variant: "error" });
+      logEvent("tournament_fetch_failed", {
+        platform: "startgg",
+        kind: result.error ? "query-error" : "not-found",
+      });
+      if (result.error) {
+        logError(result.error, {
+          area: "tournament-fetch",
+          platform: "startgg",
+          slug,
+        });
+      }
       return;
     }
 
@@ -392,7 +413,11 @@ export const useFetchResult = () => {
     if (allNonElimination && hasMultipleGroups) {
       const errorMessage = getMultiGroupError();
       playerDispatch({ type: "FETCH_PLAYERS_FAIL", payload: errorMessage });
-      alert(errorMessage);
+      showToast(errorMessage, { variant: "error" });
+      logEvent("tournament_fetch_failed", {
+        platform: "startgg",
+        kind: "multi-group",
+      });
       return;
     }
 
@@ -413,11 +438,25 @@ export const useFetchResult = () => {
 
       const paddedPlayers = padPlayersWithBlanks(players, playerCount);
       playerDispatch({ type: "FETCH_PLAYERS_SUCCESS", payload: paddedPlayers });
+      logEvent("tournament_loaded", {
+        platform: "startgg",
+        playerCount,
+      });
     } catch (error) {
-      console.error("Failed to fetch tournament data:", error);
+      logError(error, {
+        area: "tournament-fetch",
+        platform: "startgg",
+        step: "post-process",
+        slug,
+      });
       playerDispatch({
         type: "FETCH_PLAYERS_FAIL",
         payload: t`Failed to fetch tournament data`,
+      });
+      showToast(t`Failed to fetch tournament data`, { variant: "error" });
+      logEvent("tournament_fetch_failed", {
+        platform: "startgg",
+        kind: "post-process",
       });
     }
   };

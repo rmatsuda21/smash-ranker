@@ -12,6 +12,7 @@ import { DropDownSelect } from "@/components/shared/DropDownSelect/DropDownSelec
 import { downloadBlob } from "@/utils/top8/downloadBlob";
 import { exportCanvasToPngBlob } from "@/utils/top8/exportCanvas";
 import { DownloadOptionModal } from "@/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal";
+import { logEvent } from "@/utils/observability/log";
 
 import styles from "./CanvasDownloader.module.scss";
 
@@ -61,6 +62,7 @@ export const CanvasDownloader = ({ className }: Props) => {
 
     const finalFilename = `${filename || "ranker"}.${fileExtensions[imgType]}`;
     await downloadBlob({ blob, filename: finalFilename, mimeType });
+    logEvent("export_png", { surface: "ranker", format: imgType, pixelRatio });
   }, [stageRef, filename, imgType, quality, pixelRatio]);
 
   return (

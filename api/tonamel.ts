@@ -1,5 +1,11 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 
+import {
+  addBreadcrumb,
+  captureFnException,
+  withLogging,
+} from "./_lib/withLogging";
+
 const TONAMEL_BASE = "https://tonamel.com";
 const MANAGEMENT_ENDPOINT = `${TONAMEL_BASE}/graphql/competition_management`;
 const PUBLIC_ENDPOINT = `${TONAMEL_BASE}/graphql`;
@@ -118,17 +124,35 @@ async function queryGraphQL(
 }
 
 async function fetchCompetition(slug: string, podiumLimit: number) {
-  const { token, cookies } = await fetchCsrfToken();
+  let csrf: { token: string; cookies: string };
+  try {
+    csrf = await fetchCsrfToken();
+    addBreadcrumb("tonamel", "csrf_token_ok");
+  } catch (err) {
+    addBreadcrumb("tonamel", "csrf_token_fail", { error: String(err) });
+    throw err;
+  }
+  const { token, cookies } = csrf;
 
   // Step 1: Get competition info + tournament IDs from management endpoint
-  const compData = await queryGraphQL(
-    MANAGEMENT_ENDPOINT,
-    COMPETITION_QUERY,
-    { id: slug },
-    token,
-    cookies,
-    slug,
-  );
+  let compData;
+  try {
+    compData = await queryGraphQL(
+      MANAGEMENT_ENDPOINT,
+      COMPETITION_QUERY,
+      { id: slug },
+      token,
+      cookies,
+      slug,
+    );
+    addBreadcrumb("tonamel", "competition_query_ok", { slug });
+  } catch (err) {
+    addBreadcrumb("tonamel", "competition_query_fail", {
+      slug,
+      error: String(err),
+    });
+    throw err;
+  }
 
   const competition = compData.data?.competition;
   if (!competition) throw new Error("Competition not found");
@@ -149,18 +173,25 @@ async function fetchCompetition(slug: string, podiumLimit: number) {
   if (tournaments.length > 0) {
     const tournamentId = tournaments[0].id;
 
-    const blocksData = await queryGraphQL(
-      MANAGEMENT_ENDPOINT,
-      BLOCKS_QUERY,
-      {
-        competitionId: slug,
-        tournamentId,
-        blockFilter: { first: 10, after: "", last: 10, before: "" },
-      },
-      token,
-      cookies,
-      slug,
-    );
+    let blocksData;
+    try {
+      blocksData = await queryGraphQL(
+        MANAGEMENT_ENDPOINT,
+        BLOCKS_QUERY,
+        {
+          competitionId: slug,
+          tournamentId,
+          blockFilter: { first: 10, after: "", last: 10, before: "" },
+        },
+        token,
+        cookies,
+        slug,
+      );
+      addBreadcrumb("tonamel", "blocks_query_ok");
+    } catch (err) {
+      addBreadcrumb("tonamel", "blocks_query_fail", { error: String(err) });
+      throw err;
+    }
 
     const blocks =
       blocksData.data?.competition?.tournament?.blocks?.edges ?? [];
@@ -169,24 +200,31 @@ async function fetchCompetition(slug: string, podiumLimit: number) {
     if (blocks.length > 0) {
       const blockId = blocks[0].node.id;
 
-      const podiumData = await queryGraphQL(
-        MANAGEMENT_ENDPOINT,
-        PODIUM_QUERY,
-        {
-          competitionId: slug,
-          tournamentId,
-          blockId,
-          filter: {
-            first: podiumLimit,
-            after: "",
-            last: podiumLimit,
-            before: "",
+      let podiumData;
+      try {
+        podiumData = await queryGraphQL(
+          MANAGEMENT_ENDPOINT,
+          PODIUM_QUERY,
+          {
+            competitionId: slug,
+            tournamentId,
+            blockId,
+            filter: {
+              first: podiumLimit,
+              after: "",
+              last: podiumLimit,
+              before: "",
+            },
           },
-        },
-        token,
-        cookies,
-        slug,
-      );
+          token,
+          cookies,
+          slug,
+        );
+        addBreadcrumb("tonamel", "podium_query_ok");
+      } catch (err) {
+        addBreadcrumb("tonamel", "podium_query_fail", { error: String(err) });
+        throw err;
+      }
 
       const podiumEdges =
         podiumData.data?.competition?.tournament?.block?.podium?.edges ?? [];
@@ -211,14 +249,21 @@ async function fetchCompetition(slug: string, podiumLimit: number) {
   }
 
   // Step 3: Get competition metadata + participants from public endpoint
-  const publicData = await queryGraphQL(
-    PUBLIC_ENDPOINT,
-    PUBLIC_COMPETITION_QUERY,
-    { id: slug },
-    token,
-    cookies,
-    slug,
-  );
+  let publicData;
+  try {
+    publicData = await queryGraphQL(
+      PUBLIC_ENDPOINT,
+      PUBLIC_COMPETITION_QUERY,
+      { id: slug },
+      token,
+      cookies,
+      slug,
+    );
+    addBreadcrumb("tonamel", "public_query_ok");
+  } catch (err) {
+    addBreadcrumb("tonamel", "public_query_fail", { error: String(err) });
+    throw err;
+  }
 
   const publicComp = publicData.data?.competition;
 
@@ -256,7 +301,7 @@ async function fetchCompetition(slug: string, podiumLimit: number) {
   };
 }
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+const handler = async (req: VercelRequest, res: VercelResponse) => {
   if (req.method !== "GET") {
     return res.status(405).json({ error: "Method not allowed" });
   }
@@ -278,9 +323,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const data = await fetchCompetition(slug, podiumLimit);
     return res.status(200).json(data);
   } catch (error) {
-    console.error("Tonamel proxy error:", error);
+    captureFnException(error, { fn: "tonamel" });
     const message =
       error instanceof Error ? error.message : "Failed to fetch from Tonamel";
     return res.status(500).json({ error: message });
   }
-}
+};
+
+export default withLogging("tonamel", handler);

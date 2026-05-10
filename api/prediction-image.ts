@@ -6,6 +6,8 @@ import satori from "satori";
 import { Resvg } from "@resvg/resvg-js";
 import React from "react";
 
+import { addBreadcrumb, withLogging } from "./_lib/withLogging";
+
 // Cached at module scope for warm starts
 const fontRegular = readFileSync(
   join(__dirname, "fonts/MPLUSRounded1c-Regular.ttf"),
@@ -518,79 +520,86 @@ function decodePayload(encoded: string): RequestBody | null {
 
 // --- Handler ---
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+const handler = async (req: VercelRequest, res: VercelResponse) => {
   if (req.method !== "GET") {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  try {
-    const encoded = req.query.d;
-    if (typeof encoded !== "string" || encoded.length === 0) {
-      return res.status(400).json({ error: "Missing 'd' query parameter" });
-    }
-
-    const body = decodePayload(encoded);
-    if (!body) {
-      return res.status(400).json({ error: "Invalid payload" });
-    }
-
-    const hash = hashPayload(body);
-    const etag = `"${hash}"`;
-
-    res.setHeader("Content-Type", "image/png");
-    // GET URLs are content-addressed (different `d` → different URL), so the
-    // CDN can safely cache for a long time. The browser revalidates after
-    // max-age via ETag.
-    res.setHeader(
-      "Cache-Control",
-      "public, max-age=300, s-maxage=86400, stale-while-revalidate=604800",
-    );
-    res.setHeader("ETag", etag);
-
-    if (req.headers["if-none-match"] === etag) {
-      res.setHeader("X-Cache", "HIT-ETAG");
-      return res.status(304).end();
-    }
-
-    const cachedPng = lruGet(pngCache, hash);
-    if (cachedPng) {
-      res.setHeader("X-Cache", "HIT");
-      return res.status(200).send(cachedPng);
-    }
-
-    const tournamentIcon = await fetchTournamentIcon(body.tournamentIconUrl);
-
-    const palette: PredictionPalette = {
-      ...DEFAULT_PALETTE,
-      ...(body.palette ?? {}),
-    };
-
-    const height = estimateHeight(body.predictions.length);
-    const graphic = buildGraphic(body, tournamentIcon, palette);
-
-    const svg = await satori(graphic, {
-      width: WIDTH,
-      height,
-      fonts: [
-        { name: "M PLUS Rounded 1c", data: fontRegular, weight: 400 },
-        { name: "M PLUS Rounded 1c", data: fontBold, weight: 800 },
-      ],
-    });
-
-    // PNG output is deterministic on Vercel's Linux x64 runtime in production.
-    // Local dev uses platform-specific Resvg binaries (darwin-arm64, win32-x64,
-    // etc.) which may produce subpixel differences from the production binary.
-    const resvg = new Resvg(svg, {
-      fitTo: { mode: "width" as const, value: OUTPUT_WIDTH },
-      font: { loadSystemFonts: false },
-    });
-    const png = Buffer.from(resvg.render().asPng());
-
-    lruSet(pngCache, hash, png, PNG_CACHE_MAX);
-    res.setHeader("X-Cache", "MISS");
-    return res.status(200).send(png);
-  } catch (error) {
-    console.error("Prediction image error:", error);
-    return res.status(500).json({ error: "Failed to generate image" });
+  const encoded = req.query.d;
+  if (typeof encoded !== "string" || encoded.length === 0) {
+    return res.status(400).json({ error: "Missing 'd' query parameter" });
   }
-}
+
+  const body = decodePayload(encoded);
+  if (!body) {
+    return res.status(400).json({ error: "Invalid payload" });
+  }
+
+  const hash = hashPayload(body);
+  const etag = `"${hash}"`;
+
+  res.setHeader("Content-Type", "image/png");
+  // GET URLs are content-addressed (different `d` → different URL), so the
+  // CDN can safely cache for a long time. The browser revalidates after
+  // max-age via ETag.
+  res.setHeader(
+    "Cache-Control",
+    "public, max-age=300, s-maxage=86400, stale-while-revalidate=604800",
+  );
+  res.setHeader("ETag", etag);
+
+  if (req.headers["if-none-match"] === etag) {
+    res.setHeader("X-Cache", "HIT-ETAG");
+    return res.status(304).end();
+  }
+
+  const cachedPng = lruGet(pngCache, hash);
+  if (cachedPng) {
+    res.setHeader("X-Cache", "HIT");
+    return res.status(200).send(cachedPng);
+  }
+
+  addBreadcrumb("prediction-image", "fetch_icon_start");
+  const tournamentIcon = await fetchTournamentIcon(body.tournamentIconUrl);
+  addBreadcrumb("prediction-image", "fetch_icon_done", {
+    hasIcon: tournamentIcon != null,
+  });
+
+  const palette: PredictionPalette = {
+    ...DEFAULT_PALETTE,
+    ...(body.palette ?? {}),
+  };
+
+  const height = estimateHeight(body.predictions.length);
+  const graphic = buildGraphic(body, tournamentIcon, palette);
+
+  addBreadcrumb("prediction-image", "satori_start", {
+    predictionCount: body.predictions.length,
+  });
+  const svg = await satori(graphic, {
+    width: WIDTH,
+    height,
+    fonts: [
+      { name: "M PLUS Rounded 1c", data: fontRegular, weight: 400 },
+      { name: "M PLUS Rounded 1c", data: fontBold, weight: 800 },
+    ],
+  });
+  addBreadcrumb("prediction-image", "satori_done");
+
+  // PNG output is deterministic on Vercel's Linux x64 runtime in production.
+  // Local dev uses platform-specific Resvg binaries (darwin-arm64, win32-x64,
+  // etc.) which may produce subpixel differences from the production binary.
+  addBreadcrumb("prediction-image", "resvg_start");
+  const resvg = new Resvg(svg, {
+    fitTo: { mode: "width" as const, value: OUTPUT_WIDTH },
+    font: { loadSystemFonts: false },
+  });
+  const png = Buffer.from(resvg.render().asPng());
+  addBreadcrumb("prediction-image", "resvg_done", { bytes: png.length });
+
+  lruSet(pngCache, hash, png, PNG_CACHE_MAX);
+  res.setHeader("X-Cache", "MISS");
+  return res.status(200).send(png);
+};
+
+export default withLogging("prediction-image", handler);

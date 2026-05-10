@@ -6,6 +6,7 @@ import { Trans } from "@lingui/react/macro";
 import { DBTemplate } from "@/types/Repository";
 import { TemplatePreview } from "@/components/top8/TemplateEditor/TemplatePreview/TemplatePreview";
 import { Button } from "@/components/shared/Button/Button";
+import { logEvent } from "@/utils/observability/log";
 
 import styles from "./TemplateEditor.module.scss";
 
@@ -53,7 +54,13 @@ export const TemplateGroup = ({
             className={styles.template}
             key={template.id}
             template={template}
-            onClick={() => onTemplateClick(template.id)}
+            onClick={() => {
+              onTemplateClick(template.id);
+              logEvent("template_selected", {
+                templateId: template.id,
+                group: name,
+              });
+            }}
             onDelete={
               onDeleteTemplate ? () => onDeleteTemplate(template.id) : undefined
             }

@@ -1,6 +1,8 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { verifyAccess, version } from "flags";
 
+import { withLogging } from "../_lib/withLogging";
+
 // Flag Discovery Endpoint for the Vercel Toolbar's Flags Explorer.
 //
 // Wired to the public path /.well-known/vercel/flags via a rewrite in
@@ -24,7 +26,7 @@ const DEFINITIONS = {
   },
 };
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+const handler = async (req: VercelRequest, res: VercelResponse) => {
   const access = await verifyAccess(
     (req.headers["authorization"] as string | undefined) ?? null,
   );
@@ -38,4 +40,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     definitions: DEFINITIONS,
     overrideEncryptionMode: "encrypted" as const,
   });
-}
+};
+
+export default withLogging("vercel-flags", handler);
