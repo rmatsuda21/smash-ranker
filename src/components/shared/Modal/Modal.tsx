@@ -1,5 +1,7 @@
 import { createPortal } from "react-dom";
 
+import { useDismissOnEscape } from "@/hooks/useDismiss";
+
 import styles from "./Modal.module.scss";
 
 type Props = {
@@ -12,6 +14,8 @@ export const Modal = ({
   isOpen,
   onClose,
 }: React.PropsWithChildren<Props>) => {
+  useDismissOnEscape({ enabled: isOpen, onDismiss: onClose });
+
   return createPortal(
     isOpen ? (
       <div className={styles.modal}>

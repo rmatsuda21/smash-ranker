@@ -1,5 +1,7 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { FaGear } from "react-icons/fa6";
+
+import { useDismissOnEscape } from "@/hooks/useDismiss";
 
 import { HamburgerButton } from "./HamburgerButton/HamburgerButton";
 import { NavOverlay } from "./NavOverlay/NavOverlay";
@@ -43,18 +45,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
     setIsNavOpen(false);
   }, []);
 
-  // Escape key closes whichever is open
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        if (isSettingsOpen) setIsSettingsOpen(false);
-        else if (isNavOpen) setIsNavOpen(false);
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isNavOpen, isSettingsOpen]);
+  useDismissOnEscape({ enabled: isNavOpen, onDismiss: closeNav });
 
   return (
     <div className={styles.root}>
