@@ -11,6 +11,8 @@ import {
 } from "@/utils/top8/samplePlayers";
 import { getMultiGroupError } from "@/consts/errors";
 import { EMPTY_CHARACTER_ID } from "@/consts/top8/characters";
+import { useToast } from "@/components/Toast";
+import { logError, logEvent, logWarning } from "@/utils/observability/log";
 const IDB_IMAGES_BASE_URL = "/idb-images/";
 
 interface TonamelPlacement {
@@ -137,7 +139,11 @@ const storeTonamelImage = async (
     });
 
     return src;
-  } catch {
+  } catch (error) {
+    logWarning("tonamel image fetch failed", {
+      area: "tonamel-image-store",
+      error: error instanceof Error ? error.message : String(error),
+    });
     return undefined;
   }
 };
@@ -182,6 +188,7 @@ const padPlayersWithBlanks = (
 export const useFetchTonamel = () => {
   const playerDispatch = usePlayerStore((state) => state.dispatch);
   const tournamentDispatch = useTournamentStore((state) => state.dispatch);
+  const { showToast } = useToast();
 
   const fetchTonamel = async (slug: string, playerCount: number = 8) => {
     playerDispatch({ type: "FETCH_PLAYERS" });
@@ -197,7 +204,11 @@ export const useFetchTonamel = () => {
       if (blockCount > 1) {
         const errorMessage = getMultiGroupError();
         playerDispatch({ type: "FETCH_PLAYERS_FAIL", payload: errorMessage });
-        alert(errorMessage);
+        showToast(errorMessage, { variant: "error" });
+        logEvent("tournament_fetch_failed", {
+          platform: "tonamel",
+          kind: "multi-group",
+        });
         return;
       }
 
@@ -210,14 +221,19 @@ export const useFetchTonamel = () => {
       const players = parseParticipants(data.competition);
       const paddedPlayers = padPlayersWithBlanks(players, playerCount);
       playerDispatch({ type: "FETCH_PLAYERS_SUCCESS", payload: paddedPlayers });
+      logEvent("tournament_loaded", {
+        platform: "tonamel",
+        playerCount,
+      });
     } catch (error) {
       const message =
         error instanceof Error
           ? error.message
           : t`Failed to fetch Tonamel tournament`;
-      console.error("Tonamel fetch error:", error);
+      logError(error, { area: "tournament-fetch", platform: "tonamel", slug });
       playerDispatch({ type: "FETCH_PLAYERS_FAIL", payload: message });
-      alert(message);
+      showToast(message, { variant: "error" });
+      logEvent("tournament_fetch_failed", { platform: "tonamel" });
     }
   };
 

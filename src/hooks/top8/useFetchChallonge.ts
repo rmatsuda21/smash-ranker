@@ -9,6 +9,8 @@ import {
   getPlacements,
 } from "@/utils/top8/samplePlayers";
 import { EMPTY_CHARACTER_ID } from "@/consts/top8/characters";
+import { useToast } from "@/components/Toast";
+import { logError, logEvent } from "@/utils/observability/log";
 
 interface ChallongeParticipantWrapper {
   participant: {
@@ -99,6 +101,7 @@ const padPlayersWithBlanks = (
 export const useFetchChallonge = () => {
   const playerDispatch = usePlayerStore((state) => state.dispatch);
   const tournamentDispatch = useTournamentStore((state) => state.dispatch);
+  const { showToast } = useToast();
 
   const fetchChallonge = async (slug: string, playerCount: number = 8) => {
     playerDispatch({ type: "FETCH_PLAYERS" });
@@ -115,14 +118,23 @@ export const useFetchChallonge = () => {
       const players = parseParticipants(data.tournament.participants ?? []);
       const paddedPlayers = padPlayersWithBlanks(players, playerCount);
       playerDispatch({ type: "FETCH_PLAYERS_SUCCESS", payload: paddedPlayers });
+      logEvent("tournament_loaded", {
+        platform: "challonge",
+        playerCount,
+      });
     } catch (error) {
       const message =
         error instanceof Error
           ? error.message
           : t`Failed to fetch Challonge tournament`;
-      console.error("Challonge fetch error:", error);
+      logError(error, {
+        area: "tournament-fetch",
+        platform: "challonge",
+        slug,
+      });
       playerDispatch({ type: "FETCH_PLAYERS_FAIL", payload: message });
-      alert(message);
+      showToast(message, { variant: "error" });
+      logEvent("tournament_fetch_failed", { platform: "challonge" });
     }
   };
 

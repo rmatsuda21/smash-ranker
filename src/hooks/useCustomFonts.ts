@@ -11,6 +11,7 @@ import {
   registerCustomFamily,
   unregisterCustomFamily,
 } from "@/utils/fonts/fontLoader";
+import { logEvent } from "@/utils/observability/log";
 
 export const useCustomFonts = () => {
   const [customFonts, setCustomFonts] = useState<DBCustomFont[]>([]);
@@ -60,6 +61,9 @@ export const useCustomFonts = () => {
 
       dispatch({ type: "ADD_CUSTOM_FONTS", payload: [font] });
       setCustomFonts((prev) => [...prev, dbFont]);
+      logEvent("custom_font_uploaded", {
+        sizeKb: Math.round(file.size / 1024),
+      });
 
       return font;
     },

@@ -9,6 +9,7 @@ import { ConfirmationModal } from "@/components/shared/ConfirmationModal/Confirm
 import { TierListSettings } from "@/components/tierlist/TierListSettings/TierListSettings";
 import { useTierListStore } from "@/store/tierListStore";
 import { downloadBlob } from "@/utils/top8/downloadBlob";
+import { logError, logEvent } from "@/utils/observability/log";
 
 import styles from "./TierListToolbar.module.scss";
 
@@ -137,8 +138,9 @@ export const TierListToolbar = ({ exportRef }: Props) => {
         filename: "tier-list.png",
         mimeType: "image/png",
       });
+      logEvent("export_png", { surface: "tier" });
     } catch (err) {
-      console.error("Export failed:", err);
+      logError(err, { area: "export", surface: "tier" });
     } finally {
       setExporting(false);
     }

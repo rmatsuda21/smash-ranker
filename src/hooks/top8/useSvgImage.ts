@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useMemo } from "react";
 
 import { LRUCache } from "@/utils/LRUCache";
 import { isMobile } from "@/utils/isMobile";
+import { logError } from "@/utils/observability/log";
 
 const svgTextCache = new LRUCache<string, string>(50);
 
@@ -80,7 +81,7 @@ export const useSvgImage = ({
           setSvgText(text);
         }
       } catch (error) {
-        console.error("Error fetching SVG:", error);
+        logError(error, { area: "svg-fetch", svgUrl });
         if (!cancelled) {
           onErrorRef.current?.(new Error("Failed to fetch SVG"));
         }
@@ -162,7 +163,7 @@ export const useSvgImage = ({
 
         img.src = url;
       } catch (error) {
-        console.error("Error applying SVG colors:", error);
+        logError(error, { area: "svg-recolor", svgUrl });
         if (!cancelled) {
           onErrorRef.current?.(new Error("Failed to process SVG"));
         }

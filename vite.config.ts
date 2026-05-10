@@ -4,6 +4,7 @@ import { createLogger, defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import { analyzer } from "vite-bundle-analyzer";
 import { lingui } from "@lingui/vite-plugin";
+import { sentryVitePlugin } from "@sentry/vite-plugin";
 
 import { challongeDevProxy } from "./vite-plugins/challongeDevProxy";
 import { tonamelDevProxy } from "./vite-plugins/tonamelDevProxy";
@@ -30,9 +31,17 @@ customLogger.warn = (msg, options) => {
 // https://vite.dev/config/
 export default defineConfig(() => {
   const shouldAnalyze = process.env.ANALYZE === "true";
+  // Source-map upload only runs when SENTRY_AUTH_TOKEN is present (CI/Vercel
+  // build). Without the token the build still succeeds — local builds skip it.
+  const shouldUploadSentry = Boolean(process.env.SENTRY_AUTH_TOKEN);
 
   return {
     customLogger,
+    build: {
+      // "hidden" emits source maps but strips the //# sourceMappingURL comment
+      // so they aren't served to end users — Sentry still uploads & uses them.
+      sourcemap: shouldUploadSentry ? ("hidden" as const) : false,
+    },
     plugins: [
       react({
         plugins: [["@lingui/swc-plugin", {}]],
@@ -42,6 +51,13 @@ export default defineConfig(() => {
       tonamelDevProxy(),
       tonamelImageProxy(),
       predictionImageDevProxy(),
+      shouldUploadSentry &&
+        sentryVitePlugin({
+          org: process.env.SENTRY_ORG,
+          project: process.env.SENTRY_PROJECT,
+          authToken: process.env.SENTRY_AUTH_TOKEN,
+          telemetry: false,
+        }),
       shouldAnalyze && analyzer(),
     ].filter(Boolean),
     optimizeDeps: {

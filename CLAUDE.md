@@ -207,3 +207,26 @@ Vercel serverless functions live in the `api/` directory:
 - `VITE_START_GG_TOKEN` — start.gg API token
 - `START_GG_OAUTH_SECRET` — start.gg OAuth secret (server-side)
 - `CHALLONGE_API_KEY` — Challonge API v1 key (server-side, used by `api/challonge.ts`)
+- `VITE_SENTRY_DSN` — Sentry DSN for the client SDK (public; embedded in the bundle). Leave unset locally to silence Sentry during `bun dev`.
+- `SENTRY_DSN` — Sentry DSN for `api/*` functions (server-side).
+- `SENTRY_AUTH_TOKEN` — Build-time only. Enables source-map upload via `@sentry/vite-plugin`. Without it, the build succeeds and emits no source maps.
+- `SENTRY_ORG`, `SENTRY_PROJECT` — Required when `SENTRY_AUTH_TOKEN` is set.
+
+### Observability
+
+Errors and analytics flow through three helpers in `src/utils/observability/`:
+
+- `logError(error, context?)` — `console.error` + Sentry exception capture. Use for unexpected failures.
+- `logWarning(message, context?)` — `console.warn` + Sentry message capture at warning level. Use for recoverable conditions (silent fallbacks, missing config, swallowed catches).
+- `logEvent(name, props?)` — `track()` from `@vercel/analytics`. Use for product analytics (`tournament_loaded`, `template_selected`, `export_png`, `route_view`, etc.).
+
+`<ErrorBoundary>` (`src/components/ErrorBoundary.tsx`) reports React render errors to Sentry. `<ToastProvider>` (`src/components/Toast/`) provides `useToast().showToast(message, { variant })` for non-modal user-visible errors — prefer it over `alert()`. `@vercel/speed-insights/react` is mounted in `src/App.tsx` for Web Vitals.
+
+Vercel functions wrap their default export with `withLogging("<name>", handler)` from `api/_lib/withLogging.ts`, which:
+
+- Emits one structured JSON log line per request (`fn`, `requestId`, `status`, `durationMs`, `path`).
+- Initializes `@sentry/node` once at module scope (Fluid Compute reuses instances).
+- Captures unhandled exceptions to Sentry with `fn` + `requestId` tags, sets the `x-request-id` response header, and flushes Sentry via `waitUntil`.
+- Exports `addBreadcrumb(category, message, data?)` and `captureFnException(err, tags)` for handlers that catch and respond themselves (e.g. `api/tonamel.ts`).
+
+When adding a new `api/*` function, wrap the default export with `withLogging`.

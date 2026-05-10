@@ -7,6 +7,7 @@ import { usePredictionStore } from "@/store/predictionStore";
 import { detectPlatformAndSlug, slugToUrl } from "@/consts/platforms";
 import type { PredictionPlayer } from "@/types/predict/Prediction";
 import { extractTournamentPalette } from "@/utils/predict/extractTournamentPalette";
+import { logError, logEvent } from "@/utils/observability/log";
 
 // Step 1: Get event metadata + first phase ID
 const EventMetaQueryDoc = graphql(`
@@ -289,6 +290,10 @@ export const useFetchPredictionEntrants = () => {
       result.tournamentUrl = slugToUrl(detected.platform, detected.slug);
 
       dispatch({ type: "FETCH_SUCCESS", payload: result });
+      logEvent("prediction_loaded", {
+        platform: detected.platform,
+        entrantCount: result.entrants.length,
+      });
 
       if (result.tournamentIconUrl) {
         extractTournamentPalette(result.tournamentIconUrl).then((palette) => {
@@ -298,8 +303,13 @@ export const useFetchPredictionEntrants = () => {
     } catch (error) {
       const message =
         error instanceof Error ? error.message : t`Failed to fetch tournament`;
-      console.error("Prediction fetch error:", error);
+      logError(error, {
+        area: "prediction-fetch",
+        platform: detected.platform,
+        slug: detected.slug,
+      });
       dispatch({ type: "FETCH_FAIL", payload: message });
+      logEvent("prediction_fetch_failed", { platform: detected.platform });
     }
   };
 

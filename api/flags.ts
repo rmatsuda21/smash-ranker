@@ -1,6 +1,8 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { Reason, flagsClient } from "@vercel/flags-core";
 
+import { withLogging } from "./_lib/withLogging";
+
 // Catalogue of flags exposed to the client. Add new keys here.
 const FLAG_KEYS = ["thumbnail-enabled"] as const;
 type FlagKey = (typeof FLAG_KEYS)[number];
@@ -16,7 +18,7 @@ type DebugEntry = {
   errorMessage?: string;
 };
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+const handler = async (req: VercelRequest, res: VercelResponse) => {
   // Cache briefly at the edge so every page nav doesn't hammer the function,
   // but stay responsive to dashboard toggles.
   res.setHeader(
@@ -83,4 +85,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.json({ values: out, debug: debugInfo });
   }
   return res.json(out);
-}
+};
+
+export default withLogging("flags", handler);
