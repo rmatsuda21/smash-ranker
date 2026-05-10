@@ -5,6 +5,7 @@ import { useLingui } from "@lingui/react";
 
 import { TournamentLoader } from "@/components/top8/TournamentLoader/TournamentLoader";
 import { CanvasDownloader } from "@/components/top8/CanvasDownloader/CanvasDownloader";
+import { SocialShareButton } from "@/components/top8/SocialShareButton/SocialShareButton";
 import { AssetManager } from "@/components/top8/AssetManager/AssetManager";
 import { Button } from "@/components/shared/Button/Button";
 import { useCanvasStore } from "@/store/canvasStore";
@@ -23,6 +24,7 @@ export const Header = () => {
     <div className={styles.header}>
       <TournamentLoader className={cn(styles.item, styles.tournamentLoader)} />
       <CanvasDownloader className={styles.item} />
+      <SocialShareButton className={styles.item} />
       <AssetManager className={styles.item} />
       <div className={cn(styles.item, styles.historyControls)}>
         <Button onClick={undo} disabled={!canUndo}>

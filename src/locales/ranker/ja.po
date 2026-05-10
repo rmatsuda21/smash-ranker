@@ -281,6 +281,10 @@ msgstr "シードで自動入力"
 msgid "Avatar"
 msgstr "アイコン"
 
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:454
+msgid "Back to plain text"
+msgstr "プレーンテキストに戻る"
+
 #: src/components/top8/DesignEditor/DesignEditor.tsx:42
 msgid "Background Image"
 msgstr "背景画像"
@@ -288,6 +292,10 @@ msgstr "背景画像"
 #: src/components/top8/SettingsPanel/AccentColorPicker.tsx:32
 msgid "Blue"
 msgstr "ブルー"
+
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:404
+msgid "Bluesky"
+msgstr "Bluesky"
 
 #: src/components/top8/InfoPanel/InfoPanel.tsx:82
 msgid "Buy me a coffee"
@@ -305,6 +313,10 @@ msgstr ""
 #: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:150
 msgid "Cancel"
 msgstr "キャンセル"
+
+#: src/utils/social/builtInTemplates.ts:30
+msgid "Casual congrats"
+msgstr "カジュアルなお祝い"
 
 #. placeholder {0}: res.status
 #: src/hooks/predict/useFetchPredictionEntrants.ts:206
@@ -337,6 +349,10 @@ msgstr "選手を初期化しますか？"
 msgid "Clear Predictions?"
 msgstr "予想をクリアしますか？"
 
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:369
+msgid "Close"
+msgstr "閉じる"
+
 #: src/components/top8/ElementEditor/TextConfigEditor/TextConfigEditor.tsx:78
 #~ msgid "Color"
 #~ msgstr "色"
@@ -366,6 +382,18 @@ msgstr "コピー完了"
 #: src/components/predict/ExportBar/ExportBar.tsx:62
 msgid "Copy"
 msgstr "コピー"
+
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:529
+msgid "Copy image"
+msgstr "画像をコピー"
+
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:480
+msgid "Could not copy image — try Download instead."
+msgstr "画像をコピーできませんでした — 代わりにダウンロードをお試しください。"
+
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:330
+#~ msgid "Could not copy or download — please try again."
+#~ msgstr "コピーまたはダウンロードに失敗しました — もう一度お試しください。"
 
 #: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:54
 msgid "Count"
@@ -451,9 +479,17 @@ msgstr "素材消去"
 msgid "Delete Assets"
 msgstr "素材を削除"
 
+#: src/components/top8/SocialPostComposer/TemplateSelector.tsx:63
+msgid "Delete template"
+msgstr "テンプレートを削除"
+
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:219
 msgid "Delete Template?"
 msgstr "テンプレートを削除しますか？"
+
+#: src/components/top8/SocialPostComposer/TemplateSelector.tsx:68
+msgid "Delete this template?"
+msgstr "このテンプレートを削除しますか？"
 
 #: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:205
 msgid "Deselect All"
@@ -472,11 +508,15 @@ msgid "Don't show again"
 msgstr "次回から表示しない"
 
 #: src/components/predict/ExportBar/ExportBar.tsx:50
-#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:111
+#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:95
 msgid "Download"
 msgstr "ダウンロード"
 
-#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:117
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:520
+msgid "Download image"
+msgstr "画像をダウンロード"
+
+#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:101
 #: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:39
 msgid "Download Options"
 msgstr "ダウンロード設定"
@@ -534,7 +574,7 @@ msgid "Failed to generate image"
 msgstr "画像の生成に失敗しました"
 
 #: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:157
-#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:85
+#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:69
 msgid "Filename"
 msgstr "ファイル名"
 
@@ -575,9 +615,21 @@ msgstr ""
 msgid "Icon"
 msgstr "アイコン"
 
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:469
+msgid "Image copied — paste with Ctrl+V or ⌘V"
+msgstr "画像をコピーしました — Ctrl+V または ⌘V で貼り付けてください"
+
 #: src/components/top8/DesignEditor/DesignEditor.tsx:61
 msgid "Image darkness"
 msgstr "背景画像の明さ"
+
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:475
+msgid "Image downloaded — attach it in the composer"
+msgstr "画像をダウンロードしました — 投稿画面で添付してください"
+
+#: src/components/top8/SocialPostComposer/TemplatePicker.tsx:46
+msgid "Insert variable…"
+msgstr "変数を挿入…"
 
 #: src/components/top8/SettingsPanel/LanguagePicker.tsx:22
 msgid "Japanese"
@@ -590,6 +642,10 @@ msgstr "参加"
 #: src/components/top8/InfoPanel/InfoPanel.tsx:45
 msgid "Join the official server for help, feedback, and updates!"
 msgstr "公式サーバーで情報発信を行なってます！"
+
+#: src/components/top8/SocialPostComposer/PlatformPreview.tsx:108
+msgid "Just now"
+msgstr "たった今"
 
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:51
 msgid "Kagaribi"
@@ -604,10 +660,18 @@ msgstr "言語"
 msgid "Light"
 msgstr "ライト"
 
+#: src/utils/social/templateTokens.ts:61
+#~ msgid "Lists"
+#~ msgstr "リスト"
+
 #: src/components/predict/TournamentUrlInput/TournamentUrlInput.tsx:54
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:109
 msgid "Load"
 msgstr "取得"
+
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:378
+msgid "Load a tournament to compose a post."
+msgstr "トーナメントを読み込んで投稿を作成してください。"
 
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:211
 msgid "Load Template?"
@@ -653,6 +717,10 @@ msgstr "ミニマル"
 #~ msgid "Minimal Light ({count} Players)"
 #~ msgstr "ミニマル ライト（{count}人用）"
 
+#: src/utils/social/builtInTemplates.ts:35
+msgid "Minimalist"
+msgstr "ミニマル"
+
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:272
 msgid "My Templates"
 msgstr "マイテンプレ"
@@ -686,6 +754,18 @@ msgstr "なし"
 msgid "Okay"
 msgstr "OK"
 
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:352
+#~ msgid "Open in Bluesky"
+#~ msgstr "Blueskyで開く"
+
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:350
+#~ msgid "Open in X"
+#~ msgstr "Xで開く"
+
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:445
+msgid "Open template editor"
+msgstr "テンプレートエディタを開く"
+
 #: src/components/shared/FileUploader/FileUploader.tsx:156
 msgid "Or drag and drop"
 msgstr "ドラッグ・ドロップも対応"
@@ -710,6 +790,10 @@ msgstr "ピンク"
 #: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:49
 msgid "Pixel Ratio"
 msgstr "ピクセル比"
+
+#: src/components/top8/SocialPostComposer/TemplatePicker.tsx:172
+#~ msgid "Placeholders like <0>{tokenExample}</0> are filled in automatically for each tournament."
+#~ msgstr "<0>{tokenExample}</0> のようなプレースホルダーは、トーナメントごとに自動で置き換えられます。"
 
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:209
 msgid "Placement"
@@ -747,6 +831,19 @@ msgstr "選手情報"
 #: src/components/predict/PredictionPreview/PredictionPreview.tsx:57
 msgid "Polishing trophies..."
 msgstr ""
+
+#: src/components/top8/SocialPostComposer/PlatformPreview.tsx:166
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:538
+msgid "Post"
+msgstr "ポスト"
+
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:338
+#~ msgid "Post on Bluesky"
+#~ msgstr "Blueskyに投稿"
+
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:336
+#~ msgid "Post on X"
+#~ msgstr "Xに投稿"
 
 #: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:28
 msgid "Prediction size"
@@ -787,7 +884,7 @@ msgstr ""
 msgid "Red"
 msgstr "赤"
 
-#: src/components/top8/Ranker/Header/Header.tsx:34
+#: src/components/top8/Ranker/Header/Header.tsx:36
 msgid "Redo"
 msgstr "やり直す"
 
@@ -803,9 +900,21 @@ msgstr "サムネイルを再生成"
 msgid "Rounding up the squad..."
 msgstr ""
 
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:508
+msgid "Save"
+msgstr "保存"
+
+#: src/components/top8/SocialPostComposer/TemplatePicker.tsx:121
+#~ msgid "Save current as template"
+#~ msgstr "現在の内容をテンプレートとして保存"
+
 #: src/components/predict/EntrantPoolPanel/EntrantPoolPanel.tsx:51
 msgid "Search players..."
 msgstr "プレイヤーを検索..."
+
+#: src/components/top8/SocialPostComposer/TemplatePicker.tsx:45
+msgid "Search variables…"
+msgstr "変数を検索…"
 
 #: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:207
 #: src/components/top8/AssetSelector/AssetSelector.tsx:91
@@ -840,6 +949,11 @@ msgstr ""
 msgid "Share invite"
 msgstr "招待リンクをコピー"
 
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:364
+#: src/components/top8/SocialShareButton/SocialShareButton.tsx:29
+msgid "Share to social"
+msgstr "SNSで共有"
+
 #: src/components/predict/FetchingState/FetchingState.tsx:16
 msgid "Sharpening the seeds..."
 msgstr ""
@@ -868,6 +982,14 @@ msgstr "ストックアイコン"
 msgid "Support"
 msgstr "サポート"
 
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:548
+msgid "Switch template?"
+msgstr "テンプレートを切り替えますか？"
+
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:550
+msgid "Switching templates will replace what you've typed. Continue?"
+msgstr "テンプレートを切り替えると、入力した内容が置き換えられます。続行しますか？"
+
 #: src/components/predict/FetchingState/FetchingState.tsx:14
 msgid "Talking to the bracket gods..."
 msgstr ""
@@ -875,6 +997,18 @@ msgstr ""
 #: src/components/predict/PredictionListPanel/PredictionListPanel.tsx:111
 msgid "Tap entrants to add predictions"
 msgstr "参加者をタップして予想に追加"
+
+#: src/components/top8/SocialPostComposer/TemplateSelector.tsx:43
+msgid "Template"
+msgstr "テンプレート"
+
+#: src/components/top8/SocialPostComposer/TemplatePicker.tsx:164
+#~ msgid "Template body"
+#~ msgstr "テンプレート本文"
+
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:492
+msgid "Template name"
+msgstr "テンプレート名"
 
 #: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:102
 #: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:106
@@ -930,19 +1064,44 @@ msgstr "サムネイル"
 msgid "Tonamel API error: {0}"
 msgstr "Tonamel APIエラー: {0}"
 
+#: src/utils/social/templateTokens.ts:30
+#~ msgid "Top {n} list"
+#~ msgstr "トップ{n}リスト"
+
 #: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:21
 msgid "Top 16"
 msgstr "Top 16"
 
+#: src/utils/social/builtInTemplates.ts:20
+msgid "Top 3"
+msgstr "トップ3"
+
+#: src/utils/social/templateTokens.ts:49
+#~ msgid "Top 3 list (with medals)"
+#~ msgstr "トップ3リスト（メダル付き）"
+
+#: src/utils/social/builtInTemplates.ts:20
+#~ msgid "Top 3 with handles"
+#~ msgstr "トップ3＋ハンドル"
+
+#: src/utils/social/templateTokens.ts:50
+#~ msgid "Top 5 list"
+#~ msgstr "トップ5リスト"
+
 #: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:20
 msgid "Top 8"
 msgstr "Top 8"
+
+#: src/utils/social/builtInTemplates.ts:25
+msgid "Top 8 list"
+msgstr "トップ8リスト"
 
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:69
 msgid "Top8er"
 msgstr "Top8er"
 
 #: src/components/top8/SidePanel/SidePanelNav.tsx:24
+#: src/utils/social/templateTokens.ts:56
 msgid "Tournament"
 msgstr "大会情報"
 
@@ -958,6 +1117,11 @@ msgstr "大会市区町村"
 msgid "Tournament Country"
 msgstr "大会国"
 
+#: src/utils/social/templateTokens.ts:16
+#: src/utils/social/templateTokens.ts:48
+msgid "Tournament date"
+msgstr "大会の日付"
+
 #: src/consts/top8/placeholders.ts:30
 msgid "Tournament Date"
 msgstr "大会日付"
@@ -965,6 +1129,11 @@ msgstr "大会日付"
 #: src/consts/top8/placeholders.ts:31
 msgid "Tournament Full Address"
 msgstr "大会住所"
+
+#: src/utils/social/templateTokens.ts:14
+#: src/utils/social/templateTokens.ts:46
+msgid "Tournament name"
+msgstr "大会名"
 
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:104
 #: src/consts/top8/placeholders.ts:28
@@ -984,8 +1153,14 @@ msgstr "大会都道府県"
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:175
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:77
 #: src/consts/top8/placeholders.ts:35
+#: src/utils/social/templateTokens.ts:15
+#: src/utils/social/templateTokens.ts:47
 msgid "Tournament URL"
 msgstr "大会URL"
+
+#: src/utils/social/builtInTemplates.ts:15
+msgid "Trophy spotlight"
+msgstr "優勝者スポットライト"
 
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:230
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:233
@@ -1000,7 +1175,7 @@ msgstr "Xアカウント"
 msgid "Type"
 msgstr "形式"
 
-#: src/components/top8/Ranker/Header/Header.tsx:30
+#: src/components/top8/Ranker/Header/Header.tsx:32
 msgid "Undo"
 msgstr "元に戻す"
 
@@ -1022,9 +1197,52 @@ msgstr "素材をアップロード"
 msgid "Uploaded"
 msgstr "アップロード日"
 
+#. placeholder {0}: winnerHandle[1]
+#: src/utils/social/templateTokens.ts:20
+msgid "Winner #{0} handle"
+msgstr ""
+
+#. placeholder {0}: winnerName[1]
+#: src/utils/social/templateTokens.ts:29
+msgid "Winner #{0} name"
+msgstr ""
+
+#. placeholder {0}: winnerTag[1]
+#: src/utils/social/templateTokens.ts:24
+msgid "Winner #{0} tag"
+msgstr ""
+
+#: src/utils/social/templateTokens.ts:73
+msgid "Winner #{placement} handle"
+msgstr "{placement}位のハンドル"
+
+#: src/utils/social/templateTokens.ts:82
+#~ msgid "Winner #{placement} name"
+#~ msgstr "{placement}位の名前"
+
+#: src/utils/social/templateTokens.ts:78
+msgid "Winner #{placement} tag"
+msgstr "{placement}位のタグ"
+
+#: src/utils/social/templateTokens.ts:57
+msgid "Winners"
+msgstr "上位選手"
+
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:393
+msgid "X"
+msgstr "X"
+
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:427
+msgid "you"
+msgstr "あなた"
+
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:212
 msgid "Your current design will be overwritten!"
 msgstr "現在のデザインは上書きされます！"
+
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:426
+msgid "Your name"
+msgstr "あなたの名前"
 
 #: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:142
 msgid "Zoom In"

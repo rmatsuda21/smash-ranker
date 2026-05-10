@@ -41,3 +41,10 @@ export type DBThumbnailTemplate = {
   date: Date;
   previewImage?: Blob;
 };
+
+export type DBSocialTemplate = {
+  id: string;
+  name: string;
+  body: string;
+  createdAt: Date;
+};
