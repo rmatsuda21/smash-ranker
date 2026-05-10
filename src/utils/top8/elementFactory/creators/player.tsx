@@ -25,6 +25,7 @@ import {
   calculateGridAlignOffset,
   findOptimalSquareGrid,
 } from "./layout";
+import { getElementKey } from "../elementKey";
 
 type CharacterImageWithAltData = CharacterImageElementConfig & {
   _altCharacter?: CharacerData;
@@ -41,7 +42,7 @@ export const createCharacterImageElement: ElementCreator<
   if (!isAltCharacter && (!player || player.characters.length === 0)) {
     return (
       <Rect
-        key={element.id ?? `character-${index}`}
+        key={getElementKey(element, index)}
         x={element.position.x}
         y={element.position.y}
         width={element.size?.width ?? 100}
@@ -83,7 +84,7 @@ export const createCharacterImageElement: ElementCreator<
 
   return (
     <CustomImage
-      key={element.id ?? `character-${index}`}
+      key={getElementKey(element, index)}
       id="character"
       x={element.position.x}
       y={element.position.y}
@@ -157,7 +158,7 @@ export const createAltCharacterImageElement: ElementCreator<
 
   return (
     <Group
-      key={element.id ?? `alt-group-${index}`}
+      key={getElementKey(element, index)}
       x={element.position.x}
       y={element.position.y}
     >
@@ -235,7 +236,7 @@ export const createCustomAltCharacterImageElement: ElementCreator<
 
   return (
     <Group
-      key={element.id ?? `custom-alt-group-${index}`}
+      key={getElementKey(element, index)}
       x={element.position.x}
       y={element.position.y}
     >
@@ -364,7 +365,7 @@ function renderCustomAltWithTemplate(
 
   return (
     <Group
-      key={element.id ?? `custom-alt-group-${index}`}
+      key={getElementKey(element, index)}
       x={element.position.x}
       y={element.position.y}
     >
@@ -545,7 +546,7 @@ export const createPlayerFlagElement: ElementCreator<
 
   return (
     <CustomImage
-      key={element.id ?? `playerFlag-${index}`}
+      key={getElementKey(element, index)}
       x={element.position.x}
       y={element.position.y}
       width={element.size?.width ?? 40}
