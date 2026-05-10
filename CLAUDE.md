@@ -220,9 +220,15 @@ Errors and analytics flow through three helpers in `src/utils/observability/`:
 
 - `logError(error, context?)` — `console.error` + Sentry exception capture. Use for unexpected failures.
 - `logWarning(message, context?)` — `console.warn` + Sentry message capture at warning level. Use for recoverable conditions (silent fallbacks, missing config, swallowed catches).
-- `logEvent(name, props?)` — `posthog.capture(...)`. Use for product analytics (`tournament_loaded`, `template_selected`, `export_png`, `route_view`, etc.). PostHog is the analytics backend because Vercel Web Analytics restricts custom events to Pro+; pageview tracking still flows through `@vercel/analytics`'s `inject()` (free on Hobby).
+- `logEvent(name, props?)` — `posthog.capture(...)`. Use for product-specific analytics (`tournament_loaded`, `template_selected`, `export_png`, etc.). PostHog is the analytics backend because Vercel Web Analytics restricts custom events to Pro+; the dual setup is intentional — `@vercel/analytics`'s `inject()` continues to power Vercel's pageviews dashboard (free on Hobby), and PostHog handles custom events plus its own SPA `$pageview` capture.
 
-PostHog is initialized in `src/utils/observability/analytics.ts` with `autocapture: false`, `capture_pageview: false`, session recording + surveys disabled, and is opted-out in `import.meta.env.DEV`.
+PostHog is initialized in `src/utils/observability/analytics.ts`:
+
+- `defaults: '2026-01-30'` opts into the modern defaults bundle: SPA `$pageview` on `history_change` (works with wouter automatically — do NOT manually emit pageview events), `capture_pageleave: 'if_capture_pageview'` for accurate session duration, and rageclick filtering.
+- `autocapture: false` — the app is a Konva canvas tool; autocapture would drown signal in canvas-element click noise. Stick with explicit `logEvent` calls.
+- Slim core bundle (`posthog-js/dist/module.slim`) drops session-replay, surveys, and rarely-used extensions for ~30KB gzipped savings. We don't mount `<PostHogProvider>` because we use no PostHog hooks today; if we ever need `usePostHog` / `useFeatureFlagEnabled`, switch the import back to `posthog-js` (full) and add the Provider — slim's types aren't assignable to the React bindings.
+- Super-properties registered via `posthog.register({ app_environment, commit_sha })` so every event carries deployment context.
+- Init early-returns under `import.meta.env.DEV` so `bun dev` doesn't ship to the prod project. Vercel preview deploys are PROD builds and DO report.
 
 `<ErrorBoundary>` (`src/components/ErrorBoundary.tsx`) catches React render-phase errors and reports them to Sentry. React 19's root-level `onUncaughtError` / `onCaughtError` / `onRecoverableError` handlers are wired via `Sentry.reactErrorHandler()` in `src/main.tsx` to catch errors that escape the boundary. `<ToastProvider>` (`src/components/Toast/`) exposes `useToast().showToast(message, { variant })` for non-modal user-visible errors — prefer it over `alert()`. `@vercel/speed-insights/react` is mounted in `src/App.tsx` for Web Vitals.
 
