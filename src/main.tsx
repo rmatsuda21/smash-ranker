@@ -12,11 +12,13 @@ import "@/index.css";
 import { registerServiceWorker } from "@/utils/waitForServiceWorker";
 import { loadCatalog } from "@/i18n";
 import { COOKIES } from "@/consts/cookies";
-import { initSentry } from "@/utils/observability/sentry";
+import { initSentry, reactErrorHandler } from "@/utils/observability/sentry";
+import { initAnalytics } from "@/utils/observability/analytics";
 import { logError } from "@/utils/observability/log";
 import App from "@/App";
 
 initSentry();
+initAnalytics();
 
 (async () => {
   try {
@@ -41,7 +43,11 @@ initSentry();
     await registerServiceWorker();
 
     inject();
-    createRoot(document.getElementById("root")!).render(
+    createRoot(document.getElementById("root")!, {
+      onUncaughtError: reactErrorHandler,
+      onCaughtError: reactErrorHandler,
+      onRecoverableError: reactErrorHandler,
+    }).render(
       <StrictMode>
         <I18nProvider i18n={i18n}>
           <App />

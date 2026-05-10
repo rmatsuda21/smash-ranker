@@ -1,5 +1,4 @@
-import { track } from "@vercel/analytics";
-
+import { capture } from "./analytics";
 import { captureException, captureMessage } from "./sentry";
 
 export const logError = (error: unknown, context?: Record<string, unknown>) => {
@@ -27,7 +26,7 @@ type EventProps = Record<string, string | number | boolean | null>;
 
 export const logEvent = (name: string, props?: EventProps) => {
   try {
-    track(name, props);
+    capture(name, props);
   } catch {
     // Analytics is best-effort; never block a user action because of it.
   }

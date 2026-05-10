@@ -10,11 +10,14 @@ export const initSentry = () => {
   Sentry.init({
     dsn,
     environment: import.meta.env.MODE,
-    release: import.meta.env.VITE_VERCEL_GIT_COMMIT_SHA,
+    release: import.meta.env.VITE_VERCEL_GIT_COMMIT_SHA || undefined,
     tracesSampleRate: 0,
     replaysSessionSampleRate: 0,
     replaysOnErrorSampleRate: 0,
-    integrations: [],
+    attachStacktrace: true,
+    // Intentionally omitting `integrations` — passing [] would disable
+    // GlobalHandlers (window.onerror / unhandledrejection), Breadcrumbs,
+    // LinkedErrors, BrowserApiErrors, etc. Keep Sentry's defaults.
   });
   initialized = true;
 };
@@ -38,5 +41,9 @@ export const captureMessage = (
     context ? { level, extra: context } : { level },
   );
 };
+
+// Used by createRoot()'s onUncaughtError / onCaughtError / onRecoverableError
+// hooks (React 19). Captures errors that escape <ErrorBoundary>.
+export const reactErrorHandler = Sentry.reactErrorHandler();
 
 export { Sentry };
