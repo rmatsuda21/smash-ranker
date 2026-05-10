@@ -19,6 +19,7 @@ import { evaluateElementCondition } from "@/utils/top8/evaluateElementCondition"
 import { resolveText } from "@/utils/top8/resolveText";
 import { composeFontStyle } from "@/utils/fonts/fontLoader";
 import type { InternalContext } from "../types";
+import { getElementKey } from "../elementKey";
 
 let createKonvaElementsInternal: (
   elements: ElementConfig[],
@@ -338,7 +339,7 @@ export const createGroupElement: ElementCreator<GroupElementConfig> = ({
 
   return (
     <Group
-      key={element.id ?? `group-${index}`}
+      key={getElementKey(element, index)}
       x={element.position.x}
       y={element.position.y}
       width={element.size?.width}
@@ -380,7 +381,7 @@ export const createFlexGroupElement: ElementCreator<FlexGroupElementConfig> = ({
   if (visibleChildren.length === 0) {
     return (
       <Group
-        key={element.id ?? `flexGroup-${index}`}
+        key={getElementKey(element, index)}
         x={element.position.x}
         y={element.position.y}
         width={element.size?.width}
@@ -392,7 +393,12 @@ export const createFlexGroupElement: ElementCreator<FlexGroupElementConfig> = ({
   const lines = buildFlexLines(visibleChildren, containerMainSize, gap, wrap);
   const orderedLines = wrapDirection === "end" ? [...lines].reverse() : lines;
 
-  const positionedElements: ReactNode[] = [];
+  // Collect all positioned children into a single array, then render with one
+  // batched call to createKonvaElementsInternal. Each child must reach that
+  // function with its own loop index so the ${type}-${index} fallback key is
+  // unique among siblings — recursing per-child would force index=0 for every
+  // sibling and cause React duplicate-key warnings.
+  const positionedChildren: ElementConfig[] = [];
   let crossPosition = 0;
 
   for (const line of orderedLines) {
@@ -438,7 +444,7 @@ export const createFlexGroupElement: ElementCreator<FlexGroupElementConfig> = ({
       const childOffsetX = child.element.position?.x ?? 0;
       const childOffsetY = child.element.position?.y ?? 0;
 
-      const modifiedElement: ElementConfig = {
+      positionedChildren.push({
         ...child.element,
         position: {
           x:
@@ -450,14 +456,7 @@ export const createFlexGroupElement: ElementCreator<FlexGroupElementConfig> = ({
           ...child.element.size,
           ...(isRow ? { width: childMainSize } : { height: childMainSize }),
         },
-      };
-
-      positionedElements.push(
-        ...createKonvaElementsInternal(
-          [modifiedElement],
-          context as InternalContext,
-        ),
-      );
+      });
 
       mainPosition += childMainSize + (spaceBetween || gap);
     }
@@ -465,9 +464,14 @@ export const createFlexGroupElement: ElementCreator<FlexGroupElementConfig> = ({
     crossPosition += maxCrossSize + gap;
   }
 
+  const positionedElements = createKonvaElementsInternal(
+    positionedChildren,
+    context as InternalContext,
+  );
+
   return (
     <Group
-      key={element.id ?? `flexGroup-${index}`}
+      key={getElementKey(element, index)}
       x={element.position.x}
       y={element.position.y}
       width={element.size?.width}
@@ -717,7 +721,7 @@ export const createFlexGridElement: ElementCreator<FlexGridElementConfig> = ({
   if (visibleChildren.length === 0) {
     return (
       <Group
-        key={element.id ?? `flexGrid-${index}`}
+        key={getElementKey(element, index)}
         x={element.position.x}
         y={element.position.y}
         width={containerWidth}
@@ -764,7 +768,9 @@ export const createFlexGridElement: ElementCreator<FlexGridElementConfig> = ({
     ? lastGroupItemCount === grid.rows
     : lastGroupItemCount === grid.columns;
 
-  const positionedElements: ReactNode[] = [];
+  // See note in createFlexGroupElement: collect every child into one array
+  // and recurse once so each sibling gets a distinct loop index for keying.
+  const positionedChildren: ElementConfig[] = [];
 
   for (let i = 0; i < visibleChildren.length; i++) {
     const child = visibleChildren[i];
@@ -809,30 +815,25 @@ export const createFlexGridElement: ElementCreator<FlexGridElementConfig> = ({
       y += lastColOffset;
     }
 
-    const finalX = gridOffsetX + x;
-    const finalY = gridOffsetY + y;
-
-    const modifiedElement: ElementConfig = {
+    positionedChildren.push({
       ...child.element,
-      position: { x: finalX, y: finalY },
+      position: { x: gridOffsetX + x, y: gridOffsetY + y },
       size: {
         ...child.element.size,
         width: grid.cellWidth,
         height: grid.cellHeight,
       },
-    };
-
-    positionedElements.push(
-      ...createKonvaElementsInternal(
-        [modifiedElement],
-        context as InternalContext,
-      ),
-    );
+    });
   }
+
+  const positionedElements = createKonvaElementsInternal(
+    positionedChildren,
+    context as InternalContext,
+  );
 
   return (
     <Group
-      key={element.id ?? `flexGrid-${index}`}
+      key={getElementKey(element, index)}
       x={element.position.x}
       y={element.position.y}
       width={containerWidth}

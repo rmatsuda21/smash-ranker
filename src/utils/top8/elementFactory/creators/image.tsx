@@ -11,6 +11,7 @@ import type { ElementCreator } from "@/types/top8/ElementFactory";
 import { CustomImage } from "@/components/top8/Canvas/CustomImage";
 import { CustomSVG } from "@/components/top8/Canvas/CustomSVG";
 import { resolvePaletteColors } from "@/utils/top8/resolveColor";
+import { getElementKey } from "../elementKey";
 
 export const createImageElement: ElementCreator<ImageElementConfig> = ({
   element,
@@ -18,7 +19,7 @@ export const createImageElement: ElementCreator<ImageElementConfig> = ({
 }) => {
   return (
     <CustomImage
-      key={element.id ?? `image-${index}`}
+      key={getElementKey(element, index)}
       id={`image-${index}`}
       x={element.position.x}
       y={element.position.y}
@@ -39,7 +40,7 @@ export const createCustomImageElement: ElementCreator<
 
   return (
     <CustomImage
-      key={element.id ?? `customImage-${index}`}
+      key={getElementKey(element, index)}
       x={element.position.x}
       y={element.position.y}
       width={width}
@@ -66,7 +67,7 @@ export const createSvgElement: ElementCreator<SvgElementConfig> = ({
 
   return (
     <CustomSVG
-      key={element.id ?? `svg-${index}`}
+      key={getElementKey(element, index)}
       x={element.position.x}
       y={element.position.y}
       width={element.size?.width ?? 100}
@@ -86,7 +87,7 @@ export const createTournamentIconElement: ElementCreator<
   if (!tournament?.iconSrc) {
     return (
       <Rect
-        key={element.id ?? `tournamentIcon-${index}`}
+        key={getElementKey(element, index)}
         x={element.position.x}
         y={element.position.y}
         width={element.size?.width ?? 100}
@@ -99,7 +100,7 @@ export const createTournamentIconElement: ElementCreator<
 
   return (
     <CustomImage
-      key={element.id ?? `tournamentIcon-${index}`}
+      key={getElementKey(element, index)}
       x={element.position.x}
       y={element.position.y}
       imageSrc={tournament.iconSrc}
@@ -125,7 +126,7 @@ export const createBackgroundImageElement: ElementCreator<
   }
 
   return (
-    <Group key={element.id ?? `backgroundImage-${index}`}>
+    <Group key={getElementKey(element, index)}>
       <CustomImage
         imageSrc={backgroundImgId}
         x={element.position.x}

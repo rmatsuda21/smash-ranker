@@ -12,6 +12,12 @@ import { elementCreators } from "./creators";
 import { setCreateKonvaElementsInternal } from "./creators/layout";
 import { injectAsyncCallbacks } from "./asyncTracking";
 
+// IMPORTANT: callers that recurse into this function from creator code must
+// pass the parent's *full* children array in a single call. The loop index
+// below feeds the `${type}-${index}` fallback key in `getElementKey`, so
+// per-child recursion (one call per element) would force `index=0` for every
+// sibling and trigger React's duplicate-key warning. See `createFlexGroupElement`
+// and `createFlexGridElement` for the correct batched pattern.
 export const createKonvaElementsInternal = (
   elements: ElementConfig[],
   context: InternalContext,

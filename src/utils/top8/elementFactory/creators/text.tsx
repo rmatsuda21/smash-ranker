@@ -10,6 +10,7 @@ import { replacePlaceholders } from "@/utils/top8/replacePlaceholderString";
 import { resolveColor } from "@/utils/top8/resolveColor";
 import { resolveText } from "@/utils/top8/resolveText";
 import { composeFontStyle } from "@/utils/fonts/fontLoader";
+import { getElementKey } from "../elementKey";
 
 export const createTextElement: ElementCreator<TextElementConfig> = ({
   element,
@@ -34,7 +35,7 @@ export const createTextElement: ElementCreator<TextElementConfig> = ({
 
   return (
     <Text
-      key={element.id ?? `text-${index}`}
+      key={getElementKey(element, index)}
       x={element.position.x}
       y={element.position.y}
       fill={resolveColor(element.fill, design?.colorPalette) ?? "white"}
@@ -84,7 +85,7 @@ export const createSmartTextElement: ElementCreator<SmartTextElementConfig> = ({
 
   return (
     <SmartText
-      key={element.id ?? `smartText-${index}`}
+      key={getElementKey(element, index)}
       x={element.position.x}
       y={element.position.y}
       width={element.size?.width}

@@ -8,6 +8,7 @@ import {
   resolveLinearGradientProps,
   resolveRadialGradientProps,
 } from "@/utils/top8/resolveGradient";
+import { getElementKey } from "../elementKey";
 
 export const createRectElement: ElementCreator<RectElementConfig> = ({
   element,
@@ -16,7 +17,7 @@ export const createRectElement: ElementCreator<RectElementConfig> = ({
 }) => {
   const { design } = context;
   const { fill } = element;
-  const key = element.id ?? `rect-${index}`;
+  const key = getElementKey(element, index);
   const stroke = resolveColor(
     element.stroke as string | undefined,
     design?.colorPalette,
