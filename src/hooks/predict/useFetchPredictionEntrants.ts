@@ -7,7 +7,7 @@ import { usePredictionStore } from "@/store/predictionStore";
 import { detectPlatformAndSlug, slugToUrl } from "@/consts/platforms";
 import type { PredictionPlayer } from "@/types/predict/Prediction";
 import { extractTournamentPalette } from "@/utils/predict/extractTournamentPalette";
-import { logError, logEvent } from "@/utils/observability/log";
+import { logEvent } from "@/utils/observability/log";
 
 // Step 1: Get event metadata + first phase ID
 const EventMetaQueryDoc = graphql(`
@@ -272,6 +272,10 @@ export const useFetchPredictionEntrants = () => {
     if (!detected) return;
 
     dispatch({ type: "FETCH_START" });
+    logEvent("tournament_url_submit", {
+      tournament_platform: detected.platform,
+      surface: "predict",
+    });
 
     try {
       let result;
@@ -290,9 +294,9 @@ export const useFetchPredictionEntrants = () => {
       result.tournamentUrl = slugToUrl(detected.platform, detected.slug);
 
       dispatch({ type: "FETCH_SUCCESS", payload: result });
-      logEvent("prediction_loaded", {
-        platform: detected.platform,
-        entrantCount: result.entrants.length,
+      logEvent("prediction_load", {
+        tournament_platform: detected.platform,
+        entrant_count: result.entrants.length,
       });
 
       if (result.tournamentIconUrl) {
@@ -303,13 +307,12 @@ export const useFetchPredictionEntrants = () => {
     } catch (error) {
       const message =
         error instanceof Error ? error.message : t`Failed to fetch tournament`;
-      logError(error, {
-        area: "prediction-fetch",
-        platform: detected.platform,
-        slug: detected.slug,
-      });
+      // Don't Sentry-capture: most failures here are user-input errors. Real
+      // upstream issues land in the api/* function-side Sentry captures.
       dispatch({ type: "FETCH_FAIL", payload: message });
-      logEvent("prediction_fetch_failed", { platform: detected.platform });
+      logEvent("prediction_fetch_fail", {
+        tournament_platform: detected.platform,
+      });
     }
   };
 

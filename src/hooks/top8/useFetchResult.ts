@@ -18,7 +18,7 @@ import {
 import { getMultiGroupError } from "@/consts/errors";
 import { EMPTY_CHARACTER_ID } from "@/consts/top8/characters";
 import { useToast } from "@/components/Toast";
-import { logError, logEvent } from "@/utils/observability/log";
+import { logError, logEvent, logWarning } from "@/utils/observability/log";
 const IDB_IMAGES_BASE_URL = "/idb-images/";
 
 interface TournamentImage {
@@ -241,11 +241,15 @@ const fetchPlayerCharacters = async (
 
   if (result.error || !nodes) {
     if (result.error) {
-      logError(result.error, {
+      // Per-entrant character fetches are best-effort; transient start.gg
+      // flakes shouldn't inflate Sentry exception counts. Warning level keeps
+      // the trail without a noisy alert.
+      logWarning("player characters fetch failed", {
         area: "tournament-fetch",
         platform: "startgg",
         step: "player-characters",
         entrantId,
+        error: result.error.message,
       });
     }
     return [];
@@ -382,17 +386,13 @@ export const useFetchResult = () => {
       const errorMessage = result.error?.message || t`Tournament not found`;
       playerDispatch({ type: "FETCH_PLAYERS_FAIL", payload: errorMessage });
       showToast(errorMessage, { variant: "error" });
-      logEvent("tournament_fetch_failed", {
-        platform: "startgg",
-        kind: result.error ? "query-error" : "not-found",
+      logEvent("tournament_fetch_fail", {
+        tournament_platform: "startgg",
+        failure_kind: result.error ? "query_error" : "not_found",
       });
-      if (result.error) {
-        logError(result.error, {
-          area: "tournament-fetch",
-          platform: "startgg",
-          slug,
-        });
-      }
+      // Don't Sentry-capture user-input failures (bad slug, deleted event).
+      // The PostHog rate is the right signal; bug investigation belongs to
+      // the api-side Sentry capture if a real upstream issue surfaces.
       return;
     }
 
@@ -414,9 +414,9 @@ export const useFetchResult = () => {
       const errorMessage = getMultiGroupError();
       playerDispatch({ type: "FETCH_PLAYERS_FAIL", payload: errorMessage });
       showToast(errorMessage, { variant: "error" });
-      logEvent("tournament_fetch_failed", {
-        platform: "startgg",
-        kind: "multi-group",
+      logEvent("tournament_fetch_fail", {
+        tournament_platform: "startgg",
+        failure_kind: "multi_group",
       });
       return;
     }
@@ -438,11 +438,13 @@ export const useFetchResult = () => {
 
       const paddedPlayers = padPlayersWithBlanks(players, playerCount);
       playerDispatch({ type: "FETCH_PLAYERS_SUCCESS", payload: paddedPlayers });
-      logEvent("tournament_loaded", {
-        platform: "startgg",
-        playerCount,
+      logEvent("tournament_load", {
+        tournament_platform: "startgg",
+        player_count: playerCount,
       });
     } catch (error) {
+      // Post-process failure: image storage, character fetch, IndexedDB write.
+      // These are likely real bugs, not user-input issues — keep Sentry capture.
       logError(error, {
         area: "tournament-fetch",
         platform: "startgg",
@@ -454,9 +456,9 @@ export const useFetchResult = () => {
         payload: t`Failed to fetch tournament data`,
       });
       showToast(t`Failed to fetch tournament data`, { variant: "error" });
-      logEvent("tournament_fetch_failed", {
-        platform: "startgg",
-        kind: "post-process",
+      logEvent("tournament_fetch_fail", {
+        tournament_platform: "startgg",
+        failure_kind: "post_process",
       });
     }
   };

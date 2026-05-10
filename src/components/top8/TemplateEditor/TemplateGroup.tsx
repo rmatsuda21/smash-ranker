@@ -56,9 +56,9 @@ export const TemplateGroup = ({
             template={template}
             onClick={() => {
               onTemplateClick(template.id);
-              logEvent("template_selected", {
-                templateId: template.id,
-                group: name,
+              logEvent("template_select", {
+                template_id: template.id,
+                template_group: name,
               });
             }}
             onDelete={

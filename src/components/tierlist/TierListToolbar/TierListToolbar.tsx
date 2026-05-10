@@ -9,7 +9,12 @@ import { ConfirmationModal } from "@/components/shared/ConfirmationModal/Confirm
 import { TierListSettings } from "@/components/tierlist/TierListSettings/TierListSettings";
 import { useTierListStore } from "@/store/tierListStore";
 import { downloadBlob } from "@/utils/top8/downloadBlob";
-import { logError, logEvent } from "@/utils/observability/log";
+import {
+  logError,
+  logEvent,
+  setPerson,
+  setPersonOnce,
+} from "@/utils/observability/log";
 
 import styles from "./TierListToolbar.module.scss";
 
@@ -26,6 +31,8 @@ export const TierListToolbar = ({ exportRef }: Props) => {
   const handleExport = async () => {
     if (!exportRef.current || exporting) return;
     setExporting(true);
+    const startedAt = performance.now();
+    logEvent("graphic_export_start", { export_surface: "tier" });
     const { toCanvas } = await import("html-to-image");
     // Yield to let React render the loading state before the heavy work
     await new Promise((r) => requestAnimationFrame(r));
@@ -138,9 +145,23 @@ export const TierListToolbar = ({ exportRef }: Props) => {
         filename: "tier-list.png",
         mimeType: "image/png",
       });
-      logEvent("export_png", { surface: "tier" });
+      logEvent("graphic_export_complete", {
+        export_surface: "tier",
+        export_format: "png",
+        duration_ms: Math.round(performance.now() - startedAt),
+      });
+      const now = new Date().toISOString();
+      setPersonOnce({ first_export_at: now });
+      setPerson({ has_exported: true, last_export_at: now });
     } catch (err) {
+      // html-to-image / canvas compositing failures are real bugs — keep
+      // Sentry capture, plus a product fail event for rate visibility.
       logError(err, { area: "export", surface: "tier" });
+      logEvent("graphic_export_fail", {
+        export_surface: "tier",
+        failure_kind: "render_threw",
+        duration_ms: Math.round(performance.now() - startedAt),
+      });
     } finally {
       setExporting(false);
     }
