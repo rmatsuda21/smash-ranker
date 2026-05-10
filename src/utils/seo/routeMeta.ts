@@ -14,8 +14,7 @@ const DEFAULT_IMAGE = `${SITE}/og-default.png`;
 const STATIC_ROUTES: Record<string, RouteMeta> = {
   "/": {
     title: "Smash Ranker — Tournament graphics for Super Smash Bros.",
-    description:
-      "Free online tools for Super Smash Bros. tournaments: Top 8 bracket graphics, tier lists, prediction makers, and thumbnails. No signup required.",
+    description: "Your one-stop shop for Super Smash Bros. graphics!",
     image: DEFAULT_IMAGE,
     url: `${SITE}/`,
     type: "website",
