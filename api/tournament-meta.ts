@@ -2,17 +2,31 @@ import "./_instrument";
 
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 
+import { respondClientError } from "./_lib/errors";
+import { assertSameOrigin } from "./_lib/origin";
 import { withLogging } from "./_lib/withLogging";
 import { decodeInvite, fetchTournamentMeta } from "./_lib/tournamentMeta";
+
+const MAX_INVITE_LENGTH = 512;
 
 const handler = async (req: VercelRequest, res: VercelResponse) => {
   if (req.method !== "GET") {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
+  try {
+    assertSameOrigin(req);
+  } catch (err) {
+    if (respondClientError(res, err)) return;
+    throw err;
+  }
+
   const encoded = req.query.d;
   if (typeof encoded !== "string" || encoded.length === 0) {
     return res.status(400).json({ error: "Missing 'd' query parameter" });
+  }
+  if (encoded.length > MAX_INVITE_LENGTH) {
+    return res.status(400).json({ error: "Invite too long" });
   }
 
   const invite = decodeInvite(encoded);

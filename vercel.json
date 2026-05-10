@@ -30,6 +30,26 @@
     "api/og-image.ts": {
       "memory": 1024,
       "maxDuration": 30
+    },
+    "api/challonge.ts": {
+      "memory": 512,
+      "maxDuration": 10
+    },
+    "api/tonamel.ts": {
+      "memory": 512,
+      "maxDuration": 15
+    },
+    "api/tonamel-image.ts": {
+      "memory": 512,
+      "maxDuration": 10
+    },
+    "api/tournament-meta.ts": {
+      "memory": 512,
+      "maxDuration": 10
+    },
+    "api/flags.ts": {
+      "memory": 256,
+      "maxDuration": 5
     }
   }
 }

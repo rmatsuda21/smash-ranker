@@ -8,7 +8,13 @@ import satori from "satori";
 import { Resvg } from "@resvg/resvg-js";
 import React from "react";
 
+import { BadRequestError, respondClientError } from "./_lib/errors";
+import { parseBase64UrlPayload, parseImageUrl } from "./_lib/validate";
 import { addBreadcrumb, withLogging } from "./_lib/withLogging";
+
+const MAX_PAYLOAD_BYTES = 8 * 1024;
+const MAX_PREDICTIONS = 16;
+const MAX_FIELD_LENGTH = 256;
 
 // Cached at module scope for warm starts
 const fontRegular = readFileSync(
@@ -508,16 +514,85 @@ function hashPayload(body: RequestBody): string {
 
 // --- Payload decoding ---
 
-function decodePayload(encoded: string): RequestBody | null {
-  try {
-    const json = Buffer.from(encoded, "base64url").toString("utf8");
-    const parsed = JSON.parse(json);
-    if (!parsed || typeof parsed !== "object") return null;
-    if (!Array.isArray(parsed.predictions)) return null;
-    return parsed as RequestBody;
-  } catch {
-    return null;
+function asBoundedString(value: unknown, field: string): string {
+  if (typeof value !== "string") {
+    throw new BadRequestError(`Field ${field} must be a string`);
   }
+  if (value.length > MAX_FIELD_LENGTH) {
+    throw new BadRequestError(`Field ${field} too long`);
+  }
+  return value;
+}
+
+function asOptionalBoundedString(
+  value: unknown,
+  field: string,
+): string | undefined {
+  if (value === undefined || value === null || value === "") return undefined;
+  return asBoundedString(value, field);
+}
+
+function decodePayload(encoded: unknown): RequestBody {
+  const decoded = parseBase64UrlPayload(encoded, MAX_PAYLOAD_BYTES);
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(decoded);
+  } catch {
+    throw new BadRequestError("Invalid payload JSON");
+  }
+
+  if (!parsed || typeof parsed !== "object") {
+    throw new BadRequestError("Invalid payload");
+  }
+  const obj = parsed as Record<string, unknown>;
+
+  if (!Array.isArray(obj.predictions)) {
+    throw new BadRequestError("predictions must be an array");
+  }
+  if (obj.predictions.length === 0) {
+    throw new BadRequestError("predictions must not be empty");
+  }
+  if (obj.predictions.length > MAX_PREDICTIONS) {
+    throw new BadRequestError(`predictions exceeds max of ${MAX_PREDICTIONS}`);
+  }
+
+  const predictions: PredictionPlayer[] = obj.predictions.map((p, i) => {
+    if (!p || typeof p !== "object") {
+      throw new BadRequestError(`predictions[${i}] must be an object`);
+    }
+    const item = p as Record<string, unknown>;
+    return {
+      id: asBoundedString(item.id, `predictions[${i}].id`),
+      name: asBoundedString(item.name, `predictions[${i}].name`),
+      prefix: asOptionalBoundedString(item.prefix, `predictions[${i}].prefix`),
+    };
+  });
+
+  // Validate the icon URL host before we'll fetch it. Empty string skips the
+  // fetch entirely, which is the common case for Challonge/Tonamel sources.
+  const iconUrlRaw = asOptionalBoundedString(
+    obj.tournamentIconUrl,
+    "tournamentIconUrl",
+  );
+  let tournamentIconUrl = "";
+  if (iconUrlRaw) {
+    // Throws BadRequestError on private IPs, http://, etc.
+    parseImageUrl(iconUrlRaw);
+    tournamentIconUrl = iconUrlRaw;
+  }
+
+  return {
+    tournamentName:
+      asOptionalBoundedString(obj.tournamentName, "tournamentName") ?? "",
+    eventName: asOptionalBoundedString(obj.eventName, "eventName") ?? "",
+    tournamentDate:
+      asOptionalBoundedString(obj.tournamentDate, "tournamentDate") ?? "",
+    tournamentIconUrl,
+    predictions,
+    palette: obj.palette as PredictionPalette | undefined,
+    locale: asOptionalBoundedString(obj.locale, "locale"),
+  };
 }
 
 // --- Handler ---
@@ -527,27 +602,28 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const encoded = req.query.d;
-  if (typeof encoded !== "string" || encoded.length === 0) {
-    return res.status(400).json({ error: "Missing 'd' query parameter" });
-  }
-
-  const body = decodePayload(encoded);
-  if (!body) {
-    return res.status(400).json({ error: "Invalid payload" });
+  let body: RequestBody;
+  try {
+    body = decodePayload(req.query.d);
+  } catch (err) {
+    if (respondClientError(res, err)) return;
+    throw err;
   }
 
   const hash = hashPayload(body);
   const etag = `"${hash}"`;
 
   res.setHeader("Content-Type", "image/png");
-  // GET URLs are content-addressed (different `d` → different URL), so the
-  // CDN can safely cache for a long time. The browser revalidates after
-  // max-age via ETag.
+  // The URL is content-addressed by the base64url payload, so the same `?d=`
+  // value always produces the exact same PNG — `immutable` is honest. Header
+  // priority: Vercel-CDN > CDN > Cache-Control. The Vercel-only header is
+  // stripped before reaching the browser.
   res.setHeader(
-    "Cache-Control",
-    "public, max-age=300, s-maxage=86400, stale-while-revalidate=604800",
+    "Vercel-CDN-Cache-Control",
+    "public, max-age=31536000, immutable",
   );
+  res.setHeader("CDN-Cache-Control", "public, max-age=86400");
+  res.setHeader("Cache-Control", "public, max-age=3600");
   res.setHeader("ETag", etag);
 
   if (req.headers["if-none-match"] === etag) {
