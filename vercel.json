@@ -26,6 +26,10 @@
     "api/prediction-image.ts": {
       "memory": 1024,
       "maxDuration": 30
+    },
+    "api/og-image.ts": {
+      "memory": 1024,
+      "maxDuration": 30
     }
   }
 }
