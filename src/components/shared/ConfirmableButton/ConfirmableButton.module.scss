@@ -1,33 +1,33 @@
-.copyLabel {
+.label {
   position: relative;
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
 }
 
-.copyInner {
+.inner {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
   opacity: 1;
   transition: opacity var(--duration-base) var(--ease-standard);
-
-  &.hidden {
-    opacity: 0;
-  }
 }
 
-.copiedOverlay {
+.innerHidden {
+  opacity: 0;
+}
+
+.overlay {
   position: absolute;
   inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: var(--space-2);
-  animation: fadeIn var(--duration-base) var(--ease-standard);
+  animation: confirmableFadeIn var(--duration-base) var(--ease-standard);
 }
 
-@keyframes fadeIn {
+@keyframes confirmableFadeIn {
   from {
     opacity: 0;
   }
@@ -36,8 +36,18 @@
   }
 }
 
-.copied {
+.confirmed {
   color: #34d399 !important;
   border-color: #34d399 !important;
   background-color: rgba(52, 211, 153, 0.1) !important;
+}
+
+.failed {
+  color: var(--status-danger) !important;
+  border-color: var(--status-danger) !important;
+  background-color: color-mix(
+    in srgb,
+    var(--status-danger) 10%,
+    transparent
+  ) !important;
 }

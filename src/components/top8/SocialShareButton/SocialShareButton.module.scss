@@ -1,0 +1,14 @@
+@use "@/_theme" as *;
+
+.wrapper {
+  display: inline-flex;
+  align-items: center;
+}
+
+.suspenseFallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-8);
+  min-width: 320px;
+}

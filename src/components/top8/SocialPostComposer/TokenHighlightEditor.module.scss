@@ -1,0 +1,162 @@
+@use "@/_theme" as *;
+
+/* The wrapper hosts a textarea and an overlay div that share identical
+   typography metrics. The textarea text is transparent so the highlighted
+   overlay underneath shows through; cursor + selection chrome stay native.
+   `line-height` is set HERE only — children use `font: inherit` to pick it
+   up, guaranteeing the textarea cursor's line-box matches the overlay
+   text's line-box exactly (otherwise the cursor renders taller than the
+   visible text and looks vertically misaligned). */
+.wrapper {
+  position: relative;
+  width: 100%;
+  font-family: inherit;
+  font-size: inherit;
+  /* `text-box-trim` (applied on the children) shrinks the inline boxes
+     down to cap-to-baseline, removing leading + the empty descender slot
+     so highlights fit the glyphs. We then keep line-height: 1.4 to
+     restore comfortable spacing between trimmed boxes. */
+  line-height: 1.4;
+}
+
+.overlay,
+.textarea {
+  /* `font: inherit` blasts every font sub-property (family, size, style,
+     weight, line-height, …) to the parent's value so both children get
+     IDENTICAL glyph metrics. */
+  font: inherit;
+  line-height: 1.4;
+  letter-spacing: inherit;
+  word-spacing: inherit;
+  text-rendering: optimizeLegibility;
+  font-kerning: normal;
+  -webkit-font-smoothing: inherit;
+  tab-size: inherit;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  padding: 4px 0;
+  margin: 0;
+  border: 0;
+  box-sizing: border-box;
+  vertical-align: top;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  color: inherit;
+  /* Match the textarea's wrap behavior precisely. */
+  width: 100%;
+  min-height: 100%;
+  /* Intentionally NOT clipping overflow — the per-token hover tooltip
+     pseudo-element needs to escape the overlay's bounds. The textarea
+     auto-grows to fit content so neither the wrapper nor overlay should
+     overflow in practice. */
+}
+
+.textarea {
+  position: relative;
+  width: 100%;
+  background: transparent;
+  color: transparent;
+  /* caret-color inherits from the wrapper (which platform variants override
+     to a visible accent color). Using `currentColor` here would resolve to
+     the textarea's own transparent `color`, hiding the caret. */
+  caret-color: inherit;
+  resize: none;
+  outline: none;
+  display: block;
+  min-height: 60px;
+  line-height: 1.4;
+  /* Nudge the textarea up by 2px so the native selection chrome and the
+     overlay's text glyphs line up better — without this the selection
+     box paints starting 2px above where the visible text sits, making
+     the text look top-aligned within the highlight. */
+  margin-top: -2px;
+
+  /* Hide the textarea's own glyphs but keep selection visible. */
+  -webkit-text-fill-color: transparent;
+}
+
+/* Selection chrome — the textarea's native ::selection paints the
+   line-box. The wrapper sets `--selection-bg` per platform. */
+.textarea::selection {
+  background-color: var(--selection-bg, rgba(120, 180, 255, 0.45));
+}
+.textarea::-moz-selection {
+  background-color: var(--selection-bg, rgba(120, 180, 255, 0.45));
+}
+
+/* Live link styling for plain mode — `@handle` and http(s) URLs render in
+   the platform's brand blue, mimicking how X / Bluesky highlight links in
+   their composers. The wrapper sets `--link-fg` per platform variant. */
+.link {
+  color: var(--link-fg, #1d9bf0);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.textarea::placeholder {
+  -webkit-text-fill-color: currentColor;
+  color: currentColor;
+  opacity: 0.45;
+}
+
+.token {
+  /* Platform-aware colors — set as CSS vars on the wrapper (see
+     SocialPostComposer.module.scss .bodyEditorX / .bodyEditorBluesky)
+     so the highlight reads on both X's dark card and Bluesky's light card. */
+  background-color: var(--token-bg, rgba(29, 155, 240, 0.22));
+  color: var(--token-fg, #7dc6f3);
+  border-radius: 3px;
+  transition: background-color var(--duration-fast, 0.1s) ease;
+  /* Render the highlight per-line when a token wraps, so multi-line tokens
+     show a separate hugged-to-text bar on each line instead of a single
+     bar that stretches across the line gap. */
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+
+  /* IMPORTANT: do not change font-weight, letter-spacing, padding, or
+     anything else that changes glyph metrics. The textarea sits on top of
+     this overlay and its caret position is computed from the textarea's
+     own text — any width drift between overlay glyphs and textarea glyphs
+     misaligns the visible cursor against the highlighted text.
+     We also intentionally don't enable pointer events here — the textarea
+     paints on top, so tokens cannot receive native hover anyway. The
+     editor walks token-span clientRects on mousemove to drive
+     `.tokenHovered`. */
+}
+
+.tokenHovered {
+  background-color: var(
+    --token-bg-hover,
+    var(--token-bg, rgba(29, 155, 240, 0.36))
+  );
+}
+
+/* Tooltip rendered as a real React element — positioned via inline style
+   from the wrapper's coordinate system. Outside the overlay so it isn't
+   affected by overlay clipping or stacking. */
+.tooltip {
+  position: absolute;
+  transform: translate(-50%, calc(-100% - 6px));
+  padding: 4px 8px;
+  background-color: var(--bg-raised);
+  color: var(--fg-1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-sm);
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: normal;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+  /* The wrapper's font is system-ui (matches the platform card); reset to
+     the app font so the tooltip itself reads consistently. */
+}

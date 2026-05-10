@@ -1,52 +1,30 @@
-import { useState } from "react";
 import { Trans } from "@lingui/react/macro";
-import { FaLink, FaCircleCheck } from "react-icons/fa6";
+import { FaLink } from "react-icons/fa6";
 
-import { Button } from "@/components/shared/Button/Button";
+import { ConfirmableButton } from "@/components/shared/ConfirmableButton/ConfirmableButton";
 import { detectPlatformAndSlug } from "@/consts/platforms";
 import { usePredictionStore } from "@/store/predictionStore";
 import { encodeInvite } from "@/utils/predict/inviteCode";
 
-import styles from "./InviteShareButton.module.scss";
-
 export const InviteShareButton = () => {
   const tournamentUrl = usePredictionStore((s) => s.tournamentUrl);
-  const [copied, setCopied] = useState(false);
 
   const detected = tournamentUrl ? detectPlatformAndSlug(tournamentUrl) : null;
   if (!detected) return null;
 
   const handleCopy = async () => {
     const inviteUrl = `https://smash-ranker.app/predict?d=${encodeInvite(detected)}`;
-
-    try {
-      await navigator.clipboard.writeText(inviteUrl);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      // Clipboard API may not be available
-    }
+    await navigator.clipboard.writeText(inviteUrl);
   };
 
   return (
-    <Button
+    <ConfirmableButton
       variant="outline"
       size="sm"
-      onClick={handleCopy}
-      className={copied ? styles.copied : undefined}
-    >
-      <span className={styles.copyLabel}>
-        <span className={`${styles.copyInner} ${copied ? styles.hidden : ""}`}>
-          <FaLink />
-          <Trans>Share invite</Trans>
-        </span>
-        {copied && (
-          <span className={styles.copiedOverlay}>
-            <FaCircleCheck />
-            <Trans>Copied!</Trans>
-          </span>
-        )}
-      </span>
-    </Button>
+      icon={<FaLink />}
+      label={<Trans>Share invite</Trans>}
+      confirmLabel={<Trans>Copied!</Trans>}
+      onAction={handleCopy}
+    />
   );
 };

@@ -7,10 +7,10 @@ import { useLingui } from "@lingui/react";
 import { Button } from "@/components/shared/Button/Button";
 import { Input } from "@/components/shared/Input/Input";
 import { useCanvasStore } from "@/store/canvasStore";
-import { usePlayerStore } from "@/store/playerStore";
 import { useTournamentStore } from "@/store/tournamentStore";
 import { DropDownSelect } from "@/components/shared/DropDownSelect/DropDownSelect";
 import { downloadBlob } from "@/utils/top8/downloadBlob";
+import { exportCanvasToPngBlob } from "@/utils/top8/exportCanvas";
 import { DownloadOptionModal } from "@/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal";
 
 import styles from "./CanvasDownloader.module.scss";
@@ -34,8 +34,6 @@ export const CanvasDownloader = ({ className }: Props) => {
   const [filename, setFilename] = useState("");
   const [imgType, setImgType] = useState<ImgTypes>("png");
   const stageRef = useCanvasStore((state) => state.stageRef);
-  const dispatch = usePlayerStore((state) => state.dispatch);
-  const tournamentDispatch = useTournamentStore((state) => state.dispatch);
   const tournamentName = useTournamentStore(
     (state) => state.info.tournamentName,
   );
@@ -51,33 +49,19 @@ export const CanvasDownloader = ({ className }: Props) => {
   const handleDownload = useCallback(async () => {
     if (!stageRef) return;
 
-    dispatch({ type: "CLEAR_SELECTED_PLAYER" });
-    tournamentDispatch({ type: "CLEAR_SELECTED_ELEMENT" });
-
-    await new Promise((resolve) => setTimeout(resolve, 50));
-
     const mimeType = `image/${imgType}`;
-    const canvas = stageRef.toCanvas({ pixelRatio });
-
-    const blob = await new Promise<Blob | null>((resolve) =>
-      canvas.toBlob((b) => resolve(b), mimeType, quality),
-    );
-    canvas.width = 0;
-    canvas.height = 0;
+    const blob = await exportCanvasToPngBlob({
+      stageRef,
+      pixelRatio,
+      mimeType,
+      quality,
+    });
 
     if (!blob) return;
 
     const finalFilename = `${filename || "ranker"}.${fileExtensions[imgType]}`;
     await downloadBlob({ blob, filename: finalFilename, mimeType });
-  }, [
-    stageRef,
-    filename,
-    dispatch,
-    tournamentDispatch,
-    imgType,
-    quality,
-    pixelRatio,
-  ]);
+  }, [stageRef, filename, imgType, quality, pixelRatio]);
 
   return (
     <div className={className}>

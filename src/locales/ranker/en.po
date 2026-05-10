@@ -281,12 +281,20 @@ msgstr ""
 msgid "Avatar"
 msgstr ""
 
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:454
+msgid "Back to plain text"
+msgstr ""
+
 #: src/components/top8/DesignEditor/DesignEditor.tsx:42
 msgid "Background Image"
 msgstr ""
 
 #: src/components/top8/SettingsPanel/AccentColorPicker.tsx:32
 msgid "Blue"
+msgstr ""
+
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:404
+msgid "Bluesky"
 msgstr ""
 
 #: src/components/top8/InfoPanel/InfoPanel.tsx:82
@@ -304,6 +312,10 @@ msgstr ""
 #: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:60
 #: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:150
 msgid "Cancel"
+msgstr ""
+
+#: src/utils/social/builtInTemplates.ts:30
+msgid "Casual congrats"
 msgstr ""
 
 #. placeholder {0}: res.status
@@ -337,6 +349,10 @@ msgstr ""
 msgid "Clear Predictions?"
 msgstr ""
 
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:369
+msgid "Close"
+msgstr ""
+
 #: src/components/top8/ElementEditor/TextConfigEditor/TextConfigEditor.tsx:78
 #~ msgid "Color"
 #~ msgstr ""
@@ -366,6 +382,18 @@ msgstr ""
 #: src/components/predict/ExportBar/ExportBar.tsx:62
 msgid "Copy"
 msgstr ""
+
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:529
+msgid "Copy image"
+msgstr ""
+
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:480
+msgid "Could not copy image — try Download instead."
+msgstr ""
+
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:330
+#~ msgid "Could not copy or download — please try again."
+#~ msgstr ""
 
 #: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:54
 msgid "Count"
@@ -451,8 +479,16 @@ msgstr ""
 msgid "Delete Assets"
 msgstr ""
 
+#: src/components/top8/SocialPostComposer/TemplateSelector.tsx:63
+msgid "Delete template"
+msgstr ""
+
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:219
 msgid "Delete Template?"
+msgstr ""
+
+#: src/components/top8/SocialPostComposer/TemplateSelector.tsx:68
+msgid "Delete this template?"
 msgstr ""
 
 #: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:205
@@ -472,11 +508,15 @@ msgid "Don't show again"
 msgstr ""
 
 #: src/components/predict/ExportBar/ExportBar.tsx:50
-#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:111
+#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:95
 msgid "Download"
 msgstr ""
 
-#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:117
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:520
+msgid "Download image"
+msgstr ""
+
+#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:101
 #: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:39
 msgid "Download Options"
 msgstr ""
@@ -534,7 +574,7 @@ msgid "Failed to generate image"
 msgstr ""
 
 #: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:157
-#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:85
+#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:69
 msgid "Filename"
 msgstr ""
 
@@ -575,8 +615,20 @@ msgstr ""
 msgid "Icon"
 msgstr ""
 
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:469
+msgid "Image copied — paste with Ctrl+V or ⌘V"
+msgstr ""
+
 #: src/components/top8/DesignEditor/DesignEditor.tsx:61
 msgid "Image darkness"
+msgstr ""
+
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:475
+msgid "Image downloaded — attach it in the composer"
+msgstr ""
+
+#: src/components/top8/SocialPostComposer/TemplatePicker.tsx:46
+msgid "Insert variable…"
 msgstr ""
 
 #: src/components/top8/SettingsPanel/LanguagePicker.tsx:22
@@ -589,6 +641,10 @@ msgstr ""
 
 #: src/components/top8/InfoPanel/InfoPanel.tsx:45
 msgid "Join the official server for help, feedback, and updates!"
+msgstr ""
+
+#: src/components/top8/SocialPostComposer/PlatformPreview.tsx:108
+msgid "Just now"
 msgstr ""
 
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:51
@@ -604,9 +660,17 @@ msgstr ""
 msgid "Light"
 msgstr ""
 
+#: src/utils/social/templateTokens.ts:61
+#~ msgid "Lists"
+#~ msgstr ""
+
 #: src/components/predict/TournamentUrlInput/TournamentUrlInput.tsx:54
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:109
 msgid "Load"
+msgstr ""
+
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:378
+msgid "Load a tournament to compose a post."
 msgstr ""
 
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:211
@@ -653,6 +717,10 @@ msgstr ""
 #~ msgid "Minimal Light ({count} Players)"
 #~ msgstr ""
 
+#: src/utils/social/builtInTemplates.ts:35
+msgid "Minimalist"
+msgstr ""
+
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:272
 msgid "My Templates"
 msgstr ""
@@ -686,6 +754,18 @@ msgstr ""
 msgid "Okay"
 msgstr ""
 
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:352
+#~ msgid "Open in Bluesky"
+#~ msgstr ""
+
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:350
+#~ msgid "Open in X"
+#~ msgstr ""
+
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:445
+msgid "Open template editor"
+msgstr ""
+
 #: src/components/shared/FileUploader/FileUploader.tsx:156
 msgid "Or drag and drop"
 msgstr "Or drag and drop"
@@ -710,6 +790,10 @@ msgstr ""
 #: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:49
 msgid "Pixel Ratio"
 msgstr ""
+
+#: src/components/top8/SocialPostComposer/TemplatePicker.tsx:172
+#~ msgid "Placeholders like <0>{tokenExample}</0> are filled in automatically for each tournament."
+#~ msgstr ""
 
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:209
 msgid "Placement"
@@ -747,6 +831,19 @@ msgstr ""
 #: src/components/predict/PredictionPreview/PredictionPreview.tsx:57
 msgid "Polishing trophies..."
 msgstr ""
+
+#: src/components/top8/SocialPostComposer/PlatformPreview.tsx:166
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:538
+msgid "Post"
+msgstr ""
+
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:338
+#~ msgid "Post on Bluesky"
+#~ msgstr ""
+
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:336
+#~ msgid "Post on X"
+#~ msgstr ""
 
 #: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:28
 msgid "Prediction size"
@@ -787,7 +884,7 @@ msgstr ""
 msgid "Red"
 msgstr ""
 
-#: src/components/top8/Ranker/Header/Header.tsx:34
+#: src/components/top8/Ranker/Header/Header.tsx:36
 msgid "Redo"
 msgstr ""
 
@@ -803,8 +900,20 @@ msgstr ""
 msgid "Rounding up the squad..."
 msgstr ""
 
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:508
+msgid "Save"
+msgstr ""
+
+#: src/components/top8/SocialPostComposer/TemplatePicker.tsx:121
+#~ msgid "Save current as template"
+#~ msgstr ""
+
 #: src/components/predict/EntrantPoolPanel/EntrantPoolPanel.tsx:51
 msgid "Search players..."
+msgstr ""
+
+#: src/components/top8/SocialPostComposer/TemplatePicker.tsx:45
+msgid "Search variables…"
 msgstr ""
 
 #: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:207
@@ -840,6 +949,11 @@ msgstr ""
 msgid "Share invite"
 msgstr ""
 
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:364
+#: src/components/top8/SocialShareButton/SocialShareButton.tsx:29
+msgid "Share to social"
+msgstr ""
+
 #: src/components/predict/FetchingState/FetchingState.tsx:16
 msgid "Sharpening the seeds..."
 msgstr ""
@@ -868,12 +982,32 @@ msgstr ""
 msgid "Support"
 msgstr ""
 
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:548
+msgid "Switch template?"
+msgstr ""
+
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:550
+msgid "Switching templates will replace what you've typed. Continue?"
+msgstr ""
+
 #: src/components/predict/FetchingState/FetchingState.tsx:14
 msgid "Talking to the bracket gods..."
 msgstr ""
 
 #: src/components/predict/PredictionListPanel/PredictionListPanel.tsx:111
 msgid "Tap entrants to add predictions"
+msgstr ""
+
+#: src/components/top8/SocialPostComposer/TemplateSelector.tsx:43
+msgid "Template"
+msgstr ""
+
+#: src/components/top8/SocialPostComposer/TemplatePicker.tsx:164
+#~ msgid "Template body"
+#~ msgstr ""
+
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:492
+msgid "Template name"
 msgstr ""
 
 #: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:102
@@ -930,12 +1064,36 @@ msgstr ""
 msgid "Tonamel API error: {0}"
 msgstr ""
 
+#: src/utils/social/templateTokens.ts:30
+#~ msgid "Top {n} list"
+#~ msgstr ""
+
 #: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:21
 msgid "Top 16"
 msgstr ""
 
+#: src/utils/social/builtInTemplates.ts:20
+msgid "Top 3"
+msgstr ""
+
+#: src/utils/social/templateTokens.ts:49
+#~ msgid "Top 3 list (with medals)"
+#~ msgstr ""
+
+#: src/utils/social/builtInTemplates.ts:20
+#~ msgid "Top 3 with handles"
+#~ msgstr ""
+
+#: src/utils/social/templateTokens.ts:50
+#~ msgid "Top 5 list"
+#~ msgstr ""
+
 #: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:20
 msgid "Top 8"
+msgstr ""
+
+#: src/utils/social/builtInTemplates.ts:25
+msgid "Top 8 list"
 msgstr ""
 
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:69
@@ -943,6 +1101,7 @@ msgid "Top8er"
 msgstr ""
 
 #: src/components/top8/SidePanel/SidePanelNav.tsx:24
+#: src/utils/social/templateTokens.ts:56
 msgid "Tournament"
 msgstr ""
 
@@ -958,12 +1117,22 @@ msgstr ""
 msgid "Tournament Country"
 msgstr ""
 
+#: src/utils/social/templateTokens.ts:16
+#: src/utils/social/templateTokens.ts:48
+msgid "Tournament date"
+msgstr ""
+
 #: src/consts/top8/placeholders.ts:30
 msgid "Tournament Date"
 msgstr ""
 
 #: src/consts/top8/placeholders.ts:31
 msgid "Tournament Full Address"
+msgstr ""
+
+#: src/utils/social/templateTokens.ts:14
+#: src/utils/social/templateTokens.ts:46
+msgid "Tournament name"
 msgstr ""
 
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:104
@@ -984,7 +1153,13 @@ msgstr ""
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:175
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:77
 #: src/consts/top8/placeholders.ts:35
+#: src/utils/social/templateTokens.ts:15
+#: src/utils/social/templateTokens.ts:47
 msgid "Tournament URL"
+msgstr ""
+
+#: src/utils/social/builtInTemplates.ts:15
+msgid "Trophy spotlight"
 msgstr ""
 
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:230
@@ -1000,7 +1175,7 @@ msgstr ""
 msgid "Type"
 msgstr ""
 
-#: src/components/top8/Ranker/Header/Header.tsx:30
+#: src/components/top8/Ranker/Header/Header.tsx:32
 msgid "Undo"
 msgstr ""
 
@@ -1022,8 +1197,51 @@ msgstr ""
 msgid "Uploaded"
 msgstr ""
 
+#. placeholder {0}: winnerHandle[1]
+#: src/utils/social/templateTokens.ts:20
+msgid "Winner #{0} handle"
+msgstr ""
+
+#. placeholder {0}: winnerName[1]
+#: src/utils/social/templateTokens.ts:29
+msgid "Winner #{0} name"
+msgstr ""
+
+#. placeholder {0}: winnerTag[1]
+#: src/utils/social/templateTokens.ts:24
+msgid "Winner #{0} tag"
+msgstr ""
+
+#: src/utils/social/templateTokens.ts:73
+msgid "Winner #{placement} handle"
+msgstr ""
+
+#: src/utils/social/templateTokens.ts:82
+#~ msgid "Winner #{placement} name"
+#~ msgstr ""
+
+#: src/utils/social/templateTokens.ts:78
+msgid "Winner #{placement} tag"
+msgstr ""
+
+#: src/utils/social/templateTokens.ts:57
+msgid "Winners"
+msgstr ""
+
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:393
+msgid "X"
+msgstr ""
+
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:427
+msgid "you"
+msgstr ""
+
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:212
 msgid "Your current design will be overwritten!"
+msgstr ""
+
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:426
+msgid "Your name"
 msgstr ""
 
 #: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:142
