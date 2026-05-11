@@ -50,11 +50,11 @@ msgstr ""
 msgid "Classic"
 msgstr ""
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:168
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:191
 msgid "Clear"
 msgstr ""
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:184
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:207
 msgid "Clear Tiers"
 msgstr ""
 
@@ -178,11 +178,11 @@ msgstr ""
 msgid "Pastel"
 msgstr ""
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:175
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:198
 msgid "Reset"
 msgstr ""
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:194
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:217
 msgid "Reset All"
 msgstr ""
 
@@ -190,7 +190,7 @@ msgstr ""
 msgid "Right"
 msgstr ""
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:178
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:201
 msgid "Save Image"
 msgstr ""
 
@@ -210,11 +210,11 @@ msgstr ""
 msgid "Stock"
 msgstr ""
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:186
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:209
 msgid "This will move all characters back to the unranked pool. Your tiers will remain."
 msgstr ""
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:196
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:219
 msgid "This will reset everything to the default state, including tiers and all character placements."
 msgstr ""
 

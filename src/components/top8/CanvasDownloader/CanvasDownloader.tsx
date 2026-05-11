@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { IoMdDownload } from "react-icons/io";
 import { CgOptions } from "react-icons/cg";
 import { msg } from "@lingui/core/macro";
@@ -8,16 +8,22 @@ import { Button } from "@/components/shared/Button/Button";
 import { Input } from "@/components/shared/Input/Input";
 import { useCanvasStore } from "@/store/canvasStore";
 import { useTournamentStore } from "@/store/tournamentStore";
+import {
+  PIXEL_RATIO_MAX_MOBILE,
+  useExportSettingsStore,
+} from "@/store/exportSettingsStore";
 import { DropDownSelect } from "@/components/shared/DropDownSelect/DropDownSelect";
-import { downloadBlob } from "@/utils/top8/downloadBlob";
-import { exportCanvasToPngBlob } from "@/utils/top8/exportCanvas";
 import { DownloadOptionModal } from "@/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal";
-import { logEvent, setPerson, setPersonOnce } from "@/utils/observability/log";
+import { ExportPreviewModal } from "@/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal";
+import { isMobile } from "@/utils/isMobile";
+import type { StageBlobCache } from "@/hooks/top8/useStageBlobCache";
 
 import styles from "./CanvasDownloader.module.scss";
 
 type Props = {
   className?: string;
+  onShare: () => void;
+  blobCache: StageBlobCache;
 };
 
 type ImgTypes = "png" | "jpeg" | "webp";
@@ -27,17 +33,25 @@ const fileExtensions: Record<ImgTypes, string> = {
   webp: "webp",
 };
 
-export const CanvasDownloader = ({ className }: Props) => {
+export const CanvasDownloader = ({ className, onShare, blobCache }: Props) => {
   const { _ } = useLingui();
   const [isOptionModalOpen, setIsOptionModalOpen] = useState(false);
-  const [quality, setQuality] = useState(2);
-  const [pixelRatio, setPixelRatio] = useState(2);
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [filename, setFilename] = useState("");
   const [imgType, setImgType] = useState<ImgTypes>("png");
   const stageRef = useCanvasStore((state) => state.stageRef);
   const tournamentName = useTournamentStore(
     (state) => state.info.tournamentName,
   );
+  const pixelRatio = useExportSettingsStore((s) => s.pixelRatio);
+  const quality = useExportSettingsStore((s) => s.quality);
+
+  // Persisted pixel ratio can exceed mobile bounds (e.g. user set 4× on
+  // desktop, then opened the same browser profile on mobile). Cap at
+  // export time so we don't allocate a multi-million-pixel canvas.
+  const effectivePixelRatio = isMobile()
+    ? Math.min(pixelRatio, PIXEL_RATIO_MAX_MOBILE)
+    : pixelRatio;
 
   useEffect(() => {
     const normalizedFilename = tournamentName
@@ -46,57 +60,6 @@ export const CanvasDownloader = ({ className }: Props) => {
       .replace(/^-|-$/g, "");
     setFilename(normalizedFilename);
   }, [tournamentName]);
-
-  const handleDownload = useCallback(async () => {
-    if (!stageRef) return;
-
-    const mimeType = `image/${imgType}`;
-    const startedAt = performance.now();
-    logEvent("graphic_export_start", {
-      export_surface: "ranker",
-      export_format: imgType,
-      pixel_ratio: pixelRatio,
-    });
-    let blob: Blob | null = null;
-    try {
-      blob = await exportCanvasToPngBlob({
-        stageRef,
-        pixelRatio,
-        mimeType,
-        quality,
-      });
-    } catch (error) {
-      logEvent("graphic_export_fail", {
-        export_surface: "ranker",
-        export_format: imgType,
-        failure_kind: "render_threw",
-        duration_ms: Math.round(performance.now() - startedAt),
-      });
-      throw error;
-    }
-
-    if (!blob) {
-      logEvent("graphic_export_fail", {
-        export_surface: "ranker",
-        export_format: imgType,
-        failure_kind: "blob_null",
-        duration_ms: Math.round(performance.now() - startedAt),
-      });
-      return;
-    }
-
-    const finalFilename = `${filename || "ranker"}.${fileExtensions[imgType]}`;
-    await downloadBlob({ blob, filename: finalFilename, mimeType });
-    logEvent("graphic_export_complete", {
-      export_surface: "ranker",
-      export_format: imgType,
-      pixel_ratio: pixelRatio,
-      duration_ms: Math.round(performance.now() - startedAt),
-    });
-    const now = new Date().toISOString();
-    setPersonOnce({ first_export_at: now });
-    setPerson({ has_exported: true, last_export_at: now });
-  }, [stageRef, filename, imgType, quality, pixelRatio]);
 
   return (
     <div className={className}>
@@ -126,7 +89,7 @@ export const CanvasDownloader = ({ className }: Props) => {
       <div className={styles.buttons}>
         <Button
           disabled={!stageRef}
-          onClick={handleDownload}
+          onClick={() => setIsPreviewOpen(true)}
           tooltip={_(msg`Download`)}
         >
           <IoMdDownload size={16} />
@@ -139,12 +102,19 @@ export const CanvasDownloader = ({ className }: Props) => {
         </Button>
       </div>
       <DownloadOptionModal
-        quality={quality}
-        pixelRatio={pixelRatio}
-        setQuality={setQuality}
-        setPixelRatio={setPixelRatio}
         isOpen={isOptionModalOpen}
         setIsOpen={setIsOptionModalOpen}
+        imgType={imgType}
+      />
+      <ExportPreviewModal
+        isOpen={isPreviewOpen}
+        onClose={() => setIsPreviewOpen(false)}
+        onShare={onShare}
+        filename={filename}
+        imgType={imgType}
+        pixelRatio={effectivePixelRatio}
+        quality={quality}
+        blobCache={blobCache}
       />
     </div>
   );

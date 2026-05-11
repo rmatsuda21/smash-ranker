@@ -57,6 +57,7 @@ import {
   buildXIntent,
 } from "@/utils/social/buildIntentUrl";
 import type { SocialPlatform } from "@/types/social/SocialTemplate";
+import type { StageBlobCache } from "@/hooks/top8/useStageBlobCache";
 
 import { CharCounter } from "./CharCounter";
 import { useCanvasImage, useTwitterTextParser } from "./hooks";
@@ -83,9 +84,10 @@ const lookupTemplateBody = (
 
 type Props = {
   onClose: () => void;
+  blobCache?: StageBlobCache;
 };
 
-const SocialPostComposer = ({ onClose }: Props) => {
+const SocialPostComposer = ({ onClose, blobCache }: Props) => {
   const { _, i18n } = useLingui();
 
   const stageRef = useCanvasStore((state) => state.stageRef);
@@ -152,7 +154,7 @@ const SocialPostComposer = ({ onClose }: Props) => {
     blob: imageBlob,
     url: imageUrl,
     loading: imageLoading,
-  } = useCanvasImage(stageRef);
+  } = useCanvasImage(stageRef, blobCache);
   const parseTweet = useTwitterTextParser(selectedPlatform === "x");
 
   const charCount = useMemo(() => {
