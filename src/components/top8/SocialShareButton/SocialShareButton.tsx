@@ -8,17 +8,33 @@ import { Modal } from "@/components/shared/Modal/Modal";
 import { Spinner } from "@/components/shared/Spinner/Spinner";
 import { useCanvasStore } from "@/store/canvasStore";
 import { LazySocialPostComposer } from "@/components/top8/SocialPostComposer";
+import type { StageBlobCache } from "@/hooks/top8/useStageBlobCache";
 
 import styles from "./SocialShareButton.module.scss";
 
 type Props = {
   className?: string;
+  isOpen?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  blobCache?: StageBlobCache;
 };
 
-export const SocialShareButton = ({ className }: Props) => {
+export const SocialShareButton = ({
+  className,
+  isOpen: controlledIsOpen,
+  onOpenChange,
+  blobCache,
+}: Props) => {
   const { _ } = useLingui();
-  const [isOpen, setIsOpen] = useState(false);
+  const [uncontrolledIsOpen, setUncontrolledIsOpen] = useState(false);
   const stageRef = useCanvasStore((state) => state.stageRef);
+
+  const isControlled = controlledIsOpen !== undefined;
+  const isOpen = isControlled ? controlledIsOpen : uncontrolledIsOpen;
+  const setIsOpen = (next: boolean) => {
+    if (!isControlled) setUncontrolledIsOpen(next);
+    onOpenChange?.(next);
+  };
 
   return (
     <div className={className}>
@@ -39,7 +55,10 @@ export const SocialShareButton = ({ className }: Props) => {
             </div>
           }
         >
-          <LazySocialPostComposer onClose={() => setIsOpen(false)} />
+          <LazySocialPostComposer
+            onClose={() => setIsOpen(false)}
+            blobCache={blobCache}
+          />
         </Suspense>
       </Modal>
     </div>
