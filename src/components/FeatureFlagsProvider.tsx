@@ -13,6 +13,12 @@ export const FeatureFlagsProvider = ({ children }: { children: ReactNode }) => {
   const [flags, setFlags] = useState<FeatureFlags>(DEFAULT_FLAGS);
 
   useEffect(() => {
+    // Plain `bun dev` has no `/api/flags` handler (only `dev:vercel` does), and
+    // DEFAULT_FLAGS are the intended source of truth in dev (see
+    // useFeatureFlags.ts). Skip the fetch so the expected "endpoint
+    // unreachable" warning doesn't fire on the happy path.
+    if (import.meta.env.DEV) return;
+
     let cancelled = false;
     fetch(FLAGS_ENDPOINT, { credentials: "same-origin" })
       .then(async (r) => {
@@ -29,8 +35,6 @@ export const FeatureFlagsProvider = ({ children }: { children: ReactNode }) => {
         setFlags((prev) => ({ ...prev, ...data }));
       })
       .catch((error) => {
-        // Endpoint unreachable (e.g. plain `bun dev` without `dev:vercel`);
-        // log at warning level and keep defaults.
         logWarning("feature flags endpoint unreachable", {
           error: error instanceof Error ? error.message : String(error),
         });
