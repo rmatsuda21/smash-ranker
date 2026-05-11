@@ -4,6 +4,7 @@ import { Link, useLocation } from "wouter";
 import cn from "classnames";
 
 import { useFeatureFlag } from "@/hooks/useFeatureFlags";
+import { SiteFooter } from "@/components/shared/SiteFooter/SiteFooter";
 
 import styles from "./NavOverlay.module.scss";
 
@@ -97,6 +98,9 @@ export const NavOverlay = ({ isOpen, onClose }: Props) => {
           </Link>
         ))}
       </nav>
+      <div className={styles.footer}>
+        <SiteFooter onNavigate={onClose} />
+      </div>
     </div>,
     document.getElementById("root")!.children[0] ||
       document.getElementById("root")!,

@@ -8,6 +8,7 @@ import { useFeatureFlag } from "@/hooks/useFeatureFlags";
 const TierPage = lazy(() => import("@/pages/tier"));
 const PredictPage = lazy(() => import("@/pages/predict"));
 const ThumbnailPage = lazy(() => import("@/pages/thumbnail"));
+const TosPage = lazy(() => import("@/pages/tos"));
 
 export const PageRouter = () => {
   const thumbnailEnabled = useFeatureFlag("thumbnail-enabled");
@@ -33,6 +34,11 @@ export const PageRouter = () => {
           </Suspense>
         </Route>
       )}
+      <Route path="/tos">
+        <Suspense>
+          <TosPage />
+        </Suspense>
+      </Route>
     </Switch>
   );
 };
