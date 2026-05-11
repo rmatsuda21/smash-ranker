@@ -1,19 +1,12 @@
 import { useCallback, useRef } from "react";
 import { Link } from "wouter";
 import { Trans } from "@lingui/react/macro";
-import {
-  FaTrophy,
-  FaLayerGroup,
-  FaListOl,
-  FaGithub,
-  FaPhotoFilm,
-} from "react-icons/fa6";
-import { SiBuymeacoffee } from "react-icons/si";
+import { FaTrophy, FaLayerGroup, FaListOl, FaPhotoFilm } from "react-icons/fa6";
 
 import { useFeatureFlag } from "@/hooks/useFeatureFlags";
 import { Card } from "@/components/shared/Card/Card";
 import { Badge } from "@/components/shared/Badge/Badge";
-import { LastUpdateTracker } from "@/components/home/LastUpdateTracker";
+import { SiteFooter } from "@/components/shared/SiteFooter/SiteFooter";
 
 import styles from "./home.module.scss";
 
@@ -171,33 +164,7 @@ export const Home = () => {
         </div>
       </section>
 
-      <footer className={styles.footer}>
-        <p className={styles.copyright}>
-          &copy; {new Date().getFullYear()} Smash Ranker
-        </p>
-        <span className={styles.footerDivider}>&middot;</span>
-        <a
-          href="https://github.com/rmatsuda21/smash-ranker"
-          target="_blank"
-          rel="noopener noreferrer"
-          className={styles.footerLink}
-        >
-          <FaGithub />
-          GitHub
-        </a>
-        <span className={styles.footerDivider}>&middot;</span>
-        <LastUpdateTracker />
-        <span className={styles.footerDivider}>&middot;</span>
-        <a
-          href="https://buymeacoffee.com/chikyunojin"
-          target="_blank"
-          rel="noopener noreferrer"
-          className={styles.footerLink}
-        >
-          <SiBuymeacoffee />
-          <Trans>Buy me a coffee</Trans>
-        </a>
-      </footer>
+      <SiteFooter />
     </div>
   );
 };

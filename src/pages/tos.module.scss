@@ -1,0 +1,116 @@
+@use "@/_theme" as *;
+
+.root {
+  width: 100%;
+  min-height: 100%;
+  padding: var(--space-10) var(--space-5);
+  background: var(--bg-1);
+  color: var(--fg-1);
+}
+
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  line-height: 1.65;
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  align-self: flex-start;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius);
+  color: var(--fg-2);
+  text-decoration: none;
+  font-size: var(--font-size-sm);
+  transition:
+    background var(--duration-fast) var(--ease-in-out),
+    color var(--duration-fast) var(--ease-in-out);
+
+  &:hover {
+    background: var(--bg-3);
+    color: var(--fg-1);
+  }
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--border-1);
+}
+
+.title {
+  margin: 0;
+  font-size: var(--display-md);
+  font-weight: 700;
+  color: var(--fg-1);
+}
+
+.updated {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--fg-muted);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+
+  h2 {
+    margin: 0;
+    font-size: var(--font-size-xl);
+    font-weight: 600;
+    color: var(--fg-1);
+  }
+
+  p {
+    margin: 0;
+    color: var(--fg-2);
+    font-size: var(--font-size-md);
+  }
+
+  ul {
+    margin: 0;
+    padding-left: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    color: var(--fg-2);
+    font-size: var(--font-size-md);
+  }
+
+  li {
+    line-height: 1.55;
+  }
+
+  a {
+    color: var(--brand);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+
+    &:hover {
+      color: var(--brand-strong, var(--brand));
+    }
+  }
+
+  code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.9em;
+    padding: 0.1em 0.35em;
+    border-radius: var(--radius-sm, 4px);
+    background: var(--bg-3);
+    color: var(--fg-1);
+  }
+
+  strong {
+    color: var(--fg-1);
+    font-weight: 600;
+  }
+}
