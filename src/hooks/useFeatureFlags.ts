@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react";
 
-export type FeatureFlagKey = "thumbnail-enabled";
+export type FeatureFlagKey = "thumbnail-enabled" | "results-enabled";
 export type FeatureFlags = Record<FeatureFlagKey, boolean>;
 
 // Local-dev defaults (used until the API responds, and as a fallback when the
@@ -10,6 +10,7 @@ export type FeatureFlags = Record<FeatureFlagKey, boolean>;
 // otherwise.
 export const DEFAULT_FLAGS: FeatureFlags = {
   "thumbnail-enabled": import.meta.env.DEV,
+  "results-enabled": import.meta.env.DEV,
 };
 
 export const FlagsContext = createContext<FeatureFlags>(DEFAULT_FLAGS);

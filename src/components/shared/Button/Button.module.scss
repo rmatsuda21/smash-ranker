@@ -30,9 +30,22 @@
     }
   }
 
+  // Same disabled-looking dimming as `.loading`, but the loader sits
+  // inline next to a visible status label rather than overlaying hidden
+  // text. Used when `loadingText` is provided.
+  &.loadingInline {
+    opacity: 0.75;
+    cursor: not-allowed;
+  }
+
   .loader {
     position: absolute;
-    color: var(--fg-1);
+  }
+
+  // Inline variant — sits in the flex flow before the loadingText label
+  // (button's own `gap` handles spacing).
+  .loaderInline {
+    position: static;
   }
 
   svg {
@@ -91,6 +104,10 @@
   background-color: var(--accent-9);
   border: 1px solid var(--accent-9);
 
+  .loader {
+    --spinner-color: #fff;
+  }
+
   &:hover:not(:disabled) {
     background-color: var(--accent-10);
     border-color: var(--accent-10);
@@ -112,6 +129,10 @@
   background-color: transparent;
   border: 1px solid var(--accent-9);
 
+  .loader {
+    --spinner-color: var(--accent-9);
+  }
+
   &:hover:not(:disabled) {
     background-color: var(--accent-3);
   }
@@ -130,6 +151,10 @@
   color: var(--accent-9);
   background-color: transparent;
   border: 1px solid transparent;
+
+  .loader {
+    --spinner-color: var(--accent-9);
+  }
 
   &:hover:not(:disabled) {
     background-color: var(--accent-3);

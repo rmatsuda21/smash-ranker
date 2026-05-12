@@ -13,6 +13,11 @@ type Props = React.ComponentProps<"button"> & {
   size?: ButtonSize;
   fullWidth?: boolean;
   loading?: boolean;
+  // Optional label shown next to the spinner while loading. When provided,
+  // the spinner sits inline before the text (instead of as an overlay
+  // hiding the resting children), so users get a status message — e.g.
+  // "Fetching opponent data..." — without losing the spinner cue.
+  loadingText?: React.ReactNode;
   tooltip?: string;
 };
 
@@ -23,6 +28,7 @@ export const Button = ({
   fullWidth = false,
   children,
   loading = false,
+  loadingText,
   disabled = false,
   tooltip,
   ...props
@@ -30,6 +36,7 @@ export const Button = ({
   const { Tooltip, handleMouseEnter, handleMouseLeave } = useTooltip({
     tooltip: tooltip ?? "",
   });
+  const showInlineLoading = loading && loadingText !== undefined;
   return (
     <>
       <button
@@ -40,15 +47,24 @@ export const Button = ({
           styles[variant],
           styles[size],
           { [styles.fullWidth]: fullWidth },
-          { [styles.loading]: loading },
+          { [styles.loading]: loading && !showInlineLoading },
+          { [styles.loadingInline]: showInlineLoading },
           className,
         )}
         disabled={loading || disabled}
         aria-label={tooltip}
         {...props}
       >
-        {loading && <Spinner className={styles.loader} size={15} />}
-        {children}
+        {loading && (
+          <Spinner
+            className={cn(
+              styles.loader,
+              showInlineLoading && styles.loaderInline,
+            )}
+            size={15}
+          />
+        )}
+        {showInlineLoading ? loadingText : children}
         {tooltip && <Tooltip className={styles.tooltip} />}
       </button>
     </>

@@ -1,0 +1,210 @@
+@use "@/_theme" as *;
+
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: var(--space-5);
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+
+  @include mobile {
+    padding: var(--space-3) var(--space-4) 0;
+    gap: var(--space-3);
+  }
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  flex: 1;
+  text-align: center;
+  padding: var(--space-10) var(--space-5);
+
+  @include mobile {
+    padding: var(--space-6) var(--space-4);
+    overflow-y: auto;
+  }
+}
+
+.emptyIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-lg);
+  background: var(--accent-2);
+  color: var(--accent-9);
+  font-size: 22px;
+}
+
+.emptyTitle {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--fg-1);
+
+  @include mobile {
+    font-size: 20px;
+  }
+}
+
+.emptyDescription {
+  font-size: var(--font-size-md);
+  color: var(--fg-4);
+  max-width: 380px;
+  line-height: 1.5;
+}
+
+.emptyInput {
+  width: 100%;
+  max-width: 500px;
+  margin-top: var(--space-2);
+}
+
+.emptyFetching {
+  width: 100%;
+  max-width: 500px;
+  margin-top: var(--space-1);
+}
+
+.supportedPlatforms {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-xs);
+  color: var(--fg-muted);
+  margin-top: var(--space-1);
+}
+
+.error {
+  color: var(--red-9, red);
+  font-size: var(--font-size-sm);
+  flex-shrink: 0;
+}
+
+.workspace {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  flex: 1;
+  min-height: 0;
+
+  @include mobile {
+    gap: var(--space-3);
+  }
+}
+
+.workspaceFetching {
+  pointer-events: none;
+  user-select: none;
+}
+
+.tournamentHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+.tournamentInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.tournamentName {
+  font-size: var(--title-size);
+  font-weight: 700;
+  color: var(--fg-1);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  @include mobile {
+    font-size: 18px;
+  }
+}
+
+.eventName {
+  font-size: var(--font-size-sm);
+  color: var(--fg-4);
+  margin-top: var(--space-1);
+}
+
+.split {
+  display: grid;
+  grid-template-columns: minmax(0, 320px) minmax(0, 1fr);
+  gap: var(--space-4);
+  flex: 1;
+  min-height: 0;
+
+  @include mobile {
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+}
+
+.pickerColumn {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.resultsColumn {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: var(--space-1);
+}
+
+// Sticky CTA — pinned to the bottom of the scrolling results column so the
+// Generate button stays visible while a player has a long set list. The
+// gradient fades content scrolling behind it into the page background
+// rather than letting set rows bleed up to the button edge.
+.generateBar {
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  margin-top: auto;
+  padding: var(--space-4) 0 var(--space-3);
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    var(--bg-app) 45%,
+    var(--bg-app) 100%
+  );
+
+  > button {
+    min-width: 200px;
+  }
+}
+
+.placeholder {
+  color: var(--fg-4);
+  font-size: var(--font-size-sm);
+  text-align: center;
+  padding: var(--space-10) var(--space-3);
+  background: var(--gray-2);
+  border-radius: var(--radius-lg);
+  border: 1px dashed var(--border);
+}

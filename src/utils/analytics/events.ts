@@ -16,7 +16,12 @@ export type FetchFailureKind =
   | "multi_group"
   | "post_process";
 
-export type ExportSurface = "predict" | "ranker" | "tier" | "thumbnail";
+export type ExportSurface =
+  | "predict"
+  | "ranker"
+  | "tier"
+  | "thumbnail"
+  | "results";
 
 export type ShareMethod = "clipboard" | "url";
 
@@ -30,6 +35,10 @@ export type EventName =
   // Predict funnel
   | "prediction_load"
   | "prediction_fetch_fail"
+  // Results funnel
+  | "results_load"
+  | "results_fetch_fail"
+  | "results_entrant_select"
   // Editor engagement
   | "panel_switch"
   // Graphic export funnel
