@@ -168,6 +168,13 @@ interface ResultsStore extends ResultsState {
   dispatch: (action: ResultsAction) => void;
 }
 
+// Bump on backwards-incompatible state shape changes. The `migrate` below
+// folds any older shape into the current `initialState`, filling missing
+// fields with defaults. Without this, an older persisted shape can crash
+// render code that destructures fields that didn't exist yet (we hit this
+// exact bug when `rankings` was first added to PlayerTournamentResults).
+const RESULTS_STORE_VERSION = 1;
+
 export const useResultsStore = create<ResultsStore>()(
   devtools(
     persist(
@@ -178,7 +185,28 @@ export const useResultsStore = create<ResultsStore>()(
       }),
       {
         name: "results-store",
+        version: RESULTS_STORE_VERSION,
         storage: createJSONStorage(() => localStorage),
+        // Forward-compatible merge: persisted fields override defaults,
+        // but any missing field falls back to whatever `initialState`
+        // provides today. Returns the merged shape; zustand-persist
+        // hydrates from it on next render.
+        migrate: (persistedState, version) => {
+          const merged: ResultsState = {
+            ...initialState,
+            ...(typeof persistedState === "object" && persistedState !== null
+              ? (persistedState as Partial<ResultsState>)
+              : {}),
+          };
+          // Defensive resets — values that should never be persisted as
+          // "true" (loaded from a stopped fetch from a previous session).
+          merged.fetchingPool = false;
+          merged.fetchingResults = false;
+          merged.error = "";
+          // Future migration branches go here, keyed off `version`.
+          void version;
+          return merged;
+        },
         partialize: (state) => ({
           tournamentName: state.tournamentName,
           eventName: state.eventName,

@@ -2,6 +2,7 @@ import { Trans } from "@lingui/react/macro";
 
 import { useResultsStore } from "@/store/resultsStore";
 import type { PlayerSet } from "@/types/results/PlayerTournamentResults";
+import { lookupFallbackCharacterId } from "@/utils/results/fallbackCharacters";
 
 import { SetRow } from "./SetRow";
 import styles from "./SetList.module.scss";
@@ -41,15 +42,12 @@ export const SetList = () => {
     );
   }
 
-  // `undefined` = fallback fetch not yet completed (show shimmer);
-  // `null` = fetched, no recorded character usage (show empty placeholder);
-  // `string` = use as the grayscale fallback icon.
-  const lookupFallback = (id: string): string | null | undefined =>
-    Object.prototype.hasOwnProperty.call(fallbackCharacters, id)
-      ? fallbackCharacters[id]
-      : undefined;
-
-  const selfFallback = lookupFallback(playerResults.entrantId);
+  // See utils/results/fallbackCharacters.ts: undefined = still fetching
+  // (shimmer), null = fetched-but-empty (dashed placeholder), string = id.
+  const selfFallback = lookupFallbackCharacterId(
+    fallbackCharacters,
+    playerResults.entrantId,
+  );
   const phaseGroups = groupByPhase(playerResults.sets);
 
   return (
@@ -71,7 +69,10 @@ export const SetList = () => {
                   key={set.id}
                   set={set}
                   selfFallbackCharacterId={selfFallback}
-                  opponentFallbackCharacterId={lookupFallback(set.opponent.id)}
+                  opponentFallbackCharacterId={lookupFallbackCharacterId(
+                    fallbackCharacters,
+                    set.opponent.id,
+                  )}
                 />
               ))}
             </div>
