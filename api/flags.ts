@@ -8,12 +8,13 @@ import { assertSameOrigin } from "./_lib/origin";
 import { withLogging } from "./_lib/withLogging";
 
 // Catalogue of flags exposed to the client. Add new keys here.
-const FLAG_KEYS = ["thumbnail-enabled"] as const;
+const FLAG_KEYS = ["thumbnail-enabled", "results-enabled"] as const;
 type FlagKey = (typeof FLAG_KEYS)[number];
 type FlagValues = Record<FlagKey, boolean>;
 
 const DEFAULTS: FlagValues = {
   "thumbnail-enabled": false,
+  "results-enabled": false,
 };
 
 type DebugEntry = {

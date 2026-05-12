@@ -9,7 +9,10 @@
   position: absolute;
   width: 10%;
   height: 27%;
-  background: var(--gray-9);
+  // Parents can override via `--spinner-color` (e.g. Button matches the
+  // bars to the variant's text color so a loading solid-accent button
+  // doesn't show grey bars on white text).
+  background: var(--spinner-color, var(--gray-9));
   border-radius: 15%;
   left: 50%;
   top: 0;

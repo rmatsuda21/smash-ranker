@@ -10,6 +10,7 @@ import { challongeDevProxy } from "./vite-plugins/challongeDevProxy";
 import { tonamelDevProxy } from "./vite-plugins/tonamelDevProxy";
 import { tonamelImageProxy } from "./vite-plugins/tonamelImageProxy";
 import { predictionImageDevProxy } from "./vite-plugins/predictionImageDevProxy";
+import { resultsImageDevProxy } from "./vite-plugins/resultsImageDevProxy";
 
 // Silence Vite's "Failed to load source map for ..." warnings for packages
 // that ship JS with `//# sourceMappingURL=` comments but don't publish the
@@ -51,6 +52,7 @@ export default defineConfig(() => {
       tonamelDevProxy(),
       tonamelImageProxy(),
       predictionImageDevProxy(),
+      resultsImageDevProxy(),
       shouldUploadSentry &&
         sentryVitePlugin({
           org: process.env.SENTRY_ORG,
@@ -74,12 +76,18 @@ export default defineConfig(() => {
       // These packages are only used by Vercel serverless functions in api/
       // and are never imported by the client. Vite would otherwise try to
       // pre-bundle them and fail on Vercel-build-time-only virtual modules
-      // like `@vercel/flags-definitions`.
+      // like `@vercel/flags-definitions`, or on native `.node` binaries
+      // (resvg-js) that esbuild can't load. The image dev proxies pull these
+      // in via dynamic `import("../api/...")` calls and the optimizer follows
+      // that edge.
       exclude: [
         "@flags-sdk/vercel",
         "@vercel/flags-core",
         "flags",
         "@vercel/node",
+        "@resvg/resvg-js",
+        "satori",
+        "@sentry/node",
       ],
     },
     resolve: {

@@ -17,11 +17,11 @@ msgstr ""
 #~ msgid "Buy me a coffee"
 #~ msgstr "クラファン実地中"
 
-#: src/pages/home.tsx:121
+#: src/pages/home.tsx:128
 msgid "Create custom YouTube thumbnails for your Smash sets!"
 msgstr "対戦動画のYouTubeサムネを簡単作成。"
 
-#: src/pages/home.tsx:95
+#: src/pages/home.tsx:102
 msgid "Create your own fully customizable character tier lists."
 msgstr "自分のキャラティア表を作ろう。"
 
@@ -33,19 +33,23 @@ msgstr "自分のキャラティア表を作ろう。"
 #~ msgid "Drag and drop characters to create and export shareable tier lists."
 #~ msgstr "キャラクターをドラッグ＆ドロップして、共有できるティアリストを作成・出力できます。"
 
-#: src/pages/home.tsx:72
+#: src/pages/home.tsx:79
 msgid "Easily generate your own tournament graphics with full customization."
 msgstr "大会リザルト画像作成を極限まで楽にしました。"
 
-#: src/pages/home.tsx:162
+#: src/pages/home.tsx:178
+msgid "Generate a shareable recap of any player's run at a tournament — placement, record, and every set they played."
+msgstr ""
+
+#: src/pages/home.tsx:197
 msgid "I have many exiciting tools on the way 🔧 Stay tuned!"
 msgstr "色々な新ツールを開発中です 🔧 お楽しみに！"
 
-#: src/pages/home.tsx:156
+#: src/pages/home.tsx:191
 msgid "In Development"
 msgstr "開発中"
 
-#: src/pages/home.tsx:144
+#: src/pages/home.tsx:151
 msgid "Like making bracket predictions? Why not share yours with your friends with a cool graphic!"
 msgstr "みんなで大会予想を画像で共有しあおう。"
 
@@ -53,11 +57,12 @@ msgstr "みんなで大会予想を画像で共有しあおう。"
 #~ msgid "More exciting tools are being built 🔧 Stay tuned!"
 #~ msgstr "色々な新ツールを開発中です 🔧 お楽しみに！"
 
-#: src/pages/home.tsx:159
+#: src/pages/home.tsx:194
 msgid "More tools on the way"
 msgstr "まだまだ新機能製作中"
 
-#: src/pages/home.tsx:116
+#: src/pages/home.tsx:123
+#: src/pages/home.tsx:173
 msgid "New"
 msgstr "新着"
 
@@ -65,26 +70,30 @@ msgstr "新着"
 #~ msgid "Predict tournament placements and share your bracket picks as a graphic."
 #~ msgstr "大会の順位を予想して、画像として共有しましょう。"
 
-#: src/pages/home.tsx:140
+#: src/pages/home.tsx:147
 msgid "Predictions"
 msgstr "順位予想"
 
-#: src/pages/home.tsx:114
+#: src/pages/home.tsx:121
 msgid "Thumbnail Maker"
 msgstr "サムネ作成"
 
-#: src/pages/home.tsx:91
+#: src/pages/home.tsx:98
 msgid "Tier List Maker"
 msgstr "ティア表作成"
 
-#: src/pages/home.tsx:53
+#: src/pages/home.tsx:60
 msgid "Tools"
 msgstr "ツール一覧"
 
-#: src/pages/home.tsx:68
+#: src/pages/home.tsx:75
 msgid "Tournament Ranker"
 msgstr "リザルト作成"
 
-#: src/pages/home.tsx:46
+#: src/pages/home.tsx:171
+msgid "Tournament Recap"
+msgstr ""
+
+#: src/pages/home.tsx:53
 msgid "Your one-stop site for Smash Bros graphics!"
 msgstr "スマブラの画像作成ならスマラン！"

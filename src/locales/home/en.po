@@ -17,11 +17,11 @@ msgstr ""
 #~ msgid "Buy me a coffee"
 #~ msgstr ""
 
-#: src/pages/home.tsx:121
+#: src/pages/home.tsx:128
 msgid "Create custom YouTube thumbnails for your Smash sets!"
 msgstr ""
 
-#: src/pages/home.tsx:95
+#: src/pages/home.tsx:102
 msgid "Create your own fully customizable character tier lists."
 msgstr ""
 
@@ -33,23 +33,27 @@ msgstr ""
 #~ msgid "Drag and drop characters to create and export shareable tier lists."
 #~ msgstr ""
 
-#: src/pages/home.tsx:72
+#: src/pages/home.tsx:79
 msgid "Easily generate your own tournament graphics with full customization."
+msgstr ""
+
+#: src/pages/home.tsx:178
+msgid "Generate a shareable recap of any player's run at a tournament — placement, record, and every set they played."
 msgstr ""
 
 #: src/pages/home.tsx:74
 #~ msgid "Generate tournament bracket graphics with custom templates, player data, and character art."
 #~ msgstr ""
 
-#: src/pages/home.tsx:162
+#: src/pages/home.tsx:197
 msgid "I have many exiciting tools on the way 🔧 Stay tuned!"
 msgstr ""
 
-#: src/pages/home.tsx:156
+#: src/pages/home.tsx:191
 msgid "In Development"
 msgstr ""
 
-#: src/pages/home.tsx:144
+#: src/pages/home.tsx:151
 msgid "Like making bracket predictions? Why not share yours with your friends with a cool graphic!"
 msgstr ""
 
@@ -57,11 +61,12 @@ msgstr ""
 #~ msgid "More exciting tools are being built 🔧 Stay tuned!"
 #~ msgstr ""
 
-#: src/pages/home.tsx:159
+#: src/pages/home.tsx:194
 msgid "More tools on the way"
 msgstr ""
 
-#: src/pages/home.tsx:116
+#: src/pages/home.tsx:123
+#: src/pages/home.tsx:173
 msgid "New"
 msgstr ""
 
@@ -69,26 +74,30 @@ msgstr ""
 #~ msgid "Predict tournament placements and share your bracket picks as a graphic."
 #~ msgstr ""
 
-#: src/pages/home.tsx:140
+#: src/pages/home.tsx:147
 msgid "Predictions"
 msgstr ""
 
-#: src/pages/home.tsx:114
+#: src/pages/home.tsx:121
 msgid "Thumbnail Maker"
 msgstr ""
 
-#: src/pages/home.tsx:91
+#: src/pages/home.tsx:98
 msgid "Tier List Maker"
 msgstr ""
 
-#: src/pages/home.tsx:53
+#: src/pages/home.tsx:60
 msgid "Tools"
 msgstr ""
 
-#: src/pages/home.tsx:68
+#: src/pages/home.tsx:75
 msgid "Tournament Ranker"
 msgstr ""
 
-#: src/pages/home.tsx:46
+#: src/pages/home.tsx:171
+msgid "Tournament Recap"
+msgstr ""
+
+#: src/pages/home.tsx:53
 msgid "Your one-stop site for Smash Bros graphics!"
 msgstr ""

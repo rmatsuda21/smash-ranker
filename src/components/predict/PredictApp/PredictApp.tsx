@@ -3,27 +3,37 @@ import cn from "classnames";
 import { Trans } from "@lingui/react/macro";
 import { msg } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
+import { type MessageDescriptor } from "@lingui/core";
 import { FaListOl } from "react-icons/fa6";
 
 import { Button } from "@/components/shared/Button/Button";
 import { Modal } from "@/components/shared/Modal/Modal";
+import { TournamentUrlInput } from "@/components/shared/TournamentUrlInput/TournamentUrlInput";
+import { FetchingState } from "@/components/shared/FetchingState/FetchingState";
 import { useConfirmation } from "@/hooks/useConfirmation";
 import { usePredictionStore } from "@/store/predictionStore";
 import { useFetchPredictionEntrants } from "@/hooks/predict/useFetchPredictionEntrants";
 import { detectPlatformAndSlug, slugToUrl } from "@/consts/platforms";
 import { decodeInvite } from "@/utils/predict/inviteCode";
-import { TournamentUrlInput } from "@/components/predict/TournamentUrlInput/TournamentUrlInput";
 import { InviteShareButton } from "@/components/predict/InviteShareButton/InviteShareButton";
 import { PredictionCountSelector } from "@/components/predict/PredictionCountSelector/PredictionCountSelector";
 import { PredictionWorkspace } from "@/components/predict/PredictionWorkspace/PredictionWorkspace";
 import { ActionBar } from "@/components/predict/ActionBar/ActionBar";
-import { FetchingState } from "@/components/predict/FetchingState/FetchingState";
 import {
   PredictionPreview,
   type PredictionPreviewCache,
 } from "@/components/predict/PredictionPreview/PredictionPreview";
 
 import styles from "./PredictApp.module.scss";
+
+const PREDICT_TAGLINES: MessageDescriptor[] = [
+  msg`Talking to the bracket gods...`,
+  msg`Pulling entrants...`,
+  msg`Sharpening the seeds...`,
+  msg`Hyping up the bracket...`,
+  msg`Rounding up the squad...`,
+  msg`Counting the contenders...`,
+];
 
 export const PredictApp = () => {
   const { _ } = useLingui();
@@ -82,12 +92,20 @@ export const PredictApp = () => {
             </Trans>
           </p>
           <div className={styles.emptyInput}>
-            <TournamentUrlInput />
+            <TournamentUrlInput
+              onLoad={fetchEntrants}
+              isFetching={fetching}
+              inputId="predict-tournament-url"
+            />
           </div>
           {error && <p className={styles.error}>{error}</p>}
           {fetching && (
             <div className={styles.emptyFetching}>
-              <FetchingState mode="inline" />
+              <FetchingState
+                mode="inline"
+                heading={<Trans>Loading tournament</Trans>}
+                taglines={PREDICT_TAGLINES}
+              />
             </div>
           )}
           <div className={styles.supportedPlatforms}>
@@ -104,7 +122,11 @@ export const PredictApp = () => {
 
   return (
     <div className={styles.root}>
-      <TournamentUrlInput />
+      <TournamentUrlInput
+        onLoad={fetchEntrants}
+        isFetching={fetching}
+        inputId="predict-tournament-url"
+      />
 
       {error && <p className={styles.error}>{error}</p>}
 
@@ -130,7 +152,13 @@ export const PredictApp = () => {
         <PredictionWorkspace />
         <ActionBar onGenerate={() => setPreviewOpen(true)} />
 
-        {fetching && <FetchingState mode="overlay" />}
+        {fetching && (
+          <FetchingState
+            mode="overlay"
+            heading={<Trans>Loading tournament</Trans>}
+            taglines={PREDICT_TAGLINES}
+          />
+        )}
       </div>
 
       <Modal isOpen={previewOpen} onClose={() => setPreviewOpen(false)}>

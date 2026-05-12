@@ -1,0 +1,22 @@
+@use "@/_theme" as *;
+
+.root {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-3) 0;
+  flex-wrap: wrap;
+
+  > button {
+    min-width: 140px;
+  }
+
+  @include mobile {
+    position: sticky;
+    bottom: 0;
+    background: var(--bg-surface);
+    padding: var(--space-3) var(--space-4);
+    z-index: 10;
+  }
+}

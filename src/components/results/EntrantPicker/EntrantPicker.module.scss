@@ -1,0 +1,142 @@
+@use "@/_theme" as *;
+
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+  flex: 1;
+  min-height: 0;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--fg-1);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.count {
+  font-weight: 400;
+  color: var(--fg-4);
+  font-size: var(--font-size-xs);
+}
+
+.search {
+  flex-shrink: 0;
+
+  input {
+    width: 100%;
+  }
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  max-height: 560px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+
+  @include mobile {
+    flex: 1;
+    min-height: 0;
+    max-height: none;
+    padding-bottom: 60px;
+  }
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-2);
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  background: var(--gray-2);
+  color: var(--fg-1);
+  cursor: pointer;
+  text-align: left;
+  font-size: var(--font-size-sm);
+  transition:
+    background var(--duration-base) var(--ease-standard),
+    border-color var(--duration-base) var(--ease-standard);
+  min-height: 40px;
+
+  &:hover:not(:disabled) {
+    background: var(--bg-raised);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &[data-selected] {
+    border-color: var(--accent-9);
+    background: var(--accent-2);
+  }
+}
+
+.seed {
+  color: var(--fg-4);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  min-width: 32px;
+  flex-shrink: 0;
+}
+
+.flag {
+  width: 18px;
+  height: 12px;
+  object-fit: cover;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.prefix {
+  color: var(--fg-4);
+  font-weight: 400;
+}
+
+.chevron {
+  flex-shrink: 0;
+  color: var(--fg-4);
+  font-size: 10px;
+  opacity: 0.6;
+
+  .item:hover:not(:disabled) & {
+    opacity: 1;
+    color: var(--accent-9);
+  }
+}
+
+.loading {
+  color: var(--accent-9);
+  font-size: 16px;
+}
+
+.empty {
+  color: var(--fg-4);
+  font-size: var(--font-size-sm);
+  text-align: center;
+  padding: var(--space-5) 0;
+}

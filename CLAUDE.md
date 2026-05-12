@@ -38,8 +38,8 @@ No test runner is configured. Use `bun lint` and `bun build` to validate changes
 ### Routing & Pages
 
 - `src/App.tsx` — Root with urql GraphQL provider + Lingui i18n provider
-- `src/components/PageRouter.tsx` — Wouter-based routing. Lazy-loads `/tier`, `/predict`, and `/thumbnail` via `React.lazy` + `Suspense`.
-- Routes: `/` → home; `/ranker` → main Top 8 editor; `/tier` → tier list maker; `/predict` → tournament prediction maker; `/thumbnail` → thumbnail/graphic editor (gated by the `thumbnail-enabled` feature flag).
+- `src/components/PageRouter.tsx` — Wouter-based routing. Lazy-loads `/tier`, `/predict`, `/results`, and `/thumbnail` via `React.lazy` + `Suspense`.
+- Routes: `/` → home; `/ranker` → main Top 8 editor; `/tier` → tier list maker; `/predict` → tournament prediction maker; `/results` → per-player tournament recap (gated by the `results-enabled` feature flag); `/thumbnail` → thumbnail/graphic editor (gated by the `thumbnail-enabled` feature flag).
 
 ### State Management (Zustand)
 
@@ -53,6 +53,7 @@ All stores live in `src/store/` and use Zustand's persist middleware (localStora
 - **fontStore** — Fontsource catalog + active font selection. Tracks `selectedFont` (user's pick), `displayedFont` (what's currently rendered, lags during loads), the catalog `fonts` Set, and custom-font registrations. Loading lifecycle is owned by `src/utils/fonts/fontLoader.ts`, not the store.
 - **tierListStore** — tier list state: tiers, character pool, layout variant, label font settings, image mode
 - **predictionStore** — `/predict` state: tournament metadata, entrant pool, ordered predictions, prediction count, fetch status. Reducer-based.
+- **resultsStore** — `/results` state: tournament metadata, entrant pool, selected entrant, `playerResults` (placement, W-L, set list), separate `fetchingPool` and `fetchingResults` flags. Reducer-based.
 - **thumbnailStore** — `/thumbnail` design state: `ThumbnailDesign` element tree (groups + leaves). Reducer-based with custom history integration via `historyStore`.
 - **thumbnailEditorStore** — `/thumbnail` UI state (not persisted): selection, hover, zoom/pan, grid/snap settings, active sidebar tab, Konva `Stage` ref.
 
@@ -80,6 +81,22 @@ A tournament prediction maker: paste a tournament URL, fetch the entrant pool, t
 - **Auto-load via URL** — `PredictApp` parses `?p=<platform>&s=<slug>` from `window.location.search` on first mount and triggers `fetchEntrants`. `InviteShareButton` produces the same shareable URL.
 - **Drag-and-drop** — `@dnd-kit` (sortable) for reordering predictions.
 - **Preview & export** — `PredictionPreview` GETs `/api/prediction-image?d=<base64url(JSON)>` and renders the returned PNG. Encoding the payload into the URL makes responses CDN-cacheable. The result blob/URL are also cached on a `cacheRef` so re-opening the modal with the same payload skips even the network round-trip. `ExportBar` handles download/share.
+
+### Results (`/results`)
+
+A per-player tournament recap generator: paste a start.gg event URL, fetch the entrant pool, pick a player, fetch their full set history, and generate a shareable graphic (placement, W-L, seed delta, and every set with characters/scores/round labels). **Gated by the `results-enabled` feature flag** (default-on in dev, default-off in prod).
+
+- **Components** live in `src/components/results/` (`ResultsApp`, `EntrantPicker`, `PlayerSummary`, `SetList/SetRow`, `ResultsPreview`, `ResultsExportBar`). Shared with predict via `src/components/shared/TournamentUrlInput/` and `src/components/shared/FetchingState/` (lifted from predict — both accept callback/tagline props and have no store coupling).
+- **Page** — `src/pages/results.tsx` provides its own urql `Provider` (separate from `/ranker` and `/predict`).
+- **Store** — `src/store/resultsStore.ts` (reducer-based). Actions: `FETCH_POOL_*`, `SELECT_ENTRANT`, `FETCH_RESULTS_*`, `SET_COLOR_PALETTE`, `CLEAR_SELECTION`, `RESET`. Two independent fetch-status flags.
+- **Types** — `src/types/results/ResultsEntrantSummary.ts`, `src/types/results/PlayerTournamentResults.ts` (`PlayerSet`, `PlayerSetOpponent`, `CharacterRef`).
+- **Fetching** — Two-stage start.gg-only pipeline:
+  - `src/hooks/results/useFetchResultsEntrantPool.ts` — pasted URL → `ResultsEventMeta` + paginated `ResultsPhaseSeeds`. Mirrors the predict pipeline. Pasting a Challonge/Tonamel URL dispatches `FETCH_POOL_FAIL` with a "start.gg-only" message.
+  - `src/hooks/results/useFetchPlayerResults.ts` — selected entrant id → `PlayerTournamentResults` query (`entrant.paginatedSets` with `sortType: RECENT`, `filters: { hideEmpty: true }`). Parses `displayScore` ("X - Y"), groups distinct characters per side from `games[].selections[]`, then reverses to chronological-oldest-first (secondary sort by `startAt`).
+- **Palette extraction** — reuses `src/utils/predict/extractTournamentPalette.ts` and the `PredictionPalette` type from `src/types/predict/PredictionPalette.ts`.
+- **Preview & export** — `ResultsPreview` GETs `/api/results-image?d=<base64url(JSON)>` and renders the returned PNG. Same blob-caching pattern as `PredictionPreview` (`cacheRef`). `ResultsExportBar` handles download/clipboard with `export_surface: "results"` analytics. Tall graphics scroll inside the modal — no `+N more` truncation.
+- **Upset factor** — payload-only field (`upsetFactor` on `PlayerSet`). The graphic renders a badge when present and `> 0`; client doesn't compute it (planned to come from better-gg).
+- **Server renderer** — `api/results-image.ts` mirrors `api/prediction-image.ts`: satori + resvg, M PLUS Rounded 1c fonts, content-addressable LRU caches (tournament icon, character icons, PNG), ETag/304. Width 380px, output 760px. Pulls character stocks from the `SmashRankerAssets` GitHub repo (same path as `getCharImgUrl`).
 
 ### Thumbnail (`/thumbnail`)
 
@@ -199,6 +216,7 @@ Vercel serverless functions live in the `api/` directory:
 - `api/tonamel.ts` — Proxy for Tonamel GraphQL API. Accepts `?slug=<competition_id>`. Fetches CSRF token, then queries management endpoint for placements and public endpoint for metadata/participants.
 - `api/tonamel-image.ts` — Image proxy for Tonamel tournament icons. Accepts `?url=<image_url>`. Allowlisted hosts: `assets.tonamel.com`, `img.tonamel.com`, `p1-c2db36b0.imageflux.jp`.
 - `api/prediction-image.ts` — GET endpoint that renders a `/predict` graphic server-side. Reads the payload from a base64url-encoded `d` query param so responses are URL-addressed and CDN-cacheable. Uses `satori` (JSX → SVG) + `@resvg/resvg-js` (SVG → PNG) at 2× pixel ratio. Bundles M PLUS Rounded 1c fonts from `api/fonts/` and pulls character stock images from the `SmashRankerAssets` GitHub repo. Module-scope LRU caches dedupe character/icon fetches and rendered PNGs across requests on a warm instance.
+- `api/results-image.ts` — same pattern as `prediction-image.ts`, but renders a per-player tournament recap (tournament header + player summary stats + chronological set list). Width 380px / output 760px. Validates payload (`MAX_SETS = 32`, `MAX_CHARACTERS_PER_SIDE = 4`, character-id regex). Module-scope LRU caches for tournament icon, character icons (256 entries), and rendered PNGs.
 - `api/flags.ts` — Feature-flag endpoint backed by `@vercel/flags-core`. Returns `{ "thumbnail-enabled": boolean, ... }`. Falls back to defaults if the `FLAGS` env var is missing. Pass `?debug=1` for evaluation reasons.
 - `api/vercel/flags.ts` — Vercel Flags discovery endpoint.
 

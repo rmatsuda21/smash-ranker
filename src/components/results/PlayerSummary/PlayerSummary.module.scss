@@ -1,0 +1,175 @@
+@use "@/_theme" as *;
+
+// Outer row: avatar (left) · tag column (flex 1) · stats column (right).
+// Vertically centered.
+.root {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--gray-2);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+}
+
+// start.gg player profile image — rounded square.
+.avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: var(--gray-3);
+}
+
+.tag {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  line-height: 1.2;
+}
+
+// Small meta line above the player name: country flag + prefix.
+.tagMeta {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.flag {
+  width: 14px;
+  height: 10px;
+  object-fit: cover;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.prefix {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--fg-4);
+  letter-spacing: 0.02em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.name {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--fg-1);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 1.15;
+
+  @include mobile {
+    font-size: 18px;
+  }
+}
+
+// Accent-tinted pill that surfaces the player's most-impactful PR below
+// the name. Same visual language as the opponent's pill in SetRow, just
+// slightly larger so it reads alongside the 20px player name.
+.rankings {
+  display: inline-flex;
+  align-self: flex-start;
+  align-items: center;
+  margin-top: 4px;
+  max-width: 100%;
+  padding: 2px 7px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  border-radius: var(--radius-pill, 999px);
+  color: var(--accent-9);
+  background: var(--accent-2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.stats {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+// Placement font matches the player tag so the two read as a balanced pair.
+.placementRow {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.placementValue {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--fg-1);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  letter-spacing: 0.01em;
+
+  @include mobile {
+    font-size: 18px;
+  }
+}
+
+.placementSub {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--fg-4);
+  font-variant-numeric: tabular-nums;
+}
+
+.statsRow {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 4px 8px;
+  font-size: 12px;
+  color: var(--fg-4);
+}
+
+.statItem {
+  white-space: nowrap;
+}
+
+.statStrong {
+  color: var(--fg-1);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.statSep {
+  color: var(--fg-5, var(--fg-4));
+  opacity: 0.5;
+}
+
+// Inline seed-delta text — color-coded per direction.
+.delta {
+  margin-left: 5px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.deltaPositive {
+  color: var(--accent-9);
+}
+
+.deltaNegative {
+  color: #ff8a99;
+}
+
+.deltaEven {
+  color: var(--fg-3);
+  // Match the +/- weight + size so the badge reads as "equal," not subdued.
+}

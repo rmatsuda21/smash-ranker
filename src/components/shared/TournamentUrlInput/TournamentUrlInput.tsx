@@ -7,16 +7,24 @@ import { useLingui } from "@lingui/react";
 import { Button } from "@/components/shared/Button/Button";
 import { Input } from "@/components/shared/Input/Input";
 import { detectPlatformAndSlug } from "@/consts/platforms";
-import { usePredictionStore } from "@/store/predictionStore";
-import { useFetchPredictionEntrants } from "@/hooks/predict/useFetchPredictionEntrants";
 
 import styles from "./TournamentUrlInput.module.scss";
 
-export const TournamentUrlInput = () => {
+type Props = {
+  onLoad: (url: string) => void;
+  isFetching: boolean;
+  inputId: string;
+  placeholder?: string;
+};
+
+export const TournamentUrlInput = ({
+  onLoad,
+  isFetching,
+  inputId,
+  placeholder = "https://start.gg/tournament/.../event/...",
+}: Props) => {
   const { _ } = useLingui();
   const [url, setUrl] = useState("");
-  const isFetching = usePredictionStore((state) => state.fetching);
-  const { fetchEntrants } = useFetchPredictionEntrants();
 
   const detected = useMemo(() => detectPlatformAndSlug(url), [url]);
   const isValid = detected !== null;
@@ -24,7 +32,7 @@ export const TournamentUrlInput = () => {
 
   const handleLoad = () => {
     if (!isValid) return;
-    fetchEntrants(url);
+    onLoad(url);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -42,11 +50,11 @@ export const TournamentUrlInput = () => {
             [styles.error]: hasInput && !isValid,
           })}
           label={_(msg`Tournament URL`)}
-          id="predict-tournament-url"
-          name="predict-tournament-url"
+          id={inputId}
+          name={inputId}
           type="text"
           value={url}
-          placeholder="https://start.gg/tournament/.../event/..."
+          placeholder={placeholder}
           onChange={(e) => setUrl(e.currentTarget.value)}
           onKeyDown={handleKeyDown}
         />
