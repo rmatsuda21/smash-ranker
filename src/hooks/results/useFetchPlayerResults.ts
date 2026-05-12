@@ -133,7 +133,9 @@ const PlayerTournamentResultsQueryDoc = graphql(`
 // Convenience aliases over the codegen query type so the parse helpers
 // below read naturally. Each piece is fully nullable in the schema.
 type Entrant = NonNullable<PlayerTournamentResultsQuery["entrant"]>;
-type SetNode = NonNullable<NonNullable<Entrant["paginatedSets"]>["nodes"]>[number];
+type SetNode = NonNullable<
+  NonNullable<Entrant["paginatedSets"]>["nodes"]
+>[number];
 type SlotEntrant = NonNullable<
   NonNullable<NonNullable<NonNullable<SetNode>["slots"]>[number]>["entrant"]
 >;
@@ -167,8 +169,8 @@ const parseSet = (
   entrantId: string,
   selfSeed: number,
 ): ParsedSet | null => {
-  const slots = (node.slots ?? []).filter(
-    (s): s is { entrant: SlotEntrant } => Boolean(s?.entrant?.id),
+  const slots = (node.slots ?? []).filter((s): s is { entrant: SlotEntrant } =>
+    Boolean(s?.entrant?.id),
   );
   const selfSlot = slots.find((s) => String(s.entrant.id) === entrantId);
   const oppSlot = slots.find((s) => String(s.entrant.id) !== entrantId);
@@ -240,8 +242,14 @@ export const useFetchPlayerResults = () => {
     const myRequest = ++requestIdRef.current;
     dispatch({ type: "FETCH_RESULTS_START" });
 
-    // Read videogameId at call time so a slow fetch doesn't pin a stale value.
-    const videogameId = useResultsStore.getState().videogameId;
+    // Snapshot tournament context at call time so a slow fetch doesn't
+    // pin stale values and so the catch block below has them available
+    // for error logs (useful for reproducing issues + filing start.gg
+    // upstream reports — every fail carries the slug + ids you'd need).
+    const { videogameId, tournamentUrl } = useResultsStore.getState();
+    // Lifted out of the try block so the catch can include it when we
+    // failed after parsing player info but before dispatching success.
+    let playerId: string | undefined;
 
     try {
       const result = await client
@@ -266,7 +274,7 @@ export const useFetchPlayerResults = () => {
       const name = participant?.gamerTag || entrant.name || "Unknown";
       const prefix = participant?.prefix || undefined;
       const country = resolveCountry(participant?.user?.location?.country);
-      const playerId =
+      playerId =
         participant?.player?.id != null
           ? String(participant.player.id)
           : undefined;
@@ -286,7 +294,11 @@ export const useFetchPlayerResults = () => {
         // pagination if it shows up in logs.
         logWarning("results player set list truncated", {
           area: "results-fetch",
-          entrantId,
+          tournament_platform: "startgg",
+          tournament_url: tournamentUrl,
+          videogame_id: videogameId,
+          entrant_id: entrantId,
+          player_id: playerId,
           total: pageInfo?.total ?? null,
           totalPages: pageInfo?.totalPages ?? null,
         });
@@ -345,7 +357,11 @@ export const useFetchPlayerResults = () => {
           : t`Failed to fetch player results`;
       logWarning("results player-fetch failed", {
         area: "results-fetch",
-        entrantId,
+        tournament_platform: "startgg",
+        tournament_url: tournamentUrl,
+        videogame_id: videogameId,
+        entrant_id: entrantId,
+        player_id: playerId,
         error: message,
       });
       dispatch({ type: "FETCH_RESULTS_FAIL", payload: message });
@@ -353,6 +369,10 @@ export const useFetchPlayerResults = () => {
         tournament_platform: "startgg",
         stage: "player",
         reason: "query_error",
+        tournament_url: tournamentUrl,
+        videogame_id: videogameId,
+        entrant_id: entrantId,
+        player_id: playerId ?? null,
       });
     }
   };

@@ -134,6 +134,7 @@ export const useFetchChallonge = () => {
       showToast(message, { variant: "error" });
       logEvent("tournament_fetch_fail", {
         tournament_platform: "challonge",
+        tournament_slug: slug,
       });
     }
   };

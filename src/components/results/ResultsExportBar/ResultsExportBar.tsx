@@ -26,8 +26,25 @@ type Props = {
 
 export const ResultsExportBar = ({ blob }: Props) => {
   const tournamentName = useResultsStore((s) => s.tournamentName);
+  const tournamentUrl = useResultsStore((s) => s.tournamentUrl);
+  const videogameId = useResultsStore((s) => s.videogameId);
   const playerName = useResultsStore((s) => s.playerResults?.name ?? "");
+  const entrantId = useResultsStore((s) => s.playerResults?.entrantId ?? null);
+  const playerId = useResultsStore((s) => s.playerResults?.playerId ?? null);
   const setCount = useResultsStore((s) => s.playerResults?.sets.length ?? 0);
+
+  // Shared context: every export event carries the tournament + entrant
+  // identifiers so failures can be reproduced and start.gg upstream
+  // issues can be filed with the exact URL + ids.
+  const exportContext = {
+    export_surface: "results" as const,
+    export_format: "png" as const,
+    tournament_url: tournamentUrl,
+    videogame_id: videogameId,
+    entrant_id: entrantId,
+    player_id: playerId,
+    set_count: setCount,
+  };
 
   const handleDownload = async () => {
     if (!blob) return;
@@ -37,10 +54,8 @@ export const ResultsExportBar = ({ blob }: Props) => {
     try {
       await downloadBlob({ blob, filename, mimeType: "image/png" });
       logEvent("graphic_export_complete", {
-        export_surface: "results",
-        export_format: "png",
+        ...exportContext,
         share_method: "download",
-        set_count: setCount,
         size_kb: Math.round(blob.size / 1024),
       });
       const now = new Date().toISOString();
@@ -50,13 +65,15 @@ export const ResultsExportBar = ({ blob }: Props) => {
       // Most likely the user denied the download permission prompt — still
       // worth tracking so the funnel reflects real outcomes.
       logEvent("graphic_export_fail", {
-        export_surface: "results",
-        export_format: "png",
+        ...exportContext,
         failure_kind: "post_process",
         share_method: "download",
       });
       logWarning("results download failed", {
         area: "results-export",
+        tournament_url: tournamentUrl,
+        entrant_id: entrantId,
+        player_id: playerId,
         error: err instanceof Error ? err.message : String(err),
       });
     }
@@ -71,18 +88,23 @@ export const ResultsExportBar = ({ blob }: Props) => {
       logEvent("graphic_share", {
         export_surface: "results",
         share_method: "clipboard",
+        tournament_url: tournamentUrl,
+        entrant_id: entrantId,
+        player_id: playerId,
       });
     } catch (err) {
       // Clipboard write commonly fails: permission denied, insecure
       // context (HTTP), or the user navigated away mid-promise.
       logEvent("graphic_export_fail", {
-        export_surface: "results",
-        export_format: "png",
+        ...exportContext,
         failure_kind: "post_process",
         share_method: "clipboard",
       });
       logWarning("results clipboard write failed", {
         area: "results-export",
+        tournament_url: tournamentUrl,
+        entrant_id: entrantId,
+        player_id: playerId,
         error: err instanceof Error ? err.message : String(err),
       });
     }

@@ -170,7 +170,9 @@ const fetchStartgg = async (
     // we can revisit the cap if it shows up in logs.
     logWarning("results entrant pool truncated", {
       area: "results-fetch",
-      slug,
+      tournament_platform: "startgg",
+      tournament_slug: slug,
+      phase_id: firstPhaseId,
       totalPages,
       cap: MAX_SEEDS_PAGES,
       perPage: SEEDS_PER_PAGE,
@@ -214,6 +216,7 @@ export const useFetchResultsEntrantPool = () => {
         tournament_platform: detected.platform,
         stage: "pool",
         reason: "unsupported_platform",
+        tournament_slug: detected.slug,
       });
       return;
     }
@@ -248,7 +251,10 @@ export const useFetchResultsEntrantPool = () => {
           .catch((err) => {
             logWarning("results palette extraction failed", {
               area: "results-fetch",
-              iconUrl: result.tournamentIconUrl,
+              tournament_platform: detected.platform,
+              tournament_slug: detected.slug,
+              tournament_url: result.tournamentUrl,
+              icon_url: result.tournamentIconUrl,
               error: err instanceof Error ? err.message : String(err),
             });
           });
@@ -259,7 +265,8 @@ export const useFetchResultsEntrantPool = () => {
         error instanceof Error ? error.message : t`Failed to fetch tournament`;
       logWarning("results pool-fetch failed", {
         area: "results-fetch",
-        slug: detected.slug,
+        tournament_platform: detected.platform,
+        tournament_slug: detected.slug,
         error: message,
       });
       dispatch({ type: "FETCH_POOL_FAIL", payload: message });
@@ -267,6 +274,7 @@ export const useFetchResultsEntrantPool = () => {
         tournament_platform: detected.platform,
         stage: "pool",
         reason: "query_error",
+        tournament_slug: detected.slug,
       });
     }
   };

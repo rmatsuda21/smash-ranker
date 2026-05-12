@@ -7,6 +7,7 @@ import { ConfirmableButton } from "@/components/shared/ConfirmableButton/Confirm
 import { Modal } from "@/components/shared/Modal/Modal";
 import { Spinner } from "@/components/shared/Spinner/Spinner";
 import { useCanvasStore } from "@/store/canvasStore";
+import { useTournamentStore } from "@/store/tournamentStore";
 import { exportCanvasToPngBlob } from "@/utils/top8/exportCanvas";
 import { downloadBlob } from "@/utils/top8/downloadBlob";
 import { copyImageToClipboard } from "@/utils/social/clipboardImage";
@@ -42,6 +43,7 @@ export const ExportPreviewModal = ({
   blobCache,
 }: Props) => {
   const stageRef = useCanvasStore((state) => state.stageRef);
+  const tournamentUrl = useTournamentStore((s) => s.info.url ?? null);
   const mimeType = `image/${imgType}`;
   const settingsKey = buildStageBlobKey(mimeType, pixelRatio, quality);
 
@@ -75,11 +77,16 @@ export const ExportPreviewModal = ({
 
     const startedAt = performance.now();
     const startEpoch = blobCache.current.epoch;
-    logEvent("graphic_export_start", {
-      export_surface: "ranker",
+    // Shared identifying context so every export event from this modal
+    // carries the tournament URL — makes it easy to reproduce a failed
+    // export by re-pasting the same URL into /ranker.
+    const exportContext = {
+      export_surface: "ranker" as const,
       export_format: imgType,
       pixel_ratio: pixelRatio,
-    });
+      tournament_url: tournamentUrl,
+    };
+    logEvent("graphic_export_start", exportContext);
 
     const generate = async () => {
       try {
@@ -94,8 +101,7 @@ export const ExportPreviewModal = ({
 
         if (!result) {
           logEvent("graphic_export_fail", {
-            export_surface: "ranker",
-            export_format: imgType,
+            ...exportContext,
             failure_kind: "blob_null",
             duration_ms: Math.round(performance.now() - startedAt),
           });
@@ -112,8 +118,7 @@ export const ExportPreviewModal = ({
       } catch {
         if (cancelled) return;
         logEvent("graphic_export_fail", {
-          export_surface: "ranker",
-          export_format: imgType,
+          ...exportContext,
           failure_kind: "render_threw",
           duration_ms: Math.round(performance.now() - startedAt),
         });
@@ -136,6 +141,7 @@ export const ExportPreviewModal = ({
     quality,
     mimeType,
     blobCache,
+    tournamentUrl,
   ]);
 
   const handleDownload = async () => {
@@ -146,6 +152,7 @@ export const ExportPreviewModal = ({
       export_surface: "ranker",
       export_format: imgType,
       pixel_ratio: pixelRatio,
+      tournament_url: tournamentUrl,
     });
     const now = new Date().toISOString();
     setPersonOnce({ first_export_at: now });
@@ -159,6 +166,7 @@ export const ExportPreviewModal = ({
     logEvent("graphic_share", {
       export_surface: "ranker",
       share_method: "clipboard",
+      tournament_url: tournamentUrl,
     });
     return true;
   };

@@ -142,6 +142,8 @@ const storeTonamelImage = async (
   } catch (error) {
     logWarning("tonamel image fetch failed", {
       area: "tonamel-image-store",
+      tournament_platform: "tonamel",
+      image_url: imageUrl,
       error: error instanceof Error ? error.message : String(error),
     });
     return undefined;
@@ -208,6 +210,7 @@ export const useFetchTonamel = () => {
         logEvent("tournament_fetch_fail", {
           tournament_platform: "tonamel",
           failure_kind: "multi_group",
+          tournament_slug: slug,
         });
         return;
       }
@@ -237,6 +240,7 @@ export const useFetchTonamel = () => {
       showToast(message, { variant: "error" });
       logEvent("tournament_fetch_fail", {
         tournament_platform: "tonamel",
+        tournament_slug: slug,
       });
     }
   };
