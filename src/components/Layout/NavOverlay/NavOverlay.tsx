@@ -8,11 +8,20 @@ import { SiteFooter } from "@/components/shared/SiteFooter/SiteFooter";
 
 import styles from "./NavOverlay.module.scss";
 
-type NavItem = { label: string; href: string; flag?: "thumbnail-enabled" };
+type NavItem = {
+  label: string;
+  href: string;
+  flag?: "thumbnail-enabled" | "results-enabled";
+};
 
 const NAV_ITEMS: NavItem[] = [
   { label: "Home", href: "/" },
   { label: "Ranker", href: "/ranker" },
+  {
+    label: "Tournament Recap",
+    href: "/results",
+    flag: "results-enabled",
+  },
   { label: "Tier List", href: "/tier" },
   { label: "Thumbnail", href: "/thumbnail", flag: "thumbnail-enabled" },
   { label: "Predictions", href: "/predict" },
@@ -31,13 +40,15 @@ export const NavOverlay = ({ isOpen, onClose }: Props) => {
   const firstLinkRef = useRef<HTMLAnchorElement>(null);
   const closeTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const thumbnailEnabled = useFeatureFlag("thumbnail-enabled");
+  const resultsEnabled = useFeatureFlag("results-enabled");
   const visibleItems = useMemo(
     () =>
       NAV_ITEMS.filter((item) => {
         if (item.flag === "thumbnail-enabled") return thumbnailEnabled;
+        if (item.flag === "results-enabled") return resultsEnabled;
         return true;
       }),
-    [thumbnailEnabled],
+    [thumbnailEnabled, resultsEnabled],
   );
 
   // Handle mount/unmount with close animation

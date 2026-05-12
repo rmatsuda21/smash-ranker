@@ -6,7 +6,7 @@ import {
   FaLayerGroup,
   FaListOl,
   FaPhotoFilm,
-  FaChartLine,
+  FaClipboardList,
 } from "react-icons/fa6";
 
 import { useFeatureFlag } from "@/hooks/useFeatureFlags";
@@ -105,13 +105,37 @@ export const Home = () => {
             </p>
           </Card>
 
+          {resultsEnabled && (
+            <Card
+              as={Link}
+              to="/results"
+              variant="interactive"
+              className={styles.card}
+              style={{ animationDelay: "0.4s" }}
+            >
+              <div className={styles.cardHeader}>
+                <div className={styles.cardIcon}>
+                  <FaClipboardList />
+                </div>
+                <h3 className={styles.cardTitle}>
+                  <Trans>Tournament Recap</Trans>
+                </h3>
+              </div>
+              <p className={styles.cardDescription}>
+                <Trans>
+                  Share your tournament results with a nice graphic!
+                </Trans>
+              </p>
+            </Card>
+          )}
+
           {thumbnailEnabled && (
             <Card
               as={Link}
               to="/thumbnail"
               variant="interactive"
               className={styles.card}
-              style={{ animationDelay: "0.4s" }}
+              style={{ animationDelay: "0.55s" }}
             >
               <div className={styles.cardHeader}>
                 <div className={styles.cardIcon}>
@@ -137,7 +161,7 @@ export const Home = () => {
             to="/predict"
             variant="interactive"
             className={styles.card}
-            style={{ animationDelay: "0.55s" }}
+            style={{ animationDelay: "0.7s" }}
           >
             <div className={styles.cardHeader}>
               <div className={styles.cardIcon}>
@@ -154,34 +178,6 @@ export const Home = () => {
               </Trans>
             </p>
           </Card>
-
-          {resultsEnabled && (
-            <Card
-              as={Link}
-              to="/results"
-              variant="interactive"
-              className={styles.card}
-              style={{ animationDelay: "0.7s" }}
-            >
-              <div className={styles.cardHeader}>
-                <div className={styles.cardIcon}>
-                  <FaChartLine />
-                </div>
-                <h3 className={styles.cardTitle}>
-                  <Trans>Tournament Recap</Trans>
-                  <Badge variant="new">
-                    <Trans>New</Trans>
-                  </Badge>
-                </h3>
-              </div>
-              <p className={styles.cardDescription}>
-                <Trans>
-                  Generate a shareable recap of any player's run at a tournament
-                  — placement, record, and every set they played.
-                </Trans>
-              </p>
-            </Card>
-          )}
         </div>
       </section>
 
