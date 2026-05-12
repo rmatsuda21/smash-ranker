@@ -21,6 +21,11 @@ import {
   ResultsPreview,
   type ResultsPreviewCache,
 } from "@/components/results/ResultsPreview/ResultsPreview";
+import {
+  allFallbacksLoaded,
+  hasFallbackEntry,
+} from "@/utils/results/fallbackCharacters";
+import { logEvent } from "@/utils/observability/log";
 
 import styles from "./ResultsApp.module.scss";
 
@@ -75,15 +80,12 @@ export const ResultsApp = () => {
   }, [selectedEntrantId, playerResults, fetchingResults, fetchPlayerResults]);
 
   // Fan out fallback-character fetches for the selected player AND every
-  // unique opponent once playerResults lands. Passing the start.gg playerId
-  // through lets the hook short-circuit via the better-gg snapshot before
-  // touching the start.gg API.
+  // unique opponent once playerResults lands. The fetch hook prefers the
+  // better-gg snapshot (via playerId) over start.gg's recentStandings.
   useEffect(() => {
     if (!videogameId || !playerResults) return;
     const fire = (entrantId: string, playerId: string | undefined) => {
-      if (Object.prototype.hasOwnProperty.call(fallbackCharacters, entrantId)) {
-        return;
-      }
+      if (hasFallbackEntry(fallbackCharacters, entrantId)) return;
       fetchFallback(entrantId, videogameId, playerId);
     };
     fire(playerResults.entrantId, playerResults.playerId);
@@ -96,26 +98,13 @@ export const ResultsApp = () => {
     }
   }, [playerResults, videogameId, fallbackCharacters, fetchFallback]);
 
-  // All fallback character fetches considered "done" when every required
-  // entrant id has an entry in `fallbackCharacters` (the success action
-  // writes either a character id or `null` — both count as resolved).
-  // Used to gate the Generate Graphic button so the rendered PNG doesn't
-  // miss fallback icons for opponents whose lookup hasn't finished.
-  const fallbacksReady = useMemo(() => {
-    if (!playerResults) return true;
-    if (!videogameId) return true;
-    const has = (id: string) =>
-      Object.prototype.hasOwnProperty.call(fallbackCharacters, id);
-    if (!has(playerResults.entrantId)) return false;
-    const seen = new Set<string>([playerResults.entrantId]);
-    for (const set of playerResults.sets) {
-      const id = set.opponent.id;
-      if (!id || seen.has(id)) continue;
-      seen.add(id);
-      if (!has(id)) return false;
-    }
-    return true;
-  }, [playerResults, fallbackCharacters, videogameId]);
+  // Gate the Generate button until every entrant we care about has a
+  // resolved fallback entry — otherwise the rendered PNG would miss
+  // grayscale icons for opponents whose lookup hasn't finished.
+  const fallbacksReady = useMemo(
+    () => allFallbacksLoaded(playerResults, fallbackCharacters, videogameId),
+    [playerResults, fallbackCharacters, videogameId],
+  );
 
   const handleSelect = (id: string) => {
     dispatch({ type: "SELECT_ENTRANT", payload: id });
@@ -126,6 +115,14 @@ export const ResultsApp = () => {
   const handleGenerate = () => {
     if (!playerResults) return;
     setPreviewOpen(true);
+    // `_start` is fired again inside ResultsPreview when the PNG fetch
+    // actually kicks off; this event represents the user *intent* (modal
+    // open) so we can see how many opens lead to a completed export.
+    logEvent("graphic_export_start", {
+      export_surface: "results",
+      export_format: "png",
+      set_count: playerResults.sets.length,
+    });
   };
 
   const hasData = entrantPool.length > 0;

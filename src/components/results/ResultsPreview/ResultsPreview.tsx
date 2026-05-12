@@ -1,5 +1,6 @@
 import {
   useEffect,
+  useMemo,
   useRef,
   useState,
   type CSSProperties,
@@ -16,6 +17,7 @@ import { useResultsStore } from "@/store/resultsStore";
 import { ResultsExportBar } from "@/components/results/ResultsExportBar/ResultsExportBar";
 import type { PredictionPalette } from "@/types/predict/PredictionPalette";
 import type { PlayerTournamentResults } from "@/types/results/PlayerTournamentResults";
+import { logEvent, logWarning } from "@/utils/observability/log";
 
 import styles from "./ResultsPreview.module.scss";
 
@@ -133,24 +135,49 @@ export const ResultsPreview = ({ cacheRef }: Props) => {
   const fallbackCharacters = useResultsStore((s) => s.fallbackCharacters);
   const styleVars = paletteToStyleVars(palette);
 
-  const payload = playerResults
-    ? buildPayload(
-        tournamentName,
-        eventName,
-        tournamentDate,
-        tournamentIconUrl,
-        tournamentCountry,
-        numEntrants,
-        palette,
-        i18n.locale,
-        playerResults,
-        fallbackCharacters,
-      )
-    : null;
-  const cacheKey = payload ? JSON.stringify(payload) : "";
-  const requestUrl = payload
-    ? `/api/results-image?d=${base64urlEncode(cacheKey)}`
-    : "";
+  // Payload + serialized form are derived once per input change rather
+  // than every render. The JSON.stringify is hot when the modal stays
+  // open and the user clicks around behind it.
+  const payload = useMemo(
+    () =>
+      playerResults
+        ? buildPayload(
+            tournamentName,
+            eventName,
+            tournamentDate,
+            tournamentIconUrl,
+            tournamentCountry,
+            numEntrants,
+            palette,
+            i18n.locale,
+            playerResults,
+            fallbackCharacters,
+          )
+        : null,
+    [
+      playerResults,
+      tournamentName,
+      eventName,
+      tournamentDate,
+      tournamentIconUrl,
+      tournamentCountry,
+      numEntrants,
+      palette,
+      i18n.locale,
+      fallbackCharacters,
+    ],
+  );
+  const cacheKey = useMemo(
+    () => (payload ? JSON.stringify(payload) : ""),
+    [payload],
+  );
+  const requestUrl = useMemo(
+    () =>
+      payload && cacheKey
+        ? `/api/results-image?d=${base64urlEncode(cacheKey)}`
+        : "",
+    [payload, cacheKey],
+  );
 
   const cached = cacheRef.current?.key === cacheKey ? cacheRef.current : null;
 
@@ -162,6 +189,7 @@ export const ResultsPreview = ({ cacheRef }: Props) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const sentinelRef = useRef<HTMLDivElement>(null);
 
+  const setCount = playerResults?.sets.length ?? 0;
   useEffect(() => {
     if (!requestUrl) return;
     if (cacheRef.current?.key === cacheKey) {
@@ -176,11 +204,30 @@ export const ResultsPreview = ({ cacheRef }: Props) => {
     setImageUrl(null);
     setBlob(null);
 
+    // `graphic_export_start` is fired by ResultsApp on modal-open (the
+    // user-intent moment); we only emit `_fail` from here so the funnel
+    // pairs cleanly without double-counting `_start`s.
+    const startedAt = performance.now();
+
     const generate = async () => {
       try {
         const res = await fetch(requestUrl);
-        if (!res.ok || cancelled) {
-          if (!cancelled) setError(true);
+        if (cancelled) return;
+        if (!res.ok) {
+          setError(true);
+          logEvent("graphic_export_fail", {
+            export_surface: "results",
+            export_format: "png",
+            failure_kind: "post_process",
+            status: res.status,
+            set_count: setCount,
+            duration_ms: Math.round(performance.now() - startedAt),
+          });
+          logWarning("results image fetch non-2xx", {
+            area: "results-render",
+            status: res.status,
+            statusText: res.statusText,
+          });
           return;
         }
 
@@ -196,8 +243,21 @@ export const ResultsPreview = ({ cacheRef }: Props) => {
 
         setBlob(result);
         setImageUrl(url);
-      } catch {
-        if (!cancelled) setError(true);
+      } catch (err) {
+        if (cancelled) return;
+        setError(true);
+        const message = err instanceof Error ? err.message : String(err);
+        logEvent("graphic_export_fail", {
+          export_surface: "results",
+          export_format: "png",
+          failure_kind: "query_error",
+          set_count: setCount,
+          duration_ms: Math.round(performance.now() - startedAt),
+        });
+        logWarning("results image fetch threw", {
+          area: "results-render",
+          error: message,
+        });
       }
     };
 
@@ -206,7 +266,7 @@ export const ResultsPreview = ({ cacheRef }: Props) => {
     return () => {
       cancelled = true;
     };
-  }, [cacheKey, requestUrl, cacheRef]);
+  }, [cacheKey, requestUrl, cacheRef, setCount]);
 
   useEffect(() => {
     if (!imageUrl) return;

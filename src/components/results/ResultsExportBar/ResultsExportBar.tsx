@@ -5,7 +5,12 @@ import { Button } from "@/components/shared/Button/Button";
 import { ConfirmableButton } from "@/components/shared/ConfirmableButton/ConfirmableButton";
 import { useResultsStore } from "@/store/resultsStore";
 import { downloadBlob } from "@/utils/top8/downloadBlob";
-import { logEvent, setPerson, setPersonOnce } from "@/utils/observability/log";
+import {
+  logEvent,
+  logWarning,
+  setPerson,
+  setPersonOnce,
+} from "@/utils/observability/log";
 
 import styles from "./ResultsExportBar.module.scss";
 
@@ -29,26 +34,58 @@ export const ResultsExportBar = ({ blob }: Props) => {
     const tournament = normalizeFilename(tournamentName) || "tournament";
     const player = normalizeFilename(playerName) || "player";
     const filename = `${tournament}-${player}-results.png`;
-    await downloadBlob({ blob, filename, mimeType: "image/png" });
-    logEvent("graphic_export_complete", {
-      export_surface: "results",
-      export_format: "png",
-      share_method: "download",
-      set_count: setCount,
-      size_kb: Math.round(blob.size / 1024),
-    });
-    const now = new Date().toISOString();
-    setPersonOnce({ first_export_at: now });
-    setPerson({ has_exported: true, last_export_at: now });
+    try {
+      await downloadBlob({ blob, filename, mimeType: "image/png" });
+      logEvent("graphic_export_complete", {
+        export_surface: "results",
+        export_format: "png",
+        share_method: "download",
+        set_count: setCount,
+        size_kb: Math.round(blob.size / 1024),
+      });
+      const now = new Date().toISOString();
+      setPersonOnce({ first_export_at: now });
+      setPerson({ has_exported: true, last_export_at: now });
+    } catch (err) {
+      // Most likely the user denied the download permission prompt — still
+      // worth tracking so the funnel reflects real outcomes.
+      logEvent("graphic_export_fail", {
+        export_surface: "results",
+        export_format: "png",
+        failure_kind: "post_process",
+        share_method: "download",
+      });
+      logWarning("results download failed", {
+        area: "results-export",
+        error: err instanceof Error ? err.message : String(err),
+      });
+    }
   };
 
   const handleCopy = async () => {
     if (!blob) return;
-    await navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]);
-    logEvent("graphic_share", {
-      export_surface: "results",
-      share_method: "clipboard",
-    });
+    try {
+      await navigator.clipboard.write([
+        new ClipboardItem({ "image/png": blob }),
+      ]);
+      logEvent("graphic_share", {
+        export_surface: "results",
+        share_method: "clipboard",
+      });
+    } catch (err) {
+      // Clipboard write commonly fails: permission denied, insecure
+      // context (HTTP), or the user navigated away mid-promise.
+      logEvent("graphic_export_fail", {
+        export_surface: "results",
+        export_format: "png",
+        failure_kind: "post_process",
+        share_method: "clipboard",
+      });
+      logWarning("results clipboard write failed", {
+        area: "results-export",
+        error: err instanceof Error ? err.message : String(err),
+      });
+    }
   };
 
   return (

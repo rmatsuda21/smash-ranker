@@ -63,22 +63,28 @@ export const useFetchPlayerFallbackCharacter = () => {
     videogameId: string,
     playerId?: string,
   ) => {
-    // 1. Try the better-gg snapshot first. If the player is in there, we know
-    //    their main character without hitting start.gg at all — saves both a
-    //    round trip and start.gg query-complexity budget.
+    // `resolve` marks the slot as fetched (writes either an id or null).
+    // `null` means "fetched but no data" — distinct from "not yet fetched"
+    // (key missing entirely), which keeps the shimmer visible.
+    const resolve = (characterId: string | null) =>
+      dispatch({
+        type: "FETCH_FALLBACK_SUCCESS",
+        payload: { entrantId, characterId },
+      });
+
+    // 1. Try the better-gg snapshot first. Saves a start.gg round trip
+    //    and query-complexity budget when the player is in the dataset.
     if (playerId) {
       try {
         const local = await getLocalPlayersData();
         const localCharId = getLocalMainCharacterId(local, playerId);
         if (localCharId) {
-          dispatch({
-            type: "FETCH_FALLBACK_SUCCESS",
-            payload: { entrantId, characterId: localCharId },
-          });
+          resolve(localCharId);
           return;
         }
       } catch {
-        // Local lookup failed — fall through to start.gg.
+        // Local lookup failed (already logged at fetch source) — fall
+        // through to start.gg.
       }
     }
 
@@ -93,25 +99,20 @@ export const useFetchPlayerFallbackCharacter = () => {
         .toPromise();
 
       if (result.error || !result.data?.entrant) {
-        dispatch({
-          type: "FETCH_FALLBACK_SUCCESS",
-          payload: { entrantId, characterId: null },
-        });
+        resolve(null);
         return;
       }
 
       const player = result.data.entrant.participants?.[0]?.player;
       if (!player) {
-        dispatch({
-          type: "FETCH_FALLBACK_SUCCESS",
-          payload: { entrantId, characterId: null },
-        });
+        resolve(null);
         return;
       }
 
-      // For each recent standing, only count selections where the selection's
-      // entrant matches that standing's entrant (i.e. the player's own picks,
-      // not the opponent's).
+      // Count only the player's OWN selections — selections whose entrant
+      // matches the recent-standing's entrant. Mixing in opponent picks
+      // would skew the "main character" guess toward what the player
+      // most-often faces, not what they play.
       const usage = new Map<string, number>();
       for (const standing of player.recentStandings ?? []) {
         if (!standing) continue;
@@ -145,10 +146,7 @@ export const useFetchPlayerFallbackCharacter = () => {
         }
       }
 
-      dispatch({
-        type: "FETCH_FALLBACK_SUCCESS",
-        payload: { entrantId, characterId: topId },
-      });
+      resolve(topId);
     } catch (error) {
       const message =
         error instanceof Error ? error.message : "fallback fetch failed";
@@ -158,8 +156,8 @@ export const useFetchPlayerFallbackCharacter = () => {
         videogameId,
         error: message,
       });
-      // Don't write null on transient errors — leave the slot empty so a later
-      // attempt can refetch. (Callers can check the map's hasOwnProperty.)
+      // Intentionally don't write null on transient errors — leaving the
+      // slot un-keyed lets a future fetch retry.
     }
   };
 

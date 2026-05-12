@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { useClient } from "urql";
 import * as countryList from "country-list";
 import { t } from "@lingui/core/macro";
@@ -7,7 +8,15 @@ import { useResultsStore } from "@/store/resultsStore";
 import { detectPlatformAndSlug, slugToUrl } from "@/consts/platforms";
 import type { ResultsEntrantSummary } from "@/types/results/ResultsEntrantSummary";
 import { extractTournamentPalette } from "@/utils/predict/extractTournamentPalette";
-import { logEvent } from "@/utils/observability/log";
+import { logEvent, logWarning } from "@/utils/observability/log";
+import { MISSING_SEED_FALLBACK } from "@/utils/results/parseStartggResults";
+
+// Pagination caps for the seed list. start.gg events typically register
+// well under 256 entrants; we cap at 4 pages × 64 = 256 to bound the
+// page-load latency and start.gg query-complexity budget. Tournaments
+// past this surface a warning so the cap can be revisited.
+const SEEDS_PER_PAGE = 64;
+const MAX_SEEDS_PAGES = 4;
 
 const ResultsEventMetaQueryDoc = graphql(`
   query ResultsEventMeta($slug: String!) {
@@ -116,14 +125,13 @@ const fetchStartgg = async (
 
   const allEntrants: ResultsEntrantSummary[] = [];
   let page = 1;
-  const perPage = 64;
   let totalPages = 1;
 
-  while (page <= totalPages && page <= 4) {
+  while (page <= totalPages && page <= MAX_SEEDS_PAGES) {
     const seedsResult = await client
       .query(ResultsPhaseSeedsQueryDoc, {
         phaseId: firstPhaseId,
-        perPage,
+        perPage: SEEDS_PER_PAGE,
         page,
       })
       .toPromise();
@@ -149,12 +157,25 @@ const fetchStartgg = async (
         id: String(entrant.id),
         name: participant?.gamerTag || entrant.name || "Unknown",
         prefix: participant?.prefix || undefined,
-        seed: node.seedNum ?? 9999,
+        seed: node.seedNum ?? MISSING_SEED_FALLBACK,
         country: countryCode || undefined,
       });
     }
 
     page++;
+  }
+
+  if (totalPages > MAX_SEEDS_PAGES) {
+    // Quietly truncating large events is the wrong call long-term; warn so
+    // we can revisit the cap if it shows up in logs.
+    logWarning("results entrant pool truncated", {
+      area: "results-fetch",
+      slug,
+      totalPages,
+      cap: MAX_SEEDS_PAGES,
+      perPage: SEEDS_PER_PAGE,
+      collected: allEntrants.length,
+    });
   }
 
   allEntrants.sort((a, b) => a.seed - b.seed);
@@ -175,6 +196,10 @@ const fetchStartgg = async (
 export const useFetchResultsEntrantPool = () => {
   const client = useClient();
   const dispatch = useResultsStore((state) => state.dispatch);
+  // Same monotonic-token cancellation pattern as useFetchPlayerResults:
+  // a slow tournament A doesn't get to clobber the user's newer paste of
+  // tournament B.
+  const requestIdRef = useRef(0);
 
   const fetchEntrants = async (url: string) => {
     const detected = detectPlatformAndSlug(url);
@@ -193,6 +218,7 @@ export const useFetchResultsEntrantPool = () => {
       return;
     }
 
+    const myRequest = ++requestIdRef.current;
     dispatch({ type: "FETCH_POOL_START" });
     logEvent("tournament_url_submit", {
       tournament_platform: detected.platform,
@@ -201,6 +227,7 @@ export const useFetchResultsEntrantPool = () => {
 
     try {
       const result = await fetchStartgg(client, detected.slug);
+      if (myRequest !== requestIdRef.current) return;
       result.tournamentUrl = slugToUrl(detected.platform, detected.slug);
 
       dispatch({ type: "FETCH_POOL_SUCCESS", payload: result });
@@ -210,17 +237,36 @@ export const useFetchResultsEntrantPool = () => {
       });
 
       if (result.tournamentIconUrl) {
-        extractTournamentPalette(result.tournamentIconUrl).then((palette) => {
-          dispatch({ type: "SET_COLOR_PALETTE", payload: palette });
-        });
+        // Palette extraction is best-effort — the default palette is a
+        // fine fallback. Don't let a transient image error bubble as an
+        // unhandled rejection.
+        extractTournamentPalette(result.tournamentIconUrl)
+          .then((palette) => {
+            if (myRequest !== requestIdRef.current) return;
+            dispatch({ type: "SET_COLOR_PALETTE", payload: palette });
+          })
+          .catch((err) => {
+            logWarning("results palette extraction failed", {
+              area: "results-fetch",
+              iconUrl: result.tournamentIconUrl,
+              error: err instanceof Error ? err.message : String(err),
+            });
+          });
       }
     } catch (error) {
+      if (myRequest !== requestIdRef.current) return;
       const message =
         error instanceof Error ? error.message : t`Failed to fetch tournament`;
+      logWarning("results pool-fetch failed", {
+        area: "results-fetch",
+        slug: detected.slug,
+        error: message,
+      });
       dispatch({ type: "FETCH_POOL_FAIL", payload: message });
       logEvent("results_fetch_fail", {
         tournament_platform: detected.platform,
         stage: "pool",
+        reason: "query_error",
       });
     }
   };
