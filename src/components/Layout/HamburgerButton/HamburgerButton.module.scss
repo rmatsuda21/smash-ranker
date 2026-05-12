@@ -9,25 +9,51 @@
   padding: 0;
   background: none;
   border: none;
+  border-radius: var(--radius);
   cursor: pointer;
 
   .bar {
     display: block;
-    width: 22px;
-    height: 2px;
+    width: 20px;
+    height: 2.5px;
     background-color: var(--accent-9);
     border-radius: 2px;
     transition: transform var(--duration-slow) var(--ease-in-out);
     transform-origin: center;
   }
 
-  &.open {
+  &:hover {
     .bar:first-child {
-      transform: translateY(4px) rotate(45deg);
+      transform: rotate(5deg);
     }
 
     .bar:last-child {
-      transform: translateY(-4px) rotate(-45deg);
+      transform: rotate(-5deg);
     }
+  }
+
+  &.open {
+    .bar:first-child {
+      transform: translateY(5.25px) rotate(45deg);
+    }
+
+    .bar:last-child {
+      transform: translateY(-5.25px) rotate(-45deg);
+    }
+  }
+
+  &.open:hover {
+    .bar:first-child {
+      transform: translateY(5.25px) rotate(50deg);
+    }
+
+    .bar:last-child {
+      transform: translateY(-5.25px) rotate(-50deg);
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent-9);
+    outline-offset: 2px;
   }
 }
