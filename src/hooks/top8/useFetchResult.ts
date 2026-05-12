@@ -246,9 +246,10 @@ const fetchPlayerCharacters = async (
       // the trail without a noisy alert.
       logWarning("player characters fetch failed", {
         area: "tournament-fetch",
-        platform: "startgg",
+        tournament_platform: "startgg",
+        tournament_slug: slug,
+        entrant_id: entrantId,
         step: "player-characters",
-        entrantId,
         error: result.error.message,
       });
     }
@@ -389,6 +390,7 @@ export const useFetchResult = () => {
       logEvent("tournament_fetch_fail", {
         tournament_platform: "startgg",
         failure_kind: result.error ? "query_error" : "not_found",
+        tournament_slug: slug,
       });
       // Don't Sentry-capture user-input failures (bad slug, deleted event).
       // The PostHog rate is the right signal; bug investigation belongs to
@@ -417,6 +419,7 @@ export const useFetchResult = () => {
       logEvent("tournament_fetch_fail", {
         tournament_platform: "startgg",
         failure_kind: "multi_group",
+        tournament_slug: slug,
       });
       return;
     }
@@ -459,6 +462,7 @@ export const useFetchResult = () => {
       logEvent("tournament_fetch_fail", {
         tournament_platform: "startgg",
         failure_kind: "post_process",
+        tournament_slug: slug,
       });
     }
   };

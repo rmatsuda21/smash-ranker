@@ -312,6 +312,7 @@ export const useFetchPredictionEntrants = () => {
       dispatch({ type: "FETCH_FAIL", payload: message });
       logEvent("prediction_fetch_fail", {
         tournament_platform: detected.platform,
+        tournament_slug: detected.slug,
       });
     }
   };

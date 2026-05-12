@@ -190,6 +190,13 @@ export const ResultsPreview = ({ cacheRef }: Props) => {
   const sentinelRef = useRef<HTMLDivElement>(null);
 
   const setCount = playerResults?.sets.length ?? 0;
+  const entrantId = playerResults?.entrantId ?? null;
+  const playerId = playerResults?.playerId ?? null;
+  // Snapshot of identifying context for error/event logs. Lets reports
+  // include the tournament URL + ids so issues can be reproduced (and so
+  // upstream start.gg reports include the exact event + player).
+  const tournamentUrl = useResultsStore((s) => s.tournamentUrl);
+  const videogameId = useResultsStore((s) => s.videogameId);
   useEffect(() => {
     if (!requestUrl) return;
     if (cacheRef.current?.key === cacheKey) {
@@ -208,6 +215,15 @@ export const ResultsPreview = ({ cacheRef }: Props) => {
     // user-intent moment); we only emit `_fail` from here so the funnel
     // pairs cleanly without double-counting `_start`s.
     const startedAt = performance.now();
+    const failContext = {
+      export_surface: "results" as const,
+      export_format: "png" as const,
+      set_count: setCount,
+      tournament_url: tournamentUrl,
+      videogame_id: videogameId,
+      entrant_id: entrantId,
+      player_id: playerId,
+    };
 
     const generate = async () => {
       try {
@@ -216,17 +232,19 @@ export const ResultsPreview = ({ cacheRef }: Props) => {
         if (!res.ok) {
           setError(true);
           logEvent("graphic_export_fail", {
-            export_surface: "results",
-            export_format: "png",
+            ...failContext,
             failure_kind: "post_process",
             status: res.status,
-            set_count: setCount,
             duration_ms: Math.round(performance.now() - startedAt),
           });
           logWarning("results image fetch non-2xx", {
             area: "results-render",
             status: res.status,
             statusText: res.statusText,
+            tournament_url: tournamentUrl,
+            videogame_id: videogameId,
+            entrant_id: entrantId,
+            player_id: playerId,
           });
           return;
         }
@@ -248,14 +266,16 @@ export const ResultsPreview = ({ cacheRef }: Props) => {
         setError(true);
         const message = err instanceof Error ? err.message : String(err);
         logEvent("graphic_export_fail", {
-          export_surface: "results",
-          export_format: "png",
+          ...failContext,
           failure_kind: "query_error",
-          set_count: setCount,
           duration_ms: Math.round(performance.now() - startedAt),
         });
         logWarning("results image fetch threw", {
           area: "results-render",
+          tournament_url: tournamentUrl,
+          videogame_id: videogameId,
+          entrant_id: entrantId,
+          player_id: playerId,
           error: message,
         });
       }
@@ -266,7 +286,16 @@ export const ResultsPreview = ({ cacheRef }: Props) => {
     return () => {
       cancelled = true;
     };
-  }, [cacheKey, requestUrl, cacheRef, setCount]);
+  }, [
+    cacheKey,
+    requestUrl,
+    cacheRef,
+    setCount,
+    tournamentUrl,
+    videogameId,
+    entrantId,
+    playerId,
+  ]);
 
   useEffect(() => {
     if (!imageUrl) return;

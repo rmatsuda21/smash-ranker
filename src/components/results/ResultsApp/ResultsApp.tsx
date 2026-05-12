@@ -115,13 +115,19 @@ export const ResultsApp = () => {
   const handleGenerate = () => {
     if (!playerResults) return;
     setPreviewOpen(true);
-    // `_start` is fired again inside ResultsPreview when the PNG fetch
-    // actually kicks off; this event represents the user *intent* (modal
-    // open) so we can see how many opens lead to a completed export.
+    // Single `_start` event per export attempt — fired here at the
+    // intent moment (modal open) and paired with the `_complete`/`_fail`
+    // events emitted by ResultsPreview / ResultsExportBar. Carries the
+    // start.gg identifiers so the funnel breakdown can isolate problem
+    // tournaments/players.
     logEvent("graphic_export_start", {
       export_surface: "results",
       export_format: "png",
       set_count: playerResults.sets.length,
+      tournament_url: useResultsStore.getState().tournamentUrl,
+      videogame_id: videogameId,
+      entrant_id: playerResults.entrantId,
+      player_id: playerResults.playerId ?? null,
     });
   };
 

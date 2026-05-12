@@ -152,8 +152,11 @@ export const useFetchPlayerFallbackCharacter = () => {
         error instanceof Error ? error.message : "fallback fetch failed";
       logWarning("results fallback-character fetch failed", {
         area: "results-fetch",
-        entrantId,
-        videogameId,
+        tournament_platform: "startgg",
+        tournament_url: useResultsStore.getState().tournamentUrl,
+        videogame_id: videogameId,
+        entrant_id: entrantId,
+        player_id: playerId,
         error: message,
       });
       // Intentionally don't write null on transient errors — leaving the
