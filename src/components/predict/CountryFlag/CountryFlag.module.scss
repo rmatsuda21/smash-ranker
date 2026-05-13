@@ -1,0 +1,10 @@
+@use "@/_theme" as *;
+
+.flag {
+  flex-shrink: 0;
+  width: 18px;
+  height: 13px;
+  border-radius: 2px;
+  object-fit: cover;
+  display: block;
+}

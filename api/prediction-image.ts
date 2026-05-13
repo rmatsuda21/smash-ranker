@@ -6,6 +6,7 @@ import { join } from "path";
 import { createHash } from "crypto";
 import satori from "satori";
 import { Resvg } from "@resvg/resvg-js";
+import sharp from "sharp";
 import React from "react";
 
 import { BadRequestError, respondClientError } from "./_lib/errors.js";
@@ -40,6 +41,10 @@ const DATE_FORMATTER = new Intl.DateTimeFormat("en-US", {
 const TOURNAMENT_ICON_CACHE_MAX = 64;
 const tournamentIconCache = new Map<string, string>();
 
+// Flag cache (per-country-code base64 PNG, decoded from bundled SVGs).
+const FLAG_CACHE_MAX = 280;
+const flagCache = new Map<string, string>();
+
 // Final-PNG cache, keyed by sha256(canonical payload). Skips satori+resvg
 // entirely on a hit. Bounded to keep memory in check.
 const PNG_CACHE_MAX = 64;
@@ -67,6 +72,7 @@ type PredictionPlayer = {
   id: string;
   name: string;
   prefix?: string;
+  country?: string;
 };
 
 // Duplicated locally — `api/` is built independently from `src/`, so we don't
@@ -170,6 +176,47 @@ async function fetchTournamentIcon(
   return fetched;
 }
 
+// Flag SVGs are bundled via vercel.json `includeFiles: public/assets/flags/**`.
+// Decode SVG → PNG via sharp; satori v0.26 handles PNG reliably but trips on
+// SVGs in some cases.
+async function fetchFlag(countryCode: string): Promise<string | null> {
+  const cc = countryCode.toLowerCase();
+  if (!/^[a-z]{2}$/.test(cc)) return null;
+  const cached = lruGet(flagCache, cc);
+  if (cached) return cached;
+
+  try {
+    const path = join(process.cwd(), "public", "assets", "flags", `${cc}.svg`);
+    const svgBuf = readFileSync(path);
+    const pngBuf = await sharp(svgBuf, { density: 192 })
+      .resize(24, 16, { fit: "cover" })
+      .png()
+      .toBuffer();
+    const dataUrl = `data:image/png;base64,${pngBuf.toString("base64")}`;
+    lruSet(flagCache, cc, dataUrl, FLAG_CACHE_MAX);
+    return dataUrl;
+  } catch {
+    return null;
+  }
+}
+
+async function preloadFlags(
+  codes: (string | null | undefined)[],
+): Promise<Map<string, string>> {
+  const unique = new Set<string>();
+  for (const code of codes) {
+    if (code) unique.add(code.toLowerCase());
+  }
+  const map = new Map<string, string>();
+  await Promise.all(
+    Array.from(unique).map(async (cc) => {
+      const data = await fetchFlag(cc);
+      if (data) map.set(cc, data);
+    }),
+  );
+  return map;
+}
+
 // --- Placements ---
 
 // Standard tournament placement pattern: 1, 2, 3, 4, 5, 5, 7, 7, 9, 9, 9, 9, ...
@@ -240,6 +287,7 @@ const DOT_PATTERN_SVG = `data:image/svg+xml,${encodeURIComponent(
 function buildGraphic(
   body: RequestBody,
   tournamentIcon: string | null,
+  flags: Map<string, string>,
   palette: PredictionPalette,
 ): React.ReactElement {
   const { tournamentName, eventName, tournamentDate, predictions, locale } =
@@ -255,6 +303,9 @@ function buildGraphic(
 
   const rows = predictions.map((player, index) => {
     const rank = placements[index];
+    const flag = player.country
+      ? flags.get(player.country.toLowerCase())
+      : null;
 
     return h(
       "div",
@@ -296,6 +347,18 @@ function buildGraphic(
           String(rank),
         ),
       ),
+      // Country flag
+      flag
+        ? h("img", {
+            src: flag,
+            width: 15,
+            height: 10,
+            style: {
+              borderRadius: 1,
+              flexShrink: 0,
+            },
+          })
+        : null,
       // Player name
       h(
         "div",
@@ -504,6 +567,7 @@ function canonicalize(body: RequestBody): string {
       id: p.id,
       name: p.name,
       prefix: p.prefix ?? "",
+      country: p.country ?? "",
     })),
   });
 }
@@ -562,10 +626,25 @@ function decodePayload(encoded: unknown): RequestBody {
       throw new BadRequestError(`predictions[${i}] must be an object`);
     }
     const item = p as Record<string, unknown>;
+    const countryRaw = asOptionalBoundedString(
+      item.country,
+      `predictions[${i}].country`,
+    );
+    let country: string | undefined;
+    if (countryRaw) {
+      const cc = countryRaw.toLowerCase();
+      if (!/^[a-z]{2}$/.test(cc)) {
+        throw new BadRequestError(
+          `predictions[${i}].country must be a 2-letter ISO code`,
+        );
+      }
+      country = cc;
+    }
     return {
       id: asBoundedString(item.id, `predictions[${i}].id`),
       name: asBoundedString(item.name, `predictions[${i}].name`),
       prefix: asOptionalBoundedString(item.prefix, `predictions[${i}].prefix`),
+      country,
     };
   });
 
@@ -637,10 +716,14 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
     return res.status(200).send(cachedPng);
   }
 
-  addBreadcrumb("prediction-image", "fetch_icon_start");
-  const tournamentIcon = await fetchTournamentIcon(body.tournamentIconUrl);
-  addBreadcrumb("prediction-image", "fetch_icon_done", {
+  addBreadcrumb("prediction-image", "fetch_assets_start");
+  const [tournamentIcon, flags] = await Promise.all([
+    fetchTournamentIcon(body.tournamentIconUrl),
+    preloadFlags(body.predictions.map((p) => p.country)),
+  ]);
+  addBreadcrumb("prediction-image", "fetch_assets_done", {
     hasIcon: tournamentIcon != null,
+    flagCount: flags.size,
   });
 
   const palette: PredictionPalette = {
@@ -649,7 +732,7 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
   };
 
   const height = estimateHeight(body.predictions.length);
-  const graphic = buildGraphic(body, tournamentIcon, palette);
+  const graphic = buildGraphic(body, tournamentIcon, flags, palette);
 
   addBreadcrumb("prediction-image", "satori_start", {
     predictionCount: body.predictions.length,

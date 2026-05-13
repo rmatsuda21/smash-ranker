@@ -84,6 +84,7 @@ export const PredictionPreview = ({ cacheRef }: Props) => {
       id: p.id,
       name: p.name,
       prefix: p.prefix,
+      country: p.country,
     })),
   };
   const cacheKey = JSON.stringify(payload);
