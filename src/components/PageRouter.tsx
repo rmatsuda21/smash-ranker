@@ -2,9 +2,11 @@ import { lazy, Suspense } from "react";
 import { Route, Switch } from "wouter";
 
 import { Home } from "@/pages/home";
-import { RankerPage } from "@/pages/ranker";
 import { useFeatureFlag } from "@/hooks/useFeatureFlags";
 
+const RankerPage = lazy(() =>
+  import("@/pages/ranker").then((m) => ({ default: m.RankerPage })),
+);
 const TierPage = lazy(() => import("@/pages/tier"));
 const PredictPage = lazy(() => import("@/pages/predict"));
 const ResultsPage = lazy(() => import("@/pages/results"));
@@ -18,7 +20,11 @@ export const PageRouter = () => {
   return (
     <Switch>
       <Route path="/" component={Home} />
-      <Route path="/ranker" component={RankerPage} />
+      <Route path="/ranker">
+        <Suspense>
+          <RankerPage />
+        </Suspense>
+      </Route>
       <Route path="/tier">
         <Suspense>
           <TierPage />
