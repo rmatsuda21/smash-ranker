@@ -4,11 +4,6 @@ import Konva from "konva";
 import { Group as KonvaGroup } from "konva/lib/Group";
 
 import { ElementFilterConfig } from "@/types/top8/Design";
-import { isMobile } from "@/utils/isMobile";
-
-/** Max pixel area (width × height) we allow Konva to cache on mobile.
- *  Keeps memory safe while enabling filters on small elements like text. */
-const MOBILE_CACHE_MAX_AREA = 50_000;
 
 type FilterProps = {
   filters?: any[];
@@ -74,8 +69,6 @@ export const FilteredGroup = ({
     [filtersConfig],
   );
 
-  const mobile = isMobile();
-
   useEffect(() => {
     const node = groupRef.current;
     if (!node) return;
@@ -87,19 +80,7 @@ export const FilteredGroup = ({
     }
 
     const raf = requestAnimationFrame(() => {
-      if (!groupRef.current) return;
-
-      if (mobile) {
-        const { width, height } = groupRef.current.getClientRect();
-        const area = width * height;
-        if (area <= 0 || area > MOBILE_CACHE_MAX_AREA) {
-          groupRef.current.clearCache();
-          return;
-        }
-        groupRef.current.cache({ offset: 2 });
-      } else {
-        groupRef.current.cache({ offset: 4 });
-      }
+      groupRef.current?.cache({ offset: 4 });
     });
 
     return () => cancelAnimationFrame(raf);
@@ -111,7 +92,6 @@ export const FilteredGroup = ({
     filterProps.blue,
     filterProps.blurRadius,
     invalidateCacheKey,
-    mobile,
   ]);
 
   return (

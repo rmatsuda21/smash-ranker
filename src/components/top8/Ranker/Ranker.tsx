@@ -17,6 +17,14 @@ const Canvas = lazy(() =>
   })),
 );
 
+const MobileCanvas = lazy(() =>
+  import("@/components/top8/Canvas/MobileCanvas/MobileCanvas").then(
+    (module) => ({
+      default: module.MobileCanvas,
+    }),
+  ),
+);
+
 export const Ranker = () => {
   const isCanvasExpanded = useEditorStore((s) => s.isCanvasExpanded);
   const dispatch = useEditorStore((s) => s.dispatch);
@@ -52,7 +60,11 @@ export const Ranker = () => {
               </div>
             }
           >
-            <Canvas className={styles.canvas} />
+            {mobile ? (
+              <MobileCanvas className={styles.canvas} />
+            ) : (
+              <Canvas className={styles.canvas} />
+            )}
           </Suspense>
         </div>
       </div>

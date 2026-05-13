@@ -1,0 +1,50 @@
+@use "@/_theme" as *;
+
+.mobileCanvasContainer {
+  position: relative;
+  height: auto;
+  width: 100%;
+
+  .scrollArea {
+    width: 100%;
+    overflow: hidden;
+    background: var(--bg-surface);
+  }
+
+  .canvasInner {
+    width: var(--canvas-width);
+    height: var(--canvas-height);
+    transform: scale(var(--display-scale));
+    transform-origin: top left;
+  }
+
+  .canvasWrapper {
+    --display-scale: 1;
+    position: relative;
+    width: calc(var(--canvas-width) * var(--display-scale));
+    height: calc(var(--canvas-height) * var(--display-scale));
+    margin-inline: auto;
+  }
+
+  .loader {
+    background: var(--bg-surface);
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    inset: 0;
+  }
+
+  .fontSwapOverlay {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    cursor: wait;
+  }
+}

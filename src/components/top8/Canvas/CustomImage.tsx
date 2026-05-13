@@ -2,7 +2,7 @@ import { ComponentProps, memo, useEffect, useRef } from "react";
 import { Image } from "react-konva";
 
 import { useCustomImage } from "@/hooks/top8/useCustomImage";
-import { isMobile } from "@/utils/isMobile";
+import { useRenderMode } from "@/components/top8/Canvas/RenderModeContext";
 
 const BACKDROP_OFFSET = 10;
 
@@ -60,12 +60,13 @@ const CustomImageComponent = ({
     onError: onErrorRef.current,
   });
 
-  const mobile = isMobile();
+  const renderMode = useRenderMode();
+  const skipNodeCache = renderMode === "mobile";
 
   useEffect(() => {
     if (!ref.current || !finalImage) return;
 
-    if (mobile) {
+    if (skipNodeCache) {
       ref.current.clearCache();
       return;
     }
@@ -81,7 +82,7 @@ const CustomImageComponent = ({
     shadowOpacity,
     finalImage,
     ref,
-    mobile,
+    skipNodeCache,
   ]);
 
   if (!finalImage) return null;
