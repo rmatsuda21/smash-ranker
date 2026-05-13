@@ -17,7 +17,7 @@ msgstr ""
 #~ msgid "Buy me a coffee"
 #~ msgstr ""
 
-#: src/pages/home.tsx:128
+#: src/pages/home.tsx:152
 msgid "Create custom YouTube thumbnails for your Smash sets!"
 msgstr ""
 
@@ -38,22 +38,22 @@ msgid "Easily generate your own tournament graphics with full customization."
 msgstr ""
 
 #: src/pages/home.tsx:178
-msgid "Generate a shareable recap of any player's run at a tournament — placement, record, and every set they played."
-msgstr ""
+#~ msgid "Generate a shareable recap of any player's run at a tournament — placement, record, and every set they played."
+#~ msgstr ""
 
 #: src/pages/home.tsx:74
 #~ msgid "Generate tournament bracket graphics with custom templates, player data, and character art."
 #~ msgstr ""
 
-#: src/pages/home.tsx:197
+#: src/pages/home.tsx:193
 msgid "I have many exiciting tools on the way 🔧 Stay tuned!"
 msgstr ""
 
-#: src/pages/home.tsx:191
+#: src/pages/home.tsx:187
 msgid "In Development"
 msgstr ""
 
-#: src/pages/home.tsx:151
+#: src/pages/home.tsx:175
 msgid "Like making bracket predictions? Why not share yours with your friends with a cool graphic!"
 msgstr ""
 
@@ -61,12 +61,11 @@ msgstr ""
 #~ msgid "More exciting tools are being built 🔧 Stay tuned!"
 #~ msgstr ""
 
-#: src/pages/home.tsx:194
+#: src/pages/home.tsx:190
 msgid "More tools on the way"
 msgstr ""
 
-#: src/pages/home.tsx:123
-#: src/pages/home.tsx:173
+#: src/pages/home.tsx:147
 msgid "New"
 msgstr ""
 
@@ -74,11 +73,15 @@ msgstr ""
 #~ msgid "Predict tournament placements and share your bracket picks as a graphic."
 #~ msgstr ""
 
-#: src/pages/home.tsx:147
+#: src/pages/home.tsx:171
 msgid "Predictions"
 msgstr ""
 
-#: src/pages/home.tsx:121
+#: src/pages/home.tsx:125
+msgid "Share your tournament results with a nice graphic!"
+msgstr ""
+
+#: src/pages/home.tsx:145
 msgid "Thumbnail Maker"
 msgstr ""
 
@@ -94,7 +97,7 @@ msgstr ""
 msgid "Tournament Ranker"
 msgstr ""
 
-#: src/pages/home.tsx:171
+#: src/pages/home.tsx:121
 msgid "Tournament Recap"
 msgstr ""
 

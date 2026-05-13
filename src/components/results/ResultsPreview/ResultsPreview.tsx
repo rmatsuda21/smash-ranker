@@ -354,7 +354,7 @@ export const ResultsPreview = ({ cacheRef }: Props) => {
             <img
               className={styles.image}
               src={imageUrl}
-              alt="Tournament results graphic"
+              alt={_(msg`Tournament results graphic`)}
             />
             <div ref={sentinelRef} className={styles.scrollSentinel} />
           </div>

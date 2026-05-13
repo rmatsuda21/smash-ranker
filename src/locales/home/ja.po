@@ -17,7 +17,7 @@ msgstr ""
 #~ msgid "Buy me a coffee"
 #~ msgstr "クラファン実地中"
 
-#: src/pages/home.tsx:128
+#: src/pages/home.tsx:152
 msgid "Create custom YouTube thumbnails for your Smash sets!"
 msgstr "対戦動画のYouTubeサムネを簡単作成。"
 
@@ -38,18 +38,18 @@ msgid "Easily generate your own tournament graphics with full customization."
 msgstr "大会リザルト画像作成を極限まで楽にしました。"
 
 #: src/pages/home.tsx:178
-msgid "Generate a shareable recap of any player's run at a tournament — placement, record, and every set they played."
-msgstr ""
+#~ msgid "Generate a shareable recap of any player's run at a tournament — placement, record, and every set they played."
+#~ msgstr ""
 
-#: src/pages/home.tsx:197
+#: src/pages/home.tsx:193
 msgid "I have many exiciting tools on the way 🔧 Stay tuned!"
 msgstr "色々な新ツールを開発中です 🔧 お楽しみに！"
 
-#: src/pages/home.tsx:191
+#: src/pages/home.tsx:187
 msgid "In Development"
 msgstr "開発中"
 
-#: src/pages/home.tsx:151
+#: src/pages/home.tsx:175
 msgid "Like making bracket predictions? Why not share yours with your friends with a cool graphic!"
 msgstr "みんなで大会予想を画像で共有しあおう。"
 
@@ -57,12 +57,11 @@ msgstr "みんなで大会予想を画像で共有しあおう。"
 #~ msgid "More exciting tools are being built 🔧 Stay tuned!"
 #~ msgstr "色々な新ツールを開発中です 🔧 お楽しみに！"
 
-#: src/pages/home.tsx:194
+#: src/pages/home.tsx:190
 msgid "More tools on the way"
 msgstr "まだまだ新機能製作中"
 
-#: src/pages/home.tsx:123
-#: src/pages/home.tsx:173
+#: src/pages/home.tsx:147
 msgid "New"
 msgstr "新着"
 
@@ -70,11 +69,15 @@ msgstr "新着"
 #~ msgid "Predict tournament placements and share your bracket picks as a graphic."
 #~ msgstr "大会の順位を予想して、画像として共有しましょう。"
 
-#: src/pages/home.tsx:147
+#: src/pages/home.tsx:171
 msgid "Predictions"
 msgstr "順位予想"
 
-#: src/pages/home.tsx:121
+#: src/pages/home.tsx:125
+msgid "Share your tournament results with a nice graphic!"
+msgstr "自分の戦績をきれいな画像で共有しよう。"
+
+#: src/pages/home.tsx:145
 msgid "Thumbnail Maker"
 msgstr "サムネ作成"
 
@@ -90,9 +93,9 @@ msgstr "ツール一覧"
 msgid "Tournament Ranker"
 msgstr "リザルト作成"
 
-#: src/pages/home.tsx:171
+#: src/pages/home.tsx:121
 msgid "Tournament Recap"
-msgstr ""
+msgstr "大会振り返り"
 
 #: src/pages/home.tsx:53
 msgid "Your one-stop site for Smash Bros graphics!"

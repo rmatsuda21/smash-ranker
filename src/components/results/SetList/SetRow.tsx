@@ -1,5 +1,7 @@
 import cn from "classnames";
 import { Trans } from "@lingui/react/macro";
+import { msg } from "@lingui/core/macro";
+import { useLingui } from "@lingui/react";
 
 import type {
   CharacterRef,
@@ -24,6 +26,7 @@ const CharacterStack = ({
   characters: CharacterRef[];
   fallbackId: string | null | undefined;
 }) => {
+  const { _ } = useLingui();
   if (characters.length > 0) {
     return (
       <span className={styles.charStack}>
@@ -43,7 +46,7 @@ const CharacterStack = ({
     return (
       <span
         className={cn(styles.charPlaceholder, styles.charPlaceholderLoading)}
-        aria-label="Loading character"
+        aria-label={_(msg`Loading character`)}
       />
     );
   }
@@ -59,11 +62,12 @@ const CharacterStack = ({
       </span>
     );
   }
+  const noCharacterData = _(msg`No character data`);
   return (
     <span
       className={styles.charEmpty}
-      aria-label="No character data"
-      title="No character data"
+      aria-label={noCharacterData}
+      title={noCharacterData}
     />
   );
 };
