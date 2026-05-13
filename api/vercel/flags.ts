@@ -1,9 +1,9 @@
-import "../_instrument";
+import "../_instrument.js";
 
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { verifyAccess, version } from "flags";
 
-import { withLogging } from "../_lib/withLogging";
+import { withLogging } from "../_lib/withLogging.js";
 
 // Flag Discovery Endpoint for the Vercel Toolbar's Flags Explorer.
 //

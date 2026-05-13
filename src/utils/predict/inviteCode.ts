@@ -1,4 +1,4 @@
-import type { Platform } from "@/consts/platforms";
+import type { Platform } from "../../consts/platforms.js";
 
 const VERSION = "1";
 

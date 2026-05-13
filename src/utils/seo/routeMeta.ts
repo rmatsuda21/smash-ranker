@@ -1,4 +1,4 @@
-import { decodeInvite } from "../predict/inviteCode";
+import { decodeInvite } from "../predict/inviteCode.js";
 
 export type RouteMeta = {
   title: string;

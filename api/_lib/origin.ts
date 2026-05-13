@@ -1,6 +1,6 @@
 import type { VercelRequest } from "@vercel/node";
 
-import { ForbiddenError } from "./errors";
+import { ForbiddenError } from "./errors.js";
 
 // ---------------------------------------------------------------------------
 // SINGLE SOURCE OF TRUTH for origins allowed to call same-origin-guarded API

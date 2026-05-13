@@ -1,15 +1,15 @@
-import "./_instrument";
+import "./_instrument.js";
 
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 
-import { respondClientError } from "./_lib/errors";
-import { assertSameOrigin } from "./_lib/origin";
-import { parsePlayerCount, parseSlug } from "./_lib/validate";
+import { respondClientError } from "./_lib/errors.js";
+import { assertSameOrigin } from "./_lib/origin.js";
+import { parsePlayerCount, parseSlug } from "./_lib/validate.js";
 import {
   addBreadcrumb,
   captureFnException,
   withLogging,
-} from "./_lib/withLogging";
+} from "./_lib/withLogging.js";
 
 const TONAMEL_BASE = "https://tonamel.com";
 const MANAGEMENT_ENDPOINT = `${TONAMEL_BASE}/graphql/competition_management`;

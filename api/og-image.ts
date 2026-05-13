@@ -1,4 +1,4 @@
-import "./_instrument";
+import "./_instrument.js";
 
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { readFileSync } from "fs";
@@ -8,13 +8,13 @@ import satori from "satori";
 import { Resvg } from "@resvg/resvg-js";
 import React from "react";
 
-import { addBreadcrumb, withLogging } from "./_lib/withLogging";
-import { parseImageUrl } from "./_lib/validate";
+import { addBreadcrumb, withLogging } from "./_lib/withLogging.js";
+import { parseImageUrl } from "./_lib/validate.js";
 import {
   decodeInvite,
   fetchTournamentMeta,
   type TournamentMeta,
-} from "./_lib/tournamentMeta";
+} from "./_lib/tournamentMeta.js";
 
 // Invite codes are short (version + platform char + compact slug); cap the
 // raw query length to bound work before decode.

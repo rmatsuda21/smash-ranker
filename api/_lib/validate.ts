@@ -1,4 +1,4 @@
-import { BadRequestError } from "./errors";
+import { BadRequestError } from "./errors.js";
 
 const SLUG_RE = /^[A-Za-z0-9_-]+$/;
 

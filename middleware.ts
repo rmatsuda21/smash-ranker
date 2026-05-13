@@ -10,7 +10,7 @@
 //   The middleware matcher only includes the listed page routes, so the
 //   inner fetch to /index.html doesn't recurse through this middleware.
 
-import { getRouteMeta, renderHeadTags } from "./src/utils/seo/routeMeta";
+import { getRouteMeta, renderHeadTags } from "./src/utils/seo/routeMeta.js";
 
 export const config = {
   matcher: ["/", "/ranker", "/tier", "/predict", "/thumbnail"],
