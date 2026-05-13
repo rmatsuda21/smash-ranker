@@ -25,7 +25,8 @@
   "functions": {
     "api/prediction-image.ts": {
       "memory": 1024,
-      "maxDuration": 30
+      "maxDuration": 30,
+      "includeFiles": "public/assets/flags/**"
     },
     "api/results-image.ts": {
       "memory": 1024,

@@ -3,6 +3,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { MdDragIndicator, MdClose } from "react-icons/md";
 
 import type { PredictionPlayer } from "@/types/predict/Prediction";
+import { CountryFlag } from "@/components/predict/CountryFlag/CountryFlag";
 
 import styles from "./SortablePredictionItem.module.scss";
 
@@ -36,6 +37,7 @@ export const SortablePredictionItem = ({ player, rank, onRemove }: Props) => {
       <span className={styles.rank} data-rank={rank}>
         {rank}
       </span>
+      <CountryFlag country={player.country} />
       <span className={styles.name}>
         {player.prefix && (
           <span className={styles.prefix}>{player.prefix} | </span>
@@ -68,6 +70,7 @@ export const PredictionItemOverlay = ({
       <span className={styles.rank} data-rank={rank}>
         {rank}
       </span>
+      <CountryFlag country={player.country} />
       <span className={styles.name}>
         {player.prefix && (
           <span className={styles.prefix}>{player.prefix} | </span>
