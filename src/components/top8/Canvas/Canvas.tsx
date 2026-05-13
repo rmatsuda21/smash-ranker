@@ -13,7 +13,6 @@ import { TournamentLayer } from "@/components/top8/Canvas/TournamentLayer";
 import { BracketLoader } from "@/components/shared/BracketLoader/BracketLoader";
 import { Slider } from "@/components/shared/Slider/Slider";
 import { Button } from "@/components/shared/Button/Button";
-import { isMobile } from "@/utils/isMobile";
 import { useEffectiveCanvasSize } from "@/hooks/top8/useEffectiveCanvasSize";
 import { loadFamily } from "@/utils/fonts/fontLoader";
 
@@ -76,16 +75,15 @@ export const Canvas = ({ className }: Props) => {
 
   const handleFitToWindow = useCallback(() => {
     if (scrollAreaRef.current) {
-      const padding = isMobile() ? 0 : CANVAS_PADDING;
-      const availableWidth = scrollAreaRef.current.clientWidth - padding * 2;
-      const availableHeight = scrollAreaRef.current.clientHeight - padding * 2;
+      const availableWidth =
+        scrollAreaRef.current.clientWidth - CANVAS_PADDING * 2;
+      const availableHeight =
+        scrollAreaRef.current.clientHeight - CANVAS_PADDING * 2;
 
       const scaleByWidth = availableWidth / canvasSize.width;
       const scaleByHeight = availableHeight / canvasSize.height;
 
-      setDisplayScale(
-        isMobile() ? scaleByWidth : Math.min(scaleByWidth, scaleByHeight),
-      );
+      setDisplayScale(Math.min(scaleByWidth, scaleByHeight));
     }
   }, [canvasSize.width, canvasSize.height]);
 
@@ -111,7 +109,7 @@ export const Canvas = ({ className }: Props) => {
           "--aspect-ratio": `${canvasSize.width / canvasSize.height}`,
           "--canvas-width": `${canvasSize.width}px`,
           "--canvas-height": `${canvasSize.height}px`,
-          "--canvas-padding": `${isMobile() ? 0 : CANVAS_PADDING}px`,
+          "--canvas-padding": `${CANVAS_PADDING}px`,
         } as React.CSSProperties);
       }
     };
@@ -203,7 +201,6 @@ export const Canvas = ({ className }: Props) => {
                 ref={setStageRef}
                 width={canvasSize.width}
                 height={canvasSize.height}
-                pixelRatio={isMobile() ? 0.5 : undefined}
                 onClick={handleStageClick}
               >
                 <BackgroundLayer

@@ -4,11 +4,40 @@ import { KonvaEventObject } from "konva/lib/Node";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Group, Rect } from "react-konva";
 
+import { useRenderMode } from "@/components/top8/Canvas/RenderModeContext";
+
 type Props = Partial<GroupConfig> & {
   onClick: (e: KonvaEventObject<MouseEvent>) => void;
 };
 
 export const SelectableElement = ({
+  onClick,
+  children,
+  ...rest
+}: React.PropsWithChildren<Props>) => {
+  const renderMode = useRenderMode();
+  if (renderMode === "mobile") {
+    // Mobile pipeline is non-interactive — drop hover state, measurement
+    // effect, and the two transparent hit-test rects per element. We also
+    // strip listening/draggable to keep the group fully passive.
+    const { listening, draggable, ...groupRest } = rest;
+    void listening;
+    void draggable;
+    return (
+      <Group {...groupRest} listening={false}>
+        {children}
+      </Group>
+    );
+  }
+
+  return (
+    <SelectableElementInteractive onClick={onClick} {...rest}>
+      {children}
+    </SelectableElementInteractive>
+  );
+};
+
+const SelectableElementInteractive = ({
   onClick,
   children,
   ...rest
