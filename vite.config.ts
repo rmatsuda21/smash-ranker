@@ -42,6 +42,24 @@ export default defineConfig(() => {
       // "hidden" emits source maps but strips the //# sourceMappingURL comment
       // so they aren't served to end users — Sentry still uploads & uses them.
       sourcemap: shouldUploadSentry ? ("hidden" as const) : false,
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            if (!id.includes("node_modules")) return;
+            if (id.includes("/konva/") || id.includes("/react-konva/"))
+              return "konva";
+            if (
+              id.includes("/react/") ||
+              id.includes("/react-dom/") ||
+              id.includes("/scheduler/")
+            )
+              return "react";
+            if (id.includes("/@sentry/")) return "sentry";
+            if (id.includes("/posthog-js/")) return "posthog";
+            if (id.includes("/urql/") || id.includes("/@urql/")) return "urql";
+          },
+        },
+      },
     },
     plugins: [
       react({

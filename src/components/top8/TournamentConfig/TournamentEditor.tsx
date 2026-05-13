@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { debounce, isEqual } from "lodash";
+import debounce from "lodash/debounce";
+import isEqual from "lodash/isEqual";
 import cn from "classnames";
 import { msg } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
