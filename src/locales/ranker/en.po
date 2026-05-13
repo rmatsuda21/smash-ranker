@@ -334,7 +334,7 @@ msgid "City"
 msgstr ""
 
 #: src/components/predict/PredictApp/PredictApp.tsx:145
-#: src/components/results/ResultsApp/ResultsApp.tsx:205
+#: src/components/results/ResultsApp/ResultsApp.tsx:208
 #: src/components/top8/AssetSelector/AssetSelector.tsx:100
 msgid "Clear"
 msgstr ""
@@ -364,7 +364,7 @@ msgid "Color Palette"
 msgstr ""
 
 #: src/hooks/predict/useFetchPredictionEntrants.ts:241
-#: src/hooks/top8/useFetchTonamel.ts:200
+#: src/hooks/top8/useFetchTonamel.ts:202
 msgid "Competition not found"
 msgstr ""
 
@@ -376,21 +376,21 @@ msgstr ""
 msgid "Consulting Master Hand..."
 msgstr ""
 
-#: src/components/predict/ExportBar/ExportBar.tsx:59
+#: src/components/predict/ExportBar/ExportBar.tsx:100
 #: src/components/predict/InviteShareButton/InviteShareButton.tsx:26
-#: src/components/results/ResultsExportBar/ResultsExportBar.tsx:63
-#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:210
+#: src/components/results/ResultsExportBar/ResultsExportBar.tsx:122
+#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:218
 #: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:421
 msgid "Copied!"
 msgstr ""
 
-#: src/components/predict/ExportBar/ExportBar.tsx:58
-#: src/components/results/ResultsExportBar/ResultsExportBar.tsx:62
-#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:209
+#: src/components/predict/ExportBar/ExportBar.tsx:99
+#: src/components/results/ResultsExportBar/ResultsExportBar.tsx:121
+#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:217
 msgid "Copy"
 msgstr ""
 
-#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:211
+#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:219
 msgid "Copy failed"
 msgstr ""
 
@@ -410,8 +410,8 @@ msgstr ""
 msgid "Count"
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:36
-#: src/components/results/ResultsPreview/ResultsPreview.tsx:57
+#: src/components/results/ResultsApp/ResultsApp.tsx:41
+#: src/components/results/ResultsPreview/ResultsPreview.tsx:59
 msgid "Counting stocks..."
 msgstr ""
 
@@ -527,10 +527,10 @@ msgstr ""
 msgid "Done"
 msgstr ""
 
-#: src/components/predict/ExportBar/ExportBar.tsx:54
-#: src/components/results/ResultsExportBar/ResultsExportBar.tsx:58
+#: src/components/predict/ExportBar/ExportBar.tsx:95
+#: src/components/results/ResultsExportBar/ResultsExportBar.tsx:117
 #: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:93
-#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:205
+#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:213
 msgid "Download"
 msgstr ""
 
@@ -547,11 +547,11 @@ msgstr ""
 msgid "Downloaded!"
 msgstr ""
 
-#: src/components/results/SetList/SetRow.tsx:120
+#: src/components/results/SetList/SetRow.tsx:124
 msgid "DQ"
 msgstr ""
 
-#: src/components/results/ResultsPreview/ResultsPreview.tsx:59
+#: src/components/results/ResultsPreview/ResultsPreview.tsx:61
 msgid "Drawing the matchups..."
 msgstr ""
 
@@ -587,36 +587,36 @@ msgstr ""
 msgid "Failed to fetch Challonge tournament"
 msgstr ""
 
-#: src/hooks/results/useFetchPlayerResults.ts:393
+#: src/hooks/results/useFetchPlayerResults.ts:357
 msgid "Failed to fetch player results"
 msgstr ""
 
 #: src/hooks/predict/useFetchPredictionEntrants.ts:162
-#: src/hooks/results/useFetchResultsEntrantPool.ts:132
+#: src/hooks/results/useFetchResultsEntrantPool.ts:140
 msgid "Failed to fetch seeds"
 msgstr ""
 
-#: src/hooks/top8/useFetchTonamel.ts:232
+#: src/hooks/top8/useFetchTonamel.ts:235
 msgid "Failed to fetch Tonamel tournament"
 msgstr ""
 
 #: src/hooks/predict/useFetchPredictionEntrants.ts:309
-#: src/hooks/results/useFetchResultsEntrantPool.ts:219
+#: src/hooks/results/useFetchResultsEntrantPool.ts:265
 msgid "Failed to fetch tournament"
 msgstr ""
 
-#: src/hooks/top8/useFetchResult.ts:456
-#: src/hooks/top8/useFetchResult.ts:458
+#: src/hooks/top8/useFetchResult.ts:459
+#: src/hooks/top8/useFetchResult.ts:461
 msgid "Failed to fetch tournament data"
 msgstr ""
 
 #: src/components/predict/PredictionPreview/PredictionPreview.tsx:179
-#: src/components/results/ResultsPreview/ResultsPreview.tsx:253
-#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:186
+#: src/components/results/ResultsPreview/ResultsPreview.tsx:342
+#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:194
 msgid "Failed to generate image"
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:230
+#: src/components/results/ResultsApp/ResultsApp.tsx:233
 msgid "Fetching opponent data..."
 msgstr ""
 
@@ -643,7 +643,7 @@ msgid "Gamer Tag"
 msgstr ""
 
 #: src/components/predict/ActionBar/ActionBar.tsx:34
-#: src/components/results/ResultsApp/ResultsApp.tsx:232
+#: src/components/results/ResultsApp/ResultsApp.tsx:235
 msgid "Generate Graphic"
 msgstr ""
 
@@ -651,11 +651,11 @@ msgstr ""
 msgid "Generating prediction"
 msgstr ""
 
-#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:179
+#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:187
 msgid "Generating preview..."
 msgstr ""
 
-#: src/components/results/ResultsPreview/ResultsPreview.tsx:293
+#: src/components/results/ResultsPreview/ResultsPreview.tsx:382
 msgid "Generating recap"
 msgstr ""
 
@@ -663,7 +663,7 @@ msgstr ""
 msgid "Green"
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:154
+#: src/components/results/ResultsApp/ResultsApp.tsx:157
 msgid "https://start.gg/tournament/.../event/..."
 msgstr ""
 
@@ -745,18 +745,22 @@ msgstr ""
 msgid "Load Tournament?"
 msgstr ""
 
+#: src/components/results/SetList/SetRow.tsx:49
+msgid "Loading character"
+msgstr ""
+
 #: src/components/top8/SidePanel/SidePanel.tsx:88
 msgid "Loading Configs..."
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:218
+#: src/components/results/ResultsApp/ResultsApp.tsx:221
 msgid "Loading results"
 msgstr ""
 
 #: src/components/predict/PredictApp/PredictApp.tsx:106
 #: src/components/predict/PredictApp/PredictApp.tsx:158
-#: src/components/results/ResultsApp/ResultsApp.tsx:162
-#: src/components/results/ResultsApp/ResultsApp.tsx:248
+#: src/components/results/ResultsApp/ResultsApp.tsx:165
+#: src/components/results/ResultsApp/ResultsApp.tsx:251
 msgid "Loading tournament"
 msgstr ""
 
@@ -764,7 +768,7 @@ msgstr ""
 msgid "Locking in picks..."
 msgstr ""
 
-#: src/components/results/ResultsPreview/ResultsPreview.tsx:60
+#: src/components/results/ResultsPreview/ResultsPreview.tsx:62
 msgid "Locking in the recap..."
 msgstr ""
 
@@ -808,12 +812,16 @@ msgstr ""
 msgid "No assets yet"
 msgstr ""
 
-#: src/components/results/SetList/SetList.tsx:39
+#: src/components/results/SetList/SetRow.tsx:65
+msgid "No character data"
+msgstr ""
+
+#: src/components/results/SetList/SetList.tsx:40
 msgid "No completed sets found for this player."
 msgstr ""
 
 #: src/hooks/predict/useFetchPredictionEntrants.ts:141
-#: src/hooks/results/useFetchResultsEntrantPool.ts:112
+#: src/hooks/results/useFetchResultsEntrantPool.ts:121
 msgid "No phases found for this event"
 msgstr ""
 
@@ -868,7 +876,7 @@ msgstr ""
 msgid "Output: {outputWidth} × {outputHeight} px"
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:144
+#: src/components/results/ResultsApp/ResultsApp.tsx:147
 msgid "Paste a start.gg event URL, pick a player, and generate a shareable recap of their run."
 msgstr ""
 
@@ -880,7 +888,7 @@ msgstr ""
 msgid "Pick a player"
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:239
+#: src/components/results/ResultsApp/ResultsApp.tsx:242
 msgid "Pick a player to see their results."
 msgstr ""
 
@@ -921,7 +929,7 @@ msgstr ""
 msgid "Player Prefix"
 msgstr ""
 
-#: src/hooks/results/useFetchPlayerResults.ts:177
+#: src/hooks/results/useFetchPlayerResults.ts:268
 msgid "Player results not available."
 msgstr ""
 
@@ -974,7 +982,7 @@ msgid "Preview of your saved template"
 msgstr ""
 
 #: src/components/predict/PredictApp/PredictApp.tsx:31
-#: src/components/results/ResultsApp/ResultsApp.tsx:29
+#: src/components/results/ResultsApp/ResultsApp.tsx:34
 msgid "Pulling entrants..."
 msgstr ""
 
@@ -986,7 +994,7 @@ msgstr ""
 msgid "Quality"
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:31
+#: src/components/results/ResultsApp/ResultsApp.tsx:36
 msgid "Reading the bracket..."
 msgstr ""
 
@@ -994,7 +1002,7 @@ msgstr ""
 msgid "Reading the tea leaves..."
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:38
+#: src/components/results/ResultsApp/ResultsApp.tsx:43
 msgid "Recapping the run..."
 msgstr ""
 
@@ -1018,13 +1026,13 @@ msgstr ""
 msgid "Regenerate Thumbnails"
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:35
-#: src/components/results/ResultsPreview/ResultsPreview.tsx:56
+#: src/components/results/ResultsApp/ResultsApp.tsx:40
+#: src/components/results/ResultsPreview/ResultsPreview.tsx:58
 msgid "Replaying the bracket..."
 msgstr ""
 
 #: src/components/predict/PredictApp/PredictApp.tsx:34
-#: src/components/results/ResultsApp/ResultsApp.tsx:30
+#: src/components/results/ResultsApp/ResultsApp.tsx:35
 msgid "Rounding up the squad..."
 msgstr ""
 
@@ -1058,7 +1066,7 @@ msgstr ""
 msgid "Select"
 msgstr ""
 
-#: src/components/results/ResultsPreview/ResultsPreview.tsx:241
+#: src/components/results/ResultsPreview/ResultsPreview.tsx:330
 msgid "Select a player first."
 msgstr ""
 
@@ -1082,7 +1090,7 @@ msgstr ""
 msgid "Selected"
 msgstr ""
 
-#: src/components/results/SetList/SetList.tsx:58
+#: src/components/results/SetList/SetList.tsx:56
 msgid "Sets"
 msgstr ""
 
@@ -1090,7 +1098,7 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:221
+#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:229
 msgid "Share"
 msgstr ""
 
@@ -1119,7 +1127,7 @@ msgstr ""
 msgid "Square Variant"
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:169
+#: src/components/results/ResultsApp/ResultsApp.tsx:172
 msgid "start.gg only"
 msgstr ""
 
@@ -1144,12 +1152,12 @@ msgid "Switching templates will replace what you've typed. Continue?"
 msgstr ""
 
 #: src/components/predict/PredictApp/PredictApp.tsx:30
-#: src/components/results/ResultsApp/ResultsApp.tsx:28
+#: src/components/results/ResultsApp/ResultsApp.tsx:33
 msgid "Talking to the bracket gods..."
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:37
-#: src/components/results/ResultsPreview/ResultsPreview.tsx:58
+#: src/components/results/ResultsApp/ResultsApp.tsx:42
+#: src/components/results/ResultsPreview/ResultsPreview.tsx:60
 msgid "Tallying the damage..."
 msgstr ""
 
@@ -1305,17 +1313,21 @@ msgid "Tournament Name"
 msgstr ""
 
 #: src/hooks/predict/useFetchPredictionEntrants.ts:123
-#: src/hooks/results/useFetchResultsEntrantPool.ts:88
-#: src/hooks/top8/useFetchResult.ts:386
+#: src/hooks/results/useFetchResultsEntrantPool.ts:97
+#: src/hooks/top8/useFetchResult.ts:387
 msgid "Tournament not found"
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:141
+#: src/components/results/ResultsApp/ResultsApp.tsx:144
 msgid "Tournament Recap"
 msgstr ""
 
-#: src/hooks/results/useFetchResultsEntrantPool.ts:186
+#: src/hooks/results/useFetchResultsEntrantPool.ts:213
 msgid "Tournament results are start.gg-only for now. Paste a start.gg event URL to continue."
+msgstr ""
+
+#: src/components/results/ResultsPreview/ResultsPreview.tsx:357
+msgid "Tournament results graphic"
 msgstr ""
 
 #: src/consts/top8/placeholders.ts:33
@@ -1370,7 +1382,7 @@ msgstr ""
 msgid "Uploaded"
 msgstr ""
 
-#: src/components/results/SetList/SetRow.tsx:139
+#: src/components/results/SetList/SetRow.tsx:143
 msgid "vs"
 msgstr ""
 
