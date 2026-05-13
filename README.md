@@ -4,7 +4,9 @@
 
 A free, browser-based graphic generator for Super Smash Bros. tournaments. Paste a tournament URL, pick a template, smash a few buttons, and export polished Top 8 cards, tier lists, and prediction graphics ready for Twitter/X, Bluesky, and Discord. 📸
 
-🎮 No account. 🔒 No tracking. 💾 Your designs live in your browser, not our database (because there isn't one, yet).
+🎮 No account. 🔒 No tracking*. 💾 Your designs live in your browser, not our database (because there isn't one, yet).
+
+*\*Error and event logging is performed for development purposes but data is not used for advertisement or distributed*
 
 ## ✨ Features
 
