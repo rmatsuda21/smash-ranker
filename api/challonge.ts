@@ -1,11 +1,11 @@
-import "./_instrument";
+import "./_instrument.js";
 
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 
-import { respondClientError } from "./_lib/errors";
-import { assertSameOrigin } from "./_lib/origin";
-import { parseSlug } from "./_lib/validate";
-import { withLogging } from "./_lib/withLogging";
+import { respondClientError } from "./_lib/errors.js";
+import { assertSameOrigin } from "./_lib/origin.js";
+import { parseSlug } from "./_lib/validate.js";
+import { withLogging } from "./_lib/withLogging.js";
 
 const CHALLONGE_API_BASE = "https://api.challonge.com/v1";
 

@@ -1,10 +1,10 @@
-import "./_instrument";
+import "./_instrument.js";
 
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 
-import { respondClientError } from "./_lib/errors";
-import { parseImageUrl } from "./_lib/validate";
-import { withLogging } from "./_lib/withLogging";
+import { respondClientError } from "./_lib/errors.js";
+import { parseImageUrl } from "./_lib/validate.js";
+import { withLogging } from "./_lib/withLogging.js";
 
 const ALLOWED_HOSTS = [
   "assets.tonamel.com",

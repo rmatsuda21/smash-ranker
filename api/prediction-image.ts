@@ -1,4 +1,4 @@
-import "./_instrument";
+import "./_instrument.js";
 
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { readFileSync } from "fs";
@@ -8,9 +8,9 @@ import satori from "satori";
 import { Resvg } from "@resvg/resvg-js";
 import React from "react";
 
-import { BadRequestError, respondClientError } from "./_lib/errors";
-import { parseBase64UrlPayload, parseImageUrl } from "./_lib/validate";
-import { addBreadcrumb, withLogging } from "./_lib/withLogging";
+import { BadRequestError, respondClientError } from "./_lib/errors.js";
+import { parseBase64UrlPayload, parseImageUrl } from "./_lib/validate.js";
+import { addBreadcrumb, withLogging } from "./_lib/withLogging.js";
 
 const MAX_PAYLOAD_BYTES = 8 * 1024;
 const MAX_PREDICTIONS = 16;

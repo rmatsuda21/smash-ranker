@@ -1,11 +1,11 @@
-import "./_instrument";
+import "./_instrument.js";
 
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { Reason, flagsClient } from "@vercel/flags-core";
 
-import { respondClientError } from "./_lib/errors";
-import { assertSameOrigin } from "./_lib/origin";
-import { withLogging } from "./_lib/withLogging";
+import { respondClientError } from "./_lib/errors.js";
+import { assertSameOrigin } from "./_lib/origin.js";
+import { withLogging } from "./_lib/withLogging.js";
 
 // Catalogue of flags exposed to the client. Add new keys here.
 const FLAG_KEYS = ["thumbnail-enabled", "results-enabled"] as const;

@@ -1,11 +1,11 @@
-import "./_instrument";
+import "./_instrument.js";
 
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 
-import { respondClientError } from "./_lib/errors";
-import { assertSameOrigin } from "./_lib/origin";
-import { withLogging } from "./_lib/withLogging";
-import { decodeInvite, fetchTournamentMeta } from "./_lib/tournamentMeta";
+import { respondClientError } from "./_lib/errors.js";
+import { assertSameOrigin } from "./_lib/origin.js";
+import { withLogging } from "./_lib/withLogging.js";
+import { decodeInvite, fetchTournamentMeta } from "./_lib/tournamentMeta.js";
 
 const MAX_INVITE_LENGTH = 512;
 
