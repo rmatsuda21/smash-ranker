@@ -1,6 +1,6 @@
 # 🏆 Smash Ranker
 
-> _Make high quality Smash Bros. graphics look without opening up Photoshop._
+> _Make high quality Smash Bros. graphics in your browser._
 
 A free, browser-based graphic generator for Super Smash Bros. tournaments. Paste a tournament URL, pick a template, smash a few buttons, and export polished Top 8 cards, tier lists, and prediction graphics ready for Twitter/X, Bluesky, and Discord. 📸
 
