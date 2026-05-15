@@ -329,7 +329,7 @@ msgstr "Challonge APIエラー: {0}"
 msgid "Characters"
 msgstr "使用キャラ"
 
-#: src/components/top8/TournamentConfig/TournamentEditor.tsx:150
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:151
 msgid "City"
 msgstr "市区町村"
 
@@ -420,7 +420,7 @@ msgid "Counting the contenders..."
 msgstr ""
 
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:238
-#: src/components/top8/TournamentConfig/TournamentEditor.tsx:166
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:167
 msgid "Country"
 msgstr "国"
 
@@ -474,7 +474,7 @@ msgstr "自作ミニマルテンプレート"
 msgid "Dark"
 msgstr "ダーク"
 
-#: src/components/top8/TournamentConfig/TournamentEditor.tsx:121
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:122
 msgid "Date"
 msgstr "日付"
 
@@ -574,11 +574,11 @@ msgstr "start.gg、Challonge、またはTonamelの大会URLを入れてくださ
 
 #: src/components/predict/EntrantPoolPanel/EntrantPoolPanel.tsx:44
 #: src/components/predict/PredictionWorkspace/PredictionWorkspace.tsx:31
-#: src/components/top8/TournamentConfig/TournamentEditor.tsx:136
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:137
 msgid "Entrants"
 msgstr "参加人数"
 
-#: src/components/top8/TournamentConfig/TournamentEditor.tsx:112
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:113
 #: src/consts/top8/placeholders.ts:29
 msgid "Event Name"
 msgstr "イベント名"
@@ -610,7 +610,7 @@ msgstr "大会情報の取得に失敗しました"
 msgid "Failed to fetch tournament data"
 msgstr "大会データの取得に失敗しました"
 
-#: src/components/predict/PredictionPreview/PredictionPreview.tsx:179
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:180
 #: src/components/results/ResultsPreview/ResultsPreview.tsx:342
 #: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:194
 msgid "Failed to generate image"
@@ -647,7 +647,7 @@ msgstr "選手名"
 msgid "Generate Graphic"
 msgstr "画像を生成"
 
-#: src/components/predict/PredictionPreview/PredictionPreview.tsx:219
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:220
 msgid "Generating prediction"
 msgstr "予測作成中"
 
@@ -663,6 +663,10 @@ msgstr "リザルト生成中"
 msgid "Green"
 msgstr "グリーン"
 
+#: src/components/Layout/NavOverlay/NavOverlay.tsx:21
+msgid "Home"
+msgstr "ホーム"
+
 #: src/components/results/ResultsApp/ResultsApp.tsx:157
 msgid "https://start.gg/tournament/.../event/..."
 msgstr "https://start.gg/tournament/.../event/..."
@@ -671,7 +675,7 @@ msgstr "https://start.gg/tournament/.../event/..."
 msgid "Hyping up the bracket..."
 msgstr ""
 
-#: src/components/top8/TournamentConfig/TournamentEditor.tsx:88
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:89
 msgid "Icon"
 msgstr "アイコン"
 
@@ -966,6 +970,7 @@ msgstr "ポスト"
 msgid "Prediction size"
 msgstr "予想人数"
 
+#: src/components/Layout/NavOverlay/NavOverlay.tsx:34
 #: src/components/predict/PredictApp/PredictApp.tsx:87
 #: src/components/predict/PredictionListPanel/PredictionListPanel.tsx:84
 #: src/components/predict/PredictionWorkspace/PredictionWorkspace.tsx:39
@@ -993,6 +998,10 @@ msgstr "紫"
 #: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:74
 msgid "Quality"
 msgstr "品質"
+
+#: src/components/Layout/NavOverlay/NavOverlay.tsx:22
+#~ msgid "Ranker"
+#~ msgstr "ランカー"
 
 #: src/components/results/ResultsApp/ResultsApp.tsx:36
 msgid "Reading the bracket..."
@@ -1131,7 +1140,7 @@ msgstr "スクエアバリアント"
 msgid "start.gg only"
 msgstr "start.gg のみ対応"
 
-#: src/components/top8/TournamentConfig/TournamentEditor.tsx:158
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:159
 msgid "State"
 msgstr "州・都道府県"
 
@@ -1225,9 +1234,25 @@ msgstr "この大会は複数グループ制のため、統一された順位を
 msgid "This will reset all player data for this slot."
 msgstr "このスロットの選手情報がすべてリセットされます。"
 
+#: src/components/Layout/NavOverlay/NavOverlay.tsx:29
+#~ msgid "Thumbnail"
+#~ msgstr "サムネイル"
+
+#: src/components/Layout/NavOverlay/NavOverlay.tsx:30
+msgid "Thumbnail Maker"
+msgstr "サムネ作成"
+
 #: src/components/top8/SettingsPanel/ThumbnailRegenButton.tsx:31
 msgid "Thumbnails"
 msgstr "サムネイル"
+
+#: src/components/Layout/NavOverlay/NavOverlay.tsx:28
+#~ msgid "Tier List"
+#~ msgstr "ティアリスト"
+
+#: src/components/Layout/NavOverlay/NavOverlay.tsx:28
+msgid "Tier List Maker"
+msgstr "ティア表作成"
 
 #. placeholder {0}: res.status
 #: src/hooks/predict/useFetchPredictionEntrants.ts:237
@@ -1307,7 +1332,7 @@ msgstr "大会住所"
 msgid "Tournament name"
 msgstr "大会名"
 
-#: src/components/top8/TournamentConfig/TournamentEditor.tsx:104
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:105
 #: src/consts/top8/placeholders.ts:28
 msgid "Tournament Name"
 msgstr "大会名"
@@ -1318,6 +1343,11 @@ msgstr "大会名"
 msgid "Tournament not found"
 msgstr "大会が見つかりませんでした"
 
+#: src/components/Layout/NavOverlay/NavOverlay.tsx:22
+msgid "Tournament Ranker"
+msgstr "リザルト作成"
+
+#: src/components/Layout/NavOverlay/NavOverlay.tsx:24
 #: src/components/results/ResultsApp/ResultsApp.tsx:144
 msgid "Tournament Recap"
 msgstr "大会振り返り"
@@ -1335,7 +1365,7 @@ msgid "Tournament State"
 msgstr "大会都道府県"
 
 #: src/components/shared/TournamentUrlInput/TournamentUrlInput.tsx:52
-#: src/components/top8/TournamentConfig/TournamentEditor.tsx:175
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:176
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:83
 #: src/consts/top8/placeholders.ts:35
 #: src/utils/social/templateTokens.ts:15

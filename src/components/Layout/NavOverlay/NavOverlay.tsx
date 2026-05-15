@@ -1,6 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Link, useLocation } from "wouter";
+import { msg } from "@lingui/core/macro";
+import { useLingui } from "@lingui/react";
+import type { MessageDescriptor } from "@lingui/core";
 import cn from "classnames";
 
 import { useFeatureFlag } from "@/hooks/useFeatureFlags";
@@ -9,22 +12,26 @@ import { SiteFooter } from "@/components/shared/SiteFooter/SiteFooter";
 import styles from "./NavOverlay.module.scss";
 
 type NavItem = {
-  label: string;
+  label: MessageDescriptor;
   href: string;
   flag?: "thumbnail-enabled" | "results-enabled";
 };
 
 const NAV_ITEMS: NavItem[] = [
-  { label: "Home", href: "/" },
-  { label: "Ranker", href: "/ranker" },
+  { label: msg`Home`, href: "/" },
+  { label: msg`Tournament Ranker`, href: "/ranker" },
   {
-    label: "Tournament Recap",
+    label: msg`Tournament Recap`,
     href: "/results",
     flag: "results-enabled",
   },
-  { label: "Tier List", href: "/tier" },
-  { label: "Thumbnail", href: "/thumbnail", flag: "thumbnail-enabled" },
-  { label: "Predictions", href: "/predict" },
+  { label: msg`Tier List Maker`, href: "/tier" },
+  {
+    label: msg`Thumbnail Maker`,
+    href: "/thumbnail",
+    flag: "thumbnail-enabled",
+  },
+  { label: msg`Predictions`, href: "/predict" },
 ];
 
 type Props = {
@@ -34,6 +41,7 @@ type Props = {
 
 export const NavOverlay = ({ isOpen, onClose }: Props) => {
   const [location] = useLocation();
+  const { _ } = useLingui();
   const [renderState, setRenderState] = useState<"closed" | "open" | "closing">(
     "closed",
   );
@@ -105,7 +113,7 @@ export const NavOverlay = ({ isOpen, onClose }: Props) => {
             onClick={onClose}
             style={{ "--stagger": i } as React.CSSProperties}
           >
-            {item.label}
+            {_(item.label)}
           </Link>
         ))}
       </nav>
