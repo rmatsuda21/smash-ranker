@@ -298,71 +298,6 @@ function ordinal(n: number): string {
   return s[(v - 20) % 10] || s[v] || s[0];
 }
 
-// Placement row in the player summary band. Font size matches the player
-// tag (19px) so the placement and the name sit at the same visual weight,
-// with a smaller "of {numEntrants}" suffix.
-function buildPlacementRow(
-  placement: number,
-  numEntrants: number,
-  palette: PredictionPalette,
-): React.ReactElement {
-  if (!placement) {
-    return h(
-      "div",
-      {
-        style: {
-          display: "flex",
-          alignItems: "baseline",
-          fontSize: 19,
-          fontWeight: 800,
-          color: palette.textPrimary,
-          letterSpacing: 0.2,
-        },
-      },
-      "—",
-    );
-  }
-  return h(
-    "div",
-    {
-      style: {
-        display: "flex",
-        flexDirection: "row" as const,
-        alignItems: "baseline",
-        gap: 5,
-      },
-    },
-    h(
-      "div",
-      {
-        style: {
-          display: "flex",
-          fontSize: 19,
-          fontWeight: 800,
-          color: palette.textPrimary,
-          lineHeight: 1,
-          letterSpacing: 0.2,
-        },
-      },
-      `${placement}${ordinal(placement)}`,
-    ),
-    numEntrants > 0
-      ? h(
-          "div",
-          {
-            style: {
-              display: "flex",
-              fontSize: 12,
-              fontWeight: 500,
-              color: palette.textMuted,
-            },
-          },
-          `/ ${numEntrants}`,
-        )
-      : null,
-  );
-}
-
 // Bottom stats row: "{W}-{L} record · seed {N} {+Δ}". The seed delta is inline
 // text (not a pill), color-coded: accent for positive, warm red for negative,
 // muted for even/missing.
@@ -823,6 +758,12 @@ function buildSetRow(
             alignItems: "center",
             justifyContent: "center",
             flexShrink: 0,
+            // Fixed footprint so "DQ" (narrow) and "X - Y" (wider) occupy the
+            // same horizontal space and the character icons on either side
+            // stay aligned across rows. Sized to comfortably fit common
+            // single-digit scores like "2 - 1"; wider scores will grow beyond
+            // this min, which is acceptable.
+            minWidth: 48,
             fontSize: 17,
             fontWeight: 800,
             letterSpacing: 0.4,
@@ -1122,9 +1063,10 @@ function buildGraphic(
       ),
     ),
     // Player summary band — single row: [flag + name] on the left (flex:1,
-    // ellipsizes) and a stacked stats column on the right (placement on top,
-    // record/seed below). Vertically centered so the name aligns to the
-    // visual midline of the taller right column.
+    // ellipsizes) and a stacked stats column on the right (placement stamp on
+    // top, record/seed below). Differentiates from set-row chrome (which uses
+    // a left-border accent) with a full-perimeter subtle border and an
+    // accent-tinted placement stamp pill.
     h(
       "div",
       {
@@ -1133,11 +1075,11 @@ function buildGraphic(
           flexDirection: "row" as const,
           alignItems: "center",
           gap: 14,
-          margin: "0 16px 12px",
-          padding: "10px 14px 12px",
-          borderRadius: 10,
-          backgroundColor: "rgba(255,255,255,0.04)",
-          borderLeft: `3px solid ${palette.accent}`,
+          margin: "0 16px 14px",
+          padding: "12px 14px 12px",
+          borderRadius: 12,
+          backgroundColor: "rgba(255,255,255,0.03)",
+          border: `1px solid ${palette.borderSubtle}`,
         },
       },
       // Left: avatar + tag column (flag + prefix inline on top row, name below)
@@ -1255,7 +1197,9 @@ function buildGraphic(
             )
           : null,
       ),
-      // Right: stats column (placement / record · seed · delta)
+      // Right: stats column. Placement is rendered as an accent-tinted stamp
+      // pill (replaces the previous flat "Nth / M" row — set rows are
+      // unaffected); record/seed sits below it.
       h(
         "div",
         {
@@ -1263,11 +1207,69 @@ function buildGraphic(
             display: "flex",
             flexDirection: "column" as const,
             alignItems: "flex-end",
-            gap: 4,
+            gap: 6,
             flexShrink: 0,
           },
         },
-        buildPlacementRow(player.placement, body.numEntrants, palette),
+        player.placement
+          ? h(
+              "div",
+              {
+                style: {
+                  display: "flex",
+                  flexDirection: "row" as const,
+                  alignItems: "baseline",
+                  gap: 4,
+                  paddingTop: 4,
+                  paddingBottom: 4,
+                  paddingLeft: 10,
+                  paddingRight: 10,
+                  borderRadius: 999,
+                  backgroundColor: palette.accentRowBg,
+                },
+              },
+              h(
+                "div",
+                {
+                  style: {
+                    display: "flex",
+                    fontSize: 18,
+                    fontWeight: 800,
+                    color: palette.accent,
+                    lineHeight: 1,
+                    letterSpacing: 0.2,
+                  },
+                },
+                `${player.placement}${ordinal(player.placement)}`,
+              ),
+              body.numEntrants > 0
+                ? h(
+                    "div",
+                    {
+                      style: {
+                        display: "flex",
+                        fontSize: 11,
+                        fontWeight: 500,
+                        color: palette.accent,
+                        opacity: 0.7,
+                      },
+                    },
+                    `/ ${body.numEntrants}`,
+                  )
+                : null,
+            )
+          : h(
+              "div",
+              {
+                style: {
+                  display: "flex",
+                  fontSize: 19,
+                  fontWeight: 800,
+                  color: palette.textPrimary,
+                },
+              },
+              "—",
+            ),
         buildRecordSeedRow(player, palette),
       ),
     ),
