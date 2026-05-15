@@ -1,0 +1,138 @@
+@use "@/_theme" as *;
+
+.root {
+  display: grid;
+  grid-template-columns: minmax(0, 320px) minmax(0, 1fr);
+  gap: var(--space-4);
+  flex: 1;
+  min-height: 0;
+
+  @include mobile {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    gap: 0;
+  }
+}
+
+// Mobile tab bar — hidden on desktop
+.tabs {
+  display: none;
+
+  @include mobile {
+    display: flex;
+    gap: 0;
+    border-bottom: 2px solid var(--border);
+    flex-shrink: 0;
+  }
+}
+
+.tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-2);
+  border: none;
+  background: none;
+  color: var(--fg-4);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  cursor: pointer;
+  position: relative;
+  transition: color var(--duration-base) var(--ease-standard);
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: transparent;
+    transition: background var(--duration-base) var(--ease-standard);
+  }
+
+  &.active {
+    color: var(--accent-9);
+
+    &::after {
+      background: var(--accent-9);
+    }
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
+
+.panel {
+  min-width: 0;
+
+  @include mobile {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    padding-top: var(--space-3);
+    position: relative;
+  }
+}
+
+.pickerPanel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.resultsPanel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: var(--space-1);
+}
+
+.hiddenMobile {
+  @include mobile {
+    display: none;
+  }
+}
+
+// Sticky CTA — pinned to the bottom of the scrolling results column so the
+// Generate button stays visible while a player has a long set list. The
+// gradient fades content scrolling behind it into the page background
+// rather than letting set rows bleed up to the button edge.
+.generateBar {
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  margin-top: auto;
+  padding: var(--space-4) 0 var(--space-3);
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    var(--bg-app) 45%,
+    var(--bg-app) 100%
+  );
+
+  > button {
+    min-width: 200px;
+  }
+}
+
+.placeholder {
+  color: var(--fg-4);
+  font-size: var(--font-size-sm);
+  text-align: center;
+  padding: var(--space-10) var(--space-3);
+  background: var(--gray-2);
+  border-radius: var(--radius-lg);
+  border: 1px dashed var(--border);
+}
