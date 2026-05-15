@@ -520,7 +520,7 @@ function buildGraphic(
         style: {
           display: "flex",
           justifyContent: "center",
-          padding: "8px 16px",
+          padding: "3px 16px",
           fontSize: 9,
           fontWeight: 400,
           color: palette.textFooter,
@@ -540,7 +540,7 @@ function estimateHeight(predictionCount: number): number {
   const listPadding = 16;
   const rowHeight = 38;
   const rowGap = 3;
-  const footer = 34;
+  const footer = 24;
   return (
     header +
     subtitle +

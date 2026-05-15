@@ -1315,7 +1315,7 @@ function buildGraphic(
         style: {
           display: "flex",
           justifyContent: "center",
-          padding: "8px 16px",
+          padding: "3px 16px",
           fontSize: 9,
           fontWeight: 400,
           color: palette.textFooter,
