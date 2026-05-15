@@ -19,13 +19,13 @@ type NavItem = {
 
 const NAV_ITEMS: NavItem[] = [
   { label: msg`Home`, href: "/" },
-  { label: msg`Tournament Ranker`, href: "/ranker" },
+  { label: msg`Ranker`, href: "/ranker" },
   {
-    label: msg`Tournament Recap`,
+    label: msg`Recap`,
     href: "/results",
     flag: "results-enabled",
   },
-  { label: msg`Tier List Maker`, href: "/tier" },
+  { label: msg`Tier List`, href: "/tier" },
   {
     label: msg`Thumbnail Maker`,
     href: "/thumbnail",
