@@ -334,7 +334,7 @@ msgid "City"
 msgstr "市区町村"
 
 #: src/components/predict/PredictApp/PredictApp.tsx:145
-#: src/components/results/ResultsApp/ResultsApp.tsx:208
+#: src/components/results/ResultsApp/ResultsApp.tsx:209
 #: src/components/top8/AssetSelector/AssetSelector.tsx:100
 msgid "Clear"
 msgstr "クリア"
@@ -410,7 +410,7 @@ msgstr "画像をコピー"
 msgid "Count"
 msgstr "人数"
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:41
+#: src/components/results/ResultsApp/ResultsApp.tsx:40
 #: src/components/results/ResultsPreview/ResultsPreview.tsx:59
 msgid "Counting stocks..."
 msgstr "ストックを数えています..."
@@ -574,6 +574,7 @@ msgstr "start.gg、Challonge、またはTonamelの大会URLを入れてくださ
 
 #: src/components/predict/EntrantPoolPanel/EntrantPoolPanel.tsx:44
 #: src/components/predict/PredictionWorkspace/PredictionWorkspace.tsx:31
+#: src/components/results/ResultsWorkspace/ResultsWorkspace.tsx:53
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:137
 msgid "Entrants"
 msgstr "参加人数"
@@ -616,7 +617,7 @@ msgstr "大会データの取得に失敗しました"
 msgid "Failed to generate image"
 msgstr "画像の生成に失敗しました"
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:233
+#: src/components/results/ResultsWorkspace/ResultsWorkspace.tsx:93
 msgid "Fetching opponent data..."
 msgstr "対戦相手のデータを取得中..."
 
@@ -643,7 +644,7 @@ msgid "Gamer Tag"
 msgstr "選手名"
 
 #: src/components/predict/ActionBar/ActionBar.tsx:34
-#: src/components/results/ResultsApp/ResultsApp.tsx:235
+#: src/components/results/ResultsWorkspace/ResultsWorkspace.tsx:95
 msgid "Generate Graphic"
 msgstr "画像を生成"
 
@@ -667,7 +668,7 @@ msgstr "グリーン"
 msgid "Home"
 msgstr "ホーム"
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:157
+#: src/components/results/ResultsApp/ResultsApp.tsx:158
 msgid "https://start.gg/tournament/.../event/..."
 msgstr "https://start.gg/tournament/.../event/..."
 
@@ -757,14 +758,14 @@ msgstr "キャラクター読み込み中"
 msgid "Loading Configs..."
 msgstr "読み込み中..."
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:221
+#: src/components/results/ResultsWorkspace/ResultsWorkspace.tsx:81
 msgid "Loading results"
 msgstr "リザルト読み込み中"
 
 #: src/components/predict/PredictApp/PredictApp.tsx:106
 #: src/components/predict/PredictApp/PredictApp.tsx:158
-#: src/components/results/ResultsApp/ResultsApp.tsx:165
-#: src/components/results/ResultsApp/ResultsApp.tsx:251
+#: src/components/results/ResultsApp/ResultsApp.tsx:166
+#: src/components/results/ResultsApp/ResultsApp.tsx:226
 msgid "Loading tournament"
 msgstr "大会読み込み中"
 
@@ -880,7 +881,7 @@ msgstr "元コンセプトとインスピレーション"
 msgid "Output: {outputWidth} × {outputHeight} px"
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:147
+#: src/components/results/ResultsApp/ResultsApp.tsx:148
 msgid "Paste a start.gg event URL, pick a player, and generate a shareable recap of their run."
 msgstr "start.ggのイベントURLを貼り付けて選手を選び、共有できるリザルト画像を作成しよう。"
 
@@ -892,7 +893,7 @@ msgstr "大会URLを貼り付けて順位を予想し、予想を共有しまし
 msgid "Pick a player"
 msgstr "選手を選択"
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:242
+#: src/components/results/ResultsWorkspace/ResultsWorkspace.tsx:102
 msgid "Pick a player to see their results."
 msgstr "選手を選んでリザルトを表示。"
 
@@ -987,7 +988,7 @@ msgid "Preview of your saved template"
 msgstr ""
 
 #: src/components/predict/PredictApp/PredictApp.tsx:31
-#: src/components/results/ResultsApp/ResultsApp.tsx:34
+#: src/components/results/ResultsApp/ResultsApp.tsx:33
 msgid "Pulling entrants..."
 msgstr "出場選手を取得中..."
 
@@ -1000,10 +1001,10 @@ msgid "Quality"
 msgstr "品質"
 
 #: src/components/Layout/NavOverlay/NavOverlay.tsx:22
-#~ msgid "Ranker"
-#~ msgstr "ランカー"
+msgid "Ranker"
+msgstr "リザルト作成"
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:36
+#: src/components/results/ResultsApp/ResultsApp.tsx:35
 msgid "Reading the bracket..."
 msgstr "ブラケットを確認中..."
 
@@ -1011,7 +1012,11 @@ msgstr "ブラケットを確認中..."
 msgid "Reading the tea leaves..."
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:43
+#: src/components/Layout/NavOverlay/NavOverlay.tsx:24
+msgid "Recap"
+msgstr "大会振り返り"
+
+#: src/components/results/ResultsApp/ResultsApp.tsx:42
 msgid "Recapping the run..."
 msgstr "リザルトを振り返り中..."
 
@@ -1035,13 +1040,17 @@ msgstr "テンプレートのプレビュー画像をすべて再生成します
 msgid "Regenerate Thumbnails"
 msgstr "サムネイルを再生成"
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:40
+#: src/components/results/ResultsApp/ResultsApp.tsx:39
 #: src/components/results/ResultsPreview/ResultsPreview.tsx:58
 msgid "Replaying the bracket..."
 msgstr "ブラケットを再生中..."
 
+#: src/components/results/ResultsWorkspace/ResultsWorkspace.tsx:62
+msgid "Results"
+msgstr ""
+
 #: src/components/predict/PredictApp/PredictApp.tsx:34
-#: src/components/results/ResultsApp/ResultsApp.tsx:35
+#: src/components/results/ResultsApp/ResultsApp.tsx:34
 msgid "Rounding up the squad..."
 msgstr "メンバーを集合中..."
 
@@ -1136,7 +1145,7 @@ msgstr "容量"
 msgid "Square Variant"
 msgstr "スクエアバリアント"
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:172
+#: src/components/results/ResultsApp/ResultsApp.tsx:173
 msgid "start.gg only"
 msgstr "start.gg のみ対応"
 
@@ -1161,11 +1170,11 @@ msgid "Switching templates will replace what you've typed. Continue?"
 msgstr "テンプレートを切り替えると、入力した内容が置き換えられます。続行しますか？"
 
 #: src/components/predict/PredictApp/PredictApp.tsx:30
-#: src/components/results/ResultsApp/ResultsApp.tsx:33
+#: src/components/results/ResultsApp/ResultsApp.tsx:32
 msgid "Talking to the bracket gods..."
 msgstr "ブラケットの神に祈り中..."
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:42
+#: src/components/results/ResultsApp/ResultsApp.tsx:41
 #: src/components/results/ResultsPreview/ResultsPreview.tsx:60
 msgid "Tallying the damage..."
 msgstr "ダメージを集計中..."
@@ -1247,12 +1256,12 @@ msgid "Thumbnails"
 msgstr "サムネイル"
 
 #: src/components/Layout/NavOverlay/NavOverlay.tsx:28
-#~ msgid "Tier List"
-#~ msgstr "ティアリスト"
+msgid "Tier List"
+msgstr "ティア表作成"
 
 #: src/components/Layout/NavOverlay/NavOverlay.tsx:28
-msgid "Tier List Maker"
-msgstr "ティア表作成"
+#~ msgid "Tier List Maker"
+#~ msgstr "ティア表作成"
 
 #. placeholder {0}: res.status
 #: src/hooks/predict/useFetchPredictionEntrants.ts:237
@@ -1344,11 +1353,10 @@ msgid "Tournament not found"
 msgstr "大会が見つかりませんでした"
 
 #: src/components/Layout/NavOverlay/NavOverlay.tsx:22
-msgid "Tournament Ranker"
-msgstr "リザルト作成"
+#~ msgid "Tournament Ranker"
+#~ msgstr "リザルト作成"
 
-#: src/components/Layout/NavOverlay/NavOverlay.tsx:24
-#: src/components/results/ResultsApp/ResultsApp.tsx:144
+#: src/components/results/ResultsApp/ResultsApp.tsx:145
 msgid "Tournament Recap"
 msgstr "大会振り返り"
 
