@@ -1,7 +1,7 @@
 import "./_instrument.js";
 
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { Reason, flagsClient } from "@vercel/flags-core";
+import { Reason, createClient } from "@vercel/flags-core";
 
 import { respondClientError } from "./_lib/errors.js";
 import { assertSameOrigin } from "./_lib/origin.js";
@@ -23,6 +23,27 @@ type DebugEntry = {
   errorMessage?: string;
 };
 
+const EVALUATE_TIMEOUT_MS = 2500;
+
+// Hoisted to module scope so Fluid Compute reuses the in-memory datafile
+// across requests on a warm instance — only the first call pays the fetch
+// cost. `stream: false, polling: false` switches the controller to one-shot
+// fetch mode, which is the right shape for a stateless serverless function.
+const client = process.env.FLAGS
+  ? createClient(process.env.FLAGS, { stream: false, polling: false })
+  : null;
+
+const withTimeout = <T>(p: Promise<T>, ms: number): Promise<T> =>
+  Promise.race([
+    p,
+    new Promise<T>((_, reject) =>
+      setTimeout(
+        () => reject(new Error(`evaluate timed out after ${ms}ms`)),
+        ms,
+      ),
+    ),
+  ]);
+
 const handler = async (req: VercelRequest, res: VercelResponse) => {
   try {
     assertSameOrigin(req);
@@ -40,7 +61,7 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
 
   const debug = req.query.debug === "1";
 
-  if (!process.env.FLAGS) {
+  if (!client) {
     console.warn("[flags] FLAGS env var missing; returning defaults");
     return res.json(
       debug
@@ -65,7 +86,10 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
         // value undefined when the flag can't be resolved (cold start, missing
         // from embedded snapshot, etc.). The returned object always carries
         // `reason` and optionally `errorMessage` for diagnostics.
-        const result = await flagsClient.evaluate<boolean>(key, DEFAULTS[key]);
+        const result = await withTimeout(
+          client.evaluate<boolean>(key, DEFAULTS[key]),
+          EVALUATE_TIMEOUT_MS,
+        );
         out[key] = Boolean(result.value);
         debugInfo[key] = {
           value: out[key],
