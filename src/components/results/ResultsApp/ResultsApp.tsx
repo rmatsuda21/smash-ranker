@@ -14,9 +14,7 @@ import { useResultsStore } from "@/store/resultsStore";
 import { useFetchResultsEntrantPool } from "@/hooks/results/useFetchResultsEntrantPool";
 import { useFetchPlayerResults } from "@/hooks/results/useFetchPlayerResults";
 import { useFetchPlayerFallbackCharacter } from "@/hooks/results/useFetchPlayerFallbackCharacter";
-import { EntrantPicker } from "@/components/results/EntrantPicker/EntrantPicker";
-import { PlayerSummary } from "@/components/results/PlayerSummary/PlayerSummary";
-import { SetList } from "@/components/results/SetList/SetList";
+import { ResultsWorkspace } from "@/components/results/ResultsWorkspace/ResultsWorkspace";
 import {
   ResultsPreview,
   type ResultsPreviewCache,
@@ -213,40 +211,14 @@ export const ResultsApp = () => {
           </div>
         </div>
 
-        <div className={styles.split}>
-          <div className={styles.pickerColumn}>
-            <EntrantPicker onSelect={(entrant) => handleSelect(entrant.id)} />
-          </div>
-          <div className={styles.resultsColumn}>
-            {fetchingResults && !playerResults && (
-              <FetchingState
-                mode="inline"
-                heading={<Trans>Loading results</Trans>}
-                taglines={PLAYER_TAGLINES}
-              />
-            )}
-            {playerResults && (
-              <>
-                <PlayerSummary />
-                <SetList />
-                <div className={styles.generateBar}>
-                  <Button
-                    onClick={handleGenerate}
-                    loading={fetchingResults || !fallbacksReady}
-                    loadingText={<Trans>Fetching opponent data...</Trans>}
-                  >
-                    <Trans>Generate Graphic</Trans>
-                  </Button>
-                </div>
-              </>
-            )}
-            {!fetchingResults && !playerResults && (
-              <div className={styles.placeholder}>
-                <Trans>Pick a player to see their results.</Trans>
-              </div>
-            )}
-          </div>
-        </div>
+        <ResultsWorkspace
+          onSelectEntrant={handleSelect}
+          onGenerate={handleGenerate}
+          fetchingResults={fetchingResults}
+          playerResults={playerResults}
+          fallbacksReady={fallbacksReady}
+          playerTaglines={PLAYER_TAGLINES}
+        />
 
         {fetchingPool && (
           <FetchingState
