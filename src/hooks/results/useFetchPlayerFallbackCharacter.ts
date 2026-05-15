@@ -14,6 +14,13 @@ import {
 // we can get from one query.
 const RECENT_STANDINGS_LIMIT = 20;
 
+// Cap how long we wait for a fallback character before giving up and writing
+// null ("no character"). The fallback is best-effort decoration on top of an
+// already-rendered set list — letting a single slow entrant block the
+// fallbacks-ready gate (and therefore the preview render) is worse than
+// shipping the graphic with one missing icon.
+const FALLBACK_FETCH_TIMEOUT_MS = 5000;
+
 const PlayerFallbackCharacterQueryDoc = graphql(`
   query PlayerFallbackCharacter(
     $entrantId: ID!
@@ -65,12 +72,33 @@ export const useFetchPlayerFallbackCharacter = () => {
   ) => {
     // `resolve` marks the slot as fetched (writes either an id or null).
     // `null` means "fetched but no data" — distinct from "not yet fetched"
-    // (key missing entirely), which keeps the shimmer visible.
-    const resolve = (characterId: string | null) =>
+    // (key missing entirely), which keeps the shimmer visible. Guarded by
+    // `done` so the timeout race can't be undone by a late-arriving response.
+    let done = false;
+    let timer: ReturnType<typeof setTimeout> | null = null;
+    const resolve = (characterId: string | null) => {
+      if (done) return;
+      done = true;
+      if (timer) clearTimeout(timer);
       dispatch({
         type: "FETCH_FALLBACK_SUCCESS",
         payload: { entrantId, characterId },
       });
+    };
+
+    timer = setTimeout(() => {
+      if (done) return;
+      logWarning("results fallback-character fetch timed out", {
+        area: "results-fetch",
+        tournament_platform: "startgg",
+        tournament_url: useResultsStore.getState().tournamentUrl,
+        videogame_id: videogameId,
+        entrant_id: entrantId,
+        player_id: playerId,
+        timeout_ms: FALLBACK_FETCH_TIMEOUT_MS,
+      });
+      resolve(null);
+    }, FALLBACK_FETCH_TIMEOUT_MS);
 
     // 1. Try the better-gg snapshot first. Saves a start.gg round trip
     //    and query-complexity budget when the player is in the dataset.
@@ -160,7 +188,13 @@ export const useFetchPlayerFallbackCharacter = () => {
         error: message,
       });
       // Intentionally don't write null on transient errors — leaving the
-      // slot un-keyed lets a future fetch retry.
+      // slot un-keyed lets a future fetch retry. Clear the pending timer
+      // too, so the retry path isn't clobbered by a stale timeout firing
+      // FALLBACK_FETCH_TIMEOUT_MS later.
+      if (timer) {
+        clearTimeout(timer);
+        timer = null;
+      }
     }
   };
 
