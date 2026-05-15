@@ -27,12 +27,29 @@ export const lookupFallbackCharacterId = (
 ): string | null | undefined =>
   hasFallbackEntry(map, entrantId) ? map[entrantId] : undefined;
 
-// True when every entrant we care about (the selected player + every
-// unique opponent they faced) has a resolved entry. Used to keep the
-// Generate Graphic button in its loading state until the rendered PNG
-// won't miss fallback icons. Short-circuits when there's no player or
-// no videogameId — the fan-out effect doesn't fire in those cases, so
-// blocking forever would be wrong.
+// The set of entrants whose fallback character actually affects render
+// output: those with at least one set where their side's character list
+// is empty. Entrants whose every set has recorded selections never have
+// their fallback id read (CharacterStack short-circuits), so fetching
+// it is pure overhead.
+export const getEntrantsNeedingFallback = (
+  player: PlayerTournamentResults | null,
+): Set<string> => {
+  const needs = new Set<string>();
+  if (!player) return needs;
+  for (const set of player.sets) {
+    if (set.selfCharacters.length === 0) needs.add(player.entrantId);
+    const oppId = set.opponent.id;
+    if (oppId && set.opponent.characters.length === 0) needs.add(oppId);
+  }
+  return needs;
+};
+
+// True when every entrant whose fallback would actually be rendered has
+// a resolved entry. Used to keep the Generate Graphic button in its
+// loading state until the rendered PNG won't miss fallback icons.
+// Short-circuits when there's no player or no videogameId — the fan-out
+// effect doesn't fire in those cases, so blocking forever would be wrong.
 export const allFallbacksLoaded = (
   player: PlayerTournamentResults | null,
   map: FallbackCharacterMap,
@@ -40,12 +57,7 @@ export const allFallbacksLoaded = (
 ): boolean => {
   if (!player) return true;
   if (!videogameId) return true;
-  if (!hasFallbackEntry(map, player.entrantId)) return false;
-  const seen = new Set<string>([player.entrantId]);
-  for (const set of player.sets) {
-    const id = set.opponent.id;
-    if (!id || seen.has(id)) continue;
-    seen.add(id);
+  for (const id of getEntrantsNeedingFallback(player)) {
     if (!hasFallbackEntry(map, id)) return false;
   }
   return true;

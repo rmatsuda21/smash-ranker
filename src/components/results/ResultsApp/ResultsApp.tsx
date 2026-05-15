@@ -23,6 +23,7 @@ import {
 } from "@/components/results/ResultsPreview/ResultsPreview";
 import {
   allFallbacksLoaded,
+  getEntrantsNeedingFallback,
   hasFallbackEntry,
 } from "@/utils/results/fallbackCharacters";
 import { logEvent } from "@/utils/observability/log";
@@ -79,22 +80,24 @@ export const ResultsApp = () => {
     fetchPlayerResults(selectedEntrantId);
   }, [selectedEntrantId, playerResults, fetchingResults, fetchPlayerResults]);
 
-  // Fan out fallback-character fetches for the selected player AND every
-  // unique opponent once playerResults lands. The fetch hook prefers the
-  // better-gg snapshot (via playerId) over start.gg's recentStandings.
+  // Fan out fallback-character fetches only for entrants whose fallback
+  // would actually be rendered — i.e. those with at least one set where
+  // their side's character list is empty. When every set has recorded
+  // selections, no network call fires and the gate below is satisfied
+  // immediately.
   useEffect(() => {
     if (!videogameId || !playerResults) return;
-    const fire = (entrantId: string, playerId: string | undefined) => {
-      if (hasFallbackEntry(fallbackCharacters, entrantId)) return;
-      fetchFallback(entrantId, videogameId, playerId);
-    };
-    fire(playerResults.entrantId, playerResults.playerId);
-    const seen = new Set<string>([playerResults.entrantId]);
+    const needs = getEntrantsNeedingFallback(playerResults);
+    if (needs.size === 0) return;
+    const playerIdByEntrant = new Map<string, string | undefined>();
+    playerIdByEntrant.set(playerResults.entrantId, playerResults.playerId);
     for (const set of playerResults.sets) {
-      const oppId = set.opponent.id;
-      if (!oppId || seen.has(oppId)) continue;
-      seen.add(oppId);
-      fire(oppId, set.opponent.playerId);
+      if (!set.opponent.id || playerIdByEntrant.has(set.opponent.id)) continue;
+      playerIdByEntrant.set(set.opponent.id, set.opponent.playerId);
+    }
+    for (const entrantId of needs) {
+      if (hasFallbackEntry(fallbackCharacters, entrantId)) continue;
+      fetchFallback(entrantId, videogameId, playerIdByEntrant.get(entrantId));
     }
   }, [playerResults, videogameId, fallbackCharacters, fetchFallback]);
 
