@@ -1,0 +1,16 @@
+.gate {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-max);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-surface);
+  opacity: 1;
+  transition: opacity var(--fade-duration, 300ms) var(--ease-out);
+}
+
+.leaving {
+  opacity: 0;
+  pointer-events: none;
+}

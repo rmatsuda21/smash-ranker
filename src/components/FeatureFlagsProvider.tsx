@@ -3,24 +3,46 @@ import { useEffect, useMemo, useState, type ReactNode } from "react";
 import {
   DEFAULT_FLAGS,
   FlagsContext,
+  FlagsLoadingContext,
   type FeatureFlags,
 } from "@/hooks/useFeatureFlags";
 import { logWarning } from "@/utils/observability/log";
 
 const FLAGS_ENDPOINT = "/api/flags";
+const FLAGS_FETCH_TIMEOUT_MS = 2500;
+
+const FORCE_LOADING_IN_DEV = true;
+const shouldFetchFlags = !import.meta.env.DEV || FORCE_LOADING_IN_DEV;
 
 export const FeatureFlagsProvider = ({ children }: { children: ReactNode }) => {
   const [flags, setFlags] = useState<FeatureFlags>(DEFAULT_FLAGS);
+  const [loading, setLoading] = useState<boolean>(shouldFetchFlags);
 
   useEffect(() => {
-    // Plain `bun dev` has no `/api/flags` handler (only `dev:vercel` does), and
-    // DEFAULT_FLAGS are the intended source of truth in dev (see
-    // useFeatureFlags.ts). Skip the fetch so the expected "endpoint
-    // unreachable" warning doesn't fire on the happy path.
-    if (import.meta.env.DEV) return;
+    if (!shouldFetchFlags) return;
 
-    let cancelled = false;
-    fetch(FLAGS_ENDPOINT, { credentials: "same-origin" })
+    let settled = false;
+    const controller = new AbortController();
+    const finalize = () => {
+      if (settled) return;
+      settled = true;
+      window.clearTimeout(timeoutId);
+      setLoading(false);
+    };
+
+    const timeoutId = window.setTimeout(() => {
+      if (settled) return;
+      controller.abort();
+      logWarning("feature flags fetch timed out", {
+        timeoutMs: FLAGS_FETCH_TIMEOUT_MS,
+      });
+      finalize();
+    }, FLAGS_FETCH_TIMEOUT_MS);
+
+    fetch(FLAGS_ENDPOINT, {
+      credentials: "same-origin",
+      signal: controller.signal,
+    })
       .then(async (r) => {
         if (!r.ok) {
           logWarning("feature flags endpoint returned non-OK", {
@@ -31,21 +53,32 @@ export const FeatureFlagsProvider = ({ children }: { children: ReactNode }) => {
         return r.json();
       })
       .then((data: Partial<FeatureFlags> | null) => {
-        if (cancelled || !data) return;
-        setFlags((prev) => ({ ...prev, ...data }));
+        if (settled) return;
+        if (data) setFlags((prev) => ({ ...prev, ...data }));
+        finalize();
       })
       .catch((error) => {
+        if (settled) return;
         logWarning("feature flags endpoint unreachable", {
           error: error instanceof Error ? error.message : String(error),
         });
+        finalize();
       });
+
     return () => {
-      cancelled = true;
+      settled = true;
+      window.clearTimeout(timeoutId);
+      controller.abort();
     };
   }, []);
 
-  const value = useMemo(() => flags, [flags]);
+  const flagsValue = useMemo(() => flags, [flags]);
+
   return (
-    <FlagsContext.Provider value={value}>{children}</FlagsContext.Provider>
+    <FlagsContext.Provider value={flagsValue}>
+      <FlagsLoadingContext.Provider value={loading}>
+        {children}
+      </FlagsLoadingContext.Provider>
+    </FlagsContext.Provider>
   );
 };

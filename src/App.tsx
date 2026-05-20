@@ -1,5 +1,6 @@
 import { SpeedInsights } from "@vercel/speed-insights/react";
 
+import { AppLoadingGate } from "@/components/AppLoadingGate/AppLoadingGate";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { Layout } from "@/components/Layout/Layout";
 import { PageRouter } from "@/components/PageRouter";
@@ -11,9 +12,11 @@ function App() {
     <ErrorBoundary>
       <ToastProvider>
         <FeatureFlagsProvider>
-          <Layout>
-            <PageRouter />
-          </Layout>
+          <AppLoadingGate>
+            <Layout>
+              <PageRouter />
+            </Layout>
+          </AppLoadingGate>
         </FeatureFlagsProvider>
       </ToastProvider>
       <SpeedInsights />
