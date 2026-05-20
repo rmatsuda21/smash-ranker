@@ -29,7 +29,6 @@ No test runner is configured. Use `bun lint` and `bun build` to validate changes
 ## Commit messages
 
 - Keep messages short and simple — a single lowercase line describing the change, matching the existing `git log` style.
-- Never add a `Co-Authored-By` trailer. Do not credit Claude as a co-author.
 
 ## Architecture
 
