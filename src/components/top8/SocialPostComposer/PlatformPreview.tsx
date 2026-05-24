@@ -48,9 +48,7 @@ export const PlatformPreview = ({
 }: Props) => {
   const isX = platform === "x";
 
-  const handle = isX
-    ? `@${AUTHOR_HANDLE}`
-    : `@${AUTHOR_HANDLE}.bsky.social`;
+  const handle = isX ? `@${AUTHOR_HANDLE}` : `@${AUTHOR_HANDLE}.bsky.social`;
 
   const editorClassName = cn(
     styles.bodyEditor,
@@ -104,7 +102,7 @@ export const PlatformPreview = ({
               isX ? styles.handleTimeX : styles.handleTimeBluesky,
             )}
           >
-            <Trans>Just now</Trans>
+            <Trans>1s</Trans>
           </span>
         </div>
 

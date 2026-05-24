@@ -215,6 +215,10 @@ msgstr ""
 #~ msgid "16 Players"
 #~ msgstr ""
 
+#: src/components/top8/SocialPostComposer/PlatformPreview.tsx:105
+msgid "1s"
+msgstr ""
+
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:108
 #~ msgid "24 Players"
 #~ msgstr ""
@@ -709,8 +713,8 @@ msgid "Join the official server for help, feedback, and updates!"
 msgstr ""
 
 #: src/components/top8/SocialPostComposer/PlatformPreview.tsx:107
-msgid "Just now"
-msgstr ""
+#~ msgid "Just now"
+#~ msgstr ""
 
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:51
 msgid "Kagaribi"
@@ -954,7 +958,7 @@ msgstr ""
 msgid "Polishing trophies..."
 msgstr ""
 
-#: src/components/top8/SocialPostComposer/PlatformPreview.tsx:160
+#: src/components/top8/SocialPostComposer/PlatformPreview.tsx:158
 #: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:432
 msgid "Post"
 msgstr ""

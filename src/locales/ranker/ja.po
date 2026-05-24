@@ -215,6 +215,10 @@ msgstr "16人用"
 #~ msgid "16 Players"
 #~ msgstr "16人用"
 
+#: src/components/top8/SocialPostComposer/PlatformPreview.tsx:105
+msgid "1s"
+msgstr ""
+
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:108
 #~ msgid "24 Players"
 #~ msgstr "24人用"
@@ -709,8 +713,8 @@ msgid "Join the official server for help, feedback, and updates!"
 msgstr "公式サーバーで情報発信を行なってます！"
 
 #: src/components/top8/SocialPostComposer/PlatformPreview.tsx:107
-msgid "Just now"
-msgstr "たった今"
+#~ msgid "Just now"
+#~ msgstr "たった今"
 
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:51
 msgid "Kagaribi"
@@ -954,7 +958,7 @@ msgstr ""
 msgid "Polishing trophies..."
 msgstr ""
 
-#: src/components/top8/SocialPostComposer/PlatformPreview.tsx:160
+#: src/components/top8/SocialPostComposer/PlatformPreview.tsx:158
 #: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:432
 msgid "Post"
 msgstr "ポスト"
@@ -1279,7 +1283,7 @@ msgstr "Top 16"
 
 #: src/utils/social/builtInTemplates.ts:21
 msgid "Top 3"
-msgstr "トップ3"
+msgstr "Top 3"
 
 #: src/utils/social/templateTokens.ts:49
 #~ msgid "Top 3 list (with medals)"
@@ -1294,7 +1298,6 @@ msgstr "トップ3"
 #~ msgstr "トップ5リスト"
 
 #: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:20
-#: src/utils/social/builtInTemplates.ts:32
 msgid "Top 8"
 msgstr "Top 8"
 
