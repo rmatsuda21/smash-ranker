@@ -2,6 +2,7 @@ import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Layer, Rect, Transformer } from "react-konva";
 import { Layer as KonvaLayer } from "konva/lib/Layer";
 import { KonvaEventObject } from "konva/lib/Node";
+import { Rect as KonvaRect } from "konva/lib/shapes/Rect";
 import { Transformer as KonvaTransformer } from "konva/lib/shapes/Transformer";
 import { useShallow } from "zustand/react/shallow";
 
@@ -103,12 +104,26 @@ const PlayerTransformerLayer = memo(
   },
 );
 
+const HOVER_FILL = "rgba(0, 0, 0, 0.2)";
+
 const PlayerLayerComponent = ({ onReady }: { onReady?: () => void }) => {
   const readyPlayerCountRef = useRef(0);
   const mainLayerRef = useRef<KonvaLayer>(null);
   const dragLayerRef = useRef<KonvaLayer>(null);
+  const hoverOverlayLayerRef = useRef<KonvaLayer>(null);
+  const overlayRefsByPlayerId = useRef<Map<string, KonvaRect>>(new Map());
   const onReadyRef = useRef(onReady);
   onReadyRef.current = onReady;
+
+  const handlePlayerHoverChange = useCallback(
+    (playerId: string, isHovered: boolean) => {
+      const node = overlayRefsByPlayerId.current.get(playerId);
+      if (!node) return;
+      node.opacity(isHovered ? 1 : 0);
+      node.getLayer()?.batchDraw();
+    },
+    [],
+  );
 
   const players = usePlayerStore((state) => state.players);
 
@@ -192,6 +207,36 @@ const PlayerLayerComponent = ({ onReady }: { onReady?: () => void }) => {
               fontFamily={displayedFont}
               editable={editable}
               onReady={handlePlayerReady}
+              onHoverChange={(isHovered) =>
+                handlePlayerHoverChange(player.id, isHovered)
+              }
+            />
+          );
+        })}
+      </Layer>
+
+      <Layer ref={hoverOverlayLayerRef} listening={false}>
+        {players.map((player, index) => {
+          if (index >= playerConfigs.length) return null;
+          const config = playerConfigs[index];
+          return (
+            <Rect
+              key={player.id}
+              ref={(node) => {
+                if (node) overlayRefsByPlayerId.current.set(player.id, node);
+                else overlayRefsByPlayerId.current.delete(player.id);
+              }}
+              x={config.position?.x}
+              y={config.position?.y}
+              width={config.size?.width}
+              height={config.size?.height}
+              scaleX={config.scale?.x ?? 1}
+              scaleY={config.scale?.y ?? 1}
+              rotation={config.rotation ?? 0}
+              fill={HOVER_FILL}
+              opacity={0}
+              listening={false}
+              perfectDrawEnabled={false}
             />
           );
         })}

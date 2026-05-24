@@ -23,6 +23,7 @@ type Props = {
   fontFamily: string;
   editable: boolean;
   onReady?: () => void;
+  onHoverChange?: (isHovered: boolean) => void;
 };
 
 const PlayerComponent = ({
@@ -36,6 +37,7 @@ const PlayerComponent = ({
   fontFamily,
   editable,
   onReady,
+  onHoverChange,
 }: Props) => {
   const onReadyRef = useRef(onReady);
   onReadyRef.current = onReady;
@@ -138,6 +140,7 @@ const PlayerComponent = ({
       onClick={handleGroupClick}
       onDragEnd={handleDragEnd}
       onDragStart={onDragStart}
+      onHoverChange={onHoverChange}
       dragBoundFunc={dragBoundFunc}
       name={player.id}
     >

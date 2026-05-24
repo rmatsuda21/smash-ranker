@@ -8,10 +8,12 @@ import { useRenderMode } from "@/components/top8/Canvas/RenderModeContext";
 
 type Props = Partial<GroupConfig> & {
   onClick: (e: KonvaEventObject<MouseEvent>) => void;
+  onHoverChange?: (isHovered: boolean) => void;
 };
 
 export const SelectableElement = ({
   onClick,
+  onHoverChange,
   children,
   ...rest
 }: React.PropsWithChildren<Props>) => {
@@ -23,6 +25,7 @@ export const SelectableElement = ({
     const { listening, draggable, ...groupRest } = rest;
     void listening;
     void draggable;
+    void onHoverChange;
     return (
       <Group {...groupRest} listening={false}>
         {children}
@@ -31,7 +34,11 @@ export const SelectableElement = ({
   }
 
   return (
-    <SelectableElementInteractive onClick={onClick} {...rest}>
+    <SelectableElementInteractive
+      onClick={onClick}
+      onHoverChange={onHoverChange}
+      {...rest}
+    >
       {children}
     </SelectableElementInteractive>
   );
@@ -39,11 +46,14 @@ export const SelectableElement = ({
 
 const SelectableElementInteractive = ({
   onClick,
+  onHoverChange,
   children,
   ...rest
 }: React.PropsWithChildren<Props>) => {
   const [isHovered, setIsHovered] = useState(false);
   const contentRef = useRef<KonvaGroup>(null);
+  const isHoveredRef = useRef(false);
+  const usesExternalOverlay = onHoverChange !== undefined;
   const [contentBounds, setContentBounds] = useState({
     x: 0,
     y: 0,
@@ -103,27 +113,53 @@ const SelectableElementInteractive = ({
   const rectX = hasExplicitSize ? 0 : contentBounds.x;
   const rectY = hasExplicitSize ? 0 : contentBounds.y;
 
-  const handleMouseEnter = useCallback((e: KonvaEventObject<MouseEvent>) => {
-    e.cancelBubble = true;
+  const handleMouseEnter = useCallback(
+    (e: KonvaEventObject<MouseEvent>) => {
+      e.cancelBubble = true;
 
-    const container = e.target.getStage()?.container();
-    if (container) {
-      container.style.cursor = "pointer";
-    }
+      const container = e.target.getStage()?.container();
+      if (container) {
+        container.style.cursor = "pointer";
+      }
 
-    setIsHovered(true);
-  }, []);
+      if (usesExternalOverlay) {
+        if (isHoveredRef.current) return;
+        isHoveredRef.current = true;
+        onHoverChange?.(true);
+      } else {
+        setIsHovered(true);
+      }
+    },
+    [usesExternalOverlay, onHoverChange],
+  );
 
-  const handleMouseLeave = useCallback((e: KonvaEventObject<MouseEvent>) => {
-    e.cancelBubble = true;
+  const handleMouseLeave = useCallback(
+    (e: KonvaEventObject<MouseEvent>) => {
+      e.cancelBubble = true;
 
-    const container = e.target.getStage()?.container();
-    if (container) {
-      container.style.cursor = "default";
-    }
+      const container = e.target.getStage()?.container();
+      if (container) {
+        container.style.cursor = "default";
+      }
 
-    setIsHovered(false);
-  }, []);
+      if (usesExternalOverlay) {
+        if (!isHoveredRef.current) return;
+        isHoveredRef.current = false;
+        onHoverChange?.(false);
+      } else {
+        setIsHovered(false);
+      }
+    },
+    [usesExternalOverlay, onHoverChange],
+  );
+
+  useEffect(() => {
+    return () => {
+      if (isHoveredRef.current && onHoverChange) {
+        onHoverChange(false);
+      }
+    };
+  }, [onHoverChange]);
 
   return (
     <Group
@@ -140,14 +176,16 @@ const SelectableElementInteractive = ({
         fill="transparent"
       />
       <Group ref={contentRef}>{children}</Group>
-      <Rect
-        x={rectX}
-        y={rectY}
-        width={width}
-        height={height}
-        fill={isHovered ? "rgba(0, 0, 0, 0.2)" : "transparent"}
-        listening={false}
-      />
+      {!usesExternalOverlay && (
+        <Rect
+          x={rectX}
+          y={rectY}
+          width={width}
+          height={height}
+          fill={isHovered ? "rgba(0, 0, 0, 0.2)" : "transparent"}
+          listening={false}
+        />
+      )}
     </Group>
   );
 };
