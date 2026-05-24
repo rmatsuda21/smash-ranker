@@ -141,23 +141,6 @@ export const PlatformPreview = ({
             <div className={styles.imageShimmer} aria-hidden="true" />
           )}
         </div>
-
-        <div
-          className={cn(
-            styles.previewFooter,
-            isX ? styles.previewFooterX : styles.previewFooterBluesky,
-          )}
-        >
-          <span
-            className={cn(
-              styles.fauxPostButton,
-              isX ? styles.fauxPostButtonX : styles.fauxPostButtonBluesky,
-            )}
-            aria-hidden="true"
-          >
-            <Trans>Post</Trans>
-          </span>
-        </div>
       </div>
     </div>
   );

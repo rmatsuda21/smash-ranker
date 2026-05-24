@@ -262,42 +262,6 @@
   }
 }
 
-.previewFooter {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding-top: 8px;
-  margin-top: 8px;
-  border-top: 1px solid;
-}
-
-.previewFooterX {
-  border-color: #2f3336;
-}
-
-.previewFooterBluesky {
-  border-color: #eaeef2;
-}
-
-.fauxPostButton {
-  border: none;
-  border-radius: 9999px;
-  padding: 8px 18px;
-  font-size: 15px;
-  font-weight: 700;
-  pointer-events: none;
-}
-
-.fauxPostButtonX {
-  background-color: #1d9bf0;
-  color: #ffffff;
-}
-
-.fauxPostButtonBluesky {
-  background-color: #1185fe;
-  color: #ffffff;
-}
-
 /* ----- Char counter ----- */
 .metaRow {
   display: flex;
@@ -462,7 +426,6 @@
   flex: 1;
   min-width: 0;
 }
-
 
 .empty {
   padding: var(--space-6) var(--space-4);
