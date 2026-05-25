@@ -227,7 +227,7 @@ export const PlayersEditor = ({ className }: Props) => {
         id="twitter"
         name="twitter"
         type="text"
-        label={_(msg`Twitter`)}
+        label={_(msg`X Handle`)}
         value={tempPlayer?.twitter ?? ""}
         onChange={handleChange}
         placeholder={_(msg`Twitter`)}

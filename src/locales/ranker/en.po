@@ -454,6 +454,7 @@ msgid "Credits & Inspiration"
 msgstr ""
 
 #: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:22
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:100
 msgid "Custom"
 msgstr ""
 
@@ -958,7 +959,6 @@ msgstr ""
 msgid "Polishing trophies..."
 msgstr ""
 
-#: src/components/top8/SocialPostComposer/PlatformPreview.tsx:158
 #: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:432
 msgid "Post"
 msgstr ""
@@ -1389,7 +1389,6 @@ msgstr ""
 msgid "Trophy spotlight"
 msgstr ""
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:230
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:233
 msgid "Twitter"
 msgstr ""
@@ -1465,6 +1464,10 @@ msgstr ""
 
 #: src/components/top8/SocialPostComposer/PlatformTabs.tsx:23
 msgid "X"
+msgstr ""
+
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:230
+msgid "X Handle"
 msgstr ""
 
 #: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:427

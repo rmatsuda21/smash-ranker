@@ -454,6 +454,7 @@ msgid "Credits & Inspiration"
 msgstr "クレジット & インスピレーション"
 
 #: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:22
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:100
 msgid "Custom"
 msgstr "カスタム"
 
@@ -958,7 +959,6 @@ msgstr ""
 msgid "Polishing trophies..."
 msgstr ""
 
-#: src/components/top8/SocialPostComposer/PlatformPreview.tsx:158
 #: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:432
 msgid "Post"
 msgstr "ポスト"
@@ -998,7 +998,7 @@ msgstr "出場選手を取得中..."
 
 #: src/components/top8/SettingsPanel/AccentColorPicker.tsx:34
 msgid "Purple"
-msgstr "紫"
+msgstr "パープル"
 
 #: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:74
 msgid "Quality"
@@ -1030,7 +1030,7 @@ msgstr "リザルトを振り返り中..."
 
 #: src/components/top8/SettingsPanel/AccentColorPicker.tsx:30
 msgid "Red"
-msgstr "赤"
+msgstr "レッド"
 
 #: src/components/top8/Ranker/Header/Header.tsx:49
 msgid "Redo"
@@ -1298,6 +1298,7 @@ msgstr "Top 3"
 #~ msgstr "トップ5リスト"
 
 #: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:20
+#: src/utils/social/builtInTemplates.ts:32
 msgid "Top 8"
 msgstr "Top 8"
 
@@ -1388,10 +1389,9 @@ msgstr "大会URL"
 msgid "Trophy spotlight"
 msgstr "優勝者スポットライト"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:230
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:233
 msgid "Twitter"
-msgstr "X（旧ツイッタ）"
+msgstr "X"
 
 #: src/consts/top8/placeholders.ts:47
 msgid "Twitter Handle"
@@ -1465,6 +1465,10 @@ msgstr "上位選手"
 #: src/components/top8/SocialPostComposer/PlatformTabs.tsx:23
 msgid "X"
 msgstr "X"
+
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:230
+msgid "X Handle"
+msgstr "Xハンドル"
 
 #: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:427
 #~ msgid "you"

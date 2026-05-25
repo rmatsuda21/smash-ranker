@@ -10,6 +10,7 @@ import { COOKIES } from "@/consts/cookies";
 import { useTooltip } from "@/components/shared/Tooltip/useTooltip";
 import { Tooltip } from "@/components/shared/Tooltip/Tooltip";
 import { ColorInput } from "@/components/shared/ColorInput/ColorInput";
+
 import styles from "./SettingsPanel.module.scss";
 
 type AccentColor =
@@ -97,6 +98,10 @@ export const AccentColorPicker = () => {
           className={cn(styles.colorButton, {
             [styles.selected]: currentAccent === "custom",
           })}
+          onMouseEnter={() => tooltip.show(_(msg`Custom`))}
+          onMouseLeave={() => tooltip.hide()}
+          aria-pressed={currentAccent === "custom"}
+          aria-label={_(msg`Custom`)}
         >
           <ColorInput
             color={customHex}
