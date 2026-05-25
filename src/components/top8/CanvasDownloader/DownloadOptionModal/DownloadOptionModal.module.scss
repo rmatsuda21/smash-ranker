@@ -12,6 +12,12 @@
   gap: var(--space-1);
 }
 
+.fieldLabel {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--accent-9);
+}
+
 .sliderLabel {
   display: flex;
   align-items: baseline;

@@ -105,6 +105,7 @@ export const CanvasDownloader = ({ className, onShare, blobCache }: Props) => {
         isOpen={isOptionModalOpen}
         setIsOpen={setIsOptionModalOpen}
         imgType={imgType}
+        setImgType={setImgType}
       />
       <ExportPreviewModal
         isOpen={isPreviewOpen}

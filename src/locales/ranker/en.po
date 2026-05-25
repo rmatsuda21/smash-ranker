@@ -247,17 +247,17 @@ msgstr ""
 msgid "8 Players (Light)"
 msgstr ""
 
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:74
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:75
 msgid "Accent Color"
-msgstr ""
+msgstr "アクセントカラー"
 
 #: src/components/predict/PredictApp/PredictApp.tsx:74
 msgid "All current predictions will be removed."
 msgstr ""
 
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:31
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:32
 msgid "Amber"
-msgstr ""
+msgstr "アンバー"
 
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:76
 msgid "Any current player and tournament data will be overwritten."
@@ -293,9 +293,9 @@ msgstr ""
 msgid "Background Image"
 msgstr ""
 
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:32
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:33
 msgid "Blue"
-msgstr ""
+msgstr "ブルー"
 
 #: src/components/top8/SocialPostComposer/PlatformTabs.tsx:34
 msgid "Bluesky"
@@ -454,9 +454,10 @@ msgid "Credits & Inspiration"
 msgstr ""
 
 #: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:22
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:100
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:101
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:104
 msgid "Custom"
-msgstr ""
+msgstr "カスタム"
 
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:249
 msgid "Custom Flag"
@@ -528,7 +529,7 @@ msgstr ""
 msgid "Don't show again"
 msgstr ""
 
-#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:99
+#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:125
 msgid "Done"
 msgstr ""
 
@@ -544,7 +545,7 @@ msgid "Download image"
 msgstr ""
 
 #: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:99
-#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:46
+#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:61
 msgid "Download Options"
 msgstr ""
 
@@ -643,6 +644,10 @@ msgstr ""
 #~ msgid "Font Weight"
 #~ msgstr ""
 
+#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:66
+msgid "Format"
+msgstr "フォーマット"
+
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:187
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:190
 msgid "Gamer Tag"
@@ -665,7 +670,7 @@ msgstr ""
 msgid "Generating recap"
 msgstr ""
 
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:33
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:34
 msgid "Green"
 msgstr ""
 
@@ -786,7 +791,7 @@ msgstr ""
 msgid "Love Smash Ranker? Support the project!"
 msgstr ""
 
-#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:87
+#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:113
 msgid "Lower values reduce file size at the cost of detail."
 msgstr ""
 
@@ -882,7 +887,7 @@ msgstr ""
 msgid "Original concept & inspiration"
 msgstr ""
 
-#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:64
+#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:90
 msgid "Output: {outputWidth} × {outputHeight} px"
 msgstr ""
 
@@ -902,11 +907,11 @@ msgstr ""
 msgid "Pick a player to see their results."
 msgstr ""
 
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:29
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:30
 msgid "Pink"
 msgstr ""
 
-#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:53
+#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:79
 msgid "Pixel Ratio"
 msgstr ""
 
@@ -952,7 +957,11 @@ msgid "Players"
 msgstr ""
 
 #: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:91
-msgid "PNG is lossless — quality only applies to JPEG and WebP."
+#~ msgid "PNG is lossless — quality only applies to JPEG and WebP."
+#~ msgstr ""
+
+#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:117
+msgid "PNG is lossless, quality only applies to JPEG and WebP."
 msgstr ""
 
 #: src/components/predict/PredictionPreview/PredictionPreview.tsx:57
@@ -996,11 +1005,11 @@ msgstr ""
 msgid "Pulling entrants..."
 msgstr ""
 
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:34
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:35
 msgid "Purple"
 msgstr ""
 
-#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:74
+#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:100
 msgid "Quality"
 msgstr ""
 
@@ -1028,7 +1037,7 @@ msgstr ""
 #~ msgid "Record"
 #~ msgstr ""
 
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:30
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:31
 msgid "Red"
 msgstr ""
 

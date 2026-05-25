@@ -247,7 +247,7 @@ msgstr "8人用（ダーク）"
 msgid "8 Players (Light)"
 msgstr "8人用（ライト）"
 
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:74
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:75
 msgid "Accent Color"
 msgstr "アクセントカラー"
 
@@ -255,7 +255,7 @@ msgstr "アクセントカラー"
 msgid "All current predictions will be removed."
 msgstr "現在の予想がすべて削除されます。"
 
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:31
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:32
 msgid "Amber"
 msgstr "アンバー"
 
@@ -293,7 +293,7 @@ msgstr "プレーンテキストに戻る"
 msgid "Background Image"
 msgstr "背景画像"
 
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:32
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:33
 msgid "Blue"
 msgstr "ブルー"
 
@@ -454,7 +454,8 @@ msgid "Credits & Inspiration"
 msgstr "クレジット & インスピレーション"
 
 #: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:22
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:100
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:101
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:104
 msgid "Custom"
 msgstr "カスタム"
 
@@ -528,9 +529,9 @@ msgstr "サイズ"
 msgid "Don't show again"
 msgstr "次回から表示しない"
 
-#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:99
+#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:125
 msgid "Done"
-msgstr ""
+msgstr "終了"
 
 #: src/components/predict/ExportBar/ExportBar.tsx:95
 #: src/components/results/ResultsExportBar/ResultsExportBar.tsx:117
@@ -544,7 +545,7 @@ msgid "Download image"
 msgstr "画像をダウンロード"
 
 #: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:99
-#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:46
+#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:61
 msgid "Download Options"
 msgstr "ダウンロード設定"
 
@@ -643,6 +644,10 @@ msgstr "フォント"
 #~ msgid "Font Weight"
 #~ msgstr "フォントウェイト"
 
+#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:66
+msgid "Format"
+msgstr "フォーマット"
+
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:187
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:190
 msgid "Gamer Tag"
@@ -665,7 +670,7 @@ msgstr "プレビュー作成中..."
 msgid "Generating recap"
 msgstr "リザルト生成中"
 
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:33
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:34
 msgid "Green"
 msgstr "グリーン"
 
@@ -786,7 +791,7 @@ msgstr "リザルトを確定中..."
 msgid "Love Smash Ranker? Support the project!"
 msgstr "応援クラファン実施中です。"
 
-#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:87
+#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:113
 msgid "Lower values reduce file size at the cost of detail."
 msgstr ""
 
@@ -882,9 +887,9 @@ msgstr "オリジナル"
 msgid "Original concept & inspiration"
 msgstr "元コンセプトとインスピレーション"
 
-#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:64
+#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:90
 msgid "Output: {outputWidth} × {outputHeight} px"
-msgstr ""
+msgstr "出力: {outputWidth} × {outputHeight} px"
 
 #: src/components/results/ResultsApp/ResultsApp.tsx:148
 msgid "Paste a start.gg event URL, pick a player, and generate a shareable recap of their run."
@@ -902,11 +907,11 @@ msgstr "選手を選択"
 msgid "Pick a player to see their results."
 msgstr "選手を選んでリザルトを表示。"
 
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:29
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:30
 msgid "Pink"
 msgstr "ピンク"
 
-#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:53
+#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:79
 msgid "Pixel Ratio"
 msgstr "ピクセル比"
 
@@ -951,9 +956,9 @@ msgstr "選手タグ"
 msgid "Players"
 msgstr "選手情報"
 
-#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:91
-msgid "PNG is lossless — quality only applies to JPEG and WebP."
-msgstr ""
+#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:117
+msgid "PNG is lossless, quality only applies to JPEG and WebP."
+msgstr "品質設定はJPEGとWebPにのみ適用されます"
 
 #: src/components/predict/PredictionPreview/PredictionPreview.tsx:57
 msgid "Polishing trophies..."
@@ -996,11 +1001,11 @@ msgstr ""
 msgid "Pulling entrants..."
 msgstr "出場選手を取得中..."
 
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:34
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:35
 msgid "Purple"
 msgstr "パープル"
 
-#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:74
+#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:100
 msgid "Quality"
 msgstr "品質"
 
@@ -1028,7 +1033,7 @@ msgstr "リザルトを振り返り中..."
 #~ msgid "Record"
 #~ msgstr ""
 
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:30
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:31
 msgid "Red"
 msgstr "レッド"
 
@@ -1122,7 +1127,7 @@ msgstr ""
 
 #: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:229
 msgid "Share"
-msgstr ""
+msgstr "シェア"
 
 #: src/components/predict/InviteShareButton/InviteShareButton.tsx:25
 msgid "Share invite"
@@ -1131,7 +1136,7 @@ msgstr "招待リンクをコピー"
 #: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:304
 #: src/components/top8/SocialShareButton/SocialShareButton.tsx:45
 msgid "Share to social"
-msgstr "SNSで共有"
+msgstr "SNSでシェア"
 
 #: src/components/predict/PredictApp/PredictApp.tsx:32
 msgid "Sharpening the seeds..."

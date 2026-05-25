@@ -1,6 +1,7 @@
 import { Trans } from "@lingui/react/macro";
 
 import { Button } from "@/components/shared/Button/Button";
+import { DropDownSelect } from "@/components/shared/DropDownSelect/DropDownSelect";
 import { Modal } from "@/components/shared/Modal/Modal";
 import { Slider } from "@/components/shared/Slider/Slider";
 import { useEffectiveCanvasSize } from "@/hooks/top8/useEffectiveCanvasSize";
@@ -18,13 +19,27 @@ import { isMobile } from "@/utils/isMobile";
 
 import styles from "./DownloadOptionModal.module.scss";
 
+type ImgType = "png" | "jpeg" | "webp";
+
+const IMG_TYPE_OPTIONS: { value: ImgType; id: string; display: string }[] = [
+  { value: "png", id: "png", display: "PNG" },
+  { value: "jpeg", id: "jpeg", display: "JPEG" },
+  { value: "webp", id: "webp", display: "WEBP" },
+];
+
 type Props = {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-  imgType: "png" | "jpeg" | "webp";
+  imgType: ImgType;
+  setImgType: (imgType: ImgType) => void;
 };
 
-export const DownloadOptionModal = ({ isOpen, setIsOpen, imgType }: Props) => {
+export const DownloadOptionModal = ({
+  isOpen,
+  setIsOpen,
+  imgType,
+  setImgType,
+}: Props) => {
   const pixelRatio = useExportSettingsStore((s) => s.pixelRatio);
   const quality = useExportSettingsStore((s) => s.quality);
   const setPixelRatio = useExportSettingsStore((s) => s.setPixelRatio);
@@ -45,6 +60,17 @@ export const DownloadOptionModal = ({ isOpen, setIsOpen, imgType }: Props) => {
         <h3>
           <Trans>Download Options</Trans>
         </h3>
+
+        <div className={styles.field}>
+          <span className={styles.fieldLabel}>
+            <Trans>Format</Trans>
+          </span>
+          <DropDownSelect
+            options={IMG_TYPE_OPTIONS}
+            selectedValue={imgType}
+            onChange={setImgType}
+          />
+        </div>
 
         <div className={styles.field}>
           <Slider
@@ -89,7 +115,7 @@ export const DownloadOptionModal = ({ isOpen, setIsOpen, imgType }: Props) => {
               </Trans>
             ) : (
               <Trans>
-                PNG is lossless — quality only applies to JPEG and WebP.
+                PNG is lossless, quality only applies to JPEG and WebP.
               </Trans>
             )}
           </p>
