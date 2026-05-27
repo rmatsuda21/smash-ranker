@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   DndContext,
   DragOverlay,
@@ -282,6 +282,15 @@ export const TierListApp = () => {
 
   const activeChar = activeId ? characters[activeId] : null;
 
+  const tierCols = useMemo(() => {
+    const MAX_CELL = 64;
+    const GAP = 4;
+
+    const overhead = layout === "top" ? 10 : 90;
+    const content = Math.max(0, tierListWidth - overhead);
+    return Math.max(1, Math.ceil((content + GAP) / (MAX_CELL + GAP)));
+  }, [tierListWidth, layout]);
+
   return (
     <div className={styles.root}>
       <TierListToolbar exportRef={exportRef} />
@@ -295,7 +304,12 @@ export const TierListApp = () => {
         <div className={styles.contentRow}>
           <div
             className={styles.resizeContainer}
-            style={{ width: tierListWidth }}
+            style={
+              {
+                width: tierListWidth,
+                "--tier-cols": tierCols,
+              } as React.CSSProperties
+            }
           >
             <div
               ref={exportRef}
