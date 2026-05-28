@@ -44,7 +44,7 @@ initAnalytics();
        ████████  ████████████████
 `;
   console.log(
-    `%c${ASCII_LOGO}%c\n  Hey, curious dev — nice find!\n  Want to help build Smash Ranker? Contribute at https://github.com/rmatsuda21/smash-ranker\n`,
+    `%c${ASCII_LOGO}%c\n  Hey, curious dev — nice find!\n`,
     "color:#ff3e7f;font-family:ui-monospace,Menlo,monospace;font-weight:bold;line-height:1;",
     "color:#a0a0a8;font-family:ui-monospace,Menlo,monospace;font-size:12px;",
   );

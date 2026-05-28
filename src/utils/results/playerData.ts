@@ -2,10 +2,6 @@
 // source for the fallback-character lookup. Falling back to start.gg's
 // recentStandings is slower (1 request per opponent) and noisier (we have to
 // aggregate set-level character selections), so we try the local data first.
-//
-// Swap the URL below for a github gist raw URL if you'd rather host the data
-// separately from the better-gg repo. Gist raw URLs look like:
-//   https://gist.githubusercontent.com/<user>/<gist-id>/raw/players.json
 import { logWarning } from "@/utils/observability/log";
 
 const PLAYERS_DATA_URL =

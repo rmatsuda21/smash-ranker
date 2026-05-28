@@ -38,6 +38,9 @@ export default defineConfig(() => {
 
   return {
     customLogger,
+    define: {
+      __BUILD_TIME__: JSON.stringify(new Date().toISOString()),
+    },
     build: {
       // "hidden" emits source maps but strips the //# sourceMappingURL comment
       // so they aren't served to end users — Sentry still uploads & uses them.

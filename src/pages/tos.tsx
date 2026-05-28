@@ -241,9 +241,9 @@ const TosPage = () => {
           <p>
             These terms may be updated from time to time. The &ldquo;Last
             updated&rdquo; date at the top of this page reflects the version
-            currently in effect. Material changes will be noted in the
-            project&rsquo;s GitHub repository. Continued use of the Service
-            after a change constitutes acceptance of the updated terms.
+            currently in effect. Material changes will be announced on this
+            page. Continued use of the Service after a change constitutes
+            acceptance of the updated terms.
           </p>
         </section>
 
@@ -251,16 +251,7 @@ const TosPage = () => {
           <h2>12. Contact</h2>
           <p>
             Questions about these terms or the Service can be sent to{" "}
-            <a href="mailto:reo.matsuda@gmail.com">reo.matsuda@gmail.com</a> or
-            filed as an issue at{" "}
-            <a
-              href="https://github.com/rmatsuda21/smash-ranker/issues"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              github.com/rmatsuda21/smash-ranker
-            </a>
-            .
+            <a href="mailto:reo.matsuda@gmail.com">reo.matsuda@gmail.com</a>.
           </p>
         </section>
       </article>

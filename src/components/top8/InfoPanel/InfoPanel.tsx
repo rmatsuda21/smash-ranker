@@ -1,4 +1,4 @@
-import { FaGithub, FaXTwitter, FaDiscord } from "react-icons/fa6";
+import { FaXTwitter, FaDiscord } from "react-icons/fa6";
 import { FaCoffee } from "react-icons/fa";
 import { Trans } from "@lingui/react/macro";
 
@@ -19,14 +19,6 @@ export const InfoPanel = ({ className }: Props) => {
           <div className={styles.author}>
             <span className={styles.authorName}>Reo Matsuda</span>
             <div className={styles.socials}>
-              <a
-                href="https://github.com/rmatsuda21"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="GitHub"
-              >
-                <FaGithub />
-              </a>
               <a
                 href="https://x.com/chikyunojin"
                 target="_blank"

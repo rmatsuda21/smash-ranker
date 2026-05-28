@@ -1,6 +1,6 @@
 import { Link } from "wouter";
 import { Trans } from "@lingui/react/macro";
-import { FaGithub, FaFileLines } from "react-icons/fa6";
+import { FaFileLines } from "react-icons/fa6";
 import { SiBuymeacoffee } from "react-icons/si";
 
 import { LastUpdateTracker } from "@/components/home/LastUpdateTracker";
@@ -17,16 +17,6 @@ export const SiteFooter = ({ onNavigate }: Props) => {
       <p className={styles.copyright}>
         &copy; {new Date().getFullYear()} Smash Ranker
       </p>
-      <span className={styles.divider}>&middot;</span>
-      <a
-        href="https://github.com/rmatsuda21/smash-ranker"
-        target="_blank"
-        rel="noopener noreferrer"
-        className={styles.link}
-      >
-        <FaGithub />
-        GitHub
-      </a>
       <span className={styles.divider}>&middot;</span>
       <LastUpdateTracker />
       <span className={styles.divider}>&middot;</span>
