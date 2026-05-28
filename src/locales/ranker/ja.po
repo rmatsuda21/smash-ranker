@@ -13,171 +13,6 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:19
-#~ msgid "Background"
-#~ msgstr "背景"
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:48
-#~ msgid "Bottom Text"
-#~ msgstr "下部テキスト"
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:33
-#~ msgid "Card Background"
-#~ msgstr "カード背景"
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:37
-#~ msgid "Character BG"
-#~ msgstr "キャラクター背景"
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:38
-#~ msgid "Character Border"
-#~ msgstr "キャラクターボーダー"
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:32
-#~ msgid "Character Shadow"
-#~ msgstr "キャラクターシャドウ"
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:21
-#~ msgid "Color 1"
-#~ msgstr "カラー 1"
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:22
-#~ msgid "Color 2"
-#~ msgstr "カラー 2"
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:23
-#~ msgid "Color 3"
-#~ msgstr "カラー 3"
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:50
-#~ msgid "Date"
-#~ msgstr "日付"
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:52
-#~ msgid "Entrants"
-#~ msgstr "参加人数"
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:25
-#~ msgid "Gradient End"
-#~ msgstr "グラデーション（終）"
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:24
-#~ msgid "Gradient Start"
-#~ msgstr "グラデーション（始）"
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:34
-#~ msgid "Left Border"
-#~ msgstr "左ボーダー"
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:51
-#~ msgid "Location"
-#~ msgstr "場所"
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:31
-#~ msgid "Main BG"
-#~ msgstr "メイン背景"
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:28
-#~ msgid "Placement Shadow"
-#~ msgstr "順位シャドウ"
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:30
-#~ msgid "Placement Stroke"
-#~ msgstr "順位ストローク"
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:43
-#~ msgid "Player"
-#~ msgstr "プレイヤー"
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:29
-#~ msgid "Prefix"
-#~ msgstr "所属"
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:17
-#~ msgid "Primary"
-#~ msgstr "メインカラー"
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:18
-#~ msgid "Secondary"
-#~ msgstr "サブカラー"
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:20
-#~ msgid "Smash Ball"
-#~ msgstr "スマッシュボール"
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:26
-#~ msgid "Text"
-#~ msgstr "テキスト"
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:27
-#~ msgid "Text Shadow"
-#~ msgstr "テキストシャドウ"
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:41
-#~ msgid "Theme"
-#~ msgstr "テーマ"
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:49
-#~ msgid "Title"
-#~ msgstr "タイトル"
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:35
-#~ msgid "Top Bar"
-#~ msgstr "トップバー"
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:46
-#~ msgid "Top Left Text"
-#~ msgstr "左上テキスト"
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:47
-#~ msgid "Top Right Text"
-#~ msgstr "右上テキスト"
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:55
-#~ msgid "Tournament Info"
-#~ msgstr "大会情報"
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:54
-#~ msgid "Tournament Name"
-#~ msgstr "大会名"
-
-#. js-lingui-explicit-id
-#: src/consts/top8/paletteLabels.ts:53
-#~ msgid "URL"
-#~ msgstr "URL"
-
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:91
 msgid "(https://challonge.com/[tournament])"
 msgstr "(https://challonge.com/[大会名])"
@@ -211,21 +46,9 @@ msgstr "参加人数"
 msgid "16 Player Variant"
 msgstr "16人用"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:102
-#~ msgid "16 Players"
-#~ msgstr "16人用"
-
 #: src/components/top8/SocialPostComposer/PlatformPreview.tsx:105
 msgid "1s"
 msgstr ""
-
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:108
-#~ msgid "24 Players"
-#~ msgstr "24人用"
-
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:96
-#~ msgid "4 Players"
-#~ msgstr "4人用"
 
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:97
 msgid "4 Players (Dark)"
@@ -234,10 +57,6 @@ msgstr "4人用（ダーク）"
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:109
 msgid "4 Players (Light)"
 msgstr "4人用（ライト）"
-
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:90
-#~ msgid "8 Players"
-#~ msgstr "8人用"
 
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:91
 msgid "8 Players (Dark)"
@@ -301,8 +120,8 @@ msgstr "ブルー"
 msgid "Bluesky"
 msgstr "Bluesky"
 
-#: src/components/shared/SiteFooter/SiteFooter.tsx:45
-#: src/components/top8/InfoPanel/InfoPanel.tsx:82
+#: src/components/shared/SiteFooter/SiteFooter.tsx:35
+#: src/components/top8/InfoPanel/InfoPanel.tsx:74
 msgid "Buy me a coffee"
 msgstr "一杯だけよ"
 
@@ -318,10 +137,6 @@ msgstr ""
 #: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:150
 msgid "Cancel"
 msgstr "キャンセル"
-
-#: src/utils/social/builtInTemplates.ts:30
-#~ msgid "Casual congrats"
-#~ msgstr "カジュアルなお祝い"
 
 #. placeholder {0}: res.status
 #: src/hooks/predict/useFetchPredictionEntrants.ts:207
@@ -359,10 +174,6 @@ msgstr "予想をクリアしますか？"
 #: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:309
 msgid "Close"
 msgstr "閉じる"
-
-#: src/components/top8/ElementEditor/TextConfigEditor/TextConfigEditor.tsx:78
-#~ msgid "Color"
-#~ msgstr "色"
 
 #: src/components/top8/DesignEditor/DesignEditor.tsx:80
 msgid "Color Palette"
@@ -407,14 +218,6 @@ msgstr ""
 msgid "Copy image"
 msgstr "画像をコピー"
 
-#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:480
-#~ msgid "Could not copy image — try Download instead."
-#~ msgstr "画像をコピーできませんでした — 代わりにダウンロードをお試しください。"
-
-#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:330
-#~ msgid "Could not copy or download — please try again."
-#~ msgstr "コピーまたはダウンロードに失敗しました — もう一度お試しください。"
-
 #: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:54
 msgid "Count"
 msgstr "人数"
@@ -454,7 +257,7 @@ msgstr "テンプレートを作成"
 msgid "Created by"
 msgstr "制作者"
 
-#: src/components/top8/InfoPanel/InfoPanel.tsx:89
+#: src/components/top8/InfoPanel/InfoPanel.tsx:81
 msgid "Credits & Inspiration"
 msgstr "クレジット & インスピレーション"
 
@@ -645,14 +448,6 @@ msgstr "ファイル名"
 msgid "Font"
 msgstr "フォント"
 
-#: src/components/top8/ElementEditor/TextConfigEditor/TextConfigEditor.tsx:79
-#~ msgid "Font Size"
-#~ msgstr "フォントサイズ"
-
-#: src/components/top8/ElementEditor/TextConfigEditor/TextConfigEditor.tsx:80
-#~ msgid "Font Weight"
-#~ msgstr "フォントウェイト"
-
 #: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:66
 msgid "Format"
 msgstr "フォーマット"
@@ -699,17 +494,9 @@ msgstr ""
 msgid "Icon"
 msgstr "アイコン"
 
-#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:469
-#~ msgid "Image copied — paste with Ctrl+V or ⌘V"
-#~ msgstr "画像をコピーしました — Ctrl+V または ⌘V で貼り付けてください"
-
 #: src/components/top8/DesignEditor/DesignEditor.tsx:61
 msgid "Image darkness"
 msgstr "背景画像の明さ"
-
-#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:475
-#~ msgid "Image downloaded, attach it in the composer"
-#~ msgstr "画像をダウンロードしました、投稿画面で添付してください"
 
 #: src/components/top8/SocialPostComposer/TemplatePicker.tsx:46
 msgid "Insert variable…"
@@ -719,25 +506,17 @@ msgstr "変数を挿入…"
 msgid "Japanese"
 msgstr "日本語"
 
-#: src/components/top8/InfoPanel/InfoPanel.tsx:57
+#: src/components/top8/InfoPanel/InfoPanel.tsx:49
 msgid "Join Discord"
 msgstr "参加"
 
-#: src/components/top8/InfoPanel/InfoPanel.tsx:45
+#: src/components/top8/InfoPanel/InfoPanel.tsx:37
 msgid "Join the official server for help, feedback, and updates!"
 msgstr "公式サーバーで情報発信を行なってます！"
-
-#: src/components/top8/SocialPostComposer/PlatformPreview.tsx:107
-#~ msgid "Just now"
-#~ msgstr "たった今"
 
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:51
 msgid "Kagaribi"
 msgstr "篝火"
-
-#: src/components/results/SetList/SetRow.tsx:47
-#~ msgid "L"
-#~ msgstr ""
 
 #: src/components/top8/SettingsPanel/LanguagePicker.tsx:41
 msgid "Language"
@@ -747,10 +526,6 @@ msgstr "言語"
 #: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:40
 msgid "Light"
 msgstr "ライト"
-
-#: src/utils/social/templateTokens.ts:61
-#~ msgid "Lists"
-#~ msgstr "リスト"
 
 #: src/components/shared/TournamentUrlInput/TournamentUrlInput.tsx:62
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:115
@@ -796,7 +571,7 @@ msgstr ""
 msgid "Locking in the recap..."
 msgstr "リザルトを確定中..."
 
-#: src/components/top8/InfoPanel/InfoPanel.tsx:67
+#: src/components/top8/InfoPanel/InfoPanel.tsx:59
 msgid "Love Smash Ranker? Support the project!"
 msgstr "応援クラファン実施中です。"
 
@@ -808,21 +583,13 @@ msgstr ""
 msgid "Manage Assets"
 msgstr "素材管理"
 
-#: src/components/top8/InfoPanel/InfoPanel.tsx:70
+#: src/components/top8/InfoPanel/InfoPanel.tsx:62
 msgid "Many cups of coffee were consumed during development 👀"
 msgstr "珈琲一杯分から！"
 
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:87
 msgid "Minimal"
 msgstr "ミニマル"
-
-#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:45
-#~ msgid "Minimal Dark ({count} Players)"
-#~ msgstr "ミニマル ダーク（{count}人用）"
-
-#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:46
-#~ msgid "Minimal Light ({count} Players)"
-#~ msgstr "ミニマル ライト（{count}人用）"
 
 #: src/utils/social/builtInTemplates.ts:55
 msgid "Minimalist"
@@ -871,18 +638,6 @@ msgstr "このデザインにはテキストが定義されていません。"
 msgid "None"
 msgstr "なし"
 
-#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:62
-#~ msgid "Okay"
-#~ msgstr "OK"
-
-#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:352
-#~ msgid "Open in Bluesky"
-#~ msgstr "Blueskyで開く"
-
-#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:350
-#~ msgid "Open in X"
-#~ msgstr "Xで開く"
-
 #: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:363
 msgid "Open template editor"
 msgstr "テンプレートエディタを開く"
@@ -896,7 +651,7 @@ msgstr "ドラッグ・ドロップも対応"
 msgid "Original"
 msgstr "オリジナル"
 
-#: src/components/top8/InfoPanel/InfoPanel.tsx:101
+#: src/components/top8/InfoPanel/InfoPanel.tsx:93
 msgid "Original concept & inspiration"
 msgstr "元コンセプトとインスピレーション"
 
@@ -927,10 +682,6 @@ msgstr "ピンク"
 #: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:79
 msgid "Pixel Ratio"
 msgstr "ピクセル比"
-
-#: src/components/top8/SocialPostComposer/TemplatePicker.tsx:172
-#~ msgid "Placeholders like <0>{tokenExample}</0> are filled in automatically for each tournament."
-#~ msgstr "<0>{tokenExample}</0>のようなプレースホルダーは、トーナメントごとに自動で置き換えられます。"
 
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:209
 msgid "Placement"
@@ -980,14 +731,6 @@ msgstr ""
 #: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:432
 msgid "Post"
 msgstr "ポスト"
-
-#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:338
-#~ msgid "Post on Bluesky"
-#~ msgstr "Blueskyに投稿"
-
-#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:336
-#~ msgid "Post on X"
-#~ msgstr "Xに投稿"
 
 #: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:28
 msgid "Prediction size"
@@ -1042,10 +785,6 @@ msgstr "大会振り返り"
 msgid "Recapping the run..."
 msgstr "リザルトを振り返り中..."
 
-#: src/components/results/PlayerSummary/PlayerSummary.tsx:55
-#~ msgid "Record"
-#~ msgstr ""
-
 #: src/components/top8/SettingsPanel/AccentColorPicker.tsx:31
 msgid "Red"
 msgstr "レッド"
@@ -1085,10 +824,6 @@ msgstr "メンバーを集合中..."
 msgid "Save"
 msgstr "保存"
 
-#: src/components/top8/SocialPostComposer/TemplatePicker.tsx:121
-#~ msgid "Save current as template"
-#~ msgstr "現在の内容をテンプレートとして保存"
-
 #: src/components/predict/EntrantPoolPanel/EntrantPoolPanel.tsx:51
 #: src/components/results/EntrantPicker/EntrantPicker.tsx:45
 msgid "Search players..."
@@ -1101,10 +836,6 @@ msgstr "変数を検索…"
 #: src/components/results/PlayerSummary/PlayerSummary.tsx:127
 msgid "seed"
 msgstr "シード"
-
-#: src/components/results/PlayerSummary/PlayerSummary.tsx:63
-#~ msgid "Seed"
-#~ msgstr ""
 
 #: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:207
 #: src/components/top8/AssetSelector/AssetSelector.tsx:91
@@ -1180,11 +911,11 @@ msgstr "start.gg のみ対応"
 msgid "State"
 msgstr "州・都道府県"
 
-#: src/components/top8/InfoPanel/InfoPanel.tsx:113
+#: src/components/top8/InfoPanel/InfoPanel.tsx:105
 msgid "Stock icons"
 msgstr "ストックアイコン"
 
-#: src/components/top8/InfoPanel/InfoPanel.tsx:64
+#: src/components/top8/InfoPanel/InfoPanel.tsx:56
 msgid "Support"
 msgstr "サポート"
 
@@ -1214,10 +945,6 @@ msgstr "参加者をタップして予想に追加"
 msgid "Template"
 msgstr "テンプレート"
 
-#: src/components/top8/SocialPostComposer/TemplatePicker.tsx:164
-#~ msgid "Template body"
-#~ msgstr "テンプレート本文"
-
 #: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:392
 msgid "Template name"
 msgstr "テンプレート名"
@@ -1237,13 +964,9 @@ msgstr ""
 msgid "Templates"
 msgstr "テンプレ"
 
-#: src/components/shared/SiteFooter/SiteFooter.tsx:35
+#: src/components/shared/SiteFooter/SiteFooter.tsx:25
 msgid "Terms of Service"
-msgstr ""
-
-#: src/components/top8/ElementEditor/TextConfigEditor/TextConfigEditor.tsx:70
-#~ msgid "Text"
-#~ msgstr "テキスト"
+msgstr "利用規約"
 
 #: src/components/top8/TextEditor/TextEditor.tsx:48
 msgid "Text content is configured in the design layout."
@@ -1274,10 +997,6 @@ msgstr "アプリのデータを初期状態に戻すと保存されているテ
 msgid "This will reset all player data for this slot."
 msgstr "このスロットの選手情報がすべてリセットされます。"
 
-#: src/components/Layout/NavOverlay/NavOverlay.tsx:29
-#~ msgid "Thumbnail"
-#~ msgstr "サムネイル"
-
 #: src/components/Layout/NavOverlay/NavOverlay.tsx:30
 msgid "Thumbnail Maker"
 msgstr "サムネ作成"
@@ -1290,10 +1009,6 @@ msgstr "サムネイル"
 msgid "Tier List"
 msgstr "ティア表作成"
 
-#: src/components/Layout/NavOverlay/NavOverlay.tsx:28
-#~ msgid "Tier List Maker"
-#~ msgstr "ティア表作成"
-
 #: src/components/Layout/SettingsModal/SettingsModal.tsx:41
 msgid "Toggle developer settings"
 msgstr ""
@@ -1304,10 +1019,6 @@ msgstr ""
 msgid "Tonamel API error: {0}"
 msgstr "Tonamel APIエラー: {0}"
 
-#: src/utils/social/templateTokens.ts:30
-#~ msgid "Top {n} list"
-#~ msgstr "トップ{n}リスト"
-
 #: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:21
 msgid "Top 16"
 msgstr "Top 16"
@@ -1316,26 +1027,10 @@ msgstr "Top 16"
 msgid "Top 3"
 msgstr "Top 3"
 
-#: src/utils/social/templateTokens.ts:49
-#~ msgid "Top 3 list (with medals)"
-#~ msgstr "トップ3リスト（メダル付き）"
-
-#: src/utils/social/builtInTemplates.ts:20
-#~ msgid "Top 3 with handles"
-#~ msgstr "トップ3＋ハンドル"
-
-#: src/utils/social/templateTokens.ts:50
-#~ msgid "Top 5 list"
-#~ msgstr "トップ5リスト"
-
 #: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:20
 #: src/utils/social/builtInTemplates.ts:32
 msgid "Top 8"
 msgstr "Top 8"
-
-#: src/utils/social/builtInTemplates.ts:25
-#~ msgid "Top 8 list"
-#~ msgstr "トップ8リスト"
 
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:69
 msgid "Top8er"
@@ -1346,7 +1041,7 @@ msgstr "Top8er"
 msgid "Tournament"
 msgstr "大会情報"
 
-#: src/components/top8/InfoPanel/InfoPanel.tsx:125
+#: src/components/top8/InfoPanel/InfoPanel.tsx:117
 msgid "Tournament & Player data"
 msgstr "大会・選手情報"
 
@@ -1386,10 +1081,6 @@ msgstr "大会名"
 #: src/hooks/top8/useFetchResult.ts:387
 msgid "Tournament not found"
 msgstr "大会が見つかりませんでした"
-
-#: src/components/Layout/NavOverlay/NavOverlay.tsx:22
-#~ msgid "Tournament Ranker"
-#~ msgstr "リザルト作成"
 
 #: src/components/results/ResultsApp/ResultsApp.tsx:145
 msgid "Tournament Recap"
@@ -1436,8 +1127,8 @@ msgstr "形式"
 msgid "Undo"
 msgstr "元に戻す"
 
-#. placeholder {0}: formatRelative(state.date, i18n.locale)
-#: src/components/home/LastUpdateTracker.tsx:84
+#. placeholder {0}: formatRelative(BUILD_DATE, i18n.locale)
+#: src/components/home/LastUpdateTracker.tsx:33
 msgid "Updated {0}"
 msgstr "更新: {0}"
 
@@ -1462,10 +1153,6 @@ msgstr ""
 msgid "vs"
 msgstr "vs"
 
-#: src/components/results/SetList/SetRow.tsx:47
-#~ msgid "W"
-#~ msgstr ""
-
 #. placeholder {0}: winnerHandle[1]
 #: src/utils/social/templateTokens.ts:20
 msgid "Winner #{0} handle"
@@ -1485,10 +1172,6 @@ msgstr ""
 msgid "Winner #{placement} handle"
 msgstr "{placement}位のハンドル"
 
-#: src/utils/social/templateTokens.ts:82
-#~ msgid "Winner #{placement} name"
-#~ msgstr "{placement}位の名前"
-
 #: src/utils/social/templateTokens.ts:78
 msgid "Winner #{placement} tag"
 msgstr "{placement}位のタグ"
@@ -1505,17 +1188,9 @@ msgstr "X"
 msgid "X Handle"
 msgstr "Xハンドル"
 
-#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:427
-#~ msgid "you"
-#~ msgstr "あなた"
-
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:212
 msgid "Your current design will be overwritten!"
 msgstr "現在のデザインは上書きされます！"
-
-#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:426
-#~ msgid "Your name"
-#~ msgstr "あなたの名前"
 
 #: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:142
 msgid "Zoom In"
