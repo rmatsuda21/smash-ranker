@@ -37,7 +37,13 @@
   color: var(--fg-1);
 }
 
-.close {
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.iconButton {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -64,6 +70,14 @@
   &:focus-visible {
     outline: 2px solid var(--accent-9);
     outline-offset: 2px;
+  }
+}
+
+.iconButtonActive {
+  color: var(--accent-9);
+
+  &:hover {
+    color: var(--accent-9);
   }
 }
 

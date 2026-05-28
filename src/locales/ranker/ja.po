@@ -355,6 +355,7 @@ msgstr "選手を初期化しますか？"
 msgid "Clear Predictions?"
 msgstr "予想をクリアしますか？"
 
+#: src/components/Layout/SettingsModal/SettingsModal.tsx:48
 #: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:309
 msgid "Close"
 msgstr "閉じる"
@@ -366,6 +367,10 @@ msgstr "閉じる"
 #: src/components/top8/DesignEditor/DesignEditor.tsx:80
 msgid "Color Palette"
 msgstr "カラーパレット"
+
+#: src/components/top8/SettingsPanel/DeveloperSettings.tsx:60
+msgid "Commit"
+msgstr ""
 
 #: src/hooks/predict/useFetchPredictionEntrants.ts:241
 #: src/hooks/top8/useFetchTonamel.ts:202
@@ -520,6 +525,10 @@ msgstr "全選択解除"
 #: src/components/top8/SidePanel/SidePanelNav.tsx:28
 msgid "Design"
 msgstr "デザイン"
+
+#: src/components/top8/SettingsPanel/DeveloperSettings.tsx:37
+msgid "Developer"
+msgstr "開発者モード"
 
 #: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:177
 msgid "Dimensions"
@@ -819,6 +828,10 @@ msgstr "ミニマル"
 msgid "Minimalist"
 msgstr "ミニマル"
 
+#: src/components/top8/SettingsPanel/DeveloperSettings.tsx:54
+msgid "Mode"
+msgstr ""
+
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:272
 msgid "My Templates"
 msgstr "マイテンプレ"
@@ -1054,6 +1067,11 @@ msgstr "サムネイルを再生成"
 msgid "Replaying the bracket..."
 msgstr "ブラケットを再生中..."
 
+#: src/components/top8/SettingsPanel/DeveloperSettings.tsx:47
+#: src/components/top8/SettingsPanel/DeveloperSettings.tsx:75
+msgid "Reset application state"
+msgstr "アプリ初期化"
+
 #: src/components/results/ResultsWorkspace/ResultsWorkspace.tsx:62
 msgid "Results"
 msgstr ""
@@ -1121,7 +1139,7 @@ msgstr "選択済み"
 msgid "Sets"
 msgstr "試合"
 
-#: src/components/Layout/SettingsModal/SettingsModal.tsx:24
+#: src/components/Layout/SettingsModal/SettingsModal.tsx:33
 msgid "Settings"
 msgstr ""
 
@@ -1248,6 +1266,10 @@ msgstr "このテンプレートは完全に削除されます。"
 msgid "This tournament has multiple groups without a final bracket, so it doesn't produce a unified Top 8 ranking."
 msgstr "この大会は複数グループ制のため、統一された順位を生成できません。"
 
+#: src/components/top8/SettingsPanel/DeveloperSettings.tsx:77
+msgid "This will permanently delete all saved templates, custom fonts, uploaded assets, and design settings. The page will reload."
+msgstr "アプリのデータを初期状態に戻すと保存されているテンプレ、カスタムフォント、素材、デザインの設定などが消えます。"
+
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:175
 msgid "This will reset all player data for this slot."
 msgstr "このスロットの選手情報がすべてリセットされます。"
@@ -1271,6 +1293,10 @@ msgstr "ティア表作成"
 #: src/components/Layout/NavOverlay/NavOverlay.tsx:28
 #~ msgid "Tier List Maker"
 #~ msgstr "ティア表作成"
+
+#: src/components/Layout/SettingsModal/SettingsModal.tsx:41
+msgid "Toggle developer settings"
+msgstr ""
 
 #. placeholder {0}: res.status
 #: src/hooks/predict/useFetchPredictionEntrants.ts:237
@@ -1427,6 +1453,10 @@ msgstr "素材をアップロード"
 #: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:185
 msgid "Uploaded"
 msgstr "アップロード日"
+
+#: src/components/top8/SettingsPanel/DeveloperSettings.tsx:66
+msgid "Version"
+msgstr ""
 
 #: src/components/results/SetList/SetRow.tsx:143
 msgid "vs"

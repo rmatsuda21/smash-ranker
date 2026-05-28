@@ -17,7 +17,7 @@ msgstr ""
 msgid "← swipe to scroll →"
 msgstr ""
 
-#: src/components/tierlist/TierListApp/TierListApp.tsx:331
+#: src/components/tierlist/TierListApp/TierListApp.tsx:345
 msgid "Add Tier"
 msgstr ""
 

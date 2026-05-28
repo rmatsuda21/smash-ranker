@@ -355,6 +355,7 @@ msgstr ""
 msgid "Clear Predictions?"
 msgstr ""
 
+#: src/components/Layout/SettingsModal/SettingsModal.tsx:48
 #: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:309
 msgid "Close"
 msgstr ""
@@ -365,6 +366,10 @@ msgstr ""
 
 #: src/components/top8/DesignEditor/DesignEditor.tsx:80
 msgid "Color Palette"
+msgstr ""
+
+#: src/components/top8/SettingsPanel/DeveloperSettings.tsx:60
+msgid "Commit"
 msgstr ""
 
 #: src/hooks/predict/useFetchPredictionEntrants.ts:241
@@ -519,6 +524,10 @@ msgstr ""
 
 #: src/components/top8/SidePanel/SidePanelNav.tsx:28
 msgid "Design"
+msgstr ""
+
+#: src/components/top8/SettingsPanel/DeveloperSettings.tsx:37
+msgid "Developer"
 msgstr ""
 
 #: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:177
@@ -819,6 +828,10 @@ msgstr ""
 msgid "Minimalist"
 msgstr ""
 
+#: src/components/top8/SettingsPanel/DeveloperSettings.tsx:54
+msgid "Mode"
+msgstr ""
+
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:272
 msgid "My Templates"
 msgstr ""
@@ -1058,6 +1071,11 @@ msgstr ""
 msgid "Replaying the bracket..."
 msgstr ""
 
+#: src/components/top8/SettingsPanel/DeveloperSettings.tsx:47
+#: src/components/top8/SettingsPanel/DeveloperSettings.tsx:75
+msgid "Reset application state"
+msgstr ""
+
 #: src/components/results/ResultsWorkspace/ResultsWorkspace.tsx:62
 msgid "Results"
 msgstr ""
@@ -1125,7 +1143,7 @@ msgstr ""
 msgid "Sets"
 msgstr ""
 
-#: src/components/Layout/SettingsModal/SettingsModal.tsx:24
+#: src/components/Layout/SettingsModal/SettingsModal.tsx:33
 msgid "Settings"
 msgstr ""
 
@@ -1252,6 +1270,10 @@ msgstr ""
 msgid "This tournament has multiple groups without a final bracket, so it doesn't produce a unified Top 8 ranking."
 msgstr ""
 
+#: src/components/top8/SettingsPanel/DeveloperSettings.tsx:77
+msgid "This will permanently delete all saved templates, custom fonts, uploaded assets, and design settings. The page will reload."
+msgstr ""
+
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:175
 msgid "This will reset all player data for this slot."
 msgstr ""
@@ -1275,6 +1297,10 @@ msgstr ""
 #: src/components/Layout/NavOverlay/NavOverlay.tsx:28
 #~ msgid "Tier List Maker"
 #~ msgstr ""
+
+#: src/components/Layout/SettingsModal/SettingsModal.tsx:41
+msgid "Toggle developer settings"
+msgstr ""
 
 #. placeholder {0}: res.status
 #: src/hooks/predict/useFetchPredictionEntrants.ts:237
@@ -1430,6 +1456,10 @@ msgstr ""
 
 #: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:185
 msgid "Uploaded"
+msgstr ""
+
+#: src/components/top8/SettingsPanel/DeveloperSettings.tsx:66
+msgid "Version"
 msgstr ""
 
 #: src/components/results/SetList/SetRow.tsx:143
