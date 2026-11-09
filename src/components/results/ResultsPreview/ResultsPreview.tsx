@@ -17,6 +17,10 @@ import { useResultsStore } from "@/store/resultsStore";
 import { ResultsExportBar } from "@/components/results/ResultsExportBar/ResultsExportBar";
 import type { PredictionPalette } from "@/types/predict/PredictionPalette";
 import type { PlayerTournamentResults } from "@/types/results/PlayerTournamentResults";
+import type {
+  SetListLayout,
+  SetListStyle,
+} from "@/types/results/SetListDisplay";
 import { logEvent, logWarning } from "@/utils/observability/log";
 
 import styles from "./ResultsPreview.module.scss";
@@ -77,6 +81,7 @@ const buildPayload = (
   locale: string,
   player: PlayerTournamentResults,
   fallbackCharacters: Record<string, string | null>,
+  display: { layout: SetListLayout; style: SetListStyle },
 ) => ({
   tournamentName,
   eventName,
@@ -98,6 +103,7 @@ const buildPayload = (
     losses: player.losses,
   },
   fallbackCharacterId: fallbackCharacters[player.entrantId] ?? null,
+  display,
   sets: player.sets.map((s) => ({
     id: s.id,
     fullRoundText: s.fullRoundText,
@@ -133,6 +139,8 @@ export const ResultsPreview = ({ cacheRef }: Props) => {
   const palette = useResultsStore((s) => s.colorPalette);
   const playerResults = useResultsStore((s) => s.playerResults);
   const fallbackCharacters = useResultsStore((s) => s.fallbackCharacters);
+  const setListLayout = useResultsStore((s) => s.setListLayout);
+  const setListStyle = useResultsStore((s) => s.setListStyle);
   const styleVars = paletteToStyleVars(palette);
 
   // Payload + serialized form are derived once per input change rather
@@ -152,9 +160,12 @@ export const ResultsPreview = ({ cacheRef }: Props) => {
             i18n.locale,
             playerResults,
             fallbackCharacters,
+            { layout: setListLayout, style: setListStyle },
           )
         : null,
     [
+      setListLayout,
+      setListStyle,
       playerResults,
       tournamentName,
       eventName,

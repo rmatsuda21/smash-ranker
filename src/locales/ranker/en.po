@@ -120,6 +120,14 @@ msgstr "ブルー"
 msgid "Bluesky"
 msgstr ""
 
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:31
+msgid "Both players side by side, score in the middle"
+msgstr ""
+
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:35
+msgid "Bracket"
+msgstr ""
+
 #: src/components/shared/SiteFooter/SiteFooter.tsx:35
 #: src/components/top8/InfoPanel/InfoPanel.tsx:74
 msgid "Buy me a coffee"
@@ -136,6 +144,10 @@ msgstr ""
 #: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:60
 #: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:150
 msgid "Cancel"
+msgstr ""
+
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:132
+msgid "Card style"
 msgstr ""
 
 #. placeholder {0}: res.status
@@ -181,6 +193,10 @@ msgstr ""
 
 #: src/components/top8/SettingsPanel/DeveloperSettings.tsx:60
 msgid "Commit"
+msgstr ""
+
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:40
+msgid "Compact"
 msgstr ""
 
 #: src/hooks/predict/useFetchPredictionEntrants.ts:241
@@ -292,6 +308,10 @@ msgstr ""
 msgid "Date"
 msgstr ""
 
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:47
+msgid "Default"
+msgstr ""
+
 #: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:218
 msgid "Delete"
 msgstr ""
@@ -337,12 +357,25 @@ msgstr ""
 msgid "Dimensions"
 msgstr ""
 
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:82
+msgid "Display"
+msgstr ""
+
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:76
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:77
+msgid "Display options"
+msgstr ""
+
 #: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:54
 msgid "Don't show again"
 msgstr ""
 
 #: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:125
 msgid "Done"
+msgstr ""
+
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:48
+msgid "Dotted"
 msgstr ""
 
 #: src/components/predict/ExportBar/ExportBar.tsx:95
@@ -365,7 +398,8 @@ msgstr ""
 msgid "Downloaded!"
 msgstr ""
 
-#: src/components/results/SetList/SetRow.tsx:124
+#: src/components/results/SetList/SetRow.tsx:246
+#: src/components/results/SetList/SetRow.tsx:292
 msgid "DQ"
 msgstr ""
 
@@ -474,6 +508,10 @@ msgstr ""
 msgid "Generating recap"
 msgstr ""
 
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:50
+msgid "Gradient edge"
+msgstr ""
+
 #: src/components/top8/SettingsPanel/AccentColorPicker.tsx:34
 msgid "Green"
 msgstr ""
@@ -518,8 +556,16 @@ msgstr ""
 msgid "Kagaribi"
 msgstr ""
 
+#: src/components/results/SetList/SetRow.tsx:236
+msgid "L"
+msgstr ""
+
 #: src/components/top8/SettingsPanel/LanguagePicker.tsx:41
 msgid "Language"
+msgstr ""
+
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:96
+msgid "Layout"
 msgstr ""
 
 #: src/components/top8/SettingsPanel/ThemePicker.tsx:21
@@ -544,7 +590,7 @@ msgstr ""
 msgid "Load Tournament?"
 msgstr ""
 
-#: src/components/results/SetList/SetRow.tsx:49
+#: src/components/results/SetList/SetRow.tsx:57
 msgid "Loading character"
 msgstr ""
 
@@ -607,11 +653,11 @@ msgstr ""
 msgid "No assets yet"
 msgstr ""
 
-#: src/components/results/SetList/SetRow.tsx:65
+#: src/components/results/SetList/SetRow.tsx:73
 msgid "No character data"
 msgstr ""
 
-#: src/components/results/SetList/SetList.tsx:40
+#: src/components/results/SetList/SetList.tsx:43
 msgid "No completed sets found for this player."
 msgstr ""
 
@@ -636,6 +682,14 @@ msgstr ""
 #: src/components/top8/CharacterEditor/CharacterSelect/CharacterSelect.tsx:34
 #: src/components/top8/PlayersEditor/CountryDropDown.tsx:38
 msgid "None"
+msgstr ""
+
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:36
+msgid "One line per player, like a bracket match box"
+msgstr ""
+
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:41
+msgid "One line per set, tap a set for details"
 msgstr ""
 
 #: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:363
@@ -824,6 +878,10 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:49
+msgid "Scoreline"
+msgstr ""
+
 #: src/components/predict/EntrantPoolPanel/EntrantPoolPanel.tsx:51
 #: src/components/results/EntrantPicker/EntrantPicker.tsx:45
 msgid "Search players..."
@@ -866,7 +924,7 @@ msgstr ""
 msgid "Selected"
 msgstr ""
 
-#: src/components/results/SetList/SetList.tsx:56
+#: src/components/results/SetList/SetList.tsx:72
 msgid "Sets"
 msgstr ""
 
@@ -1145,12 +1203,24 @@ msgstr ""
 msgid "Uploaded"
 msgstr ""
 
+#: src/components/results/SetList/SetRow.tsx:158
+msgid "Upset Factor {upsetFactor}"
+msgstr ""
+
 #: src/components/top8/SettingsPanel/DeveloperSettings.tsx:66
 msgid "Version"
 msgstr ""
 
-#: src/components/results/SetList/SetRow.tsx:143
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:30
+msgid "Versus"
+msgstr ""
+
+#: src/components/results/SetList/SetRow.tsx:257
 msgid "vs"
+msgstr ""
+
+#: src/components/results/SetList/SetRow.tsx:236
+msgid "W"
 msgstr ""
 
 #. placeholder {0}: winnerHandle[1]

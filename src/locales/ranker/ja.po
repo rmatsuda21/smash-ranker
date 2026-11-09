@@ -120,6 +120,14 @@ msgstr "ブルー"
 msgid "Bluesky"
 msgstr "Bluesky"
 
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:31
+msgid "Both players side by side, score in the middle"
+msgstr "両プレイヤーを左右に、スコアを中央に表示"
+
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:35
+msgid "Bracket"
+msgstr "ブラケット"
+
 #: src/components/shared/SiteFooter/SiteFooter.tsx:35
 #: src/components/top8/InfoPanel/InfoPanel.tsx:74
 msgid "Buy me a coffee"
@@ -137,6 +145,10 @@ msgstr ""
 #: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:150
 msgid "Cancel"
 msgstr "キャンセル"
+
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:132
+msgid "Card style"
+msgstr "カードのスタイル"
 
 #. placeholder {0}: res.status
 #: src/hooks/predict/useFetchPredictionEntrants.ts:207
@@ -182,6 +194,10 @@ msgstr "カラーパレット"
 #: src/components/top8/SettingsPanel/DeveloperSettings.tsx:60
 msgid "Commit"
 msgstr ""
+
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:40
+msgid "Compact"
+msgstr "コンパクト"
 
 #: src/hooks/predict/useFetchPredictionEntrants.ts:241
 #: src/hooks/top8/useFetchTonamel.ts:202
@@ -292,6 +308,10 @@ msgstr "ダーク"
 msgid "Date"
 msgstr "日付"
 
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:47
+msgid "Default"
+msgstr "デフォルト"
+
 #: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:218
 msgid "Delete"
 msgstr "削除"
@@ -337,6 +357,15 @@ msgstr "開発者モード"
 msgid "Dimensions"
 msgstr "サイズ"
 
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:82
+msgid "Display"
+msgstr "表示"
+
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:76
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:77
+msgid "Display options"
+msgstr "表示オプション"
+
 #: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:54
 msgid "Don't show again"
 msgstr "次回から表示しない"
@@ -344,6 +373,10 @@ msgstr "次回から表示しない"
 #: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:125
 msgid "Done"
 msgstr "終了"
+
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:48
+msgid "Dotted"
+msgstr "ドット"
 
 #: src/components/predict/ExportBar/ExportBar.tsx:95
 #: src/components/results/ResultsExportBar/ResultsExportBar.tsx:117
@@ -365,7 +398,8 @@ msgstr "ダウンロード設定"
 msgid "Downloaded!"
 msgstr ""
 
-#: src/components/results/SetList/SetRow.tsx:124
+#: src/components/results/SetList/SetRow.tsx:246
+#: src/components/results/SetList/SetRow.tsx:292
 msgid "DQ"
 msgstr "DQ"
 
@@ -474,6 +508,10 @@ msgstr "プレビュー作成中..."
 msgid "Generating recap"
 msgstr "リザルト生成中"
 
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:50
+msgid "Gradient edge"
+msgstr "グラデーション枠"
+
 #: src/components/top8/SettingsPanel/AccentColorPicker.tsx:34
 msgid "Green"
 msgstr "グリーン"
@@ -518,9 +556,17 @@ msgstr "公式サーバーで情報発信を行なってます！"
 msgid "Kagaribi"
 msgstr "篝火"
 
+#: src/components/results/SetList/SetRow.tsx:236
+msgid "L"
+msgstr "L"
+
 #: src/components/top8/SettingsPanel/LanguagePicker.tsx:41
 msgid "Language"
 msgstr "言語"
+
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:96
+msgid "Layout"
+msgstr "レイアウト"
 
 #: src/components/top8/SettingsPanel/ThemePicker.tsx:21
 #: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:40
@@ -544,7 +590,7 @@ msgstr "テンプレートを読み込みますか？"
 msgid "Load Tournament?"
 msgstr "大会を読み込みますか？"
 
-#: src/components/results/SetList/SetRow.tsx:49
+#: src/components/results/SetList/SetRow.tsx:57
 msgid "Loading character"
 msgstr "キャラクター読み込み中"
 
@@ -607,11 +653,11 @@ msgstr "マイテンプレ"
 msgid "No assets yet"
 msgstr "素材がありません"
 
-#: src/components/results/SetList/SetRow.tsx:65
+#: src/components/results/SetList/SetRow.tsx:73
 msgid "No character data"
 msgstr "キャラクター情報なし"
 
-#: src/components/results/SetList/SetList.tsx:40
+#: src/components/results/SetList/SetList.tsx:43
 msgid "No completed sets found for this player."
 msgstr "この選手の試合データが見つかりません。"
 
@@ -637,6 +683,14 @@ msgstr "このデザインにはテキストが定義されていません。"
 #: src/components/top8/PlayersEditor/CountryDropDown.tsx:38
 msgid "None"
 msgstr "なし"
+
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:36
+msgid "One line per player, like a bracket match box"
+msgstr "ブラケットの対戦枠のように1プレイヤー1行"
+
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:41
+msgid "One line per set, tap a set for details"
+msgstr "1セット1行、タップで詳細を表示"
 
 #: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:363
 msgid "Open template editor"
@@ -824,6 +878,10 @@ msgstr "メンバーを集合中..."
 msgid "Save"
 msgstr "保存"
 
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:49
+msgid "Scoreline"
+msgstr "スコアライン"
+
 #: src/components/predict/EntrantPoolPanel/EntrantPoolPanel.tsx:51
 #: src/components/results/EntrantPicker/EntrantPicker.tsx:45
 msgid "Search players..."
@@ -866,7 +924,7 @@ msgstr "国選択"
 msgid "Selected"
 msgstr "選択済み"
 
-#: src/components/results/SetList/SetList.tsx:56
+#: src/components/results/SetList/SetList.tsx:72
 msgid "Sets"
 msgstr "試合"
 
@@ -1145,13 +1203,25 @@ msgstr "素材をアップロード"
 msgid "Uploaded"
 msgstr "アップロード日"
 
+#: src/components/results/SetList/SetRow.tsx:158
+msgid "Upset Factor {upsetFactor}"
+msgstr "アップセットファクター {upsetFactor}"
+
 #: src/components/top8/SettingsPanel/DeveloperSettings.tsx:66
 msgid "Version"
 msgstr ""
 
-#: src/components/results/SetList/SetRow.tsx:143
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:30
+msgid "Versus"
+msgstr "対戦"
+
+#: src/components/results/SetList/SetRow.tsx:257
 msgid "vs"
 msgstr "vs"
+
+#: src/components/results/SetList/SetRow.tsx:236
+msgid "W"
+msgstr "W"
 
 #. placeholder {0}: winnerHandle[1]
 #: src/utils/social/templateTokens.ts:20

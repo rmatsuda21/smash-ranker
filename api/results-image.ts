@@ -130,6 +130,23 @@ type PlayerInfo = {
   losses: number;
 };
 
+// Mirrors src/types/results/SetListDisplay.ts.
+type SetListLayout = "versus" | "bracket" | "compact";
+type SetListStyle = "default" | "borderedDots" | "scoreline" | "gradientEdge";
+type SetListDisplay = { layout: SetListLayout; style: SetListStyle };
+const SET_LIST_LAYOUTS: readonly SetListLayout[] = [
+  "versus",
+  "bracket",
+  "compact",
+];
+const SET_LIST_STYLES: readonly SetListStyle[] = [
+  "default",
+  "borderedDots",
+  "scoreline",
+  "gradientEdge",
+];
+const DEFAULT_DISPLAY: SetListDisplay = { layout: "versus", style: "default" };
+
 type RequestBody = {
   tournamentName: string;
   eventName: string;
@@ -142,6 +159,7 @@ type RequestBody = {
   player: PlayerInfo;
   fallbackCharacterId?: string | null;
   sets: ResultSet[];
+  display?: SetListDisplay;
 };
 
 // --- Image fetching ---
@@ -541,11 +559,11 @@ const CHAR_SIZE = 24;
 // AND no recent-fallback character was found. Dashed-border square; the
 // dashed treatment alone reads as "placeholder / missing" without needing a
 // glyph inside.
-function buildEmptyCharacterSlot(): React.ReactElement {
+function buildEmptyCharacterSlot(size: number = CHAR_SIZE): React.ReactElement {
   return h("div", {
     style: {
-      width: CHAR_SIZE,
-      height: CHAR_SIZE,
+      width: size,
+      height: size,
       borderRadius: 3,
       flexShrink: 0,
       backgroundColor: "rgba(255,255,255,0.03)",
@@ -558,6 +576,7 @@ function buildCharacterStack(
   characters: string[],
   iconMap: Map<string, string>,
   fallbackId?: string | null,
+  size: number = CHAR_SIZE,
 ): React.ReactElement {
   const slots = characters.slice(0, 3);
   // No set-level data: render the grayscale fallback if we have one, else the
@@ -568,8 +587,8 @@ function buildCharacterStack(
       if (src) {
         return h("img", {
           src,
-          width: CHAR_SIZE,
-          height: CHAR_SIZE,
+          width: size,
+          height: size,
           style: {
             borderRadius: 3,
             flexShrink: 0,
@@ -579,7 +598,7 @@ function buildCharacterStack(
         });
       }
     }
-    return buildEmptyCharacterSlot();
+    return buildEmptyCharacterSlot(size);
   }
   return h(
     "div",
@@ -597,8 +616,8 @@ function buildCharacterStack(
         return h("img", {
           key: id,
           src,
-          width: CHAR_SIZE,
-          height: CHAR_SIZE,
+          width: size,
+          height: size,
           style: { borderRadius: 3, flexShrink: 0 },
         });
       }
@@ -608,8 +627,8 @@ function buildCharacterStack(
       return h("div", {
         key: id,
         style: {
-          width: CHAR_SIZE,
-          height: CHAR_SIZE,
+          width: size,
+          height: size,
           borderRadius: 3,
           backgroundColor: "rgba(255,255,255,0.08)",
           flexShrink: 0,
@@ -635,121 +654,569 @@ function groupSetsByPhase(sets: ResultSet[]): PhaseGroup[] {
   return groups;
 }
 
-function buildPhaseSection(
-  group: PhaseGroup,
+// Shortens start.gg round names the way the community does ("Winners
+// Semi-Final" → "WSF"). Mirrors src/utils/results/abbreviateRound.ts.
+const ROUND_STAGES: ReadonlyArray<readonly [RegExp, string]> = [
+  [/^grand\s*finals?\s*reset$/, "GFR"],
+  [/^grand\s*finals?$/, "GF"],
+  [/^quarter-?\s*finals?$/, "QF"],
+  [/^semi-?\s*finals?$/, "SF"],
+  [/^finals?$/, "F"],
+  [/^round\s*(\d+)$/, "R$1"],
+];
+function abbreviateRound(fullRoundText: string): string {
+  const m = fullRoundText.trim().match(/^(winners?|losers?)?\s*(.*)$/i);
+  if (!m) return fullRoundText;
+  const side = m[1] ? m[1][0].toUpperCase() : "";
+  const rest = m[2].toLowerCase();
+  for (const [re, out] of ROUND_STAGES) {
+    if (re.test(rest)) return side + rest.replace(re, out);
+  }
+  return fullRoundText;
+}
+
+// Satori has no color-mix(); build translucent accents from the hex.
+function withAlpha(hex: string, alpha: number): string {
+  const m = hex.trim().match(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i);
+  if (!m) return hex;
+  let c = m[1];
+  if (c.length === 3)
+    c = c
+      .split("")
+      .map((x) => x + x)
+      .join("");
+  const r = parseInt(c.slice(0, 2), 16);
+  const g = parseInt(c.slice(2, 4), 16);
+  const b = parseInt(c.slice(4, 6), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
+function dotPatternSvg(fill: string): string {
+  return `data:image/svg+xml,${encodeURIComponent(
+    `<svg width="12" height="12" xmlns="http://www.w3.org/2000/svg"><circle cx="1" cy="1" r="1" fill="${fill}"/></svg>`,
+  )}`;
+}
+
+// Satori calls `.trim()` on string-valued style props, so a key whose value
+// is `undefined` crashes it. Strip those before handing a style to `h()`.
+function definedStyle(style: React.CSSProperties): React.CSSProperties {
+  return Object.fromEntries(
+    Object.entries(style).filter(([, v]) => v !== undefined),
+  ) as React.CSSProperties;
+}
+
+const WIN_GREEN = "#46a758";
+const LOSS_RED = "#e5484d";
+const UPSET_GUTTER = 44;
+const UPSET_TAB_WIDTH = 34;
+
+type RowContext = {
+  palette: PredictionPalette;
+  iconMap: Map<string, string>;
+  flagMap: Map<string, string>;
+  fallbackCharacterId?: string | null;
+  display: SetListDisplay;
+  player: PlayerInfo;
+  // Whether any set in the list is an upset — every row then reserves the
+  // left gutter for the UF tab so cards stay aligned.
+  hasUpsets: boolean;
+};
+
+function seedRunText(seed: number, placement: number): string {
+  if (!seed) return "";
+  if (!placement) return `#${seed}`;
+  return `#${seed} → ${placement}${ordinal(placement)}`;
+}
+
+function selfDisplayName(player: PlayerInfo): string {
+  return player.prefix ? `${player.prefix} | ${player.name}` : player.name;
+}
+
+// Score colors: the selected style decides. Scoreline uses green/red; the
+// others use the accent for wins and muted text for losses.
+function scoreColors(ctx: RowContext): { win: string; loss: string } {
+  if (ctx.display.style === "scoreline")
+    return { win: WIN_GREEN, loss: LOSS_RED };
+  return { win: ctx.palette.accent, loss: ctx.palette.textMuted };
+}
+
+// Card chrome per style. Returns the outer container style and, for the
+// gradient edge, an inner style (satori has no border-image, so the edge is
+// a 1px-padded gradient box around a solid box).
+function cardFrame(
+  ctx: RowContext,
+  didWin: boolean,
+): { outer: React.CSSProperties; inner?: React.CSSProperties } {
+  const { palette } = ctx;
+  const base: React.CSSProperties = { borderRadius: 6 };
+  switch (ctx.display.style) {
+    case "borderedDots":
+      return {
+        outer: definedStyle({
+          ...base,
+          border: `1px solid ${didWin ? withAlpha(palette.accent, 0.55) : "rgba(255,255,255,0.12)"}`,
+          boxShadow: didWin
+            ? `0 0 0 1px ${withAlpha(palette.accent, 0.18)}`
+            : undefined,
+          backgroundColor: "rgba(255,255,255,0.025)",
+          backgroundImage: `url('${dotPatternSvg(
+            didWin ? withAlpha(palette.accent, 0.3) : "rgba(255,255,255,0.06)",
+          )}')`,
+          backgroundSize: "12px 12px",
+          backgroundRepeat: "repeat" as const,
+        }),
+      };
+    case "scoreline":
+      return {
+        outer: {
+          borderRadius: 0,
+          borderBottom: `1px solid ${palette.borderSubtle}`,
+        },
+      };
+    case "gradientEdge":
+      return {
+        outer: {
+          ...base,
+          padding: 1,
+          backgroundImage: `linear-gradient(115deg, ${
+            didWin ? palette.accent : "rgba(255,255,255,0.22)"
+          } 0%, rgba(255,255,255,0.06) 100%)`,
+        },
+        inner: definedStyle({
+          borderRadius: 5,
+          backgroundColor: palette.bgGradientEnd,
+          backgroundImage: didWin
+            ? `linear-gradient(90deg, ${withAlpha(palette.accent, 0.12)} 0%, rgba(0,0,0,0) 50%)`
+            : undefined,
+        }),
+      };
+    default:
+      return {
+        outer: definedStyle({
+          ...base,
+          backgroundColor: didWin
+            ? "rgba(255,255,255,0.045)"
+            : "rgba(255,255,255,0.025)",
+          backgroundImage: didWin
+            ? `linear-gradient(90deg, ${withAlpha(palette.accent, 0.1)} 0%, rgba(0,0,0,0) 60%)`
+            : undefined,
+        }),
+      };
+  }
+}
+
+// UF tab in the gutter to the left of the card, vertically centered.
+function buildUpsetTab(
+  uf: number,
   palette: PredictionPalette,
-  iconMap: Map<string, string>,
-  flagMap: Map<string, string>,
-  fallbackCharacterId?: string | null,
 ): React.ReactElement {
+  const tier = upsetBadgeStyle(uf, palette);
   return h(
     "div",
     {
-      key: group.id,
-      style: {
+      style: definedStyle({
         display: "flex",
         flexDirection: "column" as const,
-        gap: 4,
-      },
+        alignItems: "center",
+        justifyContent: "center",
+        minWidth: UPSET_TAB_WIDTH,
+        paddingTop: 5,
+        paddingBottom: 5,
+        paddingLeft: 6,
+        paddingRight: 6,
+        borderRadius: 6,
+        lineHeight: 1,
+        color: tier.color,
+        backgroundColor: tier.backgroundColor,
+        backgroundImage: tier.backgroundImage,
+        border: tier.border,
+        boxShadow: tier.boxShadow,
+      }),
     },
     h(
       "div",
       {
-        style: {
-          display: "flex",
-          fontSize: 9,
-          fontWeight: 800,
-          letterSpacing: 1.2,
-          color: palette.accent,
-          textTransform: "uppercase" as const,
-          paddingBottom: 3,
-          marginBottom: 2,
-          borderBottom: `1px solid ${palette.borderSubtle}`,
-        },
+        style: { display: "flex", fontSize: 9, fontWeight: 800, opacity: 0.85 },
       },
-      group.name,
+      "UF",
     ),
-    ...group.sets.map((s) =>
-      buildSetRow(s, palette, iconMap, flagMap, fallbackCharacterId),
+    h(
+      "div",
+      {
+        style: { display: "flex", fontSize: 18, fontWeight: 800, marginTop: 2 },
+      },
+      String(uf),
     ),
   );
 }
 
-function buildSetRow(
-  set: ResultSet,
-  palette: PredictionPalette,
-  iconMap: Map<string, string>,
-  flagMap: Map<string, string>,
-  fallbackCharacterId?: string | null,
-): React.ReactElement {
-  const borderColor = set.didWin ? palette.accent : palette.textMuted;
-  const scoreColor = set.didWin ? palette.accent : palette.textSecondary;
-  const meta =
-    set.opponent.seed && set.opponent.placement
-      ? `(#${set.opponent.seed} → ${set.opponent.placement}${ordinal(set.opponent.placement)})`
-      : set.opponent.seed
-        ? `(#${set.opponent.seed})`
-        : "";
-  const opponentFlag =
-    set.opponent.country && flagMap.get(set.opponent.country.toLowerCase());
+function buildFlag(
+  ctx: RowContext,
+  country?: string,
+): React.ReactElement | null {
+  const src = country && ctx.flagMap.get(country.toLowerCase());
+  return src
+    ? h("img", {
+        src,
+        width: 13,
+        height: 9,
+        style: { borderRadius: 1, flexShrink: 0 },
+      })
+    : null;
+}
 
+function buildName(
+  ctx: RowContext,
+  name: string,
+  prefix: string | undefined,
+  fontSize: number,
+  color: string,
+): React.ReactElement {
+  // Prefix and name are separate boxes: satori mislays a bare text node next
+  // to an element when the parent truncates, drawing them on top of each
+  // other. Only the name box shrinks and ellipsizes.
   return h(
     "div",
     {
-      key: set.id,
       style: {
         display: "flex",
-        flexDirection: "column" as const,
-        gap: 1,
-        padding: "5px 12px 6px",
-        borderRadius: 6,
-        backgroundColor: set.didWin
-          ? "rgba(255,255,255,0.045)"
-          : "rgba(255,255,255,0.025)",
-        borderLeft: `3px solid ${borderColor}`,
-        opacity: set.isDQ ? 0.65 : 1,
+        alignItems: "baseline",
+        gap: 3,
+        minWidth: 0,
+        maxWidth: "100%",
+        fontSize,
+        fontWeight: 700,
+        color,
       },
     },
-    // Row 1: round label, centered.
+    prefix
+      ? h(
+          "div",
+          {
+            style: {
+              display: "flex",
+              flexShrink: 0,
+              fontWeight: 400,
+              color: ctx.palette.textMuted,
+            },
+          },
+          `${prefix} |`,
+        )
+      : null,
     h(
       "div",
       {
         style: {
           display: "flex",
-          justifyContent: "center",
-          fontSize: 9,
-          fontWeight: 700,
-          letterSpacing: 1,
-          color: palette.textMuted,
+          minWidth: 0,
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          whiteSpace: "nowrap" as const,
         },
       },
-      (set.fullRoundText || "—").toUpperCase(),
+      name,
     ),
-    // Row 2: chars · score · chars. Equal `flex: 1 1 0` on each side keeps
-    // the score pinned to the midpoint regardless of how many chars per side.
+  );
+}
+
+function buildRankingPill(
+  ctx: RowContext,
+  ranking: PlayerRanking,
+): React.ReactElement {
+  return h(
+    "div",
+    {
+      style: {
+        display: "flex",
+        alignItems: "center",
+        paddingTop: 1,
+        paddingBottom: 1,
+        paddingLeft: 5,
+        paddingRight: 5,
+        borderRadius: 999,
+        fontSize: 9,
+        fontWeight: 700,
+        lineHeight: 1,
+        color: ctx.palette.accent,
+        backgroundColor: ctx.palette.accentRowBg,
+        flexShrink: 1,
+        minWidth: 0,
+        maxWidth: 160,
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        whiteSpace: "nowrap" as const,
+      },
+    },
+    `${ranking.displayTitle ?? ranking.title} #${ranking.rank}`,
+  );
+}
+
+function muted(
+  ctx: RowContext,
+  text: string,
+  fontSize = 10,
+): React.ReactElement {
+  return h(
+    "div",
+    {
+      style: {
+        display: "flex",
+        fontSize,
+        color: ctx.palette.textMuted,
+        flexShrink: 0,
+      },
+    },
+    text,
+  );
+}
+
+// --- Layout: versus ---
+function buildVersusCard(set: ResultSet, ctx: RowContext): React.ReactElement {
+  const { win, loss } = scoreColors(ctx);
+  const selfRun = seedRunText(ctx.player.seed, ctx.player.placement);
+  const oppRun = seedRunText(set.opponent.seed, set.opponent.placement);
+
+  const side = (
+    reverse: boolean,
+    chars: React.ReactElement,
+    ...text: React.ReactElement[]
+  ) =>
     h(
       "div",
       {
         style: {
           display: "flex",
-          flexDirection: "row" as const,
+          flexDirection: (reverse ? "row-reverse" : "row") as
+            "row" | "row-reverse",
           alignItems: "center",
-          gap: 10,
+          gap: 8,
+          flex: "1 1 0" as unknown as number,
+          minWidth: 0,
         },
       },
+      chars,
       h(
         "div",
         {
           style: {
             display: "flex",
-            flex: "1 1 0" as unknown as number,
+            flexDirection: "column" as const,
+            alignItems: reverse ? "flex-end" : "flex-start",
+            gap: 2,
             minWidth: 0,
-            justifyContent: "flex-end",
-            alignItems: "center",
+            flex: "1 1 0" as unknown as number,
           },
         },
-        buildCharacterStack(set.selfCharacters, iconMap, fallbackCharacterId),
+        ...text,
       ),
+    );
+
+  const scoreEl = set.isDQ
+    ? h(
+        "div",
+        {
+          style: {
+            display: "flex",
+            fontSize: 20,
+            fontWeight: 800,
+            letterSpacing: 1,
+            color: ctx.palette.textMuted,
+          },
+        },
+        "DQ",
+      )
+    : h(
+        "div",
+        {
+          style: {
+            display: "flex",
+            alignItems: "baseline",
+            gap: 3,
+            fontSize: 20,
+            fontWeight: 800,
+            lineHeight: 1,
+          },
+        },
+        h(
+          "span",
+          { style: { color: set.didWin ? win : loss } },
+          String(set.scoreSelf),
+        ),
+        h(
+          "span",
+          { style: { color: ctx.palette.textMuted, fontWeight: 400 } },
+          "–",
+        ),
+        h(
+          "span",
+          { style: { color: set.didWin ? loss : win } },
+          String(set.scoreOpponent),
+        ),
+      );
+
+  return h(
+    "div",
+    {
+      style: {
+        display: "flex",
+        flexDirection: "row" as const,
+        alignItems: "center",
+        gap: 10,
+        padding: "6px 12px",
+      },
+    },
+    side(
+      true,
+      buildCharacterStack(
+        set.selfCharacters,
+        ctx.iconMap,
+        ctx.fallbackCharacterId,
+        28,
+      ),
+      buildName(
+        ctx,
+        selfDisplayName(ctx.player),
+        undefined,
+        12,
+        ctx.palette.textPrimary,
+      ),
+      ...(selfRun ? [muted(ctx, selfRun)] : []),
+    ),
+    h(
+      "div",
+      {
+        style: {
+          display: "flex",
+          flexDirection: "column" as const,
+          alignItems: "center",
+          gap: 3,
+          width: 56,
+          flexShrink: 0,
+        },
+      },
+      scoreEl,
+      h(
+        "div",
+        {
+          style: {
+            display: "flex",
+            fontSize: 9,
+            color: ctx.palette.textSecondary,
+          },
+        },
+        abbreviateRound(set.fullRoundText) || "—",
+      ),
+    ),
+    // Opponent column: ranking pill on its own row above the icon + text row,
+    // so it starts flush with the character icons.
+    h(
+      "div",
+      {
+        style: {
+          display: "flex",
+          flexDirection: "column" as const,
+          alignItems: "flex-start",
+          gap: 4,
+          flex: "1 1 0" as unknown as number,
+          minWidth: 0,
+        },
+      },
+      ...(set.opponent.topRanking
+        ? [buildRankingPill(ctx, set.opponent.topRanking)]
+        : []),
+      h(
+        "div",
+        { style: { display: "flex", width: "100%", minWidth: 0 } },
+        side(
+          false,
+          buildCharacterStack(
+            set.opponent.characters,
+            ctx.iconMap,
+            set.opponent.fallbackCharacterId,
+            28,
+          ),
+          h(
+            "div",
+            {
+              style: {
+                display: "flex",
+                alignItems: "center",
+                gap: 5,
+                minWidth: 0,
+                maxWidth: "100%",
+              },
+            },
+            buildFlag(ctx, set.opponent.country),
+            buildName(
+              ctx,
+              set.opponent.name,
+              set.opponent.prefix,
+              12,
+              ctx.palette.textPrimary,
+            ),
+          ),
+          ...(oppRun ? [muted(ctx, oppRun)] : []),
+        ),
+      ),
+    ),
+  );
+}
+
+// --- Layout: bracket slot ---
+function buildBracketCard(set: ResultSet, ctx: RowContext): React.ReactElement {
+  const { palette } = ctx;
+  const { win } = scoreColors(ctx);
+  const selfScore = set.isDQ
+    ? set.didWin
+      ? "W"
+      : "DQ"
+    : String(set.scoreSelf);
+  const oppScore = set.isDQ
+    ? set.didWin
+      ? "DQ"
+      : "W"
+    : String(set.scoreOpponent);
+
+  const slot = (
+    winner: boolean,
+    chars: React.ReactElement,
+    nameEl: React.ReactElement,
+    extras: React.ReactElement[],
+    score: string,
+    last: boolean,
+  ) =>
+    h(
+      "div",
+      {
+        style: {
+          display: "flex",
+          alignItems: "center",
+          gap: 8,
+          minHeight: 30,
+          paddingLeft: 8,
+          ...(last ? { borderTop: `1px solid ${palette.borderSubtle}` } : {}),
+          color: winner ? palette.textPrimary : palette.textMuted,
+        },
+      },
+      h(
+        "div",
+        { style: { display: "flex", opacity: winner ? 1 : 0.55 } },
+        chars,
+      ),
+      h(
+        "div",
+        {
+          style: {
+            display: "flex",
+            alignItems: "center",
+            gap: 5,
+            flex: "1 1 0" as unknown as number,
+            minWidth: 0,
+          },
+        },
+        nameEl,
+      ),
+      ...extras,
       h(
         "div",
         {
@@ -757,48 +1224,162 @@ function buildSetRow(
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
+            alignSelf: "stretch",
+            width: 30,
             flexShrink: 0,
-            // Fixed footprint so "DQ" (narrow) and "X - Y" (wider) occupy the
-            // same horizontal space and the character icons on either side
-            // stay aligned across rows. Sized to comfortably fit common
-            // single-digit scores like "2 - 1"; wider scores will grow beyond
-            // this min, which is acceptable.
-            minWidth: 48,
-            fontSize: 17,
+            fontSize: 13,
             fontWeight: 800,
-            letterSpacing: 0.4,
-            color: set.isDQ ? palette.textMuted : scoreColor,
+            color: winner ? "#ffffff" : palette.textMuted,
+            backgroundColor: winner ? win : "rgba(255,255,255,0.06)",
           },
         },
-        set.isDQ ? "DQ" : `${set.scoreSelf} - ${set.scoreOpponent}`,
+        score,
       ),
-      h(
-        "div",
-        {
-          style: {
-            display: "flex",
-            flex: "1 1 0" as unknown as number,
-            minWidth: 0,
-            justifyContent: "flex-start",
-            alignItems: "center",
-          },
-        },
-        buildCharacterStack(
-          set.opponent.characters,
-          iconMap,
-          set.opponent.fallbackCharacterId,
-        ),
-      ),
-    ),
-    // Row 3: inline opponent info (left, ellipsizes) + optional UF (right).
+    );
+
+  const oppRun = seedRunText(set.opponent.seed, set.opponent.placement);
+  return h(
+    "div",
+    {
+      style: {
+        display: "flex",
+        flexDirection: "row" as const,
+        overflow: "hidden",
+      },
+    },
     h(
       "div",
       {
         style: {
           display: "flex",
-          flexDirection: "row" as const,
           alignItems: "center",
-          gap: 6,
+          justifyContent: "center",
+          width: 44,
+          flexShrink: 0,
+          padding: "6px 4px",
+          fontSize: 11,
+          fontWeight: 800,
+          color: palette.textSecondary,
+          borderRight: `1px solid ${palette.borderSubtle}`,
+          textAlign: "center" as const,
+        },
+      },
+      abbreviateRound(set.fullRoundText) || "—",
+    ),
+    h(
+      "div",
+      {
+        style: {
+          display: "flex",
+          flexDirection: "column" as const,
+          flex: "1 1 0" as unknown as number,
+          minWidth: 0,
+        },
+      },
+      slot(
+        set.didWin,
+        buildCharacterStack(
+          set.selfCharacters,
+          ctx.iconMap,
+          ctx.fallbackCharacterId,
+          20,
+        ),
+        buildName(
+          ctx,
+          selfDisplayName(ctx.player),
+          undefined,
+          12,
+          set.didWin ? palette.textPrimary : palette.textMuted,
+        ),
+        [],
+        selfScore,
+        false,
+      ),
+      slot(
+        !set.didWin,
+        buildCharacterStack(
+          set.opponent.characters,
+          ctx.iconMap,
+          set.opponent.fallbackCharacterId,
+          20,
+        ),
+        h(
+          "div",
+          {
+            style: {
+              display: "flex",
+              alignItems: "center",
+              gap: 5,
+              minWidth: 0,
+            },
+          },
+          buildFlag(ctx, set.opponent.country),
+          buildName(
+            ctx,
+            set.opponent.name,
+            set.opponent.prefix,
+            12,
+            set.didWin ? palette.textMuted : palette.textPrimary,
+          ),
+        ),
+        [
+          ...(oppRun ? [muted(ctx, oppRun)] : []),
+          ...(set.opponent.topRanking
+            ? [buildRankingPill(ctx, set.opponent.topRanking)]
+            : []),
+        ],
+        oppScore,
+        true,
+      ),
+    ),
+  );
+}
+
+// --- Layout: compact ---
+// The web version expands on click; the image shows the details inline.
+function buildCompactCard(set: ResultSet, ctx: RowContext): React.ReactElement {
+  const { palette } = ctx;
+  const { win, loss } = scoreColors(ctx);
+  const oppRun = seedRunText(set.opponent.seed, set.opponent.placement);
+  return h(
+    "div",
+    {
+      style: {
+        display: "flex",
+        alignItems: "center",
+        gap: 10,
+        minHeight: 40,
+        padding: "6px 12px",
+      },
+    },
+    h(
+      "div",
+      {
+        style: {
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: 22,
+          height: 22,
+          borderRadius: 6,
+          flexShrink: 0,
+          fontSize: 11,
+          fontWeight: 800,
+          color: set.didWin ? "#ffffff" : palette.textSecondary,
+          backgroundColor: set.didWin ? win : "rgba(255,255,255,0.1)",
+        },
+      },
+      set.didWin ? "W" : "L",
+    ),
+    h(
+      "div",
+      {
+        style: {
+          display: "flex",
+          flexDirection: "column" as const,
+          gap: 2,
+          flex: "1 1 0" as unknown as number,
+          minWidth: 0,
         },
       },
       h(
@@ -806,116 +1387,169 @@ function buildSetRow(
         {
           style: {
             display: "flex",
-            flexDirection: "row" as const,
             alignItems: "center",
-            flex: 1,
-            minWidth: 0,
             gap: 5,
+            minWidth: 0,
             overflow: "hidden",
           },
         },
-        h(
-          "div",
-          {
-            style: {
-              display: "flex",
-              fontSize: 9,
-              fontWeight: 400,
-              color: palette.textMuted,
-              flexShrink: 0,
-            },
-          },
-          "vs",
-        ),
-        opponentFlag
-          ? h("img", {
-              src: opponentFlag,
-              width: 13,
-              height: 9,
-              style: { borderRadius: 1, flexShrink: 0 },
-            })
-          : null,
-        h(
-          "div",
-          {
-            style: {
-              display: "flex",
-              minWidth: 0,
-              fontSize: 11,
-              fontWeight: 700,
-              color: palette.textSecondary,
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              whiteSpace: "nowrap" as const,
-            },
-          },
-          set.opponent.prefix
-            ? h(
-                "span",
-                {
-                  style: {
-                    fontWeight: 400,
-                    color: palette.textMuted,
-                    marginRight: 3,
-                  },
-                },
-                `${set.opponent.prefix} |`,
-              )
-            : null,
+        buildFlag(ctx, set.opponent.country),
+        buildName(
+          ctx,
           set.opponent.name,
+          set.opponent.prefix,
+          12,
+          palette.textPrimary,
         ),
-        meta
-          ? h(
-              "div",
-              {
-                style: {
-                  display: "flex",
-                  fontSize: 9,
-                  fontWeight: 400,
-                  color: palette.textMuted,
-                  flexShrink: 0,
-                },
-              },
-              meta,
-            )
-          : null,
-        set.opponent.topRanking
-          ? h(
-              "div",
-              {
-                style: {
-                  display: "flex",
-                  alignItems: "center",
-                  paddingTop: 1,
-                  paddingBottom: 1,
-                  paddingLeft: 5,
-                  paddingRight: 5,
-                  borderRadius: 999,
-                  fontSize: 9,
-                  fontWeight: 700,
-                  letterSpacing: 0.2,
-                  lineHeight: 1,
-                  color: palette.accent,
-                  backgroundColor: palette.accentRowBg,
-                  flexShrink: 0,
-                  maxWidth: 180,
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap" as const,
-                },
-              },
-              `${set.opponent.topRanking.displayTitle ?? set.opponent.topRanking.title} #${set.opponent.topRanking.rank}`,
-            )
-          : null,
+        ...(set.opponent.topRanking
+          ? [buildRankingPill(ctx, set.opponent.topRanking)]
+          : []),
       ),
-      set.upsetFactor !== undefined && set.upsetFactor > 0
-        ? h(
-            "div",
-            { style: upsetBadgeStyle(set.upsetFactor, palette) },
-            `UF ${set.upsetFactor}`,
-          )
-        : null,
+      h(
+        "div",
+        { style: { display: "flex", alignItems: "center", gap: 6 } },
+        buildCharacterStack(
+          set.selfCharacters,
+          ctx.iconMap,
+          ctx.fallbackCharacterId,
+          16,
+        ),
+        muted(ctx, "vs", 9),
+        buildCharacterStack(
+          set.opponent.characters,
+          ctx.iconMap,
+          set.opponent.fallbackCharacterId,
+          16,
+        ),
+        ...(oppRun ? [muted(ctx, oppRun)] : []),
+      ),
     ),
+    muted(ctx, abbreviateRound(set.fullRoundText) || "—", 10),
+    h(
+      "div",
+      {
+        style: {
+          display: "flex",
+          justifyContent: "flex-end",
+          minWidth: 34,
+          fontSize: 14,
+          fontWeight: 800,
+          color: set.isDQ ? palette.textMuted : set.didWin ? win : loss,
+        },
+      },
+      set.isDQ ? "DQ" : `${set.scoreSelf}–${set.scoreOpponent}`,
+    ),
+  );
+}
+
+function buildSetRow(set: ResultSet, ctx: RowContext): React.ReactElement {
+  const frame = cardFrame(ctx, set.didWin);
+  const content =
+    ctx.display.layout === "bracket"
+      ? buildBracketCard(set, ctx)
+      : ctx.display.layout === "compact"
+        ? buildCompactCard(set, ctx)
+        : buildVersusCard(set, ctx);
+
+  const card = h(
+    "div",
+    {
+      style: {
+        display: "flex",
+        flexDirection: "column" as const,
+        flex: "1 1 0" as unknown as number,
+        minWidth: 0,
+        opacity: set.isDQ ? 0.65 : 1,
+        ...frame.outer,
+      },
+    },
+    frame.inner
+      ? h(
+          "div",
+          {
+            style: {
+              display: "flex",
+              flexDirection: "column" as const,
+              ...frame.inner,
+            },
+          },
+          content,
+        )
+      : content,
+  );
+
+  if (!ctx.hasUpsets) {
+    return h("div", { key: set.id, style: { display: "flex" } }, card);
+  }
+  const hasUpset = set.upsetFactor !== undefined && set.upsetFactor > 0;
+  return h(
+    "div",
+    {
+      key: set.id,
+      style: {
+        display: "flex",
+        flexDirection: "row" as const,
+        alignItems: "center",
+      },
+    },
+    h(
+      "div",
+      {
+        style: {
+          display: "flex",
+          justifyContent: "flex-start",
+          width: UPSET_GUTTER,
+          flexShrink: 0,
+        },
+      },
+      hasUpset ? buildUpsetTab(set.upsetFactor!, ctx.palette) : null,
+    ),
+    card,
+    // Versus mirrors the gutter so the score stays centered in the list.
+    ctx.display.layout === "versus"
+      ? h("div", {
+          style: { display: "flex", width: UPSET_GUTTER, flexShrink: 0 },
+        })
+      : null,
+  );
+}
+
+function buildPhaseSection(
+  group: PhaseGroup,
+  ctx: RowContext,
+): React.ReactElement {
+  const wins = group.sets.filter((s) => s.didWin).length;
+  return h(
+    "div",
+    {
+      key: group.id,
+      style: { display: "flex", flexDirection: "column" as const, gap: 4 },
+    },
+    h(
+      "div",
+      {
+        style: {
+          display: "flex",
+          alignItems: "baseline",
+          justifyContent: "space-between",
+          fontSize: 9,
+          fontWeight: 800,
+          letterSpacing: 1.2,
+          color: ctx.palette.accent,
+          textTransform: "uppercase" as const,
+          paddingBottom: 3,
+          marginBottom: 2,
+          borderBottom: `1px solid ${ctx.palette.borderSubtle}`,
+        },
+      },
+      h("span", {}, group.name),
+      h(
+        "span",
+        { style: { color: ctx.palette.textMuted, letterSpacing: 0 } },
+        `${wins}–${group.sets.length - wins}`,
+      ),
+    ),
+    ...group.sets.map((s) => buildSetRow(s, ctx)),
   );
 }
 
@@ -1287,13 +1921,17 @@ function buildGraphic(
             },
           },
           ...groupSetsByPhase(sets).map((group) =>
-            buildPhaseSection(
-              group,
+            buildPhaseSection(group, {
               palette,
               iconMap,
               flagMap,
               fallbackCharacterId,
-            ),
+              display: body.display ?? DEFAULT_DISPLAY,
+              player,
+              hasUpsets: sets.some(
+                (s) => s.upsetFactor !== undefined && s.upsetFactor > 0,
+              ),
+            }),
           ),
         )
       : h(
@@ -1341,6 +1979,7 @@ function canonicalize(body: RequestBody): string {
     locale: body.locale ?? "",
     player: body.player,
     fallbackCharacterId: body.fallbackCharacterId ?? null,
+    display: body.display ?? DEFAULT_DISPLAY,
     sets: body.sets.map((s) => ({
       id: s.id,
       fullRoundText: s.fullRoundText,
@@ -1362,6 +2001,21 @@ function hashPayload(body: RequestBody): string {
 }
 
 // --- Payload decoding ---
+
+function parseDisplay(value: unknown): SetListDisplay {
+  if (value === undefined || value === null) return DEFAULT_DISPLAY;
+  if (typeof value !== "object") throw new BadRequestError("display invalid");
+  const d = value as Record<string, unknown>;
+  const layout = d.layout ?? DEFAULT_DISPLAY.layout;
+  const style = d.style ?? DEFAULT_DISPLAY.style;
+  if (!SET_LIST_LAYOUTS.includes(layout as SetListLayout)) {
+    throw new BadRequestError("display.layout invalid");
+  }
+  if (!SET_LIST_STYLES.includes(style as SetListStyle)) {
+    throw new BadRequestError("display.style invalid");
+  }
+  return { layout: layout as SetListLayout, style: style as SetListStyle };
+}
 
 function asBoundedString(value: unknown, field: string): string {
   if (typeof value !== "string") {
@@ -1627,6 +2281,7 @@ function decodePayload(encoded: unknown): RequestBody {
     numEntrants: asNonNegInt(obj.numEntrants ?? 0, "numEntrants"),
     palette: obj.palette as PredictionPalette | undefined,
     locale: asOptionalBoundedString(obj.locale, "locale"),
+    display: parseDisplay(obj.display),
     player: {
       name: asBoundedString(p.name, "player.name"),
       prefix: asOptionalBoundedString(p.prefix, "player.prefix"),

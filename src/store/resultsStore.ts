@@ -7,6 +7,12 @@ import {
   DEFAULT_PREDICTION_PALETTE,
   type PredictionPalette,
 } from "@/types/predict/PredictionPalette";
+import {
+  DEFAULT_SET_LIST_LAYOUT,
+  DEFAULT_SET_LIST_STYLE,
+  type SetListLayout,
+  type SetListStyle,
+} from "@/types/results/SetListDisplay";
 
 interface ResultsState {
   tournamentName: string;
@@ -31,6 +37,11 @@ interface ResultsState {
   fetchingPool: boolean;
   fetchingResults: boolean;
   error: string;
+
+  // Set-list display preferences. Survive RESET — they're about the user,
+  // not the loaded tournament.
+  setListLayout: SetListLayout;
+  setListStyle: SetListStyle;
 }
 
 type ResultsAction =
@@ -60,6 +71,8 @@ type ResultsAction =
       payload: { entrantId: string; characterId: string | null };
     }
   | { type: "CLEAR_SELECTION" }
+  | { type: "SET_LIST_LAYOUT"; payload: SetListLayout }
+  | { type: "SET_LIST_STYLE"; payload: SetListStyle }
   | { type: "RESET" };
 
 const initialState: ResultsState = {
@@ -79,6 +92,8 @@ const initialState: ResultsState = {
   fetchingPool: false,
   fetchingResults: false,
   error: "",
+  setListLayout: DEFAULT_SET_LIST_LAYOUT,
+  setListStyle: DEFAULT_SET_LIST_STYLE,
 };
 
 const resultsReducer = (
@@ -156,8 +171,18 @@ const resultsReducer = (
         fallbackCharacters: {},
       };
 
+    case "SET_LIST_LAYOUT":
+      return { setListLayout: action.payload };
+
+    case "SET_LIST_STYLE":
+      return { setListStyle: action.payload };
+
     case "RESET":
-      return { ...initialState };
+      return {
+        ...initialState,
+        setListLayout: state.setListLayout,
+        setListStyle: state.setListStyle,
+      };
 
     default:
       return {};
@@ -221,6 +246,8 @@ export const useResultsStore = create<ResultsStore>()(
           selectedEntrantId: state.selectedEntrantId,
           playerResults: state.playerResults,
           fallbackCharacters: state.fallbackCharacters,
+          setListLayout: state.setListLayout,
+          setListStyle: state.setListStyle,
         }),
       },
     ),

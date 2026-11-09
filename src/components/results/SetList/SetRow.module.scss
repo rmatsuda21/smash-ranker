@@ -10,13 +10,19 @@
   border-left: 3px solid transparent;
   transition: background var(--duration-base) var(--ease-standard);
   min-height: 0;
+  position: relative;
+
+  // Gutter outside the card for the upset tab (34px tab + 10px gap). SetList
+  // sets `--upset-slot` when any set in the list is an upset, so every row
+  // shifts together and stays aligned.
+  margin-left: var(--upset-slot, 0px);
 
   &.win {
     border-left-color: var(--accent-9);
     background:
       linear-gradient(
         90deg,
-        rgba(var(--accent-9-rgb, 138, 99, 210), 0.04) 0%,
+        color-mix(in srgb, var(--accent-9) 4%, transparent) 0%,
         transparent 60%
       ),
       var(--gray-2);
@@ -29,58 +35,135 @@
   &[data-dq] {
     opacity: 0.65;
   }
-}
 
-// Row 1: round label, centered.
-.round {
-  text-align: center;
-  font-size: 9px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  font-weight: 700;
-  color: var(--fg-4);
-  line-height: 1.2;
-}
+  // Layout modifiers sit above the visual variants so a variant can still
+  // restyle the border/background of any layout.
 
-// Row 2: 3-col flex. Equal `flex: 1 1 0` on each side pins the score to the
-// exact midpoint of the card width.
-.mainRow {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  width: 100%;
-}
-
-.charSide {
-  display: flex;
-  flex: 1 1 0;
-  min-width: 0;
-  align-items: center;
-}
-
-.charSideLeft {
-  justify-content: flex-end;
-}
-
-.charSideRight {
-  justify-content: flex-start;
-}
-
-.score {
-  font-size: 17px;
-  font-weight: 800;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.01em;
-  white-space: nowrap;
-  flex-shrink: 0;
-  color: var(--fg-1);
-
-  .win & {
-    color: var(--accent-9);
+  // --- Layout: versus -------------------------------------------------------
+  // Head-to-head split. Both sides render alike; the card chrome comes from
+  // the selected style variant and the score carries the result.
+  &.layoutVersus {
+    display: grid;
+    // Fixed center column so every row's score lands in the same place.
+    grid-template-columns: minmax(0, 1fr) 60px minmax(0, 1fr);
+    align-items: center;
+    column-gap: var(--space-3);
+    // The gutter is mirrored on the right so the score column stays at the
+    // exact center of the list.
+    margin-right: var(--upset-slot, 0px);
+    padding: 6px 12px;
+    border-left-width: 0;
   }
 
-  .loss & {
-    color: var(--fg-3);
+  // --- Layout: bracket slot -------------------------------------------------
+  // Mirrors a bracket match box: round column, then one line per player with
+  // its own score cell.
+  &.layoutBracket {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 0;
+    padding: 0;
+    border-left-width: 0;
+  }
+
+  // --- Layout: compact ------------------------------------------------------
+  // One line per set; click to reveal characters, seed run, and ranking.
+  &.layoutCompact {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding: 0;
+    border-left-width: 0;
+  }
+
+  // --- Variant: bordered + dots ---------------------------------------------
+  // Same dotted background pattern used by the predict/results graphic
+  // previews. Dots are tinted accent on wins, neutral white on losses.
+  &.variantBorderedDots {
+    border-left-color: transparent;
+    border: 1px solid var(--gray-5);
+    background:
+      radial-gradient(
+        circle at 1px 1px,
+        rgba(255, 255, 255, 0.04) 1px,
+        transparent 0
+      ),
+      var(--gray-2);
+    background-size:
+      12px 12px,
+      auto;
+
+    &.win {
+      background:
+        radial-gradient(
+          circle at 1px 1px,
+          color-mix(in srgb, var(--accent-9) 22%, transparent) 1px,
+          transparent 0
+        ),
+        var(--gray-2);
+      background-size:
+        12px 12px,
+        auto;
+      border-color: color-mix(in srgb, var(--accent-9) 55%, transparent);
+      box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent-9) 18%, transparent);
+    }
+
+    &.loss {
+      border-color: var(--gray-5);
+    }
+  }
+
+  // --- Variant: scoreline ---------------------------------------------------
+  // After HLTV's results list: no card at all, just rows divided by a
+  // hairline, with the outcome carried entirely by score color (green for
+  // the winner's number, red for yours on a loss).
+  &.variantScoreline {
+    --set-win-color: var(--green-9, #46a758);
+    --set-loss-color: var(--red-9, #e5484d);
+
+    border-left-width: 0;
+    border-radius: 0;
+    border-bottom: 1px solid var(--border);
+
+    &.win,
+    &.loss {
+      background: transparent;
+    }
+
+    // In the versus layout the lit number is always the winner's.
+    .versusScore [data-lit] {
+      color: var(--set-win-color);
+    }
+  }
+
+  // --- Variant: gradient edge -----------------------------------------------
+  // After the masked gradient borders on Linear's and Stripe's marketing
+  // cards: a solid padding-box fill over a gradient border-box, so the
+  // gradient only shows as a 1px edge that fades around the card.
+  &.variantGradientEdge {
+    border: 1px solid transparent;
+    background:
+      linear-gradient(var(--gray-2), var(--gray-2)) padding-box,
+      linear-gradient(135deg, var(--gray-6), var(--gray-3) 50%, var(--gray-5))
+        border-box;
+
+    &.win {
+      background:
+        linear-gradient(
+            90deg,
+            color-mix(in srgb, var(--accent-9) 12%, transparent),
+            transparent 50%
+          )
+          padding-box,
+        linear-gradient(var(--gray-2), var(--gray-2)) padding-box,
+        linear-gradient(
+            115deg,
+            var(--accent-9),
+            color-mix(in srgb, var(--accent-9) 15%, var(--gray-3)) 45%,
+            var(--gray-4)
+          )
+          border-box;
+    }
   }
 }
 
@@ -90,15 +173,6 @@
   color: var(--fg-4);
   letter-spacing: 0.1em;
   flex-shrink: 0;
-}
-
-// Row 3: opponent info (left) + optional UF badge (right).
-.footerRow {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  width: 100%;
-  margin-top: 1px;
 }
 
 .charStack {
@@ -168,24 +242,6 @@
   }
 }
 
-.opponentLine {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex: 1;
-  min-width: 0;
-  font-size: 11px;
-  color: var(--fg-3);
-  overflow: hidden;
-}
-
-.vs {
-  color: var(--fg-4);
-  font-size: 9px;
-  text-transform: lowercase;
-  flex-shrink: 0;
-}
-
 .flag {
   width: 13px;
   height: 9px;
@@ -206,17 +262,6 @@
 .prefix {
   color: var(--fg-4);
   font-weight: 400;
-}
-
-// Sits immediately to the right of the opponent name, not pushed to the far
-// right of the row. `flex-shrink: 0` keeps the (#seed → placement) bracket
-// intact even when the name has to ellipsize.
-.opponentMeta {
-  color: var(--fg-4);
-  white-space: nowrap;
-  flex-shrink: 0;
-  font-variant-numeric: tabular-nums;
-  font-size: 10px;
 }
 
 // Subtle accent-tinted pill that surfaces the opponent's most-impactful PR
@@ -297,5 +342,390 @@
   .upsetLegendary,
   .charPlaceholderLoading {
     animation: none;
+  }
+}
+
+// Truncating wrapper for a bare name inside a flex row (text-overflow does
+// not apply to a flex container's own text).
+.nameText {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// ==========================================
+// Layout: versus
+// ==========================================
+
+// Each side is one line: character stack beside a two-line text block
+// (name over seed run / ranking). The self side mirrors it, text first.
+.versusSide {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+
+  .charImg,
+  .charPlaceholder,
+  .charEmpty {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+.versusSelf {
+  flex-direction: row-reverse;
+  text-align: right;
+
+  .versusText {
+    align-items: flex-end;
+  }
+}
+
+// The ranking pill sits on its own row above the icon + text row, so it
+// starts flush with the character icons.
+.versusOpponent {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.versusSideRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.versusText {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  min-width: 0;
+}
+
+.versusName {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  max-width: 100%;
+  min-width: 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--fg-1);
+
+  .opponentName {
+    color: inherit;
+  }
+}
+
+.versusMeta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  color: var(--fg-4);
+  font-variant-numeric: tabular-nums;
+}
+
+.versusCenter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  min-width: 0;
+  text-align: center;
+
+  // DQ sits in the score's slot at the score's size so rows stay aligned.
+  .dq {
+    font-size: 22px;
+    line-height: 1;
+    letter-spacing: 0.04em;
+  }
+}
+
+.versusScore {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  font-size: 22px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  color: var(--set-loss-color, var(--fg-4));
+
+  [data-lit] {
+    color: var(--fg-1);
+  }
+
+  .win & [data-lit] {
+    color: var(--set-win-color, var(--accent-9));
+  }
+}
+
+.versusDash {
+  font-weight: 400;
+}
+
+.versusRound {
+  font-size: 10px;
+  line-height: 1.25;
+  color: var(--fg-3);
+}
+
+// ==========================================
+// Layout: bracket slot
+// ==========================================
+
+.bracketRound {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 4px;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.25;
+  text-align: center;
+  color: var(--fg-3);
+  border-right: 1px solid var(--border);
+}
+
+.bracketSlots {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.bracketSlot {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  min-height: 30px;
+  padding-left: 8px;
+  font-size: 12px;
+  color: var(--fg-3);
+
+  & + & {
+    border-top: 1px solid var(--border);
+  }
+
+  .charImg,
+  .charPlaceholder,
+  .charEmpty {
+    width: 20px;
+    height: 20px;
+  }
+
+  &:not([data-winner]) .charImg {
+    opacity: 0.55;
+  }
+
+  &[data-winner] {
+    color: var(--fg-1);
+    font-weight: 600;
+  }
+}
+
+.bracketName {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex: 1;
+  min-width: 0;
+
+  .opponentName {
+    color: inherit;
+    font-weight: inherit;
+  }
+}
+
+.bracketSeed {
+  flex-shrink: 0;
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--fg-4);
+  font-variant-numeric: tabular-nums;
+}
+
+.bracketScore {
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 30px;
+  font-size: 13px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: var(--fg-3);
+  background: var(--gray-3);
+
+  [data-winner] > & {
+    color: white;
+    background: var(--accent-9);
+  }
+
+  .bracketSlot:first-child > & {
+    border-top-right-radius: var(--radius);
+  }
+
+  .bracketSlot:last-child > & {
+    border-bottom-right-radius: var(--radius);
+  }
+}
+
+// Upset tab: inside the row's left edge, vertically centered, out of flow
+// so it never moves the row's content. Layered on `.upset` + a tier class,
+// which supply the tier colors. "UF" stacks over the number to keep the tab
+// narrow.
+.upsetTab {
+  position: absolute;
+  top: 50%;
+  left: calc(-1 * var(--upset-slot, 44px));
+  z-index: 1;
+  transform: translateY(-50%);
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  min-width: 34px;
+  padding: 5px 6px;
+  border-radius: var(--radius);
+  line-height: 1;
+}
+
+.upsetTabLabel {
+  font-size: 9px;
+  font-weight: 700;
+  opacity: 0.85;
+}
+
+.upsetTabValue {
+  font-size: 18px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.compactVs {
+  font-size: 9px;
+  color: var(--fg-4);
+}
+
+// ==========================================
+// Layout: compact
+// ==========================================
+
+.compactSummary {
+  appearance: none;
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr) auto auto;
+  align-items: center;
+  column-gap: var(--space-3);
+  width: 100%;
+  min-height: 40px;
+  padding: 0 12px;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  border-radius: inherit;
+
+  &:hover {
+    background: color-mix(in srgb, var(--fg-1) 4%, transparent);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent-9);
+    outline-offset: -2px;
+  }
+}
+
+.compactOutcome {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--fg-3);
+  background: var(--gray-4);
+
+  .win & {
+    color: white;
+    background: var(--set-win-color, var(--accent-9));
+  }
+}
+
+.compactOpponent {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  font-size: 13px;
+
+  .opponentName {
+    color: var(--fg-1);
+  }
+}
+
+.compactRound {
+  font-size: 11px;
+  color: var(--fg-4);
+  white-space: nowrap;
+}
+
+.compactScore {
+  min-width: 34px;
+  text-align: right;
+  font-size: 14px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: var(--set-loss-color, var(--fg-3));
+
+  .win & {
+    color: var(--set-win-color, var(--accent-9));
+  }
+}
+
+.compactDetails {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-3);
+  padding: 0 12px 10px 46px;
+  font-size: 11px;
+  color: var(--fg-4);
+}
+
+.compactChars {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  .charImg,
+  .charPlaceholder,
+  .charEmpty {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.compactSeed {
+  font-variant-numeric: tabular-nums;
+}
+
+@include mobile {
+  .compactRound {
+    display: none;
   }
 }
