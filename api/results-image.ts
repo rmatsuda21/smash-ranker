@@ -25,8 +25,11 @@ const fontBold = readFileSync(
   join(__dirname, "fonts/MPLUSRounded1c-ExtraBold.ttf"),
 );
 
-const WIDTH = 480;
-const OUTPUT_WIDTH = 960;
+// The graphic grows between these bounds to fit long player names, then
+// truncates (CSS ellipsis) past the max. Output PNG is rendered at 2×.
+const MIN_WIDTH = 480;
+const MAX_WIDTH = 640;
+const OUTPUT_SCALE = 2;
 
 const h = React.createElement;
 
@@ -1442,6 +1445,87 @@ function buildCompactCard(set: ResultSet, ctx: RowContext): React.ReactElement {
   );
 }
 
+// --- Dynamic width ---
+
+// Rough advance widths for M PLUS Rounded 1c, per script. No font-metrics
+// library is bundled, so this is an estimate; it only decides how wide the
+// canvas gets. Anything still too long is ellipsized by the row itself.
+function estimateTextWidth(text: string, fontSize: number): number {
+  let em = 0;
+  for (const ch of text) {
+    const c = ch.codePointAt(0) ?? 0;
+    if (
+      (c >= 0x3000 && c <= 0x9fff) || // CJK punctuation, kana, kanji
+      (c >= 0xac00 && c <= 0xd7af) || // Hangul
+      (c >= 0xff00 && c <= 0xffef) // fullwidth forms
+    ) {
+      em += 1;
+    } else if (ch === " ") em += 0.3;
+    else if (/[0-9]/.test(ch)) em += 0.6;
+    else if (/[A-Z]/.test(ch)) em += 0.68;
+    else if (/[|.,:;'"!`-]/.test(ch)) em += 0.35;
+    else em += 0.56;
+  }
+  return em * fontSize;
+}
+
+function fullName(name: string, prefix?: string): string {
+  return prefix ? `${prefix} | ${name}` : name;
+}
+
+// Canvas width for this payload: wide enough for the longest name in the
+// chosen layout, within [MIN_WIDTH, MAX_WIDTH].
+function computeImageWidth(body: RequestBody): number {
+  const display = body.display ?? DEFAULT_DISPLAY;
+  const hasUpsets = body.sets.some(
+    (s) => s.upsetFactor !== undefined && s.upsetFactor > 0,
+  );
+  const gutter = hasUpsets ? UPSET_GUTTER : 0;
+  const nameFont = 12;
+  const selfName = fullName(body.player.name, body.player.prefix);
+
+  let needed: number;
+  if (display.layout === "versus") {
+    // Each side: icons + 8 gap + name. Both sides get the same column, so
+    // size for the wider of the two, mirrored.
+    const sideFor = (name: string, chars: number) =>
+      Math.max(1, Math.min(3, chars)) * 28 +
+      6 +
+      8 +
+      estimateTextWidth(name, nameFont);
+    let widest = Math.max(
+      0,
+      ...body.sets.map((set) =>
+        Math.max(
+          sideFor(selfName, set.selfCharacters.length),
+          sideFor(
+            fullName(set.opponent.name, set.opponent.prefix),
+            set.opponent.characters.length,
+          ),
+        ),
+      ),
+    );
+    widest = Math.ceil(widest);
+    // 2 sides + score column + 2 gaps + card padding + outer padding + gutters.
+    needed = widest * 2 + 56 + 10 * 2 + 12 * 2 + 14 * 2 + gutter * 2;
+  } else {
+    // Bracket / compact: one name column. At MIN_WIDTH that column has about
+    // 170px for a name after icons, seed run, pill and score; grow by the
+    // overflow of the longest name.
+    const longest = Math.max(
+      estimateTextWidth(selfName, nameFont),
+      ...body.sets.map((set) =>
+        estimateTextWidth(
+          fullName(set.opponent.name, set.opponent.prefix),
+          nameFont,
+        ),
+      ),
+    );
+    needed = MIN_WIDTH + gutter + Math.max(0, Math.ceil(longest) - 170);
+  }
+  return Math.min(MAX_WIDTH, Math.max(MIN_WIDTH, needed));
+}
+
 function buildSetRow(set: ResultSet, ctx: RowContext): React.ReactElement {
   const frame = cardFrame(ctx, set.didWin);
   const content =
@@ -2375,10 +2459,11 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
     setCount: body.sets.length,
   });
   // Auto-height: omit `height` so satori fits the rendered content. The root
-  // div has no fixed height; Resvg then scales the resulting SVG to OUTPUT_WIDTH
-  // while preserving the aspect ratio satori computed.
+  // div has no fixed height; Resvg then scales the resulting SVG to 2× the
+  // chosen width while preserving the aspect ratio satori computed.
+  const width = computeImageWidth(body);
   const svg = await satori(graphic, {
-    width: WIDTH,
+    width,
     fonts: [
       { name: "M PLUS Rounded 1c", data: fontRegular, weight: 400 },
       { name: "M PLUS Rounded 1c", data: fontBold, weight: 800 },
@@ -2388,7 +2473,7 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
 
   addBreadcrumb("results-image", "resvg_start");
   const resvg = new Resvg(svg, {
-    fitTo: { mode: "width" as const, value: OUTPUT_WIDTH },
+    fitTo: { mode: "width" as const, value: width * OUTPUT_SCALE },
     font: { loadSystemFonts: false },
   });
   const png = Buffer.from(resvg.render().asPng());
