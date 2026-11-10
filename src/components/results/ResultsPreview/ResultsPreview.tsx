@@ -11,7 +11,6 @@ import cn from "classnames";
 import { Trans } from "@lingui/react/macro";
 import { msg } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
-import { type MessageDescriptor } from "@lingui/core";
 
 import { useResultsStore } from "@/store/resultsStore";
 import { ResultsExportBar } from "@/components/results/ResultsExportBar/ResultsExportBar";
@@ -58,17 +57,11 @@ type Props = {
   cacheRef: RefObject<ResultsPreviewCache | null>;
 };
 
-const TAGLINES: MessageDescriptor[] = [
-  msg`Replaying the bracket...`,
-  msg`Counting stocks...`,
-  msg`Tallying the damage...`,
-  msg`Drawing the matchups...`,
-  msg`Locking in the recap...`,
-];
-
-const prefersReducedMotion = () =>
-  typeof window !== "undefined" &&
-  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const ordinal = (n: number): string => {
+  const s = ["th", "st", "nd", "rd"];
+  const v = n % 100;
+  return s[(v - 20) % 10] || s[v] || s[0];
+};
 
 const buildPayload = (
   tournamentName: string,
@@ -196,7 +189,6 @@ export const ResultsPreview = ({ cacheRef }: Props) => {
   const [blob, setBlob] = useState<Blob | null>(cached?.blob ?? null);
   const [error, setError] = useState(false);
   const [atBottom, setAtBottom] = useState(true);
-  const [taglineIdx, setTaglineIdx] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
   const sentinelRef = useRef<HTMLDivElement>(null);
 
@@ -322,17 +314,6 @@ export const ResultsPreview = ({ cacheRef }: Props) => {
     return () => observer.disconnect();
   }, [imageUrl]);
 
-  const isLoading = !imageUrl && !error;
-  useEffect(() => {
-    if (!isLoading) return;
-    if (prefersReducedMotion()) return;
-    const id = setInterval(
-      () => setTaglineIdx((i) => (i + 1) % TAGLINES.length),
-      1700,
-    );
-    return () => clearInterval(id);
-  }, [isLoading]);
-
   if (!playerResults) {
     return (
       <div className={styles.loading}>
@@ -382,37 +363,60 @@ export const ResultsPreview = ({ cacheRef }: Props) => {
     );
   }
 
-  const skeletonSets = playerResults.sets.slice(0, 5);
+  const buildSets = playerResults.sets.slice(0, 6);
+  const { placement } = playerResults;
+  const placementLabel = `${placement}${ordinal(placement)}`;
 
   return (
     <div className={styles.loading}>
       <div className={styles.loadingCard} style={styleVars}>
-        <div className={styles.shimmer} aria-hidden="true" />
-        <div className={styles.headerRow}>
-          <span className={styles.eyebrow}>
-            <Trans>Generating recap</Trans>
-          </span>
-          <div className={styles.tagline} aria-live="polite">
-            <span key={taglineIdx} className={styles.taglineText}>
-              {_(TAGLINES[taglineIdx])}
+        <div className={styles.build} aria-hidden="true">
+          <div
+            className={styles.buildHeader}
+            style={{ "--i": 0 } as CSSProperties}
+          >
+            <span className={styles.buildIcon} />
+            <span className={styles.buildLines}>
+              <span className={styles.buildLine} style={{ width: "70%" }} />
+              <span className={styles.buildLine} style={{ width: "45%" }} />
             </span>
           </div>
-        </div>
-        <ol className={styles.skeletonList}>
-          {skeletonSets.map((s, i) => (
-            <li
-              key={s.id}
-              className={styles.skeletonRow}
-              style={{ animationDelay: `${120 + i * 90}ms` }}
-            >
-              <span className={styles.skeletonChip} />
-              <span className={styles.skeletonText} />
-              <span className={styles.skeletonScore} />
-            </li>
-          ))}
-        </ol>
-        <div className={styles.progressTrack} aria-hidden="true">
-          <div className={styles.progressFill} />
+          <div
+            className={styles.buildPlayer}
+            style={{ "--i": 1 } as CSSProperties}
+          >
+            <span className={styles.buildName}>
+              {playerResults.prefix && (
+                <span className={styles.buildPrefix}>
+                  {playerResults.prefix}
+                </span>
+              )}
+              {playerResults.name}
+            </span>
+            <span className={styles.buildPlacement}>{placementLabel}</span>
+          </div>
+          <ol className={styles.buildRows}>
+            {buildSets.map((set, i) => (
+              <li
+                key={set.id}
+                className={cn(
+                  styles.buildRow,
+                  set.didWin ? styles.buildRowWin : styles.buildRowLoss,
+                )}
+                style={{ "--i": i + 2 } as CSSProperties}
+              >
+                <span className={styles.buildChip} />
+                <span
+                  className={styles.buildLine}
+                  style={{ width: `${48 + ((i * 17) % 30)}%` }}
+                />
+                <span className={styles.buildScore}>
+                  {set.scoreSelf}-{set.scoreOpponent}
+                </span>
+              </li>
+            ))}
+          </ol>
+          <div className={styles.buildScan} />
         </div>
       </div>
     </div>

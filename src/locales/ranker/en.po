@@ -70,9 +70,17 @@ msgstr ""
 msgid "Accent Color"
 msgstr "アクセントカラー"
 
+#: src/components/results/ResultsPreview/ResultsPreview.tsx:66
+#~ msgid "Adding a little sparkle to the win column..."
+#~ msgstr ""
+
 #: src/components/predict/PredictApp/PredictApp.tsx:74
 msgid "All current predictions will be removed."
 msgstr ""
+
+#: src/components/results/ResultsPreview/ResultsPreview.tsx:67
+#~ msgid "Almost there, just one more stock..."
+#~ msgstr ""
 
 #: src/components/top8/SettingsPanel/AccentColorPicker.tsx:32
 msgid "Amber"
@@ -89,6 +97,10 @@ msgstr ""
 
 #: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:57
 msgid "Are you sure you want to delete this asset?"
+msgstr ""
+
+#: src/components/results/ResultsApp/ResultsApp.tsx:32
+msgid "Asking start.gg very nicely..."
 msgstr ""
 
 #: src/components/top8/AssetManager/AssetManager.tsx:32
@@ -160,12 +172,20 @@ msgstr ""
 msgid "Characters"
 msgstr ""
 
+#: src/components/results/ResultsApp/ResultsApp.tsx:44
+msgid "Checking if the seed was fair..."
+msgstr ""
+
+#: src/components/results/ResultsApp/ResultsApp.tsx:34
+msgid "Checking who actually made it past pools..."
+msgstr ""
+
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:151
 msgid "City"
 msgstr ""
 
 #: src/components/predict/PredictApp/PredictApp.tsx:145
-#: src/components/results/ResultsApp/ResultsApp.tsx:209
+#: src/components/results/ResultsApp/ResultsApp.tsx:213
 #: src/components/top8/AssetSelector/AssetSelector.tsx:100
 msgid "Clear"
 msgstr ""
@@ -240,11 +260,19 @@ msgstr ""
 
 #: src/components/results/ResultsApp/ResultsApp.tsx:40
 #: src/components/results/ResultsPreview/ResultsPreview.tsx:59
-msgid "Counting stocks..."
-msgstr ""
+#~ msgid "Counting stocks..."
+#~ msgstr ""
 
 #: src/components/predict/PredictApp/PredictApp.tsx:35
 msgid "Counting the contenders..."
+msgstr ""
+
+#: src/components/results/ResultsApp/ResultsApp.tsx:36
+msgid "Counting the DQs so you don't have to..."
+msgstr ""
+
+#: src/components/results/ResultsApp/ResultsApp.tsx:42
+msgid "Counting the stocks. All of them..."
 msgstr ""
 
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:238
@@ -306,6 +334,10 @@ msgstr ""
 
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:122
 msgid "Date"
+msgstr ""
+
+#: src/components/results/ResultsApp/ResultsApp.tsx:45
+msgid "Deciding which loss was \"actually close\"..."
 msgstr ""
 
 #: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:47
@@ -404,8 +436,12 @@ msgid "DQ"
 msgstr ""
 
 #: src/components/results/ResultsPreview/ResultsPreview.tsx:61
-msgid "Drawing the matchups..."
-msgstr ""
+#~ msgid "Drawing the matchups..."
+#~ msgstr ""
+
+#: src/components/results/ResultsPreview/ResultsPreview.tsx:62
+#~ msgid "Drawing this one by hand..."
+#~ msgstr ""
 
 #: src/components/top8/TextEditor/TextEditor.tsx:59
 msgid "Edit the text content displayed in your graphic."
@@ -464,7 +500,7 @@ msgid "Failed to fetch tournament data"
 msgstr ""
 
 #: src/components/predict/PredictionPreview/PredictionPreview.tsx:180
-#: src/components/results/ResultsPreview/ResultsPreview.tsx:342
+#: src/components/results/ResultsPreview/ResultsPreview.tsx:334
 #: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:194
 msgid "Failed to generate image"
 msgstr ""
@@ -473,9 +509,21 @@ msgstr ""
 msgid "Fetching opponent data..."
 msgstr ""
 
+#: src/components/results/ResultsApp/ResultsApp.tsx:43
+msgid "Figuring out who got sent to losers..."
+msgstr ""
+
 #: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:157
 #: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:67
 msgid "Filename"
+msgstr ""
+
+#: src/components/results/ResultsPreview/ResultsPreview.tsx:64
+#~ msgid "Finding a font that says \"I'm cracked\"..."
+#~ msgstr ""
+
+#: src/components/results/ResultsApp/ResultsApp.tsx:33
+msgid "Finding everyone who showed up..."
 msgstr ""
 
 #: src/components/top8/DesignEditor/DesignEditor.tsx:28
@@ -504,9 +552,9 @@ msgstr ""
 msgid "Generating preview..."
 msgstr ""
 
-#: src/components/results/ResultsPreview/ResultsPreview.tsx:382
-msgid "Generating recap"
-msgstr ""
+#: src/components/results/ResultsPreview/ResultsPreview.tsx:394
+#~ msgid "Generating recap"
+#~ msgstr ""
 
 #: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:50
 msgid "Gradient edge"
@@ -520,7 +568,7 @@ msgstr ""
 msgid "Home"
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:158
+#: src/components/results/ResultsApp/ResultsApp.tsx:162
 msgid "https://start.gg/tournament/.../event/..."
 msgstr ""
 
@@ -604,8 +652,8 @@ msgstr ""
 
 #: src/components/predict/PredictApp/PredictApp.tsx:106
 #: src/components/predict/PredictApp/PredictApp.tsx:158
-#: src/components/results/ResultsApp/ResultsApp.tsx:166
-#: src/components/results/ResultsApp/ResultsApp.tsx:226
+#: src/components/results/ResultsApp/ResultsApp.tsx:170
+#: src/components/results/ResultsApp/ResultsApp.tsx:230
 msgid "Loading tournament"
 msgstr ""
 
@@ -614,7 +662,15 @@ msgid "Locking in picks..."
 msgstr ""
 
 #: src/components/results/ResultsPreview/ResultsPreview.tsx:62
-msgid "Locking in the recap..."
+#~ msgid "Locking in the recap..."
+#~ msgstr ""
+
+#: src/components/results/ResultsApp/ResultsApp.tsx:46
+msgid "Looking for the game 5 last stock..."
+msgstr ""
+
+#: src/components/results/ResultsApp/ResultsApp.tsx:37
+msgid "Looking for the guy who entered as \"test\"..."
 msgstr ""
 
 #: src/components/top8/InfoPanel/InfoPanel.tsx:59
@@ -624,6 +680,10 @@ msgstr ""
 #: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:113
 msgid "Lower values reduce file size at the cost of detail."
 msgstr ""
+
+#: src/components/results/ResultsPreview/ResultsPreview.tsx:63
+#~ msgid "Making the upsets look extra dramatic..."
+#~ msgstr ""
 
 #: src/components/top8/AssetManager/AssetManager.tsx:34
 msgid "Manage Assets"
@@ -713,7 +773,7 @@ msgstr ""
 msgid "Output: {outputWidth} × {outputHeight} px"
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:148
+#: src/components/results/ResultsApp/ResultsApp.tsx:152
 msgid "Paste a start.gg event URL, pick a player, and generate a shareable recap of their run."
 msgstr ""
 
@@ -807,7 +867,6 @@ msgid "Preview of your saved template"
 msgstr ""
 
 #: src/components/predict/PredictApp/PredictApp.tsx:31
-#: src/components/results/ResultsApp/ResultsApp.tsx:33
 msgid "Pulling entrants..."
 msgstr ""
 
@@ -824,8 +883,12 @@ msgid "Ranker"
 msgstr ""
 
 #: src/components/results/ResultsApp/ResultsApp.tsx:35
-msgid "Reading the bracket..."
+msgid "Reading the bracket upside down..."
 msgstr ""
+
+#: src/components/results/ResultsApp/ResultsApp.tsx:35
+#~ msgid "Reading the bracket..."
+#~ msgstr ""
 
 #: src/components/predict/PredictionPreview/PredictionPreview.tsx:56
 msgid "Reading the tea leaves..."
@@ -836,8 +899,8 @@ msgid "Recap"
 msgstr ""
 
 #: src/components/results/ResultsApp/ResultsApp.tsx:42
-msgid "Recapping the run..."
-msgstr ""
+#~ msgid "Recapping the run..."
+#~ msgstr ""
 
 #: src/components/top8/SettingsPanel/AccentColorPicker.tsx:31
 msgid "Red"
@@ -857,8 +920,8 @@ msgstr ""
 
 #: src/components/results/ResultsApp/ResultsApp.tsx:39
 #: src/components/results/ResultsPreview/ResultsPreview.tsx:58
-msgid "Replaying the bracket..."
-msgstr ""
+#~ msgid "Replaying the bracket..."
+#~ msgstr ""
 
 #: src/components/top8/SettingsPanel/DeveloperSettings.tsx:47
 #: src/components/top8/SettingsPanel/DeveloperSettings.tsx:75
@@ -869,8 +932,11 @@ msgstr ""
 msgid "Results"
 msgstr ""
 
+#: src/components/results/ResultsApp/ResultsApp.tsx:41
+msgid "Rewatching every set at 2x speed..."
+msgstr ""
+
 #: src/components/predict/PredictApp/PredictApp.tsx:34
-#: src/components/results/ResultsApp/ResultsApp.tsx:34
 msgid "Rounding up the squad..."
 msgstr ""
 
@@ -900,7 +966,7 @@ msgstr ""
 msgid "Select"
 msgstr ""
 
-#: src/components/results/ResultsPreview/ResultsPreview.tsx:330
+#: src/components/results/ResultsPreview/ResultsPreview.tsx:322
 msgid "Select a player first."
 msgstr ""
 
@@ -953,6 +1019,10 @@ msgstr ""
 msgid "Show help"
 msgstr ""
 
+#: src/components/results/ResultsPreview/ResultsPreview.tsx:65
+#~ msgid "Shrinking the tag that's way too long..."
+#~ msgstr ""
+
 #: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:169
 msgid "Size"
 msgstr ""
@@ -961,7 +1031,7 @@ msgstr ""
 msgid "Square Variant"
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:173
+#: src/components/results/ResultsApp/ResultsApp.tsx:177
 msgid "start.gg only"
 msgstr ""
 
@@ -986,14 +1056,13 @@ msgid "Switching templates will replace what you've typed. Continue?"
 msgstr ""
 
 #: src/components/predict/PredictApp/PredictApp.tsx:30
-#: src/components/results/ResultsApp/ResultsApp.tsx:32
 msgid "Talking to the bracket gods..."
 msgstr ""
 
 #: src/components/results/ResultsApp/ResultsApp.tsx:41
 #: src/components/results/ResultsPreview/ResultsPreview.tsx:60
-msgid "Tallying the damage..."
-msgstr ""
+#~ msgid "Tallying the damage..."
+#~ msgstr ""
 
 #: src/components/predict/PredictionListPanel/PredictionListPanel.tsx:111
 msgid "Tap entrants to add predictions"
@@ -1140,7 +1209,7 @@ msgstr ""
 msgid "Tournament not found"
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:145
+#: src/components/results/ResultsApp/ResultsApp.tsx:149
 msgid "Tournament Recap"
 msgstr ""
 
@@ -1148,7 +1217,7 @@ msgstr ""
 msgid "Tournament results are start.gg-only for now. Paste a start.gg event URL to continue."
 msgstr ""
 
-#: src/components/results/ResultsPreview/ResultsPreview.tsx:357
+#: src/components/results/ResultsPreview/ResultsPreview.tsx:349
 msgid "Tournament results graphic"
 msgstr ""
 

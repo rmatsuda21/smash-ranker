@@ -29,17 +29,21 @@ import { logEvent } from "@/utils/observability/log";
 import styles from "./ResultsApp.module.scss";
 
 const POOL_TAGLINES: MessageDescriptor[] = [
-  msg`Talking to the bracket gods...`,
-  msg`Pulling entrants...`,
-  msg`Rounding up the squad...`,
-  msg`Reading the bracket...`,
+  msg`Asking start.gg very nicely...`,
+  msg`Finding everyone who showed up...`,
+  msg`Checking who actually made it past pools...`,
+  msg`Reading the bracket upside down...`,
+  msg`Counting the DQs so you don't have to...`,
+  msg`Looking for the guy who entered as "test"...`,
 ];
 
 const PLAYER_TAGLINES: MessageDescriptor[] = [
-  msg`Replaying the bracket...`,
-  msg`Counting stocks...`,
-  msg`Tallying the damage...`,
-  msg`Recapping the run...`,
+  msg`Rewatching every set at 2x speed...`,
+  msg`Counting the stocks. All of them...`,
+  msg`Figuring out who got sent to losers...`,
+  msg`Checking if the seed was fair...`,
+  msg`Deciding which loss was "actually close"...`,
+  msg`Looking for the game 5 last stock...`,
 ];
 
 export const ResultsApp = () => {
