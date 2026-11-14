@@ -5,7 +5,12 @@ import { usePlayerStore } from "@/store/playerStore";
 import { useTournamentStore } from "@/store/tournamentStore";
 import { useFontStore } from "@/store/fontStore";
 
-export type StageBlobCacheEntry = { key: string; blob: Blob };
+export type StageBlobCacheEntry = {
+  key: string;
+  blob: Blob;
+  /** Smaller copy for on-screen preview, when the export produced one. */
+  previewBlob?: Blob | null;
+};
 
 export type StageBlobCacheState = {
   entry: StageBlobCacheEntry | null;

@@ -9,13 +9,12 @@ import { Input } from "@/components/shared/Input/Input";
 import { useCanvasStore } from "@/store/canvasStore";
 import { useTournamentStore } from "@/store/tournamentStore";
 import {
-  PIXEL_RATIO_MAX_MOBILE,
+  useExportPixelRatio,
   useExportSettingsStore,
 } from "@/store/exportSettingsStore";
 import { DropDownSelect } from "@/components/shared/DropDownSelect/DropDownSelect";
 import { DownloadOptionModal } from "@/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal";
 import { ExportPreviewModal } from "@/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal";
-import { isMobile } from "@/utils/isMobile";
 import type { StageBlobCache } from "@/hooks/top8/useStageBlobCache";
 
 import styles from "./CanvasDownloader.module.scss";
@@ -43,15 +42,12 @@ export const CanvasDownloader = ({ className, onShare, blobCache }: Props) => {
   const tournamentName = useTournamentStore(
     (state) => state.info.tournamentName,
   );
-  const pixelRatio = useExportSettingsStore((s) => s.pixelRatio);
+  const { pixelRatio, maxPixelRatio } = useExportPixelRatio();
   const quality = useExportSettingsStore((s) => s.quality);
 
-  // Persisted pixel ratio can exceed mobile bounds (e.g. user set 4× on
-  // desktop, then opened the same browser profile on mobile). Cap at
-  // export time so we don't allocate a multi-million-pixel canvas.
-  const effectivePixelRatio = isMobile()
-    ? Math.min(pixelRatio, PIXEL_RATIO_MAX_MOBILE)
-    : pixelRatio;
+  // Defensive cap: the persisted value is clamped on write and rehydrate,
+  // but an out-of-range ratio here means a multi-million-pixel canvas.
+  const effectivePixelRatio = Math.min(pixelRatio, maxPixelRatio);
 
   useEffect(() => {
     const normalizedFilename = tournamentName

@@ -6,16 +6,14 @@ import { Modal } from "@/components/shared/Modal/Modal";
 import { Slider } from "@/components/shared/Slider/Slider";
 import { useEffectiveCanvasSize } from "@/hooks/top8/useEffectiveCanvasSize";
 import {
-  PIXEL_RATIO_MAX,
-  PIXEL_RATIO_MAX_MOBILE,
   PIXEL_RATIO_MIN,
   PIXEL_RATIO_STEP,
   QUALITY_MAX,
   QUALITY_MIN,
   QUALITY_STEP,
+  useExportPixelRatio,
   useExportSettingsStore,
 } from "@/store/exportSettingsStore";
-import { isMobile } from "@/utils/isMobile";
 
 import styles from "./DownloadOptionModal.module.scss";
 
@@ -40,13 +38,11 @@ export const DownloadOptionModal = ({
   imgType,
   setImgType,
 }: Props) => {
-  const pixelRatio = useExportSettingsStore((s) => s.pixelRatio);
+  const { pixelRatio, setPixelRatio, maxPixelRatio } = useExportPixelRatio();
   const quality = useExportSettingsStore((s) => s.quality);
-  const setPixelRatio = useExportSettingsStore((s) => s.setPixelRatio);
   const setQuality = useExportSettingsStore((s) => s.setQuality);
 
   const canvasSize = useEffectiveCanvasSize();
-  const maxPixelRatio = isMobile() ? PIXEL_RATIO_MAX_MOBILE : PIXEL_RATIO_MAX;
   const effectivePixelRatio = Math.min(pixelRatio, maxPixelRatio);
 
   const outputWidth = Math.round(canvasSize.width * effectivePixelRatio);

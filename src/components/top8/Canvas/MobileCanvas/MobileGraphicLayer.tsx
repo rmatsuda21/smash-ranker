@@ -10,9 +10,15 @@ import { createKonvaElements } from "@/utils/top8/elementFactory";
 import { Player } from "@/components/top8/Canvas/Player";
 import { useEffectiveCanvasSize } from "@/hooks/top8/useEffectiveCanvasSize";
 import { computeDynamicPlayerLayout } from "@/utils/top8/dynamicPlayerHeight";
+import { shrinkHitCanvas } from "@/utils/top8/mobileBackingRatio";
 import type { Design, ElementConfig, PlayerDesign } from "@/types/top8/Design";
+import type { Layer as KonvaLayer } from "konva/lib/Layer";
 
 const noop = () => {};
+
+const handleLayerRef = (layer: KonvaLayer | null) => {
+  if (layer) shrinkHitCanvas(layer);
+};
 
 const MobileGraphicLayerComponent = () => {
   // Background layer state
@@ -140,9 +146,12 @@ const MobileGraphicLayerComponent = () => {
     : [...players.keys()];
 
   return (
-    <>
-      <Layer listening={false}>{backgroundKonvaElements}</Layer>
-      <Layer listening={false}>
+    // One layer for everything: each Konva layer owns a full stage-sized
+    // canvas (and exports allocate per layer), and the mobile pipeline is
+    // read-only so it gains nothing from separate redraw regions.
+    <Layer ref={handleLayerRef} listening={false}>
+      <Group listening={false}>{backgroundKonvaElements}</Group>
+      <Group listening={false}>
         {playerOrder.map((index) => {
           const player = players[index];
           if (index >= playerConfigs.length) return null;
@@ -168,8 +177,8 @@ const MobileGraphicLayerComponent = () => {
         >
           {tournamentKonvaElements}
         </Group>
-      </Layer>
-    </>
+      </Group>
+    </Layer>
   );
 };
 

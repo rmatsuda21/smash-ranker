@@ -6,10 +6,14 @@ import {
   buildStageBlobKey,
   type StageBlobCache,
 } from "@/hooks/top8/useStageBlobCache";
+import { isMobile } from "@/utils/isMobile";
 
 type ParseTweetFn = (text: string) => { weightedLength: number };
 
-const SOCIAL_CACHE_KEY = buildStageBlobKey("image/png", 2, 1);
+// Design resolution on mobile (matches the mobile export default, so the
+// two surfaces share one cached blob); 2× elsewhere.
+const SOCIAL_PIXEL_RATIO = isMobile() ? 1 : 2;
+const SOCIAL_CACHE_KEY = buildStageBlobKey("image/png", SOCIAL_PIXEL_RATIO, 1);
 
 /**
  * Snapshots the Konva stage to a PNG once on mount and tracks an object
@@ -55,7 +59,7 @@ export const useCanvasImage = (
     setLoading(true);
     const startEpoch = cacheRef?.current.epoch ?? 0;
 
-    void exportCanvasToPngBlob({ stageRef, pixelRatio: 2 })
+    void exportCanvasToPngBlob({ stageRef, pixelRatio: SOCIAL_PIXEL_RATIO })
       .then((next) => {
         if (cancelled || !next) return;
 

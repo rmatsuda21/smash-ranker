@@ -15,6 +15,10 @@ const MAX_CACHE_AREA = 30_000;
  *  Tighter cap because this path also pays the imageData allocation. */
 const RGB_MAX_CACHE_AREA = 20_000;
 
+/** Explicit so the cache doesn't inherit the mobile stage's reduced backing
+ *  ratio — exports redraw this bitmap at up to 2×. Cheap given the area caps. */
+const CACHE_PIXEL_RATIO = 2;
+
 const cssFilterStringFor = (
   filtersConfig: ElementFilterConfig[],
 ): string | undefined => {
@@ -103,7 +107,7 @@ export const MobileFilteredGroup = ({
         n.clearCache();
         return;
       }
-      n.cache({ offset: 2 });
+      n.cache({ offset: 2, pixelRatio: CACHE_PIXEL_RATIO });
     });
 
     return () => cancelAnimationFrame(raf);

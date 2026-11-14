@@ -11,6 +11,11 @@ import { useEffectiveCanvasSize } from "@/hooks/top8/useEffectiveCanvasSize";
 import { loadFamily } from "@/utils/fonts/fontLoader";
 import { RenderModeContext } from "@/components/top8/Canvas/RenderModeContext";
 import { MobileGraphicLayer } from "@/components/top8/Canvas/MobileCanvas/MobileGraphicLayer";
+import {
+  applyBackingRatio,
+  computeBackingRatio,
+  setGlobalBackingRatio,
+} from "@/utils/top8/mobileBackingRatio";
 
 import styles from "./MobileCanvas.module.scss";
 
@@ -20,7 +25,11 @@ type Props = {
 
 export const MobileCanvas = ({ className }: Props) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const [displayScale, setDisplayScale] = useState(1);
+  const stageRef = useRef<KonvaStage | null>(null);
+  // null until the container has been measured. The Stage is not mounted
+  // before then, so its canvases are created at the right backing ratio
+  // instead of Konva's default (full devicePixelRatio at design size).
+  const [displayScale, setDisplayScale] = useState<number | null>(null);
 
   const canvasSize = useEffectiveCanvasSize();
   const canvasDispatch = useCanvasStore((state) => state.dispatch);
@@ -55,6 +64,15 @@ export const MobileCanvas = ({ className }: Props) => {
     };
   }, [selectedFont, displayedFont, catalogFetching, fontDispatch]);
 
+  // Konva's pixel ratio is a global; put it back when the mobile canvas
+  // unmounts so other Konva surfaces (e.g. /thumbnail) get the default.
+  useEffect(() => {
+    const initial = setGlobalBackingRatio(window.devicePixelRatio || 1);
+    return () => {
+      setGlobalBackingRatio(initial);
+    };
+  }, []);
+
   // Fit canvas width to container; mirrors the mobile branch of the desktop
   // Canvas's fit-to-window logic without the slider/padding controls.
   useEffect(() => {
@@ -66,7 +84,11 @@ export const MobileCanvas = ({ className }: Props) => {
       if (!wrapperRef.current) return;
       const availableWidth = wrapperRef.current.clientWidth;
       if (availableWidth <= 0) return;
-      setDisplayScale(availableWidth / canvasSize.width);
+      const scale = availableWidth / canvasSize.width;
+      const ratio = computeBackingRatio(scale);
+      setGlobalBackingRatio(ratio);
+      if (stageRef.current) applyBackingRatio(stageRef.current, ratio);
+      setDisplayScale(scale);
     };
 
     resize();
@@ -76,8 +98,15 @@ export const MobileCanvas = ({ className }: Props) => {
     return () => observer?.disconnect();
   }, [canvasSize.width]);
 
+  const displayScaleRef = useRef(1);
+  if (displayScale !== null) displayScaleRef.current = displayScale;
+
   const setStageRef = useCallback(
     (stage: KonvaStage | null) => {
+      stageRef.current = stage;
+      if (stage) {
+        applyBackingRatio(stage, computeBackingRatio(displayScaleRef.current));
+      }
       canvasDispatch({ type: "SET_STAGE_REF", payload: stage });
     },
     [canvasDispatch],
@@ -113,15 +142,16 @@ export const MobileCanvas = ({ className }: Props) => {
       <div ref={wrapperRef} className={styles.scrollArea}>
         <div
           className={styles.canvasWrapper}
-          style={{ "--display-scale": displayScale } as React.CSSProperties}
+          style={
+            { "--display-scale": displayScale ?? 1 } as React.CSSProperties
+          }
         >
           <div className={styles.canvasInner}>
-            {isFontLoaded && (
+            {isFontLoaded && displayScale !== null && (
               <Stage
                 ref={setStageRef}
                 width={canvasSize.width}
                 height={canvasSize.height}
-                pixelRatio={0.5}
                 listening={false}
               >
                 {/* Inner Provider keeps context inside Konva's subtree;

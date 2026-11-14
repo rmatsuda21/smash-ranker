@@ -8,7 +8,8 @@ import { Modal } from "@/components/shared/Modal/Modal";
 import { Spinner } from "@/components/shared/Spinner/Spinner";
 import { useCanvasStore } from "@/store/canvasStore";
 import { useTournamentStore } from "@/store/tournamentStore";
-import { exportCanvasToPngBlob } from "@/utils/top8/exportCanvas";
+import { exportCanvas } from "@/utils/top8/exportCanvas";
+import { isMobile } from "@/utils/isMobile";
 import { downloadBlob } from "@/utils/top8/downloadBlob";
 import { copyImageToClipboard } from "@/utils/social/clipboardImage";
 import { logEvent, setPerson, setPersonOnce } from "@/utils/observability/log";
@@ -55,8 +56,10 @@ export const ExportPreviewModal = ({
     if (!isOpen || !stageRef) return;
 
     let createdUrl: string | null = null;
-    const adoptBlob = (next: Blob) => {
-      createdUrl = URL.createObjectURL(next);
+    // The <img> shows the preview copy when there is one; download, copy
+    // and share always use the full-size blob.
+    const adoptBlob = (next: Blob, preview?: Blob | null) => {
+      createdUrl = URL.createObjectURL(preview ?? next);
       setBlob(next);
       setImageUrl(createdUrl);
       setStatus("ready");
@@ -64,7 +67,7 @@ export const ExportPreviewModal = ({
 
     const cached = blobCache.current.entry;
     if (cached?.key === settingsKey) {
-      adoptBlob(cached.blob);
+      adoptBlob(cached.blob, cached.previewBlob);
       return () => {
         if (createdUrl) URL.revokeObjectURL(createdUrl);
       };
@@ -90,11 +93,14 @@ export const ExportPreviewModal = ({
 
     const generate = async () => {
       try {
-        const result = await exportCanvasToPngBlob({
+        const result = await exportCanvas({
           stageRef,
           pixelRatio,
           mimeType,
           quality,
+          // On mobile, never make the browser decode more than design
+          // resolution just to show the preview.
+          previewPixelRatio: isMobile() ? 1 : undefined,
         });
 
         if (cancelled) return;
@@ -112,9 +118,13 @@ export const ExportPreviewModal = ({
         // Only write to the shared cache if no invalidation happened
         // mid-flight — otherwise the blob no longer reflects current state.
         if (blobCache.current.epoch === startEpoch) {
-          blobCache.current.entry = { key: settingsKey, blob: result };
+          blobCache.current.entry = {
+            key: settingsKey,
+            blob: result.blob,
+            previewBlob: result.previewBlob,
+          };
         }
-        adoptBlob(result);
+        adoptBlob(result.blob, result.previewBlob);
       } catch {
         if (cancelled) return;
         logEvent("graphic_export_fail", {

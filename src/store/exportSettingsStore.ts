@@ -1,11 +1,17 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
+import { isMobile } from "@/utils/isMobile";
+
 export const PIXEL_RATIO_MIN = 0.5;
 export const PIXEL_RATIO_MAX = 4;
 export const PIXEL_RATIO_MAX_MOBILE = 2;
 export const PIXEL_RATIO_STEP = 0.5;
 export const PIXEL_RATIO_DEFAULT = 2;
+/** Mobile gets its own setting, defaulting to design resolution: a 2× export
+ *  of a 1920×1080 design costs ~33 MB per canvas, which is what pushes
+ *  phones over their memory budget. 2× stays available as an opt-in. */
+export const PIXEL_RATIO_DEFAULT_MOBILE = 1;
 
 export const QUALITY_MIN = 0.1;
 export const QUALITY_MAX = 1;
@@ -28,8 +34,10 @@ const clampNumber = (
 
 interface ExportSettingsState {
   pixelRatio: number;
+  mobilePixelRatio: number;
   quality: number;
   setPixelRatio: (value: number) => void;
+  setMobilePixelRatio: (value: number) => void;
   setQuality: (value: number) => void;
 }
 
@@ -37,6 +45,7 @@ export const useExportSettingsStore = create<ExportSettingsState>()(
   persist(
     (set, get) => ({
       pixelRatio: PIXEL_RATIO_DEFAULT,
+      mobilePixelRatio: PIXEL_RATIO_DEFAULT_MOBILE,
       quality: QUALITY_DEFAULT,
       setPixelRatio: (value) =>
         set({
@@ -45,6 +54,15 @@ export const useExportSettingsStore = create<ExportSettingsState>()(
             get().pixelRatio,
             PIXEL_RATIO_MIN,
             PIXEL_RATIO_MAX,
+          ),
+        }),
+      setMobilePixelRatio: (value) =>
+        set({
+          mobilePixelRatio: clampNumber(
+            value,
+            get().mobilePixelRatio,
+            PIXEL_RATIO_MIN,
+            PIXEL_RATIO_MAX_MOBILE,
           ),
         }),
       setQuality: (value) =>
@@ -67,6 +85,12 @@ export const useExportSettingsStore = create<ExportSettingsState>()(
           PIXEL_RATIO_MIN,
           PIXEL_RATIO_MAX,
         );
+        state.mobilePixelRatio = clampNumber(
+          state.mobilePixelRatio,
+          PIXEL_RATIO_DEFAULT_MOBILE,
+          PIXEL_RATIO_MIN,
+          PIXEL_RATIO_MAX_MOBILE,
+        );
         state.quality = clampNumber(
           state.quality,
           QUALITY_DEFAULT,
@@ -77,3 +101,20 @@ export const useExportSettingsStore = create<ExportSettingsState>()(
     },
   ),
 );
+
+/** Export pixel ratio for the current device class, with its setter and
+ *  upper bound. Desktop and mobile persist separate values. */
+export const useExportPixelRatio = () => {
+  const mobile = isMobile();
+  const pixelRatio = useExportSettingsStore((s) =>
+    mobile ? s.mobilePixelRatio : s.pixelRatio,
+  );
+  const setPixelRatio = useExportSettingsStore((s) =>
+    mobile ? s.setMobilePixelRatio : s.setPixelRatio,
+  );
+  return {
+    pixelRatio,
+    setPixelRatio,
+    maxPixelRatio: mobile ? PIXEL_RATIO_MAX_MOBILE : PIXEL_RATIO_MAX,
+  };
+};
