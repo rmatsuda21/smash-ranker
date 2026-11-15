@@ -6,7 +6,15 @@
   border-radius: var(--radius-md);
   padding: var(--space-2);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  max-width: 280px;
+  // Sized by its content, never by the room right of the pointer: the
+  // component moves it on screen instead (the popover UA style would
+  // otherwise pin right/bottom to 0 and squeeze it).
+  right: auto;
+  bottom: auto;
+  margin: 0;
+  box-sizing: border-box;
+  width: max-content;
+  max-width: min(280px, calc(100vw - 16px));
 }
 
 .title {
@@ -18,9 +26,10 @@
   margin-bottom: var(--space-2);
 }
 
+// Four to a row, so the picker is exactly as wide as its costumes.
 .alts {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(4, max-content);
   gap: var(--space-1);
 }
 

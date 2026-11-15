@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useLingui } from "@lingui/react/macro";
 
@@ -11,6 +11,9 @@ import { useTopLayer } from "@/hooks/useTopLayer";
 import { TooltipButton } from "@/components/shared/Tooltip/TooltipButton";
 
 import styles from "./AltPicker.module.scss";
+
+// Gap kept between the picker and the edge of the screen.
+const EDGE_MARGIN = 8;
 
 type Props = {
   instanceId: string;
@@ -37,6 +40,21 @@ export const AltPicker = ({
   // would close it again on the release of that same click.
   useTopLayer(ref);
 
+  // Opens at the pointer at its full size; when that would run off the
+  // screen it is moved back in rather than squeezed.
+  const [placement, setPlacement] = useState(position);
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const { width, height } = el.getBoundingClientRect();
+    const clamp = (value: number, size: number, viewport: number) =>
+      Math.max(EDGE_MARGIN, Math.min(value, viewport - size - EDGE_MARGIN));
+    setPlacement({
+      x: clamp(position.x, width, window.innerWidth),
+      y: clamp(position.y, height, window.innerHeight),
+    });
+  }, [position, altCount]);
+
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
       if (ref.current && !ref.current.contains(e.target as Node)) {
@@ -62,7 +80,7 @@ export const AltPicker = ({
       ref={ref}
       popover="manual"
       className={styles.picker}
-      style={{ top: position.y, left: position.x }}
+      style={{ top: placement.y, left: placement.x }}
     >
       <div className={styles.title}>
         {getCharacterDisplayName(charData.id, i18n.locale)}
