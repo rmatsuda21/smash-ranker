@@ -3,8 +3,9 @@ import { useShallow } from "zustand/react/shallow";
 
 import { useCanvasStore } from "@/store/canvasStore";
 import { usePlayerStore } from "@/store/playerStore";
-import { computePlayerHeightDelta } from "@/utils/top8/dynamicPlayerHeight";
+import { getEffectiveCanvasSize } from "@/utils/top8/scene";
 
+/** The current design's canvas size after dynamic player height. */
 export function useEffectiveCanvasSize() {
   const canvasSize = useCanvasStore(
     useShallow((state) => state.design.canvasSize),
@@ -17,24 +18,14 @@ export function useEffectiveCanvasSize() {
   );
   const players = usePlayerStore((state) => state.players);
 
-  return useMemo(() => {
-    if (!dynamicPlayerHeight) return canvasSize;
-
-    // Only players that occupy a design slot are drawn, so only they can grow
-    // the canvas. Mirrors the loop in `computeDynamicPlayerLayout`.
-    let totalDelta = 0;
-    for (let i = 0; i < Math.min(slotCount, players.length); i++) {
-      totalDelta += computePlayerHeightDelta(
+  return useMemo(
+    () =>
+      getEffectiveCanvasSize(
+        canvasSize,
         dynamicPlayerHeight,
-        players[i].characters?.length ?? 0,
-      );
-    }
-
-    if (totalDelta === 0) return canvasSize;
-
-    return {
-      width: canvasSize.width,
-      height: canvasSize.height + totalDelta,
-    };
-  }, [canvasSize, dynamicPlayerHeight, slotCount, players]);
+        slotCount,
+        players,
+      ),
+    [canvasSize, dynamicPlayerHeight, slotCount, players],
+  );
 }

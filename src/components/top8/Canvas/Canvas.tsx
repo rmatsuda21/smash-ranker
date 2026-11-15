@@ -6,16 +6,14 @@ import cn from "classnames";
 import { useCanvasStore } from "@/store/canvasStore";
 import { usePlayerStore } from "@/store/playerStore";
 import { useTournamentStore } from "@/store/tournamentStore";
-import { useFontStore } from "@/store/fontStore";
-import { BackgroundLayer } from "@/components/top8/Canvas/BackgroundLayer";
-import { PlayerLayer } from "@/components/top8/Canvas/PlayerLayer";
+import { EditableContentLayers } from "@/components/top8/Canvas/EditableContentLayers";
 import { TournamentLayer } from "@/components/top8/Canvas/TournamentLayer";
 import { BracketLoader } from "@/components/shared/BracketLoader/BracketLoader";
 import { Slider } from "@/components/shared/Slider/Slider";
 import { Button } from "@/components/shared/Button/Button";
 import { useEffectiveCanvasSize } from "@/hooks/top8/useEffectiveCanvasSize";
-import { loadFamily } from "@/utils/fonts/fontLoader";
-import { collectDesignFontWeights } from "@/utils/fonts/designWeights";
+import { useFontSwap } from "@/hooks/top8/useFontSwap";
+import { useStageBackingRatio } from "@/hooks/top8/useStageBackingRatio";
 import { perfMark, perfMeasureSince } from "@/utils/top8/renderPerf";
 
 import styles from "./Canvas.module.scss";
@@ -33,7 +31,9 @@ export const Canvas = ({ className }: Props) => {
   const [isPlayerReady, setIsPlayerReady] = useState(false);
   const [isTournamentReady, setIsTournamentReady] = useState(false);
 
-  const [displayScale, setDisplayScale] = useState(1);
+  // null until the container has been measured. The Stage is not mounted
+  // before then, so its canvases are created at the right backing ratio.
+  const [displayScale, setDisplayScale] = useState<number | null>(null);
 
   const wrapperRef = useRef<HTMLDivElement>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
@@ -42,32 +42,8 @@ export const Canvas = ({ className }: Props) => {
   const canvasDispatch = useCanvasStore((state) => state.dispatch);
   const tournamentDispatch = useTournamentStore((state) => state.dispatch);
   const playerDispatch = usePlayerStore((state) => state.dispatch);
-  const selectedFont = useFontStore((state) => state.selectedFont);
-  const displayedFont = useFontStore((state) => state.displayedFont);
-  const fontDispatch = useFontStore((state) => state.dispatch);
-  const catalogFetching = useFontStore((state) => state.fetching);
-
-  const isFontLoaded = displayedFont !== "";
-  const isFontSwapping = isFontLoaded && selectedFont !== displayedFont;
-
-  useEffect(() => {
-    if (!selectedFont) return;
-    if (selectedFont === displayedFont) return;
-
-    let cancelled = false;
-    const finish = () => {
-      if (cancelled) return;
-      fontDispatch({ type: "SET_DISPLAYED_FONT", payload: selectedFont });
-    };
-    // Only the weights the current design draws with — not every weight
-    // the family ships.
-    const weights = collectDesignFontWeights(useCanvasStore.getState().design);
-    loadFamily(selectedFont, weights).then(finish).catch(finish);
-
-    return () => {
-      cancelled = true;
-    };
-  }, [selectedFont, displayedFont, catalogFetching, fontDispatch]);
+  const { selectedFont, isFontLoaded, isFontSwapping } = useFontSwap();
+  const bindStageBackingRatio = useStageBackingRatio(displayScale);
 
   useEffect(() => {
     perfMark("canvasMount");
@@ -144,9 +120,10 @@ export const Canvas = ({ className }: Props) => {
 
   const setStageRef = useCallback(
     (stage: KonvaStage | null) => {
+      bindStageBackingRatio(stage);
       canvasDispatch({ type: "SET_STAGE_REF", payload: stage });
     },
-    [canvasDispatch],
+    [canvasDispatch, bindStageBackingRatio],
   );
 
   useEffect(() => {
@@ -203,21 +180,22 @@ export const Canvas = ({ className }: Props) => {
       <div ref={scrollAreaRef} className={styles.scrollArea}>
         <div
           className={styles.canvasWrapper}
-          style={{ "--display-scale": displayScale } as React.CSSProperties}
+          style={
+            { "--display-scale": displayScale ?? 1 } as React.CSSProperties
+          }
         >
           <div className={styles.canvasInner}>
-            {isFontLoaded && (
+            {isFontLoaded && displayScale !== null && (
               <Stage
                 ref={setStageRef}
                 width={canvasSize.width}
                 height={canvasSize.height}
                 onClick={handleStageClick}
               >
-                <BackgroundLayer
-                  onClick={handleStageClick}
-                  onReady={handleBackgroundReady}
+                <EditableContentLayers
+                  onBackgroundReady={handleBackgroundReady}
+                  onPlayersReady={handlePlayerReady}
                 />
-                <PlayerLayer onReady={handlePlayerReady} />
                 <TournamentLayer onReady={handleTournamentReady} />
               </Stage>
             )}
@@ -231,9 +209,9 @@ export const Canvas = ({ className }: Props) => {
       </div>
 
       <div className={styles.controls}>
-        <span>{`${(displayScale * 100).toFixed(0)}%`}</span>
+        <span>{`${((displayScale ?? 1) * 100).toFixed(0)}%`}</span>
         <Slider
-          value={displayScale}
+          value={displayScale ?? 1}
           onValueChange={handleDisplayScaleChange}
           min={0.1}
           max={2}

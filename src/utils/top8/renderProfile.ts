@@ -15,6 +15,10 @@ export type RenderProfile = {
   /** Elements can be hovered, selected, dragged and transformed on canvas. */
   interactive: boolean;
 
+  /** Let Konva use its perfect-draw buffer for shapes with fill, stroke and
+   *  opacity. Off for throwaway offscreen renders where speed matters more. */
+  perfectDraw: boolean;
+
   /**
    * Keep decoded full-size source images in memory so edits re-bake
    * instantly. Character art is ~15 MB decoded each, so constrained devices
@@ -63,6 +67,7 @@ export type RenderProfile = {
 export const DESKTOP_PROFILE: RenderProfile = {
   id: "desktop",
   interactive: true,
+  perfectDraw: true,
   keepSourceImages: true,
   recoloredSvgCacheSize: 80,
   bitmapsFollowScreenDensity: true,
@@ -80,6 +85,7 @@ export const DESKTOP_PROFILE: RenderProfile = {
 export const MOBILE_PROFILE: RenderProfile = {
   id: "mobile",
   interactive: false,
+  perfectDraw: true,
   keepSourceImages: false,
   recoloredSvgCacheSize: 30,
   bitmapsFollowScreenDensity: false,
@@ -94,6 +100,14 @@ export const MOBILE_PROFILE: RenderProfile = {
   // and the export share one cached blob.
   socialPixelRatio: 1,
   exportPreviewPixelRatio: 1,
+};
+
+/** Desktop-quality bitmaps on a stage nobody interacts with: template
+ *  previews and the preview generator. */
+export const OFFSCREEN_PROFILE: RenderProfile = {
+  ...DESKTOP_PROFILE,
+  interactive: false,
+  perfectDraw: false,
 };
 
 let deviceProfile: RenderProfile | undefined;

@@ -1,15 +1,19 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Stage, Layer, Group } from "react-konva";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Stage, Layer } from "react-konva";
 import { Stage as KonvaStage } from "konva/lib/Stage";
 import cn from "classnames";
 import { FaTrash } from "react-icons/fa6";
 
 import { DBTemplate } from "@/types/Repository";
-import { createKonvaElements } from "@/utils/top8/elementFactory";
+import { RenderProfileContext } from "@/components/top8/Canvas/RenderProfileContext";
+import { StaticScene } from "@/components/top8/Canvas/scene/StaticScene";
 import { createSamplePlayers } from "@/utils/top8/samplePlayers";
 import { TournamentInfo } from "@/types/top8/Tournament";
 import { useTooltip } from "@/components/shared/Tooltip/useTooltip";
-import { getDeviceRenderProfile } from "@/utils/top8/renderProfile";
+import {
+  OFFSCREEN_PROFILE,
+  getDeviceRenderProfile,
+} from "@/utils/top8/renderProfile";
 import { previewCache } from "@/db/previewCache";
 import { Spinner } from "@/components/shared/Spinner/Spinner";
 import { useEditorStore } from "@/store/editorStore";
@@ -130,9 +134,7 @@ const RenderedPreview = (props: Props) => {
   const [imageDataUrl, setImageDataUrl] = useState<string | null>(null);
   const [isRendering, setIsRendering] = useState(true);
   const [stageCaptured, setStageCaptured] = useState(false);
-  const [isBackgroundReady, setIsBackgroundReady] = useState(false);
-  const [isTournamentReady, setIsTournamentReady] = useState(false);
-  const [isPlayerReady, setIsPlayerReady] = useState(false);
+  const [isSceneReady, setIsSceneReady] = useState(false);
   const [hasSlot, setHasSlot] = useState(false);
   const [isFontLoaded, setIsFontLoaded] = useState(false);
 
@@ -178,137 +180,7 @@ const RenderedPreview = (props: Props) => {
     };
   }, [isFontLoaded]);
 
-  const backgroundElements = useMemo(
-    () =>
-      createKonvaElements(
-        template.design.background.elements,
-        {
-          fontFamily: template.font,
-          containerSize: template.design.canvasSize,
-          design: {
-            colorPalette: template.design.colorPalette,
-            bgAssetId: template.design.bgAssetId,
-            bgImageDarkness: template.design.bgImageDarkness,
-          },
-          perfectDraw: false,
-          options: {
-            disableSelectable: true,
-          },
-        },
-        { onAllReady: () => setIsBackgroundReady(true) },
-      ),
-    [
-      template.design.background.elements,
-      template.design.colorPalette,
-      template.design.bgAssetId,
-      template.design.bgImageDarkness,
-      template.design.canvasSize,
-      template.font,
-    ],
-  );
-
-  const tournamentElements = useMemo(
-    () =>
-      createKonvaElements(
-        template.design.tournament?.elements ?? [],
-        {
-          fontFamily: template.font,
-          tournament: sampleTournament,
-          containerSize: template.design.canvasSize,
-          design: {
-            colorPalette: template.design.colorPalette,
-            textPalette: template.design.textPalette,
-            bgAssetId: template.design.bgAssetId,
-            bgImageDarkness: template.design.bgImageDarkness,
-          },
-          perfectDraw: false,
-          options: { disableSelectable: true },
-        },
-        { onAllReady: () => setIsTournamentReady(true) },
-      ),
-    [
-      template.design.tournament?.elements,
-      template.design.colorPalette,
-      template.design.textPalette,
-      template.design.bgAssetId,
-      template.design.bgImageDarkness,
-      template.design.canvasSize,
-      template.font,
-    ],
-  );
-
-  const playerElements = useMemo(() => {
-    const actualPlayerCount = Math.min(
-      samplePlayers.length,
-      template.design.players.length,
-    );
-    let readyCount = 0;
-
-    const indices = samplePlayers.map((_, i) => i);
-    const renderOrder = template.design.reversePlayerZOrder
-      ? [...indices].reverse()
-      : indices;
-
-    return renderOrder.map((index) => {
-      const player = samplePlayers[index];
-      if (!player || index >= template.design.players.length) return null;
-
-      const playerDesign = {
-        ...template.design.basePlayer,
-        ...template.design.players[index],
-      };
-
-      const elements = createKonvaElements(
-        playerDesign.elements ?? [],
-        {
-          fontFamily: template.font,
-          player,
-          containerSize: {
-            width: playerDesign.size?.width,
-            height: playerDesign.size?.height,
-          },
-          design: {
-            colorPalette: template.design.colorPalette,
-            bgAssetId: template.design.bgAssetId,
-            bgImageDarkness: template.design.bgImageDarkness,
-          },
-          perfectDraw: false,
-          options: { disableSelectable: true },
-        },
-        {
-          onAllReady: () => {
-            readyCount++;
-            if (readyCount === actualPlayerCount) {
-              setIsPlayerReady(true);
-            }
-          },
-        },
-      );
-
-      return (
-        <Group
-          key={player.id}
-          x={playerDesign.position?.x}
-          y={playerDesign.position?.y}
-          width={playerDesign.size?.width}
-          height={playerDesign.size?.height}
-          scaleX={playerDesign.scale?.x}
-          scaleY={playerDesign.scale?.y}
-          rotation={playerDesign.rotation ?? 0}
-        >
-          {elements}
-        </Group>
-      );
-    });
-  }, [
-    template.design.basePlayer,
-    template.design.players,
-    template.design.colorPalette,
-    template.design.bgAssetId,
-    template.design.bgImageDarkness,
-    template.design.reversePlayerZOrder,
-    template.font,
-  ]);
+  const handleSceneReady = useCallback(() => setIsSceneReady(true), []);
 
   const captureImage = useCallback(() => {
     // TODO: Stop using timeout here and find a more reliable solution
@@ -351,10 +223,10 @@ const RenderedPreview = (props: Props) => {
   }, [template.id]);
 
   useEffect(() => {
-    if (isBackgroundReady && isTournamentReady && isPlayerReady) {
+    if (isSceneReady) {
       captureImage();
     }
-  }, [isBackgroundReady, isTournamentReady, isPlayerReady, captureImage]);
+  }, [isSceneReady, captureImage]);
 
   useEffect(() => {
     return () => {
@@ -375,9 +247,17 @@ const RenderedPreview = (props: Props) => {
             listening={false}
             pixelRatio={1}
           >
-            <Layer listening={false}>{backgroundElements}</Layer>
-            <Layer listening={false}>{playerElements}</Layer>
-            <Layer listening={false}>{tournamentElements}</Layer>
+            <RenderProfileContext value={OFFSCREEN_PROFILE}>
+              <Layer listening={false}>
+                <StaticScene
+                  design={template.design}
+                  players={samplePlayers}
+                  tournament={sampleTournament}
+                  fontFamily={template.font}
+                  onReady={handleSceneReady}
+                />
+              </Layer>
+            </RenderProfileContext>
           </Stage>
         </div>
       )}

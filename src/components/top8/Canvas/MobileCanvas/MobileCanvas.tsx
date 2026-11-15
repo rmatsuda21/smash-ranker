@@ -1,23 +1,18 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Stage } from "react-konva";
+import { Layer, Stage } from "react-konva";
 import { Stage as KonvaStage } from "konva/lib/Stage";
 import cn from "classnames";
 
 import { useCanvasStore } from "@/store/canvasStore";
-import { useFontStore } from "@/store/fontStore";
 import { usePlayerStore } from "@/store/playerStore";
 import { BracketLoader } from "@/components/shared/BracketLoader/BracketLoader";
 import { useEffectiveCanvasSize } from "@/hooks/top8/useEffectiveCanvasSize";
-import { loadFamily } from "@/utils/fonts/fontLoader";
-import { collectDesignFontWeights } from "@/utils/fonts/designWeights";
+import { useFontSwap } from "@/hooks/top8/useFontSwap";
+import { useStageBackingRatio } from "@/hooks/top8/useStageBackingRatio";
+import { useTournamentStore } from "@/store/tournamentStore";
+import { StaticScene } from "@/components/top8/Canvas/scene/StaticScene";
 import { RenderProfileContext } from "@/components/top8/Canvas/RenderProfileContext";
 import { MOBILE_PROFILE } from "@/utils/top8/renderProfile";
-import { MobileGraphicLayer } from "@/components/top8/Canvas/MobileCanvas/MobileGraphicLayer";
-import {
-  applyBackingRatio,
-  computeBackingRatio,
-  setGlobalBackingRatio,
-} from "@/utils/top8/mobileBackingRatio";
 
 import styles from "./MobileCanvas.module.scss";
 
@@ -27,7 +22,6 @@ type Props = {
 
 export const MobileCanvas = ({ className }: Props) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const stageRef = useRef<KonvaStage | null>(null);
   // null until the container has been measured. The Stage is not mounted
   // before then, so its canvases are created at the right backing ratio
   // instead of Konva's default (full devicePixelRatio at design size).
@@ -35,48 +29,18 @@ export const MobileCanvas = ({ className }: Props) => {
 
   const canvasSize = useEffectiveCanvasSize();
   const canvasDispatch = useCanvasStore((state) => state.dispatch);
+  const design = useCanvasStore((state) => state.design);
+  const players = usePlayerStore((state) => state.players);
+  const tournament = useTournamentStore((state) => state.info);
 
-  const selectedFont = useFontStore((state) => state.selectedFont);
-  const displayedFont = useFontStore((state) => state.displayedFont);
-  const fontDispatch = useFontStore((state) => state.dispatch);
-  const catalogFetching = useFontStore((state) => state.fetching);
+  const { selectedFont, displayedFont, isFontLoaded, isFontSwapping } =
+    useFontSwap();
 
-  // Loader is gated on the tournament-fetch lifecycle, not on per-Konva-node
-  // ready callbacks. The shared PlayerLayer/MobileGraphicLayer ready counter
-  // checks `playersReadyCount === playerStore.players.length` (32 sample
-  // players by default), but only `design.players.length` (8 in most
-  // templates) Player components actually mount — so the counter never
-  // reaches the threshold and `isPlayerReady` would never flip true.
+  // The loader follows the tournament fetch rather than per-image ready
+  // callbacks: the graphic is usable as soon as it paints, and images fill in
+  // as they decode.
   const isFetching = usePlayerStore((state) => state.fetching);
-  const isFontLoaded = displayedFont !== "";
-  const isFontSwapping = isFontLoaded && selectedFont !== displayedFont;
   const showLoader = isFetching || !isFontLoaded;
-
-  useEffect(() => {
-    if (!selectedFont) return;
-    if (selectedFont === displayedFont) return;
-    let cancelled = false;
-    const finish = () => {
-      if (cancelled) return;
-      fontDispatch({ type: "SET_DISPLAYED_FONT", payload: selectedFont });
-    };
-    // Only the weights the current design draws with — not every weight
-    // the family ships.
-    const weights = collectDesignFontWeights(useCanvasStore.getState().design);
-    loadFamily(selectedFont, weights).then(finish).catch(finish);
-    return () => {
-      cancelled = true;
-    };
-  }, [selectedFont, displayedFont, catalogFetching, fontDispatch]);
-
-  // Konva's pixel ratio is a global; put it back when the mobile canvas
-  // unmounts so other Konva surfaces (e.g. /thumbnail) get the default.
-  useEffect(() => {
-    const initial = setGlobalBackingRatio(window.devicePixelRatio || 1);
-    return () => {
-      setGlobalBackingRatio(initial);
-    };
-  }, []);
 
   // Fit canvas width to container; mirrors the mobile branch of the desktop
   // Canvas's fit-to-window logic without the slider/padding controls.
@@ -89,11 +53,7 @@ export const MobileCanvas = ({ className }: Props) => {
       if (!wrapperRef.current) return;
       const availableWidth = wrapperRef.current.clientWidth;
       if (availableWidth <= 0) return;
-      const scale = availableWidth / canvasSize.width;
-      const ratio = computeBackingRatio(scale);
-      setGlobalBackingRatio(ratio);
-      if (stageRef.current) applyBackingRatio(stageRef.current, ratio);
-      setDisplayScale(scale);
+      setDisplayScale(availableWidth / canvasSize.width);
     };
 
     resize();
@@ -103,18 +63,15 @@ export const MobileCanvas = ({ className }: Props) => {
     return () => observer?.disconnect();
   }, [canvasSize.width]);
 
-  const displayScaleRef = useRef(1);
-  if (displayScale !== null) displayScaleRef.current = displayScale;
-
+  const bindStageBackingRatio = useStageBackingRatio(displayScale, {
+    shrinkHitCanvases: true,
+  });
   const setStageRef = useCallback(
     (stage: KonvaStage | null) => {
-      stageRef.current = stage;
-      if (stage) {
-        applyBackingRatio(stage, computeBackingRatio(displayScaleRef.current));
-      }
+      bindStageBackingRatio(stage);
       canvasDispatch({ type: "SET_STAGE_REF", payload: stage });
     },
-    [canvasDispatch],
+    [canvasDispatch, bindStageBackingRatio],
   );
 
   const canvasReady = Boolean(canvasSize?.width && canvasSize?.height);
@@ -163,7 +120,17 @@ export const MobileCanvas = ({ className }: Props) => {
                     react-konva v19 propagates context but we provide
                     explicitly so the boundary is unambiguous. */}
                 <RenderProfileContext value={MOBILE_PROFILE}>
-                  <MobileGraphicLayer />
+                  {/* One layer for everything: each Konva layer owns a
+                      stage-sized canvas, and a read-only stage gains nothing
+                      from separate redraw regions. */}
+                  <Layer listening={false}>
+                    <StaticScene
+                      design={design}
+                      players={players}
+                      tournament={tournament}
+                      fontFamily={displayedFont}
+                    />
+                  </Layer>
                 </RenderProfileContext>
               </Stage>
             )}

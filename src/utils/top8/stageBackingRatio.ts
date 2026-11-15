@@ -8,12 +8,12 @@ const MIN_BACKING_RATIO = 0.25;
 /** Round up to this step so sub-pixel layout jitter doesn't reallocate. */
 const BACKING_RATIO_STEP = 0.05;
 
-/** The mobile stage never hit-tests (`listening={false}`), but Konva still
+/** A read-only stage never hit-tests (`listening={false}`), but Konva still
  *  allocates a stage-sized hit canvas per layer. Shrink it to a token size. */
 const HIT_CANVAS_RATIO = 0.05;
 
 /**
- * Backing-store ratio for the on-screen mobile stage.
+ * Backing-store ratio for an on-screen stage.
  *
  * The stage is laid out at design size (e.g. 1920×1080) and CSS-scaled down
  * to the container, so the canvas only needs `displayScale × devicePixelRatio`
@@ -45,17 +45,29 @@ export const shrinkHitCanvas = (layer: Layer): void => {
   }
 };
 
-/** Re-applies the ratio to an already-mounted stage (container resize,
- *  rotation). Exports are unaffected: they render at their own ratio. */
-export const applyBackingRatio = (stage: Stage, ratio: number): void => {
+/**
+ * Re-applies the ratio to an already-mounted stage (container resize, zoom,
+ * rotation). Exports are unaffected: they render at their own ratio.
+ *
+ * Hit canvases are left alone unless `shrinkHitCanvases` is set, which is
+ * only safe for a stage that never hit-tests.
+ */
+export const applyBackingRatio = (
+  stage: Stage,
+  ratio: number,
+  { shrinkHitCanvases = false }: { shrinkHitCanvases?: boolean } = {},
+): void => {
   if (stage.bufferCanvas.getPixelRatio() !== ratio) {
     stage.bufferCanvas.setPixelRatio(ratio);
   }
-  if (stage.bufferHitCanvas.getPixelRatio() !== HIT_CANVAS_RATIO) {
+  if (
+    shrinkHitCanvases &&
+    stage.bufferHitCanvas.getPixelRatio() !== HIT_CANVAS_RATIO
+  ) {
     stage.bufferHitCanvas.setPixelRatio(HIT_CANVAS_RATIO);
   }
   for (const layer of stage.getLayers()) {
-    shrinkHitCanvas(layer);
+    if (shrinkHitCanvases) shrinkHitCanvas(layer);
     const scene = layer.getCanvas();
     if (scene.getPixelRatio() !== ratio) {
       scene.setPixelRatio(ratio);

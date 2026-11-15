@@ -7,6 +7,10 @@ import { PlayerInfo } from "@/types/top8/Player";
 import { useCanvasStore } from "@/store/canvasStore";
 import { usePlayerStore } from "@/store/playerStore";
 import { type Design, PlayerDesign } from "@/types/top8/Design";
+import {
+  useSceneFactoryContext,
+  type SceneDesign,
+} from "@/components/top8/Canvas/scene/useSceneFactoryContext";
 import { createKonvaElements } from "@/utils/top8/elementFactory";
 import { SelectableElement } from "@/components/top8/Canvas/SelectableElement";
 import { useEditorStore } from "@/store/editorStore";
@@ -15,7 +19,7 @@ import { EditorTab } from "@/types/top8/Editor";
 type Props = {
   player: PlayerInfo;
   canvasSize: Design["canvasSize"];
-  design: Pick<Design, "colorPalette" | "textPalette" | "bgAssetId">;
+  design: SceneDesign;
   config: PlayerDesign;
   index: number;
   onDragStart: (e: KonvaEventObject<MouseEvent>) => void;
@@ -110,12 +114,14 @@ const PlayerComponent = ({
   );
 
   const stableOnReady = useMemo(() => () => onReadyRef.current?.(), []);
+  const factoryContext = useSceneFactoryContext();
 
   const konvaElements = useMemo(
     () =>
       createKonvaElements(
         config.elements ?? [],
         {
+          ...factoryContext,
           fontFamily,
           player,
           containerSize,
@@ -123,7 +129,15 @@ const PlayerComponent = ({
         },
         { onAllReady: stableOnReady },
       ),
-    [config.elements, fontFamily, player, containerSize, design, stableOnReady],
+    [
+      config.elements,
+      factoryContext,
+      fontFamily,
+      player,
+      containerSize,
+      design,
+      stableOnReady,
+    ],
   );
 
   return (

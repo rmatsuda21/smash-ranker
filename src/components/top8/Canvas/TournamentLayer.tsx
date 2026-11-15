@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { Group, Layer, Transformer } from "react-konva";
 import { Transformer as KonvaTransformer } from "konva/lib/shapes/Transformer";
 import { Group as KonvaGroup } from "konva/lib/Group";
@@ -6,7 +6,8 @@ import { useShallow } from "zustand/react/shallow";
 
 import { useCanvasStore } from "@/store/canvasStore";
 import { useTournamentStore } from "@/store/tournamentStore";
-import { createKonvaElements } from "@/utils/top8/elementFactory";
+import { TournamentContent } from "@/components/top8/Canvas/scene/TournamentContent";
+import { useSceneDesign } from "@/hooks/top8/useSceneState";
 import { useFontStore } from "@/store/fontStore";
 import { useEditorStore } from "@/store/editorStore";
 import { EditorTab } from "@/types/top8/Editor";
@@ -14,23 +15,11 @@ import { EditorTab } from "@/types/top8/Editor";
 export const TournamentLayer = ({ onReady }: { onReady?: () => void }) => {
   const transformerRef = useRef<KonvaTransformer>(null);
   const groupRef = useRef<KonvaGroup>(null);
-  const onReadyRef = useRef(onReady);
-  onReadyRef.current = onReady;
 
   const displayedFont = useFontStore((state) => state.displayedFont);
   const layout = useCanvasStore((state) => state.design.tournament);
   const canvasSize = useCanvasStore(
     useShallow((state) => state.design.canvasSize),
-  );
-  const colorPalette = useCanvasStore(
-    useShallow((state) => state.design.colorPalette),
-  );
-  const textPalette = useCanvasStore(
-    useShallow((state) => state.design.textPalette),
-  );
-  const bgAssetId = useCanvasStore((state) => state.design.bgAssetId);
-  const bgImageDarkness = useCanvasStore(
-    (state) => state.design.bgImageDarkness,
   );
   const tournament = useTournamentStore((state) => state.info);
   const selectedElementIndex = useTournamentStore(
@@ -45,36 +34,7 @@ export const TournamentLayer = ({ onReady }: { onReady?: () => void }) => {
     });
   }, [dispatch]);
 
-  const design = useMemo(
-    () => ({ colorPalette, textPalette, bgAssetId, bgImageDarkness }),
-    [colorPalette, textPalette, bgAssetId, bgImageDarkness],
-  );
-
-  const stableOnReady = useMemo(() => () => onReadyRef.current?.(), []);
-
-  const konvaElements = useMemo(
-    () =>
-      createKonvaElements(
-        layout?.elements ?? [],
-        {
-          fontFamily: displayedFont,
-          tournament,
-          containerSize: canvasSize,
-          design,
-          onElementSelect: handleElementSelect,
-        },
-        { onAllReady: stableOnReady },
-      ),
-    [
-      layout?.elements,
-      displayedFont,
-      tournament,
-      canvasSize,
-      design,
-      handleElementSelect,
-      stableOnReady,
-    ],
-  );
+  const design = useSceneDesign();
 
   useEffect(() => {
     if (
@@ -94,12 +54,27 @@ export const TournamentLayer = ({ onReady }: { onReady?: () => void }) => {
     } else if (transformerRef.current) {
       transformerRef.current.nodes([]);
     }
-  }, [selectedElementIndex, konvaElements]);
+  }, [
+    selectedElementIndex,
+    // Re-attach whenever the elements may have been rebuilt.
+    layout?.elements,
+    displayedFont,
+    tournament,
+    design,
+  ]);
 
   return (
     <Layer>
       <Group ref={groupRef} width={canvasSize.width} height={canvasSize.height}>
-        {konvaElements}
+        <TournamentContent
+          elements={layout?.elements}
+          canvasSize={canvasSize}
+          design={design}
+          fontFamily={displayedFont}
+          tournament={tournament}
+          onElementSelect={handleElementSelect}
+          onReady={onReady}
+        />
         <Transformer
           name={`transformer-${selectedElementIndex}`}
           ref={transformerRef}
