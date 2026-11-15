@@ -7,7 +7,9 @@
   display: flex;
   gap: var(--alt-gap);
 
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  background-color: var(--bg-input);
 
   &:before {
     content: "";

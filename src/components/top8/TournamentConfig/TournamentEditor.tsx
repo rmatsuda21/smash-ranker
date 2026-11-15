@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import debounce from "lodash/debounce";
 import isEqual from "lodash/isEqual";
-import cn from "classnames";
 import { FaArrowUpRightFromSquare, FaLink } from "react-icons/fa6";
 import { msg } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
@@ -10,6 +9,13 @@ import { useLingui } from "@lingui/react";
 import { useTournamentStore } from "@/store/tournamentStore";
 import { TournamentInfo } from "@/types/top8/Tournament";
 import { AssetSelector } from "@/components/top8/AssetSelector/AssetSelector";
+import {
+  EditorCard,
+  EditorPanel,
+  Field,
+  FieldRow,
+  FieldStack,
+} from "@/components/top8/EditorForm/EditorForm";
 
 import styles from "./TournamentEditor.module.scss";
 
@@ -28,24 +34,6 @@ const parseDateForInput = (date: string): string => {
   const [year, month, day] = date.split("-").map(Number);
   return new Date(year, month - 1, day).toISOString();
 };
-
-type FieldProps = React.ComponentProps<"input"> & {
-  label: string;
-  icon?: React.ReactNode;
-  trailing?: React.ReactNode;
-};
-
-// Labelled input with optional leading icon and trailing action.
-const Field = ({ label, icon, trailing, id, ...props }: FieldProps) => (
-  <div className={styles.field}>
-    <label htmlFor={id}>{label}</label>
-    <div className={styles.control}>
-      {icon && <span className={styles.icon}>{icon}</span>}
-      <input id={id} {...props} />
-      {trailing}
-    </div>
-  </div>
-);
 
 type Props = {
   className?: string;
@@ -105,8 +93,8 @@ export const TournamentEditor = ({ className }: Props) => {
   const canOpenUrl = /^https?:\/\//i.test(url);
 
   return (
-    <div className={cn(styles.wrapper, className)}>
-      <section className={cn(styles.card, styles.identity)}>
+    <EditorPanel className={className}>
+      <EditorCard horizontal className={styles.identity}>
         <AssetSelector
           variant="tile"
           aria-label={_(msg`Icon`)}
@@ -122,9 +110,9 @@ export const TournamentEditor = ({ className }: Props) => {
             } as unknown as React.ChangeEvent<HTMLInputElement>)
           }
         />
-        <div className={styles.names}>
-          <input
-            className={cn(styles.nameInput, styles.tournamentName)}
+        <FieldStack>
+          <Field
+            strong
             name="tournamentName"
             id="tournamentName"
             type="text"
@@ -134,8 +122,7 @@ export const TournamentEditor = ({ className }: Props) => {
             value={tempTournament?.tournamentName}
             onChange={handleChange}
           />
-          <input
-            className={styles.nameInput}
+          <Field
             name="eventName"
             id="eventName"
             type="text"
@@ -145,14 +132,11 @@ export const TournamentEditor = ({ className }: Props) => {
             value={tempTournament?.eventName}
             onChange={handleChange}
           />
-        </div>
-      </section>
+        </FieldStack>
+      </EditorCard>
 
-      <section className={styles.card}>
-        <h4 className={styles.cardTitle}>
-          <Trans>Details</Trans>
-        </h4>
-        <div className={styles.row}>
+      <EditorCard title={<Trans>Details</Trans>}>
+        <FieldRow>
           <Field
             label={_(msg`Date`)}
             name="date"
@@ -182,7 +166,7 @@ export const TournamentEditor = ({ className }: Props) => {
               } as unknown as React.ChangeEvent<HTMLInputElement>)
             }
           />
-        </div>
+        </FieldRow>
         <Field
           label={_(msg`Tournament URL`)}
           name="url"
@@ -195,7 +179,7 @@ export const TournamentEditor = ({ className }: Props) => {
           placeholder="https://"
           value={url}
           onChange={handleChange}
-          icon={<FaLink />}
+          prefix={<FaLink />}
           trailing={
             canOpenUrl && (
               <a
@@ -211,12 +195,9 @@ export const TournamentEditor = ({ className }: Props) => {
             )
           }
         />
-      </section>
+      </EditorCard>
 
-      <section className={styles.card}>
-        <h4 className={styles.cardTitle}>
-          <Trans>Location</Trans>
-        </h4>
+      <EditorCard title={<Trans>Location</Trans>}>
         <Field
           label={_(msg`City`)}
           name="city"
@@ -225,7 +206,7 @@ export const TournamentEditor = ({ className }: Props) => {
           value={tempTournament?.location.city ?? ""}
           onChange={handleLocationChange}
         />
-        <div className={styles.row}>
+        <FieldRow>
           <Field
             label={_(msg`State`)}
             name="state"
@@ -242,8 +223,8 @@ export const TournamentEditor = ({ className }: Props) => {
             value={tempTournament?.location.country ?? ""}
             onChange={handleLocationChange}
           />
-        </div>
-      </section>
-    </div>
+        </FieldRow>
+      </EditorCard>
+    </EditorPanel>
   );
 };

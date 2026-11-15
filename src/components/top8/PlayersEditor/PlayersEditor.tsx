@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { HiOutlineUserRemove } from "react-icons/hi";
-import debounce from "lodash/debounce";
+import { FaChevronDown, FaUser } from "react-icons/fa6";
 import cn from "classnames";
+import debounce from "lodash/debounce";
 import { msg } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
@@ -9,11 +10,19 @@ import { useLingui } from "@lingui/react";
 import { usePlayerStore } from "@/store/playerStore";
 import { CharacerData, PlayerInfo } from "@/types/top8/Player";
 import { CharacterEditor } from "@/components/top8/CharacterEditor/CharacterEditor";
-import { Input } from "@/components/shared/Input/Input";
 import { Button } from "@/components/shared/Button/Button";
 import { PlayerSelector } from "@/components/top8/PlayersEditor/PlayerSelector";
 import { AssetSelector } from "@/components/top8/AssetSelector/AssetSelector";
 import { CountryDropDown } from "@/components/top8/PlayersEditor/CountryDropDown";
+import {
+  EditorCard,
+  EditorPanel,
+  Field,
+  FieldGroup,
+  FieldRow,
+  FieldStack,
+} from "@/components/top8/EditorForm/EditorForm";
+import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
 import { createBlankPlayer } from "@/utils/top8/samplePlayers";
 import { useConfirmation } from "@/hooks/useConfirmation";
 
@@ -39,6 +48,9 @@ export const PlayersEditor = ({ className }: Props) => {
     () => players[selectedPlayerIndex],
     [players, selectedPlayerIndex],
   );
+
+  // null = follow the player: open only when a custom image is already set.
+  const [isCustomOpen, setIsCustomOpen] = useState<boolean | null>(null);
 
   const editingPlayerIndexRef = useRef<number>(selectedPlayerIndex);
   const isLoadingPlayerRef = useRef<boolean>(false);
@@ -175,106 +187,164 @@ export const PlayersEditor = ({ className }: Props) => {
     description: _(msg`This will reset all player data for this slot.`),
   });
 
+  const disabled = !selectedPlayer;
+  const mainCharacter = tempPlayer?.characters[0];
+  const hasCustomImages = Boolean(
+    tempPlayer?.avatarImgSrc || tempPlayer?.customFlagSrc,
+  );
+  // Rarely used, so tucked away unless this player already has one set.
+  const showCustomImages = isCustomOpen ?? hasCustomImages;
+
   return (
-    <div className={cn(styles.wrapper, className)}>
-      <div className={styles.playerSelector}>
+    <EditorPanel className={className}>
+      <div className={styles.playerSelector} role="group">
         <PlayerSelector />
       </div>
-      <Input
-        id="gamerTag"
-        name="gamerTag"
-        type="text"
-        label={_(msg`Gamer Tag`)}
-        value={tempPlayer?.gamerTag ?? ""}
-        onChange={handleChange}
-        placeholder={_(msg`Gamer Tag`)}
-        disabled={!selectedPlayer}
-      />
-      <div className={styles.row}>
-        <Input
-          id="prefix"
-          name="prefix"
-          type="text"
-          label={_(msg`Prefix`)}
-          value={tempPlayer?.prefix ?? ""}
-          onChange={handleChange}
-          placeholder={_(msg`Prefix`)}
-          disabled={!selectedPlayer}
-        />
-        <Input
-          className={styles.placementField}
-          id="placement"
-          name="placement"
-          type="number"
-          label={_(msg`Placement`)}
-          value={tempPlayer?.placement ?? ""}
-          onChange={handlePlacementChange}
-          placeholder="#"
-          disabled={!selectedPlayer}
-        />
-      </div>
-      <div className={cn({ [styles.disabled]: !selectedPlayer })}>
-        <p className={styles.label}>
-          <Trans>Characters</Trans>
-        </p>
+
+      <EditorCard disabled={disabled}>
+        <div className={styles.nameplate}>
+          <div className={styles.portrait} aria-hidden="true">
+            {mainCharacter ? (
+              <img
+                className={styles.portraitImg}
+                src={getCharImgUrl({
+                  characterId: mainCharacter.id,
+                  alt: mainCharacter.alt,
+                  type: "main",
+                })}
+                alt=""
+                draggable={false}
+              />
+            ) : (
+              <FaUser size={24} />
+            )}
+            {tempPlayer?.country && (
+              <img
+                className={styles.portraitFlag}
+                src={`/assets/flags/${tempPlayer.country.toLowerCase()}.svg`}
+                alt=""
+              />
+            )}
+          </div>
+          <FieldStack>
+            <Field
+              strong
+              id="gamerTag"
+              name="gamerTag"
+              type="text"
+              autoComplete="off"
+              aria-label={_(msg`Gamer Tag`)}
+              placeholder={_(msg`Gamer Tag`)}
+              value={tempPlayer?.gamerTag ?? ""}
+              onChange={handleChange}
+              disabled={disabled}
+            />
+            <FieldRow className={styles.prefixRow}>
+              <Field
+                id="prefix"
+                name="prefix"
+                type="text"
+                autoComplete="off"
+                aria-label={_(msg`Prefix`)}
+                placeholder={_(msg`Prefix`)}
+                value={tempPlayer?.prefix ?? ""}
+                onChange={handleChange}
+                disabled={disabled}
+              />
+              <Field
+                wrapperClassName={styles.placementField}
+                id="placement"
+                name="placement"
+                type="number"
+                min={0}
+                inputMode="numeric"
+                aria-label={_(msg`Placement`)}
+                title={_(msg`Placement`)}
+                prefix="#"
+                value={tempPlayer?.placement ?? ""}
+                onChange={handlePlacementChange}
+                disabled={disabled}
+              />
+            </FieldRow>
+          </FieldStack>
+        </div>
         <CharacterEditor
           characters={tempPlayer?.characters ?? []}
           onCharactersChange={handleCharactersChange}
-          disabled={!selectedPlayer}
+          disabled={disabled}
         />
-      </div>
-      <Input
-        id="twitter"
-        name="twitter"
-        type="text"
-        label={_(msg`X Handle`)}
-        value={tempPlayer?.twitter ?? ""}
-        onChange={handleChange}
-        placeholder={_(msg`Twitter`)}
-        disabled={!selectedPlayer}
-      />
-      <div className={cn({ [styles.disabled]: !selectedPlayer })}>
-        <p className={styles.label}>
-          <Trans>Country</Trans>
-        </p>
-        <CountryDropDown
-          selectedCountry={tempPlayer?.country ?? ""}
-          onCountryChange={handleCountryChange}
-          disabled={!selectedPlayer}
+      </EditorCard>
+
+      <EditorCard disabled={disabled}>
+        <Field
+          id="twitter"
+          name="twitter"
+          type="text"
+          autoComplete="off"
+          autoCapitalize="none"
+          spellCheck={false}
+          label={_(msg`X Handle`)}
+          prefix="@"
+          value={tempPlayer?.twitter ?? ""}
+          onChange={handleChange}
+          disabled={disabled}
         />
-      </div>
-      <div className={styles.assetRow}>
-        <div className={cn({ [styles.disabled]: !selectedPlayer })}>
-          <p className={styles.label}>
-            <Trans>Custom Flag</Trans>
-          </p>
-          <AssetSelector
-            selectedSrc={tempPlayer?.customFlagSrc}
-            onSelect={handleCustomFlagSelect}
-            onClear={handleCustomFlagClear}
-            disabled={!selectedPlayer}
+        <FieldGroup label={<Trans>Country</Trans>}>
+          <CountryDropDown
+            selectedCountry={tempPlayer?.country ?? ""}
+            onCountryChange={handleCountryChange}
+            disabled={disabled}
           />
+        </FieldGroup>
+
+        <div className={styles.custom}>
+          <button
+            type="button"
+            className={styles.customToggle}
+            onClick={() => setIsCustomOpen(!showCustomImages)}
+            aria-expanded={showCustomImages}
+            aria-controls="player-custom-images"
+          >
+            <Trans>Custom images</Trans>
+            <FaChevronDown
+              className={cn(styles.chevron, {
+                [styles.open]: showCustomImages,
+              })}
+              size={10}
+            />
+          </button>
+          {showCustomImages && (
+            <FieldRow id="player-custom-images">
+              <FieldGroup label={<Trans>Avatar</Trans>}>
+                <AssetSelector
+                  selectedSrc={tempPlayer?.avatarImgSrc}
+                  onSelect={handleAssetSelect}
+                  onClear={handleClear}
+                  disabled={disabled}
+                />
+              </FieldGroup>
+              <FieldGroup label={<Trans>Custom Flag</Trans>}>
+                <AssetSelector
+                  selectedSrc={tempPlayer?.customFlagSrc}
+                  onSelect={handleCustomFlagSelect}
+                  onClear={handleCustomFlagClear}
+                  disabled={disabled}
+                />
+              </FieldGroup>
+            </FieldRow>
+          )}
         </div>
-        <div className={cn({ [styles.disabled]: !selectedPlayer })}>
-          <p className={styles.label}>
-            <Trans>Avatar</Trans>
-          </p>
-          <AssetSelector
-            selectedSrc={tempPlayer?.avatarImgSrc}
-            onSelect={handleAssetSelect}
-            onClear={handleClear}
-            disabled={!selectedPlayer}
-          />
-        </div>
-      </div>
+      </EditorCard>
+
       <Button
-        variant="outline"
+        variant="subtle"
+        className={styles.clearPlayer}
         onClick={confirmClearPlayer}
-        disabled={!selectedPlayer}
+        disabled={disabled}
       >
         <HiOutlineUserRemove /> <Trans>Clear Player</Trans>
       </Button>
       {clearPlayerConfirmation}
-    </div>
+    </EditorPanel>
   );
 };
