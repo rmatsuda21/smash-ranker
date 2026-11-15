@@ -1,12 +1,13 @@
 import { useState, useCallback, useRef } from "react";
-import Cookies from "js-cookie";
 
 import { ConfirmationModal } from "@/components/shared/ConfirmationModal/ConfirmationModal";
+import { getPref } from "@/utils/prefs";
 
 type ConfirmationConfig = {
   title: string;
   description: string;
-  cookieName?: string;
+  /** Storage key for "Don't show again". Omit to always ask. */
+  rememberKey?: string;
 };
 
 type UseConfirmationReturn<T extends unknown[]> = {
@@ -32,8 +33,8 @@ export function useConfirmation<T extends unknown[]>(
   configRef.current = config;
 
   const confirm = useCallback((...args: T) => {
-    if (configRef.current.cookieName) {
-      if (Cookies.get(configRef.current.cookieName) === "true") {
+    if (configRef.current.rememberKey) {
+      if (getPref(configRef.current.rememberKey) === "true") {
         onConfirmRef.current(...args);
         return;
       }
@@ -64,7 +65,7 @@ export function useConfirmation<T extends unknown[]>(
       description={config.description}
       onConfirm={handleConfirm}
       onCancel={handleCancel}
-      cookieName={config.cookieName}
+      rememberKey={config.rememberKey}
     />
   );
 

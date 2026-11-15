@@ -3,7 +3,6 @@ import { createRoot } from "react-dom/client";
 import { inject } from "@vercel/analytics";
 import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
-import Cookies from "js-cookie";
 
 import "@/theme.css";
 import "@/reset.css";
@@ -11,7 +10,8 @@ import "@/index.css";
 
 import { registerServiceWorker } from "@/utils/waitForServiceWorker";
 import { loadCatalog } from "@/i18n";
-import { COOKIES } from "@/consts/cookies";
+import { PREF_KEYS } from "@/consts/prefKeys";
+import { getPref } from "@/utils/prefs";
 import { initSentry, reactErrorHandler } from "@/utils/observability/sentry";
 import { initAnalytics } from "@/utils/observability/analytics";
 import { logError } from "@/utils/observability/log";
@@ -57,16 +57,16 @@ initAnalytics();
     const defaultLanguage = supportedLanguages.includes(browserLanguage)
       ? browserLanguage
       : "en";
-    const savedLanguage = Cookies.get(COOKIES.LANGUAGE) || defaultLanguage;
+    const savedLanguage = getPref(PREF_KEYS.LANGUAGE) || defaultLanguage;
     await loadCatalog(savedLanguage);
 
-    const savedTheme = Cookies.get(COOKIES.THEME) || "dark";
+    const savedTheme = getPref(PREF_KEYS.THEME) || "dark";
     document.documentElement.setAttribute("data-theme", savedTheme);
 
-    const savedAccent = Cookies.get(COOKIES.ACCENT_COLOR) || "pink";
+    const savedAccent = getPref(PREF_KEYS.ACCENT_COLOR) || "pink";
     document.documentElement.setAttribute("data-accent", savedAccent);
     if (savedAccent === "custom") {
-      const customHex = Cookies.get(COOKIES.CUSTOM_ACCENT_COLOR) || "#ff6600";
+      const customHex = getPref(PREF_KEYS.CUSTOM_ACCENT_COLOR) || "#ff6600";
       document.documentElement.style.setProperty("--accent-base", customHex);
     }
 

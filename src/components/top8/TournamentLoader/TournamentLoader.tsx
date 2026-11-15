@@ -12,7 +12,7 @@ import { useFetchTonamel } from "@/hooks/top8/useFetchTonamel";
 import { useCanvasStore } from "@/store/canvasStore";
 import { usePlayerStore } from "@/store/playerStore";
 import { useTournamentStore } from "@/store/tournamentStore";
-import { COOKIES } from "@/consts/cookies";
+import { PREF_KEYS } from "@/consts/prefKeys";
 import { useConfirmation } from "@/hooks/useConfirmation";
 import { detectPlatformAndSlug } from "@/consts/platforms";
 import { logEvent } from "@/utils/observability/log";
@@ -75,7 +75,7 @@ export const TournamentLoader = ({ className }: Props) => {
       description: _(
         msg`Any current player and tournament data will be overwritten.`,
       ),
-      cookieName: COOKIES.NEEDS_TOURNAMENT_LOAD_CONFIRMATION,
+      rememberKey: PREF_KEYS.NEEDS_TOURNAMENT_LOAD_CONFIRMATION,
     });
 
   const urlLabel = (

@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { FaDroplet, FaCheck } from "react-icons/fa6";
-import Cookies from "js-cookie";
 import cn from "classnames";
 import { msg } from "@lingui/core/macro";
 import { MessageDescriptor } from "@lingui/core";
 import { useLingui } from "@lingui/react";
 
-import { COOKIES } from "@/consts/cookies";
+import { PREF_KEYS } from "@/consts/prefKeys";
+import { getPref, setPref } from "@/utils/prefs";
 import { useTooltip } from "@/components/shared/Tooltip/useTooltip";
 import { TooltipButton } from "@/components/shared/Tooltip/TooltipButton";
 import { ColorInput } from "@/components/shared/ColorInput/ColorInput";
@@ -32,10 +32,10 @@ const ACCENT_COLORS: {
 export const AccentColorPicker = () => {
   const { _ } = useLingui();
   const [currentAccent, setCurrentAccent] = useState<AccentColor>(
-    () => (Cookies.get(COOKIES.ACCENT_COLOR) as AccentColor) || "pink",
+    () => (getPref(PREF_KEYS.ACCENT_COLOR) as AccentColor) || "pink",
   );
   const [customHex, setCustomHex] = useState(
-    () => Cookies.get(COOKIES.CUSTOM_ACCENT_COLOR) || "#ff6600",
+    () => getPref(PREF_KEYS.CUSTOM_ACCENT_COLOR) || "#ff6600",
   );
   const { triggerProps: customTooltipProps, tooltip: customTooltip } =
     useTooltip({ content: _(msg`Custom`), describe: false });
@@ -51,13 +51,13 @@ export const AccentColorPicker = () => {
 
   const handleAccentChange = (accent: AccentColor) => {
     setCurrentAccent(accent);
-    Cookies.set(COOKIES.ACCENT_COLOR, accent, { expires: 365 });
+    setPref(PREF_KEYS.ACCENT_COLOR, accent);
     document.documentElement.setAttribute("data-accent", accent);
   };
 
   const handleCustomColorChange = (hex: string) => {
     setCustomHex(hex);
-    Cookies.set(COOKIES.CUSTOM_ACCENT_COLOR, hex, { expires: 365 });
+    setPref(PREF_KEYS.CUSTOM_ACCENT_COLOR, hex);
     if (currentAccent !== "custom") {
       handleAccentChange("custom");
     }

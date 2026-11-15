@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { FaGlobe, FaCheck } from "react-icons/fa6";
-import Cookies from "js-cookie";
 import cn from "classnames";
 import { msg } from "@lingui/core/macro";
 import { MessageDescriptor } from "@lingui/core";
 import { useLingui } from "@lingui/react";
 
 import { loadCatalog } from "@/i18n";
-import { COOKIES } from "@/consts/cookies";
+import { PREF_KEYS } from "@/consts/prefKeys";
+import { getPref, setPref } from "@/utils/prefs";
 
 import styles from "./SettingsPanel.module.scss";
 
@@ -25,12 +25,12 @@ const LANGUAGES: {
 export const LanguagePicker = () => {
   const { _ } = useLingui();
   const [currentLanguage, setCurrentLanguage] = useState<Language>(
-    () => (Cookies.get(COOKIES.LANGUAGE) as Language) || "en",
+    () => (getPref(PREF_KEYS.LANGUAGE) as Language) || "en",
   );
 
   const handleLanguageChange = async (language: Language) => {
     setCurrentLanguage(language);
-    Cookies.set(COOKIES.LANGUAGE, language, { expires: 365 });
+    setPref(PREF_KEYS.LANGUAGE, language);
     await loadCatalog(language);
   };
 

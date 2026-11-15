@@ -1,10 +1,10 @@
 import { useId, useState } from "react";
-import Cookies from "js-cookie";
 import { Trans } from "@lingui/react/macro";
 
 import { Modal } from "@/components/shared/Modal/Modal";
 import { Button } from "@/components/shared/Button/Button";
 import { Checkbox } from "@/components/shared/Checkbox/Checkbox";
+import { setPref } from "@/utils/prefs";
 
 import styles from "./ConfirmationModal.module.scss";
 
@@ -15,7 +15,7 @@ type Props = {
   description: string;
   onConfirm: () => void;
   onCancel: () => void;
-  cookieName?: string;
+  rememberKey?: string;
 };
 
 export const ConfirmationModal = ({
@@ -26,15 +26,15 @@ export const ConfirmationModal = ({
   children,
   onConfirm,
   onCancel,
-  cookieName,
+  rememberKey,
 }: React.PropsWithChildren<Props>) => {
   const [isDoNotShowAgain, setIsDoNotShowAgain] = useState(false);
   const titleId = useId();
 
   const handleConfirm = () => {
     onConfirm();
-    if (cookieName) {
-      Cookies.set(cookieName, isDoNotShowAgain ? "true" : "false");
+    if (rememberKey) {
+      setPref(rememberKey, isDoNotShowAgain ? "true" : "false");
     }
     setIsDoNotShowAgain(false);
   };
@@ -62,8 +62,8 @@ export const ConfirmationModal = ({
         </div>
         {children}
         <div className={styles.buttons}>
-          {cookieName && (
-            <div className={styles.cookieInput}>
+          {rememberKey && (
+            <div className={styles.rememberInput}>
               <Checkbox
                 checked={isDoNotShowAgain}
                 onChange={setIsDoNotShowAgain}

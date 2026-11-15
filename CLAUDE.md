@@ -182,7 +182,7 @@ When `Design.dynamicPlayerHeight` is set, player cards grow taller at render tim
 Tournament data can be loaded from **start.gg**, **Challonge**, or **Tonamel**. Platform is auto-detected from the pasted URL.
 
 - **Platform detection** (`src/consts/platforms.ts`) — `detectPlatformAndSlug()` parses URLs for all three platforms
-- **start.gg** — GraphQL API (`https://api.start.gg/gql/alpha`) via urql. Auth token via `VITE_START_GG_TOKEN` env var (stored in cookies at runtime). GraphQL types auto-generated into `src/gql/` — do not edit manually; run `bun codegen`. Hook: `src/hooks/top8/useFetchResult.ts`
+- **start.gg** — GraphQL API (`https://api.start.gg/gql/alpha`) via urql. Auth token via `VITE_START_GG_TOKEN` env var. GraphQL types auto-generated into `src/gql/` — do not edit manually; run `bun codegen`. Hook: `src/hooks/top8/useFetchResult.ts`
 - **Challonge** — REST API v1 (`https://api.challonge.com/v1`) proxied through a Vercel serverless function (`api/challonge.ts`) to keep the API key server-side. Hook: `src/hooks/top8/useFetchChallonge.ts`. Uses `include_participants=1` to fetch tournament + participants in a single request.
 - **Tonamel** — GraphQL API (`https://tonamel.com/graphql`) proxied through Vercel serverless functions. Uses two endpoints: a management endpoint for placements (competition → tournaments → blocks → podium) and a public endpoint for metadata/participants. Requires CSRF token fetched from `tonamel.com/api/csrf_token`. No API key needed. Hook: `src/hooks/top8/useFetchTonamel.ts`. Tournament images are proxied through `api/tonamel-image.ts` (allowlisted hosts) and stored in IndexedDB to avoid CORS. Tonamel does not provide location data, so `location` is set to `{}`.
 
@@ -192,13 +192,13 @@ The Vite dev server includes dev proxy plugins (`vite.config.ts`) for both Chall
 
 - Locales: `en`, `ja` — catalogs in `src/locales/{locale}.po`
 - After adding new `<Trans>` or `t\`\``strings, run`bun extract`then`bun compile`
-- Language preference stored in cookies; defaults to browser language
+- Language preference stored in localStorage via `src/utils/prefs.ts`; defaults to browser language
 
 ### Styling
 
 - SCSS + CSS Modules throughout
 - Theme system via CSS variables: `data-theme` (dark/light), `data-accent` (accent color)
-- Theme preferences persisted via cookies
+- Theme preferences persisted in localStorage via `src/utils/prefs.ts` (`getPref`/`setPref`)
 
 ### Path Aliases
 

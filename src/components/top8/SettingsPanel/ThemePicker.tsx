@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { FaPalette, FaCheck, FaMoon, FaSun } from "react-icons/fa6";
-import Cookies from "js-cookie";
 import cn from "classnames";
 import { msg } from "@lingui/core/macro";
 import { MessageDescriptor } from "@lingui/core";
 import { useLingui } from "@lingui/react";
 
-import { COOKIES } from "@/consts/cookies";
+import { PREF_KEYS } from "@/consts/prefKeys";
+import { getPref, setPref } from "@/utils/prefs";
 
 import styles from "./SettingsPanel.module.scss";
 
@@ -24,7 +24,7 @@ const THEMES: {
 export const ThemePicker = () => {
   const { _ } = useLingui();
   const [currentTheme, setCurrentTheme] = useState<Theme>(
-    () => (Cookies.get(COOKIES.THEME) as Theme) || "dark",
+    () => (getPref(PREF_KEYS.THEME) as Theme) || "dark",
   );
 
   useEffect(() => {
@@ -33,7 +33,7 @@ export const ThemePicker = () => {
 
   const handleThemeChange = (theme: Theme) => {
     setCurrentTheme(theme);
-    Cookies.set(COOKIES.THEME, theme, { expires: 365 });
+    setPref(PREF_KEYS.THEME, theme);
     document.documentElement.setAttribute("data-theme", theme);
   };
 
