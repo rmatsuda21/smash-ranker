@@ -32,7 +32,8 @@ export const parseSetRecord = (
   };
 };
 
-// `displayScore` arrives as a string like "3 - 1" or "DQ". When start.gg
+// `displayScore` arrives as a string like "3 - 1", "DQ" or, for some
+// disqualifications, a negative score such as "-1 - 0". When start.gg
 // can't render a score (e.g. a forfeited pool set) the field is null and
 // we leave the numeric score 0-0 — `didWin` from `winnerId` still tells
 // us the outcome.
@@ -43,11 +44,14 @@ export const parseDisplayScore = (
   if (/dq/i.test(raw)) return { scoreSelf: 0, scoreOpponent: 0, isDQ: true };
   const match = raw.match(/(-?\d+)\s*-\s*(-?\d+)/);
   if (!match) return { scoreSelf: 0, scoreOpponent: 0, isDQ: false };
-  return {
-    scoreSelf: parseInt(match[1], 10),
-    scoreOpponent: parseInt(match[2], 10),
-    isDQ: false,
-  };
+  const scoreSelf = parseInt(match[1], 10);
+  const scoreOpponent = parseInt(match[2], 10);
+  // start.gg records a disqualified entrant's score as -1. Some sets surface
+  // that number in `displayScore` instead of the "DQ" label.
+  if (scoreSelf < 0 || scoreOpponent < 0) {
+    return { scoreSelf: 0, scoreOpponent: 0, isDQ: true };
+  }
+  return { scoreSelf, scoreOpponent, isDQ: false };
 };
 
 // start.gg returns full country names ("Japan"); the rest of the app

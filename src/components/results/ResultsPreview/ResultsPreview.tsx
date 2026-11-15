@@ -47,6 +47,12 @@ const base64urlEncode = (text: string): string => {
     .replace(/=+$/, "");
 };
 
+const RESULTS_IMAGE_ENDPOINT = "/api/results-image";
+
+// Vercel answers 414 for URLs past roughly 32K characters. Stay well under
+// that for GET; longer payloads are sent as POST.
+const MAX_GET_PAYLOAD_LENGTH = 20_000;
+
 export type ResultsPreviewCache = {
   key: string;
   blob: Blob;
@@ -175,11 +181,8 @@ export const ResultsPreview = ({ cacheRef }: Props) => {
     () => (payload ? JSON.stringify(payload) : ""),
     [payload],
   );
-  const requestUrl = useMemo(
-    () =>
-      payload && cacheKey
-        ? `/api/results-image?d=${base64urlEncode(cacheKey)}`
-        : "",
+  const encodedPayload = useMemo(
+    () => (payload && cacheKey ? base64urlEncode(cacheKey) : ""),
     [payload, cacheKey],
   );
 
@@ -201,7 +204,7 @@ export const ResultsPreview = ({ cacheRef }: Props) => {
   const tournamentUrl = useResultsStore((s) => s.tournamentUrl);
   const videogameId = useResultsStore((s) => s.videogameId);
   useEffect(() => {
-    if (!requestUrl) return;
+    if (!encodedPayload) return;
     if (cacheRef.current?.key === cacheKey) {
       setBlob(cacheRef.current.blob);
       setImageUrl(cacheRef.current.url);
@@ -230,7 +233,17 @@ export const ResultsPreview = ({ cacheRef }: Props) => {
 
     const generate = async () => {
       try {
-        const res = await fetch(requestUrl);
+        // Short payloads go in the URL so the CDN can cache the PNG. A
+        // player with many sets would exceed Vercel's URL limit, so those
+        // are posted instead.
+        const res =
+          encodedPayload.length <= MAX_GET_PAYLOAD_LENGTH
+            ? await fetch(`${RESULTS_IMAGE_ENDPOINT}?d=${encodedPayload}`)
+            : await fetch(RESULTS_IMAGE_ENDPOINT, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ d: encodedPayload }),
+              });
         if (cancelled) return;
         if (!res.ok) {
           setError(true);
@@ -298,7 +311,7 @@ export const ResultsPreview = ({ cacheRef }: Props) => {
     };
   }, [
     cacheKey,
-    requestUrl,
+    encodedPayload,
     cacheRef,
     setCount,
     tournamentUrl,

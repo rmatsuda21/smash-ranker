@@ -5,7 +5,7 @@ export function resultsImageDevProxy(): Plugin {
     name: "results-image-dev-proxy",
     configureServer(server) {
       server.middlewares.use("/api/results-image", async (req, res) => {
-        if (req.method !== "GET") {
+        if (req.method !== "GET" && req.method !== "POST") {
           res.statusCode = 405;
           res.end(JSON.stringify({ error: "Method not allowed" }));
           return;
@@ -14,12 +14,25 @@ export function resultsImageDevProxy(): Plugin {
         const url = new URL(req.url ?? "/", "http://localhost");
         const d = url.searchParams.get("d") ?? "";
 
+        // Long payloads arrive as POST `{ d }` (see api/results-image.ts).
+        let body: unknown = undefined;
+        if (req.method === "POST") {
+          const chunks: Buffer[] = [];
+          for await (const chunk of req) chunks.push(chunk as Buffer);
+          try {
+            body = JSON.parse(Buffer.concat(chunks).toString("utf8"));
+          } catch {
+            body = undefined;
+          }
+        }
+
         try {
           const handler = (await import("../api/results-image")).default;
 
           const mockReq = {
-            method: "GET",
+            method: req.method,
             query: { d },
+            body,
             headers: req.headers,
           } as any;
           let statusCode = 200;

@@ -14,8 +14,11 @@ import { parseBase64UrlPayload, parseImageUrl } from "./_lib/validate.js";
 import { addBreadcrumb, withLogging } from "./_lib/withLogging.js";
 import { getSatoriFonts } from "./_lib/fonts.js";
 
-const MAX_PAYLOAD_BYTES = 32 * 1024;
-const MAX_SETS = 32;
+// Sized for MAX_SETS sets with long names, rankings and character lists.
+const MAX_PAYLOAD_BYTES = 96 * 1024;
+// Matches SETS_PER_PAGE in src/hooks/results/useFetchPlayerResults.ts: the
+// client never sends more sets than one page of the start.gg query.
+const MAX_SETS = 64;
 const MAX_FIELD_LENGTH = 256;
 const MAX_CHARACTERS_PER_SIDE = 4;
 
@@ -2379,13 +2382,21 @@ function decodePayload(encoded: unknown): RequestBody {
 // --- Handler ---
 
 const handler = async (req: VercelRequest, res: VercelResponse) => {
-  if (req.method !== "GET") {
+  if (req.method !== "GET" && req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
+  // GET carries the payload in the URL so responses are CDN-cacheable. Vercel
+  // rejects URLs past roughly 32K characters (414 URI_TOO_LONG), so the client
+  // sends long payloads (players with many sets) as POST `{ d }` instead.
+  const encoded =
+    req.method === "POST"
+      ? (req.body as { d?: unknown } | null | undefined)?.d
+      : req.query.d;
+
   let body: RequestBody;
   try {
-    body = decodePayload(req.query.d);
+    body = decodePayload(encoded);
   } catch (err) {
     if (respondClientError(res, err)) return;
     throw err;
