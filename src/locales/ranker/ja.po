@@ -40,11 +40,11 @@ msgstr "{0}が容量オーバーです！（最大2MB）"
 msgid "{0} selected"
 msgstr "{0}件選択中"
 
-#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:46
+#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:68
 msgid "{playerCount} Players (Dark)"
 msgstr "{playerCount}人用（ダーク）"
 
-#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:47
+#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:69
 msgid "{playerCount} Players (Light)"
 msgstr "{playerCount}人用（ライト）"
 
@@ -164,7 +164,8 @@ msgid "Calling it for the record..."
 msgstr ""
 
 #: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:76
-#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:154
+#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:167
+#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:168
 msgid "Cancel"
 msgstr "キャンセル"
 
@@ -299,10 +300,10 @@ msgstr "国"
 
 #: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:120
 #: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:157
-msgid "Create"
-msgstr "作成"
+#~ msgid "Create"
+#~ msgstr "作成"
 
-#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:74
+#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:91
 msgid "Create a minimal template with a specific player count."
 msgstr "指定の数の選手でミニマルテンプレを作成"
 
@@ -310,7 +311,7 @@ msgstr "指定の数の選手でミニマルテンプレを作成"
 #~ msgid "Create New Template"
 #~ msgstr "新規テンプレ作成"
 
-#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:114
+#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:170
 msgid "Create Template"
 msgstr "テンプレートを作成"
 
@@ -344,12 +345,12 @@ msgstr "カスタム画像"
 msgid "Custom Minimal"
 msgstr "作成"
 
-#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:71
+#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:88
 msgid "Custom Minimal Template"
 msgstr "自作ミニマルテンプレート"
 
 #: src/components/top8/SettingsPanel/ThemePicker.tsx:20
-#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:39
+#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:55
 msgid "Dark"
 msgstr "ダーク"
 
@@ -492,6 +493,10 @@ msgstr "英語"
 #: src/components/top8/TextEditor/TextEditor.tsx:85
 msgid "Enter {0}..."
 msgstr "{0}を入力..."
+
+#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:145
+msgid "Enter a number from {MIN_PLAYERS} to {MAX_PLAYERS}."
+msgstr "{MIN_PLAYERS}〜{MAX_PLAYERS}の数字を入力してください。"
 
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:123
 msgid "Enter a start.gg, Challonge, or Tonamel event URL"
@@ -657,6 +662,10 @@ msgstr "公式サーバーで情報発信を行なってます！"
 msgid "Kagaribi"
 msgstr "篝火"
 
+#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:131
+msgid "Keeps the current layout, colors and font so you can load them again from My Templates."
+msgstr "現在のレイアウト・色・フォントを保存し、マイテンプレからいつでも読み込めます。"
+
 #: src/components/results/SetList/SetRow.tsx:236
 msgid "L"
 msgstr "L"
@@ -671,7 +680,7 @@ msgid "Layout"
 msgstr "レイアウト"
 
 #: src/components/top8/SettingsPanel/ThemePicker.tsx:21
-#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:40
+#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:56
 msgid "Light"
 msgstr "ライト"
 
@@ -813,9 +822,9 @@ msgstr "このイベントにフェーズが見つかりません"
 msgid "No players found"
 msgstr "プレイヤーが見つかりません"
 
-#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:131
+#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:149
 msgid "No preview available"
-msgstr ""
+msgstr "プレビューを表示できません"
 
 #: src/components/shared/DropDownSelect/DropDownSelect.tsx:309
 msgid "No results found"
@@ -901,8 +910,7 @@ msgstr "順位"
 msgid "Player {slot}"
 msgstr "プレイヤー{slot}"
 
-#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:91
-#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:97
+#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:119
 msgid "Player Count"
 msgstr "選手数"
 
@@ -969,8 +977,8 @@ msgid "Preview"
 msgstr "プレビュー"
 
 #: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:137
-msgid "Preview of your saved template"
-msgstr ""
+#~ msgid "Preview of your saved template"
+#~ msgstr ""
 
 #: src/components/predict/PredictApp/PredictApp.tsx:31
 msgid "Pulling entrants..."
@@ -1059,6 +1067,14 @@ msgstr "保存"
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:288
 msgid "Save Design"
 msgstr "デザインを保存"
+
+#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:128
+msgid "Save Design as Template"
+msgstr "デザインをテンプレとして保存"
+
+#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:171
+msgid "Save Template"
+msgstr "テンプレを保存"
 
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:292
 msgid "Save your current design as a template to reuse it later."
@@ -1219,16 +1235,15 @@ msgstr "テンプレート"
 msgid "Template name"
 msgstr "テンプレート名"
 
-#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:106
-#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:110
-#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:142
-#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:146
+#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:156
+#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:157
+#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:159
 msgid "Template Name"
 msgstr "テンプレ名"
 
-#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:125
+#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:144
 msgid "Template preview"
-msgstr ""
+msgstr "テンプレのプレビュー"
 
 #: src/components/top8/SidePanel/SidePanelNav.tsx:36
 msgid "Templates"
@@ -1247,7 +1262,7 @@ msgid "Texts"
 msgstr "テキスト"
 
 #: src/components/top8/SettingsPanel/ThemePicker.tsx:44
-#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:80
+#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:107
 msgid "Theme"
 msgstr "テーマ"
 
