@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useId, useState } from "react";
 import cn from "classnames";
-import { FaChevronUp, FaPlus } from "react-icons/fa6";
+import { FaChevronDown, FaPlus } from "react-icons/fa6";
 import { Trans } from "@lingui/react/macro";
 
 import { DBTemplate } from "@/types/Repository";
 import { TemplatePreview } from "@/components/top8/TemplateEditor/TemplatePreview/TemplatePreview";
-import { Button } from "@/components/shared/Button/Button";
+import { EditorCard } from "@/components/top8/EditorForm/EditorForm";
 import { logEvent } from "@/utils/observability/log";
 
 import styles from "./TemplateEditor.module.scss";
@@ -18,6 +18,10 @@ type Props = {
   viewMode: "grid" | "list";
   loadingTemplateId: string | null;
   onCreateCustom?: () => void;
+  /** Shown at the end of the header, next to the group name. */
+  action?: React.ReactNode;
+  /** Shown in place of the templates when the group has none. */
+  emptyHint?: React.ReactNode;
 };
 
 export const TemplateGroup = ({
@@ -28,57 +32,80 @@ export const TemplateGroup = ({
   viewMode,
   loadingTemplateId,
   onCreateCustom,
+  action,
+  emptyHint,
 }: Props) => {
   const [collapsed, setCollapsed] = useState(false);
+  const bodyId = useId();
+  const isEmpty = templates.length === 0 && !onCreateCustom;
 
   return (
-    <div className={styles.templateGroup}>
+    <EditorCard className={styles.group}>
       <div className={styles.groupHeader}>
-        <p className={styles.groupName}>{name}</p>
-        <Button
-          className={cn({ [styles.collapsed]: collapsed })}
+        <button
+          type="button"
+          className={styles.groupToggle}
+          aria-expanded={!collapsed}
+          aria-controls={bodyId}
           onClick={() => setCollapsed(!collapsed)}
         >
-          <FaChevronUp size={8} />
-        </Button>
+          <FaChevronDown
+            size={10}
+            className={cn(styles.chevron, { [styles.collapsed]: collapsed })}
+          />
+          <span className={styles.groupName}>{name}</span>
+          {templates.length > 0 && (
+            <span className={styles.count}>{templates.length}</span>
+          )}
+        </button>
+        {action}
       </div>
 
-      <div
-        className={cn(styles.templates, {
-          [styles.grid]: viewMode === "grid",
-          [styles.collapsed]: collapsed,
-        })}
-      >
-        {templates.map((template) => (
-          <TemplatePreview
-            className={styles.template}
-            key={template.id}
-            template={template}
-            onClick={() => {
-              onTemplateClick(template.id);
-              logEvent("template_select", {
-                template_id: template.id,
-                template_group: name,
-              });
-            }}
-            onDelete={
-              onDeleteTemplate ? () => onDeleteTemplate(template.id) : undefined
-            }
-            isLoading={loadingTemplateId === template.id}
-          />
-        ))}
-        {onCreateCustom && (
-          <button
-            className={cn(styles.template, styles.createCustomCard)}
-            onClick={onCreateCustom}
+      <div id={bodyId} hidden={collapsed}>
+        {isEmpty ? (
+          <p className={styles.emptyHint}>{emptyHint}</p>
+        ) : (
+          <div
+            className={cn(styles.templates, {
+              [styles.grid]: viewMode === "grid",
+            })}
           >
-            <FaPlus size={16} />
-            <span>
-              <Trans>Custom Minimal</Trans>
-            </span>
-          </button>
+            {templates.map((template) => (
+              <TemplatePreview
+                key={template.id}
+                template={template}
+                onClick={() => {
+                  onTemplateClick(template.id);
+                  logEvent("template_select", {
+                    template_id: template.id,
+                    template_group: name,
+                  });
+                }}
+                onDelete={
+                  onDeleteTemplate
+                    ? () => onDeleteTemplate(template.id)
+                    : undefined
+                }
+                isLoading={loadingTemplateId === template.id}
+              />
+            ))}
+            {onCreateCustom && (
+              <button
+                type="button"
+                className={styles.createCustom}
+                onClick={onCreateCustom}
+              >
+                <span className={styles.createCustomTile}>
+                  <FaPlus size={14} />
+                </span>
+                <span className={styles.createCustomLabel}>
+                  <Trans>Custom Minimal</Trans>
+                </span>
+              </button>
+            )}
+          </div>
         )}
       </div>
-    </div>
+    </EditorCard>
   );
 };

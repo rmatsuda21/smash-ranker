@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import cn from "classnames";
 import { IoGrid } from "react-icons/io5";
-import { FaList } from "react-icons/fa6";
+import { FaList, FaPlus } from "react-icons/fa6";
 import type { MessageDescriptor } from "@lingui/core";
 import { msg } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
@@ -32,6 +32,7 @@ import { useConfirmation } from "@/hooks/useConfirmation";
 import { CreateTemplateModal } from "@/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal";
 import { CreateMinimalTemplateModal } from "@/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal";
 import { TemplateGroup } from "@/components/top8/TemplateEditor/TemplateGroup";
+import { EditorPanel } from "@/components/top8/EditorForm/EditorForm";
 
 import styles from "./TemplateEditor.module.scss";
 
@@ -239,30 +240,60 @@ export const TemplateEditor = ({ className }: Props) => {
       </div>
     );
 
-  return (
-    <div className={cn(className, styles.templateEditor)}>
-      <div className={styles.header}>
-        <Button onClick={() => setIsCreateModalOpen(true)}>
-          <Trans>Create New Template</Trans>
-        </Button>
+  const viewModes = [
+    { mode: "list", label: _(msg`List view`), icon: <FaList /> },
+    { mode: "grid", label: _(msg`Grid view`), icon: <IoGrid /> },
+  ] as const;
 
-        <div className={styles.viewMode}>
-          <Button
-            size="sm"
-            variant={viewMode === "list" ? "solid" : "ghost"}
-            onClick={() => setViewMode("list")}
-          >
-            <FaList />
-          </Button>
-          <Button
-            size="sm"
-            variant={viewMode === "grid" ? "solid" : "ghost"}
-            onClick={() => setViewMode("grid")}
-          >
-            <IoGrid />
-          </Button>
+  return (
+    <EditorPanel className={className}>
+      <div className={styles.toolbar}>
+        <p className={styles.hint}>
+          <Trans>Loading a template replaces your current design.</Trans>
+        </p>
+        <div
+          className={styles.viewMode}
+          role="group"
+          aria-label={_(msg`Layout`)}
+        >
+          {viewModes.map(({ mode, label, icon }) => (
+            <button
+              key={mode}
+              type="button"
+              className={cn({ [styles.active]: viewMode === mode })}
+              aria-label={label}
+              aria-pressed={viewMode === mode}
+              onClick={() => setViewMode(mode)}
+            >
+              {icon}
+            </button>
+          ))}
         </div>
       </div>
+
+      <TemplateGroup
+        templates={userTemplates}
+        name={_(msg`My Templates`)}
+        onTemplateClick={confirmTemplateClick}
+        onDeleteTemplate={confirmDeleteTemplate}
+        viewMode={viewMode}
+        loadingTemplateId={loadingTemplateId}
+        action={
+          <Button
+            size="sm"
+            variant="subtle"
+            onClick={() => setIsCreateModalOpen(true)}
+          >
+            <FaPlus size={10} />
+            <Trans>Save Design</Trans>
+          </Button>
+        }
+        emptyHint={
+          <Trans>
+            Save your current design as a template to reuse it later.
+          </Trans>
+        }
+      />
       {templateGroups.map((group) => (
         <TemplateGroup
           key={group.id}
@@ -278,16 +309,6 @@ export const TemplateEditor = ({ className }: Props) => {
           }
         />
       ))}
-      {userTemplates.length > 0 && (
-        <TemplateGroup
-          templates={userTemplates}
-          name={_(msg`My Templates`)}
-          onTemplateClick={confirmTemplateClick}
-          onDeleteTemplate={confirmDeleteTemplate}
-          viewMode={viewMode}
-          loadingTemplateId={loadingTemplateId}
-        />
-      )}
       {templateClickConfirmation}
       {deleteTemplateConfirmation}
       <CreateTemplateModal
@@ -300,6 +321,6 @@ export const TemplateEditor = ({ className }: Props) => {
         onClose={() => setIsCreateMinimalModalOpen(false)}
         createTemplate={handleCreateMinimalTemplate}
       />
-    </div>
+    </EditorPanel>
   );
 };

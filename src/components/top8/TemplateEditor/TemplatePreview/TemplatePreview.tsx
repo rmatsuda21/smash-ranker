@@ -3,13 +3,14 @@ import { Stage, Layer } from "react-konva";
 import { Stage as KonvaStage } from "konva/lib/Stage";
 import cn from "classnames";
 import { FaTrash } from "react-icons/fa6";
+import { msg } from "@lingui/core/macro";
+import { useLingui } from "@lingui/react";
 
 import { DBTemplate } from "@/types/Repository";
 import { RenderProfileContext } from "@/components/top8/Canvas/RenderProfileContext";
 import { StaticScene } from "@/components/top8/Canvas/scene/StaticScene";
 import { createSamplePlayers } from "@/utils/top8/samplePlayers";
 import { TournamentInfo } from "@/types/top8/Tournament";
-import { useTooltip } from "@/hooks/useTooltip";
 import {
   OFFSCREEN_PROFILE,
   getDeviceRenderProfile,
@@ -62,47 +63,56 @@ const sampleTournament: TournamentInfo = {
   url: "https://start.gg/420-69-tournament",
 };
 
+// One template: the thumbnail is the button that loads it, with the name
+// (and Delete, for the user's own templates) underneath.
 const PreviewShell = ({
   template,
   onClick,
   onDelete,
   className,
   isLoading,
+  offscreen,
   children,
-}: Props & { children: React.ReactNode }) => {
-  const { triggerProps, tooltip } = useTooltip({
-    content: template.name,
-    describe: false,
-  });
+}: Props & {
+  children: React.ReactNode;
+  /** Rendered outside the button: the hidden stage a preview is drawn on. */
+  offscreen?: React.ReactNode;
+}) => {
+  const { _ } = useLingui();
 
   return (
-    <div
-      className={cn(styles.previewContainer, className)}
-      {...triggerProps}
-      onClick={onClick}
-    >
-      {children}
+    <div className={cn(styles.preview, className)}>
+      <button
+        type="button"
+        className={styles.thumb}
+        onClick={onClick}
+        aria-label={_(msg`Load template: ${template.name}`)}
+      >
+        {children}
 
-      {isLoading && (
-        <div className={styles.loadingOverlay}>
-          <Spinner size={32} />
-        </div>
-      )}
+        {isLoading && (
+          <span className={styles.loadingOverlay}>
+            <Spinner size={32} />
+          </span>
+        )}
+      </button>
+      {offscreen}
 
-      {onDelete && (
-        <button
-          className={styles.deleteButton}
-          onClick={(e) => {
-            e.stopPropagation();
-            onDelete();
-          }}
-          aria-label="Delete template"
-        >
-          <FaTrash size={12} />
-        </button>
-      )}
-
-      {tooltip}
+      <div className={styles.caption}>
+        <span className={styles.name} title={template.name}>
+          {template.name}
+        </span>
+        {onDelete && (
+          <button
+            type="button"
+            className={styles.deleteButton}
+            onClick={onDelete}
+            aria-label={_(msg`Delete template: ${template.name}`)}
+          >
+            <FaTrash size={11} />
+          </button>
+        )}
+      </div>
     </div>
   );
 };
@@ -121,9 +131,9 @@ const CachedPreview = ({ blob, ...props }: Props & { blob: Blob }) => {
       {src ? (
         <img src={src} alt="Template preview" className={styles.previewImage} />
       ) : (
-        <div className={styles.loading}>
+        <span className={styles.loading}>
           <Spinner size={32} />
-        </div>
+        </span>
       )}
     </PreviewShell>
   );
@@ -237,35 +247,39 @@ const RenderedPreview = (props: Props) => {
   }, [imageDataUrl]);
 
   return (
-    <PreviewShell {...props}>
-      {hasSlot && !stageCaptured && (
-        <div className={styles.hiddenStage}>
-          <Stage
-            ref={stageRef}
-            width={template.design.canvasSize.width}
-            height={template.design.canvasSize.height}
-            listening={false}
-            pixelRatio={1}
-          >
-            <RenderProfileContext value={OFFSCREEN_PROFILE}>
-              <Layer listening={false}>
-                <StaticScene
-                  design={template.design}
-                  players={samplePlayers}
-                  tournament={sampleTournament}
-                  fontFamily={template.font}
-                  onReady={handleSceneReady}
-                />
-              </Layer>
-            </RenderProfileContext>
-          </Stage>
-        </div>
-      )}
-
+    <PreviewShell
+      {...props}
+      offscreen={
+        hasSlot &&
+        !stageCaptured && (
+          <div className={styles.hiddenStage}>
+            <Stage
+              ref={stageRef}
+              width={template.design.canvasSize.width}
+              height={template.design.canvasSize.height}
+              listening={false}
+              pixelRatio={1}
+            >
+              <RenderProfileContext value={OFFSCREEN_PROFILE}>
+                <Layer listening={false}>
+                  <StaticScene
+                    design={template.design}
+                    players={samplePlayers}
+                    tournament={sampleTournament}
+                    fontFamily={template.font}
+                    onReady={handleSceneReady}
+                  />
+                </Layer>
+              </RenderProfileContext>
+            </Stage>
+          </div>
+        )
+      }
+    >
       {isRendering && (
-        <div className={styles.loading}>
+        <span className={styles.loading}>
           <Spinner size={32} />
-        </div>
+        </span>
       )}
 
       {imageDataUrl && (
@@ -277,7 +291,7 @@ const RenderedPreview = (props: Props) => {
       )}
 
       {!imageDataUrl && !isRendering && (
-        <div className={styles.error}>Failed to load preview</div>
+        <span className={styles.error}>Failed to load preview</span>
       )}
     </PreviewShell>
   );
@@ -346,9 +360,9 @@ const UserTemplatePreview = (props: Props) => {
   if (cachedBlob === undefined) {
     return (
       <PreviewShell {...props}>
-        <div className={styles.loading}>
+        <span className={styles.loading}>
           <Spinner size={32} />
-        </div>
+        </span>
       </PreviewShell>
     );
   }
@@ -360,7 +374,7 @@ const UserTemplatePreview = (props: Props) => {
   if (!getDeviceRenderProfile().renderTemplatePreviews) {
     return (
       <PreviewShell {...props}>
-        <div className={styles.placeholder}>{template.name}</div>
+        <span className={styles.placeholder} />
       </PreviewShell>
     );
   }

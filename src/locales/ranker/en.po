@@ -52,7 +52,7 @@ msgstr ""
 msgid "# of Entrants"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:63
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:64
 msgid "16 Player Variant"
 msgstr ""
 
@@ -60,19 +60,19 @@ msgstr ""
 msgid "1s"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:99
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:100
 msgid "4 Players (Dark)"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:111
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:112
 msgid "4 Players (Light)"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:93
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:94
 msgid "8 Players (Dark)"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:105
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:106
 msgid "8 Players (Light)"
 msgstr ""
 
@@ -126,7 +126,7 @@ msgstr ""
 msgid "Avatar"
 msgstr ""
 
-#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:372
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:373
 msgid "Back to plain text"
 msgstr ""
 
@@ -220,7 +220,7 @@ msgstr ""
 #: src/components/Layout/SettingsModal/SettingsModal.tsx:54
 #: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:208
 #: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:287
-#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:309
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:310
 msgid "Close"
 msgstr ""
 
@@ -253,7 +253,7 @@ msgstr ""
 #: src/components/predict/InviteShareButton/InviteShareButton.tsx:26
 #: src/components/results/ResultsExportBar/ResultsExportBar.tsx:122
 #: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:227
-#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:421
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:422
 msgid "Copied!"
 msgstr ""
 
@@ -267,7 +267,7 @@ msgstr ""
 msgid "Copy failed"
 msgstr ""
 
-#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:420
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:421
 msgid "Copy image"
 msgstr ""
 
@@ -307,8 +307,8 @@ msgid "Create a minimal template with a specific player count."
 msgstr ""
 
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:246
-msgid "Create New Template"
-msgstr ""
+#~ msgid "Create New Template"
+#~ msgstr ""
 
 #: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:114
 msgid "Create Template"
@@ -340,7 +340,7 @@ msgstr ""
 msgid "Custom images"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateGroup.tsx:77
+#: src/components/top8/TemplateEditor/TemplateGroup.tsx:102
 msgid "Custom Minimal"
 msgstr ""
 
@@ -386,7 +386,12 @@ msgstr ""
 msgid "Delete template"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:231
+#. placeholder {0}: template.name
+#: src/components/top8/TemplateEditor/TemplatePreview/TemplatePreview.tsx:110
+msgid "Delete template: {0}"
+msgstr ""
+
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:232
 msgid "Delete Template?"
 msgstr ""
 
@@ -442,7 +447,7 @@ msgstr ""
 msgid "Download"
 msgstr ""
 
-#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:413
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:414
 msgid "Download image"
 msgstr ""
 
@@ -450,7 +455,7 @@ msgstr ""
 msgid "Download Options"
 msgstr ""
 
-#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:414
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:415
 msgid "Downloaded!"
 msgstr ""
 
@@ -604,6 +609,10 @@ msgstr ""
 msgid "Green"
 msgstr ""
 
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:245
+msgid "Grid view"
+msgstr ""
+
 #: src/components/Layout/NavOverlay/NavOverlay.tsx:21
 msgid "Home"
 msgstr ""
@@ -644,7 +653,7 @@ msgstr ""
 msgid "Join the official server for help, feedback, and updates!"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:53
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:54
 msgid "Kagaribi"
 msgstr ""
 
@@ -657,6 +666,7 @@ msgid "Language"
 msgstr ""
 
 #: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:97
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:257
 msgid "Layout"
 msgstr ""
 
@@ -665,21 +675,34 @@ msgstr ""
 msgid "Light"
 msgstr ""
 
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:244
+msgid "List view"
+msgstr ""
+
 #: src/components/shared/TournamentUrlInput/TournamentUrlInput.tsx:62
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:139
 msgid "Load"
 msgstr ""
 
-#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:318
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:319
 msgid "Load a tournament to compose a post."
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:223
+#. placeholder {0}: template.name
+#: src/components/top8/TemplateEditor/TemplatePreview/TemplatePreview.tsx:89
+msgid "Load template: {0}"
+msgstr ""
+
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:224
 msgid "Load Template?"
 msgstr ""
 
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:73
 msgid "Load Tournament?"
+msgstr ""
+
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:252
+msgid "Loading a template replaces your current design."
 msgstr ""
 
 #: src/components/results/SetList/SetRow.tsx:57
@@ -742,7 +765,7 @@ msgstr ""
 msgid "Many cups of coffee were consumed during development 👀"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:89
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:90
 msgid "Minimal"
 msgstr ""
 
@@ -758,7 +781,7 @@ msgstr ""
 msgid "Mode"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:284
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:276
 msgid "My Templates"
 msgstr ""
 
@@ -820,7 +843,7 @@ msgstr ""
 msgid "Open link"
 msgstr ""
 
-#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:363
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:364
 msgid "Open template editor"
 msgstr ""
 
@@ -828,8 +851,8 @@ msgstr ""
 #~ msgid "Or drag and drop"
 #~ msgstr "Or drag and drop"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:57
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:75
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:58
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:76
 msgid "Original"
 msgstr ""
 
@@ -919,7 +942,7 @@ msgstr ""
 msgid "Polishing trophies..."
 msgstr ""
 
-#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:432
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:433
 msgid "Post"
 msgstr ""
 
@@ -1029,8 +1052,16 @@ msgstr ""
 msgid "Rounding up the squad..."
 msgstr ""
 
-#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:406
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:407
 msgid "Save"
+msgstr ""
+
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:288
+msgid "Save Design"
+msgstr ""
+
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:292
+msgid "Save your current design as a template to reuse it later."
 msgstr ""
 
 #: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:50
@@ -1117,7 +1148,7 @@ msgstr ""
 msgid "Share invite"
 msgstr ""
 
-#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:304
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:305
 #: src/components/top8/SocialShareButton/SocialShareButton.tsx:47
 #: src/components/top8/SocialShareButton/SocialShareButton.tsx:56
 msgid "Share to social"
@@ -1139,7 +1170,7 @@ msgstr ""
 msgid "Size"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:81
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:82
 msgid "Square Variant"
 msgstr ""
 
@@ -1159,11 +1190,11 @@ msgstr ""
 msgid "Support"
 msgstr ""
 
-#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:442
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:443
 msgid "Switch template?"
 msgstr ""
 
-#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:444
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:445
 msgid "Switching templates will replace what you've typed. Continue?"
 msgstr ""
 
@@ -1184,7 +1215,7 @@ msgstr ""
 msgid "Template"
 msgstr ""
 
-#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:392
+#: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:393
 msgid "Template name"
 msgstr ""
 
@@ -1221,7 +1252,7 @@ msgid "Theme"
 msgstr ""
 
 #: src/components/top8/SocialPostComposer/TemplateSelector.tsx:35
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:232
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:233
 msgid "This template will be permanently deleted."
 msgstr ""
 
@@ -1272,7 +1303,7 @@ msgstr ""
 msgid "Top 8"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:71
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:72
 msgid "Top8er"
 msgstr ""
 
@@ -1455,7 +1486,7 @@ msgstr ""
 msgid "X Handle"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:224
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:225
 msgid "Your current design will be overwritten!"
 msgstr ""
 
