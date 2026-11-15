@@ -484,7 +484,7 @@ msgid "English"
 msgstr ""
 
 #. placeholder {0}: translatedName.toLowerCase()
-#: src/components/top8/TextEditor/TextEditor.tsx:84
+#: src/components/top8/TextEditor/TextEditor.tsx:85
 msgid "Enter {0}..."
 msgstr ""
 

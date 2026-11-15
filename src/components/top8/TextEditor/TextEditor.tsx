@@ -79,6 +79,7 @@ export const TextEditor = ({ className }: Props) => {
               label={<TransRuntime id={name} message={name} />}
             >
               <RichTextInput
+                aria-label={translatedName}
                 value={text}
                 onChange={(newText) => handleTextChange(id, newText, name)}
                 placeholder={_(msg`Enter ${translatedName.toLowerCase()}...`)}

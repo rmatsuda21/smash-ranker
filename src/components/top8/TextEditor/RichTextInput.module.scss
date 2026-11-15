@@ -6,108 +6,116 @@
   gap: var(--space-2);
 }
 
-// Drawn like the other editor fields; holds text runs and placeholder pills.
-.tokenStrip {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  row-gap: var(--space-1);
+// Drawn like the other editor fields. Holds text and placeholder pills in
+// one editable line that wraps when it runs out of room.
+.editor {
   min-height: var(--field-h, 36px);
-  padding: var(--space-1) var(--space-2);
+  padding: var(--space-1) var(--space-3);
   cursor: text;
 
+  color: var(--fg-1);
   font-size: var(--font-size-md);
+  line-height: 26px;
+  // Keeps typed spaces as real spaces instead of &nbsp;.
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
   background-color: var(--bg-input);
   border: 1px solid var(--border-strong);
   border-radius: var(--radius);
+  outline: none;
   transition: border-color var(--duration-base) var(--ease-standard);
 
   &:hover {
     border-color: var(--gray-8);
   }
 
-  &:focus-within {
+  &:focus {
     border-color: var(--brand);
     outline: 1px solid var(--brand);
     outline-offset: -2px;
   }
 
-  // 16px keeps iOS from zooming the page when an input is focused.
+  // Floated with no height, so it takes no space and the caret sits at the
+  // start of the line rather than after the hint.
+  &[data-empty="true"]::before {
+    content: attr(data-placeholder);
+    float: left;
+    height: 0;
+    color: var(--fg-4);
+    pointer-events: none;
+  }
+
+  // 16px keeps iOS from zooming the page when the field is focused.
   @include mobile {
     font-size: 16px;
-  }
-}
-
-.textSegment {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  flex: 0 0 auto;
-
-  &.sole {
-    flex: 1;
-    width: 100%;
-  }
-}
-
-.textInput {
-  border: none;
-  outline: none;
-  background: transparent;
-  box-sizing: border-box;
-  padding: 0 var(--space-1);
-  margin: 0;
-  font: inherit;
-  color: var(--fg-1);
-  width: 100%;
-  min-width: 0;
-
-  &::placeholder {
-    color: var(--fg-4);
+    line-height: 34px;
   }
 }
 
 // A live value inside the text: tinted so it reads as "filled in for you".
+// It holds no text of its own (the label and × are generated content), so
+// the caret can never be inside it.
+//
+// The element is wider than the chip you see: it has transparent padding on
+// its left and the fill is clipped to the content box. A browser draws a
+// caret that sits before a pill at the edge of the pill's box, so without
+// that padding the caret would be painted on top of the chip.
 .pill {
-  user-select: none;
-  cursor: pointer;
+  --pill-gutter: 3px;
+
   display: inline-flex;
   align-items: center;
-  gap: 2px;
-  padding: 2px var(--space-1) 2px var(--space-2);
+  padding-left: var(--pill-gutter);
+  vertical-align: baseline;
+  cursor: default;
 
   color: var(--accent-11);
-  font-family: inherit;
   font-size: var(--font-size-sm);
   font-weight: 600;
-  line-height: 1.4;
+  line-height: 22px;
+  white-space: nowrap;
   background-color: var(--brand-soft);
-  border: 1px solid var(--brand-outline);
+  background-clip: content-box;
   border-radius: var(--radius-pill);
-  transition: border-color var(--duration-base) var(--ease-standard);
+  transition: background-color var(--duration-base) var(--ease-standard);
+
+  &::before {
+    content: attr(data-label);
+    padding-left: var(--space-2);
+  }
+
+  // The remove button. 18px wide: keep in sync with PILL_REMOVE_WIDTH.
+  &::after {
+    content: "×";
+    width: 18px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 12px;
+    opacity: 0.6;
+  }
 
   &:hover {
-    border-color: var(--accent-8);
+    background-color: var(--accent-4);
 
-    .removeIcon {
+    &::after {
       opacity: 1;
     }
   }
 
-  &:focus-visible {
-    outline: 2px solid var(--accent-9);
-    outline-offset: 1px;
+  // After a space the gutter would read as a second space.
+  &[data-after-space] {
+    --pill-gutter: 1px;
   }
-}
 
-.removeIcon {
-  padding: 0 var(--space-1);
-  font-size: 12px;
-  line-height: 1;
-  opacity: 0.6;
+  &[data-selected] {
+    color: #fff;
+    background-color: var(--accent-9);
+  }
 
   @media (hover: none) {
-    opacity: 0.9;
+    &::after {
+      opacity: 0.9;
+    }
   }
 }
 

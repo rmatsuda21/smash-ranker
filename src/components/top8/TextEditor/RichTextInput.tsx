@@ -1,445 +1,244 @@
-import { useRef, useMemo, useEffect, useLayoutEffect, useState } from "react";
+import { useRef } from "react";
 import cn from "classnames";
+import { useLingui } from "@lingui/react";
 
 import {
   DesignPlaceholder,
   PlaceholderLabel,
 } from "@/consts/top8/placeholders";
 
+import {
+  domToOffset,
+  offsetToDom,
+  pillAround,
+  writeSelection,
+} from "./richText/dom";
+import {
+  charBoundary,
+  isToken,
+  unitsToValue,
+  wordBoundary,
+} from "./richText/model";
+import { type Press, useNativeEditing } from "./richText/useNativeEditing";
+import { useRichTextModel } from "./richText/useRichTextModel";
+
 import styles from "./RichTextInput.module.scss";
 
-// --- Types ---
+// A single-line text field whose value can contain placeholder tokens
+// (`<📝>`, `<📅>`, ...). It is one contenteditable element: plain text is
+// text nodes, each token is an atomic, non-editable pill.
+//
+// The browser is used for two things only: moving the caret through text,
+// and IME composition. Every edit (typing, deleting, paste, cut, undo) is
+// cancelled in `beforeinput` and applied to a model instead; the DOM is then
+// rewritten from the model and the caret put back by hand. Browsers disagree
+// about editing next to non-editable elements, so none of that is left to
+// them.
+//
+// The model is a list of units: a unit is one UTF-16 code unit of text or
+// one whole token. Caret positions are offsets into that list.
+//
+// The DOM inside the editor is owned by this code, not by React: React
+// renders an empty div and never reconciles its children.
+//
+// The pieces, in `richText/`:
+//   model.ts             the value as a list of units, and caret boundaries
+//   dom.ts               model <-> DOM, browser selection <-> model offsets
+//   useRichTextModel.ts  state, edits, undo history, sync with `value`
+//   useNativeEditing.ts  beforeinput / input / composition / selectionchange
+// This file has the React event handlers (keys, clipboard, mouse) and the
+// markup.
 
-type Segment =
-  { type: "text"; value: string } | { type: "placeholder"; value: string };
-
-// --- Segment parsing ---
-
-const PLACEHOLDER_REGEX = /<[^>]+>/g;
-
-function parseSegments(value: string): Segment[] {
-  const segments: Segment[] = [];
-  const regex = new RegExp(PLACEHOLDER_REGEX);
-  let lastIndex = 0;
-  let match: RegExpExecArray | null;
-
-  while ((match = regex.exec(value)) !== null) {
-    segments.push({ type: "text", value: value.slice(lastIndex, match.index) });
-    segments.push({ type: "placeholder", value: match[0] });
-    lastIndex = regex.lastIndex;
-  }
-
-  segments.push({ type: "text", value: value.slice(lastIndex) });
-  return segments;
-}
-
-function serialize(segments: Segment[]): string {
-  return segments.map((s) => s.value).join("");
-}
-
-// --- Text measurement via Canvas (no DOM element needed) ---
-
-let measureCtx: CanvasRenderingContext2D | null = null;
-
-function getTextWidth(text: string, font: string): number {
-  if (!measureCtx) {
-    measureCtx = document.createElement("canvas").getContext("2d");
-  }
-  if (!measureCtx) return text.length * 8;
-  measureCtx.font = font;
-  return Math.ceil(measureCtx.measureText(text).width);
-}
-
-function getFontFromElement(el: HTMLElement): string {
-  const s = getComputedStyle(el);
-  return s.font || `${s.fontWeight} ${s.fontSize} ${s.fontFamily}`;
-}
-
-// --- TextSegment ---
-
-type TextSegmentProps = {
-  value: string;
-  index: number;
-  isSole: boolean;
-  placeholder: string;
-  inputRefs: { current: (HTMLInputElement | null)[] };
-  focusedIndexRef: { current: number };
-  cursorRef: { current: number };
-  onChange: (text: string) => void;
-  onBackspaceAtStart: () => void;
-  onDeleteAtEnd: () => void;
-  onArrowLeft: () => void;
-  onArrowRight: () => void;
-};
-
-const TextSegment = ({
-  value,
-  index,
-  isSole,
-  placeholder,
-  inputRefs,
-  focusedIndexRef,
-  cursorRef,
-  onChange,
-  onBackspaceAtStart,
-  onDeleteAtEnd,
-  onArrowLeft,
-  onArrowRight,
-}: TextSegmentProps) => {
-  const localRef = useRef<HTMLInputElement>(null);
-  const spanRef = useRef<HTMLSpanElement>(null);
-  const fontRef = useRef("");
-
-  // Imperatively set width — no state, no extra re-render
-  useLayoutEffect(() => {
-    if (isSole || !spanRef.current) return;
-    if (!fontRef.current && localRef.current) {
-      fontRef.current = getFontFromElement(localRef.current);
-    }
-    const w =
-      value && fontRef.current ? getTextWidth(value, fontRef.current) + 8 : 6;
-    spanRef.current.style.flexBasis = `${w}px`;
-  }, [value, isSole]);
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    const input = e.currentTarget;
-    const start = input.selectionStart ?? 0;
-    const end = input.selectionEnd ?? 0;
-    const hasSelection = start !== end;
-
-    if (e.key === "Backspace" && start === 0 && !hasSelection) {
-      e.preventDefault();
-      onBackspaceAtStart();
-    } else if (e.key === "Delete" && start === value.length && !hasSelection) {
-      e.preventDefault();
-      onDeleteAtEnd();
-    } else if (e.key === "ArrowLeft" && start === 0 && !hasSelection) {
-      e.preventDefault();
-      onArrowLeft();
-    } else if (
-      e.key === "ArrowRight" &&
-      start === value.length &&
-      !hasSelection
-    ) {
-      e.preventDefault();
-      onArrowRight();
-    }
-  };
-
-  return (
-    <span
-      ref={spanRef}
-      className={cn(styles.textSegment, { [styles.sole]: isSole })}
-    >
-      <input
-        ref={(el) => {
-          inputRefs.current[index] = el;
-          localRef.current = el;
-        }}
-        type="text"
-        className={styles.textInput}
-        value={value}
-        placeholder={isSole ? placeholder : undefined}
-        onChange={(e) => onChange(e.target.value)}
-        onFocus={() => {
-          focusedIndexRef.current = index;
-        }}
-        onSelect={(e) => {
-          cursorRef.current =
-            (e.target as HTMLInputElement).selectionStart ?? 0;
-        }}
-        onKeyDown={handleKeyDown}
-      />
-    </span>
-  );
-};
-
-// --- PillSegment ---
-
-type PillSegmentProps = {
-  value: string;
-  onDelete: () => void;
-};
-
-const PillSegment = ({ value, onDelete }: PillSegmentProps) => {
-  const label = PlaceholderLabel.get(value as DesignPlaceholder) || value;
-
-  return (
-    <button
-      type="button"
-      className={styles.pill}
-      onClick={onDelete}
-      onMouseDown={(e) => e.preventDefault()}
-    >
-      {label}
-      <span className={styles.removeIcon}>×</span>
-    </button>
-  );
-};
-
-// --- RichTextInput ---
+// Width of the × hit area at the trailing end of a pill, and of the empty
+// gutter at its leading end. Both match the CSS.
+const PILL_REMOVE_WIDTH = 18;
+const PILL_GUTTER_WIDTH = 3;
 
 type Props = {
   value: string;
   onChange: (value: string) => void;
   className?: string;
   placeholder?: string;
+  "aria-label"?: string;
 };
 
 export const RichTextInput = ({
-  value: propValue,
+  value,
   onChange,
   className,
   placeholder = "Enter text...",
+  "aria-label": ariaLabel,
 }: Props) => {
-  // Local state for instant re-renders (prop updates are debounced by parent)
-  const [localValue, setLocalValue] = useState(propValue);
+  const { i18n } = useLingui();
+  const editorRef = useRef<HTMLDivElement>(null);
+  const lastPressRef = useRef<Press | null>(null);
 
-  // Sync from prop when it changes externally (undo/redo, load tournament)
-  const lastPropRef = useRef(propValue);
-  if (propValue !== lastPropRef.current) {
-    lastPropRef.current = propValue;
-    if (propValue !== localValue) {
-      setLocalValue(propValue);
-    }
-  }
-
-  const updateValue = (newVal: string) => {
-    setLocalValue(newVal);
-    onChange(newVal);
-  };
-
-  const segments = useMemo(() => parseSegments(localValue), [localValue]);
-  const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
-  const pendingFocusRef = useRef<{ index: number; cursor: number } | null>(
-    null,
-  );
-  const focusedIndexRef = useRef(0);
-  const cursorRef = useRef(0);
-
-  const isSingleTextSegment = segments.length === 1;
-
-  const textCount = useMemo(
-    () => segments.filter((s) => s.type === "text").length,
-    [segments],
-  );
-
-  // Apply pending focus after render. A layout effect, so focus is back
-  // before the browser paints and the insert row never flashes closed.
-  useLayoutEffect(() => {
-    const pending = pendingFocusRef.current;
-    if (pending) {
-      pendingFocusRef.current = null;
-      const input = inputRefs.current[pending.index];
-      if (input) {
-        input.focus();
-        input.setSelectionRange(pending.cursor, pending.cursor);
-      }
-    }
+  const model = useRichTextModel({
+    editorRef,
+    value,
+    onChange,
+    locale: i18n.locale,
   });
+  const composingRef = useNativeEditing({ editorRef, model, lastPressRef });
 
-  // Trim refs array when text count decreases
-  useEffect(() => {
-    inputRefs.current.length = textCount;
-  }, [textCount]);
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.nativeEvent.isComposing || composingRef.current) return;
+    const el = editorRef.current;
+    if (!el) return;
+    const mod = e.metaKey || e.ctrlKey;
+    const key = e.key.toLowerCase();
 
-  // Find segment array index for a given text input index
-  const getSegIndex = (textInputIndex: number): number => {
-    let count = 0;
-    for (let i = 0; i < segments.length; i++) {
-      if (segments[i].type === "text") {
-        if (count === textInputIndex) return i;
-        count++;
-      }
+    if (e.key === "Enter") {
+      e.preventDefault();
+      return;
     }
-    return -1;
-  };
+    if (mod && !e.altKey && (key === "z" || key === "y")) {
+      e.preventDefault();
+      e.stopPropagation();
+      model.stepHistory(key === "y" || e.shiftKey ? "redo" : "undo");
+      return;
+    }
+    // Rich-text shortcuts would otherwise wrap the text in <b>/<i>/<u>.
+    if (mod && ["b", "i", "u"].includes(key)) {
+      e.preventDefault();
+      return;
+    }
 
-  const handleTextChange = (segIndex: number, newText: string) => {
-    const newSegments = segments.map((seg, i) =>
-      i === segIndex ? { ...seg, value: newText } : seg,
+    // Backspace and Delete are handled here as well as in `beforeinput`, so
+    // they never depend on how a browser reports them.
+    if ((e.key === "Backspace" || e.key === "Delete") && !e.ctrlKey) {
+      const backward = e.key === "Backspace";
+      e.preventDefault();
+      if (e.metaKey) model.deleteFrom((units) => (backward ? 0 : units.length));
+      else if (e.altKey)
+        model.deleteFrom((units, offset) =>
+          wordBoundary(units, offset, backward),
+        );
+      else
+        model.deleteFrom((units, offset) =>
+          charBoundary(units, offset, backward),
+        );
+      return;
+    }
+
+    // Left/Right next to a pill: step over it as one unit (Shift extends the
+    // selection over it). Movement through text is left to the browser.
+    const isArrow = e.key === "ArrowLeft" || e.key === "ArrowRight";
+    if (!isArrow || mod || e.altKey) return;
+    const selection = window.getSelection();
+    if (!selection?.focusNode || !el.contains(selection.focusNode)) return;
+    // A plain arrow with a selection collapses it.
+    if (!selection.isCollapsed && !e.shiftKey) return;
+
+    const backward = e.key === "ArrowLeft";
+    const units = model.getUnits();
+    const focus = domToOffset(
+      el,
+      selection.focusNode,
+      selection.focusOffset,
+      backward ? "after" : "before",
     );
-    updateValue(serialize(newSegments));
+    if (!isToken(units[backward ? focus - 1 : focus])) return;
+
+    e.preventDefault();
+    const point = offsetToDom(el, backward ? focus - 1 : focus + 1);
+    if (e.shiftKey) selection.extend(point.node, point.offset);
+    else selection.collapse(point.node, point.offset);
   };
 
-  const handleDeletePill = (segIndex: number) => {
-    const prevText = segments[segIndex - 1];
-    const nextText = segments[segIndex + 1];
-    if (!prevText || !nextText) return;
-
-    const cursorPos = prevText.value.length;
-    const mergedText = prevText.value + nextText.value;
-
-    const newSegments = [
-      ...segments.slice(0, segIndex - 1),
-      { type: "text" as const, value: mergedText },
-      ...segments.slice(segIndex + 2),
-    ];
-
-    updateValue(serialize(newSegments));
-
-    // Find text input index for the merged segment
-    let textIndex = 0;
-    for (let i = 0; i < segIndex - 1; i++) {
-      if (segments[i].type === "text") textIndex++;
-    }
-    pendingFocusRef.current = { index: textIndex, cursor: cursorPos };
+  // Copy and cut carry the raw value (tokens included), so pasting it back
+  // restores the pills.
+  const handleCopy = (e: React.ClipboardEvent<HTMLDivElement>) => {
+    const sel = model.currentSel();
+    if (sel.start === sel.end) return;
+    e.preventDefault();
+    e.clipboardData.setData(
+      "text/plain",
+      unitsToValue(model.getUnits(), sel.start, sel.end),
+    );
   };
 
-  const handleBackspaceAtStart = (textInputIndex: number) => {
-    const segIndex = getSegIndex(textInputIndex);
-    if (segIndex < 2) return;
-
-    const prevPill = segments[segIndex - 1];
-    if (prevPill.type !== "placeholder") return;
-
-    const prevText = segments[segIndex - 2];
-    const cursorPos = prevText.value.length;
-    const mergedText = prevText.value + segments[segIndex].value;
-
-    const newSegments = [
-      ...segments.slice(0, segIndex - 2),
-      { type: "text" as const, value: mergedText },
-      ...segments.slice(segIndex + 1),
-    ];
-
-    updateValue(serialize(newSegments));
-    pendingFocusRef.current = {
-      index: textInputIndex - 1,
-      cursor: cursorPos,
-    };
+  const handleCut = (e: React.ClipboardEvent<HTMLDivElement>) => {
+    handleCopy(e);
+    if (e.defaultPrevented) model.insertAtSelection("", "other");
   };
 
-  const handleDeleteAtEnd = (textInputIndex: number) => {
-    const segIndex = getSegIndex(textInputIndex);
-    if (segIndex === -1 || segIndex + 2 >= segments.length) return;
-
-    const nextPill = segments[segIndex + 1];
-    if (nextPill.type !== "placeholder") return;
-
-    const cursorPos = segments[segIndex].value.length;
-    const nextText = segments[segIndex + 2];
-    const mergedText = segments[segIndex].value + nextText.value;
-
-    const newSegments = [
-      ...segments.slice(0, segIndex),
-      { type: "text" as const, value: mergedText },
-      ...segments.slice(segIndex + 3),
-    ];
-
-    updateValue(serialize(newSegments));
-    pendingFocusRef.current = { index: textInputIndex, cursor: cursorPos };
+  const handlePaste = (e: React.ClipboardEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    const text = e.clipboardData.getData("text/plain").replace(/[\r\n]+/g, " ");
+    model.insertAtSelection(text, "other");
   };
 
-  const handleArrowLeft = (textInputIndex: number) => {
-    if (textInputIndex > 0) {
-      const prev = inputRefs.current[textInputIndex - 1];
-      if (prev) {
-        prev.focus();
-        const len = prev.value.length;
-        prev.setSelectionRange(len, len);
-      }
+  // Pills are atomic: a press never puts the caret inside one.
+  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    lastPressRef.current = { x: e.clientX, at: performance.now() };
+    if (pillAround(e.target as Node)) e.preventDefault();
+  };
+
+  // Clicking a pill selects it; clicking its × (drawn at its trailing end)
+  // removes it; clicking the empty gutter before it puts the caret there.
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const el = editorRef.current;
+    const pill = pillAround(e.target as Node);
+    if (!el || !pill) return;
+
+    el.focus();
+    const start = domToOffset(el, pill, 0, "before");
+    const rect = pill.getBoundingClientRect();
+    if (e.clientX >= rect.right - PILL_REMOVE_WIDTH) {
+      model.replaceRange(start, start + 1, "", "other");
+    } else if (e.clientX < rect.left + PILL_GUTTER_WIDTH) {
+      writeSelection(el, { start, end: start });
+    } else {
+      writeSelection(el, { start, end: start + 1 });
     }
   };
 
-  const handleArrowRight = (textInputIndex: number) => {
-    if (textInputIndex < textCount - 1) {
-      const next = inputRefs.current[textInputIndex + 1];
-      if (next) {
-        next.focus();
-        next.setSelectionRange(0, 0);
-      }
-    }
+  // A chip reached with the keyboard has taken focus out of the editor, so
+  // go back to where the caret was first.
+  const handleInsertToken = (token: DesignPlaceholder) => {
+    model.focusAtLastSelection();
+    model.insertAtSelection(token, "other");
   };
 
-  const handleInsertChip = (chipValue: DesignPlaceholder) => {
-    const textInputIndex = Math.min(focusedIndexRef.current, textCount - 1);
-    const segIndex = getSegIndex(textInputIndex);
-    if (segIndex === -1) return;
-
-    const seg = segments[segIndex];
-    const cursor = Math.min(cursorRef.current, seg.value.length);
-    const textBefore = seg.value.slice(0, cursor);
-    const textAfter = seg.value.slice(cursor);
-
-    const newSegments = [
-      ...segments.slice(0, segIndex),
-      { type: "text" as const, value: textBefore },
-      { type: "placeholder" as const, value: chipValue },
-      { type: "text" as const, value: textAfter },
-      ...segments.slice(segIndex + 1),
-    ];
-
-    updateValue(serialize(newSegments));
-    pendingFocusRef.current = { index: textInputIndex + 1, cursor: 0 };
-  };
-
-  const handleStripClick = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget) {
-      const lastInput = inputRefs.current[textCount - 1];
-      if (lastInput) {
-        lastInput.focus();
-        const len = lastInput.value.length;
-        lastInput.setSelectionRange(len, len);
-      }
-    }
-  };
-
-  // A press on the field's own chrome (padding, gaps between chips) would
-  // blur the input, which hides the insert row until the click refocuses it.
-  // Keep focus where it is instead; presses on the inputs behave normally.
-  const keepFocus = (e: React.MouseEvent) => {
-    if (!(e.target instanceof HTMLInputElement)) e.preventDefault();
-  };
+  // A press on the gaps between chips would blur the editor, which hides
+  // the insert row until the click lands. Keep focus where it is.
+  const keepFocus = (e: React.MouseEvent) => e.preventDefault();
 
   const chips = PlaceholderLabel.tournamentEntries();
-  let textInputIndex = 0;
 
   return (
     <div className={cn(styles.richTextInput, className)}>
       <div
-        className={styles.tokenStrip}
-        onClick={handleStripClick}
-        onMouseDown={keepFocus}
-      >
-        {segments.map((seg, i) => {
-          if (seg.type === "placeholder") {
-            return (
-              <PillSegment
-                key={`p${i}`}
-                value={seg.value}
-                onDelete={() => handleDeletePill(i)}
-              />
-            );
-          }
-          const idx = textInputIndex++;
-          return (
-            <TextSegment
-              key={`t${i}`}
-              value={seg.value}
-              index={idx}
-              isSole={isSingleTextSegment}
-              placeholder={placeholder}
-              inputRefs={inputRefs}
-              focusedIndexRef={focusedIndexRef}
-              cursorRef={cursorRef}
-              onChange={(text) => handleTextChange(i, text)}
-              onBackspaceAtStart={() => handleBackspaceAtStart(idx)}
-              onDeleteAtEnd={() => handleDeleteAtEnd(idx)}
-              onArrowLeft={() => handleArrowLeft(idx)}
-              onArrowRight={() => handleArrowRight(idx)}
-            />
-          );
-        })}
-      </div>
+        ref={editorRef}
+        className={styles.editor}
+        contentEditable
+        suppressContentEditableWarning
+        role="textbox"
+        aria-multiline={false}
+        aria-label={ariaLabel}
+        aria-placeholder={placeholder}
+        data-placeholder={placeholder}
+        spellCheck={false}
+        autoCapitalize="off"
+        autoCorrect="off"
+        enterKeyHint="done"
+        onKeyDown={handleKeyDown}
+        onCopy={handleCopy}
+        onCut={handleCut}
+        onPaste={handlePaste}
+        onMouseDown={handleMouseDown}
+        onClick={handleClick}
+        onDragStart={(e) => e.preventDefault()}
+        onDrop={(e) => e.preventDefault()}
+      />
       <div className={styles.chipBar} onMouseDown={keepFocus}>
         {chips.map(([key, label]) => (
           <button
             key={key}
             type="button"
             className={styles.chip}
-            onMouseDown={(e) => e.preventDefault()}
-            onClick={() => handleInsertChip(key)}
+            onClick={() => handleInsertToken(key)}
           >
             {label}
           </button>
