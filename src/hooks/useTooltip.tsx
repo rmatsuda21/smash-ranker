@@ -9,10 +9,10 @@ import {
 import { createPortal } from "react-dom";
 import cn from "classnames";
 
-import { usePortalContainer } from "@/components/shared/Modal/modalStack";
+import { usePortalContainer } from "@/hooks/usePortalContainer";
 import { SUPPORTS_POPOVER } from "@/hooks/useTopLayer";
 
-import styles from "./Tooltip.module.scss";
+import styles from "@/components/shared/Tooltip/Tooltip.module.scss";
 
 const SHOW_DELAY_MS = 200;
 // Long enough to cross the gap between trigger and tooltip without it closing.

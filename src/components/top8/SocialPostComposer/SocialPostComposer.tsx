@@ -60,7 +60,8 @@ import type { SocialPlatform } from "@/types/social/SocialTemplate";
 import type { StageBlobCache } from "@/hooks/top8/useStageBlobCache";
 
 import { CharCounter } from "./CharCounter";
-import { useCanvasImage, useTwitterTextParser } from "./hooks";
+import { useCanvasImage } from "@/hooks/top8/useCanvasImage";
+import { useTwitterTextParser } from "@/hooks/top8/useTwitterTextParser";
 import { PlatformPreview, type ComposerMode } from "./PlatformPreview";
 import { PlatformTabs } from "./PlatformTabs";
 import { TemplatePicker } from "./TemplatePicker";

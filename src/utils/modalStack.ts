@@ -1,5 +1,3 @@
-import { useSyncExternalStore } from "react";
-
 // A modal <dialog> makes everything outside it inert and paints above it in
 // the top layer. Floating UI that portals to <body> (popovers, tooltips,
 // toasts) would end up underneath the dialog and unclickable, so those
@@ -12,14 +10,15 @@ const emit = () => {
   for (const listener of listeners) listener();
 };
 
-const subscribe = (listener: () => void) => {
+export const subscribeToModalStack = (listener: () => void) => {
   listeners.add(listener);
   return () => {
     listeners.delete(listener);
   };
 };
 
-const getSnapshot = (): HTMLElement => stack[stack.length - 1] ?? document.body;
+export const getPortalContainer = (): HTMLElement =>
+  stack[stack.length - 1] ?? document.body;
 
 export const registerModal = (el: HTMLElement) => {
   stack.push(el);
@@ -30,7 +29,3 @@ export const registerModal = (el: HTMLElement) => {
     emit();
   };
 };
-
-/** Where floating UI should portal to: the topmost open modal, else <body>. */
-export const usePortalContainer = (): HTMLElement =>
-  useSyncExternalStore(subscribe, getSnapshot);

@@ -8,7 +8,7 @@ import type { TournamentInfo } from "@/types/top8/Tournament";
 import {
   useSceneFactoryContext,
   type SceneDesign,
-} from "./useSceneFactoryContext";
+} from "@/hooks/top8/useSceneFactoryContext";
 
 type Props = {
   elements: ElementConfig[] | undefined;

@@ -14,7 +14,7 @@ import {
 import {
   useSceneFactoryContext,
   type SceneDesign,
-} from "@/components/top8/Canvas/scene/useSceneFactoryContext";
+} from "@/hooks/top8/useSceneFactoryContext";
 import { ElementList } from "@/utils/top8/elementFactory";
 import { AssetLoadBoundary } from "@/components/top8/Canvas/AssetLoadBoundary";
 import { SelectableElement } from "@/components/top8/Canvas/SelectableElement";

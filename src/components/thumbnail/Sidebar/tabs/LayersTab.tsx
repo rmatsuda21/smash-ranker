@@ -40,7 +40,7 @@ import {
   GroupElement,
   ThumbnailElement,
 } from "@/types/thumbnail/ThumbnailDesign";
-import { useElementActions } from "@/components/thumbnail/useElementActions";
+import { useElementActions } from "@/hooks/thumbnail/useElementActions";
 import {
   findElement,
   findElementWithContext,

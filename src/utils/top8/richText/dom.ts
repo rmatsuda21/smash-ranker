@@ -3,7 +3,6 @@ import {
   PlaceholderLabel,
 } from "@/consts/top8/placeholders";
 
-import styles from "../RichTextInput.module.scss";
 import { isToken, toUnits } from "./model";
 
 // The editor's DOM: writing it from the model, reading it back, and mapping
@@ -23,24 +22,25 @@ const escapeHtml = (text: string) =>
 // to land in.
 // `afterSpace` marks a pill that follows a space: the space already keeps
 // the caret off the chip, so the pill drops most of its leading gutter.
-const pillHtml = (token: string, afterSpace: boolean) => {
+const pillHtml = (token: string, afterSpace: boolean, pillClass: string) => {
   const label = escapeHtml(
     PlaceholderLabel.get(token as DesignPlaceholder) || token,
   );
   return (
-    `<span class="${styles.pill}" contenteditable="false" role="img"` +
+    `<span class="${pillClass}" contenteditable="false" role="img"` +
     ` data-token="${escapeHtml(token)}" data-label="${label}" aria-label="${label}"` +
     `${afterSpace ? " data-after-space" : ""}></span>`
   );
 };
 
 // One text node per run of text, one span per token, all direct children.
-export const toHtml = (units: string[]) => {
+// `pillClass` is the CSS class each pill gets.
+export const toHtml = (units: string[], pillClass: string) => {
   let html = "";
   let text = "";
   for (const unit of units) {
     if (isToken(unit)) {
-      html += escapeHtml(text) + pillHtml(unit, /\s$/.test(text));
+      html += escapeHtml(text) + pillHtml(unit, /\s$/.test(text), pillClass);
       text = "";
     } else {
       text += unit;

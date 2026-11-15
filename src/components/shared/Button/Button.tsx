@@ -1,7 +1,7 @@
 import cn from "classnames";
 
 import { Spinner } from "@/components/shared/Spinner/Spinner";
-import { useTooltip } from "@/components/shared/Tooltip/useTooltip";
+import { useTooltip } from "@/hooks/useTooltip";
 
 import styles from "./Button.module.scss";
 

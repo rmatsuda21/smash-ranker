@@ -1,8 +1,13 @@
 import { type RefObject, useEffect, useRef } from "react";
 
-import { domToOffset, pillAround, readSelection, writeSelection } from "./dom";
-import { charBoundary, wordBoundary } from "./model";
-import type { RichTextModel } from "./useRichTextModel";
+import {
+  domToOffset,
+  pillAround,
+  readSelection,
+  writeSelection,
+} from "@/utils/top8/richText/dom";
+import { charBoundary, wordBoundary } from "@/utils/top8/richText/model";
+import type { RichTextModel } from "@/hooks/top8/useRichTextModel";
 
 // How long after a press a caret that lands inside a pill is put on the side
 // that was pressed.
@@ -23,7 +28,7 @@ type Options = {
 // wrote on its own; `selectionchange` only fires on the document.
 //
 // Returns a ref that is true while an IME composition is in progress.
-export const useNativeEditing = ({
+export const useRichTextNativeEditing = ({
   editorRef,
   model,
   lastPressRef,

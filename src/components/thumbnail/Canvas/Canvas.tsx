@@ -43,14 +43,14 @@ import {
   ContextMenu,
   ContextMenuItem,
 } from "@/components/thumbnail/ContextMenu/ContextMenu";
-import { useElementActions } from "@/components/thumbnail/useElementActions";
+import { useElementActions } from "@/hooks/thumbnail/useElementActions";
 
 import { BackgroundLayer } from "./BackgroundLayer";
 import { ElementsLayer } from "./ElementsLayer";
 import { GuidesLayer } from "./GuidesLayer";
 import { TransformerLayer } from "./TransformerLayer";
 import { InlineTextEditor } from "./InlineTextEditor";
-import { useStageGestures } from "./useStageGestures";
+import { useStageGestures } from "@/hooks/thumbnail/useStageGestures";
 
 import styles from "./Canvas.module.scss";
 

@@ -9,7 +9,7 @@ import { RenderProfileContext } from "@/components/top8/Canvas/RenderProfileCont
 import { StaticScene } from "@/components/top8/Canvas/scene/StaticScene";
 import { createSamplePlayers } from "@/utils/top8/samplePlayers";
 import { TournamentInfo } from "@/types/top8/Tournament";
-import { useTooltip } from "@/components/shared/Tooltip/useTooltip";
+import { useTooltip } from "@/hooks/useTooltip";
 import {
   OFFSCREEN_PROFILE,
   getDeviceRenderProfile,

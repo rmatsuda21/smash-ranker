@@ -6,7 +6,8 @@ import { getPlayerPaintOrder } from "@/utils/top8/scene";
 import type { Design, PlayerDesign } from "@/types/top8/Design";
 import type { PlayerInfo } from "@/types/top8/Player";
 
-import { useLatestCallback, type SceneDesign } from "./useSceneFactoryContext";
+import { useLatestCallback } from "@/hooks/useLatestCallback";
+import type { SceneDesign } from "@/hooks/top8/useSceneFactoryContext";
 
 type DragHandler = (e: KonvaEventObject<MouseEvent>) => void;
 

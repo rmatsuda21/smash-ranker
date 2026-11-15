@@ -7,7 +7,7 @@ import { HamburgerButton } from "./HamburgerButton/HamburgerButton";
 import { NavOverlay } from "./NavOverlay/NavOverlay";
 import { SettingsModal } from "./SettingsModal/SettingsModal";
 import { StockConfetti } from "./StockConfetti/StockConfetti";
-import { useDateBasedEgg } from "./StockConfetti/useDateBasedEgg";
+import { useDateBasedEgg } from "@/hooks/useDateBasedEgg";
 
 import styles from "./Layout.module.scss";
 const LOGO_EFFECTS = [

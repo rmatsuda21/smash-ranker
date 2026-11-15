@@ -32,7 +32,7 @@ import { CharacterAltPicker } from "@/components/top8/CharacterEditor/CharacterA
 import { FlagPicker } from "@/components/thumbnail/Pickers/FlagPicker";
 import { AssetPickerButton } from "@/components/thumbnail/Pickers/AssetPickerButton";
 import { TextFontSelect } from "@/components/thumbnail/Pickers/TextFontSelect";
-import { useElementActions } from "@/components/thumbnail/useElementActions";
+import { useElementActions } from "@/hooks/thumbnail/useElementActions";
 import { getSelectedGroupIds } from "@/utils/thumbnail/groups";
 import { findElement } from "@/utils/thumbnail/elementTree";
 import { Button } from "@/components/shared/Button/Button";

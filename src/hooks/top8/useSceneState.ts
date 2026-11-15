@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useShallow } from "zustand/react/shallow";
 
-import type { SceneDesign } from "@/components/top8/Canvas/scene/useSceneFactoryContext";
+import type { SceneDesign } from "@/hooks/top8/useSceneFactoryContext";
 import { useCanvasStore } from "@/store/canvasStore";
 import { usePlayerStore } from "@/store/playerStore";
 import { getPlayerConfigs } from "@/utils/top8/scene";

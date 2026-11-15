@@ -8,7 +8,7 @@ import type { Design, ElementConfig } from "@/types/top8/Design";
 import {
   useSceneFactoryContext,
   type SceneDesign,
-} from "./useSceneFactoryContext";
+} from "@/hooks/top8/useSceneFactoryContext";
 
 type Props = {
   elements: ElementConfig[];

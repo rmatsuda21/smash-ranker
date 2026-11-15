@@ -26,6 +26,13 @@ No test runner is configured. Use `bun lint` and `bun build` to validate changes
 
 **After making changes, always run `bunx prettier --write <changed files>` to format, then `bun lint` to surface any new lint errors before reporting the work as done.** Prettier config lives in `.prettierrc` and the ignore list in `.prettierignore` (auto-generated files in `src/gql/` and `src/locales/*.ts` plus vendored `.agents/` content are excluded).
 
+## File organization
+
+- `src/components/` holds only components (`.tsx`) and their SCSS modules.
+- Hooks go in `src/hooks/` (shared) or `src/hooks/<area>/` (`top8`, `thumbnail`, `predict`, ...), one hook per file named after it. Exceptions that stay in `src/components/`: a hook that only reads a context defined beside it (`useAssetLoad`, `useRenderProfile`, `Toast/useToast.ts`), and a small unexported hook used by one component.
+- Plain logic goes in `src/utils/` or `src/utils/<area>/`; types in `src/types/`; constants in `src/consts/`.
+- Use `.tsx` only for files that contain JSX.
+
 ## Commit messages
 
 - Keep messages short and simple — a single lowercase line describing the change, matching the existing `git log` style.
@@ -112,17 +119,17 @@ A general-purpose graphic/thumbnail editor (vs-match cards, match banners, etc.)
 
 ### Feature Flags
 
-- **Provider** — `FeatureFlagsProvider` in `src/hooks/useFeatureFlags.tsx` fetches `/api/flags` once on mount and merges the response over local defaults. Expose flags via `useFeatureFlag(key)` / `useFeatureFlags()`.
+- **Provider** — `FeatureFlagsProvider` (`src/components/FeatureFlagsProvider.tsx`) fetches `/api/flags` once on mount and merges the response over local defaults. Expose flags via `useFeatureFlag(key)` / `useFeatureFlags()` from `src/hooks/useFeatureFlags.ts`.
 - **Local-dev defaults** — In `import.meta.env.DEV`, new flags default to **on** so contributors can work on them without hitting the API; in production they default to **off** until the dashboard says otherwise. Defaults also apply when `/api/flags` is unreachable (e.g. plain `bun dev` without `bun run dev:vercel`).
 - **Backend** — `api/flags.ts` is a Vercel function backed by `@vercel/flags-core`. Exposes `?debug=1` for diagnostic info; cached `public, max-age=60, stale-while-revalidate=300` at the edge. `api/vercel/flags.ts` is the discovery endpoint.
-- **Adding a flag** — Add the key to both `FeatureFlagKey`/`DEFAULT_FLAGS` in `src/hooks/useFeatureFlags.tsx` and `FLAG_KEYS`/`DEFAULTS` in `api/flags.ts`.
+- **Adding a flag** — Add the key to both `FeatureFlagKey`/`DEFAULT_FLAGS` in `src/hooks/useFeatureFlags.ts` and `FLAG_KEYS`/`DEFAULTS` in `api/flags.ts`.
 
 ### TextEditor
 
 The TextEditor panel (`src/components/top8/TextEditor/`) allows users to edit text content displayed in Top 8 graphics.
 
 - **TextEditor.tsx** — Container that reads `design.textPalette` from canvasStore, renders a `RichTextInput` per text item, and debounces (150ms) updates via `UPDATE_TEXT_CONTENT`.
-- **RichTextInput.tsx** — A single-line field built on one `contenteditable` element. The component file holds the React handlers (keys, clipboard, mouse) and markup; the rest is in `TextEditor/richText/`: `model.ts` (units and caret boundaries, no DOM), `dom.ts` (model ↔ DOM, selection ↔ offsets), `useRichTextModel.ts` (state, edits, undo history, sync with `value`), `useNativeEditing.ts` (`beforeinput`/`input`/composition/`selectionchange` listeners). Plain text is text nodes; each known placeholder token is an atomic, non-editable pill (`<span contenteditable="false" data-token="…" data-label="…">`).
+- **RichTextInput.tsx** — A single-line field built on one `contenteditable` element. The component file holds the React handlers (keys, clipboard, mouse) and markup; the rest follows the project layout: `src/utils/top8/richText/model.ts` (units and caret boundaries, no DOM), `src/utils/top8/richText/dom.ts` (model ↔ DOM, selection ↔ offsets), `src/hooks/top8/useRichTextModel.ts` (state, edits, undo history, sync with `value`), `src/hooks/top8/useRichTextNativeEditing.ts` (`beforeinput`/`input`/composition/`selectionchange` listeners). Plain text is text nodes; each known placeholder token is an atomic, non-editable pill (`<span contenteditable="false" data-token="…" data-label="…">`).
   - **Edits go through a model, not the browser.** The model is a list of units (one UTF-16 code unit of text, or one whole token); caret positions are offsets into it (`domToOffset` / `offsetToDom`). Every edit is cancelled in the native `beforeinput` listener (Backspace/Delete also in `handleKeyDown`), applied to the model by `replaceRange`, and the DOM is rewritten from the model with the caret set by hand (`commit`). Browsers disagree about typing and deleting next to non-editable elements, so do not hand an edit back to the browser (no `execCommand`, no letting a `beforeinput` through). The browser still owns caret movement through text and IME composition.
   - **IME composition is the exception**: while composing, events pass through untouched and the DOM is read back into the model on `compositionend` (`adoptDom`). The `input` listener does the same for anything else the browser changed on its own (Android keyboards, dictation).
   - **Undo/redo is the component's own stack** (Cmd/Ctrl+Z, Shift+Cmd/Ctrl+Z, Ctrl+Y, and `historyUndo`/`historyRedo`), since cancelled edits never reach the native one. Consecutive typing or deleting within a second merges into one step; an outside value change clears it.

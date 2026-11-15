@@ -1,7 +1,7 @@
 import { useLayoutEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 
-import { registerModal } from "./modalStack";
+import { registerModal } from "@/utils/modalStack";
 
 import styles from "./Modal.module.scss";
 

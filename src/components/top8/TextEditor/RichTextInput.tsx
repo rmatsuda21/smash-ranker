@@ -12,15 +12,18 @@ import {
   offsetToDom,
   pillAround,
   writeSelection,
-} from "./richText/dom";
+} from "@/utils/top8/richText/dom";
 import {
   charBoundary,
   isToken,
   unitsToValue,
   wordBoundary,
-} from "./richText/model";
-import { type Press, useNativeEditing } from "./richText/useNativeEditing";
-import { useRichTextModel } from "./richText/useRichTextModel";
+} from "@/utils/top8/richText/model";
+import {
+  type Press,
+  useRichTextNativeEditing,
+} from "@/hooks/top8/useRichTextNativeEditing";
+import { useRichTextModel } from "@/hooks/top8/useRichTextModel";
 
 import styles from "./RichTextInput.module.scss";
 
@@ -41,11 +44,12 @@ import styles from "./RichTextInput.module.scss";
 // The DOM inside the editor is owned by this code, not by React: React
 // renders an empty div and never reconciles its children.
 //
-// The pieces, in `richText/`:
-//   model.ts             the value as a list of units, and caret boundaries
-//   dom.ts               model <-> DOM, browser selection <-> model offsets
-//   useRichTextModel.ts  state, edits, undo history, sync with `value`
-//   useNativeEditing.ts  beforeinput / input / composition / selectionchange
+// The pieces:
+//   utils/top8/richText/model.ts            the value as units, caret boundaries
+//   utils/top8/richText/dom.ts              model <-> DOM, selection <-> offsets
+//   hooks/top8/useRichTextModel.ts          state, edits, undo, sync with `value`
+//   hooks/top8/useRichTextNativeEditing.ts  beforeinput / input / composition /
+//                                           selectionchange listeners
 // This file has the React event handlers (keys, clipboard, mouse) and the
 // markup.
 
@@ -78,8 +82,13 @@ export const RichTextInput = ({
     value,
     onChange,
     locale: i18n.locale,
+    pillClassName: styles.pill,
   });
-  const composingRef = useNativeEditing({ editorRef, model, lastPressRef });
+  const composingRef = useRichTextNativeEditing({
+    editorRef,
+    model,
+    lastPressRef,
+  });
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.nativeEvent.isComposing || composingRef.current) return;

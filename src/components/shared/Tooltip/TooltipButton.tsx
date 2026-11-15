@@ -1,4 +1,4 @@
-import { useTooltip } from "./useTooltip";
+import { useTooltip } from "@/hooks/useTooltip";
 
 type Props = React.ComponentProps<"button"> & {
   tooltip: string;

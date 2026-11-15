@@ -4,7 +4,7 @@ import { characters } from "@/consts/top8/ultCharacters.json";
 import { EMPTY_CHARACTER_ID } from "@/consts/top8/characters";
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
 import { CharacerData } from "@/types/top8/Player";
-import { useTooltip } from "@/components/shared/Tooltip/useTooltip";
+import { useTooltip } from "@/hooks/useTooltip";
 
 import styles from "./CharacterAltPicker.module.scss";
 

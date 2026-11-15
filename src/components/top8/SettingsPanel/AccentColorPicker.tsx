@@ -7,7 +7,7 @@ import { useLingui } from "@lingui/react";
 
 import { PREF_KEYS } from "@/consts/prefKeys";
 import { getPref, setPref } from "@/utils/prefs";
-import { useTooltip } from "@/components/shared/Tooltip/useTooltip";
+import { useTooltip } from "@/hooks/useTooltip";
 import { TooltipButton } from "@/components/shared/Tooltip/TooltipButton";
 import { ColorInput } from "@/components/shared/ColorInput/ColorInput";
 

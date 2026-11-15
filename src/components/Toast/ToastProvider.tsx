@@ -9,7 +9,7 @@ import {
 import { createPortal } from "react-dom";
 import cn from "classnames";
 
-import { usePortalContainer } from "@/components/shared/Modal/modalStack";
+import { usePortalContainer } from "@/hooks/usePortalContainer";
 
 import {
   ToastContext,

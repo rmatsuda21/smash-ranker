@@ -8,8 +8,6 @@ import {
 } from "@/hooks/top8/useStageBlobCache";
 import { getDeviceRenderProfile } from "@/utils/top8/renderProfile";
 
-type ParseTweetFn = (text: string) => { weightedLength: number };
-
 const SOCIAL_PIXEL_RATIO = getDeviceRenderProfile().socialPixelRatio;
 const SOCIAL_CACHE_KEY = buildStageBlobKey("image/png", SOCIAL_PIXEL_RATIO, 1);
 
@@ -79,32 +77,4 @@ export const useCanvasImage = (
   }, [stageRef, cacheRef]);
 
   return { blob, url, loading };
-};
-
-/**
- * Lazy-loads the `twitter-text` package and returns its `parseTweet`
- * function once the chunk arrives. Returns null until then so callers
- * know to fall back to a simple length count.
- */
-export const useTwitterTextParser = (enabled: boolean) => {
-  const [parseTweet, setParseTweet] = useState<ParseTweetFn | null>(null);
-
-  useEffect(() => {
-    if (!enabled || parseTweet) return;
-    let cancelled = false;
-    void import("twitter-text").then((m) => {
-      if (cancelled) return;
-      const mod = m as unknown as {
-        parseTweet?: ParseTweetFn;
-        default?: { parseTweet?: ParseTweetFn };
-      };
-      const fn = mod.parseTweet ?? mod.default?.parseTweet;
-      if (typeof fn === "function") setParseTweet(() => fn);
-    });
-    return () => {
-      cancelled = true;
-    };
-  }, [enabled, parseTweet]);
-
-  return parseTweet;
 };

@@ -1,4 +1,4 @@
-import { useMemo, useRef } from "react";
+import { useMemo } from "react";
 
 import { useRenderProfile } from "@/components/top8/Canvas/RenderProfileContext";
 import type { ElementFactoryContext } from "@/types/top8/ElementFactory";
@@ -26,20 +26,5 @@ export const useSceneFactoryContext = (): Pick<
       perfectDraw: perfectDraw ? undefined : false,
     }),
     [interactive, perfectDraw],
-  );
-};
-
-/** A function with a stable identity that always calls the latest `fn`.
- *  Lets ready callbacks sit outside `useMemo` dependency lists. */
-export const useLatestCallback = <Args extends unknown[]>(
-  fn: ((...args: Args) => void) | undefined,
-): ((...args: Args) => void) => {
-  const ref = useRef(fn);
-  ref.current = fn;
-  return useMemo(
-    () =>
-      (...args: Args) =>
-        ref.current?.(...args),
-    [],
   );
 };

@@ -12,7 +12,7 @@ import { Spinner } from "@/components/shared/Spinner/Spinner";
 import { useBlobUrl } from "@/hooks/useBlobUrl";
 import { DBAsset } from "@/types/Repository";
 
-import { useImageMeta } from "../useImageMeta";
+import { useImageMeta } from "@/hooks/top8/useImageMeta";
 import styles from "./AssetPreview.module.scss";
 
 type Props = {

@@ -14,7 +14,7 @@ import {
   useDismissOnOutsideClick,
 } from "@/hooks/useDismiss";
 import { SUPPORTS_POPOVER } from "@/hooks/useTopLayer";
-import { usePortalContainer } from "@/components/shared/Modal/modalStack";
+import { usePortalContainer } from "@/hooks/usePortalContainer";
 
 import styles from "./Popover.module.scss";
 

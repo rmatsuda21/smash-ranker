@@ -10,7 +10,8 @@ import { getEffectiveCanvasSize, getPlayerConfigs } from "@/utils/top8/scene";
 import { BackgroundContent } from "./BackgroundContent";
 import { PlayersContent } from "./PlayersContent";
 import { TournamentContent } from "./TournamentContent";
-import { useLatestCallback, type SceneDesign } from "./useSceneFactoryContext";
+import { useLatestCallback } from "@/hooks/useLatestCallback";
+import type { SceneDesign } from "@/hooks/top8/useSceneFactoryContext";
 
 type Props = {
   design: Design;

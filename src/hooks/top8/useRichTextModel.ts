@@ -6,8 +6,8 @@ import {
   serialize,
   toHtml,
   writeSelection,
-} from "./dom";
-import { toUnits, unitsToValue } from "./model";
+} from "@/utils/top8/richText/dom";
+import { toUnits, unitsToValue } from "@/utils/top8/richText/model";
 
 // A stale echo of our own typing can arrive from the debounced parent while
 // the user is still typing; within this window it is ignored.
@@ -18,8 +18,8 @@ const HISTORY_MERGE_MS = 1000;
 const HISTORY_LIMIT = 100;
 
 // Rewrites the editor's children from the model.
-const render = (el: HTMLElement, units: string[]) => {
-  el.innerHTML = toHtml(units);
+const render = (el: HTMLElement, units: string[], pillClass: string) => {
+  el.innerHTML = toHtml(units, pillClass);
   el.dataset.empty = String(units.length === 0);
 };
 
@@ -32,6 +32,8 @@ type Options = {
   onChange: (value: string) => void;
   /** Pill labels are translated, so a locale change redraws them. */
   locale: string;
+  /** CSS class for the pills the model draws. */
+  pillClassName: string;
 };
 
 // Owns the editor's state: the model, the selection, and the undo history.
@@ -42,6 +44,7 @@ export const useRichTextModel = ({
   value,
   onChange,
   locale,
+  pillClassName,
 }: Options) => {
   // The model. `null` until the first render writes it.
   const unitsRef = useRef<string[] | null>(null);
@@ -86,7 +89,7 @@ export const useRichTextModel = ({
     if (!el) return;
     unitsRef.current = units;
     selRef.current = sel;
-    render(el, units);
+    render(el, units, pillClassName);
     if (document.activeElement === el) writeSelection(el, sel);
     emit(unitsToValue(units));
   };
@@ -182,7 +185,7 @@ export const useRichTextModel = ({
         ? { start: Math.min(sel.start, max), end: Math.min(sel.end, max) }
         : { start: max, end: max };
       selRef.current = next;
-      render(el, units);
+      render(el, units, pillClassName);
       if (document.activeElement === el) writeSelection(el, next);
     }
     emit(unitsToValue(units));
@@ -209,7 +212,7 @@ export const useRichTextModel = ({
     if (value === valueRef.current) {
       // Locale only: keep what is in the field, relabel the pills.
       const sel = selRef.current;
-      render(el, unitsRef.current ?? []);
+      render(el, unitsRef.current ?? [], pillClassName);
       if (isFocused) writeSelection(el, sel);
       return;
     }
@@ -222,9 +225,9 @@ export const useRichTextModel = ({
     undoRef.current = [];
     redoRef.current = [];
     lastEditRef.current = null;
-    render(el, units);
+    render(el, units, pillClassName);
     if (isFocused) writeSelection(el, end);
-  }, [editorRef, value, locale]);
+  }, [editorRef, value, locale, pillClassName]);
 
   // The selection as the browser reports it; kept for when focus has left.
   const rememberSelection = (sel: Sel) => {
