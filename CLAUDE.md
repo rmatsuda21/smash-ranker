@@ -20,9 +20,11 @@ bun compile          # Compile Lingui i18n catalogs
 bun codegen          # Generate TypeScript types from start.gg GraphQL schema
 bun codegenwatch     # Watch mode for GraphQL codegen
 bun generate:previews # Regenerate built-in template preview WebP images (uses Playwright + preview-generator.html)
+bun run test:goldens        # Render every built-in template headlessly and pixel-diff against tests/goldens/
+bun run test:goldens:update # Accept the current rendering as the new goldens (after an intended visual change)
 ```
 
-No test runner is configured. Use `bun lint` and `bun build` to validate changes.
+No test runner is configured. Use `bun lint` and `bun build` to validate changes. For changes to the Top 8 render pipeline (element factory, layout, canvas leaves), also run `bun run test:goldens`; failures write the current render and a diff image to `tests/goldens/.diff/`. The goldens go through `src/tools/PreviewGenerator.tsx`, so they cover the element factory and leaf components but not `Canvas.tsx`/`PlayerLayer.tsx` or dynamic player height.
 
 **After making changes, always run `bunx prettier --write <changed files>` to format, then `bun lint` to surface any new lint errors before reporting the work as done.** Prettier config lives in `.prettierrc` and the ignore list in `.prettierignore` (auto-generated files in `src/gql/` and `src/locales/*.ts` plus vendored `.agents/` content are excluded).
 

@@ -16,6 +16,7 @@ import { Button } from "@/components/shared/Button/Button";
 import { useEffectiveCanvasSize } from "@/hooks/top8/useEffectiveCanvasSize";
 import { loadFamily } from "@/utils/fonts/fontLoader";
 import { collectDesignFontWeights } from "@/utils/fonts/designWeights";
+import { perfMark, perfMeasureSince } from "@/utils/top8/renderPerf";
 
 import styles from "./Canvas.module.scss";
 
@@ -67,6 +68,10 @@ export const Canvas = ({ className }: Props) => {
       cancelled = true;
     };
   }, [selectedFont, displayedFont, catalogFetching, fontDispatch]);
+
+  useEffect(() => {
+    perfMark("canvasMount");
+  }, []);
 
   const clearSelections = useCallback(() => {
     playerDispatch({ type: "CLEAR_SELECTED_PLAYER" });
@@ -151,6 +156,7 @@ export const Canvas = ({ className }: Props) => {
       isTournamentReady &&
       isFontLoaded
     ) {
+      perfMeasureSince("canvasReady", "canvasMount");
       setIsDrawingReady(true);
     }
   }, [isBackgroundReady, isPlayerReady, isTournamentReady, isFontLoaded]);

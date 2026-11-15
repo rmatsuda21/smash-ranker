@@ -32,3 +32,6 @@ dist-ssr
 .claude/settings.local.json
 .claude/worktrees/
 .agents/
+
+# Golden-image check output
+tests/goldens/.diff/

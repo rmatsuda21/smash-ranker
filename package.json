@@ -18,7 +18,9 @@
     "preview": "vite preview",
     "codegen": "graphql-codegen",
     "codegenwatch": "graphql-codegen --watch",
-    "generate:previews": "bunx playwright install chromium --with-deps && bun scripts/generate-previews.ts"
+    "generate:previews": "bunx playwright install chromium --with-deps && bun scripts/generate-previews.ts",
+    "test:goldens": "bunx playwright install chromium && bun scripts/check-goldens.ts",
+    "test:goldens:update": "bunx playwright install chromium && bun scripts/check-goldens.ts --update"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

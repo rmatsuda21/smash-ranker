@@ -82,6 +82,14 @@ const TEMPLATES: DBTemplate[] = [
 
 const samplePlayers = createSamplePlayers(24);
 
+// `?mode=golden` captures lossless half-resolution PNGs for the regression
+// check (scripts/check-goldens.ts) instead of lossy WebP thumbnails.
+const GOLDEN_MODE =
+  new URLSearchParams(window.location.search).get("mode") === "golden";
+const CAPTURE_OPTIONS = GOLDEN_MODE
+  ? { mimeType: "image/png", pixelRatio: 0.5 }
+  : { mimeType: "image/webp", quality: 0.5 };
+
 const sampleTournament: TournamentInfo = {
   tournamentName: "Some Tournament",
   eventName: "Some Event",
@@ -222,10 +230,7 @@ const TemplateRenderer = ({
     }
 
     try {
-      const dataUrl = stageRef.current.toDataURL({
-        mimeType: "image/webp",
-        quality: 0.5,
-      });
+      const dataUrl = stageRef.current.toDataURL(CAPTURE_OPTIONS);
       onCaptured(template.id, dataUrl);
       setCaptured(true);
     } catch (error) {

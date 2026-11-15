@@ -9,12 +9,22 @@ import type {
 } from "./types";
 import { countAsyncElements } from "./asyncTracking";
 import { createKonvaElementsInternal } from "./createElements";
+import { perfMeasure } from "@/utils/top8/renderPerf";
 
 export type { CreateKonvaElementsOptions };
 
 export const createKonvaElements = (
   elements: ElementConfig[],
   context: ElementFactoryContext = {},
+  options?: CreateKonvaElementsOptions,
+): ReactNode[] =>
+  perfMeasure("createElements", () =>
+    buildKonvaElements(elements, context, options),
+  );
+
+const buildKonvaElements = (
+  elements: ElementConfig[],
+  context: ElementFactoryContext,
   options?: CreateKonvaElementsOptions,
 ): ReactNode[] => {
   if (!options?.onAllReady && !options?.onError) {
