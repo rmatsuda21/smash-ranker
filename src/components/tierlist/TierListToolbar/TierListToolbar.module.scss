@@ -1,23 +1,79 @@
 @use "@/_theme" as *;
 
-.toolbar {
+$one-row: 1200px;
+
+// One bar for everything that is not the list: edit actions left, the look
+// options in the middle, export right. Keeping it to one row leaves the
+// height to the list; when the row is too narrow the options drop below.
+.header {
+  // Shared height for the buttons in the bar.
+  --toolbar-h: 34px;
+
+  flex-shrink: 0;
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-2);
-  padding: var(--space-3) 0;
   align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-4);
+  padding: var(--space-2) var(--space-3);
+
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border);
+
+  // Wide enough for all three on one row.
+  @media (min-width: $one-row) {
+    display: grid;
+    // Equal side columns keep the options centred on the page.
+    grid-template-columns: 1fr auto 1fr;
+  }
 
   @include mobile {
-    overflow-x: auto;
-    flex-wrap: nowrap;
-    flex-shrink: 0;
-    gap: var(--space-2);
-    padding: var(--space-1) var(--space-2);
-    max-width: 100%;
-    -webkit-overflow-scrolling: touch;
+    // Touch-sized controls.
+    --toolbar-h: 40px;
 
-    &::-webkit-scrollbar {
-      display: none;
-    }
+    gap: var(--space-2);
+    padding: var(--space-2);
+  }
+}
+
+.group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+
+  @include mobile {
+    gap: 0;
+  }
+}
+
+.export {
+  justify-content: flex-end;
+}
+
+.group .button {
+  height: var(--toolbar-h);
+  padding-inline: var(--space-3);
+
+  // Tighter, so all three buttons share one row on a phone.
+  @include mobile {
+    gap: var(--space-1);
+    padding-inline: var(--space-2);
+    white-space: nowrap;
+  }
+}
+
+.designBar {
+  order: 1;
+  flex-basis: 100%;
+  min-width: 0;
+
+  @media (min-width: $one-row) {
+    order: 0;
+  }
+
+  // Bleeds to the screen edges so the strip scrolls under them.
+  @include mobile {
+    margin-inline: calc(-1 * var(--space-2));
+    padding-inline: var(--space-2);
   }
 }

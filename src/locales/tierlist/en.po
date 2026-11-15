@@ -13,11 +13,11 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/components/tierlist/CharacterPool/CharacterPool.tsx:47
+#: src/components/tierlist/CharacterPool/CharacterPool.tsx:67
 msgid "← swipe to scroll →"
 msgstr ""
 
-#: src/components/tierlist/TierListApp/TierListApp.tsx:345
+#: src/components/tierlist/TierListApp/TierListApp.tsx:408
 msgid "Add Tier"
 msgstr ""
 
@@ -26,37 +26,41 @@ msgstr ""
 msgid "Alt {i}"
 msgstr ""
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:38
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:47
 msgid "Arial"
 msgstr ""
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:65
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:74
 msgid "Black"
 msgstr ""
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:63
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:72
 msgid "Bold"
 msgstr ""
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:193
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:198
 msgid "Center"
 msgstr ""
 
 #: src/components/tierlist/CharacterPool/CharacterPool.tsx:25
-msgid "Character Collection"
-msgstr ""
+#~ msgid "Character Collection"
+#~ msgstr ""
+
+#: src/components/tierlist/TierSidePanel/TierSidePanel.tsx:19
+#~ msgid "Characters"
+#~ msgstr ""
 
 #: src/consts/tierlist/tierPalettes.ts:15
 msgid "Classic"
 msgstr ""
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:182
-msgid "Clear"
-msgstr ""
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:183
+#~ msgid "Clear"
+#~ msgstr ""
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:198
-msgid "Clear Tiers"
-msgstr ""
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:207
+#~ msgid "Clear Tiers"
+#~ msgstr ""
 
 #: src/components/tierlist/TierListTitle/TierListTitle.tsx:89
 msgid "Click to add title"
@@ -70,15 +74,19 @@ msgstr ""
 msgid "Click to rename"
 msgstr ""
 
+#: src/components/tierlist/TierSidePanel/TierSidePanel.tsx:89
+#~ msgid "Close panel"
+#~ msgstr ""
+
 #: src/components/tierlist/TierSettings/TierSettings.tsx:85
 msgid "Color"
 msgstr ""
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:213
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:220
 msgid "Color Palette"
 msgstr ""
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:45
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:54
 msgid "Comic Sans"
 msgstr ""
 
@@ -86,16 +94,28 @@ msgstr ""
 msgid "Cool"
 msgstr ""
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:41
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:50
 msgid "Courier"
 msgstr ""
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:37
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:46
 msgid "Default"
 msgstr ""
 
 #: src/components/tierlist/TierSettings/TierSettings.tsx:110
 msgid "Delete"
+msgstr ""
+
+#: src/components/tierlist/TierSidePanel/TierSidePanel.tsx:20
+#~ msgid "Design"
+#~ msgstr ""
+
+#: src/components/tierlist/CharacterPool/CharacterPool.tsx:36
+msgid "Drag into a tier · Right-click to change costume"
+msgstr ""
+
+#: src/components/tierlist/TierListApp/TierListApp.tsx:421
+msgid "Drag to resize · Double-click to reset"
 msgstr ""
 
 #: src/consts/tierlist/tierPalettes.ts:111
@@ -106,47 +126,67 @@ msgstr ""
 msgid "Enter title"
 msgstr ""
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:64
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:213
+msgid "Every character goes back to the unranked roster. Your tiers stay as they are."
+msgstr ""
+
+#: src/components/tierlist/CharacterPool/CharacterPool.tsx:56
+#~ msgid "Every character is ranked. Drag one back here to unrank it."
+#~ msgstr ""
+
+#: src/components/tierlist/CharacterPool/CharacterPool.tsx:59
+msgid "Every character is ranked. Drag one back here."
+msgstr ""
+
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:73
 msgid "Extra Bold"
 msgstr ""
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:135
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:147
 msgid "Fancy"
 msgstr ""
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:294
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:317
+msgid "Font Family"
+msgstr ""
+
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:341
 msgid "Font Size"
 msgstr ""
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:280
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:327
 msgid "Font Weight"
 msgstr ""
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:40
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:49
 msgid "Georgia"
 msgstr ""
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:142
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:157
 msgid "Image Style"
 msgstr ""
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:39
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:48
 msgid "Impact"
 msgstr ""
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:266
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:246
 msgid "Label Font"
 msgstr ""
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:107
+#: src/components/tierlist/TierDesignEditor/TierDesignEditor.tsx:101
+#~ msgid "Label Position"
+#~ msgstr ""
+
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:120
 msgid "Layout"
 msgstr ""
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:182
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:187
 msgid "Left"
 msgstr ""
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:163
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:166
 msgid "Main Art"
 msgstr ""
 
@@ -166,7 +206,7 @@ msgstr ""
 msgid "Neon"
 msgstr ""
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:61
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:70
 msgid "Normal"
 msgstr ""
 
@@ -178,67 +218,103 @@ msgstr ""
 msgid "Pastel"
 msgstr ""
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:189
-msgid "Reset"
-msgstr ""
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:190
+#~ msgid "Reset"
+#~ msgstr ""
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:208
-msgid "Reset All"
-msgstr ""
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:217
+#~ msgid "Reset All"
+#~ msgstr ""
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:204
+#: src/components/tierlist/TierListApp/TierListApp.tsx:397
+#~ msgid "Reset width"
+#~ msgstr ""
+
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:209
 msgid "Right"
 msgstr ""
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:192
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:204
 msgid "Save Image"
 msgstr ""
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:62
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:71
 msgid "Semi-Bold"
 msgstr ""
 
 #: src/components/tierlist/TierListSettings/TierListSettings.tsx:96
-msgid "Settings"
-msgstr ""
+#~ msgid "Settings"
+#~ msgstr ""
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:117
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:130
 msgid "Side"
 msgstr ""
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:154
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:194
+msgid "Start over"
+msgstr ""
+
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:221
+msgid "Start over?"
+msgstr ""
+
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:165
 msgid "Stock"
 msgstr ""
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:200
-msgid "This will move all characters back to the unranked pool. Your tiers will remain."
-msgstr ""
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:209
+#~ msgid "This will move all characters back to the unranked pool. Your tiers will remain."
+#~ msgstr ""
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:210
-msgid "This will reset everything to the default state, including tiers and all character placements."
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:219
+#~ msgid "This will reset everything to the default state, including tiers and all character placements."
+#~ msgstr ""
+
+#: src/components/tierlist/TierListApp/TierListApp.tsx:417
+msgid "Tier list width"
 msgstr ""
 
 #: src/components/tierlist/TierSettings/TierSettings.tsx:68
 msgid "Tier settings"
 msgstr ""
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:47
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:223
+#~ msgid "Tiers, names, colors and every character placement go back to the defaults."
+#~ msgstr ""
+
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:223
+msgid "Tiers, the title, the palette and every character placement go back to the defaults."
+msgstr ""
+
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:56
 msgid "Times"
 msgstr ""
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:170
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:173
 msgid "Title Alignment"
 msgstr ""
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:126
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:138
 msgid "Top"
 msgstr ""
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:51
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:60
 msgid "Trebuchet"
 msgstr ""
 
-#: src/components/tierlist/TierListSettings/TierListSettings.tsx:53
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:187
+msgid "Unrank all"
+msgstr ""
+
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:211
+msgid "Unrank all characters?"
+msgstr ""
+
+#: src/components/tierlist/CharacterPool/CharacterPool.tsx:32
+msgid "Unranked"
+msgstr ""
+
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:62
 msgid "Verdana"
 msgstr ""
 

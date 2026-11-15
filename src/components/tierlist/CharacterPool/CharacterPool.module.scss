@@ -1,31 +1,91 @@
 @use "@/_theme" as *;
 
+// The roster. Wide screen: a column beside the list, so the list keeps the
+// full height. Narrower: docked under the list, shrinking as characters are
+// ranked. Phone: a two-row strip that scrolls sideways.
 .poolWrapper {
+  flex: none;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
+  padding: var(--space-3) var(--space-4) var(--space-4);
+
+  background: var(--bg-raised);
+  border-top: 1px solid var(--border-strong);
+
+  @include wide {
+    width: clamp(340px, 34vw, 580px);
+    padding: var(--space-3) var(--space-4);
+    border-top: none;
+    border-left: 1px solid var(--border-strong);
+  }
 
   @include mobile {
     position: relative;
     gap: 0;
-    border-top: 1px solid var(--border-strong);
-    background: var(--bg-surface);
+    padding: 0;
+  }
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-1) var(--space-2);
+
+  @include mobile {
+    padding: var(--space-2) var(--space-2) 0;
   }
 }
 
 .title {
-  font-size: 16px;
+  margin: 0;
+  font-size: var(--font-size-md);
   font-weight: 600;
-  color: var(--fg-2);
+  line-height: 1.2;
+  color: var(--fg-1);
 
   @include mobile {
-    font-size: 11px;
-    padding: var(--space-1) var(--space-2) var(--space-1);
+    font-size: var(--font-size-sm);
+  }
+}
+
+.count {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent-9);
+}
+
+.hint {
+  margin-left: auto;
+  font-size: var(--font-size-sm);
+  color: var(--fg-3);
+
+  // Touch has neither a right-click nor room for the line.
+  @include mobile {
+    display: none;
   }
 }
 
 .scrollContainer {
+  max-height: 30dvh;
+  overflow-y: auto;
+  // Room for the hover ring on the outer characters.
+  margin: -2px;
+  padding: 2px;
+
+  @include wide {
+    flex: 1;
+    min-height: 0;
+    max-height: none;
+  }
+
   @include mobile {
+    max-height: none;
+    margin: 0;
+    padding: 0;
     overflow-x: auto;
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
@@ -48,18 +108,28 @@
 .pool {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: var(--space-1);
-  padding: var(--space-3);
-  min-height: 60px;
-  background: var(--gray-2);
-  border: 2px dashed var(--border-strong);
-  border-radius: var(--radius-md);
+  min-height: 50px;
   align-content: flex-start;
+  border-radius: var(--radius-sm);
+  transition: background-color var(--duration-base) var(--ease-standard);
+
+  &.over {
+    background-color: var(--accent-2);
+  }
+
+  // Fills the column so a drop anywhere in it lands in the pool.
+  @include wide {
+    justify-content: flex-start;
+    min-height: 100%;
+  }
 
   @include mobile {
     flex-wrap: nowrap;
+    justify-content: start;
+    min-height: 60px;
     padding: var(--space-2) 0 var(--space-2) var(--space-2);
-    border: none;
     border-radius: 0;
 
     // CSS grid: 2 rows that scroll horizontally
@@ -76,6 +146,23 @@
       grid-row: 1 / -1;
       width: 8px;
     }
+  }
+}
+
+.empty {
+  margin: 0;
+  padding: var(--space-3) var(--space-2);
+  width: 100%;
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
+  text-align: center;
+  color: var(--fg-3);
+
+  @include mobile {
+    grid-row: 1 / -1;
+    align-self: center;
+    width: calc(100vw - var(--space-4));
+    padding: var(--space-2);
   }
 }
 

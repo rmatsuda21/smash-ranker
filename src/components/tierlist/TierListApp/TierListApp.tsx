@@ -1,4 +1,11 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   DndContext,
   DragOverlay,
@@ -17,6 +24,8 @@ import { FaPlus } from "react-icons/fa6";
 import cn from "classnames";
 
 import { Trans } from "@lingui/react/macro";
+import { msg } from "@lingui/core/macro";
+import { useLingui } from "@lingui/react";
 
 import { TierRow } from "@/components/tierlist/TierRow/TierRow";
 import { CharacterPool } from "@/components/tierlist/CharacterPool/CharacterPool";
@@ -40,6 +49,10 @@ type AltPickerState = {
   position: { x: number; y: number };
 } | null;
 
+const MIN_WIDTH = 300;
+const DEFAULT_WIDTH = 600;
+const KEYBOARD_STEP = 16;
+
 const findContainer = (
   instanceId: string,
   tiers: { id: string; characterIds: string[] }[],
@@ -53,6 +66,7 @@ const findContainer = (
 };
 
 export const TierListApp = () => {
+  const { _ } = useLingui();
   const dispatch = useTierListStore((s) => s.dispatch);
   const tiers = useTierListStore((s) => s.tiers);
   const pool = useTierListStore((s) => s.pool);
@@ -75,7 +89,45 @@ export const TierListApp = () => {
   const [activeId, setActiveId] = useState<string | null>(null);
   const [altPicker, setAltPicker] = useState<AltPickerState>(null);
   const exportRef = useRef<HTMLDivElement>(null);
-  const isResizing = useRef(false);
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const [availableWidth, setAvailableWidth] = useState(Infinity);
+  const [isResizing, setIsResizing] = useState(false);
+
+  // The list never grows past the room beside it, so its resize handle
+  // cannot end up under the roster or off the screen. The stored width is
+  // left alone when the window shrinks and comes back when it grows.
+  useLayoutEffect(() => {
+    const area = scrollAreaRef.current;
+    if (!area) return;
+    const measure = () => {
+      const style = getComputedStyle(area);
+      setAvailableWidth(
+        area.clientWidth -
+          parseFloat(style.paddingLeft) -
+          parseFloat(style.paddingRight),
+      );
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(area);
+    return () => observer.disconnect();
+  }, []);
+
+  // On a phone the list always spans the screen (CSS), whatever width is
+  // stored, so the row is sized from the room there actually is.
+  const isPhone = window.matchMedia("(max-width: 768px)").matches;
+  const maxWidth = Math.max(MIN_WIDTH, Math.floor(availableWidth));
+  const listWidth = isPhone ? maxWidth : Math.min(tierListWidth, maxWidth);
+
+  const setWidth = useCallback(
+    (width: number) => {
+      dispatch({
+        type: "SET_TIER_LIST_WIDTH",
+        width: Math.round(Math.min(Math.max(MIN_WIDTH, width), maxWidth)),
+      });
+    },
+    [dispatch, maxWidth],
+  );
 
   const tiersRef = useRef(tiers);
   tiersRef.current = tiers;
@@ -242,32 +294,46 @@ export const TierListApp = () => {
   );
 
   const handleResizePointerDown = useCallback(
-    (e: React.PointerEvent) => {
+    (e: React.PointerEvent<HTMLDivElement>) => {
+      if (e.button !== 0) return;
       e.preventDefault();
-      isResizing.current = true;
+      const handle = e.currentTarget;
       const startX = e.clientX;
-      const startWidth = tierListWidth;
+      const startWidth = listWidth;
+      handle.setPointerCapture(e.pointerId);
+      setIsResizing(true);
 
       const onPointerMove = (moveEvent: PointerEvent) => {
-        const delta = moveEvent.clientX - startX;
-        const newWidth = Math.min(
-          Math.max(300, startWidth + delta),
-          window.innerWidth - 48,
-        );
-        dispatch({ type: "SET_TIER_LIST_WIDTH", width: newWidth });
+        // The list is centred, so it grows on both sides: twice the pointer
+        // travel keeps the handle under the cursor.
+        setWidth(startWidth + (moveEvent.clientX - startX) * 2);
       };
 
-      const onPointerUp = () => {
-        isResizing.current = false;
-        document.removeEventListener("pointermove", onPointerMove);
-        document.removeEventListener("pointerup", onPointerUp);
+      const stop = () => {
+        setIsResizing(false);
+        handle.removeEventListener("pointermove", onPointerMove);
+        handle.removeEventListener("pointerup", stop);
+        handle.removeEventListener("pointercancel", stop);
       };
 
-      document.addEventListener("pointermove", onPointerMove);
-      document.addEventListener("pointerup", onPointerUp);
+      handle.addEventListener("pointermove", onPointerMove);
+      handle.addEventListener("pointerup", stop);
+      handle.addEventListener("pointercancel", stop);
     },
-    [tierListWidth, dispatch],
+    [listWidth, setWidth],
   );
+
+  const handleResizeKeyDown = (e: React.KeyboardEvent) => {
+    const next = {
+      ArrowLeft: listWidth - KEYBOARD_STEP,
+      ArrowRight: listWidth + KEYBOARD_STEP,
+      Home: MIN_WIDTH,
+      End: maxWidth,
+    }[e.key];
+    if (next === undefined) return;
+    e.preventDefault();
+    setWidth(next);
+  };
 
   const handleCharacterContextMenu = useCallback(
     (instanceId: string, e: React.MouseEvent) => {
@@ -287,9 +353,9 @@ export const TierListApp = () => {
     const GAP = 4;
 
     const overhead = layout === "top" ? 10 : 90;
-    const content = Math.max(0, tierListWidth - overhead);
+    const content = Math.max(0, listWidth - overhead);
     return Math.max(1, Math.ceil((content + GAP) / (MAX_CELL + GAP)));
-  }, [tierListWidth, layout]);
+  }, [listWidth, layout]);
 
   return (
     <div className={styles.root}>
@@ -301,62 +367,80 @@ export const TierListApp = () => {
         onDragOver={handleDragOver}
         onDragEnd={handleDragEnd}
       >
-        <div className={styles.contentRow}>
-          <div
-            className={styles.resizeContainer}
-            style={
-              {
-                width: tierListWidth,
-                "--tier-cols": tierCols,
-              } as React.CSSProperties
-            }
-          >
+        <div className={styles.body}>
+          <div ref={scrollAreaRef} className={styles.scrollArea}>
             <div
-              ref={exportRef}
-              className={cn(
-                styles.tierList,
-                layout === "fancy" && styles.fancySpacing,
-              )}
+              className={styles.resizeContainer}
+              style={
+                {
+                  width: listWidth,
+                  "--tier-cols": tierCols,
+                } as React.CSSProperties
+              }
             >
-              <TierListTitle
-                title={title}
-                labelFont={labelFont}
-                titleAlign={titleAlign}
-                onChangeTitle={(t) => dispatch({ type: "SET_TITLE", title: t })}
-              />
-              {tiers.map((tier, index) => (
-                <TierRow
-                  key={tier.id}
-                  tier={tier}
-                  tierIndex={index}
-                  tierCount={tiers.length}
-                  imageMode={imageMode}
-                  layout={layout}
+              <div
+                ref={exportRef}
+                className={cn(
+                  styles.tierList,
+                  layout === "fancy" && styles.fancySpacing,
+                )}
+              >
+                <TierListTitle
+                  title={title}
                   labelFont={labelFont}
-                  onCharacterContextMenu={handleCharacterContextMenu}
+                  titleAlign={titleAlign}
+                  onChangeTitle={(t) =>
+                    dispatch({ type: "SET_TITLE", title: t })
+                  }
                 />
-              ))}
+                {tiers.map((tier, index) => (
+                  <TierRow
+                    key={tier.id}
+                    tier={tier}
+                    tierIndex={index}
+                    tierCount={tiers.length}
+                    imageMode={imageMode}
+                    layout={layout}
+                    labelFont={labelFont}
+                    onCharacterContextMenu={handleCharacterContextMenu}
+                  />
+                ))}
+              </div>
+              <button
+                type="button"
+                className={styles.addTierButton}
+                onClick={handleAddTier}
+                data-export-ignore
+              >
+                <FaPlus size={12} /> <Trans>Add Tier</Trans>
+              </button>
+
+              <div
+                className={cn(styles.resizeHandle, {
+                  [styles.resizing]: isResizing,
+                })}
+                role="separator"
+                aria-orientation="vertical"
+                aria-label={_(msg`Tier list width`)}
+                aria-valuemin={MIN_WIDTH}
+                aria-valuemax={maxWidth}
+                aria-valuenow={listWidth}
+                title={_(msg`Drag to resize · Double-click to reset`)}
+                tabIndex={0}
+                onPointerDown={handleResizePointerDown}
+                onDoubleClick={() => setWidth(DEFAULT_WIDTH)}
+                onKeyDown={handleResizeKeyDown}
+              >
+                <span className={styles.resizeReadout} aria-hidden="true">
+                  {listWidth}px
+                </span>
+              </div>
             </div>
-            <button
-              className={styles.addTierButton}
-              onClick={handleAddTier}
-              data-export-ignore
-            >
-              <FaPlus size={12} /> <Trans>Add Tier</Trans>
-            </button>
-
-            <div
-              className={styles.resizeHandle}
-              onPointerDown={handleResizePointerDown}
-            />
           </div>
-
-          <div className={styles.poolSide}>
-            <CharacterPool
-              imageMode={imageMode}
-              onCharacterContextMenu={handleCharacterContextMenu}
-            />
-          </div>
+          <CharacterPool
+            imageMode={imageMode}
+            onCharacterContextMenu={handleCharacterContextMenu}
+          />
         </div>
 
         <DragOverlay dropAnimation={null}>

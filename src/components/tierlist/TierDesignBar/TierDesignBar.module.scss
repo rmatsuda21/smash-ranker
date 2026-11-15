@@ -1,0 +1,209 @@
+@use "@/_theme" as *;
+
+// Sits in the toolbar, so it brings no surface of its own.
+.bar {
+  // Containing block for the visually hidden labels: without it they sit
+  // outside this scroller and widen the page by whatever is scrolled off.
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: safe center;
+  gap: var(--space-4);
+  overflow-x: auto;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  @include mobile {
+    justify-content: flex-start;
+    gap: var(--space-3);
+  }
+}
+
+.group {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.label {
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--fg-3);
+  white-space: nowrap;
+}
+
+// Every control in the bar is one height.
+.group > [role="radiogroup"],
+.trigger {
+  box-sizing: border-box;
+  height: 30px;
+
+  @include mobile {
+    height: 36px;
+  }
+}
+
+.group > [role="radiogroup"] > button {
+  min-width: 28px;
+  white-space: nowrap;
+}
+
+.trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding-inline: var(--space-2);
+
+  font-family: inherit;
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--fg-2);
+  background-color: var(--bg-raised);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition:
+    background-color var(--duration-fast) var(--ease-in-out),
+    border-color var(--duration-fast) var(--ease-in-out),
+    color var(--duration-fast) var(--ease-in-out);
+
+  &:hover,
+  &[aria-expanded="true"] {
+    background-color: var(--gray-4);
+    color: var(--fg-1);
+  }
+
+  &[aria-expanded="true"] {
+    border-color: var(--accent-7);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent-9);
+    outline-offset: 2px;
+  }
+}
+
+.caret {
+  width: 10px;
+  height: 10px;
+  color: var(--fg-3);
+}
+
+.fontName {
+  max-width: 96px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fontSize {
+  font-variant-numeric: tabular-nums;
+  color: var(--fg-3);
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.popover {
+  gap: var(--space-1);
+}
+
+.fontPopover {
+  gap: var(--space-3);
+  padding: var(--space-3);
+}
+
+.dropdown {
+  width: 100%;
+}
+
+// The shared Slider colours its label with the accent; match the quiet
+// field labels used across the editor tabs instead.
+div.size label {
+  width: 100%;
+  font-weight: 500;
+  color: var(--fg-3);
+}
+
+.sliderLabel {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+  width: 100%;
+}
+
+.sliderValue {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--fg-1);
+}
+
+.paletteOption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  width: 100%;
+  min-height: 32px;
+  padding: var(--space-1) var(--space-2);
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  background: none;
+  color: var(--fg-2);
+  font-family: inherit;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition-property: background-color, border-color, color;
+  transition-duration: var(--duration-base);
+  transition-timing-function: var(--ease-standard);
+
+  &:hover {
+    background: var(--gray-4);
+    color: var(--fg-1);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent-9);
+    outline-offset: -2px;
+  }
+
+  &.active {
+    background: var(--accent-3);
+    border-color: var(--accent-7);
+    color: var(--fg-1);
+    font-weight: 600;
+  }
+
+  @include mobile {
+    min-height: 40px;
+  }
+}
+
+.paletteName {
+  text-align: left;
+}
+
+.paletteSwatches {
+  display: flex;
+  flex-shrink: 0;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.paletteSwatch {
+  width: 16px;
+  height: 16px;
+}

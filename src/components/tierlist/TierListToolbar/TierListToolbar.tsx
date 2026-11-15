@@ -1,12 +1,17 @@
 import { useState } from "react";
-import { FaArrowRotateLeft, FaDownload, FaEraser } from "react-icons/fa6";
+import {
+  FaArrowRotateLeft,
+  FaDownload,
+  FaRightFromBracket,
+} from "react-icons/fa6";
+import cn from "classnames";
 import { Trans } from "@lingui/react/macro";
 import { msg } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 
 import { Button } from "@/components/shared/Button/Button";
 import { ConfirmationModal } from "@/components/shared/ConfirmationModal/ConfirmationModal";
-import { TierListSettings } from "@/components/tierlist/TierListSettings/TierListSettings";
+import { TierDesignBar } from "@/components/tierlist/TierDesignBar/TierDesignBar";
 import { useTierListStore } from "@/store/tierListStore";
 import { downloadBlob } from "@/utils/top8/downloadBlob";
 import { renderElementToCanvas } from "@/utils/tierlist/renderElementToCanvas";
@@ -172,32 +177,40 @@ export const TierListToolbar = ({ exportRef }: Props) => {
   };
 
   return (
-    <div className={styles.toolbar}>
-      <TierListSettings />
-      <Button
-        size="md"
-        variant="outline"
-        onClick={() => setConfirmAction("clear")}
-      >
-        <FaEraser size={14} /> <Trans>Clear</Trans>
-      </Button>
-      <Button
-        size="md"
-        variant="outline"
-        onClick={() => setConfirmAction("reset")}
-      >
-        <FaArrowRotateLeft size={14} /> <Trans>Reset</Trans>
-      </Button>
-      <Button size="md" onClick={handleExport} loading={exporting}>
-        <FaDownload size={14} /> <Trans>Save Image</Trans>
-      </Button>
+    <header className={styles.header}>
+      <div className={styles.group}>
+        <Button
+          variant="subtle"
+          className={styles.button}
+          onClick={() => setConfirmAction("clear")}
+        >
+          <FaRightFromBracket size={14} /> <Trans>Unrank all</Trans>
+        </Button>
+        <Button
+          variant="subtle"
+          className={styles.button}
+          onClick={() => setConfirmAction("reset")}
+        >
+          <FaArrowRotateLeft size={14} /> <Trans>Start over</Trans>
+        </Button>
+      </div>
+      <TierDesignBar className={styles.designBar} />
+      <div className={cn(styles.group, styles.export)}>
+        <Button
+          className={styles.button}
+          onClick={handleExport}
+          loading={exporting}
+        >
+          <FaDownload size={14} /> <Trans>Save Image</Trans>
+        </Button>
+      </div>
 
       <ConfirmationModal
         isOpen={confirmAction === "clear"}
         onClose={() => setConfirmAction(null)}
-        title={_(msg`Clear Tiers`)}
+        title={_(msg`Unrank all characters?`)}
         description={_(
-          msg`This will move all characters back to the unranked pool. Your tiers will remain.`,
+          msg`Every character goes back to the unranked roster. Your tiers stay as they are.`,
         )}
         onConfirm={handleConfirm}
         onCancel={() => setConfirmAction(null)}
@@ -205,13 +218,13 @@ export const TierListToolbar = ({ exportRef }: Props) => {
       <ConfirmationModal
         isOpen={confirmAction === "reset"}
         onClose={() => setConfirmAction(null)}
-        title={_(msg`Reset All`)}
+        title={_(msg`Start over?`)}
         description={_(
-          msg`This will reset everything to the default state, including tiers and all character placements.`,
+          msg`Tiers, the title, the palette and every character placement go back to the defaults.`,
         )}
         onConfirm={handleConfirm}
         onCancel={() => setConfirmAction(null)}
       />
-    </div>
+    </header>
   );
 };
