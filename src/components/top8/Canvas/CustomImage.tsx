@@ -2,10 +2,13 @@ import { ComponentProps, memo, useEffect, useRef } from "react";
 import { Image } from "react-konva";
 
 import { useCustomImage } from "@/hooks/top8/useCustomImage";
-import { useRenderMode } from "@/components/top8/Canvas/RenderModeContext";
-import { useExportSettingsStore } from "@/store/exportSettingsStore";
+import {
+  useBitmapScale,
+  useRenderProfile,
+} from "@/components/top8/Canvas/RenderProfileContext";
 
 const BACKDROP_OFFSET = 10;
+const DEFAULT_SHADOW_OFFSET = { x: BACKDROP_OFFSET, y: BACKDROP_OFFSET };
 
 type Props = Omit<ComponentProps<typeof Image>, "image"> & {
   width: number;
@@ -29,7 +32,7 @@ const CustomImageComponent = ({
   hasShadow = false,
   shadowColor = "red",
   shadowBlur = 3,
-  shadowOffset = { x: BACKDROP_OFFSET, y: BACKDROP_OFFSET },
+  shadowOffset = DEFAULT_SHADOW_OFFSET,
   shadowOpacity: _shadowOpacity,
   x = 0,
   y = 0,
@@ -48,17 +51,12 @@ const CustomImageComponent = ({
   onReadyRef.current = onReady;
   onErrorRef.current = onError;
 
-  const renderMode = useRenderMode();
-  const skipNodeCache = renderMode === "mobile";
+  const { cacheShadowedImages } = useRenderProfile();
+  const bakeScale = useBitmapScale();
 
-  // On mobile the screen needs well under 1 backing pixel per design pixel,
-  // so the only reason to bake larger is the export. Follow the mobile
-  // export setting (1× by default) instead of always baking at 2×.
-  const mobileExportRatio = useExportSettingsStore((s) => s.mobilePixelRatio);
-  const bakeScale =
-    renderMode === "mobile"
-      ? Math.min(2, Math.max(1, mobileExportRatio))
-      : undefined;
+  // The baked canvas is already a plain blit, so a node cache only pays for
+  // itself when it saves re-running a shadow blur on every redraw.
+  const useNodeCache = cacheShadowedImages && shadowOpacity > 0;
 
   const { finalImage, ref } = useCustomImage({
     imageSrc,
@@ -77,23 +75,19 @@ const CustomImageComponent = ({
   useEffect(() => {
     if (!ref.current || !finalImage) return;
 
-    if (skipNodeCache) {
-      ref.current.clearCache();
-      return;
-    }
-
-    // Desktop: always cache after the image is ready so subsequent re-renders
-    // blit a pre-rasterized bitmap instead of re-running the image draw path.
     ref.current.clearCache();
-    ref.current.cache();
+    // Same density as the bake, so exports don't upscale a screen-res cache.
+    if (useNodeCache) ref.current.cache({ pixelRatio: bakeScale });
   }, [
     shadowColor,
     shadowBlur,
-    shadowOffset,
+    shadowOffset.x,
+    shadowOffset.y,
     shadowOpacity,
     finalImage,
     ref,
-    skipNodeCache,
+    useNodeCache,
+    bakeScale,
   ]);
 
   if (!finalImage) return null;

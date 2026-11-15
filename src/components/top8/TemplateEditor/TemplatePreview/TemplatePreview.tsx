@@ -9,7 +9,7 @@ import { createKonvaElements } from "@/utils/top8/elementFactory";
 import { createSamplePlayers } from "@/utils/top8/samplePlayers";
 import { TournamentInfo } from "@/types/top8/Tournament";
 import { useTooltip } from "@/components/shared/Tooltip/useTooltip";
-import { isMobile } from "@/utils/isMobile";
+import { getDeviceRenderProfile } from "@/utils/top8/renderProfile";
 import { previewCache } from "@/db/previewCache";
 import { Spinner } from "@/components/shared/Spinner/Spinner";
 import { useEditorStore } from "@/store/editorStore";
@@ -136,7 +136,6 @@ const RenderedPreview = (props: Props) => {
   const [hasSlot, setHasSlot] = useState(false);
   const [isFontLoaded, setIsFontLoaded] = useState(false);
 
-  const mobile = isMobile();
   const stageRef = useRef<KonvaStage>(null);
   const releaseRef = useRef<(() => void) | null>(null);
   const catalogFetching = useFontStore((state) => state.fetching);
@@ -321,9 +320,7 @@ const RenderedPreview = (props: Props) => {
     }
 
     try {
-      const canvas = stageRef.current.toCanvas({
-        pixelRatio: mobile ? 0.25 : 1,
-      });
+      const canvas = stageRef.current.toCanvas({ pixelRatio: 1 });
       canvas.toBlob(
         (blob) => {
           canvas.width = 0;
@@ -351,7 +348,7 @@ const RenderedPreview = (props: Props) => {
       setStageCaptured(true);
       releaseRef.current?.();
     }
-  }, [template.id, mobile]);
+  }, [template.id]);
 
   useEffect(() => {
     if (isBackgroundReady && isTournamentReady && isPlayerReady) {
@@ -376,7 +373,7 @@ const RenderedPreview = (props: Props) => {
             width={template.design.canvasSize.width}
             height={template.design.canvasSize.height}
             listening={false}
-            pixelRatio={mobile ? 0.25 : 1}
+            pixelRatio={1}
           >
             <Layer listening={false}>{backgroundElements}</Layer>
             <Layer listening={false}>{playerElements}</Layer>
@@ -480,7 +477,7 @@ const UserTemplatePreview = (props: Props) => {
     return <CachedPreview {...props} blob={cachedBlob} />;
   }
 
-  if (isMobile()) {
+  if (!getDeviceRenderProfile().renderTemplatePreviews) {
     return (
       <PreviewShell {...props}>
         <div className={styles.placeholder}>{template.name}</div>

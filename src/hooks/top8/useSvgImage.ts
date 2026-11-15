@@ -1,12 +1,12 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 
 import { LRUCache } from "@/utils/LRUCache";
-import { isMobile } from "@/utils/isMobile";
+import { getDeviceRenderProfile } from "@/utils/top8/renderProfile";
 import { logError } from "@/utils/observability/log";
 
 const svgTextCache = new LRUCache<string, string>(50);
 
-const RECOLORED_CACHE_SIZE = isMobile() ? 30 : 80;
+const RECOLORED_CACHE_SIZE = getDeviceRenderProfile().recoloredSvgCacheSize;
 type RecoloredEntry = { url: string; image: HTMLImageElement };
 const recoloredCache = new LRUCache<string, RecoloredEntry>(
   RECOLORED_CACHE_SIZE,

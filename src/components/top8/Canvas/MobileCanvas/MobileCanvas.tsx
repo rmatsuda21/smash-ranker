@@ -10,7 +10,8 @@ import { BracketLoader } from "@/components/shared/BracketLoader/BracketLoader";
 import { useEffectiveCanvasSize } from "@/hooks/top8/useEffectiveCanvasSize";
 import { loadFamily } from "@/utils/fonts/fontLoader";
 import { collectDesignFontWeights } from "@/utils/fonts/designWeights";
-import { RenderModeContext } from "@/components/top8/Canvas/RenderModeContext";
+import { RenderProfileContext } from "@/components/top8/Canvas/RenderProfileContext";
+import { MOBILE_PROFILE } from "@/utils/top8/renderProfile";
 import { MobileGraphicLayer } from "@/components/top8/Canvas/MobileCanvas/MobileGraphicLayer";
 import {
   applyBackingRatio,
@@ -161,9 +162,9 @@ export const MobileCanvas = ({ className }: Props) => {
                 {/* Inner Provider keeps context inside Konva's subtree;
                     react-konva v19 propagates context but we provide
                     explicitly so the boundary is unambiguous. */}
-                <RenderModeContext value="mobile">
+                <RenderProfileContext value={MOBILE_PROFILE}>
                   <MobileGraphicLayer />
-                </RenderModeContext>
+                </RenderProfileContext>
               </Stage>
             )}
           </div>

@@ -6,13 +6,11 @@ import {
   buildStageBlobKey,
   type StageBlobCache,
 } from "@/hooks/top8/useStageBlobCache";
-import { isMobile } from "@/utils/isMobile";
+import { getDeviceRenderProfile } from "@/utils/top8/renderProfile";
 
 type ParseTweetFn = (text: string) => { weightedLength: number };
 
-// Design resolution on mobile (matches the mobile export default, so the
-// two surfaces share one cached blob); 2× elsewhere.
-const SOCIAL_PIXEL_RATIO = isMobile() ? 1 : 2;
+const SOCIAL_PIXEL_RATIO = getDeviceRenderProfile().socialPixelRatio;
 const SOCIAL_CACHE_KEY = buildStageBlobKey("image/png", SOCIAL_PIXEL_RATIO, 1);
 
 /**

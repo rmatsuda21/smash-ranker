@@ -2,16 +2,14 @@ import { useEffect, useRef, useState } from "react";
 import { Image as KonvaImage } from "konva/lib/shapes/Image";
 
 import { LRUCache } from "@/utils/LRUCache";
-import { isMobile } from "@/utils/isMobile";
+import { getDeviceRenderProfile } from "@/utils/top8/renderProfile";
 
-const MOBILE = isMobile();
-
-// Desktop keeps decoded sources around so interactive edits (resize, crop,
-// template switch) re-bake instantly. On mobile we keep none: character art
+// Decoded sources are kept so interactive edits (resize, crop, template
+// switch) re-bake instantly. Profiles that opt out keep none: character art
 // is up to ~2000px square (~15 MB decoded each) and only the baked,
 // slot-sized canvas is ever drawn. A re-bake there re-reads the file from
 // the browser's HTTP cache instead.
-const sourceCache = MOBILE
+const sourceCache = !getDeviceRenderProfile().keepSourceImages
   ? null
   : new LRUCache<string, HTMLImageElement>(200, (_key, img) => {
       // Only clear event handlers — an evicted image may still be mid-bake.

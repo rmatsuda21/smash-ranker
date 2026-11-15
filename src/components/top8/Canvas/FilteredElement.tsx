@@ -11,8 +11,6 @@ import {
 
 import { ElementFilterConfig } from "@/types/top8/Design";
 import { FilteredGroup } from "@/components/top8/Canvas/FilteredGroup";
-import { MobileFilteredGroup } from "@/components/top8/Canvas/MobileCanvas/MobileFilteredGroup";
-import { useRenderMode } from "@/components/top8/Canvas/RenderModeContext";
 
 type Props = PropsWithChildren<
   React.ComponentProps<typeof FilteredGroup> & {
@@ -21,7 +19,6 @@ type Props = PropsWithChildren<
 >;
 
 export const FilteredElement = ({ children, ...rest }: Props) => {
-  const renderMode = useRenderMode();
   const [contentVersion, setContentVersion] = useState(0);
   const invalidateTimeoutRef = useRef<
     ReturnType<typeof setTimeout> | undefined
@@ -111,12 +108,9 @@ export const FilteredElement = ({ children, ...rest }: Props) => {
     });
   })();
 
-  const Component =
-    renderMode === "mobile" ? MobileFilteredGroup : FilteredGroup;
-
   return (
-    <Component {...rest} invalidateCacheKey={contentVersion}>
+    <FilteredGroup {...rest} invalidateCacheKey={contentVersion}>
       {maybeAugmentedChild}
-    </Component>
+    </FilteredGroup>
   );
 };

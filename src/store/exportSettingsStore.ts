@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
-import { isMobile } from "@/utils/isMobile";
+import { getDeviceRenderProfile } from "@/utils/top8/renderProfile";
 
 export const PIXEL_RATIO_MIN = 0.5;
 export const PIXEL_RATIO_MAX = 4;
@@ -105,7 +105,7 @@ export const useExportSettingsStore = create<ExportSettingsState>()(
 /** Export pixel ratio for the current device class, with its setter and
  *  upper bound. Desktop and mobile persist separate values. */
 export const useExportPixelRatio = () => {
-  const mobile = isMobile();
+  const mobile = getDeviceRenderProfile().id === "mobile";
   const pixelRatio = useExportSettingsStore((s) =>
     mobile ? s.mobilePixelRatio : s.pixelRatio,
   );

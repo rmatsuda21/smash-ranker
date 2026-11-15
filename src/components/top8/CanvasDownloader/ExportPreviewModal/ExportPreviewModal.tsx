@@ -9,7 +9,7 @@ import { Spinner } from "@/components/shared/Spinner/Spinner";
 import { useCanvasStore } from "@/store/canvasStore";
 import { useTournamentStore } from "@/store/tournamentStore";
 import { exportCanvas } from "@/utils/top8/exportCanvas";
-import { isMobile } from "@/utils/isMobile";
+import { getDeviceRenderProfile } from "@/utils/top8/renderProfile";
 import { downloadBlob } from "@/utils/top8/downloadBlob";
 import { copyImageToClipboard } from "@/utils/social/clipboardImage";
 import { logEvent, setPerson, setPersonOnce } from "@/utils/observability/log";
@@ -99,9 +99,7 @@ export const ExportPreviewModal = ({
           pixelRatio,
           mimeType,
           quality,
-          // On mobile, never make the browser decode more than design
-          // resolution just to show the preview.
-          previewPixelRatio: isMobile() ? 1 : undefined,
+          previewPixelRatio: getDeviceRenderProfile().exportPreviewPixelRatio,
         });
 
         if (cancelled) return;

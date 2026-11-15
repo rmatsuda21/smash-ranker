@@ -4,6 +4,7 @@ import { FaChevronUp, FaChevronDown } from "react-icons/fa6";
 
 import { preloadCharacterImages } from "@/utils/top8/preloadCharacterImages";
 import { isMobile } from "@/utils/isMobile";
+import { getDeviceRenderProfile } from "@/utils/top8/renderProfile";
 import { useEditorStore } from "@/store/editorStore";
 import { SidePanel } from "@/components/top8/SidePanel/SidePanel";
 import { Header } from "@/components/top8/Ranker/Header/Header";
@@ -28,7 +29,9 @@ const MobileCanvas = lazy(() =>
 export const Ranker = () => {
   const isCanvasExpanded = useEditorStore((s) => s.isCanvasExpanded);
   const dispatch = useEditorStore((s) => s.dispatch);
+  // Layout (narrow screen) and canvas capability are separate questions.
   const mobile = isMobile();
+  const { interactive } = getDeviceRenderProfile();
 
   const toggleCanvas = useCallback(() => {
     dispatch({ type: "TOGGLE_CANVAS_EXPANDED" });
@@ -60,10 +63,10 @@ export const Ranker = () => {
               </div>
             }
           >
-            {mobile ? (
-              <MobileCanvas className={styles.canvas} />
-            ) : (
+            {interactive ? (
               <Canvas className={styles.canvas} />
+            ) : (
+              <MobileCanvas className={styles.canvas} />
             )}
           </Suspense>
         </div>
