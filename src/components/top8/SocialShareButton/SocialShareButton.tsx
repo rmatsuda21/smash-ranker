@@ -47,7 +47,11 @@ export const SocialShareButton = ({
           <FaArrowUpFromBracket size={16} />
         </Button>
       </div>
-      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+      <Modal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        aria-label={_(msg`Share to social`)}
+      >
         <Suspense
           fallback={
             <div className={styles.suspenseFallback}>

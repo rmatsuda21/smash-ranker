@@ -6,7 +6,10 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { createPortal } from "react-dom";
 import cn from "classnames";
+
+import { usePortalContainer } from "@/components/shared/Modal/modalStack";
 
 import {
   ToastContext,
@@ -61,36 +64,41 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const value = useMemo(() => ({ showToast }), [showToast]);
+  // Inside the open modal when there is one, so toasts aren't hidden behind
+  // its backdrop or made inert.
+  const portalContainer = usePortalContainer();
 
   return (
     <ToastContext.Provider value={value}>
       {children}
-      {toasts.length > 0 && (
-        <div
-          className={styles.viewport}
-          role="region"
-          aria-label="Notifications"
-        >
-          {toasts.map((toast) => (
-            <div
-              key={toast.id}
-              role={toast.variant === "error" ? "alert" : "status"}
-              className={cn(styles.toast, styles[toast.variant])}
-            >
-              <span className={styles.indicator} aria-hidden="true" />
-              <div className={styles.message}>{toast.message}</div>
-              <button
-                type="button"
-                className={styles.close}
-                onClick={() => dismiss(toast.id)}
-                aria-label="Dismiss"
+      {toasts.length > 0 &&
+        createPortal(
+          <div
+            className={styles.viewport}
+            role="region"
+            aria-label="Notifications"
+          >
+            {toasts.map((toast) => (
+              <div
+                key={toast.id}
+                role={toast.variant === "error" ? "alert" : "status"}
+                className={cn(styles.toast, styles[toast.variant])}
               >
-                ×
-              </button>
-            </div>
-          ))}
-        </div>
-      )}
+                <span className={styles.indicator} aria-hidden="true" />
+                <div className={styles.message}>{toast.message}</div>
+                <button
+                  type="button"
+                  className={styles.close}
+                  onClick={() => dismiss(toast.id)}
+                  aria-label="Dismiss"
+                >
+                  ×
+                </button>
+              </div>
+            ))}
+          </div>,
+          portalContainer,
+        )}
     </ToastContext.Provider>
   );
 };

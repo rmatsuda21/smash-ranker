@@ -13,16 +13,12 @@ import {
   useDismissOnEscape,
   useDismissOnOutsideClick,
 } from "@/hooks/useDismiss";
+import { usePortalContainer } from "@/components/shared/Modal/modalStack";
 
 import styles from "./Popover.module.scss";
 
 export type PopoverPlacement =
-  | "bottom-start"
-  | "bottom-end"
-  | "bottom"
-  | "top-start"
-  | "top-end"
-  | "top";
+  "bottom-start" | "bottom-end" | "bottom" | "top-start" | "top-end" | "top";
 
 interface PopoverProps {
   anchorRef: RefObject<HTMLElement | null>;
@@ -58,6 +54,7 @@ export const Popover = ({
   children,
 }: PopoverProps) => {
   const popoverRef = useRef<HTMLDivElement>(null);
+  const portalContainer = usePortalContainer();
   const [position, setPosition] = useState<Position | null>(null);
 
   const computePosition = useCallback((): Position | null => {
@@ -158,6 +155,6 @@ export const Popover = ({
     >
       {children}
     </div>,
-    document.body,
+    portalContainer,
   );
 };

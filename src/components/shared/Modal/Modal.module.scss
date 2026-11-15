@@ -1,18 +1,32 @@
 @use "@/_theme" as *;
 
+/* The <dialog> is only a positioning shell: the visible box is .content, so
+   every click that targets the dialog itself is a backdrop click. */
 .modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: var(--z-popover);
+  margin: auto;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  max-width: 100vw;
+  max-height: 100dvh;
 
-  animation: fadeIn var(--duration-base) var(--ease-in-out);
+  /* Keep scroll gestures inside the dialog from chaining to the page. */
+  overscroll-behavior: contain;
+
+  &[open] {
+    animation: fadeIn var(--duration-base) var(--ease-in-out);
+  }
+
+  &::backdrop {
+    background-color: rgba(0, 0, 0, 0.3);
+    animation: fadeIn 0.15s ease-in-out;
+
+    /* A scroll container, so overscroll-behavior applies over the backdrop. */
+    overflow: hidden;
+    overscroll-behavior: contain;
+  }
 }
 
 @keyframes fadeIn {
@@ -24,20 +38,9 @@
   }
 }
 
-.overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.3);
-  z-index: 0;
-}
-
 .content {
   background-color: var(--bg-surface);
   border: 1px solid var(--border);
-  z-index: 1;
 
   padding: var(--space-5);
   border-radius: var(--radius);

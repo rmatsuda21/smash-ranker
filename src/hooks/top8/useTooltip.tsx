@@ -1,6 +1,8 @@
 import { useRef, useState, useCallback, useLayoutEffect } from "react";
 import { createPortal } from "react-dom";
 
+import { usePortalContainer } from "@/components/shared/Modal/modalStack";
+
 const DEFAULT_DELAY = 200;
 
 type Options = {
@@ -23,6 +25,7 @@ export const useTooltip = ({ tooltip, delay = DEFAULT_DELAY }: Options) => {
   const tooltipTimeout = useRef<ReturnType<typeof setTimeout>>(null);
   const triggerRef = useRef<HTMLElement | null>(null);
   const tooltipRef = useRef<HTMLDivElement | null>(null);
+  const portalContainer = usePortalContainer();
 
   const updatePosition = useCallback(() => {
     if (!triggerRef.current || !tooltipRef.current) return;
@@ -89,7 +92,7 @@ export const useTooltip = ({ tooltip, delay = DEFAULT_DELAY }: Options) => {
       </div>
     );
 
-    return createPortal(tooltipElement, document.body);
+    return createPortal(tooltipElement, portalContainer);
   };
 
   return { Tooltip, handleMouseEnter, handleMouseLeave };

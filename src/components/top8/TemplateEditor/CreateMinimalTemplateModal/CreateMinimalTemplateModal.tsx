@@ -61,9 +61,13 @@ export const CreateMinimalTemplateModal = ({
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      aria-labelledby="create-minimal-template-title"
+    >
       <div className={styles.createMinimalTemplateModal}>
-        <h2 className={styles.title}>
+        <h2 id="create-minimal-template-title" className={styles.title}>
           <Trans>Custom Minimal Template</Trans>
         </h2>
         <p className={styles.description}>

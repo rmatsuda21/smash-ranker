@@ -192,10 +192,14 @@ export const AssetsModal = ({
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      aria-labelledby="assets-modal-title"
+    >
       <div className={styles.assetsModal}>
         <div className={styles.header}>
-          <h3>
+          <h3 id="assets-modal-title">
             <Trans>Assets</Trans>
           </h3>
           <div className={styles.headerActions}>

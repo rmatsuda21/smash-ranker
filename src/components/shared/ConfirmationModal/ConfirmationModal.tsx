@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useId, useState } from "react";
 import Cookies from "js-cookie";
 import { Trans } from "@lingui/react/macro";
 
@@ -29,6 +29,7 @@ export const ConfirmationModal = ({
   cookieName,
 }: React.PropsWithChildren<Props>) => {
   const [isDoNotShowAgain, setIsDoNotShowAgain] = useState(false);
+  const titleId = useId();
 
   const handleConfirm = () => {
     onConfirm();
@@ -38,10 +39,12 @@ export const ConfirmationModal = ({
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose} aria-labelledby={titleId}>
       <div className={styles.modal}>
         <div className={styles.header}>
-          <h3 className={styles.title}>{title}</h3>
+          <h3 id={titleId} className={styles.title}>
+            {title}
+          </h3>
           <p className={styles.description}>{description}</p>
         </div>
         {children}

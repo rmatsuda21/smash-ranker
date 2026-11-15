@@ -153,7 +153,7 @@ msgstr ""
 msgid "Calling it for the record..."
 msgstr ""
 
-#: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:60
+#: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:61
 #: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:150
 msgid "Cancel"
 msgstr ""
@@ -224,7 +224,7 @@ msgstr ""
 msgid "Competition not found"
 msgstr ""
 
-#: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:63
+#: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:64
 msgid "Confirm"
 msgstr ""
 
@@ -235,18 +235,18 @@ msgstr ""
 #: src/components/predict/ExportBar/ExportBar.tsx:100
 #: src/components/predict/InviteShareButton/InviteShareButton.tsx:26
 #: src/components/results/ResultsExportBar/ResultsExportBar.tsx:122
-#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:228
+#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:229
 #: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:421
 msgid "Copied!"
 msgstr ""
 
 #: src/components/predict/ExportBar/ExportBar.tsx:99
 #: src/components/results/ResultsExportBar/ResultsExportBar.tsx:121
-#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:227
+#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:228
 msgid "Copy"
 msgstr ""
 
-#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:229
+#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:230
 msgid "Copy failed"
 msgstr ""
 
@@ -398,11 +398,11 @@ msgstr ""
 msgid "Display options"
 msgstr ""
 
-#: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:54
+#: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:55
 msgid "Don't show again"
 msgstr ""
 
-#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:121
+#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:125
 msgid "Done"
 msgstr ""
 
@@ -413,7 +413,7 @@ msgstr ""
 #: src/components/predict/ExportBar/ExportBar.tsx:95
 #: src/components/results/ResultsExportBar/ResultsExportBar.tsx:117
 #: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:89
-#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:223
+#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:224
 msgid "Download"
 msgstr ""
 
@@ -422,7 +422,7 @@ msgid "Download image"
 msgstr ""
 
 #: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:95
-#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:57
+#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:61
 msgid "Download Options"
 msgstr ""
 
@@ -501,7 +501,7 @@ msgstr ""
 
 #: src/components/predict/PredictionPreview/PredictionPreview.tsx:180
 #: src/components/results/ResultsPreview/ResultsPreview.tsx:334
-#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:204
+#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:205
 msgid "Failed to generate image"
 msgstr ""
 
@@ -534,7 +534,7 @@ msgstr ""
 msgid "Font \"{fontFamily}\" is already added."
 msgstr ""
 
-#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:62
+#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:66
 msgid "Format"
 msgstr "フォーマット"
 
@@ -552,7 +552,7 @@ msgstr ""
 msgid "Generating prediction"
 msgstr ""
 
-#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:197
+#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:198
 msgid "Generating preview..."
 msgstr ""
 
@@ -681,7 +681,7 @@ msgstr ""
 msgid "Love Smash Ranker? Support the project!"
 msgstr ""
 
-#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:109
+#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:113
 msgid "Lower values reduce file size at the cost of detail."
 msgstr ""
 
@@ -773,7 +773,7 @@ msgstr ""
 msgid "Original concept & inspiration"
 msgstr ""
 
-#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:86
+#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:90
 msgid "Output: {outputWidth} × {outputHeight} px"
 msgstr ""
 
@@ -797,7 +797,7 @@ msgstr ""
 msgid "Pink"
 msgstr ""
 
-#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:75
+#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:79
 msgid "Pixel Ratio"
 msgstr ""
 
@@ -838,7 +838,7 @@ msgstr ""
 msgid "Players"
 msgstr ""
 
-#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:113
+#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:117
 msgid "PNG is lossless, quality only applies to JPEG and WebP."
 msgstr ""
 
@@ -866,6 +866,12 @@ msgstr ""
 msgid "Prefix"
 msgstr ""
 
+#: src/components/predict/PredictApp/PredictApp.tsx:164
+#: src/components/results/ResultsApp/ResultsApp.tsx:236
+#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:191
+msgid "Preview"
+msgstr ""
+
 #: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:133
 msgid "Preview of your saved template"
 msgstr ""
@@ -878,7 +884,7 @@ msgstr ""
 msgid "Purple"
 msgstr ""
 
-#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:96
+#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:100
 msgid "Quality"
 msgstr ""
 
@@ -1002,7 +1008,7 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:239
+#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:240
 msgid "Share"
 msgstr ""
 
@@ -1012,6 +1018,7 @@ msgstr ""
 
 #: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:304
 #: src/components/top8/SocialShareButton/SocialShareButton.tsx:45
+#: src/components/top8/SocialShareButton/SocialShareButton.tsx:50
 msgid "Share to social"
 msgstr ""
 

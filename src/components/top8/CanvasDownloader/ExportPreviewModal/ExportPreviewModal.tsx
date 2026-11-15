@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { FaArrowUpFromBracket, FaCopy, FaDownload } from "react-icons/fa6";
-import { Trans } from "@lingui/react/macro";
+import { Trans, useLingui } from "@lingui/react/macro";
 
 import { Button } from "@/components/shared/Button/Button";
 import { ConfirmableButton } from "@/components/shared/ConfirmableButton/ConfirmableButton";
@@ -43,6 +43,7 @@ export const ExportPreviewModal = ({
   quality,
   blobCache,
 }: Props) => {
+  const { t } = useLingui();
   const stageRef = useCanvasStore((state) => state.stageRef);
   const tournamentUrl = useTournamentStore((s) => s.info.url ?? null);
   const mimeType = `image/${imgType}`;
@@ -187,7 +188,7 @@ export const ExportPreviewModal = ({
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose} aria-label={t`Preview`}>
       <div className={styles.container}>
         <div className={styles.previewArea}>
           {status === "loading" && (

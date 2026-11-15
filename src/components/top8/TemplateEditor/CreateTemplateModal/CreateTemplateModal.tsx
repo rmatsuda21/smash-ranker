@@ -104,9 +104,13 @@ export const CreateTemplateModal = ({
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      aria-labelledby="create-template-title"
+    >
       <div className={styles.createTemplateModal}>
-        <h2 className={styles.title}>
+        <h2 id="create-template-title" className={styles.title}>
           <Trans>Create Template</Trans>
         </h2>
 

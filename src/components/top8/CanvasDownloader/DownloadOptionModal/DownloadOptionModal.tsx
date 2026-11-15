@@ -51,9 +51,13 @@ export const DownloadOptionModal = ({
   const qualitySupported = imgType !== "png";
 
   return (
-    <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+    <Modal
+      isOpen={isOpen}
+      onClose={() => setIsOpen(false)}
+      aria-labelledby="download-options-title"
+    >
       <div className={styles.modal}>
-        <h3>
+        <h3 id="download-options-title">
           <Trans>Download Options</Trans>
         </h3>
 

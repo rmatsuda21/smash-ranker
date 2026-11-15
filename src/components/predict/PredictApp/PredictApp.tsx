@@ -161,7 +161,11 @@ export const PredictApp = () => {
         )}
       </div>
 
-      <Modal isOpen={previewOpen} onClose={() => setPreviewOpen(false)}>
+      <Modal
+        isOpen={previewOpen}
+        onClose={() => setPreviewOpen(false)}
+        aria-label={_(msg`Preview`)}
+      >
         <PredictionPreview cacheRef={previewCacheRef} />
       </Modal>
     </div>

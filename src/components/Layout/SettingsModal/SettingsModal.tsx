@@ -27,10 +27,16 @@ export const SettingsModal = ({ isOpen, onClose }: Props) => {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={handleClose}>
+    <Modal
+      isOpen={isOpen}
+      onClose={handleClose}
+      aria-labelledby="settings-modal-title"
+    >
       <div className={styles.content}>
         <div className={styles.header}>
-          <h2 className={styles.title}>{_(msg`Settings`)}</h2>
+          <h2 id="settings-modal-title" className={styles.title}>
+            {_(msg`Settings`)}
+          </h2>
           <div className={styles.headerActions}>
             <button
               className={cn(styles.iconButton, {
