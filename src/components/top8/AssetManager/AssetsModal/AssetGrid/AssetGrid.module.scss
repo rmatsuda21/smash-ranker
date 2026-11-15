@@ -1,55 +1,43 @@
 @use "@/_theme" as *;
 
 .gridPanel {
-  width: 240px;
-  flex-shrink: 0;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
   overflow-y: auto;
-  border: 1px solid var(--gray-3);
-  border-radius: var(--radius);
-  padding: var(--space-2);
-
-  @include mobile {
-    width: 100%;
-    max-height: 35svh;
-  }
+  // Room for the tiles' focus rings and the scrollbar.
+  padding: 2px var(--space-1) 2px 2px;
 }
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-auto-rows: 52px;
-  gap: var(--space-2);
+  grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
+  gap: var(--space-3);
   user-select: none;
 
   @include mobile {
-    grid-auto-rows: auto;
+    grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
+    gap: var(--space-2);
   }
 }
 
-.thumbnail {
+.tile {
   position: relative;
   cursor: pointer;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid transparent;
-  border-radius: var(--radius-sm);
-  overflow: hidden;
-  background-color: var(--gray-2);
-  transition: border-color var(--duration-fast) var(--ease-in-out);
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-1);
+  min-width: 0;
 
-  @include mobile {
-    aspect-ratio: 1;
-  }
-
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-  }
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  transition:
+    background-color var(--duration-fast) var(--ease-in-out),
+    border-color var(--duration-fast) var(--ease-in-out);
 
   &:hover {
-    border-color: var(--gray-7);
+    background-color: var(--bg-raised);
 
     .markCheckbox {
       opacity: 1;
@@ -61,40 +49,62 @@
     outline-offset: 1px;
   }
 
+  &:focus-within .markCheckbox {
+    opacity: 1;
+  }
+
   &.previewing {
+    background-color: var(--brand-soft);
     border-color: var(--accent-9);
-    background-color: var(--accent-2);
   }
 
   &.marked {
+    background-color: var(--bg-raised);
     border-color: var(--status-danger);
-
-    .markCheckbox {
-      opacity: 1;
-    }
   }
+}
 
-  &.selected .checkBadge {
-    display: flex;
-  }
+.thumb {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: var(--radius);
+}
+
+.name {
+  padding-inline: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--font-size-sm);
+  line-height: 1.4;
+  color: var(--fg-2);
 }
 
 .markCheckbox {
   position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 16px;
-  height: 16px;
-  border-radius: 3px;
-  border: 1.5px solid var(--gray-8);
-  background-color: var(--gray-2);
+  top: var(--space-2);
+  left: var(--space-2);
+  width: 20px;
+  height: 20px;
+  padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1;
+
+  color: #fff;
+  background-color: var(--bg-surface);
+  border: 1.5px solid var(--gray-9);
+  border-radius: var(--radius-sm);
+  // Ring keeps it readable on top of any image colour.
+  box-shadow: 0 0 0 1.5px var(--bg-surface);
   opacity: 0;
-  transition: opacity var(--duration-fast) var(--ease-in-out);
   cursor: pointer;
+  transition: opacity var(--duration-fast) var(--ease-in-out);
+
+  &:focus-visible {
+    outline: 2px solid var(--accent-9);
+    outline-offset: 1px;
+  }
 
   &.checked {
     opacity: 1;
@@ -102,37 +112,71 @@
     border-color: var(--status-danger);
   }
 
+  // No hover on touch screens: always show it, but keep it light so it
+  // doesn't hide the image.
   @include mobile {
     opacity: 1;
+    width: 22px;
+    height: 22px;
+    box-shadow: none;
+
+    &:not(.checked) {
+      background-color: rgba(0, 0, 0, 0.35);
+      border-color: rgba(255, 255, 255, 0.8);
+    }
   }
 }
 
-.checkBadge {
-  display: none;
+.inUseBadge {
   position: absolute;
-  top: 2px;
-  right: 2px;
-  width: 16px;
-  height: 16px;
-  background-color: var(--accent-9);
-  border-radius: 50%;
+  top: var(--space-2);
+  right: var(--space-2);
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
+  gap: var(--space-1);
+  padding: 2px var(--space-2);
   pointer-events: none;
+
+  color: #fff;
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  line-height: 1.4;
+  background-color: var(--accent-9);
+  border-radius: var(--radius-pill);
 }
 
-.emptyState {
+.empty {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: var(--space-2);
-  height: 100%;
-  min-height: 200px;
-  color: var(--gray-7);
-  font-size: var(--font-size-sm);
+  padding: var(--space-6);
+  text-align: center;
 
-  svg {
+  color: var(--fg-4);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-md);
+
+  > svg {
     opacity: 0.5;
+    margin-bottom: var(--space-2);
   }
+
+  button {
+    margin-top: var(--space-3);
+  }
+}
+
+.emptyTitle {
+  margin: 0;
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--fg-1);
+}
+
+.emptyHint {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--fg-3);
 }

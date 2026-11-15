@@ -128,10 +128,19 @@ export const Popover = ({
     // real dimensions, not the minWidth estimate. Without this, smart-flip
     // can't fire on first open and content-driven width is mispositioned.
     const rafId = requestAnimationFrame(update);
+    // Content can change size after opening (async data, expandable
+    // sections); re-place so flip and top-anchored positions stay correct.
+    const el = popoverRef.current;
+    const resizeObserver =
+      el && typeof ResizeObserver !== "undefined"
+        ? new ResizeObserver(update)
+        : null;
+    if (el) resizeObserver?.observe(el);
     window.addEventListener("resize", update);
     window.addEventListener("scroll", update, true);
     return () => {
       cancelAnimationFrame(rafId);
+      resizeObserver?.disconnect();
       window.removeEventListener("resize", update);
       window.removeEventListener("scroll", update, true);
     };

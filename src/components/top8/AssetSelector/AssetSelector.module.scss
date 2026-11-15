@@ -1,74 +1,312 @@
+@use "@/_theme" as *;
+
+// One bordered control: thumbnail + name opens the picker, the X clears.
 .assetSelector {
+  display: flex;
+  align-items: stretch;
+  flex-shrink: 0;
+  width: 100%;
+  height: 40px;
+  overflow: hidden;
+
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  transition: border-color var(--duration-base) var(--ease-standard);
+
+  &:hover:not(.disabled),
+  &:focus-within {
+    border-color: var(--accent-9);
+  }
+
+  &.disabled {
+    opacity: 0.5;
+  }
+}
+
+.trigger {
+  flex: 1;
+  min-width: 0;
   display: flex;
   align-items: center;
   gap: var(--space-2);
+  padding: 0 var(--space-2) 0 var(--space-1);
+  border: none;
+  background: none;
+  cursor: pointer;
 
-  .imgContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 48px;
-    height: 48px;
-    border: 1px solid var(--border-strong);
-    border-radius: var(--radius);
-    overflow: hidden;
-    flex-shrink: 0;
+  color: var(--fg-1);
+  font-family: inherit;
+  font-size: var(--font-size-md);
+  text-align: start;
 
-    cursor: pointer;
-
-    &:hover {
-      border-color: var(--accent-9);
-    }
+  &:focus-visible {
+    outline: 2px solid var(--accent-9);
+    outline-offset: -2px;
   }
 
-  .disabled {
-    opacity: 0.5;
+  &:disabled {
     cursor: not-allowed;
-    pointer-events: none;
   }
+}
+
+.thumb {
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+
+  color: var(--fg-4);
+  background-color: var(--bg-raised);
+  border-radius: var(--radius-sm);
+
+  @include checkerboard(8px);
 
   img {
     width: 100%;
     height: 100%;
     object-fit: contain;
   }
+}
 
-  .buttons {
-    display: flex;
-    gap: var(--space-2);
+.label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &.placeholder {
+    color: var(--fg-3);
   }
 }
 
-.assetSelectorModal {
+.chevron {
+  flex-shrink: 0;
+  color: var(--fg-4);
+}
+
+.clear {
+  flex-shrink: 0;
+  width: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  border-left: 1px solid var(--border);
+  background: none;
+  color: var(--fg-3);
+  cursor: pointer;
+  transition:
+    color var(--duration-base) var(--ease-standard),
+    background-color var(--duration-base) var(--ease-standard);
+
+  &:hover:not(:disabled) {
+    color: var(--status-danger);
+    background-color: var(--bg-raised);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent-9);
+    outline-offset: -2px;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+.popover {
+  width: 320px;
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+.picker {
   display: flex;
   flex-direction: column;
+  gap: var(--space-3);
+  font-size: var(--font-size-md);
+}
+
+.hiddenInput {
+  display: none;
+}
+
+.search {
+  height: 34px;
+  display: flex;
+  align-items: center;
   gap: var(--space-2);
+  padding-inline: var(--space-3);
 
-  .assets {
-    display: grid;
-    grid-template-columns: repeat(6, 100px);
-    grid-auto-rows: 100px;
-    gap: var(--space-2);
+  color: var(--fg-4);
+  background-color: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
 
-    .asset {
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100px;
-      height: 100px;
-      border: 1px solid var(--border-strong);
-      border-radius: var(--radius);
+  &:focus-within {
+    background-color: var(--bg-input);
+    border-color: var(--brand);
+    outline: 1px solid var(--brand);
+    outline-offset: -2px;
+  }
 
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-      }
+  svg {
+    flex-shrink: 0;
+  }
 
-      &:hover {
-        border-color: var(--accent-9);
-      }
+  input {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    padding: 0;
+    border: none;
+    outline: none;
+    background: transparent;
+
+    color: var(--fg-1);
+    font-family: inherit;
+    font-size: var(--font-size-md);
+
+    &::placeholder {
+      color: var(--fg-4);
     }
+  }
+}
+
+.pickerGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-2);
+  max-height: 232px;
+  overflow-y: auto;
+  // Room for the tiles' focus rings.
+  padding: 2px;
+}
+
+.pickerTile {
+  position: relative;
+  aspect-ratio: 1;
+  padding: 0;
+  overflow: hidden;
+  cursor: pointer;
+
+  background: none;
+  border: 2px solid transparent;
+  border-radius: var(--radius);
+  transition: border-color var(--duration-fast) var(--ease-in-out);
+
+  &:hover {
+    border-color: var(--gray-8);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent-9);
+    outline-offset: 1px;
+  }
+
+  &.selected {
+    border-color: var(--accent-9);
+  }
+}
+
+.pickerThumb {
+  width: 100%;
+  height: 100%;
+}
+
+.uploadTile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--fg-3);
+  border: 1px dashed var(--border-strong);
+
+  &:hover {
+    color: var(--accent-9);
+    border-color: var(--accent-9);
+  }
+}
+
+.selectedBadge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  background-color: var(--accent-9);
+  border-radius: 50%;
+}
+
+.noMatch {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: var(--space-4) 0;
+  text-align: center;
+  font-size: var(--font-size-sm);
+  color: var(--fg-3);
+}
+
+.pickerEmpty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4) 0;
+  color: var(--fg-3);
+
+  p {
+    margin: 0;
+  }
+}
+
+.pickerFooter {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--border);
+}
+
+@include mobile {
+  .assetSelector {
+    height: 44px;
+  }
+
+  .clear {
+    width: 40px;
+  }
+
+  .popover {
+    padding: var(--space-4);
+    border-radius: var(--radius-lg);
+  }
+
+  .search {
+    height: 40px;
+
+    // 16px keeps iOS from zooming the page when the input is focused.
+    input {
+      font-size: 16px;
+    }
+  }
+
+  .pickerGrid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    max-height: 40svh;
+  }
+
+  .pickerFooter button {
+    height: 36px;
+    font-size: var(--font-size-md);
   }
 }

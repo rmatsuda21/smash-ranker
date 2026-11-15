@@ -1,65 +1,41 @@
 @use "@/_theme" as *;
 
+// Desktop: a detail column beside the grid.
 .previewPanel {
-  flex: 1;
+  position: relative;
+  flex: 0 0 300px;
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: var(--space-3);
   min-width: 0;
+  padding: var(--space-3);
   overflow: hidden;
+
+  background-color: var(--bg-app);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
 }
 
 .desktopLayout {
+  flex: 1;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
-  flex: 1;
-  min-height: 0;
-
-  @include mobile {
-    display: none;
-  }
 }
 
 .mobileImageContainer {
   display: none;
-
-  @include mobile {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 80px;
-    height: 80px;
-    flex-shrink: 0;
-    border: 1px solid var(--gray-3);
-    border-radius: var(--radius);
-    overflow: hidden;
-    background-image: repeating-conic-gradient(
-      var(--gray-3) 0% 25%,
-      transparent 0% 50%
-    );
-    background-size: 10px 10px;
-
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-    }
-  }
 }
 
 .imageContainer {
   flex: 1;
   min-height: 0;
   overflow: auto;
-  border: 1px solid var(--gray-3);
+  border: 1px solid var(--border);
   border-radius: var(--radius);
 
-  background-image: repeating-conic-gradient(
-    var(--gray-3) 0% 25%,
-    transparent 0% 50%
-  );
-  background-size: 16px 16px;
+  @include checkerboard(16px);
 }
 
 // Wrapper ensures centering when image is small,
@@ -93,12 +69,38 @@
   min-width: 36px;
   text-align: center;
   user-select: none;
+  font-variant-numeric: tabular-nums;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.fileName {
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  color: var(--fg-1);
+}
+
+.metaLine {
+  display: none;
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--fg-3);
 }
 
 .details {
   display: flex;
   flex-direction: column;
   gap: var(--space-1);
+  margin: 0;
   font-size: var(--font-size-sm);
 }
 
@@ -106,24 +108,37 @@
   display: flex;
   justify-content: space-between;
   gap: var(--space-2);
+
+  dt {
+    flex-shrink: 0;
+    color: var(--fg-4);
+  }
+
+  dd {
+    margin: 0;
+    color: var(--fg-1);
+    text-align: right;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 }
 
-.detailLabel {
-  color: var(--fg-4);
-  flex-shrink: 0;
-}
-
-.detailValue {
-  color: var(--fg-1);
-  text-align: right;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.dismiss {
+  display: none;
 }
 
 .actions {
   display: flex;
   gap: var(--space-2);
+
+  button {
+    height: 34px;
+  }
+
+  .selectButton {
+    flex: 1;
+  }
 
   .deleteButton {
     color: var(--status-danger);
@@ -134,6 +149,11 @@
       color: #fff;
     }
   }
+
+  // With nothing to pick, Delete is the only action: let it fill the row.
+  .deleteButton:only-child {
+    flex: 1;
+  }
 }
 
 .emptyPreview {
@@ -143,41 +163,91 @@
   align-items: center;
   justify-content: center;
   gap: var(--space-2);
-  color: var(--gray-7);
+  text-align: center;
+  color: var(--fg-4);
   font-size: var(--font-size-sm);
-  border: 1px dashed var(--gray-5);
-  border-radius: var(--radius);
 
   svg {
     opacity: 0.5;
   }
 }
 
-// Mobile: compact horizontal layout
+// Mobile: a compact card pinned under the grid, only while an asset is open.
 @include mobile {
   .previewPanel {
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: flex-start;
-    gap: var(--space-2);
+    flex: none;
+    display: grid;
+    grid-template-columns: 64px minmax(0, 1fr) auto;
+    grid-template-areas:
+      "image info dismiss"
+      "actions actions actions";
+    align-items: center;
+    gap: var(--space-3);
+
+    &.isEmpty {
+      display: none;
+    }
+  }
+
+  .desktopLayout {
+    display: none;
+  }
+
+  .mobileImageContainer {
+    grid-area: image;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+
+    @include checkerboard(10px);
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+
+  .info {
+    grid-area: info;
+    gap: var(--space-1);
+  }
+
+  .metaLine {
+    display: block;
   }
 
   .details {
-    flex: 1;
-    min-width: 0;
+    display: none;
+  }
+
+  .dismiss {
+    grid-area: dismiss;
+    align-self: start;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: none;
+    border-radius: var(--radius);
+    background: none;
+    color: var(--fg-3);
+    cursor: pointer;
   }
 
   .actions {
-    width: 100%;
-  }
+    grid-area: actions;
 
-  .emptyPreview {
-    flex-direction: row;
-    padding: var(--space-4);
-
-    svg {
-      width: 24px;
-      height: 24px;
+    button {
+      height: 44px;
+      font-size: var(--font-size-lg);
     }
   }
 }

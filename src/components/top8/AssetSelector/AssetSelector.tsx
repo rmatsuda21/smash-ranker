@@ -1,15 +1,18 @@
 import { useEffect, useRef, useState } from "react";
-import { FaImage, FaTrash } from "react-icons/fa6";
+import { FaChevronDown, FaImage, FaXmark } from "react-icons/fa6";
 import { GrDocumentMissing } from "react-icons/gr";
-import { RxValueNone } from "react-icons/rx";
 import cn from "classnames";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
 
 import { AssetsModal } from "@/components/top8/AssetManager/AssetsModal/AssetsModal";
-import { Button } from "@/components/shared/Button/Button";
+import { Popover } from "@/components/shared/Popover/Popover";
 import { assetRepository } from "@/db/repository";
+import { useAssetDB } from "@/hooks/useAssetDb";
+import { useBlobUrl } from "@/hooks/useBlobUrl";
+import { DBAsset } from "@/types/Repository";
 
+import { AssetPicker } from "./AssetPicker";
 import styles from "./AssetSelector.module.scss";
 
 type Props = {
@@ -26,86 +29,123 @@ export const AssetSelector = ({
   disabled,
 }: Props) => {
   const { _ } = useLingui();
-  const [isOpen, setIsOpen] = useState(false);
-  const [imgUrl, setImgUrl] = useState<string | null>(null);
+  const [isPickerOpen, setIsPickerOpen] = useState(false);
+  const [isManagerOpen, setIsManagerOpen] = useState(false);
+  const [asset, setAsset] = useState<DBAsset | null>(null);
   const [notFound, setNotFound] = useState(false);
-  const prevBlobUrl = useRef<string | null>(null);
+  const anchorRef = useRef<HTMLDivElement>(null);
+
+  const imgUrl = useBlobUrl(asset?.data);
+
+  // The library is loaded here, before the picker opens, so the popover is
+  // at its final size on its first frame. Loading inside the picker made it
+  // open small below the field and then jump above once the grid appeared.
+  const { assets, uploadAsset, refresh } = useAssetDB();
+
+  const togglePicker = async () => {
+    if (isPickerOpen) {
+      setIsPickerOpen(false);
+      return;
+    }
+    await refresh();
+    setIsPickerOpen(true);
+  };
 
   useEffect(() => {
     if (!selectedSrc) {
-      if (prevBlobUrl.current) {
-        URL.revokeObjectURL(prevBlobUrl.current);
-        prevBlobUrl.current = null;
-      }
-      setImgUrl(null);
+      setAsset(null);
       setNotFound(false);
       return;
     }
 
-    assetRepository.get(selectedSrc).then((asset) => {
-      if (asset?.data) {
-        if (prevBlobUrl.current) {
-          URL.revokeObjectURL(prevBlobUrl.current);
-        }
-        const url = URL.createObjectURL(asset.data);
-        prevBlobUrl.current = url;
-        setImgUrl(url);
-      } else {
-        setImgUrl(null);
-        setNotFound(true);
-      }
+    let cancelled = false;
+    assetRepository.get(selectedSrc).then((found) => {
+      if (cancelled) return;
+      setAsset(found?.data ? found : null);
+      setNotFound(!found?.data);
     });
 
     return () => {
-      if (prevBlobUrl.current) {
-        URL.revokeObjectURL(prevBlobUrl.current);
-        prevBlobUrl.current = null;
-      }
+      cancelled = true;
     };
   }, [selectedSrc]);
 
-  const openModal = () => {
-    if (disabled) return;
-    setIsOpen(true);
-  };
+  const label = notFound
+    ? _(msg`Missing image`)
+    : (asset?.fileName ?? _(msg`Choose image`));
 
   return (
-    <div className={styles.assetSelector}>
-      <div
-        className={cn(styles.imgContainer, { [styles.disabled]: disabled })}
-        onClick={openModal}
+    <div
+      ref={anchorRef}
+      className={cn(styles.assetSelector, { [styles.disabled]: disabled })}
+    >
+      <button
+        type="button"
+        className={styles.trigger}
+        onClick={togglePicker}
+        disabled={disabled}
+        aria-haspopup="dialog"
+        aria-expanded={isPickerOpen}
+        title={asset?.fileName}
       >
-        {notFound && <GrDocumentMissing size={24} />}
-        {!notFound &&
-          (imgUrl ? (
-            <img src={imgUrl} alt="Background Image" />
+        <span className={styles.thumb}>
+          {notFound ? (
+            <GrDocumentMissing size={16} />
+          ) : imgUrl ? (
+            <img src={imgUrl} alt="" />
           ) : (
-            <RxValueNone color="var(--gray-5)" size={24} />
-          ))}
-      </div>
-      <div className={styles.buttons}>
-        <Button
-          size="sm"
-          onClick={openModal}
-          disabled={disabled}
-          tooltip={_(msg`Select`)}
+            <FaImage size={16} />
+          )}
+        </span>
+        <span
+          className={cn(styles.label, {
+            [styles.placeholder]: !asset && !notFound,
+          })}
         >
-          <FaImage />
-        </Button>
-        <Button
-          size="sm"
-          variant="outline"
+          {label}
+        </span>
+        {!selectedSrc && <FaChevronDown className={styles.chevron} size={10} />}
+      </button>
+      {selectedSrc && (
+        <button
+          type="button"
+          className={styles.clear}
           onClick={() => onClear()}
-          disabled={disabled || !selectedSrc}
-          tooltip={_(msg`Clear`)}
+          disabled={disabled}
+          aria-label={_(msg`Clear`)}
+          title={_(msg`Clear`)}
         >
-          <FaTrash />
-        </Button>
-      </div>
+          <FaXmark size={12} />
+        </button>
+      )}
+
+      <Popover
+        anchorRef={anchorRef}
+        open={isPickerOpen}
+        onClose={() => setIsPickerOpen(false)}
+        placement="bottom-start"
+        offset={6}
+        minWidth={320}
+        className={styles.popover}
+      >
+        <AssetPicker
+          assets={assets}
+          uploadAsset={uploadAsset}
+          selectedSrc={selectedSrc}
+          onPick={(src) => {
+            onSelect?.(src);
+            setIsPickerOpen(false);
+          }}
+          onManage={() => {
+            setIsPickerOpen(false);
+            setIsManagerOpen(true);
+          }}
+        />
+      </Popover>
 
       <AssetsModal
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
+        isOpen={isManagerOpen}
+        onClose={() => setIsManagerOpen(false)}
         onSelect={onSelect}
         selectedSrc={selectedSrc}
       />

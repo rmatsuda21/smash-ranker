@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { FaMinus, FaPlus, FaImage, FaCheck } from "react-icons/fa6";
+import cn from "classnames";
+import { FaMinus, FaPlus, FaImage, FaCheck, FaXmark } from "react-icons/fa6";
 import { RiDeleteBin6Fill } from "react-icons/ri";
 import { Trans } from "@lingui/react/macro";
 import { msg } from "@lingui/core/macro";
@@ -8,6 +9,7 @@ import { useLingui } from "@lingui/react";
 import { Button } from "@/components/shared/Button/Button";
 import { Slider } from "@/components/shared/Slider/Slider";
 import { Spinner } from "@/components/shared/Spinner/Spinner";
+import { useBlobUrl } from "@/hooks/useBlobUrl";
 import { DBAsset } from "@/types/Repository";
 
 import { useImageMeta } from "../useImageMeta";
@@ -20,6 +22,7 @@ type Props = {
   onZoomChange: (level: number) => void;
   onSelect?: () => void;
   onDelete: () => void;
+  onDismiss: () => void;
 };
 
 const formatBytes = (bytes: number): string => {
@@ -43,9 +46,11 @@ export const AssetPreview = ({
   onZoomChange,
   onSelect,
   onDelete,
+  onDismiss,
 }: Props) => {
   const { _, i18n } = useLingui();
   const meta = useImageMeta(asset?.data ?? null);
+  const url = useBlobUrl(asset?.data);
   const containerRef = useRef<HTMLDivElement>(null);
   const [fitScale, setFitScale] = useState(1);
 
@@ -72,7 +77,7 @@ export const AssetPreview = ({
 
   if (!asset) {
     return (
-      <div className={styles.previewPanel}>
+      <div className={cn(styles.previewPanel, styles.isEmpty)}>
         <div className={styles.emptyPreview}>
           <FaImage size={48} />
           <span>
@@ -99,25 +104,32 @@ export const AssetPreview = ({
     ? Math.round(meta.height * fitScale * (zoomLevel / 100))
     : undefined;
 
+  const typeLabel = (asset.data.type.split("/")[1] ?? asset.data.type)
+    .replace("+xml", "")
+    .toUpperCase();
+  const dimensions = meta ? `${meta.width} × ${meta.height}` : null;
+
   return (
     <div className={styles.previewPanel}>
       <div className={styles.desktopLayout}>
         <div className={styles.imageContainer} ref={containerRef}>
           <div className={styles.imageWrapper}>
-            <img
-              src={asset.src}
-              alt={asset.fileName}
-              style={{
-                width: displayWidth ? `${displayWidth}px` : undefined,
-                height: displayHeight ? `${displayHeight}px` : undefined,
-              }}
-            />
+            {url && (
+              <img
+                src={url}
+                alt={asset.fileName}
+                style={{
+                  width: displayWidth ? `${displayWidth}px` : undefined,
+                  height: displayHeight ? `${displayHeight}px` : undefined,
+                }}
+              />
+            )}
           </div>
         </div>
 
         <div className={styles.zoomControls}>
           <Button
-            variant="ghost"
+            variant="subtle"
             size="sm"
             onClick={handleZoomOut}
             disabled={zoomLevel <= 25}
@@ -135,7 +147,7 @@ export const AssetPreview = ({
             className={styles.zoomSlider}
           />
           <Button
-            variant="ghost"
+            variant="subtle"
             size="sm"
             onClick={handleZoomIn}
             disabled={zoomLevel >= 400}
@@ -148,53 +160,60 @@ export const AssetPreview = ({
       </div>
 
       <div className={styles.mobileImageContainer}>
-        <img src={asset.src} alt={asset.fileName} />
+        {url && <img src={url} alt={asset.fileName} />}
       </div>
 
-      <div className={styles.details}>
-        <div className={styles.detailRow}>
-          <span className={styles.detailLabel}>
-            <Trans>Filename</Trans>
-          </span>
-          <span className={styles.detailValue}>{asset.fileName}</span>
-        </div>
-        <div className={styles.detailRow}>
-          <span className={styles.detailLabel}>
-            <Trans>Type</Trans>
-          </span>
-          <span className={styles.detailValue}>{asset.data.type}</span>
-        </div>
-        <div className={styles.detailRow}>
-          <span className={styles.detailLabel}>
-            <Trans>Size</Trans>
-          </span>
-          <span className={styles.detailValue}>
-            {formatBytes(asset.data.size)}
-          </span>
-        </div>
-        <div className={styles.detailRow}>
-          <span className={styles.detailLabel}>
-            <Trans>Dimensions</Trans>
-          </span>
-          <span className={styles.detailValue}>
-            {meta ? `${meta.width} x ${meta.height}` : <Spinner size={12} />}
-          </span>
-        </div>
-        <div className={styles.detailRow}>
-          <span className={styles.detailLabel}>
-            <Trans>Uploaded</Trans>
-          </span>
-          <span className={styles.detailValue}>
-            {formatDate(asset.date, i18n.locale)}
-          </span>
-        </div>
+      <div className={styles.info}>
+        <p className={styles.fileName} title={asset.fileName}>
+          {asset.fileName}
+        </p>
+        {/* One line on phones, the full table on desktop. */}
+        <p className={styles.metaLine}>
+          {[typeLabel, formatBytes(asset.data.size), dimensions]
+            .filter(Boolean)
+            .join(" · ")}
+        </p>
+        <dl className={styles.details}>
+          <div className={styles.detailRow}>
+            <dt>
+              <Trans>Type</Trans>
+            </dt>
+            <dd>{typeLabel}</dd>
+          </div>
+          <div className={styles.detailRow}>
+            <dt>
+              <Trans>Size</Trans>
+            </dt>
+            <dd>{formatBytes(asset.data.size)}</dd>
+          </div>
+          <div className={styles.detailRow}>
+            <dt>
+              <Trans>Dimensions</Trans>
+            </dt>
+            <dd>{dimensions ?? <Spinner size={12} />}</dd>
+          </div>
+          <div className={styles.detailRow}>
+            <dt>
+              <Trans>Uploaded</Trans>
+            </dt>
+            <dd>{formatDate(asset.date, i18n.locale)}</dd>
+          </div>
+        </dl>
       </div>
+
+      <button
+        type="button"
+        className={styles.dismiss}
+        onClick={onDismiss}
+        aria-label={_(msg`Close`)}
+      >
+        <FaXmark size={14} />
+      </button>
 
       <div className={styles.actions}>
         {onSelect && (
           <Button
-            variant="solid"
-            size="sm"
+            className={styles.selectButton}
             onClick={onSelect}
             disabled={isSelected}
           >
@@ -204,13 +223,12 @@ export const AssetPreview = ({
                 <Trans>Selected</Trans>
               </>
             ) : (
-              <Trans>Select</Trans>
+              <Trans>Use this image</Trans>
             )}
           </Button>
         )}
         <Button
           variant="outline"
-          size="sm"
           onClick={onDelete}
           className={styles.deleteButton}
         >

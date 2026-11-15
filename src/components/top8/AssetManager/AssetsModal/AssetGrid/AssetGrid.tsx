@@ -1,44 +1,63 @@
 import cn from "classnames";
-import { FaCheck } from "react-icons/fa6";
-import { FaImage } from "react-icons/fa6";
+import { FaCheck, FaImage, FaUpload } from "react-icons/fa6";
+import { msg } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
+import { useLingui } from "@lingui/react";
 
-import { FileUploader } from "@/components/shared/FileUploader/FileUploader";
+import { Button } from "@/components/shared/Button/Button";
+import { AssetThumb } from "@/components/top8/AssetManager/AssetThumb/AssetThumb";
 import { DBAsset } from "@/types/Repository";
 
 import styles from "./AssetGrid.module.scss";
 
 type Props = {
   assets: DBAsset[];
+  /** True when `assets` is a search result rather than the whole library. */
+  isFiltered: boolean;
   selectedSrc: string;
   previewAssetId?: string;
   markedIds: Set<string>;
   onThumbnailClick: (asset: DBAsset) => void;
   onThumbnailDoubleClick?: (asset: DBAsset) => void;
   onToggleMark: (id: string, shiftKey: boolean) => void;
-  onUpload: (files?: File[]) => void;
+  onUploadClick: () => void;
 };
 
 export const AssetGrid = ({
   assets,
+  isFiltered,
   selectedSrc,
   previewAssetId,
   markedIds,
   onThumbnailClick,
   onThumbnailDoubleClick,
   onToggleMark,
-  onUpload,
+  onUploadClick,
 }: Props) => {
+  const { _ } = useLingui();
+
   if (assets.length === 0) {
     return (
-      <div className={styles.gridPanel}>
-        <div className={styles.emptyState}>
-          <FaImage size={48} />
-          <span>
-            <Trans>No assets yet</Trans>
-          </span>
-          <FileUploader onChange={onUpload} multiple />
-        </div>
+      <div className={cn(styles.gridPanel, styles.empty)}>
+        <FaImage size={40} />
+        {isFiltered ? (
+          <p className={styles.emptyTitle}>
+            <Trans>No assets match your search</Trans>
+          </p>
+        ) : (
+          <>
+            <p className={styles.emptyTitle}>
+              <Trans>No assets yet</Trans>
+            </p>
+            <p className={styles.emptyHint}>
+              <Trans>Drop images here, or upload them. Up to 2MB each.</Trans>
+            </p>
+            <Button onClick={onUploadClick}>
+              <FaUpload size={12} />
+              <Trans>Upload</Trans>
+            </Button>
+          </>
+        )}
       </div>
     );
   }
@@ -46,57 +65,71 @@ export const AssetGrid = ({
   return (
     <div className={styles.gridPanel}>
       <div className={styles.grid}>
-        {assets.map((asset) => (
-          <div
-            key={asset.id}
-            className={cn(styles.thumbnail, {
-              [styles.previewing]: asset.id === previewAssetId,
-              [styles.selected]: asset.src === selectedSrc,
-              [styles.marked]: markedIds.has(asset.id),
-            })}
-            onClick={(e) => {
-              if (e.ctrlKey || e.metaKey || e.shiftKey) {
-                onToggleMark(asset.id, e.shiftKey);
-              } else {
-                onThumbnailClick(asset);
-              }
-            }}
-            onDoubleClick={(e) => {
-              if (e.ctrlKey || e.metaKey || e.shiftKey) return;
-              onThumbnailDoubleClick?.(asset);
-            }}
-            role="button"
-            tabIndex={0}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") {
-                e.preventDefault();
-                if (e.key === "Enter" && onThumbnailDoubleClick) {
-                  onThumbnailDoubleClick(asset);
+        {assets.map((asset) => {
+          const isMarked = markedIds.has(asset.id);
+          return (
+            <div
+              key={asset.id}
+              className={cn(styles.tile, {
+                [styles.previewing]: asset.id === previewAssetId,
+                [styles.selected]: asset.src === selectedSrc,
+                [styles.marked]: isMarked,
+              })}
+              onClick={(e) => {
+                if (e.ctrlKey || e.metaKey || e.shiftKey) {
+                  onToggleMark(asset.id, e.shiftKey);
                 } else {
                   onThumbnailClick(asset);
                 }
-              }
-            }}
-          >
-            <div
-              className={cn(styles.markCheckbox, {
-                [styles.checked]: markedIds.has(asset.id),
-              })}
-              onClick={(e) => {
-                e.stopPropagation();
-                onToggleMark(asset.id, e.shiftKey);
+              }}
+              onDoubleClick={(e) => {
+                if (e.ctrlKey || e.metaKey || e.shiftKey) return;
+                onThumbnailDoubleClick?.(asset);
+              }}
+              role="button"
+              tabIndex={0}
+              aria-pressed={asset.id === previewAssetId}
+              onKeyDown={(e) => {
+                if (e.target !== e.currentTarget) return;
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  if (e.key === "Enter" && onThumbnailDoubleClick) {
+                    onThumbnailDoubleClick(asset);
+                  } else {
+                    onThumbnailClick(asset);
+                  }
+                }
               }}
             >
-              {markedIds.has(asset.id) && <FaCheck size={8} color="#fff" />}
+              <AssetThumb asset={asset} className={styles.thumb} />
+              <span className={styles.name} title={asset.fileName}>
+                {asset.fileName}
+              </span>
+              <button
+                type="button"
+                className={cn(styles.markCheckbox, {
+                  [styles.checked]: isMarked,
+                })}
+                role="checkbox"
+                aria-checked={isMarked}
+                aria-label={_(msg`Select ${asset.fileName}`)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onToggleMark(asset.id, e.shiftKey);
+                }}
+                onDoubleClick={(e) => e.stopPropagation()}
+              >
+                {isMarked && <FaCheck size={10} />}
+              </button>
+              {asset.src === selectedSrc && (
+                <span className={styles.inUseBadge}>
+                  <FaCheck size={8} />
+                  <Trans>In use</Trans>
+                </span>
+              )}
             </div>
-            <img src={asset.src} alt={asset.fileName} loading="lazy" />
-            {asset.src === selectedSrc && (
-              <div className={styles.checkBadge}>
-                <FaCheck size={8} color="#fff" />
-              </div>
-            )}
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

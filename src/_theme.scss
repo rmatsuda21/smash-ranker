@@ -10,3 +10,12 @@
     @content;
   }
 }
+
+// Checkerboard behind images, so transparent areas read as transparent.
+@mixin checkerboard($size: 12px) {
+  background-image: repeating-conic-gradient(
+    var(--gray-3) 0% 25%,
+    transparent 0% 50%
+  );
+  background-size: $size $size;
+}
