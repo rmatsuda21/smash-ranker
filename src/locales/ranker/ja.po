@@ -475,7 +475,7 @@ msgstr "ここに画像をドロップするか、アップロードしてくだ
 msgid "Drop images to upload"
 msgstr "画像をドロップしてアップロード"
 
-#: src/components/top8/TextEditor/TextEditor.tsx:59
+#: src/components/top8/TextEditor/TextEditor.tsx:64
 msgid "Edit the text content displayed in your graphic."
 msgstr "画像に表示されるテキストを編集できます。"
 
@@ -484,7 +484,7 @@ msgid "English"
 msgstr "英語"
 
 #. placeholder {0}: translatedName.toLowerCase()
-#: src/components/top8/TextEditor/TextEditor.tsx:74
+#: src/components/top8/TextEditor/TextEditor.tsx:84
 msgid "Enter {0}..."
 msgstr "{0}を入力..."
 
@@ -798,7 +798,7 @@ msgstr ""
 msgid "No results found"
 msgstr "該当する結果がありません"
 
-#: src/components/top8/TextEditor/TextEditor.tsx:45
+#: src/components/top8/TextEditor/TextEditor.tsx:49
 msgid "No text content defined in this design."
 msgstr "このデザインにはテキストが定義されていません。"
 
@@ -1072,6 +1072,10 @@ msgstr "シード"
 msgid "Select {0}"
 msgstr "{0}を選択"
 
+#: src/components/top8/TextEditor/TextEditor.tsx:67
+msgid "Select a field to insert live tournament details, such as its name or date."
+msgstr "フィールドを選択すると、大会名や日付などの大会情報を挿入できます。"
+
 #: src/components/results/ResultsPreview/ResultsPreview.tsx:322
 msgid "Select a player first."
 msgstr "まずは選手を選択してください。"
@@ -1203,7 +1207,7 @@ msgstr "テンプレ"
 msgid "Terms of Service"
 msgstr "利用規約"
 
-#: src/components/top8/TextEditor/TextEditor.tsx:48
+#: src/components/top8/TextEditor/TextEditor.tsx:52
 msgid "Text content is configured in the design layout."
 msgstr "テキストはデザインレイアウトで設定されます。"
 

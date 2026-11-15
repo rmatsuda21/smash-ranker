@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import cn from "classnames";
 import debounce from "lodash/debounce";
 import { msg } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
@@ -7,6 +6,11 @@ import { Trans as TransRuntime } from "@lingui/react";
 import { useLingui } from "@lingui/react";
 
 import { useCanvasStore } from "@/store/canvasStore";
+import {
+  EditorCard,
+  EditorPanel,
+  FieldGroup,
+} from "@/components/top8/EditorForm/EditorForm";
 import { RichTextInput } from "./RichTextInput";
 
 import styles from "./TextEditor.module.scss";
@@ -39,44 +43,50 @@ export const TextEditor = ({ className }: Props) => {
 
   if (!textPalette || Object.keys(textPalette).length === 0) {
     return (
-      <div className={cn(className, styles.textEditor)}>
-        <div className={styles.empty}>
-          <p>
+      <EditorPanel className={className}>
+        <EditorCard className={styles.empty}>
+          <p className={styles.emptyTitle}>
             <Trans>No text content defined in this design.</Trans>
           </p>
           <p className={styles.hint}>
             <Trans>Text content is configured in the design layout.</Trans>
           </p>
-        </div>
-      </div>
+        </EditorCard>
+      </EditorPanel>
     );
   }
 
   return (
-    <div className={cn(className, styles.textEditor)}>
-      <div className={styles.description}>
-        <p>
-          <Trans>Edit the text content displayed in your graphic.</Trans>
-        </p>
-      </div>
+    <EditorPanel className={className}>
+      <EditorCard>
+        <div className={styles.intro}>
+          <p>
+            <Trans>Edit the text content displayed in your graphic.</Trans>
+          </p>
+          <p className={styles.hint}>
+            <Trans>
+              Select a field to insert live tournament details, such as its name
+              or date.
+            </Trans>
+          </p>
+        </div>
 
-      <div className={styles.list}>
         {Object.entries(textPalette).map(([id, { text, name }]) => {
           const translatedName = i18n._(name);
           return (
-            <div key={id} className={styles.item}>
-              <span className={styles.label}>
-                <TransRuntime id={name} message={name} />
-              </span>
+            <FieldGroup
+              key={id}
+              label={<TransRuntime id={name} message={name} />}
+            >
               <RichTextInput
                 value={text}
                 onChange={(newText) => handleTextChange(id, newText, name)}
                 placeholder={_(msg`Enter ${translatedName.toLowerCase()}...`)}
               />
-            </div>
+            </FieldGroup>
           );
         })}
-      </div>
-    </div>
+      </EditorCard>
+    </EditorPanel>
   );
 };

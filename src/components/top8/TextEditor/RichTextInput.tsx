@@ -11,8 +11,7 @@ import styles from "./RichTextInput.module.scss";
 // --- Types ---
 
 type Segment =
-  | { type: "text"; value: string }
-  | { type: "placeholder"; value: string };
+  { type: "text"; value: string } | { type: "placeholder"; value: string };
 
 // --- Segment parsing ---
 
@@ -225,8 +224,9 @@ export const RichTextInput = ({
     [segments],
   );
 
-  // Apply pending focus after render
-  useEffect(() => {
+  // Apply pending focus after render. A layout effect, so focus is back
+  // before the browser paints and the insert row never flashes closed.
+  useLayoutEffect(() => {
     const pending = pendingFocusRef.current;
     if (pending) {
       pendingFocusRef.current = null;
@@ -385,12 +385,23 @@ export const RichTextInput = ({
     }
   };
 
+  // A press on the field's own chrome (padding, gaps between chips) would
+  // blur the input, which hides the insert row until the click refocuses it.
+  // Keep focus where it is instead; presses on the inputs behave normally.
+  const keepFocus = (e: React.MouseEvent) => {
+    if (!(e.target instanceof HTMLInputElement)) e.preventDefault();
+  };
+
   const chips = PlaceholderLabel.tournamentEntries();
   let textInputIndex = 0;
 
   return (
     <div className={cn(styles.richTextInput, className)}>
-      <div className={styles.tokenStrip} onClick={handleStripClick}>
+      <div
+        className={styles.tokenStrip}
+        onClick={handleStripClick}
+        onMouseDown={keepFocus}
+      >
         {segments.map((seg, i) => {
           if (seg.type === "placeholder") {
             return (
@@ -421,7 +432,7 @@ export const RichTextInput = ({
           );
         })}
       </div>
-      <div className={styles.chipBar}>
+      <div className={styles.chipBar} onMouseDown={keepFocus}>
         {chips.map(([key, label]) => (
           <button
             key={key}

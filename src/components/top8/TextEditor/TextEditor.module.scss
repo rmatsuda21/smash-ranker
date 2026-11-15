@@ -1,54 +1,33 @@
-@use "@/_theme" as *;
-
-.textEditor {
+.intro {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
-  flex: 1;
-  min-height: 0;
-  overflow-y: auto;
-}
-
-.description {
-  font-size: var(--font-size-sm);
-  color: var(--fg-3);
-  line-height: 1.5;
-  margin: 0;
-}
-
-.list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--form-gap);
-
-  .label {
-    @include label;
-  }
-
-  .item {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-  }
-}
-
-.empty {
-  padding: var(--space-5);
-  text-align: center;
-  color: var(--fg-muted);
+  gap: var(--space-1);
 
   p {
     margin: 0;
-
-    &:first-child {
-      font-size: var(--font-size-md);
-      font-weight: 600;
-      color: var(--fg-4);
-    }
+    font-size: var(--font-size-md);
+    line-height: 1.5;
+    color: var(--fg-1);
   }
+}
 
-  .hint {
-    margin-top: var(--space-2);
-    font-size: var(--font-size-sm);
-  }
+.intro .hint,
+.hint {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
+  color: var(--fg-3);
+}
+
+section.empty {
+  align-items: center;
+  padding-block: var(--space-6);
+  text-align: center;
+}
+
+.emptyTitle {
+  margin: 0;
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  color: var(--fg-2);
 }

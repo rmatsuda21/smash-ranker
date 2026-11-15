@@ -1,25 +1,40 @@
+@use "@/_theme" as *;
+
 .richTextInput {
-  position: relative;
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
 }
 
+// Drawn like the other editor fields; holds text runs and placeholder pills.
 .tokenStrip {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  background-color: var(--bg-surface);
+  row-gap: var(--space-1);
+  min-height: var(--field-h, 36px);
+  padding: var(--space-1) var(--space-2);
+  cursor: text;
+
+  font-size: var(--font-size-md);
+  background-color: var(--bg-input);
   border: 1px solid var(--border-strong);
   border-radius: var(--radius);
-  padding: var(--space-1) var(--space-2);
-  min-height: 36px;
-  cursor: text;
-  font-size: var(--font-size-md);
+  transition: border-color var(--duration-base) var(--ease-standard);
+
+  &:hover {
+    border-color: var(--gray-8);
+  }
 
   &:focus-within {
-    border-color: var(--accent-9);
-    box-shadow: 0 0 0 1px var(--accent-9);
+    border-color: var(--brand);
+    outline: 1px solid var(--brand);
+    outline-offset: -2px;
+  }
+
+  // 16px keeps iOS from zooming the page when an input is focused.
+  @include mobile {
+    font-size: 16px;
   }
 }
 
@@ -48,58 +63,60 @@
   min-width: 0;
 
   &::placeholder {
-    color: var(--gray-7);
+    color: var(--fg-4);
   }
 }
 
+// A live value inside the text: tinted so it reads as "filled in for you".
 .pill {
   user-select: none;
-  cursor: default;
+  cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: var(--space-1);
-  padding: 1px var(--space-1) 1px var(--space-2);
-  background: linear-gradient(135deg, var(--accent-4), var(--accent-3));
-  border: 1px solid var(--accent-6);
-  border-radius: var(--radius-sm);
+  gap: 2px;
+  padding: 2px var(--space-1) 2px var(--space-2);
+
   color: var(--accent-11);
+  font-family: inherit;
   font-size: var(--font-size-sm);
   font-weight: 600;
   line-height: 1.4;
+  background-color: var(--brand-soft);
+  border: 1px solid var(--brand-outline);
+  border-radius: var(--radius-pill);
+  transition: border-color var(--duration-base) var(--ease-standard);
+
+  &:hover {
+    border-color: var(--accent-8);
+
+    .removeIcon {
+      opacity: 1;
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent-9);
+    outline-offset: 1px;
+  }
 }
 
 .removeIcon {
-  font-size: 11px;
-  opacity: 0.6;
-  border-radius: 2px;
   padding: 0 var(--space-1);
+  font-size: 12px;
   line-height: 1;
-
-  &:hover {
-    opacity: 1;
-    background-color: var(--accent-5);
-  }
+  opacity: 0.6;
 
   @media (hover: none) {
-    opacity: 0.8;
+    opacity: 0.9;
   }
 }
 
+// Values that can be inserted. In the flow under the focused field, so it
+// never covers the field below.
 .chipBar {
   display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  z-index: var(--z-raised);
   flex-wrap: wrap;
   gap: var(--space-1);
-  padding: var(--space-2);
-  margin-top: var(--space-1);
-  background-color: var(--gray-2);
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 
   .richTextInput:focus-within & {
     display: flex;
@@ -111,23 +128,40 @@
   user-select: none;
   display: inline-flex;
   align-items: center;
-  padding: var(--space-1) var(--space-2);
-  background: linear-gradient(135deg, var(--accent-4), var(--accent-3));
-  border: 1px solid var(--accent-6);
-  border-radius: var(--radius-sm);
-  color: var(--accent-11);
-  font-size: var(--font-size-xs);
-  font-weight: 600;
-  line-height: 1.4;
-  transition: border-color var(--duration-base) var(--ease-standard);
+  gap: var(--space-1);
+  padding: 2px var(--space-2);
 
-  &:hover {
-    background: linear-gradient(135deg, var(--accent-5), var(--accent-4));
-    border-color: var(--accent-7);
+  color: var(--fg-2);
+  font-family: inherit;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  line-height: 1.4;
+  background-color: var(--bg-raised);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  transition:
+    color var(--duration-base) var(--ease-standard),
+    border-color var(--duration-base) var(--ease-standard),
+    background-color var(--duration-base) var(--ease-standard);
+
+  &::before {
+    content: "+";
+    font-weight: 700;
+    color: var(--fg-4);
   }
 
-  &:active {
-    background: linear-gradient(135deg, var(--accent-6), var(--accent-5));
-    border-color: var(--accent-8);
+  &:hover {
+    color: var(--accent-11);
+    background-color: var(--brand-soft);
+    border-color: var(--brand-outline);
+
+    &::before {
+      color: inherit;
+    }
+  }
+
+  @include mobile {
+    padding: var(--space-1) var(--space-3);
+    font-size: var(--font-size-md);
   }
 }
