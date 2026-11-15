@@ -1,146 +1,28 @@
-import { useEffect, useRef, useState } from "react";
+import { useMemo } from "react";
 import { Text } from "react-konva";
-import { Text as KonvaText, type TextConfig } from "konva/lib/shapes/Text";
+import { type TextConfig } from "konva/lib/shapes/Text";
 
-const MIN_FONT_SIZE = 8;
-const MAX_MEASURE_ITERATIONS = 10;
-const SAFETY_MARGIN_RATIO = 0.95;
-
-type Anchor =
-  | "topLeft"
-  | "topRight"
-  | "bottomLeft"
-  | "bottomRight"
-  | "bottomMiddle"
-  | "topMiddle"
-  | "leftMiddle"
-  | "rightMiddle"
-  | "center";
+import { fitText, type TextAnchor } from "@/utils/top8/textMetrics";
 
 type SmartTextProps = TextConfig & {
-  anchor?: Anchor;
+  anchor?: TextAnchor;
 };
 
-function calculateAnchorOffsets(
-  node: KonvaText,
-  anchor: Anchor,
-): { offsetX: number; offsetY: number } {
-  const textWidth = node.width();
-  const textHeight = node.height();
-
-  switch (anchor) {
-    case "topRight":
-      return { offsetX: textWidth, offsetY: 0 };
-    case "bottomLeft":
-      return { offsetX: 0, offsetY: textHeight };
-    case "bottomRight":
-      return { offsetX: textWidth, offsetY: textHeight };
-    case "bottomMiddle":
-      return { offsetX: textWidth / 2, offsetY: textHeight };
-    case "topMiddle":
-      return { offsetX: textWidth / 2, offsetY: 0 };
-    case "leftMiddle":
-      return { offsetX: 0, offsetY: textHeight / 2 };
-    case "rightMiddle":
-      return { offsetX: textWidth, offsetY: textHeight / 2 };
-    case "center":
-      return { offsetX: textWidth / 2, offsetY: textHeight / 2 };
-    case "topLeft":
-    default:
-      return { offsetX: 0, offsetY: 0 };
-  }
-}
-
-function measureFromMiddleBaseline(
-  node: KonvaText,
-  text: string,
-): { actualAscent: number; actualDescent: number } | null {
-  const canvas = document.createElement("canvas");
-  const ctx = canvas.getContext("2d");
-  if (!ctx) return null;
-
-  ctx.font = `${node.fontStyle()} ${node.fontSize()}px ${node.fontFamily()}`;
-  ctx.textBaseline = "middle";
-  const metrics = ctx.measureText(text);
-
-  if (
-    metrics.actualBoundingBoxAscent === undefined ||
-    metrics.actualBoundingBoxDescent === undefined
-  ) {
-    return null;
-  }
-
-  return {
-    actualAscent: metrics.actualBoundingBoxAscent,
-    actualDescent: metrics.actualBoundingBoxDescent,
-  };
-}
-
-function computeVerticalCorrection(
-  node: KonvaText,
-  text: string,
-  verticalAlign: string | undefined,
-): number {
-  if (!verticalAlign || verticalAlign === "top") return 0;
-
-  if (verticalAlign === "middle") {
-    const metrics = measureFromMiddleBaseline(node, text);
-    if (!metrics) return 0;
-    return (metrics.actualAscent - metrics.actualDescent) / 2;
-  }
-
-  return 0;
-}
-
-function applyNodeTypography(node: KonvaText, props: SmartTextProps) {
-  if (props.fontFamily) node.fontFamily(props.fontFamily);
-  if (props.fontStyle) node.fontStyle(props.fontStyle);
-  if (props.padding !== undefined) node.padding(props.padding);
-  if (props.lineHeight !== undefined) node.lineHeight(props.lineHeight);
-  if (props.letterSpacing !== undefined)
-    node.letterSpacing(props.letterSpacing);
-}
-
-function computeFittedFontSize(
-  node: KonvaText,
-  content: string,
-  targetWidth: number,
-  baseFontSize: number,
-  props: SmartTextProps,
-) {
-  node.text(content);
-  node.fontSize(baseFontSize);
-  applyNodeTypography(node, props);
-
-  let currentSize = baseFontSize;
-  let iterations = 0;
-  let measuredWidth = node.measureSize(content).width;
-
-  while (measuredWidth > targetWidth && iterations < MAX_MEASURE_ITERATIONS) {
-    const ratio = targetWidth / measuredWidth;
-    const nextSize = Math.max(
-      Math.floor(currentSize * ratio * SAFETY_MARGIN_RATIO),
-      MIN_FONT_SIZE,
-    );
-
-    if (nextSize === currentSize) break;
-
-    currentSize = nextSize;
-    node.fontSize(currentSize);
-    measuredWidth = node.measureSize(content).width;
-    iterations++;
-  }
-
-  return currentSize;
-}
-
+/**
+ * Text that shrinks to fit its box width and positions itself by an anchor
+ * point instead of its top-left corner.
+ *
+ * The fit is computed during render from the props alone, so the text paints
+ * once at its final size. That relies on the font already being loaded, which
+ * every canvas guarantees before mounting its stage.
+ */
 export const SmartText = (props: SmartTextProps) => {
   const {
     fontSize = 16,
     width,
     height,
     text = "",
-    shadowOffset: initialShadowOffset,
+    shadowOffset: designShadowOffset,
     anchor = "topLeft",
     verticalAlign,
     fontFamily,
@@ -151,108 +33,50 @@ export const SmartText = (props: SmartTextProps) => {
     ...restProps
   } = props;
 
-  const [adjustedFontSize, setAdjustedFontSize] = useState(fontSize);
-  const [offsetX, setOffsetX] = useState(0);
-  const [offsetY, setOffsetY] = useState(0);
-  const [shadowOffset, setShadowOffset] = useState(initialShadowOffset);
-  const textRef = useRef<KonvaText>(null);
-
-  const isCalculatingRef = useRef(false);
-
-  useEffect(() => {
-    if (!text) {
-      setAdjustedFontSize(fontSize);
-      return;
-    }
-
-    if (isCalculatingRef.current || !textRef.current) return;
-
-    const typographyProps = {
+  const fitted = useMemo(
+    () =>
+      fitText({
+        text,
+        fontSize,
+        width,
+        height,
+        anchor,
+        verticalAlign,
+        fontFamily,
+        fontStyle,
+        padding,
+        lineHeight,
+        letterSpacing,
+      }),
+    [
+      text,
+      fontSize,
+      width,
+      height,
+      anchor,
+      verticalAlign,
       fontFamily,
       fontStyle,
       padding,
       lineHeight,
       letterSpacing,
-    };
+    ],
+  );
 
-    const calculateFontSize = () => {
-      const node = textRef.current;
-      if (!node || !width) return fontSize;
-
-      isCalculatingRef.current = true;
-      const fitted = computeFittedFontSize(
-        node,
-        text,
-        width,
-        fontSize,
-        typographyProps,
-      );
-      isCalculatingRef.current = false;
-
-      return fitted;
-    };
-
-    const calculateShadowOffset = () => {
-      const node = textRef.current;
-      if (!node || !initialShadowOffset) return initialShadowOffset;
-
-      const _width = width ?? node.measureSize(text).width;
-      const fitted = computeFittedFontSize(
-        node,
-        text,
-        _width,
-        fontSize,
-        typographyProps,
-      );
-      return {
-        x: (initialShadowOffset.x * fitted) / fontSize,
-        y: (initialShadowOffset.y * fitted) / fontSize,
-      };
-    };
-
-    const calculateAnchorOffset = () => {
-      const node = textRef.current;
-      if (!node) return { offsetX: 0, offsetY: 0 };
-
-      return calculateAnchorOffsets(node, anchor);
-    };
-
-    const timeoutId = setTimeout(() => {
-      setAdjustedFontSize(calculateFontSize());
-      const anchorOffset = calculateAnchorOffset();
-      const node = textRef.current;
-      const correction = node
-        ? computeVerticalCorrection(node, text, verticalAlign)
-        : 0;
-      setOffsetX(anchorOffset.offsetX);
-      setOffsetY(anchorOffset.offsetY - correction);
-      setShadowOffset(calculateShadowOffset());
-    }, 0);
-
-    return () => {
-      clearTimeout(timeoutId);
-      isCalculatingRef.current = false;
-    };
-  }, [
-    fontSize,
-    width,
-    text,
-    initialShadowOffset,
-    anchor,
-    verticalAlign,
-    fontFamily,
-    fontStyle,
-    padding,
-    lineHeight,
-    letterSpacing,
-  ]);
+  // The shadow shrinks with the text so it keeps its proportions.
+  const shadowX = designShadowOffset?.x;
+  const shadowY = designShadowOffset?.y;
+  const shadowOffset = useMemo(() => {
+    if (shadowX === undefined || shadowY === undefined) return undefined;
+    const scale = fitted.fontSize / fontSize;
+    return { x: shadowX * scale, y: shadowY * scale };
+  }, [shadowX, shadowY, fitted.fontSize, fontSize]);
 
   return (
     <Text
-      ref={textRef}
-      fontSize={adjustedFontSize}
-      offsetX={offsetX}
-      offsetY={offsetY}
+      fontSize={fitted.fontSize}
+      offsetX={fitted.offsetX}
+      offsetY={fitted.offsetY}
       width={width}
       height={height}
       text={text}

@@ -8,6 +8,7 @@ import type { PlayerInfo } from "@/types/top8/Player";
 import {
   computeDynamicPlayerLayout,
   computePlayerHeightDelta,
+  mergePlayerSlots,
 } from "@/utils/top8/dynamicPlayerHeight";
 
 type CanvasSize = Design["canvasSize"];
@@ -28,7 +29,7 @@ export const getPlayerConfigs = (
       dynamicPlayerHeight,
     ).configs;
   }
-  return playerSlots.map((slot) => ({ ...basePlayer, ...slot }));
+  return mergePlayerSlots(basePlayer, playerSlots);
 };
 
 /** Canvas size after dynamic player height has grown the players that occupy

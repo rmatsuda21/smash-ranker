@@ -1,6 +1,5 @@
 import { Group } from "react-konva";
 import { ReactNode } from "react";
-import { Text as KonvaText } from "konva/lib/shapes/Text";
 
 import type {
   ElementConfig,
@@ -17,6 +16,7 @@ import type { ElementCreator } from "@/types/top8/ElementFactory";
 import { evaluateElementCondition } from "@/utils/top8/evaluateElementCondition";
 import { resolveElementText } from "@/utils/top8/resolveElementText";
 import { composeFontStyle } from "@/utils/fonts/fontLoader";
+import { measureTextBoxWidth } from "@/utils/top8/textMetrics";
 import type { InternalContext } from "../types";
 import { getElementKey } from "../elementKey";
 
@@ -54,23 +54,19 @@ const getElementMainSize = (
       const textEl = element as TextElementConfig | SmartTextElementConfig;
       const text = resolveElementText(textEl, context);
 
-      const tempText = new KonvaText({
-        text: text,
+      const fontFamily = context.fontFamily ?? "Arial";
+
+      return measureTextBoxWidth({
+        text,
         fontSize: textEl.fontSize ?? 20,
-        fontFamily: context.fontFamily ?? "Arial",
+        fontFamily,
         fontStyle: composeFontStyle(
-          context.fontFamily ?? "Arial",
+          fontFamily,
           textEl.fontWeight,
           textEl.fontStyle,
         ),
         width: textEl.size?.width,
-        wrap: "word",
       });
-
-      const measuredWidth = tempText.width();
-      tempText.destroy();
-
-      return measuredWidth;
     }
 
     if (element.type === "customAltCharacterImage") {

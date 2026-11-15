@@ -61,8 +61,12 @@ const SelectableElementInteractive = ({
     height: 0,
   });
 
+  const hasExplicitSize = rest.width !== undefined && rest.height !== undefined;
+
+  // The hit and hover rects need the content's bounds only when the element
+  // has no size of its own. Sized elements (every player) skip measuring.
   useEffect(() => {
-    if (!contentRef.current) return;
+    if (hasExplicitSize || !contentRef.current) return;
 
     const measureBounds = () => {
       if (!contentRef.current) return null;
@@ -105,9 +109,8 @@ const SelectableElementInteractive = ({
     }, 50);
 
     return () => clearTimeout(timeoutId);
-  }, [children]);
+  }, [children, hasExplicitSize]);
 
-  const hasExplicitSize = rest.width !== undefined && rest.height !== undefined;
   const width = rest.width ?? contentBounds.width;
   const height = rest.height ?? contentBounds.height;
   const rectX = hasExplicitSize ? 0 : contentBounds.x;

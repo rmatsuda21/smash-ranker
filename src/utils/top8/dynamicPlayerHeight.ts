@@ -81,6 +81,56 @@ function patchPlayerElements(
   return changed ? result : elements;
 }
 
+type SlotLayout = {
+  basePlayer: PlayerDesign;
+  delta: number;
+  offsetY: number;
+  config: PlayerDesign;
+};
+
+// Last layout computed for each slot object. A slot whose inputs are
+// unchanged gets the same config object back, so `Player` can tell at a
+// glance that nothing changed instead of deep-comparing element trees.
+const slotLayoutCache = new WeakMap<Partial<PlayerDesign>, SlotLayout>();
+
+const layoutSlot = (
+  basePlayer: PlayerDesign,
+  slot: Partial<PlayerDesign>,
+  delta: number,
+  offsetY: number,
+): PlayerDesign => {
+  const cached = slotLayoutCache.get(slot);
+  if (
+    cached &&
+    cached.basePlayer === basePlayer &&
+    cached.delta === delta &&
+    cached.offsetY === offsetY
+  ) {
+    return cached.config;
+  }
+
+  const config: PlayerDesign = { ...basePlayer, ...slot };
+
+  if (delta > 0) {
+    config.elements = patchPlayerElements(config.elements, delta);
+    config.size = { ...config.size, height: config.size.height + delta };
+  }
+
+  if (offsetY > 0) {
+    config.position = { ...config.position, y: config.position.y + offsetY };
+  }
+
+  slotLayoutCache.set(slot, { basePlayer, delta, offsetY, config });
+  return config;
+};
+
+/** Base player merged with each slot's overrides, with no height changes. */
+export const mergePlayerSlots = (
+  basePlayer: PlayerDesign,
+  playerOverrides: Partial<PlayerDesign>[],
+): PlayerDesign[] =>
+  playerOverrides.map((slot) => layoutSlot(basePlayer, slot, 0, 0));
+
 export function computeDynamicPlayerLayout(
   basePlayer: PlayerDesign,
   playerOverrides: Partial<PlayerDesign>[],
@@ -91,27 +141,12 @@ export function computeDynamicPlayerLayout(
   const configs: PlayerDesign[] = [];
 
   for (let i = 0; i < playerOverrides.length; i++) {
-    const merged: PlayerDesign = { ...basePlayer, ...playerOverrides[i] };
-    const player = players[i];
-    const characterCount = player?.characters?.length ?? 0;
+    const characterCount = players[i]?.characters?.length ?? 0;
     const delta = computePlayerHeightDelta(dynamicHeight, characterCount);
 
-    if (delta > 0) {
-      merged.elements = patchPlayerElements(merged.elements, delta);
-      merged.size = {
-        ...merged.size,
-        height: merged.size.height + delta,
-      };
-    }
-
-    if (cumulativeDelta > 0) {
-      merged.position = {
-        ...merged.position,
-        y: merged.position.y + cumulativeDelta,
-      };
-    }
-
-    configs.push(merged);
+    configs.push(
+      layoutSlot(basePlayer, playerOverrides[i], delta, cumulativeDelta),
+    );
     cumulativeDelta += delta;
   }
 

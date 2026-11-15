@@ -7,10 +7,12 @@ import { Stage as KonvaStage } from "konva/lib/Stage";
 import { RenderProfileContext } from "@/components/top8/Canvas/RenderProfileContext";
 import { StaticScene } from "@/components/top8/Canvas/scene/StaticScene";
 import { OFFSCREEN_PROFILE } from "@/utils/top8/renderProfile";
+import { getEffectiveCanvasSize } from "@/utils/top8/scene";
 import { createSamplePlayers } from "@/utils/top8/samplePlayers";
 import { loadFamily } from "@/utils/fonts/fontLoader";
 import { TournamentInfo } from "@/types/top8/Tournament";
 import { DBTemplate } from "@/types/Repository";
+import { CharacerData, PlayerInfo } from "@/types/top8/Player";
 
 import { top8erDesign } from "@/designs/top8er";
 import { squaresDesign } from "@/designs/squares";
@@ -31,7 +33,9 @@ declare global {
   }
 }
 
-const TEMPLATES: DBTemplate[] = [
+type PreviewTemplate = DBTemplate & { players?: PlayerInfo[] };
+
+const BUILT_IN_TEMPLATES: PreviewTemplate[] = [
   {
     id: "top8er",
     name: "Original",
@@ -84,10 +88,38 @@ const TEMPLATES: DBTemplate[] = [
 
 const samplePlayers = createSamplePlayers(24);
 
+// Players with enough characters to wrap onto extra rows, which is what
+// makes dynamic player height grow cards and the canvas.
+const multiCharacterPlayers = samplePlayers.map((player, index) => {
+  const characterCount = [9, 1, 14, 2, 7, 1, 1, 3][index] ?? 1;
+  return {
+    ...player,
+    characters: Array.from({ length: characterCount }, (_, alt) => ({
+      id: "1293",
+      alt: (alt % 8) as CharacerData["alt"],
+    })),
+  };
+});
+
+// Golden-only cases: variations of built-in templates that exercise code the
+// plain templates don't. They never become picker thumbnails.
+const GOLDEN_ONLY_TEMPLATES: PreviewTemplate[] = [
+  {
+    id: "minimal-dark-dynamic-height",
+    name: "8 Players (Dark), multi-character",
+    design: minimalDarkDesign,
+    font: "Noto Sans JP",
+    players: multiCharacterPlayers,
+  },
+];
+
 // `?mode=golden` captures lossless half-resolution PNGs for the regression
 // check (scripts/check-goldens.ts) instead of lossy WebP thumbnails.
 const GOLDEN_MODE =
   new URLSearchParams(window.location.search).get("mode") === "golden";
+const TEMPLATES = GOLDEN_MODE
+  ? [...BUILT_IN_TEMPLATES, ...GOLDEN_ONLY_TEMPLATES]
+  : BUILT_IN_TEMPLATES;
 const CAPTURE_OPTIONS = GOLDEN_MODE
   ? { mimeType: "image/png", pixelRatio: 0.5 }
   : { mimeType: "image/webp", quality: 0.5 };
@@ -109,10 +141,17 @@ const TemplateRenderer = ({
   template,
   onCaptured,
 }: {
-  template: DBTemplate;
+  template: PreviewTemplate;
   onCaptured: (id: string, dataUrl: string) => void;
 }) => {
   const stageRef = useRef<KonvaStage>(null);
+  const players = template.players ?? samplePlayers;
+  const stageSize = getEffectiveCanvasSize(
+    template.design.canvasSize,
+    template.design.dynamicPlayerHeight,
+    template.design.players.length,
+    players,
+  );
   const [isSceneReady, setIsSceneReady] = useState(false);
   const [captured, setCaptured] = useState(false);
   const handleSceneReady = useCallback(() => setIsSceneReady(true), []);
@@ -144,15 +183,15 @@ const TemplateRenderer = ({
     <div style={{ position: "absolute", left: -9999, top: -9999 }}>
       <Stage
         ref={stageRef}
-        width={template.design.canvasSize.width}
-        height={template.design.canvasSize.height}
+        width={stageSize.width}
+        height={stageSize.height}
         listening={false}
       >
         <RenderProfileContext value={OFFSCREEN_PROFILE}>
           <Layer listening={false}>
             <StaticScene
               design={template.design}
-              players={samplePlayers}
+              players={players}
               tournament={sampleTournament}
               fontFamily={template.font}
               onReady={handleSceneReady}

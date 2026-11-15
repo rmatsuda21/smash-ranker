@@ -2,42 +2,63 @@ import { DesignPlaceholder } from "@/consts/top8/placeholders";
 import { RenderCondition } from "@/consts/top8/renderConditions";
 import { ElementFactoryContext } from "@/types/top8/ElementFactory";
 
-const getConditionMap = (
-  context: ElementFactoryContext,
-): Record<DesignPlaceholder | RenderCondition, boolean> => {
-  const { player, tournament, design } = context;
-  return {
-    [DesignPlaceholder.PLAYER_TWITTER]: Boolean(player?.twitter),
-    [DesignPlaceholder.PLAYER_PLACEMENT]: Boolean(player?.placement),
-    [DesignPlaceholder.PLAYER_COUNTRY]: Boolean(
-      player?.customFlagSrc || player?.country,
-    ),
-    [DesignPlaceholder.PLAYER_NAME]: Boolean(player?.name),
-    [DesignPlaceholder.PLAYER_TAG]: Boolean(player?.gamerTag),
-    [DesignPlaceholder.PLAYER_PREFIX]: Boolean(player?.prefix),
-    [DesignPlaceholder.TOURNAMENT_NAME]: Boolean(tournament?.tournamentName),
-    [DesignPlaceholder.EVENT_NAME]: Boolean(tournament?.eventName),
-    [DesignPlaceholder.TOURNAMENT_DATE]: Boolean(tournament?.date),
-    [DesignPlaceholder.TOURNAMENT_LOCATION]:
-      Boolean(tournament?.location.city) &&
-      Boolean(tournament?.location.state) &&
-      Boolean(tournament?.location.country),
-    [DesignPlaceholder.ENTRANTS]: Boolean(tournament?.entrants),
-    [DesignPlaceholder.TOURNAMENT_CITY]: Boolean(tournament?.location.city),
-    [DesignPlaceholder.TOURNAMENT_STATE]: Boolean(tournament?.location.state),
-    [DesignPlaceholder.TOURNAMENT_COUNTRY]: Boolean(
-      tournament?.location.country,
-    ),
-    [DesignPlaceholder.TOURNAMENT_URL]: Boolean(tournament?.url),
-    [RenderCondition.TOURNAMENT_ICON]: Boolean(tournament?.iconSrc),
-    [RenderCondition.BACKGROUND_IMG]: Boolean(design?.bgAssetId),
-    [RenderCondition.HAS_ALT_CHARACTERS]: Boolean(
-      player?.characters && player.characters.length > 1,
-    ),
-    [RenderCondition.NOT]: true,
-  };
+/** Whether the data behind one condition is present. Only the condition
+ *  asked for is computed. */
+const isConditionMet = (
+  condition: DesignPlaceholder | RenderCondition,
+  { player, tournament, design }: ElementFactoryContext,
+): boolean => {
+  switch (condition) {
+    case DesignPlaceholder.PLAYER_TWITTER:
+      return Boolean(player?.twitter);
+    case DesignPlaceholder.PLAYER_PLACEMENT:
+      return Boolean(player?.placement);
+    case DesignPlaceholder.PLAYER_COUNTRY:
+      return Boolean(player?.customFlagSrc || player?.country);
+    case DesignPlaceholder.PLAYER_NAME:
+      return Boolean(player?.name);
+    case DesignPlaceholder.PLAYER_TAG:
+      return Boolean(player?.gamerTag);
+    case DesignPlaceholder.PLAYER_PREFIX:
+      return Boolean(player?.prefix);
+    case DesignPlaceholder.TOURNAMENT_NAME:
+      return Boolean(tournament?.tournamentName);
+    case DesignPlaceholder.EVENT_NAME:
+      return Boolean(tournament?.eventName);
+    case DesignPlaceholder.TOURNAMENT_DATE:
+      return Boolean(tournament?.date);
+    case DesignPlaceholder.TOURNAMENT_LOCATION:
+      return (
+        Boolean(tournament?.location.city) &&
+        Boolean(tournament?.location.state) &&
+        Boolean(tournament?.location.country)
+      );
+    case DesignPlaceholder.ENTRANTS:
+      return Boolean(tournament?.entrants);
+    case DesignPlaceholder.TOURNAMENT_CITY:
+      return Boolean(tournament?.location.city);
+    case DesignPlaceholder.TOURNAMENT_STATE:
+      return Boolean(tournament?.location.state);
+    case DesignPlaceholder.TOURNAMENT_COUNTRY:
+      return Boolean(tournament?.location.country);
+    case DesignPlaceholder.TOURNAMENT_URL:
+      return Boolean(tournament?.url);
+    case RenderCondition.TOURNAMENT_ICON:
+      return Boolean(tournament?.iconSrc);
+    case RenderCondition.BACKGROUND_IMG:
+      return Boolean(design?.bgAssetId);
+    case RenderCondition.HAS_ALT_CHARACTERS:
+      return Boolean(player?.characters && player.characters.length > 1);
+    default:
+      return false;
+  }
 };
 
+/**
+ * Evaluates an element's `conditions` list. `RenderCondition.NOT` negates
+ * the condition that follows it, and the last condition in the list decides
+ * the result.
+ */
 export const evaluateElementCondition = (
   conditions: (DesignPlaceholder | RenderCondition)[] | undefined,
   context: ElementFactoryContext,
@@ -52,12 +73,8 @@ export const evaluateElementCondition = (
       continue;
     }
 
-    const conditionValue = getConditionMap(context)[condition];
-    if (negate) {
-      shouldRender = !conditionValue;
-    } else {
-      shouldRender = conditionValue;
-    }
+    const met = isConditionMet(condition, context);
+    shouldRender = negate ? !met : met;
     negate = false;
   }
   return shouldRender;
