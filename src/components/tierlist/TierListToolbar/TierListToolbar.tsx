@@ -9,6 +9,7 @@ import { ConfirmationModal } from "@/components/shared/ConfirmationModal/Confirm
 import { TierListSettings } from "@/components/tierlist/TierListSettings/TierListSettings";
 import { useTierListStore } from "@/store/tierListStore";
 import { downloadBlob } from "@/utils/top8/downloadBlob";
+import { renderElementToCanvas } from "@/utils/tierlist/renderElementToCanvas";
 import {
   logError,
   logEvent,
@@ -33,9 +34,14 @@ export const TierListToolbar = ({ exportRef }: Props) => {
     setExporting(true);
     const startedAt = performance.now();
     logEvent("graphic_export_start", { export_surface: "tier" });
-    const { toCanvas } = await import("html-to-image");
-    // Yield to let React render the loading state before the heavy work
-    await new Promise((r) => requestAnimationFrame(r));
+    // Let the loading state actually reach the screen before the heavy,
+    // synchronous canvas work. A lone requestAnimationFrame isn't enough:
+    // its callback runs *before* that frame is painted, so continuing from
+    // it blocks the very paint we're waiting for. The timeout queued inside
+    // the callback runs after the frame has been presented.
+    await new Promise<void>((resolve) =>
+      requestAnimationFrame(() => setTimeout(resolve, 0)),
+    );
     const target = exportRef.current;
 
     const PIXEL_RATIO = 2;
@@ -57,36 +63,14 @@ export const TierListToolbar = ({ exportRef }: Props) => {
         // Non-fatal — fallback to sans-serif if loading fails.
       }
 
-      const sourceCanvas = await toCanvas(target, {
-        backgroundColor: "transparent",
-        pixelRatio: PIXEL_RATIO,
-        skipFonts: true,
-        filter: (node) =>
-          !(
-            node instanceof HTMLElement &&
-            node.hasAttribute("data-export-ignore")
-          ),
+      // Painted straight from the live layout (see renderElementToCanvas).
+      // The canvas is already cropped to the non-ignored content, so an
+      // empty-title placeholder doesn't leave a blank band.
+      const sourceCanvas = await renderElementToCanvas(target, {
+        scale: PIXEL_RATIO,
+        ignore: (el) => el.hasAttribute("data-export-ignore"),
       });
-
-      // The cloned snapshot omits data-export-ignore direct children, so the
-      // rendered content is shorter than sourceCanvas.height (which mirrors the
-      // live DOM's bounding box). Recompute the true content height to avoid
-      // baking blank space (e.g. the empty title placeholder) into the export.
-      const visibleChildren = Array.from(target.children).filter(
-        (c): c is HTMLElement =>
-          c instanceof HTMLElement && !c.hasAttribute("data-export-ignore"),
-      );
-      const gapCss = parseFloat(getComputedStyle(target).rowGap || "0") || 0;
-      const contentCss =
-        visibleChildren.reduce(
-          (sum, c) => sum + c.getBoundingClientRect().height,
-          0,
-        ) +
-        Math.max(0, visibleChildren.length - 1) * gapCss;
-      const contentPx = Math.min(
-        Math.round(contentCss * PIXEL_RATIO),
-        sourceCanvas.height,
-      );
+      const contentPx = sourceCanvas.height;
 
       const bandPx = WATERMARK_BAND_CSS_PX * PIXEL_RATIO;
       const composed = document.createElement("canvas");
@@ -133,12 +117,19 @@ export const TierListToolbar = ({ exportRef }: Props) => {
         bandTop + bandPx / 2,
       );
 
+      // Free the intermediate canvas before encoding the composed one.
+      sourceCanvas.width = 0;
+      sourceCanvas.height = 0;
+
       const blob = await new Promise<Blob>((resolve, reject) => {
         composed.toBlob(
           (b) => (b ? resolve(b) : reject(new Error("toBlob returned null"))),
           "image/png",
         );
       });
+
+      composed.width = 0;
+      composed.height = 0;
 
       await downloadBlob({
         blob,
@@ -154,7 +145,7 @@ export const TierListToolbar = ({ exportRef }: Props) => {
       setPersonOnce({ first_export_at: now });
       setPerson({ has_exported: true, last_export_at: now });
     } catch (err) {
-      // html-to-image / canvas compositing failures are real bugs — keep
+      // Canvas rendering / compositing failures are real bugs — keep
       // Sentry capture, plus a product fail event for rate visibility.
       logError(err, { area: "export", surface: "tier" });
       logEvent("graphic_export_fail", {

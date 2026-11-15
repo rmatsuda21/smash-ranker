@@ -19,6 +19,9 @@ export const CharacterImage = ({ character, imageMode, size = 48 }: Props) => {
   return (
     <img
       className={styles.image}
+      // CORS-enabled so the export can draw this element onto a canvas
+      // without tainting it. Must come before `src`.
+      crossOrigin="anonymous"
       src={url}
       alt={character.characterId}
       width={size}

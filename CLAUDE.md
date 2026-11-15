@@ -65,7 +65,7 @@ A drag-and-drop tier list maker for ranking Smash Bros. characters. Built with *
 - **Store** — `src/store/tierListStore.ts` (Zustand + persist to localStorage). Reducer-based with actions like `MOVE_CHARACTER`, `ADD_TIER`, `SET_LAYOUT`, `SET_LABEL_FONT`, etc.
 - **Layout variants** — "side" (label left of row) and "top" (label as tab above row). Controlled via `TierListSettings` popover.
 - **Settings popover** (`TierListSettings`) — label position, image style (stock/main art), font family/weight/size. Uses the shared `DropDownSelect` component.
-- **Export** — renders to PNG via `html-to-image`. Elements with `data-export-ignore` are excluded.
+- **Export** — renders to PNG with a purpose-built canvas painter, `src/utils/tierlist/renderElementToCanvas.ts`, which reads each element's measured box and computed style from the live DOM (no DOM-snapshot library). Elements with `data-export-ignore` are excluded. It supports only the CSS the tier list uses (backgrounds, one `linear-gradient`, borders, radius, overflow clipping, box/text shadow, wrapped text, `<img>` object-fit) — **when exported tier list content starts using another CSS feature (pseudo-elements, transforms, filters, background images), add it to the painter.** Character `<img>`s carry `crossOrigin="anonymous"` so they can be drawn without tainting the canvas.
 - **Mobile** — uses `touch-action: pan-y` on sortable characters to allow vertical scrolling while preserving horizontal drag. The `main` element in Layout is the scroll container on mobile. Character pool sticks to the bottom via `position: sticky`.
 
 ### Predict (`/predict`)

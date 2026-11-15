@@ -24,6 +24,11 @@
   &.loading {
     opacity: 0.75;
     color: transparent;
+    // Hide the label at once rather than fading it. The base `transition:
+    // all` would animate `color` on the main thread, so when loading kicks
+    // off blocking work (e.g. the tier list export) the fade freezes on its
+    // first frame and the label stays visible behind the spinner.
+    transition: none;
 
     > *:not(.loader) {
       opacity: 0;
