@@ -1,3 +1,4 @@
+import { useId } from "react";
 import cn from "classnames";
 
 import { useThumbnailStore } from "@/store/thumbnailStore";
@@ -22,6 +23,7 @@ const useUpdateBackground = () => {
 };
 
 export const BackgroundTab = () => {
+  const fieldId = useId();
   const background = useThumbnailStore((s) => s.design.background);
   const update = useUpdateBackground();
 
@@ -103,8 +105,9 @@ export const BackgroundTab = () => {
             onClear={() => update({ ...background, src: "" })}
           />
           <div className={styles.row}>
-            <label>Fit</label>
+            <label htmlFor={`${fieldId}-fit`}>Fit</label>
             <select
+              id={`${fieldId}-fit`}
               value={background.fillMode}
               onChange={(e) =>
                 update({

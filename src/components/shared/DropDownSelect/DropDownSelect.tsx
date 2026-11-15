@@ -1,11 +1,12 @@
 import {
   useCallback,
-  useEffect,
+  useId,
   useLayoutEffect,
   useMemo,
   useRef,
   useState,
 } from "react";
+import { useLingui } from "@lingui/react/macro";
 import { LuChevronsUpDown, LuSearch } from "react-icons/lu";
 import cn from "classnames";
 
@@ -82,15 +83,16 @@ export const DropDownSelect = <T,>({
   error,
   className,
   searchable = false,
-  searchPlaceholder = "Search...",
+  searchPlaceholder,
   renderOption,
 }: Props<T>) => {
+  const { t } = useLingui();
+  const listboxId = useId();
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
   const triggerRef = useRef<HTMLButtonElement>(null);
   const windowRef = useRef<HTMLDivElement>(null);
-  const focusedItemRef = useRef<HTMLDivElement | null>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   const selectedOption = useMemo(() => {
@@ -113,6 +115,7 @@ export const DropDownSelect = <T,>({
       onChange(value);
       setIsOpen(false);
       setSearchQuery("");
+      triggerRef.current?.focus();
     },
     [onChange],
   );
@@ -122,141 +125,148 @@ export const DropDownSelect = <T,>({
   }, []);
 
   const closeDropdown = useCallback(() => {
+    // Dismissed from the keyboard (Esc) with focus still inside the list:
+    // hand focus back to the trigger instead of dropping it on <body>.
+    if (windowRef.current?.parentElement?.contains(document.activeElement)) {
+      triggerRef.current?.focus();
+    }
     setIsOpen(false);
     setSearchQuery("");
   }, []);
 
-  useEffect(() => {
+  const getItems = () =>
+    Array.from(
+      windowRef.current?.querySelectorAll<HTMLElement>('[role="option"]') ?? [],
+    );
+
+  const moveFocus = (to: "next" | "previous" | "first" | "last") => {
+    const items = getItems();
+    if (!items.length) return;
+    const current = items.indexOf(document.activeElement as HTMLElement);
+    let target: HTMLElement | undefined;
+    if (to === "first") {
+      target = items[0];
+    } else if (to === "last") {
+      target = items[items.length - 1];
+    } else if (current === -1) {
+      // Coming from the search box: start at the selected option if shown.
+      target =
+        items.find((item) => item.dataset.state === "checked") ??
+        (to === "next" ? items[0] : items[items.length - 1]);
+    } else {
+      const step = to === "next" ? 1 : -1;
+      target = items[(current + step + items.length) % items.length];
+    }
+    target?.focus();
+  };
+
+  // Scoped to the popover (not `document`), so it only ever sees keys typed
+  // while focus is inside this dropdown.
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    const active = document.activeElement as HTMLElement | null;
+    const isSearchFocused = active === searchInputRef.current;
+    const isOptionFocused = active?.getAttribute("role") === "option";
+
+    switch (e.key) {
+      case "ArrowDown":
+        e.preventDefault();
+        moveFocus("next");
+        break;
+      case "ArrowUp":
+        e.preventDefault();
+        moveFocus("previous");
+        break;
+      case "Home":
+        if (isSearchFocused) break;
+        e.preventDefault();
+        moveFocus("first");
+        break;
+      case "End":
+        if (isSearchFocused) break;
+        e.preventDefault();
+        moveFocus("last");
+        break;
+      case "Tab":
+        // One tab stop: Tab leaves the list rather than walking the options.
+        e.preventDefault();
+        closeDropdown();
+        break;
+      case " ":
+        if (!isOptionFocused) break;
+        e.preventDefault();
+        active?.click();
+        break;
+      case "Enter":
+        // The Enter that confirms an IME conversion is not a selection.
+        if (e.nativeEvent.isComposing) break;
+        if (isOptionFocused) {
+          e.preventDefault();
+          active?.click();
+        } else if (isSearchFocused && filteredOptions.length === 1) {
+          e.preventDefault();
+          handleValueChange(filteredOptions[0].value);
+        }
+        break;
+      default:
+        // Typing while an option is focused goes to the search box.
+        if (
+          searchable &&
+          isOptionFocused &&
+          e.key.length === 1 &&
+          !e.ctrlKey &&
+          !e.metaKey &&
+          !e.altKey
+        ) {
+          searchInputRef.current?.focus();
+        }
+    }
+  };
+
+  const handleTriggerKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (!isOpen && (e.key === "ArrowDown" || e.key === "ArrowUp")) {
+      e.preventDefault();
+      setIsOpen(true);
+    }
+  };
+
+  // Move focus into the dropdown on open so the keys above reach it. Deferred
+  // a frame: the popover is hidden until it has been positioned.
+  useLayoutEffect(() => {
     if (!isOpen) return;
 
-    const getVisibleItems = () => {
-      return windowRef.current?.querySelectorAll(`.${styles.item}`) as
-        | NodeListOf<HTMLDivElement>
-        | undefined;
-    };
-
-    const focusPreviousItem = () => {
-      const items = getVisibleItems();
-      if (!items?.length) return;
-
-      if (focusedItemRef.current) {
-        const currentIndex = Array.from(items).indexOf(focusedItemRef.current);
-        const prevIndex =
-          currentIndex > 0 ? currentIndex - 1 : items.length - 1;
-        const prevItem = items[prevIndex];
-        prevItem?.focus();
-        focusedItemRef.current = prevItem;
-      } else {
-        const lastItem = items[items.length - 1];
-        lastItem?.focus();
-        focusedItemRef.current = lastItem;
-      }
-    };
-
-    const focusNextItem = () => {
-      const items = getVisibleItems();
-      if (!items?.length) return;
-
-      if (focusedItemRef.current) {
-        const currentIndex = Array.from(items).indexOf(focusedItemRef.current);
-        const nextIndex =
-          currentIndex < items.length - 1 ? currentIndex + 1 : 0;
-        const nextItem = items[nextIndex];
-        nextItem?.focus();
-        focusedItemRef.current = nextItem;
-      } else {
-        const firstItem = items[0];
-        firstItem?.focus();
-        focusedItemRef.current = firstItem;
-      }
-    };
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      const isSearchFocused = document.activeElement === searchInputRef.current;
-
-      switch (e.key) {
-        case "Escape":
-          // Popover dismisses on Escape; we just refocus the trigger.
-          triggerRef.current?.focus();
-          break;
-        case "ArrowUp":
-          e.preventDefault();
-          focusPreviousItem();
-          break;
-        case "ArrowDown":
-          e.preventDefault();
-          focusNextItem();
-          break;
-        case "Tab":
-          if (!isSearchFocused) {
-            e.preventDefault();
-            if (e.shiftKey) {
-              focusPreviousItem();
-            } else {
-              focusNextItem();
-            }
-          }
-          break;
-        case "Enter":
-          if (!isSearchFocused) {
-            e.preventDefault();
-            focusedItemRef.current?.click();
-          } else if (filteredOptions.length === 1) {
-            e.preventDefault();
-            handleValueChange(filteredOptions[0].value);
-          }
-          break;
-      }
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, filteredOptions, handleValueChange]);
-
-  useLayoutEffect(() => {
-    if (!isOpen) {
-      focusedItemRef.current = null;
-      return;
-    }
-
-    if (searchable && searchInputRef.current) {
-      requestAnimationFrame(() => {
-        searchInputRef.current?.focus();
-      });
-    }
-
-    if (windowRef.current) {
-      const checkedElement = windowRef.current.querySelector(
+    const rafId = requestAnimationFrame(() => {
+      const checked = windowRef.current?.querySelector<HTMLElement>(
         '[data-state="checked"]',
       );
-      if (checkedElement) {
-        (checkedElement as HTMLElement).scrollIntoView({ block: "start" });
-        focusedItemRef.current = checkedElement as HTMLDivElement;
+      checked?.scrollIntoView({ block: "start" });
+      if (searchable) {
+        searchInputRef.current?.focus();
+      } else {
+        (checked ?? getItems()[0])?.focus({ preventScroll: true });
       }
-    }
+    });
+    return () => cancelAnimationFrame(rafId);
   }, [isOpen, searchable]);
-
-  useEffect(() => {
-    if (isOpen && searchQuery) {
-      focusedItemRef.current = null;
-    }
-  }, [isOpen, searchQuery]);
 
   return (
     <div className={cn(styles.dropdownSelect, className)}>
       <button
         ref={triggerRef}
+        type="button"
         className={styles.trigger}
         onClick={toggleDropdown}
+        onKeyDown={handleTriggerKeyDown}
         disabled={disabled || loading}
-        tabIndex={0}
+        aria-haspopup="listbox"
+        aria-expanded={isOpen}
+        aria-controls={isOpen ? listboxId : undefined}
       >
         <TriggerContent
           loading={loading}
           selectedOption={selectedOption}
           placeholder={placeholder}
         />
-        <LuChevronsUpDown className={styles.icon} />
+        <LuChevronsUpDown className={styles.icon} aria-hidden />
       </button>
 
       <Popover
@@ -267,17 +277,21 @@ export const DropDownSelect = <T,>({
         offset={5}
         matchAnchorWidth
         className={styles.dropdown}
+        role={null}
+        onKeyDown={handleKeyDown}
       >
         {searchable && (
           <div className={styles.searchContainer}>
             <div className={styles.searchInput}>
-              <LuSearch className={styles.searchIcon} />
+              <LuSearch className={styles.searchIcon} aria-hidden />
               <input
                 ref={searchInputRef}
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder={searchPlaceholder}
+                placeholder={searchPlaceholder ?? t`Search...`}
+                aria-label={searchPlaceholder ?? t`Search...`}
+                aria-controls={listboxId}
                 autoComplete="off"
                 autoCorrect="off"
                 spellCheck={false}
@@ -285,9 +299,14 @@ export const DropDownSelect = <T,>({
             </div>
           </div>
         )}
-        <div className={styles.window} ref={windowRef} role="listbox">
+        <div
+          className={styles.window}
+          ref={windowRef}
+          id={listboxId}
+          role="listbox"
+        >
           {filteredOptions.length === 0 ? (
-            <div className={styles.noResults}>No results found</div>
+            <div className={styles.noResults}>{t`No results found`}</div>
           ) : (
             filteredOptions.map((option) => {
               const isSelected = option.value === selectedValue;
@@ -300,7 +319,7 @@ export const DropDownSelect = <T,>({
                   onClick={onClick}
                   role="option"
                   aria-selected={isSelected}
-                  tabIndex={0}
+                  tabIndex={-1}
                 >
                   {renderOption ? (
                     renderOption(option, isSelected)
@@ -311,7 +330,7 @@ export const DropDownSelect = <T,>({
                           width={24}
                           height={24}
                           src={option.imageSrc}
-                          alt={option.display ?? ""}
+                          alt=""
                           loading="lazy"
                         />
                       )}

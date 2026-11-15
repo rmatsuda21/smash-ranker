@@ -31,6 +31,9 @@ interface PopoverProps {
   flip?: boolean;
   matchAnchorWidth?: boolean;
   className?: string;
+  /** ARIA role of the panel. Pass `null` when the content brings its own. */
+  role?: React.AriaRole | null;
+  onKeyDown?: React.KeyboardEventHandler<HTMLDivElement>;
   children: ReactNode;
 }
 
@@ -52,6 +55,8 @@ export const Popover = ({
   flip = true,
   matchAnchorWidth = false,
   className,
+  role = "dialog",
+  onKeyDown,
   children,
 }: PopoverProps) => {
   const popoverRef = useRef<HTMLDivElement>(null);
@@ -201,7 +206,8 @@ export const Popover = ({
     <div
       ref={popoverRef}
       popover="auto"
-      role="dialog"
+      role={role ?? undefined}
+      onKeyDown={onKeyDown}
       className={cn(styles.popover, className)}
       style={{
         top: position?.top ?? 0,

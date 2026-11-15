@@ -739,6 +739,10 @@ msgstr "プレイヤーが見つかりません"
 msgid "No preview available"
 msgstr ""
 
+#: src/components/shared/DropDownSelect/DropDownSelect.tsx:310
+msgid "No results found"
+msgstr "該当する結果がありません"
+
 #: src/components/top8/TextEditor/TextEditor.tsx:45
 msgid "No text content defined in this design."
 msgstr "このデザインにはテキストが定義されていません。"
@@ -966,6 +970,11 @@ msgstr "プレイヤーを検索..."
 #: src/components/top8/SocialPostComposer/TemplatePicker.tsx:45
 msgid "Search variables…"
 msgstr "変数を検索…"
+
+#: src/components/shared/DropDownSelect/DropDownSelect.tsx:293
+#: src/components/shared/DropDownSelect/DropDownSelect.tsx:294
+msgid "Search..."
+msgstr "検索..."
 
 #: src/components/results/PlayerSummary/PlayerSummary.tsx:127
 msgid "seed"

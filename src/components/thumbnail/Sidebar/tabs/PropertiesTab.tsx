@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react";
+import { useCallback, useId, useMemo } from "react";
 import {
   FaAlignCenter,
   FaAlignLeft,
@@ -594,6 +594,7 @@ const ImageProperties = ({
     patch: Partial<ThumbnailElement>,
   ) => void;
 }) => {
+  const fieldId = useId();
   return (
     <div className={styles.section}>
       <h4>Image</h4>
@@ -604,8 +605,9 @@ const ImageProperties = ({
         onClear={() => update(element.id, element, { src: "" })}
       />
       <div className={styles.row}>
-        <label>Fit</label>
+        <label htmlFor={`${fieldId}-fit`}>Fit</label>
         <select
+          id={`${fieldId}-fit`}
           value={element.fillMode}
           onChange={(e) =>
             update(element.id, element, {
@@ -645,6 +647,7 @@ const CharacterProperties = ({
     patch: Partial<ThumbnailElement>,
   ) => void;
 }) => {
+  const fieldId = useId();
   return (
     <div className={styles.section}>
       <h4>Character</h4>
@@ -664,8 +667,9 @@ const CharacterProperties = ({
         }
       />
       <div className={styles.row}>
-        <label>Image type</label>
+        <label htmlFor={`${fieldId}-image-type`}>Image type</label>
         <select
+          id={`${fieldId}-image-type`}
           value={element.imageType}
           onChange={(e) =>
             update(element.id, element, {
@@ -678,8 +682,9 @@ const CharacterProperties = ({
         </select>
       </div>
       <div className={styles.row}>
-        <label>Fit</label>
+        <label htmlFor={`${fieldId}-fit`}>Fit</label>
         <select
+          id={`${fieldId}-fit`}
           value={element.fillMode ?? "cover"}
           onChange={(e) =>
             update(element.id, element, {
@@ -770,12 +775,14 @@ const ShapeProperties = ({
     patch: Partial<ThumbnailElement>,
   ) => void;
 }) => {
+  const fieldId = useId();
   return (
     <div className={styles.section}>
       <h4>Shape</h4>
       <div className={styles.row}>
-        <label>Shape</label>
+        <label htmlFor={`${fieldId}-shape`}>Shape</label>
         <select
+          id={`${fieldId}-shape`}
           value={element.shape}
           onChange={(e) =>
             update(element.id, element, {
