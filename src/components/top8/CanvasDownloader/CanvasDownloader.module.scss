@@ -167,8 +167,20 @@
 }
 
 @include mobile {
+  // Icon only, to leave the toolbar row to the URL field.
   .downloader .exportButton {
-    font-size: var(--font-size-lg);
+    width: var(--toolbar-h, 34px);
+    padding: 0;
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  .exportLabel,
+  .downloader .exportChevron {
+    display: none;
   }
 
   .panel {

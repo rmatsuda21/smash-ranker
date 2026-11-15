@@ -6,7 +6,8 @@
   overflow: hidden;
 
   width: 100vw;
-  height: 100dvh;
+  // --app-height is set while an on-screen keyboard is up (useVirtualKeyboard).
+  height: var(--app-height, 100dvh);
 
   main {
     flex: 1;
@@ -276,6 +277,12 @@
 @include mobile {
   .root main {
     overflow-y: hidden;
+  }
+
+  // Every row counts above a keyboard: the page that is being typed in
+  // marks itself and the site bar steps aside.
+  .root:has([data-keyboard="open"]) .nav {
+    display: none;
   }
 
   .nav {

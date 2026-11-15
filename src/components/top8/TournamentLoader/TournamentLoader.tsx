@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import cn from "classnames";
 import { msg } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
@@ -30,6 +30,8 @@ type Props = {
 export const TournamentLoader = ({ className }: Props) => {
   const { _ } = useLingui();
   const [url, setUrl] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [isFocused, setIsFocused] = useState(false);
 
   const isFetching = usePlayerStore((state) => state.fetching);
   const playerDispatch = usePlayerStore((state) => state.dispatch);
@@ -77,6 +79,12 @@ export const TournamentLoader = ({ className }: Props) => {
       rememberKey: PREF_KEYS.NEEDS_TOURNAMENT_LOAD_CONFIRMATION,
     });
 
+  // On a phone the field shares the toolbar row until it is focused, and
+  // only has room for a few words.
+  const isNarrow = window.matchMedia("(max-width: 768px)").matches;
+  const placeholder =
+    isNarrow && !isFocused ? _(msg`Paste URL`) : _(msg`Paste a tournament URL`);
+
   const submit = () => {
     if (isValid && !isFetching) confirmLoad();
   };
@@ -91,6 +99,7 @@ export const TournamentLoader = ({ className }: Props) => {
       >
         <FaLink className={styles.leadingIcon} aria-hidden="true" />
         <input
+          ref={inputRef}
           id="tournament-url"
           name="tournament-url"
           type="text"
@@ -102,8 +111,10 @@ export const TournamentLoader = ({ className }: Props) => {
           spellCheck={false}
           aria-label={_(msg`Tournament URL`)}
           aria-invalid={hasInput && !isValid}
-          placeholder={_(msg`Paste a tournament URL`)}
+          placeholder={placeholder}
           value={url}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
           onChange={(e) => setUrl(e.currentTarget.value)}
           onKeyDown={(e) => {
             if (e.key !== "Enter") return;
@@ -134,7 +145,14 @@ export const TournamentLoader = ({ className }: Props) => {
           size="sm"
           loading={isFetching}
           disabled={!isValid}
-          onClick={confirmLoad}
+          // On phones the button only exists while the input has focus, so
+          // keep focus there until the tap has landed, then drop it to close
+          // the keyboard and show the confirmation.
+          onMouseDown={(e) => e.preventDefault()}
+          onClick={() => {
+            inputRef.current?.blur();
+            confirmLoad();
+          }}
         >
           {_(msg`Load`)}
         </Button>

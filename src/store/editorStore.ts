@@ -26,6 +26,7 @@ const editorReducer = (
       return {
         activeTab: action.payload,
         isSidePanelOpen: true,
+        isCanvasExpanded: false,
       };
     case "SET_IS_SIDE_PANEL_OPEN":
       return {

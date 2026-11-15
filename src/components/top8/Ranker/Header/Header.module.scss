@@ -52,17 +52,32 @@
     // Touch-sized controls.
     --toolbar-h: 40px;
 
-    grid-template-columns: 1fr auto;
+    // One row: the URL field takes what the buttons leave.
+    grid-template-columns: auto minmax(0, 1fr) auto;
     gap: var(--space-2);
     padding: var(--space-2);
   }
 
-  .tournamentLoader {
-    grid-column: 1 / -1;
-    grid-row: 1;
+  .group {
+    gap: 0;
   }
 
   .divider {
-    margin-inline: var(--space-1);
+    display: none;
+  }
+
+  // While the URL field is in use it gets the whole row; the buttons come
+  // back when focus leaves it.
+  .header:has(.tournamentLoader:focus-within) {
+    grid-template-columns: minmax(0, 1fr);
+
+    .group {
+      display: none;
+    }
+  }
+
+  // Typing in an editor field: give the space to the field and the preview.
+  [data-keyboard="open"] .header {
+    display: none;
   }
 }

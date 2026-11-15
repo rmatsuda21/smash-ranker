@@ -13,15 +13,15 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:127
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:138
 msgid "(https://challonge.com/[tournament])"
 msgstr "(https://challonge.com/[大会名])"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:125
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:136
 msgid "(https://start.gg/tournament/[name]/event/[event])"
 msgstr "(https://start.gg/tournament/[大会名]/event/[イベント名])"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:129
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:140
 msgid "(https://tonamel.com/competition/[slug])"
 msgstr "(https://tonamel.com/competition/[スラッグ])"
 
@@ -96,7 +96,7 @@ msgstr "現在の予想がすべて削除されます。"
 msgid "Amber"
 msgstr "アンバー"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:75
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:77
 msgid "Any current player and tournament data will be overwritten."
 msgstr "現在の選手と大会データは上書きされます。"
 
@@ -155,17 +155,17 @@ msgstr "ブラケット"
 msgid "Buy me a coffee"
 msgstr "一杯だけよ"
 
-#: src/components/predict/PredictionPreview/PredictionPreview.tsx:58
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:59
 msgid "Calculating upset odds..."
 msgstr ""
 
-#: src/components/predict/PredictionPreview/PredictionPreview.tsx:60
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:61
 msgid "Calling it for the record..."
 msgstr ""
 
 #: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:76
 #: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:167
-#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:168
+#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:180
 msgid "Cancel"
 msgstr "キャンセル"
 
@@ -246,7 +246,7 @@ msgstr "大会が見つかりませんでした"
 msgid "Confirm"
 msgstr "確認"
 
-#: src/components/predict/PredictionPreview/PredictionPreview.tsx:55
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:56
 msgid "Consulting Master Hand..."
 msgstr ""
 
@@ -433,9 +433,9 @@ msgstr "表示オプション"
 msgid "Don't show again"
 msgstr "次回から表示しない"
 
-#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:125
-#~ msgid "Done"
-#~ msgstr "終了"
+#: src/components/top8/Ranker/Ranker.tsx:101
+msgid "Done"
+msgstr "完了"
 
 #: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:49
 msgid "Dotted"
@@ -443,7 +443,7 @@ msgstr "ドット"
 
 #: src/components/predict/ExportBar/ExportBar.tsx:95
 #: src/components/results/ResultsExportBar/ResultsExportBar.tsx:117
-#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:210
+#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:213
 #: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:222
 msgid "Download"
 msgstr "ダウンロード"
@@ -452,7 +452,7 @@ msgstr "ダウンロード"
 msgid "Download image"
 msgstr "画像をダウンロード"
 
-#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:141
+#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:144
 msgid "Download Options"
 msgstr "ダウンロード設定"
 
@@ -489,6 +489,10 @@ msgstr "画像に表示されるテキストを編集できます。"
 msgid "English"
 msgstr "英語"
 
+#: src/components/top8/Ranker/Ranker.tsx:112
+msgid "Enlarge preview"
+msgstr "プレビューを拡大"
+
 #. placeholder {0}: translatedName.toLowerCase()
 #: src/components/top8/TextEditor/TextEditor.tsx:85
 msgid "Enter {0}..."
@@ -498,7 +502,7 @@ msgstr "{0}を入力..."
 msgid "Enter a number from {MIN_PLAYERS} to {MAX_PLAYERS}."
 msgstr "{MIN_PLAYERS}〜{MAX_PLAYERS}の数字を入力してください。"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:123
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:134
 msgid "Enter a start.gg, Challonge, or Tonamel event URL"
 msgstr "start.gg、Challonge、またはTonamelの大会URLを入れてください"
 
@@ -515,7 +519,8 @@ msgstr "参加人数"
 msgid "Event Name"
 msgstr "イベント名"
 
-#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:87
+#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:85
+#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:88
 msgid "Export"
 msgstr "エクスポート"
 
@@ -546,8 +551,8 @@ msgstr "大会情報の取得に失敗しました"
 msgid "Failed to fetch tournament data"
 msgstr "大会データの取得に失敗しました"
 
-#: src/components/predict/PredictionPreview/PredictionPreview.tsx:180
-#: src/components/results/ResultsPreview/ResultsPreview.tsx:334
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:200
+#: src/components/results/ResultsPreview/ResultsPreview.tsx:354
 #: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:203
 msgid "Failed to generate image"
 msgstr "画像の生成に失敗しました"
@@ -560,7 +565,7 @@ msgstr "対戦相手のデータを取得中..."
 msgid "Figuring out who got sent to losers..."
 msgstr "誰がルーザーズに落とされたか調べています..."
 
-#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:103
+#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:106
 msgid "Filename"
 msgstr "ファイル名"
 
@@ -580,7 +585,7 @@ msgstr "フォント"
 msgid "Font \"{fontFamily}\" is already added."
 msgstr "フォント「{fontFamily}」はすでに追加されています。"
 
-#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:121
+#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:124
 msgid "Format"
 msgstr "フォーマット"
 
@@ -594,7 +599,7 @@ msgstr "選手名"
 msgid "Generate Graphic"
 msgstr "画像を生成"
 
-#: src/components/predict/PredictionPreview/PredictionPreview.tsx:220
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:240
 msgid "Generating prediction"
 msgstr "予測作成中"
 
@@ -662,7 +667,7 @@ msgstr "公式サーバーで情報発信を行なってます！"
 msgid "Kagaribi"
 msgstr "篝火"
 
-#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:131
+#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:143
 msgid "Keeps the current layout, colors and font so you can load them again from My Templates."
 msgstr "現在のレイアウト・色・フォントを保存し、マイテンプレからいつでも読み込めます。"
 
@@ -689,7 +694,7 @@ msgid "List view"
 msgstr "リスト表示"
 
 #: src/components/shared/TournamentUrlInput/TournamentUrlInput.tsx:62
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:139
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:157
 msgid "Load"
 msgstr "取得"
 
@@ -706,7 +711,7 @@ msgstr "テンプレを読み込む: {0}"
 msgid "Load Template?"
 msgstr "テンプレートを読み込みますか？"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:73
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:75
 msgid "Load Tournament?"
 msgstr "大会を読み込みますか？"
 
@@ -737,7 +742,7 @@ msgstr "大会読み込み中"
 msgid "Location"
 msgstr "開催地"
 
-#: src/components/predict/PredictionPreview/PredictionPreview.tsx:59
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:60
 msgid "Locking in picks..."
 msgstr ""
 
@@ -757,7 +762,7 @@ msgstr "「test」で登録した人を探しています..."
 msgid "Love Smash Ranker? Support the project!"
 msgstr "応援クラファン実施中です。"
 
-#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:188
+#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:191
 msgid "Lower values reduce file size at the cost of detail."
 msgstr ""
 
@@ -822,7 +827,7 @@ msgstr "このイベントにフェーズが見つかりません"
 msgid "No players found"
 msgstr "プレイヤーが見つかりません"
 
-#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:149
+#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:161
 msgid "No preview available"
 msgstr "プレビューを表示できません"
 
@@ -869,7 +874,7 @@ msgstr "オリジナル"
 msgid "Original concept & inspiration"
 msgstr "元コンセプトとインスピレーション"
 
-#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:166
+#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:169
 msgid "Output: {outputWidth} × {outputHeight} px"
 msgstr "出力: {outputWidth} × {outputHeight} px"
 
@@ -877,13 +882,17 @@ msgstr "出力: {outputWidth} × {outputHeight} px"
 msgid "Paste a start.gg event URL, pick a player, and generate a shareable recap of their run."
 msgstr "start.ggのイベントURLを貼り付けて選手を選び、共有できるリザルト画像を作成しよう。"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:105
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:86
 msgid "Paste a tournament URL"
 msgstr "大会URLを貼り付け"
 
 #: src/components/predict/PredictApp/PredictApp.tsx:90
 msgid "Paste a tournament URL to predict placements and share your picks."
 msgstr "大会URLを貼り付けて順位を予想し、予想を共有しましょう。"
+
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:86
+msgid "Paste URL"
+msgstr "大会URL"
 
 #: src/components/results/EntrantPicker/EntrantPicker.tsx:38
 msgid "Pick a player"
@@ -897,7 +906,7 @@ msgstr "選手を選んでリザルトを表示。"
 msgid "Pink"
 msgstr "ピンク"
 
-#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:153
+#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:156
 msgid "Pixel Ratio"
 msgstr "ピクセル比"
 
@@ -942,11 +951,11 @@ msgstr "選手タグ"
 msgid "Players"
 msgstr "選手情報"
 
-#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:192
+#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:195
 msgid "PNG is lossless, quality only applies to JPEG and WebP."
 msgstr "品質設定はJPEGとWebPにのみ適用されます"
 
-#: src/components/predict/PredictionPreview/PredictionPreview.tsx:57
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:58
 msgid "Polishing trophies..."
 msgstr ""
 
@@ -988,7 +997,7 @@ msgstr "出場選手を取得中..."
 msgid "Purple"
 msgstr "パープル"
 
-#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:175
+#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:178
 msgid "Quality"
 msgstr "品質"
 
@@ -1004,7 +1013,7 @@ msgstr "トーナメント表を逆さまに読んでいます..."
 #~ msgid "Reading the bracket..."
 #~ msgstr "ブラケットを確認中..."
 
-#: src/components/predict/PredictionPreview/PredictionPreview.tsx:56
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:57
 msgid "Reading the tea leaves..."
 msgstr ""
 
@@ -1068,11 +1077,11 @@ msgstr "保存"
 msgid "Save Design"
 msgstr "デザインを保存"
 
-#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:128
+#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:140
 msgid "Save Design as Template"
 msgstr "デザインをテンプレとして保存"
 
-#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:171
+#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:183
 msgid "Save Template"
 msgstr "テンプレを保存"
 
@@ -1123,7 +1132,7 @@ msgstr "{0}を選択"
 msgid "Select a field to insert live tournament details, such as its name or date."
 msgstr "フィールドを選択すると、大会名や日付などの大会情報を挿入できます。"
 
-#: src/components/results/ResultsPreview/ResultsPreview.tsx:322
+#: src/components/results/ResultsPreview/ResultsPreview.tsx:342
 msgid "Select a player first."
 msgstr "まずは選手を選択してください。"
 
@@ -1174,9 +1183,13 @@ msgstr "SNSでシェア"
 msgid "Sharpening the seeds..."
 msgstr ""
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:119
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:130
 msgid "Show help"
 msgstr "ヘルプを表示"
+
+#: src/components/top8/Ranker/Ranker.tsx:111
+msgid "Shrink preview"
+msgstr "プレビューを縮小"
 
 #: src/components/results/ResultsPreview/ResultsPreview.tsx:65
 #~ msgid "Shrinking the tag that's way too long..."
@@ -1236,12 +1249,12 @@ msgid "Template name"
 msgstr "テンプレート名"
 
 #: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:156
-#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:157
-#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:159
+#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:169
+#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:171
 msgid "Template Name"
 msgstr "テンプレ名"
 
-#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:144
+#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:156
 msgid "Template preview"
 msgstr "テンプレのプレビュー"
 
@@ -1377,7 +1390,7 @@ msgstr "大会振り返り"
 msgid "Tournament results are start.gg-only for now. Paste a start.gg event URL to continue."
 msgstr "現在、リザルトは start.gg のみ対応しています。start.gg のイベントURLを貼り付けて続行してください。"
 
-#: src/components/results/ResultsPreview/ResultsPreview.tsx:349
+#: src/components/results/ResultsPreview/ResultsPreview.tsx:369
 msgid "Tournament results graphic"
 msgstr "大会リザルト画像"
 
@@ -1387,7 +1400,7 @@ msgstr "大会都道府県"
 
 #: src/components/shared/TournamentUrlInput/TournamentUrlInput.tsx:52
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:171
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:103
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:112
 #: src/consts/top8/placeholders.ts:35
 #: src/utils/social/templateTokens.ts:15
 #: src/utils/social/templateTokens.ts:47

@@ -42,18 +42,23 @@ export const MobileCanvas = ({ className }: Props) => {
   const isFetching = usePlayerStore((state) => state.fetching);
   const showLoader = isFetching || !isFontLoaded;
 
-  // Fit canvas width to container; mirrors the mobile branch of the desktop
-  // Canvas's fit-to-window logic without the slider/padding controls.
+  // Fit the whole canvas inside the container, like the desktop Canvas's
+  // fit-to-window without the slider/padding controls.
   useEffect(() => {
-    if (!canvasSize.width) return;
+    if (!canvasSize.width || !canvasSize.height) return;
     const el = wrapperRef.current;
     if (!el) return;
 
     const resize = () => {
       if (!wrapperRef.current) return;
-      const availableWidth = wrapperRef.current.clientWidth;
-      if (availableWidth <= 0) return;
-      setDisplayScale(availableWidth / canvasSize.width);
+      const { clientWidth, clientHeight } = wrapperRef.current;
+      if (clientWidth <= 0 || clientHeight <= 0) return;
+      setDisplayScale(
+        Math.min(
+          clientWidth / canvasSize.width,
+          clientHeight / canvasSize.height,
+        ),
+      );
     };
 
     resize();
@@ -61,7 +66,7 @@ export const MobileCanvas = ({ className }: Props) => {
       typeof ResizeObserver !== "undefined" ? new ResizeObserver(resize) : null;
     observer?.observe(el);
     return () => observer?.disconnect();
-  }, [canvasSize.width]);
+  }, [canvasSize.width, canvasSize.height]);
 
   const bindStageBackingRatio = useStageBackingRatio(displayScale, {
     shrinkHitCanvases: true,

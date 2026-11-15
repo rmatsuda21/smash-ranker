@@ -134,7 +134,20 @@
 
 @include mobile {
   .field {
+    padding-left: var(--space-3);
     padding-right: var(--space-1);
+
+    // At rest the field shares a row with the toolbar buttons, so it is just
+    // the icon and the URL. Help and Load appear once it is focused and has
+    // the row to itself (Header.module.scss).
+    &:not(:focus-within) {
+      padding-right: var(--space-3);
+
+      .infoButton,
+      .loadButton {
+        display: none;
+      }
+    }
 
     // 16px keeps iOS from zooming the page when the input is focused.
     input {

@@ -19,6 +19,13 @@ import { perfMark, perfMeasureSince } from "@/utils/top8/renderPerf";
 import styles from "./Canvas.module.scss";
 
 const CANVAS_PADDING = 40;
+const NARROW_CANVAS_PADDING = 8;
+const NARROW_QUERY = "(max-width: 768px)";
+
+const getCanvasPadding = () =>
+  window.matchMedia(NARROW_QUERY).matches
+    ? NARROW_CANVAS_PADDING
+    : CANVAS_PADDING;
 
 type Props = {
   className?: string;
@@ -60,10 +67,9 @@ export const Canvas = ({ className }: Props) => {
 
   const handleFitToWindow = useCallback(() => {
     if (scrollAreaRef.current) {
-      const availableWidth =
-        scrollAreaRef.current.clientWidth - CANVAS_PADDING * 2;
-      const availableHeight =
-        scrollAreaRef.current.clientHeight - CANVAS_PADDING * 2;
+      const padding = getCanvasPadding();
+      const availableWidth = scrollAreaRef.current.clientWidth - padding * 2;
+      const availableHeight = scrollAreaRef.current.clientHeight - padding * 2;
 
       const scaleByWidth = availableWidth / canvasSize.width;
       const scaleByHeight = availableHeight / canvasSize.height;
@@ -94,7 +100,7 @@ export const Canvas = ({ className }: Props) => {
           "--aspect-ratio": `${canvasSize.width / canvasSize.height}`,
           "--canvas-width": `${canvasSize.width}px`,
           "--canvas-height": `${canvasSize.height}px`,
-          "--canvas-padding": `${CANVAS_PADDING}px`,
+          "--canvas-padding": `${getCanvasPadding()}px`,
         } as React.CSSProperties);
       }
     };

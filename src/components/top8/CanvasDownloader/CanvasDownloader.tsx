@@ -82,11 +82,14 @@ export const CanvasDownloader = ({ className, onShare, blobCache }: Props) => {
         onClick={() => setIsPanelOpen((open) => !open)}
         aria-haspopup="dialog"
         aria-expanded={isPanelOpen}
+        aria-label={_(msg`Export`)}
       >
-        <IoMdDownload size={16} />
-        {_(msg`Export`)}
+        <IoMdDownload size={16} aria-hidden="true" />
+        <span className={styles.exportLabel}>{_(msg`Export`)}</span>
         <FaChevronDown
-          className={cn(styles.chevron, { [styles.open]: isPanelOpen })}
+          className={cn(styles.chevron, styles.exportChevron, {
+            [styles.open]: isPanelOpen,
+          })}
           size={10}
         />
       </Button>

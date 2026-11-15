@@ -104,31 +104,17 @@
   }
 }
 
+// Narrow window: the canvas is a preview strip above the editor
+// (Ranker.module.scss). It always fits the strip, so there is no zoom bar.
 @include mobile {
   .canvasContainer {
-    --canvas-padding: 0px;
-    height: auto;
-
     .scrollArea {
-      flex: 1;
       scrollbar-gutter: auto;
-      overflow: auto;
-      background: var(--bg-surface);
-    }
-
-    .canvasWrapper {
-      margin-inline: auto;
+      overflow: hidden;
     }
 
     .controls {
-      padding: var(--space-2) var(--space-2);
-      margin: 0;
-      gap: var(--space-2);
-      border-radius: 0;
-
-      input[type="range"] {
-        width: 120px;
-      }
+      display: none;
     }
   }
 }
