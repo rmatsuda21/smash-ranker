@@ -161,9 +161,9 @@ export const MobileCanvas = ({ className }: Props) => {
                 {/* Inner Provider keeps context inside Konva's subtree;
                     react-konva v19 propagates context but we provide
                     explicitly so the boundary is unambiguous. */}
-                <RenderModeContext.Provider value="mobile">
+                <RenderModeContext value="mobile">
                   <MobileGraphicLayer />
-                </RenderModeContext.Provider>
+                </RenderModeContext>
               </Stage>
             )}
           </div>

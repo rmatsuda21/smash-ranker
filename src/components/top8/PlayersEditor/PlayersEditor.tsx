@@ -169,7 +169,7 @@ export const PlayersEditor = ({ className }: Props) => {
 
   const {
     confirm: confirmClearPlayer,
-    ConfirmationDialog: ClearPlayerConfirmation,
+    confirmationDialog: clearPlayerConfirmation,
   } = useConfirmation(handleClearPlayer, {
     title: _(msg`Clear Player?`),
     description: _(msg`This will reset all player data for this slot.`),
@@ -274,7 +274,7 @@ export const PlayersEditor = ({ className }: Props) => {
       >
         <HiOutlineUserRemove /> <Trans>Clear Player</Trans>
       </Button>
-      <ClearPlayerConfirmation />
+      {clearPlayerConfirmation}
     </div>
   );
 };

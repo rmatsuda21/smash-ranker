@@ -11,7 +11,8 @@ type ConfirmationConfig = {
 
 type UseConfirmationReturn<T extends unknown[]> = {
   confirm: (...args: T) => void;
-  ConfirmationDialog: React.FC<React.PropsWithChildren<unknown>>;
+  /** Render this once anywhere in the calling component. */
+  confirmationDialog: React.ReactNode;
 };
 
 export function useConfirmation<T extends unknown[]>(
@@ -55,20 +56,17 @@ export function useConfirmation<T extends unknown[]>(
     setPendingArgs(null);
   }, []);
 
-  const ConfirmationDialog: React.FC = useCallback(
-    () => (
-      <ConfirmationModal
-        isOpen={isOpen}
-        onClose={handleCancel}
-        title={configRef.current.title}
-        description={configRef.current.description}
-        onConfirm={handleConfirm}
-        onCancel={handleCancel}
-        cookieName={configRef.current.cookieName}
-      />
-    ),
-    [isOpen, handleCancel, handleConfirm],
+  const confirmationDialog = (
+    <ConfirmationModal
+      isOpen={isOpen}
+      onClose={handleCancel}
+      title={config.title}
+      description={config.description}
+      onConfirm={handleConfirm}
+      onCancel={handleCancel}
+      cookieName={config.cookieName}
+    />
   );
 
-  return { confirm, ConfirmationDialog };
+  return { confirm, confirmationDialog };
 }

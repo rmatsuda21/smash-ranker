@@ -69,7 +69,7 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
   const portalContainer = usePortalContainer();
 
   return (
-    <ToastContext.Provider value={value}>
+    <ToastContext value={value}>
       {children}
       {toasts.length > 0 &&
         createPortal(
@@ -99,6 +99,6 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
           </div>,
           portalContainer,
         )}
-    </ToastContext.Provider>
+    </ToastContext>
   );
 };

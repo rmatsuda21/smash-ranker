@@ -68,7 +68,7 @@ export const PredictApp = () => {
     fetchEntrants(slugToUrl(decoded.platform, decoded.slug));
   }, [fetchEntrants, tournamentUrl]);
 
-  const { confirm: confirmClear, ConfirmationDialog: ClearConfirmation } =
+  const { confirm: confirmClear, confirmationDialog: clearConfirmation } =
     useConfirmation(() => dispatch({ type: "CLEAR_PREDICTIONS" }), {
       title: _(msg`Clear Predictions?`),
       description: _(msg`All current predictions will be removed.`),
@@ -146,7 +146,7 @@ export const PredictApp = () => {
             </Button>
           </div>
         </div>
-        <ClearConfirmation />
+        {clearConfirmation}
 
         <PredictionCountSelector />
         <PredictionWorkspace />

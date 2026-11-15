@@ -69,7 +69,7 @@ export const TournamentLoader = ({ className }: Props) => {
     }
   };
 
-  const { confirm: confirmLoad, ConfirmationDialog: LoadConfirmation } =
+  const { confirm: confirmLoad, confirmationDialog: loadConfirmation } =
     useConfirmation(loadTournament, {
       title: _(msg`Load Tournament?`),
       description: _(
@@ -116,7 +116,7 @@ export const TournamentLoader = ({ className }: Props) => {
         </Button>
       </div>
 
-      <LoadConfirmation />
+      {loadConfirmation}
     </div>
   );
 };

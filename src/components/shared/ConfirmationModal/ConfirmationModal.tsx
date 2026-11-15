@@ -36,10 +36,23 @@ export const ConfirmationModal = ({
     if (cookieName) {
       Cookies.set(cookieName, isDoNotShowAgain ? "true" : "false");
     }
+    setIsDoNotShowAgain(false);
+  };
+
+  // The modal stays mounted between uses, so clear the checkbox on the way
+  // out rather than carrying a cancelled tick into the next confirmation.
+  const handleClose = () => {
+    setIsDoNotShowAgain(false);
+    onClose();
+  };
+
+  const handleCancel = () => {
+    setIsDoNotShowAgain(false);
+    onCancel();
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} aria-labelledby={titleId}>
+    <Modal isOpen={isOpen} onClose={handleClose} aria-labelledby={titleId}>
       <div className={styles.modal}>
         <div className={styles.header}>
           <h3 id={titleId} className={styles.title}>
@@ -59,7 +72,7 @@ export const ConfirmationModal = ({
               />
             </div>
           )}
-          <Button variant="ghost" onClick={onCancel}>
+          <Button variant="ghost" onClick={handleCancel}>
             <Trans>Cancel</Trans>
           </Button>
           <Button variant="solid" onClick={handleConfirm}>

@@ -20,7 +20,16 @@
   }
 }
 
+// The read-only title is a <button> so it can be reached and activated from
+// the keyboard; a button shrink-wraps where the old <div> filled the row.
+.titleButton {
+  width: 100%;
+  text-align: start;
+}
+
 .placeholder {
+  width: 100%;
+  background: none;
   display: flex;
   align-items: center;
   justify-content: center;

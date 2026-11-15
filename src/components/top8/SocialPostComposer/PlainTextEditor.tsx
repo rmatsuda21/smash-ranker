@@ -1,10 +1,10 @@
 import {
-  forwardRef,
   useImperativeHandle,
   useLayoutEffect,
   useMemo,
   useRef,
   type ReactNode,
+  type Ref,
 } from "react";
 import cn from "classnames";
 
@@ -99,50 +99,52 @@ const autoGrow = (el: HTMLTextAreaElement) => {
  * overlay below paints the visible text with link spans colored to match
  * the platform.
  */
-export const PlainTextEditor = forwardRef<PlainTextEditorHandle, Props>(
-  (
-    { text, onChange, className, placeholder, ariaLabel, spellCheck = false },
-    forwardedRef,
-  ) => {
-    const textareaRef = useRef<HTMLTextAreaElement>(null);
-    const overlayRef = useRef<HTMLDivElement>(null);
+export const PlainTextEditor = ({
+  text,
+  onChange,
+  className,
+  placeholder,
+  ariaLabel,
+  spellCheck = false,
+  ref,
+}: Props & { ref?: Ref<PlainTextEditorHandle> }) => {
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
 
-    const matches = useMemo(() => findLinks(text), [text]);
+  const matches = useMemo(() => findLinks(text), [text]);
 
-    useLayoutEffect(() => {
-      if (textareaRef.current) autoGrow(textareaRef.current);
-    }, [text]);
+  useLayoutEffect(() => {
+    if (textareaRef.current) autoGrow(textareaRef.current);
+  }, [text]);
 
-    useImperativeHandle(forwardedRef, () => ({
-      focus: () => textareaRef.current?.focus(),
-    }));
+  useImperativeHandle(ref, () => ({
+    focus: () => textareaRef.current?.focus(),
+  }));
 
-    const handleScroll = () => {
-      const ta = textareaRef.current;
-      const overlay = overlayRef.current;
-      if (!ta || !overlay) return;
-      overlay.scrollTop = ta.scrollTop;
-      overlay.scrollLeft = ta.scrollLeft;
-    };
+  const handleScroll = () => {
+    const ta = textareaRef.current;
+    const overlay = overlayRef.current;
+    if (!ta || !overlay) return;
+    overlay.scrollTop = ta.scrollTop;
+    overlay.scrollLeft = ta.scrollLeft;
+  };
 
-    return (
-      <div className={cn(styles.wrapper, className)}>
-        <div ref={overlayRef} className={styles.overlay} aria-hidden="true">
-          {renderHighlighted(text, matches)}
-        </div>
-        <textarea
-          ref={textareaRef}
-          className={cn(styles.textarea)}
-          value={text}
-          placeholder={placeholder}
-          aria-label={ariaLabel}
-          spellCheck={spellCheck}
-          onChange={(e) => onChange(e.target.value)}
-          onScroll={handleScroll}
-          rows={2}
-        />
+  return (
+    <div className={cn(styles.wrapper, className)}>
+      <div ref={overlayRef} className={styles.overlay} aria-hidden="true">
+        {renderHighlighted(text, matches)}
       </div>
-    );
-  },
-);
-PlainTextEditor.displayName = "PlainTextEditor";
+      <textarea
+        ref={textareaRef}
+        className={cn(styles.textarea)}
+        value={text}
+        placeholder={placeholder}
+        aria-label={ariaLabel}
+        spellCheck={spellCheck}
+        onChange={(e) => onChange(e.target.value)}
+        onScroll={handleScroll}
+        rows={2}
+      />
+    </div>
+  );
+};

@@ -58,15 +58,15 @@ msgstr "クリア"
 msgid "Clear Tiers"
 msgstr "ティアをクリア"
 
-#: src/components/tierlist/TierListTitle/TierListTitle.tsx:87
+#: src/components/tierlist/TierListTitle/TierListTitle.tsx:89
 msgid "Click to add title"
 msgstr "クリックしてタイトルを追加"
 
-#: src/components/tierlist/TierListTitle/TierListTitle.tsx:97
+#: src/components/tierlist/TierListTitle/TierListTitle.tsx:100
 msgid "Click to edit title"
 msgstr "クリックしてタイトルを編集"
 
-#: src/components/tierlist/TierLabel/TierLabel.tsx:81
+#: src/components/tierlist/TierLabel/TierLabel.tsx:82
 msgid "Click to rename"
 msgstr "クリックして名前を変更"
 
@@ -102,7 +102,7 @@ msgstr "削除"
 msgid "Earth"
 msgstr "アース"
 
-#: src/components/tierlist/TierListTitle/TierListTitle.tsx:71
+#: src/components/tierlist/TierListTitle/TierListTitle.tsx:72
 msgid "Enter title"
 msgstr "タイトルを入力"
 

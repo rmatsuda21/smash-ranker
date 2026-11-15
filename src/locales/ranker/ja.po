@@ -153,7 +153,7 @@ msgstr ""
 msgid "Calling it for the record..."
 msgstr ""
 
-#: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:63
+#: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:76
 #: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:154
 msgid "Cancel"
 msgstr "キャンセル"
@@ -224,7 +224,7 @@ msgstr "コンパクト"
 msgid "Competition not found"
 msgstr "大会が見つかりませんでした"
 
-#: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:66
+#: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:79
 msgid "Confirm"
 msgstr "確認"
 
@@ -398,7 +398,7 @@ msgstr "表示"
 msgid "Display options"
 msgstr "表示オプション"
 
-#: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:57
+#: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:70
 msgid "Don't show again"
 msgstr "次回から表示しない"
 
@@ -739,7 +739,7 @@ msgstr "プレイヤーが見つかりません"
 msgid "No preview available"
 msgstr ""
 
-#: src/components/shared/DropDownSelect/DropDownSelect.tsx:310
+#: src/components/shared/DropDownSelect/DropDownSelect.tsx:309
 msgid "No results found"
 msgstr "該当する結果がありません"
 
@@ -971,8 +971,8 @@ msgstr "プレイヤーを検索..."
 msgid "Search variables…"
 msgstr "変数を検索…"
 
+#: src/components/shared/DropDownSelect/DropDownSelect.tsx:292
 #: src/components/shared/DropDownSelect/DropDownSelect.tsx:293
-#: src/components/shared/DropDownSelect/DropDownSelect.tsx:294
 msgid "Search..."
 msgstr "検索..."
 

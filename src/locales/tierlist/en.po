@@ -58,15 +58,15 @@ msgstr ""
 msgid "Clear Tiers"
 msgstr ""
 
-#: src/components/tierlist/TierListTitle/TierListTitle.tsx:87
+#: src/components/tierlist/TierListTitle/TierListTitle.tsx:89
 msgid "Click to add title"
 msgstr ""
 
-#: src/components/tierlist/TierListTitle/TierListTitle.tsx:97
+#: src/components/tierlist/TierListTitle/TierListTitle.tsx:100
 msgid "Click to edit title"
 msgstr ""
 
-#: src/components/tierlist/TierLabel/TierLabel.tsx:81
+#: src/components/tierlist/TierLabel/TierLabel.tsx:82
 msgid "Click to rename"
 msgstr ""
 
@@ -102,7 +102,7 @@ msgstr ""
 msgid "Earth"
 msgstr ""
 
-#: src/components/tierlist/TierListTitle/TierListTitle.tsx:71
+#: src/components/tierlist/TierListTitle/TierListTitle.tsx:72
 msgid "Enter title"
 msgstr ""
 

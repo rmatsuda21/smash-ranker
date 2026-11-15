@@ -28,7 +28,7 @@ export const TemplateSelector = ({
   onDelete,
 }: Props) => {
   const { _ } = useLingui();
-  const { confirm: confirmDelete, ConfirmationDialog } = useConfirmation(
+  const { confirm: confirmDelete, confirmationDialog } = useConfirmation(
     onDelete,
     {
       title: _(msg`Delete this template?`),
@@ -81,7 +81,7 @@ export const TemplateSelector = ({
           );
         }}
       />
-      <ConfirmationDialog />
+      {confirmationDialog}
     </div>
   );
 };

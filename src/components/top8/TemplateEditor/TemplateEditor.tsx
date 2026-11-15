@@ -218,7 +218,7 @@ export const TemplateEditor = ({ className }: Props) => {
 
   const {
     confirm: confirmTemplateClick,
-    ConfirmationDialog: TemplateClickConfirmation,
+    confirmationDialog: templateClickConfirmation,
   } = useConfirmation(loadTemplate, {
     title: _(msg`Load Template?`),
     description: _(msg`Your current design will be overwritten!`),
@@ -226,7 +226,7 @@ export const TemplateEditor = ({ className }: Props) => {
 
   const {
     confirm: confirmDeleteTemplate,
-    ConfirmationDialog: DeleteTemplateConfirmation,
+    confirmationDialog: deleteTemplateConfirmation,
   } = useConfirmation(deleteTemplate, {
     title: _(msg`Delete Template?`),
     description: _(msg`This template will be permanently deleted.`),
@@ -288,8 +288,8 @@ export const TemplateEditor = ({ className }: Props) => {
           loadingTemplateId={loadingTemplateId}
         />
       )}
-      <TemplateClickConfirmation />
-      <DeleteTemplateConfirmation />
+      {templateClickConfirmation}
+      {deleteTemplateConfirmation}
       <CreateTemplateModal
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}

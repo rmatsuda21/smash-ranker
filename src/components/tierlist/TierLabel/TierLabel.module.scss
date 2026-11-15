@@ -13,7 +13,13 @@
   word-break: break-word;
 }
 
+// A <button> so renaming works from the keyboard; strip the button chrome
+// so it still reads as plain label text.
 .text {
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
   cursor: pointer;
   text-align: center;
   word-break: break-word;

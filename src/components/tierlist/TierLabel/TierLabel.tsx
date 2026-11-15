@@ -75,13 +75,14 @@ export const TierLabel = ({
           autoFocus
         />
       ) : (
-        <span
+        <button
+          type="button"
           className={styles.text}
           onClick={handleClick}
           title={_(msg`Click to rename`)}
         >
           {name}
-        </span>
+        </button>
       )}
     </div>
   );

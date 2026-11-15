@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import cn from "classnames";
 import { Trans } from "@lingui/react/macro";
 import { msg } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
@@ -78,25 +79,27 @@ export const TierListTitle = ({
 
   if (!title) {
     return (
-      <div
+      <button
+        type="button"
         className={styles.placeholder}
         style={fontStyle}
         onClick={handleClick}
         data-export-ignore
       >
         <Trans>Click to add title</Trans>
-      </div>
+      </button>
     );
   }
 
   return (
-    <div
-      className={styles.titleContainer}
+    <button
+      type="button"
+      className={cn(styles.titleContainer, styles.titleButton)}
       style={fontStyle}
       onClick={handleClick}
       title={_(msg`Click to edit title`)}
     >
       {title}
-    </div>
+    </button>
   );
 };

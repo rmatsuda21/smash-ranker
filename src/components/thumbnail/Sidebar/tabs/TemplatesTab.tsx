@@ -116,7 +116,7 @@ export const TemplatesTab = () => {
     refresh();
   };
 
-  const { confirm: confirmDelete, ConfirmationDialog: DeleteConfirmation } =
+  const { confirm: confirmDelete, confirmationDialog: deleteConfirmation } =
     useConfirmation(
       async (id: string) => {
         await thumbnailTemplateRepository.delete(id);
@@ -238,7 +238,7 @@ export const TemplatesTab = () => {
           autoFocus
         />
       </ConfirmationModal>
-      <DeleteConfirmation />
+      {deleteConfirmation}
     </div>
   );
 };

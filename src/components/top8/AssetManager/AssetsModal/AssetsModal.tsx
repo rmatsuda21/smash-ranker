@@ -47,7 +47,7 @@ export const AssetsModal = ({
 
   const { assets, uploadAsset, deleteAsset, refresh } = useAssetDB(repository);
 
-  const { confirm: confirmDelete, ConfirmationDialog } = useConfirmation(
+  const { confirm: confirmDelete, confirmationDialog } = useConfirmation(
     async (id: string) => {
       await deleteAsset(id);
       if (previewAsset?.id === id) {
@@ -60,7 +60,7 @@ export const AssetsModal = ({
     },
   );
 
-  const { confirm: confirmBulkDelete, ConfirmationDialog: BulkDeleteDialog } =
+  const { confirm: confirmBulkDelete, confirmationDialog: bulkDeleteDialog } =
     useConfirmation(
       async (ids: string[]) => {
         for (const id of ids) {
@@ -275,8 +275,8 @@ export const AssetsModal = ({
           />
         </div>
       </div>
-      <ConfirmationDialog />
-      <BulkDeleteDialog />
+      {confirmationDialog}
+      {bulkDeleteDialog}
     </Modal>
   );
 };

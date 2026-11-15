@@ -75,10 +75,8 @@ export const FeatureFlagsProvider = ({ children }: { children: ReactNode }) => {
   const flagsValue = useMemo(() => flags, [flags]);
 
   return (
-    <FlagsContext.Provider value={flagsValue}>
-      <FlagsLoadingContext.Provider value={loading}>
-        {children}
-      </FlagsLoadingContext.Provider>
-    </FlagsContext.Provider>
+    <FlagsContext value={flagsValue}>
+      <FlagsLoadingContext value={loading}>{children}</FlagsLoadingContext>
+    </FlagsContext>
   );
 };
