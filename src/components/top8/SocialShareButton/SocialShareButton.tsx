@@ -40,11 +40,14 @@ export const SocialShareButton = ({
     <div className={className}>
       <div className={styles.wrapper}>
         <Button
+          variant="subtle"
+          className={styles.button}
           disabled={!stageRef}
           onClick={() => setIsOpen(true)}
-          tooltip={_(msg`Share to social`)}
+          aria-label={_(msg`Share to social`)}
         >
-          <FaArrowUpFromBracket size={16} />
+          <FaArrowUpFromBracket size={14} />
+          <span className={styles.label}>{_(msg`Share`)}</span>
         </Button>
       </div>
       <Modal

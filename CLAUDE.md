@@ -2,9 +2,7 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-**No manual testing is required for this repo when making changes**
-
-**Do not spin up the dev server (`bun dev`) to visually verify rendering.** Trust `bun lint` and `bun run build` for correctness; the user will check the browser themselves and report visual issues. Avoid `curl`-ing the dev server — the UI is React-rendered so HTML scrapes won't reveal anything useful.
+**For UI changes, check the result in the browser before reporting the work as done.** Start the dev server through the browser preview (the `dev` configuration in `.claude/launch.json`, which runs `bun dev` on port 5173) and look at the affected screen, at desktop and mobile widths when layout changes. Non-visual changes need no manual testing: `bun lint` and `bun run build` are enough. Avoid `curl`-ing the dev server — the UI is React-rendered so HTML scrapes won't reveal anything useful.
 
 ## Commands
 

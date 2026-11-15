@@ -1,15 +1,21 @@
 @use "@/_theme" as *;
 
-div.assetManager {
-  .content {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: flex-start;
-    gap: var(--space-1);
+.assetManager {
+  display: flex;
+}
+
+.assetManager .button {
+  height: var(--toolbar-h, 34px);
+  padding-inline: var(--space-3);
+}
+
+@include mobile {
+  .assetManager .button {
+    width: var(--toolbar-h, 34px);
+    padding: 0;
   }
 
   .label {
-    @include label;
+    display: none;
   }
 }

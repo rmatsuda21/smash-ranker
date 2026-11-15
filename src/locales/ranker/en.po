@@ -13,15 +13,15 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:91
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:115
 msgid "(https://challonge.com/[tournament])"
 msgstr ""
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:89
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:113
 msgid "(https://start.gg/tournament/[name]/event/[event])"
 msgstr ""
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:93
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:117
 msgid "(https://tonamel.com/competition/[slug])"
 msgstr ""
 
@@ -86,7 +86,7 @@ msgstr ""
 msgid "Amber"
 msgstr "アンバー"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:76
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:75
 msgid "Any current player and tournament data will be overwritten."
 msgstr ""
 
@@ -103,7 +103,7 @@ msgstr ""
 msgid "Asking start.gg very nicely..."
 msgstr ""
 
-#: src/components/top8/AssetManager/AssetManager.tsx:32
+#: src/components/top8/AssetManager/AssetManager.tsx:36
 #: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:203
 msgid "Assets"
 msgstr ""
@@ -235,18 +235,18 @@ msgstr ""
 #: src/components/predict/ExportBar/ExportBar.tsx:100
 #: src/components/predict/InviteShareButton/InviteShareButton.tsx:26
 #: src/components/results/ResultsExportBar/ResultsExportBar.tsx:122
-#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:229
+#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:227
 #: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:421
 msgid "Copied!"
 msgstr ""
 
 #: src/components/predict/ExportBar/ExportBar.tsx:99
 #: src/components/results/ResultsExportBar/ResultsExportBar.tsx:121
-#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:228
+#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:226
 msgid "Copy"
 msgstr ""
 
-#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:230
+#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:228
 msgid "Copy failed"
 msgstr ""
 
@@ -412,8 +412,8 @@ msgstr ""
 
 #: src/components/predict/ExportBar/ExportBar.tsx:95
 #: src/components/results/ResultsExportBar/ResultsExportBar.tsx:117
-#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:89
-#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:224
+#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:137
+#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:222
 msgid "Download"
 msgstr ""
 
@@ -421,7 +421,7 @@ msgstr ""
 msgid "Download image"
 msgstr ""
 
-#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:95
+#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:128
 #: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:61
 msgid "Download Options"
 msgstr ""
@@ -456,7 +456,7 @@ msgstr ""
 msgid "Enter {0}..."
 msgstr ""
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:87
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:111
 msgid "Enter a start.gg, Challonge, or Tonamel event URL"
 msgstr ""
 
@@ -470,6 +470,10 @@ msgstr ""
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:113
 #: src/consts/top8/placeholders.ts:29
 msgid "Event Name"
+msgstr ""
+
+#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:74
+msgid "Export"
 msgstr ""
 
 #: src/hooks/top8/useFetchChallonge.ts:129
@@ -501,7 +505,7 @@ msgstr ""
 
 #: src/components/predict/PredictionPreview/PredictionPreview.tsx:180
 #: src/components/results/ResultsPreview/ResultsPreview.tsx:334
-#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:205
+#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:203
 msgid "Failed to generate image"
 msgstr ""
 
@@ -514,7 +518,7 @@ msgid "Figuring out who got sent to losers..."
 msgstr ""
 
 #: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:157
-#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:63
+#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:90
 msgid "Filename"
 msgstr ""
 
@@ -534,9 +538,10 @@ msgstr ""
 msgid "Font \"{fontFamily}\" is already added."
 msgstr ""
 
+#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:108
 #: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:66
 msgid "Format"
-msgstr "フォーマット"
+msgstr ""
 
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:187
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:190
@@ -552,7 +557,7 @@ msgstr ""
 msgid "Generating prediction"
 msgstr ""
 
-#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:198
+#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:196
 msgid "Generating preview..."
 msgstr ""
 
@@ -626,7 +631,7 @@ msgid "Light"
 msgstr ""
 
 #: src/components/shared/TournamentUrlInput/TournamentUrlInput.tsx:62
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:115
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:127
 msgid "Load"
 msgstr ""
 
@@ -638,7 +643,7 @@ msgstr ""
 msgid "Load Template?"
 msgstr ""
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:74
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:73
 msgid "Load Tournament?"
 msgstr ""
 
@@ -689,7 +694,7 @@ msgstr ""
 #~ msgid "Making the upsets look extra dramatic..."
 #~ msgstr ""
 
-#: src/components/top8/AssetManager/AssetManager.tsx:34
+#: src/components/top8/AssetManager/AssetManager.tsx:32
 msgid "Manage Assets"
 msgstr ""
 
@@ -785,6 +790,10 @@ msgstr ""
 msgid "Paste a start.gg event URL, pick a player, and generate a shareable recap of their run."
 msgstr ""
 
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:101
+msgid "Paste a tournament URL"
+msgstr ""
+
 #: src/components/predict/PredictApp/PredictApp.tsx:90
 msgid "Paste a tournament URL to predict placements and share your picks."
 msgstr ""
@@ -872,7 +881,7 @@ msgstr ""
 
 #: src/components/predict/PredictApp/PredictApp.tsx:167
 #: src/components/results/ResultsApp/ResultsApp.tsx:239
-#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:191
+#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:189
 msgid "Preview"
 msgstr ""
 
@@ -920,7 +929,7 @@ msgstr ""
 msgid "Red"
 msgstr ""
 
-#: src/components/top8/Ranker/Header/Header.tsx:49
+#: src/components/top8/Ranker/Header/Header.tsx:44
 msgid "Redo"
 msgstr ""
 
@@ -1017,7 +1026,8 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:240
+#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:238
+#: src/components/top8/SocialShareButton/SocialShareButton.tsx:50
 msgid "Share"
 msgstr ""
 
@@ -1026,8 +1036,8 @@ msgid "Share invite"
 msgstr ""
 
 #: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:304
-#: src/components/top8/SocialShareButton/SocialShareButton.tsx:45
-#: src/components/top8/SocialShareButton/SocialShareButton.tsx:53
+#: src/components/top8/SocialShareButton/SocialShareButton.tsx:47
+#: src/components/top8/SocialShareButton/SocialShareButton.tsx:56
 msgid "Share to social"
 msgstr ""
 
@@ -1035,7 +1045,7 @@ msgstr ""
 msgid "Sharpening the seeds..."
 msgstr ""
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:84
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:108
 msgid "Show help"
 msgstr ""
 
@@ -1248,7 +1258,7 @@ msgstr ""
 
 #: src/components/shared/TournamentUrlInput/TournamentUrlInput.tsx:52
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:176
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:83
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:99
 #: src/consts/top8/placeholders.ts:35
 #: src/utils/social/templateTokens.ts:15
 #: src/utils/social/templateTokens.ts:47
@@ -1271,7 +1281,7 @@ msgstr ""
 msgid "Type"
 msgstr ""
 
-#: src/components/top8/Ranker/Header/Header.tsx:45
+#: src/components/top8/Ranker/Header/Header.tsx:35
 msgid "Undo"
 msgstr ""
 

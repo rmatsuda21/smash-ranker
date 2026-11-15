@@ -1,79 +1,68 @@
 @use "@/_theme" as *;
 
 .header {
-  padding-block: var(--space-2);
-  display: flex;
+  // Shared height for every control in the bar; child components read it.
+  --toolbar-h: 34px;
 
-  background: linear-gradient(
-    24deg,
-    var(--accent-2),
-    var(--accent-1),
-    var(--accent-2)
-  );
-  border-top: 1px solid var(--accent-1);
-  border-bottom: 1px solid var(--accent-1);
+  flex-shrink: 0;
+  display: grid;
+  // Equal side columns keep the URL bar centred on the page.
+  grid-template-columns: 1fr minmax(0, 480px) 1fr;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-2) var(--space-3);
 
-  > * {
-    border-left: 1px solid var(--accent-4);
-    border-right: 1px solid var(--accent-4);
-    padding-inline: var(--space-3);
-  }
-
-  > *:first-child {
-    border-left: none;
-  }
-
-  > *:last-child {
-    border-right: none;
-  }
-
-  [data-theme="light"] & {
-    background: linear-gradient(
-      24deg,
-      var(--accent-11),
-      var(--accent-12),
-      var(--accent-11)
-    );
-    border-top: 1px solid var(--accent-10);
-    border-bottom: 1px solid var(--accent-10);
-
-    > * {
-      border-left: 1px solid var(--accent-9);
-      border-right: 1px solid var(--accent-9);
-    }
-  }
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border);
 }
 
-.item {
+.group {
   display: flex;
-  align-items: flex-end;
-  gap: var(--space-2);
-
-  button {
-    height: 34px;
-  }
-}
-
-.historyControls {
+  align-items: center;
   gap: var(--space-1);
 }
 
-.tournamentLoader {
-  input {
-    width: 400px;
+.group .iconButton {
+  width: var(--toolbar-h);
+  height: var(--toolbar-h);
+  padding: 0;
+}
+
+@include mobile {
+  .group .iconButton svg {
+    width: 16px;
+    height: 16px;
   }
+}
+
+.divider {
+  width: 1px;
+  height: 20px;
+  margin-inline: var(--space-2);
+  background: var(--border-strong);
+}
+
+.export {
+  justify-content: flex-end;
+  gap: var(--space-2);
 }
 
 @include mobile {
   .header {
-    overflow-x: auto;
-    overflow-y: hidden;
-    flex-shrink: 0;
+    // Touch-sized controls.
+    --toolbar-h: 40px;
+
+    grid-template-columns: 1fr auto;
+    gap: var(--space-2);
+    padding: var(--space-2);
   }
 
   .tournamentLoader {
-    input {
-      width: 200px;
-    }
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+
+  .divider {
+    margin-inline: var(--space-1);
   }
 }

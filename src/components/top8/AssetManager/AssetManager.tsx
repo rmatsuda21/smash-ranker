@@ -7,7 +7,6 @@ import { useLingui } from "@lingui/react";
 
 import { Button } from "@/components/shared/Button/Button";
 import { useAssetDB } from "@/hooks/useAssetDb";
-import { Spinner } from "@/components/shared/Spinner/Spinner";
 import { AssetsModal } from "@/components/top8/AssetManager/AssetsModal/AssetsModal";
 
 import styles from "./AssetManager.module.scss";
@@ -23,18 +22,20 @@ export const AssetManager = ({ className }: Props) => {
 
   const onClose = () => setIsOpen(false);
 
-  if (loading) return <Spinner size={25} />;
-
   return (
     <div className={cn(styles.assetManager, className)}>
-      <div className={styles.content}>
-        <p className={styles.label}>
+      <Button
+        variant="subtle"
+        className={styles.button}
+        loading={loading}
+        onClick={() => setIsOpen(true)}
+        aria-label={_(msg`Manage Assets`)}
+      >
+        <RiFolderImageFill size={16} />
+        <span className={styles.label}>
           <Trans>Assets</Trans>
-        </p>
-        <Button onClick={() => setIsOpen(true)} tooltip={_(msg`Manage Assets`)}>
-          <RiFolderImageFill />
-        </Button>
-      </div>
+        </span>
+      </Button>
       <AssetsModal isOpen={isOpen} onClose={onClose} />
     </div>
   );

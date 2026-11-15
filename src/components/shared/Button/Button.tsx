@@ -5,7 +5,7 @@ import { useTooltip } from "@/components/shared/Tooltip/useTooltip";
 
 import styles from "./Button.module.scss";
 
-type ButtonVariant = "solid" | "outline" | "ghost";
+type ButtonVariant = "solid" | "outline" | "ghost" | "subtle";
 type ButtonSize = "sm" | "md" | "lg";
 
 type Props = React.ComponentProps<"button"> & {

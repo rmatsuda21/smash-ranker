@@ -5,6 +5,22 @@
   align-items: center;
 }
 
+.wrapper .button {
+  height: var(--toolbar-h, 34px);
+  padding-inline: var(--space-3);
+}
+
+@include mobile {
+  .wrapper .button {
+    width: var(--toolbar-h, 34px);
+    padding: 0;
+  }
+
+  .label {
+    display: none;
+  }
+}
+
 .suspenseFallback {
   display: flex;
   align-items: center;

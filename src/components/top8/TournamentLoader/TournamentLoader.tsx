@@ -2,10 +2,9 @@ import { useMemo, useState } from "react";
 import cn from "classnames";
 import { msg } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
-import { FaCircleInfo } from "react-icons/fa6";
+import { FaCircleInfo, FaLink } from "react-icons/fa6";
 
 import { Button } from "@/components/shared/Button/Button";
-import { Input } from "@/components/shared/Input/Input";
 import { useFetchResult } from "@/hooks/top8/useFetchResult";
 import { useFetchChallonge } from "@/hooks/top8/useFetchChallonge";
 import { useFetchTonamel } from "@/hooks/top8/useFetchTonamel";
@@ -78,40 +77,65 @@ export const TournamentLoader = ({ className }: Props) => {
       rememberKey: PREF_KEYS.NEEDS_TOURNAMENT_LOAD_CONFIRMATION,
     });
 
-  const urlLabel = (
-    <span className={styles.labelWithInfo}>
-      <Trans>Tournament URL</Trans>
-      <span className={styles.infoButton} aria-label={_(msg`Show help`)}>
-        <FaCircleInfo />
-        <pre className={styles.tooltip}>
-          <Trans>Enter a start.gg, Challonge, or Tonamel event URL</Trans>
-          <br />
-          <Trans>(https://start.gg/tournament/[name]/event/[event])</Trans>
-          <br />
-          <Trans>(https://challonge.com/[tournament])</Trans>
-          <br />
-          <Trans>(https://tonamel.com/competition/[slug])</Trans>
-        </pre>
-      </span>
-    </span>
-  );
+  const submit = () => {
+    if (isValid && !isFetching) confirmLoad();
+  };
 
   return (
     <div className={cn(styles.tournamentLoader, className)}>
-      <div className={styles.inputContainer}>
-        <Input
-          className={cn({
-            [styles.valid]: hasInput && isValid,
-            [styles.error]: hasInput && !isValid,
-          })}
-          label={urlLabel}
+      <div
+        className={cn(styles.field, {
+          [styles.valid]: hasInput && isValid,
+          [styles.error]: hasInput && !isValid,
+        })}
+      >
+        <FaLink className={styles.leadingIcon} aria-hidden="true" />
+        <input
           id="tournament-url"
           name="tournament-url"
           type="text"
+          inputMode="url"
+          enterKeyHint="go"
+          autoComplete="off"
+          autoCapitalize="none"
+          autoCorrect="off"
+          spellCheck={false}
+          aria-label={_(msg`Tournament URL`)}
+          aria-invalid={hasInput && !isValid}
+          placeholder={_(msg`Paste a tournament URL`)}
           value={url}
           onChange={(e) => setUrl(e.currentTarget.value)}
+          onKeyDown={(e) => {
+            if (e.key !== "Enter") return;
+            // Dismiss the on-screen keyboard so the confirmation is visible.
+            e.currentTarget.blur();
+            submit();
+          }}
         />
-        <Button loading={isFetching} disabled={!isValid} onClick={confirmLoad}>
+        <span
+          className={styles.infoButton}
+          role="button"
+          tabIndex={0}
+          aria-label={_(msg`Show help`)}
+        >
+          <FaCircleInfo />
+          <pre className={styles.tooltip}>
+            <Trans>Enter a start.gg, Challonge, or Tonamel event URL</Trans>
+            <br />
+            <Trans>(https://start.gg/tournament/[name]/event/[event])</Trans>
+            <br />
+            <Trans>(https://challonge.com/[tournament])</Trans>
+            <br />
+            <Trans>(https://tonamel.com/competition/[slug])</Trans>
+          </pre>
+        </span>
+        <Button
+          className={styles.loadButton}
+          size="sm"
+          loading={isFetching}
+          disabled={!isValid}
+          onClick={confirmLoad}
+        >
           {_(msg`Load`)}
         </Button>
       </div>

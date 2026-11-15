@@ -25,30 +25,41 @@ export const Header = () => {
   const blobCache = useStageBlobCache();
 
   return (
-    <div className={styles.header}>
-      <TournamentLoader className={cn(styles.item, styles.tournamentLoader)} />
-      <CanvasDownloader
-        className={styles.item}
-        onShare={() => setIsShareOpen(true)}
-        blobCache={blobCache}
-      />
-      <SocialShareButton
-        className={styles.item}
-        isOpen={isShareOpen}
-        onOpenChange={setIsShareOpen}
-        blobCache={blobCache}
-      />
-      <AssetManager className={styles.item} />
-      <div className={cn(styles.item, styles.historyControls)}>
-        <Button onClick={undo} disabled={!canUndo}>
-          <FaArrowRotateLeft size={16} />
-          {_(msg`Undo`)}
+    <header className={styles.header}>
+      <div className={cn(styles.group, styles.edit)}>
+        <Button
+          variant="subtle"
+          className={styles.iconButton}
+          onClick={undo}
+          disabled={!canUndo}
+          tooltip={_(msg`Undo`)}
+        >
+          <FaArrowRotateLeft size={14} />
         </Button>
-        <Button onClick={redo} disabled={!canRedo}>
-          <FaArrowRotateRight size={16} />
-          {_(msg`Redo`)}
+        <Button
+          variant="subtle"
+          className={styles.iconButton}
+          onClick={redo}
+          disabled={!canRedo}
+          tooltip={_(msg`Redo`)}
+        >
+          <FaArrowRotateRight size={14} />
         </Button>
+        <span className={styles.divider} aria-hidden="true" />
+        <AssetManager />
       </div>
-    </div>
+      <TournamentLoader className={styles.tournamentLoader} />
+      <div className={cn(styles.group, styles.export)}>
+        <SocialShareButton
+          isOpen={isShareOpen}
+          onOpenChange={setIsShareOpen}
+          blobCache={blobCache}
+        />
+        <CanvasDownloader
+          onShare={() => setIsShareOpen(true)}
+          blobCache={blobCache}
+        />
+      </div>
+    </header>
   );
 };

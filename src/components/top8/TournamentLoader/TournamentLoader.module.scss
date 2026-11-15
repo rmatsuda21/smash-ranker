@@ -1,44 +1,104 @@
+@use "@/_theme" as *;
+
 .tournamentLoader {
   display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
+}
 
-  .inputContainer {
-    display: flex;
-    gap: var(--space-2);
-    align-items: flex-end;
+// One composite control: icon, URL input, help, and the Load action.
+.field {
+  flex: 1;
+  min-width: 0;
+  height: var(--toolbar-h, 34px);
+  display: flex;
+  align-items: center;
+  position: relative;
+  gap: var(--space-2);
+  padding: 0 var(--space-1) 0 var(--space-4);
+
+  background-color: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  transition: border-color var(--duration-base) var(--ease-standard);
+
+  &:focus-within {
+    background-color: var(--bg-input);
+    border-color: var(--brand);
+    outline: 1px solid var(--brand);
+    outline-offset: -2px;
+  }
+
+  input {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    padding: 0;
+    border: none;
+    outline: none;
+    background: transparent;
+
+    color: var(--fg-1);
+    font-family: inherit;
+    font-size: var(--font-size-md);
+    text-overflow: ellipsis;
+
+    &::placeholder {
+      color: var(--fg-4);
+    }
+  }
+
+  &.error {
+    border-color: var(--red-9, red);
+  }
+
+  &.valid {
+    border-color: var(--green-9, green);
+
+    .leadingIcon {
+      color: var(--green-9, green);
+    }
   }
 }
 
-.error input {
-  border-color: var(--red-9, red);
+.leadingIcon {
+  flex-shrink: 0;
+  font-size: 14px;
+  color: var(--fg-4);
+  transition: color var(--duration-base) var(--ease-standard);
 }
 
-.valid input {
-  border-color: var(--green-9, green);
-}
+.field .loadButton {
+  flex-shrink: 0;
+  height: calc(var(--toolbar-h, 34px) - 8px);
+  padding-inline: var(--space-3);
+  border-radius: var(--radius-pill);
 
-.labelWithInfo {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  position: relative;
+  // Until a valid URL is entered the action recedes into the field.
+  &:disabled:not([class*="loading"]) {
+    opacity: 1;
+    color: var(--fg-muted);
+    background-color: transparent;
+    border-color: transparent;
+  }
 }
 
 .tooltip {
   position: absolute;
-  top: 100%;
-  left: 50%;
+  top: calc(100% + var(--space-2));
+  right: 0;
   z-index: var(--z-popover);
   background-color: var(--gray-5);
   color: var(--fg-1);
 
   width: max-content;
+  max-width: 90vw;
+  margin: 0;
   padding: var(--space-2) var(--space-3);
   border-radius: var(--radius);
 
   font-size: var(--font-size-xs);
   font-weight: 500;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 
   opacity: 0;
   visibility: hidden;
@@ -49,21 +109,59 @@
 }
 
 .infoButton {
+  flex-shrink: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   position: relative;
   cursor: help;
-  color: var(--fg-2);
+  color: var(--fg-4);
   font-size: 14px;
   transition: color var(--duration-base) var(--ease-standard);
 
-  &:hover {
+  // Focus as well as hover, so a tap opens the help on touch screens.
+  &:hover,
+  &:focus {
     color: var(--accent);
+    outline: none;
 
     .tooltip {
       opacity: 1;
       visibility: visible;
     }
+  }
+}
+
+@include mobile {
+  .field {
+    padding-right: var(--space-1);
+
+    // 16px keeps iOS from zooming the page when the input is focused.
+    input {
+      font-size: 16px;
+    }
+  }
+
+  .field .loadButton {
+    padding-inline: var(--space-4);
+    font-size: var(--font-size-md);
+  }
+
+  // Enlarge the tap area without growing the icon. Static, so the tooltip
+  // anchors to the whole field and can't run off the screen edge.
+  .infoButton {
+    position: static;
+    align-self: stretch;
+    padding-inline: var(--space-2);
+    font-size: 16px;
+  }
+
+  .tooltip {
+    top: calc(100% + var(--space-1));
+    left: 0;
+    right: 0;
+    width: auto;
+    max-width: none;
+    font-size: var(--font-size-sm);
   }
 }
