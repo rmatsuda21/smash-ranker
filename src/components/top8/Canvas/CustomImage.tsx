@@ -3,6 +3,7 @@ import { Image } from "react-konva";
 
 import { useCustomImage } from "@/hooks/top8/useCustomImage";
 import { useRenderMode } from "@/components/top8/Canvas/RenderModeContext";
+import { useExportSettingsStore } from "@/store/exportSettingsStore";
 
 const BACKDROP_OFFSET = 10;
 
@@ -47,6 +48,18 @@ const CustomImageComponent = ({
   onReadyRef.current = onReady;
   onErrorRef.current = onError;
 
+  const renderMode = useRenderMode();
+  const skipNodeCache = renderMode === "mobile";
+
+  // On mobile the screen needs well under 1 backing pixel per design pixel,
+  // so the only reason to bake larger is the export. Follow the mobile
+  // export setting (1× by default) instead of always baking at 2×.
+  const mobileExportRatio = useExportSettingsStore((s) => s.mobilePixelRatio);
+  const bakeScale =
+    renderMode === "mobile"
+      ? Math.min(2, Math.max(1, mobileExportRatio))
+      : undefined;
+
   const { finalImage, ref } = useCustomImage({
     imageSrc,
     width,
@@ -56,12 +69,10 @@ const CustomImageComponent = ({
     offset,
     cropOffset,
     cropScale,
+    bakeScale,
     onReady: onReadyRef.current,
     onError: onErrorRef.current,
   });
-
-  const renderMode = useRenderMode();
-  const skipNodeCache = renderMode === "mobile";
 
   useEffect(() => {
     if (!ref.current || !finalImage) return;
