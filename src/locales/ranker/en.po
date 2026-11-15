@@ -66,7 +66,7 @@ msgstr ""
 msgid "8 Players (Light)"
 msgstr ""
 
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:75
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:70
 msgid "Accent Color"
 msgstr "アクセントカラー"
 
@@ -82,7 +82,7 @@ msgstr ""
 #~ msgid "Almost there, just one more stock..."
 #~ msgstr ""
 
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:32
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:26
 msgid "Amber"
 msgstr "アンバー"
 
@@ -124,7 +124,7 @@ msgstr ""
 msgid "Background Image"
 msgstr ""
 
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:33
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:27
 msgid "Blue"
 msgstr "ブルー"
 
@@ -132,11 +132,11 @@ msgstr "ブルー"
 msgid "Bluesky"
 msgstr ""
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:31
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:32
 msgid "Both players side by side, score in the middle"
 msgstr ""
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:35
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:36
 msgid "Bracket"
 msgstr ""
 
@@ -158,7 +158,7 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:132
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:133
 msgid "Card style"
 msgstr ""
 
@@ -215,7 +215,7 @@ msgstr ""
 msgid "Commit"
 msgstr ""
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:40
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:41
 msgid "Compact"
 msgstr ""
 
@@ -306,8 +306,8 @@ msgid "Credits & Inspiration"
 msgstr ""
 
 #: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:22
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:101
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:104
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:41
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:97
 msgid "Custom"
 msgstr "カスタム"
 
@@ -340,7 +340,7 @@ msgstr ""
 msgid "Deciding which loss was \"actually close\"..."
 msgstr ""
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:47
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:48
 msgid "Default"
 msgstr ""
 
@@ -389,7 +389,7 @@ msgstr ""
 msgid "Dimensions"
 msgstr ""
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:82
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:83
 msgid "Display"
 msgstr ""
 
@@ -406,7 +406,7 @@ msgstr ""
 msgid "Done"
 msgstr ""
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:48
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:49
 msgid "Dotted"
 msgstr ""
 
@@ -560,11 +560,11 @@ msgstr ""
 #~ msgid "Generating recap"
 #~ msgstr ""
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:50
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:51
 msgid "Gradient edge"
 msgstr ""
 
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:34
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:28
 msgid "Green"
 msgstr ""
 
@@ -616,7 +616,7 @@ msgstr ""
 msgid "Language"
 msgstr ""
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:96
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:97
 msgid "Layout"
 msgstr ""
 
@@ -748,11 +748,11 @@ msgstr ""
 msgid "None"
 msgstr ""
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:36
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:37
 msgid "One line per player, like a bracket match box"
 msgstr ""
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:41
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:42
 msgid "One line per set, tap a set for details"
 msgstr ""
 
@@ -793,7 +793,7 @@ msgstr ""
 msgid "Pick a player to see their results."
 msgstr ""
 
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:30
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:24
 msgid "Pink"
 msgstr ""
 
@@ -880,7 +880,7 @@ msgstr ""
 msgid "Pulling entrants..."
 msgstr ""
 
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:35
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:29
 msgid "Purple"
 msgstr ""
 
@@ -912,7 +912,7 @@ msgstr ""
 #~ msgid "Recapping the run..."
 #~ msgstr ""
 
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:31
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:25
 msgid "Red"
 msgstr ""
 
@@ -954,7 +954,7 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:49
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:50
 msgid "Scoreline"
 msgstr ""
 
@@ -1292,7 +1292,7 @@ msgstr ""
 msgid "Version"
 msgstr ""
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:30
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:31
 msgid "Versus"
 msgstr ""
 

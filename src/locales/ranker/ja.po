@@ -66,7 +66,7 @@ msgstr "8人用（ダーク）"
 msgid "8 Players (Light)"
 msgstr "8人用（ライト）"
 
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:75
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:70
 msgid "Accent Color"
 msgstr "アクセントカラー"
 
@@ -82,7 +82,7 @@ msgstr "現在の予想がすべて削除されます。"
 #~ msgid "Almost there, just one more stock..."
 #~ msgstr "あと少し、ラスト1ストックです..."
 
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:32
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:26
 msgid "Amber"
 msgstr "アンバー"
 
@@ -124,7 +124,7 @@ msgstr "プレーンテキストに戻る"
 msgid "Background Image"
 msgstr "背景画像"
 
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:33
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:27
 msgid "Blue"
 msgstr "ブルー"
 
@@ -132,11 +132,11 @@ msgstr "ブルー"
 msgid "Bluesky"
 msgstr "Bluesky"
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:31
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:32
 msgid "Both players side by side, score in the middle"
 msgstr "両プレイヤーを左右に、スコアを中央に表示"
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:35
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:36
 msgid "Bracket"
 msgstr "ブラケット"
 
@@ -158,7 +158,7 @@ msgstr ""
 msgid "Cancel"
 msgstr "キャンセル"
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:132
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:133
 msgid "Card style"
 msgstr "カードのスタイル"
 
@@ -215,7 +215,7 @@ msgstr "カラーパレット"
 msgid "Commit"
 msgstr ""
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:40
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:41
 msgid "Compact"
 msgstr "コンパクト"
 
@@ -306,8 +306,8 @@ msgid "Credits & Inspiration"
 msgstr "クレジット & インスピレーション"
 
 #: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:22
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:101
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:104
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:41
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:97
 msgid "Custom"
 msgstr "カスタム"
 
@@ -340,7 +340,7 @@ msgstr "日付"
 msgid "Deciding which loss was \"actually close\"..."
 msgstr "どの負けが「実は惜しかった」か判定中..."
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:47
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:48
 msgid "Default"
 msgstr "デフォルト"
 
@@ -389,7 +389,7 @@ msgstr "開発者モード"
 msgid "Dimensions"
 msgstr "サイズ"
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:82
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:83
 msgid "Display"
 msgstr "表示"
 
@@ -406,7 +406,7 @@ msgstr "次回から表示しない"
 msgid "Done"
 msgstr "終了"
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:48
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:49
 msgid "Dotted"
 msgstr "ドット"
 
@@ -560,11 +560,11 @@ msgstr "プレビュー作成中..."
 #~ msgid "Generating recap"
 #~ msgstr "リザルト生成中"
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:50
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:51
 msgid "Gradient edge"
 msgstr "グラデーション枠"
 
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:34
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:28
 msgid "Green"
 msgstr "グリーン"
 
@@ -616,7 +616,7 @@ msgstr "L"
 msgid "Language"
 msgstr "言語"
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:96
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:97
 msgid "Layout"
 msgstr "レイアウト"
 
@@ -748,11 +748,11 @@ msgstr "このデザインにはテキストが定義されていません。"
 msgid "None"
 msgstr "なし"
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:36
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:37
 msgid "One line per player, like a bracket match box"
 msgstr "ブラケットの対戦枠のように1プレイヤー1行"
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:41
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:42
 msgid "One line per set, tap a set for details"
 msgstr "1セット1行、タップで詳細を表示"
 
@@ -793,7 +793,7 @@ msgstr "選手を選択"
 msgid "Pick a player to see their results."
 msgstr "選手を選んでリザルトを表示。"
 
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:30
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:24
 msgid "Pink"
 msgstr "ピンク"
 
@@ -880,7 +880,7 @@ msgstr ""
 msgid "Pulling entrants..."
 msgstr "出場選手を取得中..."
 
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:35
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:29
 msgid "Purple"
 msgstr "パープル"
 
@@ -912,7 +912,7 @@ msgstr "大会振り返り"
 #~ msgid "Recapping the run..."
 #~ msgstr "リザルトを振り返り中..."
 
-#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:31
+#: src/components/top8/SettingsPanel/AccentColorPicker.tsx:25
 msgid "Red"
 msgstr "レッド"
 
@@ -954,7 +954,7 @@ msgstr "メンバーを集合中..."
 msgid "Save"
 msgstr "保存"
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:49
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:50
 msgid "Scoreline"
 msgstr "スコアライン"
 
@@ -1292,7 +1292,7 @@ msgstr "アップセットファクター {upsetFactor}"
 msgid "Version"
 msgstr ""
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:30
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:31
 msgid "Versus"
 msgstr "対戦"
 

@@ -46,6 +46,7 @@ import {
   findElementWithContext,
   isDescendantOf,
 } from "@/utils/thumbnail/elementTree";
+import { TooltipButton } from "@/components/shared/Tooltip/TooltipButton";
 
 import styles from "./LayersTab.module.scss";
 
@@ -320,18 +321,18 @@ const GroupRow = ({
           {group.name ?? "Group"} ({group.children.length})
         </span>
       )}
-      <button
+      <TooltipButton
         className={styles.iconButton}
         onClick={(e) => {
           e.stopPropagation();
           actions.ungroupSelection([group.id]);
         }}
-        type="button"
         aria-label="Ungroup"
-        title="Ungroup"
+        tooltip="Ungroup"
+        tooltipIsLabel
       >
         <FaObjectUngroup />
-      </button>
+      </TooltipButton>
     </div>
   );
 };

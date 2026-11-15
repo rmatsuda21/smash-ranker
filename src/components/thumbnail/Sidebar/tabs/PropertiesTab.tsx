@@ -37,6 +37,7 @@ import { getSelectedGroupIds } from "@/utils/thumbnail/groups";
 import { findElement } from "@/utils/thumbnail/elementTree";
 import { Button } from "@/components/shared/Button/Button";
 import { Checkbox } from "@/components/shared/Checkbox/Checkbox";
+import { TooltipButton } from "@/components/shared/Tooltip/TooltipButton";
 
 import styles from "./PropertiesTab.module.scss";
 
@@ -179,7 +180,7 @@ const MultiSelectionProperties = ({
             size="sm"
             onClick={() => actions.groupIds(ids)}
             disabled={!canGroup}
-            title="Group (Cmd+G)"
+            tooltip="Group (Cmd+G)"
           >
             <FaObjectGroup /> Group
           </Button>
@@ -188,7 +189,7 @@ const MultiSelectionProperties = ({
             size="sm"
             onClick={() => actions.ungroupSelection(ids)}
             disabled={!canUngroup}
-            title="Ungroup (Cmd+Shift+G)"
+            tooltip="Ungroup (Cmd+Shift+G)"
           >
             <FaObjectUngroup /> Ungroup
           </Button>
@@ -512,42 +513,42 @@ const TextProperties = ({
       <div className={styles.row}>
         <label>V-Align</label>
         <div className={styles.alignButtons}>
-          <button
-            type="button"
+          <TooltipButton
             className={cn({
               [styles.active]: (element.verticalAlign ?? "top") === "top",
             })}
             onClick={() =>
               update(element.id, element, { verticalAlign: "top" })
             }
-            title="Top"
+            tooltip="Top"
+            tooltipIsLabel
           >
             <FaAlignLeft style={{ transform: "rotate(90deg)" }} />
-          </button>
-          <button
-            type="button"
+          </TooltipButton>
+          <TooltipButton
             className={cn({
               [styles.active]: element.verticalAlign === "middle",
             })}
             onClick={() =>
               update(element.id, element, { verticalAlign: "middle" })
             }
-            title="Middle"
+            tooltip="Middle"
+            tooltipIsLabel
           >
             <FaAlignCenter style={{ transform: "rotate(90deg)" }} />
-          </button>
-          <button
-            type="button"
+          </TooltipButton>
+          <TooltipButton
             className={cn({
               [styles.active]: element.verticalAlign === "bottom",
             })}
             onClick={() =>
               update(element.id, element, { verticalAlign: "bottom" })
             }
-            title="Bottom"
+            tooltip="Bottom"
+            tooltipIsLabel
           >
             <FaAlignRight style={{ transform: "rotate(90deg)" }} />
-          </button>
+          </TooltipButton>
         </div>
       </div>
       <div className={styles.row}>

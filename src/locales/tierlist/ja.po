@@ -21,8 +21,8 @@ msgstr "← スワイプでスクロール →"
 msgid "Add Tier"
 msgstr "ティア追加"
 
-#: src/components/tierlist/AltPicker/AltPicker.tsx:79
-#: src/components/tierlist/AltPicker/AltPicker.tsx:87
+#: src/components/tierlist/AltPicker/AltPicker.tsx:80
+#: src/components/tierlist/AltPicker/AltPicker.tsx:89
 msgid "Alt {i}"
 msgstr "カラー {i}"
 

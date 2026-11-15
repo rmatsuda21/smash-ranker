@@ -1,7 +1,7 @@
 import cn from "classnames";
 
 import { Spinner } from "@/components/shared/Spinner/Spinner";
-import { useTooltip } from "@/hooks/top8/useTooltip";
+import { useTooltip } from "@/components/shared/Tooltip/useTooltip";
 
 import styles from "./Button.module.scss";
 
@@ -33,15 +33,17 @@ export const Button = ({
   tooltip,
   ...props
 }: Props) => {
-  const { Tooltip, handleMouseEnter, handleMouseLeave } = useTooltip({
-    tooltip: tooltip ?? "",
+  // The tooltip doubles as the accessible name below, so don't also
+  // announce it as a description.
+  const { triggerProps, tooltip: tooltipNode } = useTooltip({
+    content: tooltip,
+    describe: false,
   });
   const showInlineLoading = loading && loadingText !== undefined;
   return (
     <>
       <button
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
+        {...triggerProps}
         className={cn(
           styles.button,
           styles[variant],
@@ -65,7 +67,7 @@ export const Button = ({
           />
         )}
         {showInlineLoading ? loadingText : children}
-        {tooltip && <Tooltip className={styles.tooltip} />}
+        {tooltipNode}
       </button>
     </>
   );

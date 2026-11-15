@@ -67,19 +67,6 @@
   }
 }
 
-.tooltip {
-  pointer-events: none;
-  text-wrap: nowrap;
-
-  border-radius: var(--radius);
-  border: 1px solid var(--border-strong);
-  background-color: var(--bg-raised);
-  color: var(--fg-2);
-  padding: var(--space-1) var(--space-1);
-  font-size: var(--font-size-xs);
-  font-weight: 900;
-}
-
 .container,
 .container:before,
 .label {

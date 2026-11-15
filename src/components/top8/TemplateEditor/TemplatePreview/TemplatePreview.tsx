@@ -8,7 +8,7 @@ import { DBTemplate } from "@/types/Repository";
 import { createKonvaElements } from "@/utils/top8/elementFactory";
 import { createSamplePlayers } from "@/utils/top8/samplePlayers";
 import { TournamentInfo } from "@/types/top8/Tournament";
-import { useTooltip } from "@/hooks/top8/useTooltip";
+import { useTooltip } from "@/components/shared/Tooltip/useTooltip";
 import { isMobile } from "@/utils/isMobile";
 import { previewCache } from "@/db/previewCache";
 import { Spinner } from "@/components/shared/Spinner/Spinner";
@@ -66,15 +66,15 @@ const PreviewShell = ({
   isLoading,
   children,
 }: Props & { children: React.ReactNode }) => {
-  const { Tooltip, handleMouseEnter, handleMouseLeave } = useTooltip({
-    tooltip: template.name,
+  const { triggerProps, tooltip } = useTooltip({
+    content: template.name,
+    describe: false,
   });
 
   return (
     <div
       className={cn(styles.previewContainer, className)}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      {...triggerProps}
       onClick={onClick}
     >
       {children}
@@ -98,7 +98,7 @@ const PreviewShell = ({
         </button>
       )}
 
-      {Tooltip && <Tooltip className={styles.tooltip} />}
+      {tooltip}
     </div>
   );
 };

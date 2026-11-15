@@ -4,7 +4,7 @@ import { characters } from "@/consts/top8/ultCharacters.json";
 import { EMPTY_CHARACTER_ID } from "@/consts/top8/characters";
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
 import { CharacerData } from "@/types/top8/Player";
-import { useTooltip } from "@/hooks/top8/useTooltip";
+import { useTooltip } from "@/components/shared/Tooltip/useTooltip";
 
 import styles from "./CharacterAltPicker.module.scss";
 
@@ -31,18 +31,15 @@ const AltOption = ({
   disabled,
   onAltChange,
 }: AltOptionProps) => {
-  const { Tooltip, handleMouseEnter, handleMouseLeave } = useTooltip({
-    tooltip: altName ?? "",
-  });
+  const { triggerProps, tooltip } = useTooltip({ content: altName });
+  // Hover lives on the label; the description belongs on the radio itself.
+  const { "aria-describedby": describedBy, ...hoverProps } = triggerProps;
 
   return (
-    <label
-      className={styles.label}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
+    <label className={styles.label} {...hoverProps}>
       <input
         type="radio"
+        aria-describedby={describedBy}
         name="character-alt"
         value={alt}
         checked={isSelected}
@@ -51,7 +48,7 @@ const AltOption = ({
       />
 
       {icon && <img src={icon} alt={`Alt ${alt}`} />}
-      {altName && <Tooltip className={styles.tooltip} />}
+      {tooltip}
     </label>
   );
 };

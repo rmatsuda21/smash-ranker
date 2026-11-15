@@ -18,6 +18,7 @@ import {
 } from "@/consts/thumbnail/defaults";
 import { downloadStageAsPng } from "@/utils/thumbnail/exportPng";
 import { logEvent, setPerson, setPersonOnce } from "@/utils/observability/log";
+import { TooltipButton } from "@/components/shared/Tooltip/TooltipButton";
 
 import styles from "./Toolbar.module.scss";
 
@@ -73,66 +74,62 @@ export const Toolbar = () => {
   return (
     <div className={styles.toolbar}>
       <div className={styles.group}>
-        <button
+        <TooltipButton
           className={styles.button}
           onClick={applyUndo}
           disabled={!canUndo}
-          title="Undo (Cmd+Z)"
-          type="button"
+          tooltip="Undo (Cmd+Z)"
         >
           <FaArrowRotateLeft />
           <span className={styles.label}>Undo</span>
-        </button>
-        <button
+        </TooltipButton>
+        <TooltipButton
           className={styles.button}
           onClick={applyRedo}
           disabled={!canRedo}
-          title="Redo (Cmd+Shift+Z)"
-          type="button"
+          tooltip="Redo (Cmd+Shift+Z)"
         >
           <FaArrowRotateRight />
           <span className={styles.label}>Redo</span>
-        </button>
+        </TooltipButton>
       </div>
       <div className={styles.divider} />
       <div className={styles.group}>
-        <button
+        <TooltipButton
           className={styles.button}
           onClick={handleZoomOut}
-          title="Zoom out"
-          type="button"
+          tooltip="Zoom out"
+          tooltipIsLabel
         >
           <FaMagnifyingGlassMinus />
-        </button>
+        </TooltipButton>
         <div className={styles.zoom}>{Math.round(zoom * 100)}%</div>
-        <button
+        <TooltipButton
           className={styles.button}
           onClick={handleZoomIn}
-          title="Zoom in"
-          type="button"
+          tooltip="Zoom in"
+          tooltipIsLabel
         >
           <FaMagnifyingGlassPlus />
-        </button>
-        <button
+        </TooltipButton>
+        <TooltipButton
           className={styles.button}
           onClick={handleFit}
-          title="Fit to screen"
-          type="button"
+          tooltip="Fit to screen"
         >
           <FaExpand />
           <span className={styles.label}>Fit</span>
-        </button>
+        </TooltipButton>
       </div>
       <div className={styles.spacer} />
-      <button
+      <TooltipButton
         className={`${styles.button} ${styles.primary}`}
         onClick={handleExport}
-        title={`Export PNG (${EXPORT_PIXEL_RATIO}x)`}
-        type="button"
+        tooltip={`Export PNG (${EXPORT_PIXEL_RATIO}x)`}
       >
         <FaDownload />
         <span className={styles.label}>Export PNG</span>
-      </button>
+      </TooltipButton>
     </div>
   );
 };

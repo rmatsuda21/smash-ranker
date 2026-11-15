@@ -1,16 +1,16 @@
 .tooltip {
+  position: fixed;
+  z-index: var(--z-tooltip);
+
+  width: max-content;
+  max-width: min(320px, calc(100vw - 16px));
+
   border-radius: var(--radius);
-  padding: 1px var(--space-1);
+  border: 1px solid var(--border-strong);
+  background-color: var(--bg-raised);
+  color: var(--fg-2);
+  padding: var(--space-1);
   font-size: var(--font-size-xs);
   font-weight: 900;
-
-  display: none;
-  position: fixed;
-  z-index: var(--z-popover);
-  top: 0;
-  left: 0;
-
-  background-color: var(--gray-12);
-  color: var(--gray-1);
-  pointer-events: none;
+  line-height: 1.5;
 }

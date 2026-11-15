@@ -8,6 +8,7 @@ import { getCharacterDisplayName } from "@/utils/top8/getCharacterName";
 import { useTierListStore } from "@/store/tierListStore";
 import { ImageDisplayMode } from "@/types/tierlist/TierList";
 import { useTopLayer } from "@/hooks/useTopLayer";
+import { TooltipButton } from "@/components/shared/Tooltip/TooltipButton";
 
 import styles from "./AltPicker.module.scss";
 
@@ -68,7 +69,7 @@ export const AltPicker = ({
       </div>
       <div className={styles.alts}>
         {Array.from({ length: altCount }, (_, i) => (
-          <button
+          <TooltipButton
             key={i}
             className={styles.altButton}
             data-active={character.alt === i || undefined}
@@ -76,7 +77,8 @@ export const AltPicker = ({
               dispatch({ type: "SET_CHARACTER_ALT", instanceId, alt: i });
               onClose();
             }}
-            title={charData.altNames?.[i] ?? t`Alt ${i}`}
+            tooltip={charData.altNames?.[i] ?? t`Alt ${i}`}
+            tooltipIsLabel
           >
             <img
               src={getCharImgUrl({
@@ -89,7 +91,7 @@ export const AltPicker = ({
               height={40}
               draggable={false}
             />
-          </button>
+          </TooltipButton>
         ))}
       </div>
     </div>,

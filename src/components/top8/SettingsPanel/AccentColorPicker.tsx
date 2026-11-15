@@ -8,19 +8,13 @@ import { useLingui } from "@lingui/react";
 
 import { COOKIES } from "@/consts/cookies";
 import { useTooltip } from "@/components/shared/Tooltip/useTooltip";
-import { Tooltip } from "@/components/shared/Tooltip/Tooltip";
+import { TooltipButton } from "@/components/shared/Tooltip/TooltipButton";
 import { ColorInput } from "@/components/shared/ColorInput/ColorInput";
 
 import styles from "./SettingsPanel.module.scss";
 
 type AccentColor =
-  | "pink"
-  | "crimson"
-  | "amber"
-  | "blue"
-  | "green"
-  | "purple"
-  | "custom";
+  "pink" | "crimson" | "amber" | "blue" | "green" | "purple" | "custom";
 
 const ACCENT_COLORS: {
   value: Exclude<AccentColor, "custom">;
@@ -43,7 +37,8 @@ export const AccentColorPicker = () => {
   const [customHex, setCustomHex] = useState(
     () => Cookies.get(COOKIES.CUSTOM_ACCENT_COLOR) || "#ff6600",
   );
-  const [tooltipRef, tooltip] = useTooltip();
+  const { triggerProps: customTooltipProps, tooltip: customTooltip } =
+    useTooltip({ content: _(msg`Custom`), describe: false });
 
   useEffect(() => {
     document.documentElement.setAttribute("data-accent", currentAccent);
@@ -76,30 +71,28 @@ export const AccentColorPicker = () => {
       </div>
       <div className={styles.colorGrid}>
         {ACCENT_COLORS.map((accent) => (
-          <button
+          <TooltipButton
             key={accent.value}
+            tooltip={_(accent.label)}
+            tooltipIsLabel
             className={cn(styles.colorButton, {
               [styles.selected]: currentAccent === accent.value,
             })}
             onClick={() => handleAccentChange(accent.value)}
-            onMouseEnter={() => tooltip.show(_(accent.label))}
-            onMouseLeave={() => tooltip.hide()}
             aria-pressed={currentAccent === accent.value}
-            aria-label={_(accent.label)}
             style={{ "--swatch-color": accent.color } as React.CSSProperties}
           >
             <span className={styles.colorSwatch} />
             {currentAccent === accent.value && (
               <FaCheck className={styles.colorCheck} />
             )}
-          </button>
+          </TooltipButton>
         ))}
         <div
           className={cn(styles.colorButton, {
             [styles.selected]: currentAccent === "custom",
           })}
-          onMouseEnter={() => tooltip.show(_(msg`Custom`))}
-          onMouseLeave={() => tooltip.hide()}
+          {...customTooltipProps}
           aria-pressed={currentAccent === "custom"}
           aria-label={_(msg`Custom`)}
         >
@@ -113,7 +106,7 @@ export const AccentColorPicker = () => {
             <FaCheck className={styles.colorCheck} />
           )}
         </div>
-        <Tooltip tooltipRef={tooltipRef} />
+        {customTooltip}
       </div>
     </section>
   );

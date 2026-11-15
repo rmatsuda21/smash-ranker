@@ -19,6 +19,7 @@ import {
   type SetListLayout,
   type SetListStyle,
 } from "@/types/results/SetListDisplay";
+import { TooltipButton } from "@/components/shared/Tooltip/TooltipButton";
 
 import styles from "./SetListDisplaySettings.module.scss";
 
@@ -67,21 +68,21 @@ export const SetListDisplaySettings = () => {
 
   return (
     <>
-      <button
+      <TooltipButton
         ref={anchorRef}
-        type="button"
         className={styles.trigger}
         aria-haspopup="dialog"
         aria-expanded={open}
         aria-label={_(msg`Display options`)}
-        title={_(msg`Display options`)}
+        tooltip={_(msg`Display options`)}
+        tooltipIsLabel
         onClick={() => setOpen((v) => !v)}
       >
         <FaSliders />
         <span className={styles.triggerLabel}>
           <Trans>Display</Trans>
         </span>
-      </button>
+      </TooltipButton>
 
       <Popover
         anchorRef={anchorRef}

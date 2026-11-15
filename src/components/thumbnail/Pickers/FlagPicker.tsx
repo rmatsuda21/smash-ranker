@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 
 import { FLAG_CODES } from "@/consts/thumbnail/flagCodes";
+import { TooltipButton } from "@/components/shared/Tooltip/TooltipButton";
 
 import styles from "./FlagPicker.module.scss";
 
@@ -35,7 +36,7 @@ export const FlagPicker = ({ selected, onSelect }: Props) => {
       />
       <div className={styles.grid}>
         {filtered.map((entry) => (
-          <button
+          <TooltipButton
             key={entry.code}
             className={
               lower === entry.code.toLowerCase()
@@ -43,15 +44,15 @@ export const FlagPicker = ({ selected, onSelect }: Props) => {
                 : styles.flag
             }
             onClick={() => onSelect(entry.code)}
-            title={entry.name}
-            type="button"
+            tooltip={entry.name}
+            tooltipIsLabel
           >
             <img
               src={`/assets/flags/${entry.code.toLowerCase()}.svg`}
               alt={entry.name}
               loading="lazy"
             />
-          </button>
+          </TooltipButton>
         ))}
       </div>
     </div>

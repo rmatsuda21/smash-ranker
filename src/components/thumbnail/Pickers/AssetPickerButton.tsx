@@ -3,6 +3,7 @@ import { FaImage, FaPenToSquare, FaXmark } from "react-icons/fa6";
 
 import { AssetsModal } from "@/components/top8/AssetManager/AssetsModal/AssetsModal";
 import { thumbnailAssetRepository } from "@/db/repository";
+import { TooltipButton } from "@/components/shared/Tooltip/TooltipButton";
 
 import styles from "./AssetPickerButton.module.scss";
 
@@ -51,15 +52,15 @@ export const AssetPickerButton = ({
         )}
       </button>
       {hasSrc && onClear ? (
-        <button
-          type="button"
+        <TooltipButton
           className={styles.clearBtn}
           onClick={onClear}
           aria-label="Clear"
-          title="Clear"
+          tooltip="Clear"
+          tooltipIsLabel
         >
           <FaXmark />
-        </button>
+        </TooltipButton>
       ) : null}
       <AssetsModal
         isOpen={isOpen}
