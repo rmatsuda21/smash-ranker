@@ -3,26 +3,208 @@
 .wrapper {
   display: flex;
   flex-direction: column;
-  gap: var(--form-gap);
+  gap: var(--space-3);
   flex: 1;
   min-height: 0;
   overflow-y: auto;
+}
+
+// Each group of related fields sits on its own quiet surface.
+.card {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-3);
+
+  background-color: var(--bg-app);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+
+.cardTitle {
+  margin: 0;
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--fg-1);
+}
+
+// Icon beside the two names: reads like the header of the graphic.
+.identity {
+  --asset-tile-size: 72px;
+
+  flex-direction: row;
+  align-items: center;
+}
+
+.names {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+// Always drawn as fields, so it's clear at a glance they can be edited.
+.nameInput {
+  width: 100%;
+  height: 34px;
+  padding: 0 var(--space-3);
+
+  color: var(--fg-1);
+  font-family: inherit;
+  font-size: var(--font-size-md);
+  text-overflow: ellipsis;
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  transition: border-color var(--duration-base) var(--ease-standard);
+
+  &::placeholder {
+    color: var(--fg-4);
+    font-weight: 400;
+  }
+
+  &:hover {
+    border-color: var(--gray-8);
+  }
+
+  &:focus {
+    border-color: var(--brand);
+    outline: 1px solid var(--brand);
+    outline-offset: -2px;
+  }
+}
+
+.tournamentName {
+  font-weight: 700;
+}
+
+.row {
+  display: flex;
+  gap: var(--space-3);
+
+  > * {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+
+  label {
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--fg-3);
+  }
+}
+
+.control {
+  height: 36px;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding-inline: var(--space-3);
+
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  transition: border-color var(--duration-base) var(--ease-standard);
+
+  &:hover {
+    border-color: var(--gray-8);
+  }
+
+  &:focus-within {
+    border-color: var(--brand);
+    outline: 1px solid var(--brand);
+    outline-offset: -2px;
+  }
 
   input {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    padding: 0;
+    border: none;
+    outline: none;
+    background: transparent;
+
+    color: var(--fg-1);
+    font-family: inherit;
     font-size: var(--font-size-md);
-  }
+    text-overflow: ellipsis;
 
-  .label {
-    @include label;
-  }
-
-  .row {
-    display: flex;
-    gap: var(--form-gap);
-
-    & > * {
-      flex: 1;
-      min-width: 0;
+    &::placeholder {
+      color: var(--fg-4);
     }
+  }
+
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+  }
+}
+
+.icon {
+  flex-shrink: 0;
+  display: flex;
+  font-size: 12px;
+  color: var(--fg-4);
+}
+
+.openLink {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  margin-right: calc(var(--space-1) * -1);
+
+  font-size: 12px;
+  color: var(--fg-3);
+  border-radius: var(--radius-sm);
+  transition:
+    color var(--duration-base) var(--ease-standard),
+    background-color var(--duration-base) var(--ease-standard);
+
+  &:hover {
+    color: var(--accent-9);
+    background-color: var(--bg-raised);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent-9);
+    outline-offset: 1px;
+  }
+}
+
+@include mobile {
+  .control {
+    height: 44px;
+  }
+
+  .identity {
+    --asset-tile-size: 92px;
+  }
+
+  .nameInput {
+    height: 44px;
+  }
+
+  // 16px keeps iOS from zooming the page when an input is focused.
+  .control input,
+  .nameInput {
+    font-size: 16px;
+  }
+
+  .openLink {
+    width: 32px;
+    height: 32px;
   }
 }

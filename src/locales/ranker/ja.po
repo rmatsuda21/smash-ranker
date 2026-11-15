@@ -190,18 +190,18 @@ msgstr "シードが妥当だったか確認中..."
 msgid "Checking who actually made it past pools..."
 msgstr "予選を本当に抜けた人を確認中..."
 
-#: src/components/top8/AssetSelector/AssetSelector.tsx:60
+#: src/components/top8/AssetSelector/AssetSelector.tsx:81
 msgid "Choose image"
 msgstr "画像を選択"
 
-#: src/components/top8/TournamentConfig/TournamentEditor.tsx:151
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:221
 msgid "City"
 msgstr "市区町村"
 
 #: src/components/predict/PredictApp/PredictApp.tsx:145
 #: src/components/results/ResultsApp/ResultsApp.tsx:213
-#: src/components/top8/AssetSelector/AssetSelector.tsx:100
-#: src/components/top8/AssetSelector/AssetSelector.tsx:101
+#: src/components/top8/AssetSelector/AssetSelector.tsx:125
+#: src/components/top8/AssetSelector/AssetSelector.tsx:126
 msgid "Clear"
 msgstr "クリア"
 
@@ -293,7 +293,7 @@ msgid "Counting the stocks. All of them..."
 msgstr "ストックを数えています。全部です..."
 
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:238
-#: src/components/top8/TournamentConfig/TournamentEditor.tsx:167
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:238
 msgid "Country"
 msgstr "国"
 
@@ -349,7 +349,7 @@ msgstr "自作ミニマルテンプレート"
 msgid "Dark"
 msgstr "ダーク"
 
-#: src/components/top8/TournamentConfig/TournamentEditor.tsx:122
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:157
 msgid "Date"
 msgstr "日付"
 
@@ -397,6 +397,10 @@ msgstr "全選択解除"
 #: src/components/top8/SidePanel/SidePanelNav.tsx:28
 msgid "Design"
 msgstr "デザイン"
+
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:153
+msgid "Details"
+msgstr "詳細"
 
 #: src/components/top8/SettingsPanel/DeveloperSettings.tsx:37
 msgid "Developer"
@@ -487,11 +491,12 @@ msgstr "start.gg、Challonge、またはTonamelの大会URLを入れてくださ
 #: src/components/predict/EntrantPoolPanel/EntrantPoolPanel.tsx:44
 #: src/components/predict/PredictionWorkspace/PredictionWorkspace.tsx:31
 #: src/components/results/ResultsWorkspace/ResultsWorkspace.tsx:53
-#: src/components/top8/TournamentConfig/TournamentEditor.tsx:137
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:172
 msgid "Entrants"
 msgstr "参加人数"
 
-#: src/components/top8/TournamentConfig/TournamentEditor.tsx:113
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:143
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:144
 #: src/consts/top8/placeholders.ts:29
 msgid "Event Name"
 msgstr "イベント名"
@@ -607,7 +612,7 @@ msgstr "https://start.gg/tournament/.../event/..."
 msgid "Hyping up the bracket..."
 msgstr ""
 
-#: src/components/top8/TournamentConfig/TournamentEditor.tsx:89
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:112
 msgid "Icon"
 msgstr "アイコン"
 
@@ -692,6 +697,10 @@ msgstr "リザルト読み込み中"
 msgid "Loading tournament"
 msgstr "大会読み込み中"
 
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:218
+msgid "Location"
+msgstr "開催地"
+
 #: src/components/predict/PredictionPreview/PredictionPreview.tsx:59
 msgid "Locking in picks..."
 msgstr ""
@@ -721,7 +730,7 @@ msgstr ""
 #~ msgstr "番狂わせを少し大げさに演出中..."
 
 #: src/components/top8/AssetManager/AssetManager.tsx:32
-#: src/components/top8/AssetSelector/AssetPicker.tsx:134
+#: src/components/top8/AssetSelector/AssetPicker.tsx:136
 msgid "Manage Assets"
 msgstr "素材管理"
 
@@ -737,7 +746,7 @@ msgstr "ミニマル"
 msgid "Minimalist"
 msgstr "ミニマル"
 
-#: src/components/top8/AssetSelector/AssetSelector.tsx:59
+#: src/components/top8/AssetSelector/AssetSelector.tsx:80
 msgid "Missing image"
 msgstr "画像が見つかりません"
 
@@ -750,12 +759,12 @@ msgid "My Templates"
 msgstr "マイテンプレ"
 
 #: src/components/top8/AssetManager/AssetsModal/AssetGrid/AssetGrid.tsx:45
-#: src/components/top8/AssetSelector/AssetPicker.tsx:126
+#: src/components/top8/AssetSelector/AssetPicker.tsx:128
 msgid "No assets match your search"
 msgstr "検索に一致するアセットがありません"
 
 #: src/components/top8/AssetManager/AssetsModal/AssetGrid/AssetGrid.tsx:50
-#: src/components/top8/AssetSelector/AssetPicker.tsx:81
+#: src/components/top8/AssetSelector/AssetPicker.tsx:83
 msgid "No assets yet"
 msgstr "素材がありません"
 
@@ -801,6 +810,11 @@ msgstr "ブラケットの対戦枠のように1プレイヤー1行"
 #: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:42
 msgid "One line per set, tap a set for details"
 msgstr "1セット1行、タップで詳細を表示"
+
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:206
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:207
+msgid "Open link"
+msgstr "リンクを開く"
 
 #: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:363
 msgid "Open template editor"
@@ -1010,8 +1024,8 @@ msgstr "スコアライン"
 
 #: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:266
 #: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:267
-#: src/components/top8/AssetSelector/AssetPicker.tsx:68
-#: src/components/top8/AssetSelector/AssetPicker.tsx:69
+#: src/components/top8/AssetSelector/AssetPicker.tsx:74
+#: src/components/top8/AssetSelector/AssetPicker.tsx:75
 msgid "Search assets"
 msgstr "アセットを検索"
 
@@ -1114,7 +1128,7 @@ msgstr "スクエアバリアント"
 msgid "start.gg only"
 msgstr "start.gg のみ対応"
 
-#: src/components/top8/TournamentConfig/TournamentEditor.tsx:159
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:230
 msgid "State"
 msgstr "州・都道府県"
 
@@ -1278,7 +1292,8 @@ msgstr "大会住所"
 msgid "Tournament name"
 msgstr "大会名"
 
-#: src/components/top8/TournamentConfig/TournamentEditor.tsx:105
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:132
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:133
 #: src/consts/top8/placeholders.ts:28
 msgid "Tournament Name"
 msgstr "大会名"
@@ -1306,7 +1321,7 @@ msgid "Tournament State"
 msgstr "大会都道府県"
 
 #: src/components/shared/TournamentUrlInput/TournamentUrlInput.tsx:52
-#: src/components/top8/TournamentConfig/TournamentEditor.tsx:176
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:187
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:103
 #: src/consts/top8/placeholders.ts:35
 #: src/utils/social/templateTokens.ts:15
@@ -1349,9 +1364,9 @@ msgstr "アップロード"
 #~ msgid "Upload Assets"
 #~ msgstr "素材をアップロード"
 
-#: src/components/top8/AssetSelector/AssetPicker.tsx:85
-#: src/components/top8/AssetSelector/AssetPicker.tsx:95
-#: src/components/top8/AssetSelector/AssetPicker.tsx:96
+#: src/components/top8/AssetSelector/AssetPicker.tsx:87
+#: src/components/top8/AssetSelector/AssetPicker.tsx:97
+#: src/components/top8/AssetSelector/AssetPicker.tsx:98
 msgid "Upload image"
 msgstr "画像をアップロード"
 

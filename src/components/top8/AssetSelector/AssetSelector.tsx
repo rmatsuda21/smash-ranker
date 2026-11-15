@@ -20,6 +20,10 @@ type Props = {
   onSelect?: (src: string) => void;
   onClear: () => void;
   disabled?: boolean;
+  /** `field` is a full-width row; `tile` is a square thumbnail on its own. */
+  variant?: "field" | "tile";
+  /** Names the control when the variant shows no text (`tile`). */
+  "aria-label"?: string;
 };
 
 export const AssetSelector = ({
@@ -27,6 +31,8 @@ export const AssetSelector = ({
   onSelect,
   onClear,
   disabled,
+  variant = "field",
+  "aria-label": ariaLabel,
 }: Props) => {
   const { _ } = useLingui();
   const [isPickerOpen, setIsPickerOpen] = useState(false);
@@ -77,7 +83,10 @@ export const AssetSelector = ({
   return (
     <div
       ref={anchorRef}
-      className={cn(styles.assetSelector, { [styles.disabled]: disabled })}
+      className={cn(styles.assetSelector, {
+        [styles.tile]: variant === "tile",
+        [styles.disabled]: disabled,
+      })}
     >
       <button
         type="button"
@@ -86,6 +95,7 @@ export const AssetSelector = ({
         disabled={disabled}
         aria-haspopup="dialog"
         aria-expanded={isPickerOpen}
+        aria-label={ariaLabel}
         title={asset?.fileName}
       >
         <span className={styles.thumb}>

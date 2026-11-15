@@ -190,18 +190,18 @@ msgstr ""
 msgid "Checking who actually made it past pools..."
 msgstr ""
 
-#: src/components/top8/AssetSelector/AssetSelector.tsx:60
+#: src/components/top8/AssetSelector/AssetSelector.tsx:81
 msgid "Choose image"
 msgstr ""
 
-#: src/components/top8/TournamentConfig/TournamentEditor.tsx:151
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:221
 msgid "City"
 msgstr ""
 
 #: src/components/predict/PredictApp/PredictApp.tsx:145
 #: src/components/results/ResultsApp/ResultsApp.tsx:213
-#: src/components/top8/AssetSelector/AssetSelector.tsx:100
-#: src/components/top8/AssetSelector/AssetSelector.tsx:101
+#: src/components/top8/AssetSelector/AssetSelector.tsx:125
+#: src/components/top8/AssetSelector/AssetSelector.tsx:126
 msgid "Clear"
 msgstr ""
 
@@ -293,7 +293,7 @@ msgid "Counting the stocks. All of them..."
 msgstr ""
 
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:238
-#: src/components/top8/TournamentConfig/TournamentEditor.tsx:167
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:238
 msgid "Country"
 msgstr ""
 
@@ -349,7 +349,7 @@ msgstr ""
 msgid "Dark"
 msgstr ""
 
-#: src/components/top8/TournamentConfig/TournamentEditor.tsx:122
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:157
 msgid "Date"
 msgstr ""
 
@@ -396,6 +396,10 @@ msgstr ""
 
 #: src/components/top8/SidePanel/SidePanelNav.tsx:28
 msgid "Design"
+msgstr ""
+
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:153
+msgid "Details"
 msgstr ""
 
 #: src/components/top8/SettingsPanel/DeveloperSettings.tsx:37
@@ -487,11 +491,12 @@ msgstr ""
 #: src/components/predict/EntrantPoolPanel/EntrantPoolPanel.tsx:44
 #: src/components/predict/PredictionWorkspace/PredictionWorkspace.tsx:31
 #: src/components/results/ResultsWorkspace/ResultsWorkspace.tsx:53
-#: src/components/top8/TournamentConfig/TournamentEditor.tsx:137
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:172
 msgid "Entrants"
 msgstr ""
 
-#: src/components/top8/TournamentConfig/TournamentEditor.tsx:113
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:143
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:144
 #: src/consts/top8/placeholders.ts:29
 msgid "Event Name"
 msgstr ""
@@ -607,7 +612,7 @@ msgstr ""
 msgid "Hyping up the bracket..."
 msgstr ""
 
-#: src/components/top8/TournamentConfig/TournamentEditor.tsx:89
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:112
 msgid "Icon"
 msgstr ""
 
@@ -692,6 +697,10 @@ msgstr ""
 msgid "Loading tournament"
 msgstr ""
 
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:218
+msgid "Location"
+msgstr ""
+
 #: src/components/predict/PredictionPreview/PredictionPreview.tsx:59
 msgid "Locking in picks..."
 msgstr ""
@@ -721,7 +730,7 @@ msgstr ""
 #~ msgstr ""
 
 #: src/components/top8/AssetManager/AssetManager.tsx:32
-#: src/components/top8/AssetSelector/AssetPicker.tsx:134
+#: src/components/top8/AssetSelector/AssetPicker.tsx:136
 msgid "Manage Assets"
 msgstr ""
 
@@ -737,7 +746,7 @@ msgstr ""
 msgid "Minimalist"
 msgstr ""
 
-#: src/components/top8/AssetSelector/AssetSelector.tsx:59
+#: src/components/top8/AssetSelector/AssetSelector.tsx:80
 msgid "Missing image"
 msgstr ""
 
@@ -750,12 +759,12 @@ msgid "My Templates"
 msgstr ""
 
 #: src/components/top8/AssetManager/AssetsModal/AssetGrid/AssetGrid.tsx:45
-#: src/components/top8/AssetSelector/AssetPicker.tsx:126
+#: src/components/top8/AssetSelector/AssetPicker.tsx:128
 msgid "No assets match your search"
 msgstr ""
 
 #: src/components/top8/AssetManager/AssetsModal/AssetGrid/AssetGrid.tsx:50
-#: src/components/top8/AssetSelector/AssetPicker.tsx:81
+#: src/components/top8/AssetSelector/AssetPicker.tsx:83
 msgid "No assets yet"
 msgstr ""
 
@@ -800,6 +809,11 @@ msgstr ""
 
 #: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:42
 msgid "One line per set, tap a set for details"
+msgstr ""
+
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:206
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:207
+msgid "Open link"
 msgstr ""
 
 #: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:363
@@ -1010,8 +1024,8 @@ msgstr ""
 
 #: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:266
 #: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:267
-#: src/components/top8/AssetSelector/AssetPicker.tsx:68
-#: src/components/top8/AssetSelector/AssetPicker.tsx:69
+#: src/components/top8/AssetSelector/AssetPicker.tsx:74
+#: src/components/top8/AssetSelector/AssetPicker.tsx:75
 msgid "Search assets"
 msgstr ""
 
@@ -1114,7 +1128,7 @@ msgstr ""
 msgid "start.gg only"
 msgstr ""
 
-#: src/components/top8/TournamentConfig/TournamentEditor.tsx:159
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:230
 msgid "State"
 msgstr ""
 
@@ -1278,7 +1292,8 @@ msgstr ""
 msgid "Tournament name"
 msgstr ""
 
-#: src/components/top8/TournamentConfig/TournamentEditor.tsx:105
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:132
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:133
 #: src/consts/top8/placeholders.ts:28
 msgid "Tournament Name"
 msgstr ""
@@ -1306,7 +1321,7 @@ msgid "Tournament State"
 msgstr ""
 
 #: src/components/shared/TournamentUrlInput/TournamentUrlInput.tsx:52
-#: src/components/top8/TournamentConfig/TournamentEditor.tsx:176
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:187
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:103
 #: src/consts/top8/placeholders.ts:35
 #: src/utils/social/templateTokens.ts:15
@@ -1349,9 +1364,9 @@ msgstr "Upload"
 #~ msgid "Upload Assets"
 #~ msgstr ""
 
-#: src/components/top8/AssetSelector/AssetPicker.tsx:85
-#: src/components/top8/AssetSelector/AssetPicker.tsx:95
-#: src/components/top8/AssetSelector/AssetPicker.tsx:96
+#: src/components/top8/AssetSelector/AssetPicker.tsx:87
+#: src/components/top8/AssetSelector/AssetPicker.tsx:97
+#: src/components/top8/AssetSelector/AssetPicker.tsx:98
 msgid "Upload image"
 msgstr ""
 
