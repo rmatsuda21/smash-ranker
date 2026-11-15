@@ -26,7 +26,7 @@ msgid "(https://tonamel.com/competition/[slug])"
 msgstr ""
 
 #. placeholder {0}: file.name
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:103
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:105
 msgid "{0} is too large! (Max 2MB)"
 msgstr ""
 
@@ -42,7 +42,7 @@ msgstr ""
 msgid "# of Entrants"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:61
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:63
 msgid "16 Player Variant"
 msgstr ""
 
@@ -50,19 +50,19 @@ msgstr ""
 msgid "1s"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:97
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:99
 msgid "4 Players (Dark)"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:109
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:111
 msgid "4 Players (Light)"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:91
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:93
 msgid "8 Players (Dark)"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:103
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:105
 msgid "8 Players (Light)"
 msgstr ""
 
@@ -91,11 +91,11 @@ msgid "Any current player and tournament data will be overwritten."
 msgstr ""
 
 #. placeholder {0}: markedIds.size
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:75
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:77
 msgid "Are you sure you want to delete {0} assets?"
 msgstr ""
 
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:57
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:59
 msgid "Are you sure you want to delete this asset?"
 msgstr ""
 
@@ -104,7 +104,7 @@ msgid "Asking start.gg very nicely..."
 msgstr ""
 
 #: src/components/top8/AssetManager/AssetManager.tsx:32
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:195
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:199
 msgid "Assets"
 msgstr ""
 
@@ -235,18 +235,18 @@ msgstr ""
 #: src/components/predict/ExportBar/ExportBar.tsx:100
 #: src/components/predict/InviteShareButton/InviteShareButton.tsx:26
 #: src/components/results/ResultsExportBar/ResultsExportBar.tsx:122
-#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:218
+#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:228
 #: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:421
 msgid "Copied!"
 msgstr ""
 
 #: src/components/predict/ExportBar/ExportBar.tsx:99
 #: src/components/results/ResultsExportBar/ResultsExportBar.tsx:121
-#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:217
+#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:227
 msgid "Copy"
 msgstr ""
 
-#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:219
+#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:229
 msgid "Copy failed"
 msgstr ""
 
@@ -289,7 +289,7 @@ msgstr ""
 msgid "Create a minimal template with a specific player count."
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:234
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:246
 msgid "Create New Template"
 msgstr ""
 
@@ -349,15 +349,15 @@ msgid "Delete"
 msgstr ""
 
 #. placeholder {0}: markedIds.size
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:225
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:229
 msgid "Delete ({0})"
 msgstr ""
 
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:56
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:58
 msgid "Delete Asset"
 msgstr ""
 
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:73
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:75
 msgid "Delete Assets"
 msgstr ""
 
@@ -365,7 +365,7 @@ msgstr ""
 msgid "Delete template"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:219
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:231
 msgid "Delete Template?"
 msgstr ""
 
@@ -373,7 +373,7 @@ msgstr ""
 msgid "Delete this template?"
 msgstr ""
 
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:211
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:215
 msgid "Deselect All"
 msgstr ""
 
@@ -402,7 +402,7 @@ msgstr ""
 msgid "Don't show again"
 msgstr ""
 
-#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:125
+#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:121
 msgid "Done"
 msgstr ""
 
@@ -412,8 +412,8 @@ msgstr ""
 
 #: src/components/predict/ExportBar/ExportBar.tsx:95
 #: src/components/results/ResultsExportBar/ResultsExportBar.tsx:117
-#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:93
-#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:213
+#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:89
+#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:223
 msgid "Download"
 msgstr ""
 
@@ -421,8 +421,8 @@ msgstr ""
 msgid "Download image"
 msgstr ""
 
-#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:99
-#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:61
+#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:95
+#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:57
 msgid "Download Options"
 msgstr ""
 
@@ -501,7 +501,7 @@ msgstr ""
 
 #: src/components/predict/PredictionPreview/PredictionPreview.tsx:180
 #: src/components/results/ResultsPreview/ResultsPreview.tsx:334
-#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:194
+#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:204
 msgid "Failed to generate image"
 msgstr ""
 
@@ -514,7 +514,7 @@ msgid "Figuring out who got sent to losers..."
 msgstr ""
 
 #: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:157
-#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:67
+#: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:63
 msgid "Filename"
 msgstr ""
 
@@ -530,7 +530,11 @@ msgstr ""
 msgid "Font"
 msgstr ""
 
-#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:66
+#: src/hooks/useCustomFonts.ts:42
+msgid "Font \"{fontFamily}\" is already added."
+msgstr ""
+
+#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:62
 msgid "Format"
 msgstr "フォーマット"
 
@@ -548,7 +552,7 @@ msgstr ""
 msgid "Generating prediction"
 msgstr ""
 
-#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:187
+#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:197
 msgid "Generating preview..."
 msgstr ""
 
@@ -600,7 +604,7 @@ msgstr ""
 msgid "Join the official server for help, feedback, and updates!"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:51
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:53
 msgid "Kagaribi"
 msgstr ""
 
@@ -630,7 +634,7 @@ msgstr ""
 msgid "Load a tournament to compose a post."
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:211
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:223
 msgid "Load Template?"
 msgstr ""
 
@@ -677,7 +681,7 @@ msgstr ""
 msgid "Love Smash Ranker? Support the project!"
 msgstr ""
 
-#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:113
+#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:109
 msgid "Lower values reduce file size at the cost of detail."
 msgstr ""
 
@@ -693,7 +697,7 @@ msgstr ""
 msgid "Many cups of coffee were consumed during development 👀"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:87
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:89
 msgid "Minimal"
 msgstr ""
 
@@ -705,7 +709,7 @@ msgstr ""
 msgid "Mode"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:272
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:284
 msgid "My Templates"
 msgstr ""
 
@@ -760,8 +764,8 @@ msgstr ""
 msgid "Or drag and drop"
 msgstr "Or drag and drop"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:55
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:73
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:57
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:75
 msgid "Original"
 msgstr ""
 
@@ -769,7 +773,7 @@ msgstr ""
 msgid "Original concept & inspiration"
 msgstr ""
 
-#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:90
+#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:86
 msgid "Output: {outputWidth} × {outputHeight} px"
 msgstr ""
 
@@ -793,7 +797,7 @@ msgstr ""
 msgid "Pink"
 msgstr ""
 
-#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:79
+#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:75
 msgid "Pixel Ratio"
 msgstr ""
 
@@ -834,7 +838,7 @@ msgstr ""
 msgid "Players"
 msgstr ""
 
-#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:117
+#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:113
 msgid "PNG is lossless, quality only applies to JPEG and WebP."
 msgstr ""
 
@@ -874,7 +878,7 @@ msgstr ""
 msgid "Purple"
 msgstr ""
 
-#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:100
+#: src/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal.tsx:96
 msgid "Quality"
 msgstr ""
 
@@ -970,7 +974,7 @@ msgstr ""
 msgid "Select a player first."
 msgstr ""
 
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:213
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:217
 msgid "Select All"
 msgstr ""
 
@@ -998,7 +1002,7 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:229
+#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:239
 msgid "Share"
 msgstr ""
 
@@ -1027,7 +1031,7 @@ msgstr ""
 msgid "Size"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:79
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:81
 msgid "Square Variant"
 msgstr ""
 
@@ -1108,7 +1112,7 @@ msgstr ""
 msgid "Theme"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:220
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:232
 msgid "This template will be permanently deleted."
 msgstr ""
 
@@ -1159,7 +1163,7 @@ msgstr ""
 msgid "Top 8"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:69
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:71
 msgid "Top8er"
 msgstr ""
 
@@ -1260,11 +1264,11 @@ msgid "Updated {0}"
 msgstr ""
 
 #: src/components/shared/FileUploader/FileUploader.tsx:153
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:244
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:248
 msgid "Upload"
 msgstr "Upload"
 
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:241
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:245
 msgid "Upload Assets"
 msgstr ""
 
@@ -1327,7 +1331,7 @@ msgstr ""
 msgid "X Handle"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:212
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:224
 msgid "Your current design will be overwritten!"
 msgstr ""
 

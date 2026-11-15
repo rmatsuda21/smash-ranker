@@ -50,11 +50,11 @@ msgstr "未使用キャラ"
 msgid "Classic"
 msgstr "クラシック"
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:191
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:182
 msgid "Clear"
 msgstr "クリア"
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:207
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:198
 msgid "Clear Tiers"
 msgstr "ティアをクリア"
 
@@ -178,11 +178,11 @@ msgstr "オーシャン"
 msgid "Pastel"
 msgstr "パステル"
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:198
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:189
 msgid "Reset"
 msgstr "リセット"
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:217
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:208
 msgid "Reset All"
 msgstr "すべてリセット"
 
@@ -190,7 +190,7 @@ msgstr "すべてリセット"
 msgid "Right"
 msgstr "右"
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:201
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:192
 msgid "Save Image"
 msgstr "保存"
 
@@ -210,11 +210,11 @@ msgstr "サイド"
 msgid "Stock"
 msgstr "ストック"
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:209
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:200
 msgid "This will move all characters back to the unranked pool. Your tiers will remain."
 msgstr "すべてのキャラクターが未ランク プールに戻されます。ティアはそのまま残ります。"
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:219
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:210
 msgid "This will reset everything to the default state, including tiers and all character placements."
 msgstr "ティアやキャラクターの配置を含め、すべてが初期状態にリセットされます。"
 

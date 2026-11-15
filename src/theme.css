@@ -1,6 +1,7 @@
 /* Dark theme gray scale — derived from #414141 (lightness only) */
 :root,
 [data-theme="dark"] {
+  color-scheme: dark;
   --gray-1: hsl(from #414141 h s calc(l * 0.15));
   --gray-2: hsl(from #414141 h s calc(l * 0.3));
   --gray-3: hsl(from #414141 h s calc(l * 0.45));
@@ -18,6 +19,7 @@
 }
 
 [data-theme="light"] {
+  color-scheme: light;
   --gray-1: #f8f8f8;
   --gray-2: #f0f0f0;
   --gray-3: #e8e8e8;

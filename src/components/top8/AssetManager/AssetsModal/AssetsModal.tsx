@@ -7,6 +7,7 @@ import { useLingui } from "@lingui/react";
 
 import { Modal } from "@/components/shared/Modal/Modal";
 import { Button } from "@/components/shared/Button/Button";
+import { useToast } from "@/components/Toast";
 import { useAssetDB } from "@/hooks/useAssetDb";
 import { useConfirmation } from "@/hooks/useConfirmation";
 import { DBAsset, Store } from "@/types/Repository";
@@ -33,6 +34,7 @@ export const AssetsModal = ({
   repository,
 }: Props) => {
   const { _ } = useLingui();
+  const { showToast } = useToast();
   const [selectedAssetSrc, setSelectedAssetSrc] = useState<string>(
     selectedSrc ?? "",
   );
@@ -100,7 +102,9 @@ export const AssetsModal = ({
   const handleUpload = (files?: File[]) => {
     for (const file of files ?? []) {
       if (file.size > 2 * 1024 * 1024) {
-        alert(_(msg`${file.name} is too large! (Max 2MB)`));
+        showToast(_(msg`${file.name} is too large! (Max 2MB)`), {
+          variant: "error",
+        });
         continue;
       }
 

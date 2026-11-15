@@ -13,6 +13,9 @@ import { ThumbnailDesign } from "@/types/thumbnail/ThumbnailDesign";
 import { PREVIEW_PIXEL_RATIO } from "@/consts/thumbnail/defaults";
 import { ensureFontsLoaded } from "@/utils/thumbnail/ensureFontsLoaded";
 import { Card } from "@/components/shared/Card/Card";
+import { ConfirmationModal } from "@/components/shared/ConfirmationModal/ConfirmationModal";
+import { Input } from "@/components/shared/Input/Input";
+import { useConfirmation } from "@/hooks/useConfirmation";
 
 import { BuiltInTemplatePreview } from "./BuiltInTemplatePreview";
 
@@ -34,6 +37,8 @@ export const TemplatesTab = () => {
   const [builtInPreviews, setBuiltInPreviews] = useState<
     Record<string, string>
   >(() => Object.fromEntries(builtInPreviewCache));
+  const [isSaveOpen, setIsSaveOpen] = useState(false);
+  const [saveName, setSaveName] = useState("");
 
   const templatesNeedingPreview = useMemo<
     Array<{ template: BuiltInTemplate; design: ThumbnailDesign }>
@@ -86,9 +91,15 @@ export const TemplatesTab = () => {
     void ensureFontsLoaded(next);
   };
 
+  const openSaveDialog = () => {
+    setSaveName(design.name || "Template");
+    setIsSaveOpen(true);
+  };
+
   const handleSaveCurrent = async () => {
-    const name = prompt("Template name:", design.name || "Template");
+    const name = saveName.trim();
     if (!name) return;
+    setIsSaveOpen(false);
     let preview: Blob | undefined;
     if (stage) {
       preview = (await stageToBlob(stage, PREVIEW_PIXEL_RATIO)) ?? undefined;
@@ -105,18 +116,24 @@ export const TemplatesTab = () => {
     refresh();
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm("Delete this template?")) return;
-    await thumbnailTemplateRepository.delete(id);
-    refresh();
-  };
+  const { confirm: confirmDelete, ConfirmationDialog: DeleteConfirmation } =
+    useConfirmation(
+      async (id: string) => {
+        await thumbnailTemplateRepository.delete(id);
+        refresh();
+      },
+      {
+        title: "Delete this template?",
+        description: "This template will be permanently deleted.",
+      },
+    );
 
   return (
     <div>
       <div className={styles.section}>
         <h4>
           Built-in
-          <button className={styles.saveBtn} onClick={handleSaveCurrent}>
+          <button className={styles.saveBtn} onClick={openSaveDialog}>
             <FaFloppyDisk /> Save current
           </button>
         </h4>
@@ -187,7 +204,7 @@ export const TemplatesTab = () => {
                   className={styles.delete}
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleDelete(tmpl.id);
+                    confirmDelete(tmpl.id);
                   }}
                   aria-label="Delete"
                 >
@@ -198,6 +215,30 @@ export const TemplatesTab = () => {
           </div>
         )}
       </div>
+      <ConfirmationModal
+        isOpen={isSaveOpen}
+        onClose={() => setIsSaveOpen(false)}
+        onCancel={() => setIsSaveOpen(false)}
+        onConfirm={handleSaveCurrent}
+        title="Save template"
+        description="Save the current design as a reusable template."
+      >
+        <Input
+          id="thumbnail-template-name"
+          label="Template name"
+          value={saveName}
+          onChange={(e) => setSaveName(e.target.value)}
+          onKeyDown={(e) => {
+            // Ignore the Enter that commits an IME composition.
+            if (e.key === "Enter" && !e.nativeEvent.isComposing) {
+              e.preventDefault();
+              handleSaveCurrent();
+            }
+          }}
+          autoFocus
+        />
+      </ConfirmationModal>
+      <DeleteConfirmation />
     </div>
   );
 };

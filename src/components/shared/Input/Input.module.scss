@@ -39,10 +39,6 @@
     cursor: pointer;
   }
 
-  [data-theme="dark"] & input[type="date"]::-webkit-calendar-picker-indicator {
-    filter: invert(1);
-  }
-
   input[type="checkbox"] {
     cursor: pointer;
     position: relative;

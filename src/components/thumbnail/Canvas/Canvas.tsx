@@ -660,7 +660,7 @@ export const Canvas = () => {
     const selectedGroupIds = getSelectedGroupIds(ids, design.elements);
     const canGroup = ids.length >= 2;
     const canUngroup = selectedGroupIds.length > 0;
-    const isCmd = navigator.platform.toLowerCase().includes("mac")
+    const isCmd = /Mac|iPhone|iPad|iPod/.test(navigator.userAgent)
       ? "⌘"
       : "Ctrl";
     return [

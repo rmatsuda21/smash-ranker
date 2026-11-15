@@ -1,4 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
+import { useLingui } from "@lingui/react/macro";
+
+import { useToast } from "@/components/Toast";
 
 import { DBCustomFont } from "@/types/Repository";
 import { customFontRepository } from "@/db/repository";
@@ -17,6 +20,8 @@ export const useCustomFonts = () => {
   const [customFonts, setCustomFonts] = useState<DBCustomFont[]>([]);
   const [loading, setLoading] = useState(true);
   const dispatch = useFontStore((state) => state.dispatch);
+  const { showToast } = useToast();
+  const { t } = useLingui();
 
   useEffect(() => {
     customFontRepository
@@ -34,7 +39,9 @@ export const useCustomFonts = () => {
         (f) => f.fontFamily === fontFamily,
       );
       if (duplicate) {
-        alert(`Font "${fontFamily}" is already added.`);
+        showToast(t`Font "${fontFamily}" is already added.`, {
+          variant: "error",
+        });
         logEvent("custom_font_upload_fail", {
           failure_kind: "duplicate_family",
           size_kb: Math.round(file.size / 1024),
@@ -72,7 +79,7 @@ export const useCustomFonts = () => {
 
       return font;
     },
-    [dispatch],
+    [dispatch, showToast, t],
   );
 
   const removeFont = useCallback(

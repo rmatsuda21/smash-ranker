@@ -10,7 +10,6 @@
 .composerBody {
   /* Explicit max-height drives the scroll. Subtracting a fixed buffer for the
      surrounding modal padding, the title bar, the action bar, and the gaps. */
-  max-height: calc(100vh - 260px);
   max-height: calc(100dvh - 260px);
   overflow-y: auto;
   overscroll-behavior: contain;
