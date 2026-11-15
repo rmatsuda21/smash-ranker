@@ -1,21 +1,27 @@
 import { useState, useEffect, useRef } from "react";
 import cn from "classnames";
 import { IoMdDownload } from "react-icons/io";
-import { CgOptions } from "react-icons/cg";
 import { FaChevronDown } from "react-icons/fa6";
 import { msg } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
+import { Trans } from "@lingui/react/macro";
 
 import { Button } from "@/components/shared/Button/Button";
 import { useCanvasStore } from "@/store/canvasStore";
 import { useTournamentStore } from "@/store/tournamentStore";
 import {
+  PIXEL_RATIO_MIN,
+  PIXEL_RATIO_STEP,
+  QUALITY_MAX,
+  QUALITY_MIN,
+  QUALITY_STEP,
   useExportPixelRatio,
   useExportSettingsStore,
 } from "@/store/exportSettingsStore";
+import { Slider } from "@/components/shared/Slider/Slider";
+import { useEffectiveCanvasSize } from "@/hooks/top8/useEffectiveCanvasSize";
 import { Popover } from "@/components/shared/Popover/Popover";
 import { RadioGroup } from "@/components/shared/RadioGroup/RadioGroup";
-import { DownloadOptionModal } from "@/components/top8/CanvasDownloader/DownloadOptionModal/DownloadOptionModal";
 import { ExportPreviewModal } from "@/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal";
 import type { StageBlobCache } from "@/hooks/top8/useStageBlobCache";
 
@@ -36,9 +42,9 @@ const fileExtensions: Record<ImgTypes, string> = {
 
 export const CanvasDownloader = ({ className, onShare, blobCache }: Props) => {
   const { _ } = useLingui();
-  const [isOptionModalOpen, setIsOptionModalOpen] = useState(false);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [isPanelOpen, setIsPanelOpen] = useState(false);
+  const [isOptionsOpen, setIsOptionsOpen] = useState(false);
   const anchorRef = useRef<HTMLDivElement>(null);
   const [filename, setFilename] = useState("");
   const [imgType, setImgType] = useState<ImgTypes>("png");
@@ -46,12 +52,19 @@ export const CanvasDownloader = ({ className, onShare, blobCache }: Props) => {
   const tournamentName = useTournamentStore(
     (state) => state.info.tournamentName,
   );
-  const { pixelRatio, maxPixelRatio } = useExportPixelRatio();
+  const { pixelRatio, setPixelRatio, maxPixelRatio } = useExportPixelRatio();
   const quality = useExportSettingsStore((s) => s.quality);
+  const setQuality = useExportSettingsStore((s) => s.setQuality);
+  const canvasSize = useEffectiveCanvasSize();
 
   // Defensive cap: the persisted value is clamped on write and rehydrate,
   // but an out-of-range ratio here means a multi-million-pixel canvas.
   const effectivePixelRatio = Math.min(pixelRatio, maxPixelRatio);
+
+  const outputWidth = Math.round(canvasSize.width * effectivePixelRatio);
+  const outputHeight = Math.round(canvasSize.height * effectivePixelRatio);
+  const qualityPercent = Math.round(quality * 100);
+  const qualitySupported = imgType !== "png";
 
   useEffect(() => {
     const normalizedFilename = tournamentName
@@ -117,18 +130,77 @@ export const CanvasDownloader = ({ className, onShare, blobCache }: Props) => {
             onChange={setImgType}
           />
         </div>
+        <div className={styles.options}>
+          <button
+            type="button"
+            className={styles.optionsToggle}
+            onClick={() => setIsOptionsOpen((open) => !open)}
+            aria-expanded={isOptionsOpen}
+            aria-controls="downloader-options"
+          >
+            {_(msg`Download Options`)}
+            <FaChevronDown
+              className={cn(styles.chevron, { [styles.open]: isOptionsOpen })}
+              size={10}
+            />
+          </button>
+          {isOptionsOpen && (
+            <div id="downloader-options" className={styles.optionsBody}>
+              <div className={styles.field}>
+                <Slider
+                  label={
+                    <span className={styles.sliderLabel}>
+                      <Trans>Pixel Ratio</Trans>
+                      <span className={styles.value}>
+                        {effectivePixelRatio}×
+                      </span>
+                    </span>
+                  }
+                  min={PIXEL_RATIO_MIN}
+                  max={maxPixelRatio}
+                  step={PIXEL_RATIO_STEP}
+                  value={effectivePixelRatio}
+                  onValueChange={setPixelRatio}
+                />
+                <p className={styles.hint}>
+                  <Trans>
+                    Output: {outputWidth} × {outputHeight} px
+                  </Trans>
+                </p>
+              </div>
+              <div className={styles.field}>
+                <Slider
+                  label={
+                    <span className={styles.sliderLabel}>
+                      <Trans>Quality</Trans>
+                      <span className={styles.value}>{qualityPercent}%</span>
+                    </span>
+                  }
+                  min={QUALITY_MIN}
+                  max={QUALITY_MAX}
+                  step={QUALITY_STEP}
+                  value={quality}
+                  onValueChange={setQuality}
+                  disabled={!qualitySupported}
+                />
+                <p className={cn(styles.hint, styles.reserveLines)}>
+                  {qualitySupported ? (
+                    <Trans>
+                      Lower values reduce file size at the cost of detail.
+                    </Trans>
+                  ) : (
+                    <Trans>
+                      PNG is lossless, quality only applies to JPEG and WebP.
+                    </Trans>
+                  )}
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
         <div className={styles.actions}>
           <Button
-            variant="subtle"
-            onClick={() => {
-              setIsPanelOpen(false);
-              setIsOptionModalOpen(true);
-            }}
-          >
-            <CgOptions size={16} />
-            {_(msg`Download Options`)}
-          </Button>
-          <Button
+            fullWidth
             onClick={() => {
               setIsPanelOpen(false);
               setIsPreviewOpen(true);
@@ -139,12 +211,6 @@ export const CanvasDownloader = ({ className, onShare, blobCache }: Props) => {
           </Button>
         </div>
       </Popover>
-      <DownloadOptionModal
-        isOpen={isOptionModalOpen}
-        setIsOpen={setIsOptionModalOpen}
-        imgType={imgType}
-        setImgType={setImgType}
-      />
       <ExportPreviewModal
         isOpen={isPreviewOpen}
         onClose={() => setIsPreviewOpen(false)}
