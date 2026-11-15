@@ -10,7 +10,9 @@
   font-weight: 600;
   border-radius: var(--radius);
   cursor: pointer;
-  transition: all var(--duration-base) var(--ease-standard);
+  transition-property: background-color, border-color, color, opacity;
+  transition-duration: var(--duration-base);
+  transition-timing-function: var(--ease-standard);
 
   &:disabled {
     opacity: 0.5;
@@ -24,8 +26,8 @@
   &.loading {
     opacity: 0.75;
     color: transparent;
-    // Hide the label at once rather than fading it. The base `transition:
-    // all` would animate `color` on the main thread, so when loading kicks
+    // Hide the label at once rather than fading it. The base transition
+    // would animate `color` on the main thread, so when loading kicks
     // off blocking work (e.g. the tier list export) the fade freezes on its
     // first frame and the label stays visible behind the spinner.
     transition: none;

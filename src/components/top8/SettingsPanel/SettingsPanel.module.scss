@@ -59,7 +59,9 @@
   border: 1px solid var(--border-strong);
   border-radius: var(--radius);
   cursor: pointer;
-  transition: all var(--duration-base) var(--ease-standard);
+  transition-property: background-color, border-color;
+  transition-duration: var(--duration-base);
+  transition-timing-function: var(--ease-standard);
 
   &:hover {
     background-color: var(--gray-4);
@@ -142,7 +144,9 @@
   border: 2px solid transparent;
   border-radius: 50%;
   cursor: pointer;
-  transition: all var(--duration-base) var(--ease-standard);
+  transition-property: border-color, transform;
+  transition-duration: var(--duration-base);
+  transition-timing-function: var(--ease-standard);
 
   &:hover {
     transform: scale(0.95);

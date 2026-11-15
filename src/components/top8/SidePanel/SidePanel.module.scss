@@ -52,7 +52,7 @@
 }
 
 .close {
-  z-index: 10;
+  z-index: var(--z-raised);
   cursor: pointer;
   position: absolute;
   display: flex;

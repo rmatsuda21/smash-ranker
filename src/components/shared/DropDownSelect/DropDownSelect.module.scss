@@ -149,9 +149,10 @@
     background-color: var(--gray-8);
   }
 
-  &:focus {
-    outline: 1px solid var(--gray-8);
-    outline-offset: -1px;
+  // Options take real keyboard focus now; mouse users get hover instead.
+  &:focus-visible {
+    outline: 2px solid var(--accent-9);
+    outline-offset: -2px;
   }
 
   &[data-state="checked"] {

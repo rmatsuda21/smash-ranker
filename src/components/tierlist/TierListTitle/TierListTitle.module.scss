@@ -31,7 +31,9 @@
   font-size: 14px !important;
   cursor: pointer;
   user-select: none;
-  transition: all var(--duration-base) var(--ease-standard);
+  transition-property: background-color, border-color, color;
+  transition-duration: var(--duration-base);
+  transition-timing-function: var(--ease-standard);
 
   &:hover {
     border-color: var(--accent-7);
@@ -50,4 +52,8 @@
   outline: none;
   padding: var(--space-1) var(--space-2);
   color: var(--fg-1);
+
+  &:focus-visible {
+    border-color: var(--accent-9);
+  }
 }

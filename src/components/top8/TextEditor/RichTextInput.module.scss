@@ -91,7 +91,7 @@
   top: 100%;
   left: 0;
   right: 0;
-  z-index: 10;
+  z-index: var(--z-raised);
   flex-wrap: wrap;
   gap: var(--space-1);
   padding: var(--space-2);
@@ -119,7 +119,7 @@
   font-size: var(--font-size-xs);
   font-weight: 600;
   line-height: 1.4;
-  transition: all var(--duration-base) var(--ease-standard);
+  transition: border-color var(--duration-base) var(--ease-standard);
 
   &:hover {
     background: linear-gradient(135deg, var(--accent-5), var(--accent-4));

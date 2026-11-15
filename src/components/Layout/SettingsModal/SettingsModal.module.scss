@@ -55,7 +55,9 @@
   border-radius: var(--radius);
   cursor: pointer;
   color: var(--fg-3);
-  transition: all var(--duration-base) var(--ease-standard);
+  transition-property: background-color, color;
+  transition-duration: var(--duration-base);
+  transition-timing-function: var(--ease-standard);
 
   svg {
     width: 20px;

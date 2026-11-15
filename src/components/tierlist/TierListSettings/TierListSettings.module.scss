@@ -11,7 +11,7 @@
   padding: var(--input-padding-md);
   border-radius: var(--radius);
   cursor: pointer;
-  transition: all var(--duration-base) var(--ease-standard);
+  transition: background-color var(--duration-base) var(--ease-standard);
   color: var(--accent-9);
   background-color: transparent;
   border: 1px solid var(--accent-9);
@@ -93,7 +93,9 @@
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
-  transition: all var(--duration-base) var(--ease-standard);
+  transition-property: background-color, border-color, color;
+  transition-duration: var(--duration-base);
+  transition-timing-function: var(--ease-standard);
 
   &:hover {
     background: var(--gray-4);
@@ -150,7 +152,9 @@
   font-size: 12px;
   font-weight: 500;
   cursor: pointer;
-  transition: all var(--duration-base) var(--ease-standard);
+  transition-property: background-color, border-color, color;
+  transition-duration: var(--duration-base);
+  transition-timing-function: var(--ease-standard);
 
   &:hover {
     background: var(--gray-4);

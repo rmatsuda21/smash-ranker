@@ -155,7 +155,7 @@
   letter-spacing: normal;
   white-space: nowrap;
   pointer-events: none;
-  z-index: 10;
+  z-index: var(--z-raised);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
   /* The wrapper's font is system-ui (matches the platform card); reset to
      the app font so the tooltip itself reads consistently. */

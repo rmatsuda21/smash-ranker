@@ -91,7 +91,9 @@
       color: var(--fg-2);
       font-size: var(--font-size-sm);
       font-weight: 800;
-      transition: all var(--duration-base) var(--ease-in-out);
+      transition-property: background-color, border-color, color;
+      transition-duration: var(--duration-base);
+      transition-timing-function: var(--ease-in-out);
 
       &:hover {
         background: var(--gray-4);
