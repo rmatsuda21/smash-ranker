@@ -15,6 +15,7 @@ import { Spinner } from "@/components/shared/Spinner/Spinner";
 import { useEditorStore } from "@/store/editorStore";
 import { useFontStore } from "@/store/fontStore";
 import { loadFamily } from "@/utils/fonts/fontLoader";
+import { collectDesignFontWeights } from "@/utils/fonts/designWeights";
 import { defaultPreviews } from "@assets/previews";
 
 import styles from "./TemplatePreview.module.scss";
@@ -148,7 +149,7 @@ const RenderedPreview = (props: Props) => {
     }
     let cancelled = false;
     setIsFontLoaded(false);
-    loadFamily(template.font)
+    loadFamily(template.font, collectDesignFontWeights(template.design))
       .then(() => {
         if (!cancelled) setIsFontLoaded(true);
       })
@@ -158,7 +159,7 @@ const RenderedPreview = (props: Props) => {
     return () => {
       cancelled = true;
     };
-  }, [template.font, catalogFetching]);
+  }, [template.font, template.design, catalogFetching]);
 
   // Wait for render slot before mounting the Konva stage (after font is loaded)
   useEffect(() => {

@@ -15,6 +15,7 @@ import { Slider } from "@/components/shared/Slider/Slider";
 import { Button } from "@/components/shared/Button/Button";
 import { useEffectiveCanvasSize } from "@/hooks/top8/useEffectiveCanvasSize";
 import { loadFamily } from "@/utils/fonts/fontLoader";
+import { collectDesignFontWeights } from "@/utils/fonts/designWeights";
 
 import styles from "./Canvas.module.scss";
 
@@ -57,7 +58,10 @@ export const Canvas = ({ className }: Props) => {
       if (cancelled) return;
       fontDispatch({ type: "SET_DISPLAYED_FONT", payload: selectedFont });
     };
-    loadFamily(selectedFont).then(finish).catch(finish);
+    // Only the weights the current design draws with — not every weight
+    // the family ships.
+    const weights = collectDesignFontWeights(useCanvasStore.getState().design);
+    loadFamily(selectedFont, weights).then(finish).catch(finish);
 
     return () => {
       cancelled = true;

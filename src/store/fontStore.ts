@@ -3,6 +3,7 @@ import { devtools } from "zustand/middleware";
 
 import { fetchCatalog } from "@/utils/fonts/catalog";
 import { loadFamily, registerCustomFamily } from "@/utils/fonts/fontLoader";
+import { collectDesignFontWeights } from "@/utils/fonts/designWeights";
 import { registerCustomFontFace } from "@/utils/top8/registerCustomFont";
 import { customFontRepository } from "@/db/repository";
 import { useCanvasStore } from "@/store/canvasStore";
@@ -109,7 +110,10 @@ export const useFontStore = create<FontState>()(
           .getState()
           .dispatch({ type: "SET_FONT", payload: fontFamily }, skipHistory);
 
-        loadFamily(fontFamily).catch(() => {
+        loadFamily(
+          fontFamily,
+          collectDesignFontWeights(useCanvasStore.getState().design),
+        ).catch(() => {
           // Failure surfaces visually via the active Canvas/Preview consumer's
           // own load gate; swallow here so we don't trigger an unhandled
           // rejection from a fire-and-forget call.
@@ -175,7 +179,10 @@ Promise.allSettled([fetchCatalog(), loadCustomFontsFromDB()])
     dispatch({ type: "SET_SELECTED_FONT", payload: activeFontFamily });
 
     try {
-      await loadFamily(activeFontFamily);
+      await loadFamily(
+        activeFontFamily,
+        collectDesignFontWeights(useCanvasStore.getState().design),
+      );
     } catch (e) {
       console.warn(`Failed to preload active font "${activeFontFamily}":`, e);
     }

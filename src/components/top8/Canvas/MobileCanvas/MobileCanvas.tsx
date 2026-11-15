@@ -9,6 +9,7 @@ import { usePlayerStore } from "@/store/playerStore";
 import { BracketLoader } from "@/components/shared/BracketLoader/BracketLoader";
 import { useEffectiveCanvasSize } from "@/hooks/top8/useEffectiveCanvasSize";
 import { loadFamily } from "@/utils/fonts/fontLoader";
+import { collectDesignFontWeights } from "@/utils/fonts/designWeights";
 import { RenderModeContext } from "@/components/top8/Canvas/RenderModeContext";
 import { MobileGraphicLayer } from "@/components/top8/Canvas/MobileCanvas/MobileGraphicLayer";
 import {
@@ -58,7 +59,10 @@ export const MobileCanvas = ({ className }: Props) => {
       if (cancelled) return;
       fontDispatch({ type: "SET_DISPLAYED_FONT", payload: selectedFont });
     };
-    loadFamily(selectedFont).then(finish).catch(finish);
+    // Only the weights the current design draws with — not every weight
+    // the family ships.
+    const weights = collectDesignFontWeights(useCanvasStore.getState().design);
+    loadFamily(selectedFont, weights).then(finish).catch(finish);
     return () => {
       cancelled = true;
     };

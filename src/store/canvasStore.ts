@@ -11,6 +11,7 @@ import {
 } from "@/store/historyStore";
 import { useFontStore } from "@/store/fontStore";
 import { loadFamily } from "@/utils/fonts/fontLoader";
+import { collectDesignFontWeights } from "@/utils/fonts/designWeights";
 
 const DEFAULT_FONT = "Dela Gothic One";
 
@@ -289,9 +290,11 @@ function applyHistoryEntry(
       const fontFamily = data as string;
       const fontStore = useFontStore.getState();
       fontStore.dispatch({ type: "SET_SELECTED_FONT", payload: fontFamily });
-      loadFamily(fontFamily).catch(() => {
-        /* failure handled by the Canvas's own load gate */
-      });
+      loadFamily(fontFamily, collectDesignFontWeights(state.design)).catch(
+        () => {
+          /* failure handled by the Canvas's own load gate */
+        },
+      );
       return { font: fontFamily };
     }
 

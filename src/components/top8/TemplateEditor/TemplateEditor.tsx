@@ -26,6 +26,8 @@ import { DBTemplate } from "@/types/Repository";
 import { useCanvasStore } from "@/store/canvasStore";
 import { usePlayerStore } from "@/store/playerStore";
 import { useFontStore } from "@/store/fontStore";
+import { loadFamily } from "@/utils/fonts/fontLoader";
+import { collectDesignFontWeights } from "@/utils/fonts/designWeights";
 import { useConfirmation } from "@/hooks/useConfirmation";
 import { CreateTemplateModal } from "@/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal";
 import { CreateMinimalTemplateModal } from "@/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal";
@@ -173,6 +175,16 @@ export const TemplateEditor = ({ className }: Props) => {
     }
 
     if (template) {
+      // Fetch the weights this template draws with before applying it. The
+      // canvas only gates on font *family* changes, so a template that keeps
+      // the family but needs a new weight would otherwise paint and measure
+      // with fallback metrics.
+      await loadFamily(
+        template.font,
+        collectDesignFontWeights(template.design),
+      ).catch(() => {
+        /* apply the template anyway; the canvas falls back gracefully */
+      });
       // Skip history for font change since SET_DESIGN will clear history anyway
       await selectFont(template.font, true);
       dispatch({ type: "SET_DESIGN", payload: template.design });

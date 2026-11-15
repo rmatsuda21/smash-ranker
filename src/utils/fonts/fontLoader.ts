@@ -4,15 +4,18 @@ import { fontsourceCanvasCssUrl } from "./fontsourceUrls";
 import { pickClosestWeight } from "./weightFallback";
 
 // Sample text combining latin + japanese codepoints. Used as a primer for
-// document.fonts.load(); subsequent face-by-face loads ensure every weight
-// declared in the family's CSS is fetched (Fontsource static japanese
-// packages ship one ~1MB WOFF2 per weight without unicode-range chunking,
-// so we can't rely on lazy fetch).
+// document.fonts.load(); face-by-face loads ensure each weight we need is
+// fetched up front (Fontsource static japanese packages ship one ~1MB WOFF2
+// per weight without unicode-range chunking, so we can't rely on lazy
+// fetch).
 const SAMPLE_TEXT = "Aa1 \u3042\u6f22";
 const SAMPLE_FONT_SPEC = (family: string) => `16px "${family}"`;
 
 const inflight = new Map<string, Promise<void>>();
+// Families outside the catalog, where per-weight tracking isn't possible.
 const fullyLoaded = new Set<string>();
+// Catalog families: which weights have been fetched so far.
+const loadedWeights = new Map<string, Set<number>>();
 const customFamilies = new Map<string, number[]>();
 
 const whenCatalogReady = (): Promise<void> => {
@@ -55,7 +58,7 @@ const findFontMeta = (family: string) => {
 export const isLoaded = (family: string): boolean => {
   if (!family) return false;
   if (customFamilies.has(family)) return true;
-  return fullyLoaded.has(family);
+  return fullyLoaded.has(family) || loadedWeights.has(family);
 };
 
 export const getWeights = (family: string): number[] => {
@@ -67,6 +70,32 @@ export const getWeights = (family: string): number[] => {
 
 export const pickWeight = (family: string, requested: number): number =>
   pickClosestWeight(requested, getWeights(family));
+
+// The weight a design is asking for, before snapping to what the family
+// ships. Designs carry weight either as `fontWeight` or, in older ones,
+// inside the `fontStyle` shorthand.
+export const resolveRequestedWeight = (
+  fontWeight: number | string | undefined,
+  fontStyleRaw: string | undefined,
+): number => {
+  const styleLower = fontStyleRaw?.toLowerCase() ?? "";
+
+  if (typeof fontWeight === "number") return fontWeight;
+  if (typeof fontWeight === "string" && /^\d+$/.test(fontWeight)) {
+    return Number.parseInt(fontWeight, 10);
+  }
+  if (fontStyleRaw && /^\d+$/.test(fontStyleRaw)) {
+    return Number.parseInt(fontStyleRaw, 10);
+  }
+  if (
+    styleLower === "bold" ||
+    styleLower === "italic bold" ||
+    styleLower === "bold italic"
+  ) {
+    return 700;
+  }
+  return 400;
+};
 
 // Compose a Konva-compatible `fontStyle` string from a design's separate
 // fontWeight/fontStyle fields, snapping the requested weight to the closest
@@ -81,24 +110,10 @@ export const composeFontStyle = (
   const isItalic =
     styleLower.includes("italic") || styleLower.includes("oblique");
 
-  let requested: number;
-  if (typeof fontWeight === "number") {
-    requested = fontWeight;
-  } else if (typeof fontWeight === "string" && /^\d+$/.test(fontWeight)) {
-    requested = Number.parseInt(fontWeight, 10);
-  } else if (fontStyleRaw && /^\d+$/.test(fontStyleRaw)) {
-    requested = Number.parseInt(fontStyleRaw, 10);
-  } else if (
-    styleLower === "bold" ||
-    styleLower === "italic bold" ||
-    styleLower === "bold italic"
-  ) {
-    requested = 700;
-  } else {
-    requested = 400;
-  }
-
-  const picked = pickWeight(family, requested);
+  const picked = pickWeight(
+    family,
+    resolveRequestedWeight(fontWeight, fontStyleRaw),
+  );
   return isItalic ? `italic ${picked}` : `${picked}`;
 };
 
@@ -113,14 +128,14 @@ export const registerCustomFamily = (
 export const unregisterCustomFamily = (family: string): void => {
   customFamilies.delete(family);
   fullyLoaded.delete(family);
+  loadedWeights.delete(family);
 };
 
-// Force the browser to fetch every weight declared in the family's CSS so
-// Konva can measure and paint with correct metrics regardless of which
-// weights the design references. We drive this from the catalog's known
-// weights via document.fonts.load(shorthand, sample) — robust against the
-// FontFace registration timing inside the FontFaceSet.
-const loadAllWeights = async (
+// Force the browser to fetch the given weights so Konva can measure and
+// paint with correct metrics. Driven from known weights via
+// document.fonts.load(shorthand, sample) — robust against the FontFace
+// registration timing inside the FontFaceSet.
+const loadWeights = async (
   family: string,
   weights: number[],
 ): Promise<void> => {
@@ -144,42 +159,77 @@ const loadAllWeights = async (
   );
 };
 
-export const loadFamily = (family: string): Promise<void> => {
+const missingWeights = (family: string, wanted: number[]): number[] => {
+  const loaded = loadedWeights.get(family);
+  return loaded ? wanted.filter((w) => !loaded.has(w)) : wanted;
+};
+
+const markLoaded = (family: string, weights: number[]): void => {
+  const loaded = loadedWeights.get(family) ?? new Set<number>();
+  weights.forEach((w) => loaded.add(w));
+  loadedWeights.set(family, loaded);
+};
+
+/**
+ * Loads a font family for canvas use.
+ *
+ * Pass `requestedWeights` (see `collectDesignFontWeights`) to fetch only the
+ * weights a design uses; each is snapped to the closest weight the family
+ * ships, matching what `composeFontStyle` picks at render time. Omit it to
+ * load every weight, for surfaces where the user can pick any weight.
+ * Weights already fetched are never fetched again.
+ */
+export const loadFamily = (
+  family: string,
+  requestedWeights?: number[],
+): Promise<void> => {
   if (!family) return Promise.resolve();
+  if (customFamilies.has(family)) return Promise.resolve();
 
-  const existing = inflight.get(family);
+  const inflightKey = requestedWeights
+    ? `${family}|${[...new Set(requestedWeights)].sort((a, b) => a - b).join(",")}`
+    : `${family}|*`;
+
+  const existing = inflight.get(inflightKey);
   if (existing) return existing;
-
-  if (isLoaded(family)) return Promise.resolve();
 
   const promise = (async () => {
     try {
-      if (!customFamilies.has(family)) {
-        await whenCatalogReady();
-      }
+      await whenCatalogReady();
 
-      if (isLoaded(family)) return;
+      if (customFamilies.has(family)) return;
 
       const meta = findFontMeta(family);
       if (!meta?.id) {
         // Family isn't in the Fontsource catalog (custom font without
         // registration, or unknown family). Best-effort: wait for whatever
         // FontFaces are already declared.
-        await loadAllWeights(family, []);
+        if (fullyLoaded.has(family)) return;
+        await loadWeights(family, []);
         fullyLoaded.add(family);
         return;
       }
 
+      const wanted = requestedWeights
+        ? [
+            ...new Set(
+              requestedWeights.map((w) => pickClosestWeight(w, meta.weights)),
+            ),
+          ]
+        : meta.weights;
+      const missing = missingWeights(family, wanted);
+      if (missing.length === 0) return;
+
       await injectCanvasCss(family, fontsourceCanvasCssUrl(meta.id));
-      await loadAllWeights(family, meta.weights);
-      fullyLoaded.add(family);
+      await loadWeights(family, missing);
+      markLoaded(family, missing);
     } catch (error) {
       console.warn(`Font load failed: "${family}"`, error);
       throw error;
     }
   })();
 
-  inflight.set(family, promise);
-  promise.finally(() => inflight.delete(family));
+  inflight.set(inflightKey, promise);
+  promise.finally(() => inflight.delete(inflightKey));
   return promise;
 };
