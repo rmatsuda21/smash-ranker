@@ -12,16 +12,21 @@ export function useEffectiveCanvasSize() {
   const dynamicPlayerHeight = useCanvasStore(
     (state) => state.design.dynamicPlayerHeight,
   );
+  const slotCount = useCanvasStore(
+    (state) => state.design.players?.length ?? 0,
+  );
   const players = usePlayerStore((state) => state.players);
 
   return useMemo(() => {
     if (!dynamicPlayerHeight) return canvasSize;
 
+    // Only players that occupy a design slot are drawn, so only they can grow
+    // the canvas. Mirrors the loop in `computeDynamicPlayerLayout`.
     let totalDelta = 0;
-    for (const player of players) {
+    for (let i = 0; i < Math.min(slotCount, players.length); i++) {
       totalDelta += computePlayerHeightDelta(
         dynamicPlayerHeight,
-        player.characters?.length ?? 0,
+        players[i].characters?.length ?? 0,
       );
     }
 
@@ -31,5 +36,5 @@ export function useEffectiveCanvasSize() {
       width: canvasSize.width,
       height: canvasSize.height + totalDelta,
     };
-  }, [canvasSize, dynamicPlayerHeight, players]);
+  }, [canvasSize, dynamicPlayerHeight, slotCount, players]);
 }

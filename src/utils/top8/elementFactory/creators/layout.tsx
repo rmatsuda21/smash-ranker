@@ -14,9 +14,8 @@ import type {
   CustomAltCharacterImageElementConfig,
 } from "@/types/top8/Design";
 import type { ElementCreator } from "@/types/top8/ElementFactory";
-import { replacePlaceholders } from "@/utils/top8/replacePlaceholderString";
 import { evaluateElementCondition } from "@/utils/top8/evaluateElementCondition";
-import { resolveText } from "@/utils/top8/resolveText";
+import { resolveElementText } from "@/utils/top8/resolveElementText";
 import { composeFontStyle } from "@/utils/fonts/fontLoader";
 import type { InternalContext } from "../types";
 import { getElementKey } from "../elementKey";
@@ -53,12 +52,7 @@ const getElementMainSize = (
   if (direction === "row") {
     if (element.type === "smartText" || element.type === "text") {
       const textEl = element as TextElementConfig | SmartTextElementConfig;
-      const resolvedText = resolveText(
-        textEl.textId,
-        textEl.text,
-        context.design?.textPalette,
-      );
-      const text = replacePlaceholders(resolvedText, context);
+      const text = resolveElementText(textEl, context);
 
       const tempText = new KonvaText({
         text: text,

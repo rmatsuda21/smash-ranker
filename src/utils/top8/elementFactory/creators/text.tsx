@@ -6,9 +6,8 @@ import type {
 } from "@/types/top8/Design";
 import type { ElementCreator } from "@/types/top8/ElementFactory";
 import { SmartText } from "@/components/top8/SmartText/SmartText";
-import { replacePlaceholders } from "@/utils/top8/replacePlaceholderString";
 import { resolveColor } from "@/utils/top8/resolveColor";
-import { resolveText } from "@/utils/top8/resolveText";
+import { resolveElementText } from "@/utils/top8/resolveElementText";
 import { composeFontStyle } from "@/utils/fonts/fontLoader";
 import { getElementKey } from "../elementKey";
 
@@ -18,14 +17,7 @@ export const createTextElement: ElementCreator<TextElementConfig> = ({
   context,
 }) => {
   const { fontFamily = "Arial", design } = context;
-  const resolvedText = resolveText(
-    element.textId,
-    element.text,
-    design?.textPalette,
-  );
-  let text = replacePlaceholders(resolvedText, context);
-  if (element.textTransform === "uppercase") text = text.toUpperCase();
-  else if (element.textTransform === "lowercase") text = text.toLowerCase();
+  const text = resolveElementText(element, context);
 
   const fontStyle = composeFontStyle(
     fontFamily,
@@ -68,14 +60,7 @@ export const createSmartTextElement: ElementCreator<SmartTextElementConfig> = ({
   context,
 }) => {
   const { fontFamily = "Arial", design } = context;
-  const resolvedText = resolveText(
-    element.textId,
-    element.text,
-    design?.textPalette,
-  );
-  let text = replacePlaceholders(resolvedText, context);
-  if (element.textTransform === "uppercase") text = text.toUpperCase();
-  else if (element.textTransform === "lowercase") text = text.toLowerCase();
+  const text = resolveElementText(element, context);
 
   const fontStyle = composeFontStyle(
     fontFamily,

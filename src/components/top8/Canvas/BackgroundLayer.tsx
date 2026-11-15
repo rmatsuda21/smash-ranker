@@ -31,7 +31,7 @@ const BackgroundLayerComponent = ({ onClick, onReady }: Props) => {
     useShallow((state) => state.design.canvasSize),
   );
   const effectiveCanvasSize = useEffectiveCanvasSize();
-  const selectedFont = useFontStore((state) => state.selectedFont);
+  const displayedFont = useFontStore((state) => state.displayedFont);
 
   const design = useMemo(
     () => ({ colorPalette, bgAssetId, bgImageDarkness }),
@@ -66,7 +66,7 @@ const BackgroundLayerComponent = ({ onClick, onReady }: Props) => {
         {
           containerSize: effectiveCanvasSize,
           design,
-          fontFamily: selectedFont,
+          fontFamily: displayedFont,
         },
         { onAllReady: stableOnReady },
       ),
@@ -74,7 +74,7 @@ const BackgroundLayerComponent = ({ onClick, onReady }: Props) => {
       adjustedElements,
       design,
       effectiveCanvasSize,
-      selectedFont,
+      displayedFont,
       stableOnReady,
     ],
   );

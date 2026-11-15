@@ -107,7 +107,7 @@ const PlayerTransformerLayer = memo(
 const HOVER_FILL = "rgba(0, 0, 0, 0.2)";
 
 const PlayerLayerComponent = ({ onReady }: { onReady?: () => void }) => {
-  const readyPlayerCountRef = useRef(0);
+  const readyPlayerIdsRef = useRef<Set<string>>(new Set());
   const mainLayerRef = useRef<KonvaLayer>(null);
   const dragLayerRef = useRef<KonvaLayer>(null);
   const hoverOverlayLayerRef = useRef<KonvaLayer>(null);
@@ -175,12 +175,37 @@ const PlayerLayerComponent = ({ onReady }: { onReady?: () => void }) => {
     player.moveTo(mainLayerRef.current);
   }, []);
 
-  const handlePlayerReady = useCallback(() => {
-    readyPlayerCountRef.current++;
-    if (readyPlayerCountRef.current === players.length) {
+  // Only players that occupy a design slot mount, so readiness is counted
+  // against those ids rather than the whole player list (which defaults to 32
+  // sample players for an 8-slot design). Tracking ids instead of a counter
+  // also keeps a player that reports ready twice from being counted twice.
+  const mountedPlayerIds = useMemo(
+    () => players.slice(0, playerConfigs.length).map((player) => player.id),
+    [players, playerConfigs.length],
+  );
+  const mountedPlayerIdsRef = useRef(mountedPlayerIds);
+  mountedPlayerIdsRef.current = mountedPlayerIds;
+
+  const notifyIfAllReady = useCallback(() => {
+    const ready = readyPlayerIdsRef.current;
+    if (mountedPlayerIdsRef.current.every((id) => ready.has(id))) {
       onReadyRef.current?.();
     }
-  }, [players.length]);
+  }, []);
+
+  const handlePlayerReady = useCallback(
+    (playerId: string) => {
+      readyPlayerIdsRef.current.add(playerId);
+      notifyIfAllReady();
+    },
+    [notifyIfAllReady],
+  );
+
+  // Covers the cases no player callback will: zero mounted players, or the
+  // mounted set shrinking to players that are already ready.
+  useEffect(() => {
+    notifyIfAllReady();
+  }, [mountedPlayerIds, notifyIfAllReady]);
 
   if (!playerLayouts) return <Layer ref={mainLayerRef} />;
 
@@ -206,7 +231,7 @@ const PlayerLayerComponent = ({ onReady }: { onReady?: () => void }) => {
               onDragEnd={onPlayerDragEnd}
               fontFamily={displayedFont}
               editable={editable}
-              onReady={handlePlayerReady}
+              onReady={() => handlePlayerReady(player.id)}
               onHoverChange={(isHovered) =>
                 handlePlayerHoverChange(player.id, isHovered)
               }

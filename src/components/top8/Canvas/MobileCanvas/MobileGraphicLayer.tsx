@@ -39,7 +39,6 @@ const MobileGraphicLayerComponent = () => {
     useShallow((state) => state.design.canvasSize),
   );
   const effectiveCanvasSize = useEffectiveCanvasSize();
-  const selectedFont = useFontStore((state) => state.selectedFont);
   const displayedFont = useFontStore((state) => state.displayedFont);
 
   // Player layer state
@@ -99,14 +98,14 @@ const MobileGraphicLayerComponent = () => {
       createKonvaElements(adjustedBackgroundElements, {
         containerSize: effectiveCanvasSize,
         design: backgroundDesign,
-        fontFamily: selectedFont,
+        fontFamily: displayedFont,
         options: { editable: false, disableSelectable: true },
       }),
     [
       adjustedBackgroundElements,
       backgroundDesign,
       effectiveCanvasSize,
-      selectedFont,
+      displayedFont,
     ],
   );
 
