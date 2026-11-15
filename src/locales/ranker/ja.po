@@ -104,7 +104,7 @@ msgid "Asking start.gg very nicely..."
 msgstr "start.ggに丁寧にお願いしています..."
 
 #: src/components/top8/AssetManager/AssetManager.tsx:32
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:199
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:203
 msgid "Assets"
 msgstr "素材"
 
@@ -153,8 +153,8 @@ msgstr ""
 msgid "Calling it for the record..."
 msgstr ""
 
-#: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:61
-#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:150
+#: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:63
+#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:154
 msgid "Cancel"
 msgstr "キャンセル"
 
@@ -202,7 +202,7 @@ msgstr "選手を初期化しますか？"
 msgid "Clear Predictions?"
 msgstr "予想をクリアしますか？"
 
-#: src/components/Layout/SettingsModal/SettingsModal.tsx:48
+#: src/components/Layout/SettingsModal/SettingsModal.tsx:54
 #: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:309
 msgid "Close"
 msgstr "閉じる"
@@ -224,7 +224,7 @@ msgstr "コンパクト"
 msgid "Competition not found"
 msgstr "大会が見つかりませんでした"
 
-#: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:64
+#: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:66
 msgid "Confirm"
 msgstr "確認"
 
@@ -280,12 +280,12 @@ msgstr "ストックを数えています。全部です..."
 msgid "Country"
 msgstr "国"
 
-#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:116
-#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:153
+#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:120
+#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:157
 msgid "Create"
 msgstr "作成"
 
-#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:70
+#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:74
 msgid "Create a minimal template with a specific player count."
 msgstr "指定の数の選手でミニマルテンプレを作成"
 
@@ -293,7 +293,7 @@ msgstr "指定の数の選手でミニマルテンプレを作成"
 msgid "Create New Template"
 msgstr "新規テンプレ作成"
 
-#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:110
+#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:114
 msgid "Create Template"
 msgstr "テンプレートを作成"
 
@@ -323,7 +323,7 @@ msgstr "カスタムフォント"
 msgid "Custom Minimal"
 msgstr "作成"
 
-#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:67
+#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:71
 msgid "Custom Minimal Template"
 msgstr "自作ミニマルテンプレート"
 
@@ -349,7 +349,7 @@ msgid "Delete"
 msgstr "削除"
 
 #. placeholder {0}: markedIds.size
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:229
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:233
 msgid "Delete ({0})"
 msgstr "削除 ({0})"
 
@@ -361,7 +361,7 @@ msgstr "素材消去"
 msgid "Delete Assets"
 msgstr "素材を削除"
 
-#: src/components/top8/SocialPostComposer/TemplateSelector.tsx:63
+#: src/components/top8/SocialPostComposer/TemplateSelector.tsx:71
 msgid "Delete template"
 msgstr "テンプレートを削除"
 
@@ -369,11 +369,11 @@ msgstr "テンプレートを削除"
 msgid "Delete Template?"
 msgstr "テンプレートを削除しますか？"
 
-#: src/components/top8/SocialPostComposer/TemplateSelector.tsx:68
+#: src/components/top8/SocialPostComposer/TemplateSelector.tsx:34
 msgid "Delete this template?"
 msgstr "このテンプレートを削除しますか？"
 
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:215
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:219
 msgid "Deselect All"
 msgstr "全選択解除"
 
@@ -398,7 +398,7 @@ msgstr "表示"
 msgid "Display options"
 msgstr "表示オプション"
 
-#: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:55
+#: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:57
 msgid "Don't show again"
 msgstr "次回から表示しない"
 
@@ -735,7 +735,7 @@ msgstr "このイベントにフェーズが見つかりません"
 msgid "No players found"
 msgstr "プレイヤーが見つかりません"
 
-#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:127
+#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:131
 msgid "No preview available"
 msgstr ""
 
@@ -805,8 +805,8 @@ msgstr "ピクセル比"
 msgid "Placement"
 msgstr "順位"
 
-#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:87
-#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:93
+#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:91
+#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:97
 msgid "Player Count"
 msgstr "選手数"
 
@@ -866,13 +866,13 @@ msgstr "順位予想"
 msgid "Prefix"
 msgstr "所属"
 
-#: src/components/predict/PredictApp/PredictApp.tsx:164
-#: src/components/results/ResultsApp/ResultsApp.tsx:236
+#: src/components/predict/PredictApp/PredictApp.tsx:167
+#: src/components/results/ResultsApp/ResultsApp.tsx:239
 #: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:191
 msgid "Preview"
 msgstr "プレビュー"
 
-#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:133
+#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:137
 msgid "Preview of your saved template"
 msgstr ""
 
@@ -980,7 +980,7 @@ msgstr "選択"
 msgid "Select a player first."
 msgstr "まずは選手を選択してください。"
 
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:217
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:221
 msgid "Select All"
 msgstr "全選択"
 
@@ -1004,7 +1004,7 @@ msgstr "選択済み"
 msgid "Sets"
 msgstr "試合"
 
-#: src/components/Layout/SettingsModal/SettingsModal.tsx:33
+#: src/components/Layout/SettingsModal/SettingsModal.tsx:38
 msgid "Settings"
 msgstr ""
 
@@ -1018,7 +1018,7 @@ msgstr "招待リンクをコピー"
 
 #: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:304
 #: src/components/top8/SocialShareButton/SocialShareButton.tsx:45
-#: src/components/top8/SocialShareButton/SocialShareButton.tsx:50
+#: src/components/top8/SocialShareButton/SocialShareButton.tsx:53
 msgid "Share to social"
 msgstr "SNSでシェア"
 
@@ -1079,7 +1079,7 @@ msgstr "ブラケットの神に祈り中..."
 msgid "Tap entrants to add predictions"
 msgstr "参加者をタップして予想に追加"
 
-#: src/components/top8/SocialPostComposer/TemplateSelector.tsx:43
+#: src/components/top8/SocialPostComposer/TemplateSelector.tsx:51
 msgid "Template"
 msgstr "テンプレート"
 
@@ -1087,14 +1087,14 @@ msgstr "テンプレート"
 msgid "Template name"
 msgstr "テンプレート名"
 
-#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:102
 #: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:106
-#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:138
+#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:110
 #: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:142
+#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:146
 msgid "Template Name"
 msgstr "テンプレ名"
 
-#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:121
+#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:125
 msgid "Template preview"
 msgstr ""
 
@@ -1115,10 +1115,11 @@ msgid "Texts"
 msgstr "テキスト"
 
 #: src/components/top8/SettingsPanel/ThemePicker.tsx:44
-#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:76
+#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:80
 msgid "Theme"
 msgstr "テーマ"
 
+#: src/components/top8/SocialPostComposer/TemplateSelector.tsx:35
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:232
 msgid "This template will be permanently deleted."
 msgstr "このテンプレートは完全に削除されます。"
@@ -1147,7 +1148,7 @@ msgstr "サムネイル"
 msgid "Tier List"
 msgstr "ティア表作成"
 
-#: src/components/Layout/SettingsModal/SettingsModal.tsx:41
+#: src/components/Layout/SettingsModal/SettingsModal.tsx:47
 msgid "Toggle developer settings"
 msgstr ""
 
@@ -1271,11 +1272,11 @@ msgid "Updated {0}"
 msgstr "更新: {0}"
 
 #: src/components/shared/FileUploader/FileUploader.tsx:153
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:248
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:252
 msgid "Upload"
 msgstr "アップロード"
 
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:245
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:249
 msgid "Upload Assets"
 msgstr "素材をアップロード"
 

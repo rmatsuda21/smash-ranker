@@ -35,6 +35,18 @@ select {
   font: inherit;
 }
 
+/* Popovers: drop the UA's centered, bordered box so component classes own
+   the look and position. :where() keeps this below any class selector. */
+:where([popover]) {
+  inset: auto;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  overflow: visible;
+}
+
 /* 7. Avoid text overflows */
 p,
 h1,

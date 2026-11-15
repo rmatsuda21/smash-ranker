@@ -7,6 +7,7 @@ import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
 import { getCharacterDisplayName } from "@/utils/top8/getCharacterName";
 import { useTierListStore } from "@/store/tierListStore";
 import { ImageDisplayMode } from "@/types/tierlist/TierList";
+import { useTopLayer } from "@/hooks/useTopLayer";
 
 import styles from "./AltPicker.module.scss";
 
@@ -31,6 +32,10 @@ export const AltPicker = ({
   const charData = characters.find((c) => c.id === character?.characterId);
   const altCount = charData?.alts ?? 8;
 
+  // "manual", not "auto": this opens on right-click, and native light dismiss
+  // would close it again on the release of that same click.
+  useTopLayer(ref);
+
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
       if (ref.current && !ref.current.contains(e.target as Node)) {
@@ -54,6 +59,7 @@ export const AltPicker = ({
   return createPortal(
     <div
       ref={ref}
+      popover="manual"
       className={styles.picker}
       style={{ top: position.y, left: position.x }}
     >

@@ -104,7 +104,7 @@ msgid "Asking start.gg very nicely..."
 msgstr ""
 
 #: src/components/top8/AssetManager/AssetManager.tsx:32
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:199
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:203
 msgid "Assets"
 msgstr ""
 
@@ -153,8 +153,8 @@ msgstr ""
 msgid "Calling it for the record..."
 msgstr ""
 
-#: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:61
-#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:150
+#: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:63
+#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:154
 msgid "Cancel"
 msgstr ""
 
@@ -202,7 +202,7 @@ msgstr ""
 msgid "Clear Predictions?"
 msgstr ""
 
-#: src/components/Layout/SettingsModal/SettingsModal.tsx:48
+#: src/components/Layout/SettingsModal/SettingsModal.tsx:54
 #: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:309
 msgid "Close"
 msgstr ""
@@ -224,7 +224,7 @@ msgstr ""
 msgid "Competition not found"
 msgstr ""
 
-#: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:64
+#: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:66
 msgid "Confirm"
 msgstr ""
 
@@ -280,12 +280,12 @@ msgstr ""
 msgid "Country"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:116
-#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:153
+#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:120
+#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:157
 msgid "Create"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:70
+#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:74
 msgid "Create a minimal template with a specific player count."
 msgstr ""
 
@@ -293,7 +293,7 @@ msgstr ""
 msgid "Create New Template"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:110
+#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:114
 msgid "Create Template"
 msgstr ""
 
@@ -323,7 +323,7 @@ msgstr ""
 msgid "Custom Minimal"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:67
+#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:71
 msgid "Custom Minimal Template"
 msgstr ""
 
@@ -349,7 +349,7 @@ msgid "Delete"
 msgstr ""
 
 #. placeholder {0}: markedIds.size
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:229
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:233
 msgid "Delete ({0})"
 msgstr ""
 
@@ -361,7 +361,7 @@ msgstr ""
 msgid "Delete Assets"
 msgstr ""
 
-#: src/components/top8/SocialPostComposer/TemplateSelector.tsx:63
+#: src/components/top8/SocialPostComposer/TemplateSelector.tsx:71
 msgid "Delete template"
 msgstr ""
 
@@ -369,11 +369,11 @@ msgstr ""
 msgid "Delete Template?"
 msgstr ""
 
-#: src/components/top8/SocialPostComposer/TemplateSelector.tsx:68
+#: src/components/top8/SocialPostComposer/TemplateSelector.tsx:34
 msgid "Delete this template?"
 msgstr ""
 
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:215
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:219
 msgid "Deselect All"
 msgstr ""
 
@@ -398,7 +398,7 @@ msgstr ""
 msgid "Display options"
 msgstr ""
 
-#: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:55
+#: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:57
 msgid "Don't show again"
 msgstr ""
 
@@ -735,7 +735,7 @@ msgstr ""
 msgid "No players found"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:127
+#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:131
 msgid "No preview available"
 msgstr ""
 
@@ -805,8 +805,8 @@ msgstr ""
 msgid "Placement"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:87
-#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:93
+#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:91
+#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:97
 msgid "Player Count"
 msgstr ""
 
@@ -866,13 +866,13 @@ msgstr ""
 msgid "Prefix"
 msgstr ""
 
-#: src/components/predict/PredictApp/PredictApp.tsx:164
-#: src/components/results/ResultsApp/ResultsApp.tsx:236
+#: src/components/predict/PredictApp/PredictApp.tsx:167
+#: src/components/results/ResultsApp/ResultsApp.tsx:239
 #: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:191
 msgid "Preview"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:133
+#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:137
 msgid "Preview of your saved template"
 msgstr ""
 
@@ -980,7 +980,7 @@ msgstr ""
 msgid "Select a player first."
 msgstr ""
 
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:217
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:221
 msgid "Select All"
 msgstr ""
 
@@ -1004,7 +1004,7 @@ msgstr ""
 msgid "Sets"
 msgstr ""
 
-#: src/components/Layout/SettingsModal/SettingsModal.tsx:33
+#: src/components/Layout/SettingsModal/SettingsModal.tsx:38
 msgid "Settings"
 msgstr ""
 
@@ -1018,7 +1018,7 @@ msgstr ""
 
 #: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:304
 #: src/components/top8/SocialShareButton/SocialShareButton.tsx:45
-#: src/components/top8/SocialShareButton/SocialShareButton.tsx:50
+#: src/components/top8/SocialShareButton/SocialShareButton.tsx:53
 msgid "Share to social"
 msgstr ""
 
@@ -1079,7 +1079,7 @@ msgstr ""
 msgid "Tap entrants to add predictions"
 msgstr ""
 
-#: src/components/top8/SocialPostComposer/TemplateSelector.tsx:43
+#: src/components/top8/SocialPostComposer/TemplateSelector.tsx:51
 msgid "Template"
 msgstr ""
 
@@ -1087,14 +1087,14 @@ msgstr ""
 msgid "Template name"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:102
 #: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:106
-#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:138
+#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:110
 #: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:142
+#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:146
 msgid "Template Name"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:121
+#: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:125
 msgid "Template preview"
 msgstr ""
 
@@ -1115,10 +1115,11 @@ msgid "Texts"
 msgstr ""
 
 #: src/components/top8/SettingsPanel/ThemePicker.tsx:44
-#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:76
+#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:80
 msgid "Theme"
 msgstr ""
 
+#: src/components/top8/SocialPostComposer/TemplateSelector.tsx:35
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:232
 msgid "This template will be permanently deleted."
 msgstr ""
@@ -1147,7 +1148,7 @@ msgstr ""
 msgid "Tier List"
 msgstr ""
 
-#: src/components/Layout/SettingsModal/SettingsModal.tsx:41
+#: src/components/Layout/SettingsModal/SettingsModal.tsx:47
 msgid "Toggle developer settings"
 msgstr ""
 
@@ -1271,11 +1272,11 @@ msgid "Updated {0}"
 msgstr ""
 
 #: src/components/shared/FileUploader/FileUploader.tsx:153
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:248
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:252
 msgid "Upload"
 msgstr "Upload"
 
-#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:245
+#: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:249
 msgid "Upload Assets"
 msgstr ""
 

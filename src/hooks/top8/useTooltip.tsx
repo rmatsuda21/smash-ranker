@@ -2,6 +2,7 @@ import { useRef, useState, useCallback, useLayoutEffect } from "react";
 import { createPortal } from "react-dom";
 
 import { usePortalContainer } from "@/components/shared/Modal/modalStack";
+import { SUPPORTS_POPOVER } from "@/hooks/useTopLayer";
 
 const DEFAULT_DELAY = 200;
 
@@ -76,7 +77,14 @@ export const useTooltip = ({ tooltip, delay = DEFAULT_DELAY }: Options) => {
 
     const tooltipElement = (
       <div
-        ref={tooltipRef}
+        // Top layer, so the tooltip also shows above open popovers.
+        popover="manual"
+        ref={(el) => {
+          tooltipRef.current = el;
+          if (el && SUPPORTS_POPOVER && !el.matches(":popover-open")) {
+            el.showPopover();
+          }
+        }}
         className={className}
         style={{
           position: "fixed",

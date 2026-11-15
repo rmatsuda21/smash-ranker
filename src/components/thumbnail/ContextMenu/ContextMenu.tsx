@@ -5,6 +5,7 @@ import {
   useDismissOnEscape,
   useDismissOnOutsideClick,
 } from "@/hooks/useDismiss";
+import { useTopLayer } from "@/hooks/useTopLayer";
 
 import styles from "./ContextMenu.module.scss";
 
@@ -30,6 +31,10 @@ type Props = {
 export const ContextMenu = ({ x, y, items, onClose }: Props) => {
   const ref = useRef<HTMLDivElement>(null);
   const [pos, setPos] = useState({ x, y });
+
+  // "manual", not "auto": this opens on right-click, and native light dismiss
+  // would close it again on the release of that same click.
+  useTopLayer(ref);
 
   useLayoutEffect(() => {
     const node = ref.current;
@@ -66,6 +71,7 @@ export const ContextMenu = ({ x, y, items, onClose }: Props) => {
   return createPortal(
     <div
       ref={ref}
+      popover="manual"
       className={styles.menu}
       style={{ left: pos.x, top: pos.y }}
       onContextMenu={(e) => e.preventDefault()}

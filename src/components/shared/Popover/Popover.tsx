@@ -13,6 +13,7 @@ import {
   useDismissOnEscape,
   useDismissOnOutsideClick,
 } from "@/hooks/useDismiss";
+import { SUPPORTS_POPOVER } from "@/hooks/useTopLayer";
 import { usePortalContainer } from "@/components/shared/Modal/modalStack";
 
 import styles from "./Popover.module.scss";
@@ -131,18 +132,75 @@ export const Popover = ({
     };
   }, [open, computePosition]);
 
+  // Native path: `popover="auto"` puts the element in the top layer and
+  // gives us outside-click and Esc dismissal for free.
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
+
+  useLayoutEffect(() => {
+    const el = popoverRef.current;
+    if (!open || !el || !SUPPORTS_POPOVER) return;
+    el.showPopover();
+
+    // Light dismiss fires on the release of a press on the trigger, and the
+    // trigger's own click handler runs right after. Left alone, that click
+    // would toggle the popover straight back open, so swallow it.
+    let pressedOnAnchor = false;
+    const onPointerDown = (e: PointerEvent) => {
+      pressedOnAnchor =
+        e.target instanceof Node && !!anchorRef.current?.contains(e.target);
+    };
+    const onPointerUp = () => {
+      setTimeout(() => {
+        pressedOnAnchor = false;
+      }, 0);
+    };
+    const onBeforeToggle = (e: Event) => {
+      if ((e as ToggleEvent).newState !== "closed") return;
+      const anchor = anchorRef.current;
+      if (pressedOnAnchor && anchor) {
+        const swallow = (click: Event) => {
+          click.stopPropagation();
+          click.preventDefault();
+        };
+        const options = { capture: true, once: true };
+        anchor.addEventListener("click", swallow, options);
+        setTimeout(
+          () => anchor.removeEventListener("click", swallow, options),
+          500,
+        );
+      }
+      onCloseRef.current();
+    };
+
+    document.addEventListener("pointerdown", onPointerDown, true);
+    document.addEventListener("pointerup", onPointerUp, true);
+    el.addEventListener("beforetoggle", onBeforeToggle);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown, true);
+      document.removeEventListener("pointerup", onPointerUp, true);
+      el.removeEventListener("beforetoggle", onBeforeToggle);
+      if (el.isConnected && el.matches(":popover-open")) el.hidePopover();
+    };
+  }, [open, anchorRef]);
+
+  // Fallback path for browsers without the Popover API.
   useDismissOnOutsideClick({
-    enabled: open,
+    enabled: open && !SUPPORTS_POPOVER,
     refs: [anchorRef, popoverRef],
     onDismiss: onClose,
   });
-  useDismissOnEscape({ enabled: open, onDismiss: onClose });
+  useDismissOnEscape({
+    enabled: open && !SUPPORTS_POPOVER,
+    onDismiss: onClose,
+  });
 
   if (!open) return null;
 
-  return createPortal(
+  const node = (
     <div
       ref={popoverRef}
+      popover="auto"
       role="dialog"
       className={cn(styles.popover, className)}
       style={{
@@ -154,7 +212,12 @@ export const Popover = ({
       }}
     >
       {children}
-    </div>,
-    portalContainer,
+    </div>
   );
+
+  // Rendered in place: the top layer escapes clipping and stacking on its
+  // own, and DOM nesting is what keeps a popover inside a modal interactive
+  // and a popover inside a popover from dismissing its parent. Only the
+  // fallback still needs a portal.
+  return SUPPORTS_POPOVER ? node : createPortal(node, portalContainer);
 };

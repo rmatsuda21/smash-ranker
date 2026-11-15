@@ -21,8 +21,8 @@ msgstr ""
 msgid "Add Tier"
 msgstr ""
 
-#: src/components/tierlist/AltPicker/AltPicker.tsx:73
-#: src/components/tierlist/AltPicker/AltPicker.tsx:81
+#: src/components/tierlist/AltPicker/AltPicker.tsx:79
+#: src/components/tierlist/AltPicker/AltPicker.tsx:87
 msgid "Alt {i}"
 msgstr ""
 

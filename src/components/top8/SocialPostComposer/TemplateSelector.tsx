@@ -7,6 +7,7 @@ import {
   DropDownSelect,
   type DropDownItem,
 } from "@/components/shared/DropDownSelect/DropDownSelect";
+import { useConfirmation } from "@/hooks/useConfirmation";
 import type { SocialTemplate } from "@/types/social/SocialTemplate";
 
 import styles from "./SocialPostComposer.module.scss";
@@ -27,6 +28,13 @@ export const TemplateSelector = ({
   onDelete,
 }: Props) => {
   const { _ } = useLingui();
+  const { confirm: confirmDelete, ConfirmationDialog } = useConfirmation(
+    onDelete,
+    {
+      title: _(msg`Delete this template?`),
+      description: _(msg`This template will be permanently deleted.`),
+    },
+  );
 
   const options: DropDownItem<string>[] = [
     ...builtIn.map((t) => ({ value: t.id, id: t.id, display: t.name })),
@@ -63,13 +71,8 @@ export const TemplateSelector = ({
                 aria-label={_(msg`Delete template`)}
                 onClick={(e) => {
                   e.stopPropagation();
-                  if (
-                    typeof window !== "undefined" &&
-                    !window.confirm(_(msg`Delete this template?`))
-                  ) {
-                    return;
-                  }
-                  onDelete(option.value);
+                  // Opening the modal closes the dropdown on its own.
+                  confirmDelete(option.value);
                 }}
               >
                 <FaXmark />
@@ -78,6 +81,7 @@ export const TemplateSelector = ({
           );
         }}
       />
+      <ConfirmationDialog />
     </div>
   );
 };
