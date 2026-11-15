@@ -1,3 +1,5 @@
+@use "@/_theme" as *;
+
 .wrapper {
   display: flex;
   flex-direction: column;
@@ -14,19 +16,109 @@
 }
 
 .fontItem {
+  height: var(--field-h, 36px);
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: var(--space-1) var(--space-2);
-  border-radius: var(--radius-sm);
+  gap: var(--space-2);
+  padding: 0 var(--space-1) 0 var(--space-3);
+
   background-color: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
 }
 
 .fontName {
-  font-size: var(--font-size-sm);
+  flex: 1;
+  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-size: var(--font-size-md);
+  color: var(--fg-1);
+}
+
+.remove {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: pointer;
+
+  color: var(--fg-3);
+  background: none;
+  border: none;
+  border-radius: var(--radius-sm);
+  transition:
+    color var(--duration-base) var(--ease-standard),
+    background-color var(--duration-base) var(--ease-standard);
+
+  &:hover {
+    color: var(--status-danger);
+    background-color: var(--gray-5);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent-9);
+    outline-offset: 1px;
+  }
+
+  @include mobile {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+.hiddenInput {
+  display: none;
+}
+
+.dropzone {
+  height: var(--field-h, 36px);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding-inline: var(--space-3);
+  cursor: pointer;
+
+  color: var(--fg-2);
+  font-family: inherit;
+  font-size: var(--font-size-md);
+  background: none;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius);
+  transition:
+    color var(--duration-base) var(--ease-standard),
+    border-color var(--duration-base) var(--ease-standard),
+    background-color var(--duration-base) var(--ease-standard);
+
+  &:hover,
+  &.isFileOver {
+    color: var(--accent-9);
+    border-color: var(--accent-9);
+    background-color: var(--brand-softer);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent-9);
+    outline-offset: 1px;
+  }
+
+  // Children must not swallow drag events meant for the row.
+  > * {
+    pointer-events: none;
+  }
+}
+
+.dropzoneLabel {
   flex: 1;
-  min-width: 0;
+  text-align: start;
+  font-weight: 500;
+}
+
+.dropzoneHint {
+  font-size: var(--font-size-xs);
+  color: var(--fg-4);
 }

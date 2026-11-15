@@ -55,7 +55,7 @@ export const ColorPaletteEditor = ({ className }: Props) => {
                   color={rgbStringToAlphaHex(color)}
                   onChange={(color) => handleColorChange(id, color, name)}
                 />
-                <span>
+                <span className={styles.name}>
                   <Trans id={name} message={name} />
                 </span>
               </div>

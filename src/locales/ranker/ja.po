@@ -122,7 +122,7 @@ msgstr "素材"
 msgid "Auto-fill by seed"
 msgstr "シードで自動入力"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:320
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:318
 msgid "Avatar"
 msgstr "アイコン"
 
@@ -130,7 +130,7 @@ msgstr "アイコン"
 msgid "Back to plain text"
 msgstr "プレーンテキストに戻る"
 
-#: src/components/top8/DesignEditor/DesignEditor.tsx:42
+#: src/components/top8/DesignEditor/DesignEditor.tsx:38
 msgid "Background Image"
 msgstr "背景画像"
 
@@ -205,7 +205,7 @@ msgstr "市区町村"
 msgid "Clear"
 msgstr "クリア"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:347
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:345
 msgid "Clear Player"
 msgstr "選手初期化"
 
@@ -224,7 +224,7 @@ msgstr "予想をクリアしますか？"
 msgid "Close"
 msgstr "閉じる"
 
-#: src/components/top8/DesignEditor/DesignEditor.tsx:80
+#: src/components/top8/DesignEditor/DesignEditor.tsx:76
 msgid "Color Palette"
 msgstr "カラーパレット"
 
@@ -292,7 +292,7 @@ msgstr "代わりにDQの数を数えています..."
 msgid "Counting the stocks. All of them..."
 msgstr "ストックを数えています。全部です..."
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:293
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:292
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:219
 msgid "Country"
 msgstr "国"
@@ -328,15 +328,15 @@ msgstr "クレジット & インスピレーション"
 msgid "Custom"
 msgstr "カスタム"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:328
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:326
 msgid "Custom Flag"
 msgstr "カスタムフラッグ"
 
-#: src/components/top8/DesignEditor/DesignEditor.tsx:35
+#: src/components/top8/DesignEditor/DesignEditor.tsx:33
 msgid "Custom Fonts"
 msgstr "カスタムフォント"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:310
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:308
 msgid "Custom images"
 msgstr "カスタム画像"
 
@@ -562,7 +562,7 @@ msgstr "ファイル名"
 msgid "Finding everyone who showed up..."
 msgstr "会場に来た人を全員探しています..."
 
-#: src/components/top8/DesignEditor/DesignEditor.tsx:28
+#: src/components/top8/DesignEditor/DesignEditor.tsx:31
 msgid "Font"
 msgstr "フォント"
 
@@ -620,7 +620,7 @@ msgstr ""
 msgid "Icon"
 msgstr "アイコン"
 
-#: src/components/top8/DesignEditor/DesignEditor.tsx:61
+#: src/components/top8/DesignEditor/DesignEditor.tsx:58
 msgid "Image darkness"
 msgstr "背景画像の明さ"
 
@@ -825,8 +825,8 @@ msgid "Open template editor"
 msgstr "テンプレートエディタを開く"
 
 #: src/components/shared/FileUploader/FileUploader.tsx:156
-msgid "Or drag and drop"
-msgstr "ドラッグ・ドロップも対応"
+#~ msgid "Or drag and drop"
+#~ msgstr "ドラッグ・ドロップも対応"
 
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:57
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:75
@@ -1000,6 +1000,12 @@ msgstr "テンプレートのプレビュー画像をすべて再生成します
 #: src/components/top8/SettingsPanel/ThumbnailRegenButton.tsx:42
 msgid "Regenerate Thumbnails"
 msgstr "サムネイルを再生成"
+
+#. placeholder {0}: font.fontFamily
+#: src/components/top8/DesignEditor/CustomFontManager/CustomFontManager.tsx:57
+#: src/components/top8/DesignEditor/CustomFontManager/CustomFontManager.tsx:58
+msgid "Remove {0}"
+msgstr "{0}を削除"
 
 #: src/components/results/ResultsApp/ResultsApp.tsx:39
 #: src/components/results/ResultsPreview/ResultsPreview.tsx:58
@@ -1363,7 +1369,6 @@ msgstr "元に戻す"
 msgid "Updated {0}"
 msgstr "更新: {0}"
 
-#: src/components/shared/FileUploader/FileUploader.tsx:153
 #: src/components/top8/AssetManager/AssetsModal/AssetGrid/AssetGrid.tsx:57
 #: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:281
 msgid "Upload"
@@ -1372,6 +1377,10 @@ msgstr "アップロード"
 #: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:249
 #~ msgid "Upload Assets"
 #~ msgstr "素材をアップロード"
+
+#: src/components/top8/DesignEditor/CustomFontManager/CustomFontManager.tsx:99
+msgid "Upload font"
+msgstr "フォントをアップロード"
 
 #: src/components/top8/AssetSelector/AssetPicker.tsx:87
 #: src/components/top8/AssetSelector/AssetPicker.tsx:97
@@ -1438,7 +1447,7 @@ msgstr "上位選手"
 msgid "X"
 msgstr "X"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:287
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:286
 msgid "X Handle"
 msgstr "Xハンドル"
 

@@ -122,7 +122,7 @@ msgstr ""
 msgid "Auto-fill by seed"
 msgstr ""
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:320
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:318
 msgid "Avatar"
 msgstr ""
 
@@ -130,7 +130,7 @@ msgstr ""
 msgid "Back to plain text"
 msgstr ""
 
-#: src/components/top8/DesignEditor/DesignEditor.tsx:42
+#: src/components/top8/DesignEditor/DesignEditor.tsx:38
 msgid "Background Image"
 msgstr ""
 
@@ -205,7 +205,7 @@ msgstr ""
 msgid "Clear"
 msgstr ""
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:347
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:345
 msgid "Clear Player"
 msgstr ""
 
@@ -224,7 +224,7 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#: src/components/top8/DesignEditor/DesignEditor.tsx:80
+#: src/components/top8/DesignEditor/DesignEditor.tsx:76
 msgid "Color Palette"
 msgstr ""
 
@@ -292,7 +292,7 @@ msgstr ""
 msgid "Counting the stocks. All of them..."
 msgstr ""
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:293
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:292
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:219
 msgid "Country"
 msgstr ""
@@ -328,15 +328,15 @@ msgstr ""
 msgid "Custom"
 msgstr "カスタム"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:328
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:326
 msgid "Custom Flag"
 msgstr ""
 
-#: src/components/top8/DesignEditor/DesignEditor.tsx:35
+#: src/components/top8/DesignEditor/DesignEditor.tsx:33
 msgid "Custom Fonts"
 msgstr ""
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:310
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:308
 msgid "Custom images"
 msgstr ""
 
@@ -562,7 +562,7 @@ msgstr ""
 msgid "Finding everyone who showed up..."
 msgstr ""
 
-#: src/components/top8/DesignEditor/DesignEditor.tsx:28
+#: src/components/top8/DesignEditor/DesignEditor.tsx:31
 msgid "Font"
 msgstr ""
 
@@ -620,7 +620,7 @@ msgstr ""
 msgid "Icon"
 msgstr ""
 
-#: src/components/top8/DesignEditor/DesignEditor.tsx:61
+#: src/components/top8/DesignEditor/DesignEditor.tsx:58
 msgid "Image darkness"
 msgstr ""
 
@@ -825,8 +825,8 @@ msgid "Open template editor"
 msgstr ""
 
 #: src/components/shared/FileUploader/FileUploader.tsx:156
-msgid "Or drag and drop"
-msgstr "Or drag and drop"
+#~ msgid "Or drag and drop"
+#~ msgstr "Or drag and drop"
 
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:57
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:75
@@ -999,6 +999,12 @@ msgstr ""
 
 #: src/components/top8/SettingsPanel/ThumbnailRegenButton.tsx:42
 msgid "Regenerate Thumbnails"
+msgstr ""
+
+#. placeholder {0}: font.fontFamily
+#: src/components/top8/DesignEditor/CustomFontManager/CustomFontManager.tsx:57
+#: src/components/top8/DesignEditor/CustomFontManager/CustomFontManager.tsx:58
+msgid "Remove {0}"
 msgstr ""
 
 #: src/components/results/ResultsApp/ResultsApp.tsx:39
@@ -1363,7 +1369,6 @@ msgstr ""
 msgid "Updated {0}"
 msgstr ""
 
-#: src/components/shared/FileUploader/FileUploader.tsx:153
 #: src/components/top8/AssetManager/AssetsModal/AssetGrid/AssetGrid.tsx:57
 #: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:281
 msgid "Upload"
@@ -1372,6 +1377,10 @@ msgstr "Upload"
 #: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:249
 #~ msgid "Upload Assets"
 #~ msgstr ""
+
+#: src/components/top8/DesignEditor/CustomFontManager/CustomFontManager.tsx:99
+msgid "Upload font"
+msgstr ""
 
 #: src/components/top8/AssetSelector/AssetPicker.tsx:87
 #: src/components/top8/AssetSelector/AssetPicker.tsx:97
@@ -1438,7 +1447,7 @@ msgstr ""
 msgid "X"
 msgstr ""
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:287
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:286
 msgid "X Handle"
 msgstr ""
 

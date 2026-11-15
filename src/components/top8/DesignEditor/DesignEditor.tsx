@@ -1,4 +1,3 @@
-import cn from "classnames";
 import { Trans } from "@lingui/react/macro";
 
 import { FontSelect } from "@/components/top8/DesignEditor/FontSelect/FontSelect";
@@ -7,6 +6,11 @@ import { useCanvasStore } from "@/store/canvasStore";
 import { ColorPaletteEditor } from "@/components/top8/DesignEditor/ColorPaletteEditor/ColorPaletteEditor";
 import { AssetSelector } from "@/components/top8/AssetSelector/AssetSelector";
 import { Slider } from "@/components/shared/Slider/Slider";
+import {
+  EditorCard,
+  EditorPanel,
+  FieldGroup,
+} from "@/components/top8/EditorForm/EditorForm";
 
 import styles from "./DesignEditor.module.scss";
 
@@ -20,27 +24,18 @@ export const DesignEditor = ({ className }: Props) => {
   const bgImageDarkness = useCanvasStore(
     (state) => state.design.bgImageDarkness ?? 0,
   );
+  const darknessPercent = Math.round(bgImageDarkness * 100);
 
   return (
-    <div className={cn(className, styles.wrapper)}>
-      <div>
-        <p className={styles.label}>
-          <Trans>Font</Trans>
-        </p>
+    <EditorPanel className={className}>
+      <EditorCard title={<Trans>Font</Trans>}>
         <FontSelect />
-      </div>
+        <FieldGroup label={<Trans>Custom Fonts</Trans>}>
+          <CustomFontManager />
+        </FieldGroup>
+      </EditorCard>
 
-      <div>
-        <p className={styles.label}>
-          <Trans>Custom Fonts</Trans>
-        </p>
-        <CustomFontManager />
-      </div>
-
-      <div className={styles.backgroundImg}>
-        <p className={styles.label}>
-          <Trans>Background Image</Trans>
-        </p>
+      <EditorCard title={<Trans>Background Image</Trans>}>
         <AssetSelector
           selectedSrc={bgAssetId}
           onSelect={(id) => {
@@ -56,14 +51,17 @@ export const DesignEditor = ({ className }: Props) => {
           }}
         />
         {bgAssetId && (
-          <div className={styles.darknessSlider}>
-            <p className={styles.label}>
-              <Trans>Image darkness</Trans>
-            </p>
+          <div className={styles.darkness}>
             <Slider
+              label={
+                <span className={styles.sliderLabel}>
+                  <Trans>Image darkness</Trans>
+                  <span className={styles.sliderValue}>{darknessPercent}%</span>
+                </span>
+              }
               min={0}
               max={100}
-              value={Math.round(bgImageDarkness * 100)}
+              value={darknessPercent}
               onValueChange={(value) => {
                 canvasDispatch({
                   type: "SET_BACKGROUND_IMAGE_DARKNESS",
@@ -73,14 +71,11 @@ export const DesignEditor = ({ className }: Props) => {
             />
           </div>
         )}
-      </div>
+      </EditorCard>
 
-      <div>
-        <p className={styles.label}>
-          <Trans>Color Palette</Trans>
-        </p>
+      <EditorCard title={<Trans>Color Palette</Trans>}>
         <ColorPaletteEditor />
-      </div>
-    </div>
+      </EditorCard>
+    </EditorPanel>
   );
 };
