@@ -27,20 +27,44 @@
 
 /* Self-hosted to avoid Google Fonts being blocked. font-display: swap means
    the browser renders fallback text immediately and swaps in the real face
-   once it loads — initial paint is never blocked on the font fetch. */
+   once it loads — initial paint is never blocked on the font fetch.
+
+   Each weight is split in two by unicode-range: a ~30KB Latin file that
+   covers the English UI, and the full ~1MB file that is only fetched once a
+   character outside the Latin range (Japanese, mostly) is actually rendered.
+   The two ranges are exact complements, so nothing is downloaded twice.
+   Regenerate with fonttools from the TTFs in api/fonts/. */
 @font-face {
   font-family: "M PLUS Rounded 1c";
-  src: url("/fonts/MPLUSRounded1c-Regular.ttf") format("truetype");
+  src: url("/fonts/MPLUSRounded1c-Regular-latin.woff2") format("woff2");
   font-weight: 100 600;
   font-style: normal;
   font-display: swap;
+  unicode-range: U+0000-024F, U+2000-206F, U+20AC, U+2122;
 }
 @font-face {
   font-family: "M PLUS Rounded 1c";
-  src: url("/fonts/MPLUSRounded1c-ExtraBold.ttf") format("truetype");
+  src: url("/fonts/MPLUSRounded1c-Regular.woff2") format("woff2");
+  font-weight: 100 600;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0250-1FFF, U+2070-20AB, U+20AD-2121, U+2123-10FFFF;
+}
+@font-face {
+  font-family: "M PLUS Rounded 1c";
+  src: url("/fonts/MPLUSRounded1c-ExtraBold-latin.woff2") format("woff2");
   font-weight: 700 900;
   font-style: normal;
   font-display: swap;
+  unicode-range: U+0000-024F, U+2000-206F, U+20AC, U+2122;
+}
+@font-face {
+  font-family: "M PLUS Rounded 1c";
+  src: url("/fonts/MPLUSRounded1c-ExtraBold.woff2") format("woff2");
+  font-weight: 700 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0250-1FFF, U+2070-20AB, U+20AD-2121, U+2123-10FFFF;
 }
 
 /* ----- Primitive tokens ----- */
