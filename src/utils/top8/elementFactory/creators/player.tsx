@@ -20,26 +20,20 @@ import {
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
 import { getCharacterCrop } from "@/utils/top8/getCharacterCrop";
 import { resolveColor } from "@/utils/top8/resolveColor";
+import { createFlexGridElement } from "./layout";
 import {
-  createFlexGridElement,
   calculateGridAlignOffset,
   findOptimalSquareGrid,
-} from "./layout";
+  placeGridCells,
+} from "../layout/gridLayout";
 import { getElementKey } from "../elementKey";
-
-type CharacterImageWithAltData = CharacterImageElementConfig & {
-  _altCharacter?: CharacerData;
-  _altImageSrc?: string;
-};
 
 export const createCharacterImageElement: ElementCreator<
   CharacterImageElementConfig
 > = ({ element, index, context }) => {
   const { player, design } = context;
-  const elementWithAlt = element as CharacterImageWithAltData;
 
-  const isAltCharacter = !!elementWithAlt._altCharacter;
-  if (!isAltCharacter && (!player || player.characters.length === 0)) {
+  if (!player || player.characters.length === 0) {
     return (
       <Rect
         key={getElementKey(element, index)}
@@ -53,32 +47,22 @@ export const createCharacterImageElement: ElementCreator<
     );
   }
 
-  const character = isAltCharacter
-    ? elementWithAlt._altCharacter!
-    : player!.characters[0];
-
-  let imageSrc = isAltCharacter
-    ? elementWithAlt._altImageSrc!
-    : getCharImgUrl({
-        characterId: character.id,
-        alt: character.alt,
-      });
-
+  const character = player.characters[0];
   const characterCrop = getCharacterCrop(character.id, character.alt);
+
+  let imageSrc = getCharImgUrl({
+    characterId: character.id,
+    alt: character.alt,
+  });
   let cropOffset = characterCrop.offset;
   let cropScale = characterCrop.scale * (element.cropScaleMultiplier ?? 1);
 
-  if (!isAltCharacter && context.player?.avatarImgSrc) {
-    imageSrc = context.player.avatarImgSrc;
+  if (player.avatarImgSrc) {
+    // A custom avatar replaces the character art and is shown uncropped.
+    imageSrc = player.avatarImgSrc;
     cropOffset = { x: 0, y: 0 };
     cropScale = 1;
-  }
-
-  if (
-    !isAltCharacter &&
-    character.id === EMPTY_CHARACTER_ID &&
-    !context.player?.avatarImgSrc
-  ) {
+  } else if (character.id === EMPTY_CHARACTER_ID) {
     imageSrc = EMPTY_CHARACTER_DARK_IMG;
   }
 
@@ -321,29 +305,20 @@ function renderCustomAltWithTemplate(
     gridContentHeight,
   );
 
-  const lastRowItemCount = numItems % effectiveColumns || effectiveColumns;
-  const isLastRowFull = lastRowItemCount === effectiveColumns;
-
+  const cells = placeGridCells({
+    count: numItems,
+    columns: effectiveColumns,
+    rows: effectiveRows,
+    cellWidth,
+    cellHeight,
+    columnGap,
+    rowGap,
+    alignLastRow,
+  });
   const cellSize = { width: cellWidth, height: cellHeight };
 
   const renderedElements = characters.map((character, idx) => {
-    const row = Math.floor(idx / effectiveColumns);
-    const col = idx % effectiveColumns;
-    const isLastRow = row === effectiveRows - 1;
-
-    let x = col * (cellWidth + columnGap);
-    const y = row * (cellHeight + rowGap);
-
-    if (isLastRow && !isLastRowFull) {
-      const lastRowWidth =
-        lastRowItemCount * cellWidth + (lastRowItemCount - 1) * columnGap;
-      const lastRowOffset = calculateGridAlignOffset(
-        alignLastRow,
-        gridContentWidth,
-        lastRowWidth,
-      );
-      x += lastRowOffset;
-    }
+    const { x, y } = cells[idx];
 
     return (
       <Group

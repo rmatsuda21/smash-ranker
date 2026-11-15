@@ -1,11 +1,11 @@
 import { memo, useMemo } from "react";
 
-import { createKonvaElements } from "@/utils/top8/elementFactory";
+import { AssetLoadBoundary } from "@/components/top8/Canvas/AssetLoadBoundary";
+import { ElementList } from "@/utils/top8/elementFactory";
 import { fitBackgroundToCanvas } from "@/utils/top8/scene";
 import type { Design, ElementConfig } from "@/types/top8/Design";
 
 import {
-  useLatestCallback,
   useSceneFactoryContext,
   type SceneDesign,
 } from "./useSceneFactoryContext";
@@ -34,7 +34,6 @@ export const BackgroundContent = memo(
     onReady,
   }: Props) => {
     const factoryContext = useSceneFactoryContext();
-    const handleReady = useLatestCallback(onReady);
 
     const fittedElements = useMemo(
       () =>
@@ -46,26 +45,20 @@ export const BackgroundContent = memo(
       [elements, canvasSize.height, effectiveCanvasSize.height],
     );
 
-    return useMemo(
-      () =>
-        createKonvaElements(
-          fittedElements,
-          {
-            ...factoryContext,
-            containerSize: effectiveCanvasSize,
-            design,
-            fontFamily,
-          },
-          { onAllReady: handleReady },
-        ),
-      [
-        fittedElements,
-        factoryContext,
-        effectiveCanvasSize,
+    const context = useMemo(
+      () => ({
+        ...factoryContext,
+        containerSize: effectiveCanvasSize,
         design,
         fontFamily,
-        handleReady,
-      ],
+      }),
+      [factoryContext, effectiveCanvasSize, design, fontFamily],
+    );
+
+    return (
+      <AssetLoadBoundary onAllReady={onReady}>
+        <ElementList elements={fittedElements} context={context} />
+      </AssetLoadBoundary>
     );
   },
 );

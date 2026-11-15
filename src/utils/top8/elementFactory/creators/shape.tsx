@@ -15,135 +15,75 @@ export const createRectElement: ElementCreator<RectElementConfig> = ({
   index,
   context,
 }) => {
-  const { design } = context;
+  const palette = context.design?.colorPalette;
   const { fill } = element;
   const key = getElementKey(element, index);
-  const stroke = resolveColor(
-    element.stroke as string | undefined,
-    design?.colorPalette,
-  );
 
-  // Gradient fill
-  if (fill != null && typeof fill === "object") {
-    // Edge case: empty or single-stop → fall back to solid
-    if (fill.colorStops.length === 0) {
-      return (
-        <Rect
-          key={key}
-          x={element.position.x}
-          y={element.position.y}
-          width={element.size?.width}
-          height={element.size?.height}
-          fill="black"
-          cornerRadius={element.cornerRadius}
-          perfectDrawEnabled={context.perfectDraw}
-          stroke={stroke}
-          strokeWidth={element.strokeWidth}
-        />
-      );
-    }
+  const shared = {
+    x: element.position.x,
+    y: element.position.y,
+    cornerRadius: element.cornerRadius,
+    perfectDrawEnabled: context.perfectDraw,
+    stroke: resolveColor(element.stroke as string | undefined, palette),
+    strokeWidth: element.strokeWidth,
+  };
 
-    if (fill.colorStops.length === 1) {
-      const solidColor =
-        resolveColor(fill.colorStops[0].color, design?.colorPalette) ??
-        fill.colorStops[0].color;
-      return (
-        <Rect
-          key={key}
-          x={element.position.x}
-          y={element.position.y}
-          width={element.size?.width}
-          height={element.size?.height}
-          fill={solidColor}
-          cornerRadius={element.cornerRadius}
-          perfectDrawEnabled={context.perfectDraw}
-          stroke={stroke}
-          strokeWidth={element.strokeWidth}
-        />
-      );
-    }
+  const gradient = fill != null && typeof fill === "object" ? fill : undefined;
 
-    const w = element.size?.width ?? 0;
-    const h = element.size?.height ?? 0;
+  // A real gradient needs at least two stops.
+  if (gradient && gradient.colorStops.length >= 2) {
+    const width = element.size?.width ?? 0;
+    const height = element.size?.height ?? 0;
 
-    if (fill.type === "linear") {
-      const gradientProps = resolveLinearGradientProps(
-        fill,
-        w,
-        h,
-        design?.colorPalette,
-      );
-      return (
-        <Rect
-          key={key}
-          x={element.position.x}
-          y={element.position.y}
-          width={w}
-          height={h}
-          {...gradientProps}
-          cornerRadius={element.cornerRadius}
-          perfectDrawEnabled={context.perfectDraw}
-          stroke={stroke}
-          strokeWidth={element.strokeWidth}
-        />
-      );
-    }
-
-    if (fill.type === "radial") {
-      const gradientProps = resolveRadialGradientProps(
-        fill,
-        w,
-        h,
-        design?.colorPalette,
-      );
-      return (
-        <Rect
-          key={key}
-          x={element.position.x}
-          y={element.position.y}
-          width={w}
-          height={h}
-          {...gradientProps}
-          cornerRadius={element.cornerRadius}
-          perfectDrawEnabled={context.perfectDraw}
-          stroke={stroke}
-          strokeWidth={element.strokeWidth}
-        />
-      );
-    }
-
-    if (fill.type === "angular") {
+    if (gradient.type === "angular") {
+      // Konva has no conic gradient fill, so this one paints itself.
       return (
         <ConicGradientRect
           key={key}
-          x={element.position.x}
-          y={element.position.y}
-          width={w}
-          height={h}
-          gradient={fill}
-          palette={design?.colorPalette}
-          cornerRadius={element.cornerRadius}
-          perfectDrawEnabled={context.perfectDraw}
-          stroke={stroke}
-          strokeWidth={element.strokeWidth}
+          {...shared}
+          width={width}
+          height={height}
+          gradient={gradient}
+          palette={palette}
         />
       );
     }
+
+    const gradientProps =
+      gradient.type === "linear"
+        ? resolveLinearGradientProps(gradient, width, height, palette)
+        : resolveRadialGradientProps(gradient, width, height, palette);
+
+    return (
+      <Rect
+        key={key}
+        {...shared}
+        width={width}
+        height={height}
+        {...gradientProps}
+      />
+    );
   }
 
-  // Solid fill (string or undefined) — existing path
+  // Solid fill: a plain color, or a degenerate gradient with one stop (its
+  // color) or none (black).
+  let solidFill: string;
+  if (!gradient) {
+    solidFill = resolveColor(fill as string | undefined, palette) ?? "black";
+  } else if (gradient.colorStops.length === 1) {
+    const { color } = gradient.colorStops[0];
+    solidFill = resolveColor(color, palette) ?? color;
+  } else {
+    solidFill = "black";
+  }
+
   return (
     <Rect
       key={key}
-      x={element.position.x}
-      y={element.position.y}
+      {...shared}
       width={element.size?.width}
       height={element.size?.height}
-      fill={resolveColor(fill, design?.colorPalette) ?? "black"}
-      cornerRadius={element.cornerRadius}
-      perfectDrawEnabled={context.perfectDraw}
-      stroke={stroke}
-      strokeWidth={element.strokeWidth}
+      fill={solidFill}
     />
   );
 };

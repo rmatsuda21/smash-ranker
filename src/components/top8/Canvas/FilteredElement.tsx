@@ -1,7 +1,6 @@
 import {
   PropsWithChildren,
   ReactElement,
-  cloneElement,
   isValidElement,
   useCallback,
   useEffect,
@@ -11,6 +10,7 @@ import {
 
 import { ElementFilterConfig } from "@/types/top8/Design";
 import { FilteredGroup } from "@/components/top8/Canvas/FilteredGroup";
+import { AssetLoadBoundary } from "@/components/top8/Canvas/AssetLoadBoundary";
 
 type Props = PropsWithChildren<
   React.ComponentProps<typeof FilteredGroup> & {
@@ -35,7 +35,6 @@ export const FilteredElement = ({ children, ...rest }: Props) => {
     return () => clearTimeout(invalidateTimeoutRef.current);
   }, []);
 
-  const childOnReadyRef = useRef<undefined | (() => void)>(undefined);
   const prevChildPropsRef = useRef<{
     text?: string;
     fontSize?: number;
@@ -43,17 +42,6 @@ export const FilteredElement = ({ children, ...rest }: Props) => {
     fontFamily?: string;
     fontStyle?: string;
   }>({});
-
-  useEffect(() => {
-    const child = children as ReactElement<any>;
-
-    if (!child) {
-      childOnReadyRef.current = undefined;
-      return;
-    }
-
-    childOnReadyRef.current = child.props?.onReady;
-  }, [children]);
 
   const childText = (children as ReactElement<any>).props?.text;
   const childFontSize = (children as ReactElement<any>).props?.fontSize;
@@ -94,23 +82,12 @@ export const FilteredElement = ({ children, ...rest }: Props) => {
     invalidate,
   ]);
 
-  const handleReady = useCallback(() => {
-    childOnReadyRef.current?.();
-    invalidate();
-  }, [invalidate]);
-
-  const maybeAugmentedChild = (() => {
-    if (!isValidElement(children)) return children;
-
-    const child = children as ReactElement<any>;
-    return cloneElement(child, {
-      onReady: handleReady,
-    });
-  })();
-
   return (
     <FilteredGroup {...rest} invalidateCacheKey={contentVersion}>
-      {maybeAugmentedChild}
+      {/* An image that finishes loading changes what the cache holds. */}
+      <AssetLoadBoundary onAssetReady={invalidate}>
+        {children}
+      </AssetLoadBoundary>
     </FilteredGroup>
   );
 };

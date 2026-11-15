@@ -19,6 +19,8 @@ import {
 } from "./layout";
 import { createRectElement } from "./shape";
 
+/** The creator for each element type: a function from one element config
+ *  to the Konva node that draws it. */
 export const elementCreators = {
   text: createTextElement,
   smartText: createSmartTextElement,
@@ -35,22 +37,4 @@ export const elementCreators = {
   tournamentIcon: createTournamentIconElement,
   backgroundImage: createBackgroundImageElement,
   playerFlag: createPlayerFlagElement,
-};
-
-export {
-  createTextElement,
-  createSmartTextElement,
-  createImageElement,
-  createCustomImageElement,
-  createSvgElement,
-  createTournamentIconElement,
-  createBackgroundImageElement,
-  createCharacterImageElement,
-  createAltCharacterImageElement,
-  createCustomAltCharacterImageElement,
-  createPlayerFlagElement,
-  createGroupElement,
-  createFlexGroupElement,
-  createFlexGridElement,
-  createRectElement,
 };

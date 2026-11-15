@@ -111,6 +111,21 @@ const GOLDEN_ONLY_TEMPLATES: PreviewTemplate[] = [
     font: "Noto Sans JP",
     players: multiCharacterPlayers,
   },
+  // Alternate-character grids: row flow (top8er) and column flow (kagaribi).
+  {
+    id: "top8er-alt-characters",
+    name: "Original, multi-character",
+    design: top8erDesign,
+    font: "Noto Sans JP",
+    players: multiCharacterPlayers,
+  },
+  {
+    id: "kagaribi-alt-characters",
+    name: "Kagaribi, multi-character",
+    design: kagaribiDesign,
+    font: "Dela Gothic One",
+    players: multiCharacterPlayers,
+  },
 ];
 
 // `?mode=golden` captures lossless half-resolution PNGs for the regression

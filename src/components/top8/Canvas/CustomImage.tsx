@@ -1,7 +1,8 @@
-import { ComponentProps, memo, useEffect, useRef } from "react";
+import { ComponentProps, memo, useCallback, useEffect, useRef } from "react";
 import { Image } from "react-konva";
 
 import { useCustomImage } from "@/hooks/top8/useCustomImage";
+import { useAssetLoad } from "@/components/top8/Canvas/AssetLoadBoundary";
 import {
   useBitmapScale,
   useRenderProfile,
@@ -51,6 +52,21 @@ const CustomImageComponent = ({
   onReadyRef.current = onReady;
   onErrorRef.current = onError;
 
+  // Registered before `useCustomImage` so a cached image that bakes
+  // synchronously is already known to the load boundary.
+  const assetLoad = useAssetLoad();
+  const handleReady = useCallback(() => {
+    assetLoad.ready();
+    onReadyRef.current?.();
+  }, [assetLoad]);
+  const handleError = useCallback(
+    (error: Error) => {
+      assetLoad.fail();
+      onErrorRef.current?.(error);
+    },
+    [assetLoad],
+  );
+
   const { cacheShadowedImages } = useRenderProfile();
   const bakeScale = useBitmapScale();
 
@@ -68,8 +84,8 @@ const CustomImageComponent = ({
     cropOffset,
     cropScale,
     bakeScale,
-    onReady: onReadyRef.current,
-    onError: onErrorRef.current,
+    onReady: handleReady,
+    onError: handleError,
   });
 
   useEffect(() => {

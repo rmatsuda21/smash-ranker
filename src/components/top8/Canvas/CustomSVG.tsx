@@ -1,6 +1,7 @@
-import { ComponentProps, memo, useRef } from "react";
+import { ComponentProps, memo, useCallback, useRef } from "react";
 import { Image } from "react-konva";
 import { useSvgImage } from "@/hooks/top8/useSvgImage";
+import { useAssetLoad } from "@/components/top8/Canvas/AssetLoadBoundary";
 
 const BACKDROP_OFFSET = 10;
 
@@ -31,11 +32,26 @@ const CustomSVGComponent = ({
   onReadyRef.current = onReady;
   onErrorRef.current = onError;
 
+  // Registered before `useSvgImage` so a cached SVG that resolves
+  // synchronously is already known to the load boundary.
+  const assetLoad = useAssetLoad();
+  const handleReady = useCallback(() => {
+    assetLoad.ready();
+    onReadyRef.current?.();
+  }, [assetLoad]);
+  const handleError = useCallback(
+    (error: Error) => {
+      assetLoad.fail();
+      onErrorRef.current?.(error);
+    },
+    [assetLoad],
+  );
+
   const [image] = useSvgImage({
     svgUrl: src,
     palette,
-    onReady: onReadyRef.current,
-    onError: onErrorRef.current,
+    onReady: handleReady,
+    onError: handleError,
   });
 
   if (!image) return null;

@@ -1,4 +1,4 @@
-import { useCallback, useMemo, memo, useRef } from "react";
+import { useCallback, useMemo, memo } from "react";
 import { Vector2d } from "konva/lib/types";
 import { KonvaEventObject } from "konva/lib/Node";
 import isEqual from "lodash/isEqual";
@@ -6,12 +6,17 @@ import isEqual from "lodash/isEqual";
 import { PlayerInfo } from "@/types/top8/Player";
 import { useCanvasStore } from "@/store/canvasStore";
 import { usePlayerStore } from "@/store/playerStore";
-import { type Design, PlayerDesign } from "@/types/top8/Design";
+import {
+  type Design,
+  type ElementConfig,
+  PlayerDesign,
+} from "@/types/top8/Design";
 import {
   useSceneFactoryContext,
   type SceneDesign,
 } from "@/components/top8/Canvas/scene/useSceneFactoryContext";
-import { createKonvaElements } from "@/utils/top8/elementFactory";
+import { ElementList } from "@/utils/top8/elementFactory";
+import { AssetLoadBoundary } from "@/components/top8/Canvas/AssetLoadBoundary";
 import { SelectableElement } from "@/components/top8/Canvas/SelectableElement";
 import { useEditorStore } from "@/store/editorStore";
 import { EditorTab } from "@/types/top8/Editor";
@@ -30,6 +35,8 @@ type Props = {
   onHoverChange?: (isHovered: boolean) => void;
 };
 
+const NO_ELEMENTS: ElementConfig[] = [];
+
 const PlayerComponent = ({
   player,
   canvasSize,
@@ -43,9 +50,6 @@ const PlayerComponent = ({
   onReady,
   onHoverChange,
 }: Props) => {
-  const onReadyRef = useRef(onReady);
-  onReadyRef.current = onReady;
-
   const dispatch = usePlayerStore((state) => state.dispatch);
   const canvasDispatch = useCanvasStore((state) => state.dispatch);
   const editorDispatch = useEditorStore((state) => state.dispatch);
@@ -113,31 +117,10 @@ const PlayerComponent = ({
     [config.size?.width, config.size?.height],
   );
 
-  const stableOnReady = useMemo(() => () => onReadyRef.current?.(), []);
   const factoryContext = useSceneFactoryContext();
-
-  const konvaElements = useMemo(
-    () =>
-      createKonvaElements(
-        config.elements ?? [],
-        {
-          ...factoryContext,
-          fontFamily,
-          player,
-          containerSize,
-          design,
-        },
-        { onAllReady: stableOnReady },
-      ),
-    [
-      config.elements,
-      factoryContext,
-      fontFamily,
-      player,
-      containerSize,
-      design,
-      stableOnReady,
-    ],
+  const elementContext = useMemo(
+    () => ({ ...factoryContext, fontFamily, player, containerSize, design }),
+    [factoryContext, fontFamily, player, containerSize, design],
   );
 
   return (
@@ -158,7 +141,12 @@ const PlayerComponent = ({
       dragBoundFunc={dragBoundFunc}
       name={player.id}
     >
-      {konvaElements}
+      <AssetLoadBoundary onAllReady={onReady}>
+        <ElementList
+          elements={config.elements ?? NO_ELEMENTS}
+          context={elementContext}
+        />
+      </AssetLoadBoundary>
     </SelectableElement>
   );
 };

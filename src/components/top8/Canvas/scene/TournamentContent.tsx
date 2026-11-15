@@ -1,11 +1,11 @@
 import { memo, useMemo } from "react";
 
-import { createKonvaElements } from "@/utils/top8/elementFactory";
+import { AssetLoadBoundary } from "@/components/top8/Canvas/AssetLoadBoundary";
+import { ElementList } from "@/utils/top8/elementFactory";
 import type { Design, ElementConfig } from "@/types/top8/Design";
 import type { TournamentInfo } from "@/types/top8/Tournament";
 
 import {
-  useLatestCallback,
   useSceneFactoryContext,
   type SceneDesign,
 } from "./useSceneFactoryContext";
@@ -20,6 +20,8 @@ type Props = {
   onReady?: () => void;
 };
 
+const NO_ELEMENTS: ElementConfig[] = [];
+
 /** The design's tournament elements (title, date, entrants, ...). Renders
  *  bare nodes; the caller decides which layer or group they live in. */
 export const TournamentContent = memo(
@@ -33,32 +35,30 @@ export const TournamentContent = memo(
     onReady,
   }: Props) => {
     const factoryContext = useSceneFactoryContext();
-    const handleReady = useLatestCallback(onReady);
 
-    return useMemo(
-      () =>
-        createKonvaElements(
-          elements ?? [],
-          {
-            ...factoryContext,
-            fontFamily,
-            tournament,
-            containerSize: canvasSize,
-            design,
-            onElementSelect,
-          },
-          { onAllReady: handleReady },
-        ),
+    const context = useMemo(
+      () => ({
+        ...factoryContext,
+        fontFamily,
+        tournament,
+        containerSize: canvasSize,
+        design,
+        onElementSelect,
+      }),
       [
-        elements,
         factoryContext,
         fontFamily,
         tournament,
         canvasSize,
         design,
         onElementSelect,
-        handleReady,
       ],
+    );
+
+    return (
+      <AssetLoadBoundary onAllReady={onReady}>
+        <ElementList elements={elements ?? NO_ELEMENTS} context={context} />
+      </AssetLoadBoundary>
     );
   },
 );

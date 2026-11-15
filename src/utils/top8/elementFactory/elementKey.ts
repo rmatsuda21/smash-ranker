@@ -1,15 +1,12 @@
 import type { ElementConfig } from "@/types/top8/Design";
 
 /**
- * React key for a created element. Prefers the author-supplied `element.id`
- * (stable across renders, unique by design contract) and falls back to
- * `${type}-${index}` only when no id is provided.
+ * React key for an element. Prefers the author-supplied `element.id` (stable
+ * across renders, unique by design contract) and falls back to
+ * `${type}-${index}` when there is none.
  *
- * The `index` MUST be unique among the parent's children — i.e. the loop
- * index from a single `createKonvaElementsInternal` call over the parent's
- * full children array. Calling that function repeatedly with single-element
- * arrays would force `index=0` for every child and collapse all fallback
- * keys onto the same value, triggering React's duplicate-key warning.
+ * The `index` must be unique among the parent's children, which is why
+ * containers render all their children through a single `ElementList`.
  */
 export const getElementKey = (
   element: Pick<ElementConfig, "id" | "type">,
