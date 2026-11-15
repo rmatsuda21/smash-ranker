@@ -1,14 +1,13 @@
 import "./_instrument.js";
 
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { readFileSync } from "fs";
-import { join } from "path";
 import { createHash } from "crypto";
 import satori from "satori";
 import { Resvg } from "@resvg/resvg-js";
 import React from "react";
 
 import { addBreadcrumb, withLogging } from "./_lib/withLogging.js";
+import { getSatoriFonts } from "./_lib/fonts.js";
 import { parseImageUrl } from "./_lib/validate.js";
 import {
   decodeInvite,
@@ -19,13 +18,6 @@ import {
 // Invite codes are short (version + platform char + compact slug); cap the
 // raw query length to bound work before decode.
 const MAX_INVITE_LENGTH = 512;
-
-const fontRegular = readFileSync(
-  join(__dirname, "fonts/MPLUSRounded1c-Regular.ttf"),
-);
-const fontBold = readFileSync(
-  join(__dirname, "fonts/MPLUSRounded1c-ExtraBold.ttf"),
-);
 
 const WIDTH = 600;
 const HEIGHT = 315;
@@ -302,10 +294,7 @@ const renderPng = async (data: CardData): Promise<Buffer> => {
   const svg = await satori(buildGraphic(data), {
     width: WIDTH,
     height: HEIGHT,
-    fonts: [
-      { name: "M PLUS Rounded 1c", data: fontRegular, weight: 400 },
-      { name: "M PLUS Rounded 1c", data: fontBold, weight: 800 },
-    ],
+    fonts: getSatoriFonts(),
   });
   addBreadcrumb("og-image", "satori_done");
 

@@ -12,18 +12,11 @@ import React from "react";
 import { BadRequestError, respondClientError } from "./_lib/errors.js";
 import { parseBase64UrlPayload, parseImageUrl } from "./_lib/validate.js";
 import { addBreadcrumb, withLogging } from "./_lib/withLogging.js";
+import { getSatoriFonts } from "./_lib/fonts.js";
 
 const MAX_PAYLOAD_BYTES = 8 * 1024;
 const MAX_PREDICTIONS = 16;
 const MAX_FIELD_LENGTH = 256;
-
-// Cached at module scope for warm starts
-const fontRegular = readFileSync(
-  join(__dirname, "fonts/MPLUSRounded1c-Regular.ttf"),
-);
-const fontBold = readFileSync(
-  join(__dirname, "fonts/MPLUSRounded1c-ExtraBold.ttf"),
-);
 
 const WIDTH = 275;
 const OUTPUT_WIDTH = 550; // 2x pixel ratio for rasterization
@@ -740,10 +733,7 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
   const svg = await satori(graphic, {
     width: WIDTH,
     height,
-    fonts: [
-      { name: "M PLUS Rounded 1c", data: fontRegular, weight: 400 },
-      { name: "M PLUS Rounded 1c", data: fontBold, weight: 800 },
-    ],
+    fonts: getSatoriFonts(),
   });
   addBreadcrumb("prediction-image", "satori_done");
 

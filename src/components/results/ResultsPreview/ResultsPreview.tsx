@@ -20,7 +20,7 @@ import type {
   SetListLayout,
   SetListStyle,
 } from "@/types/results/SetListDisplay";
-import { logEvent, logWarning } from "@/utils/observability/log";
+import { logError, logEvent, logWarning } from "@/utils/observability/log";
 
 import styles from "./ResultsPreview.module.scss";
 
@@ -240,15 +240,22 @@ export const ResultsPreview = ({ cacheRef }: Props) => {
             status: res.status,
             duration_ms: Math.round(performance.now() - startedAt),
           });
-          logWarning("results image fetch non-2xx", {
-            area: "results-render",
-            status: res.status,
-            statusText: res.statusText,
-            tournament_url: tournamentUrl,
-            videogame_id: videogameId,
-            entrant_id: entrantId,
-            player_id: playerId,
-          });
+          // The payload is built by this client, so any non-2xx is a bug on
+          // our side (a crashed function or a payload the server rejects),
+          // not bad user input. Report it as an error, not a warning.
+          logError(
+            new Error(`results image request failed with ${res.status}`),
+            {
+              area: "results-render",
+              status: res.status,
+              request_id: res.headers.get("x-vercel-id"),
+              vercel_error: res.headers.get("x-vercel-error"),
+              tournament_url: tournamentUrl,
+              videogame_id: videogameId,
+              entrant_id: entrantId,
+              player_id: playerId,
+            },
+          );
           return;
         }
 

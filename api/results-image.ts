@@ -12,18 +12,12 @@ import React from "react";
 import { BadRequestError, respondClientError } from "./_lib/errors.js";
 import { parseBase64UrlPayload, parseImageUrl } from "./_lib/validate.js";
 import { addBreadcrumb, withLogging } from "./_lib/withLogging.js";
+import { getSatoriFonts } from "./_lib/fonts.js";
 
 const MAX_PAYLOAD_BYTES = 32 * 1024;
 const MAX_SETS = 32;
 const MAX_FIELD_LENGTH = 256;
 const MAX_CHARACTERS_PER_SIDE = 4;
-
-const fontRegular = readFileSync(
-  join(__dirname, "fonts/MPLUSRounded1c-Regular.ttf"),
-);
-const fontBold = readFileSync(
-  join(__dirname, "fonts/MPLUSRounded1c-ExtraBold.ttf"),
-);
 
 // The graphic grows between these bounds to fit long player names, then
 // truncates (CSS ellipsis) past the max. Output PNG is rendered at 2×.
@@ -2464,10 +2458,7 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
   const width = computeImageWidth(body);
   const svg = await satori(graphic, {
     width,
-    fonts: [
-      { name: "M PLUS Rounded 1c", data: fontRegular, weight: 400 },
-      { name: "M PLUS Rounded 1c", data: fontBold, weight: 800 },
-    ],
+    fonts: getSatoriFonts(),
   });
   addBreadcrumb("results-image", "satori_done");
 

@@ -15,6 +15,7 @@ import { type MessageDescriptor } from "@lingui/core";
 import { usePredictionStore } from "@/store/predictionStore";
 import { ExportBar } from "@/components/predict/ExportBar/ExportBar";
 import type { PredictionPalette } from "@/types/predict/PredictionPalette";
+import { logError, logWarning } from "@/utils/observability/log";
 
 import styles from "./PredictionPreview.module.scss";
 
@@ -118,8 +119,20 @@ export const PredictionPreview = ({ cacheRef }: Props) => {
       try {
         const res = await fetch(requestUrl);
 
-        if (!res.ok || cancelled) {
-          if (!cancelled) setError(true);
+        if (cancelled) return;
+        if (!res.ok) {
+          setError(true);
+          // The payload is built by this client, so any non-2xx is a bug on
+          // our side (a crashed function or a payload the server rejects).
+          logError(
+            new Error(`prediction image request failed with ${res.status}`),
+            {
+              area: "predict-render",
+              status: res.status,
+              request_id: res.headers.get("x-vercel-id"),
+              vercel_error: res.headers.get("x-vercel-error"),
+            },
+          );
           return;
         }
 
@@ -135,8 +148,15 @@ export const PredictionPreview = ({ cacheRef }: Props) => {
 
         setBlob(result);
         setImageUrl(url);
-      } catch {
-        if (!cancelled) setError(true);
+      } catch (err) {
+        if (cancelled) return;
+        setError(true);
+        // A thrown fetch is a network condition (offline, blocked request),
+        // not a server bug, so it stays a warning.
+        logWarning("prediction image fetch threw", {
+          area: "predict-render",
+          error: err instanceof Error ? err.message : String(err),
+        });
       }
     };
 
