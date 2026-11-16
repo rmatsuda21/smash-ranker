@@ -16,18 +16,21 @@
 }
 
 .title {
-  font-size: var(--font-size-sm);
-  font-weight: 700;
-  color: var(--fg-1);
+  margin: 0;
   display: flex;
-  align-items: center;
+  align-items: baseline;
   gap: var(--space-2);
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--fg-1);
 }
 
 .count {
-  font-weight: 400;
-  color: var(--fg-4);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent-9);
 }
 
 .phases {
@@ -43,6 +46,7 @@
 }
 
 .phaseHeader {
+  margin: 0;
   display: flex;
   align-items: baseline;
   gap: var(--space-2);
@@ -51,23 +55,22 @@
 }
 
 .phaseName {
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--accent-9);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--fg-2);
 }
 
 .phaseCount {
-  font-size: 11px;
-  color: var(--fg-4);
+  font-size: var(--font-size-sm);
   font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: var(--fg-3);
 }
 
 // Per-phase W–L, pushed to the right edge of the header.
 .phaseRecord {
   margin-left: auto;
-  font-size: 11px;
+  font-size: var(--font-size-sm);
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   color: var(--fg-3);
@@ -85,7 +88,7 @@
 }
 
 .empty {
-  color: var(--fg-4);
+  color: var(--fg-3);
   font-size: var(--font-size-sm);
   text-align: center;
   padding: var(--space-5) 0;

@@ -75,33 +75,35 @@ export const ResultsWorkspace = ({
           [styles.hiddenMobile]: activeTab !== "results",
         })}
       >
-        {fetchingResults && !playerResults && (
-          <FetchingState
-            mode="inline"
-            heading={<Trans>Loading results</Trans>}
-            taglines={playerTaglines}
-          />
-        )}
-        {playerResults && (
-          <>
-            <PlayerSummary />
-            <SetList />
-            <div className={styles.generateBar}>
-              <Button
-                onClick={onGenerate}
-                loading={fetchingResults || !fallbacksReady}
-                loadingText={<Trans>Fetching opponent data...</Trans>}
-              >
-                <Trans>Generate Graphic</Trans>
-              </Button>
+        <div className={styles.resultsContent}>
+          {fetchingResults && !playerResults && (
+            <FetchingState
+              mode="inline"
+              heading={<Trans>Loading results</Trans>}
+              taglines={playerTaglines}
+            />
+          )}
+          {playerResults && (
+            <>
+              <PlayerSummary />
+              <SetList />
+              <div className={styles.generateBar}>
+                <Button
+                  onClick={onGenerate}
+                  loading={fetchingResults || !fallbacksReady}
+                  loadingText={<Trans>Fetching opponent data...</Trans>}
+                >
+                  <Trans>Generate Graphic</Trans>
+                </Button>
+              </div>
+            </>
+          )}
+          {!fetchingResults && !playerResults && (
+            <div className={styles.placeholder}>
+              <Trans>Pick a player to see their results.</Trans>
             </div>
-          </>
-        )}
-        {!fetchingResults && !playerResults && (
-          <div className={styles.placeholder}>
-            <Trans>Pick a player to see their results.</Trans>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );

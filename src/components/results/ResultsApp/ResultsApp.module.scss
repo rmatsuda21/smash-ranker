@@ -1,21 +1,18 @@
 @use "@/_theme" as *;
 
+// Same shell as /ranker and /tier: a toolbar across the top, the workspace
+// under it edge to edge.
 .root {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
-  width: 100%;
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: var(--space-5);
-  flex: 1;
-  min-height: 0;
-  overflow-y: auto;
+  background: var(--bg-surface);
+}
 
-  @include mobile {
-    padding: var(--space-3) var(--space-4) 0;
-    gap: var(--space-3);
-  }
+.landing {
+  overflow-y: auto;
 }
 
 .emptyState {
@@ -29,8 +26,9 @@
   padding: var(--space-10) var(--space-5);
 
   @include mobile {
+    --toolbar-h: 40px;
+
     padding: var(--space-6) var(--space-4);
-    overflow-y: auto;
   }
 }
 
@@ -52,26 +50,27 @@
   color: var(--fg-1);
 
   @include mobile {
-    font-size: 20px;
+    font-size: var(--title-size);
   }
 }
 
 .emptyDescription {
   font-size: var(--font-size-md);
-  color: var(--fg-4);
+  color: var(--fg-3);
   max-width: 380px;
   line-height: 1.5;
 }
 
 .emptyInput {
+  display: flex;
   width: 100%;
-  max-width: 500px;
+  max-width: 480px;
   margin-top: var(--space-2);
 }
 
 .emptyFetching {
   width: 100%;
-  max-width: 500px;
+  max-width: 480px;
   margin-top: var(--space-1);
 }
 
@@ -79,70 +78,138 @@
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  font-size: var(--font-size-xs);
-  color: var(--fg-muted);
-  margin-top: var(--space-1);
+  font-size: var(--font-size-sm);
+  color: var(--fg-4);
 }
 
 .error {
+  flex-shrink: 0;
+  margin: 0;
   color: var(--red-9, red);
   font-size: var(--font-size-sm);
-  flex-shrink: 0;
-}
 
-.workspace {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-  flex: 1;
-  min-height: 0;
-
-  @include mobile {
-    gap: var(--space-3);
+  // Under the toolbar it is a strip of its own.
+  .header + & {
+    padding: var(--space-2) var(--space-3);
+    border-bottom: 1px solid var(--border);
   }
 }
 
-.workspaceFetching {
-  pointer-events: none;
-  user-select: none;
-}
+// Tournament left, URL bar across the rest.
+.header {
+  // Shared height for every control in the bar; child components read it.
+  --toolbar-h: 34px;
 
-.tournamentHeader {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: var(--space-2);
   flex-shrink: 0;
-}
-
-.headerActions {
-  display: flex;
+  display: grid;
+  // The tournament takes the room it needs (up to 40% of the bar) and the
+  // URL field fills the rest.
+  grid-template-columns: fit-content(40%) minmax(0, 1fr);
   align-items: center;
-  gap: var(--space-2);
-  flex-shrink: 0;
+  gap: var(--space-4);
+  padding: var(--space-2) var(--space-3);
+
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border);
+
+  @include mobile {
+    // Touch-sized controls.
+    --toolbar-h: 40px;
+
+    // One row: the tournament takes what the URL field leaves.
+    grid-template-columns: minmax(0, 1fr) 128px;
+    gap: var(--space-2);
+    padding: var(--space-2);
+
+    // At rest the field is just the icon and a short prompt; Load appears
+    // once it is focused.
+    .urlInput:not(:focus-within) {
+      padding-right: var(--space-3);
+
+      button {
+        display: none;
+      }
+    }
+
+    // While the URL field is in use it gets the whole row; the tournament
+    // comes back when focus leaves it.
+    &:has(.urlInput:focus-within) {
+      grid-template-columns: minmax(0, 1fr);
+
+      .tournamentInfo {
+        display: none;
+      }
+    }
+  }
 }
 
 .tournamentInfo {
-  flex: 1;
+  justify-self: start;
   min-width: 0;
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  border-radius: var(--radius);
+  color: inherit;
+  text-decoration: none;
+
+  &:focus-visible {
+    outline: 2px solid var(--accent-9);
+    outline-offset: 2px;
+  }
+}
+
+.tournamentIcon {
+  flex-shrink: 0;
+  width: var(--toolbar-h);
+  height: var(--toolbar-h);
+  object-fit: cover;
+  border-radius: var(--radius);
+  background: var(--gray-3);
+}
+
+.tournamentText {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .tournamentName {
-  font-size: var(--title-size);
+  margin: 0;
+  font-size: var(--font-size-md);
   font-weight: 700;
+  line-height: 1.2;
   color: var(--fg-1);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 
-  @include mobile {
-    font-size: 18px;
+  a.tournamentInfo:hover & {
+    color: var(--accent-9);
   }
 }
 
-.eventName {
+.tournamentMeta {
+  margin: 0;
   font-size: var(--font-size-sm);
-  color: var(--fg-4);
-  margin-top: var(--space-1);
+  line-height: 1.2;
+  color: var(--fg-3);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.workspace {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.workspaceFetching {
+  pointer-events: none;
+  user-select: none;
 }

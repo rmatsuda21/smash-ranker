@@ -70,7 +70,7 @@ export const SetList = () => {
       <div className={styles.titleRow}>
         <h3 className={styles.title}>
           <Trans>Sets</Trans>
-          <span className={styles.count}>({playerResults.sets.length})</span>
+          <span className={styles.count}>{playerResults.sets.length}</span>
         </h3>
         <SetListDisplaySettings />
       </div>
@@ -79,7 +79,7 @@ export const SetList = () => {
           <section key={group.id} className={styles.phase}>
             <h4 className={styles.phaseHeader}>
               <span className={styles.phaseName}>{group.name}</span>
-              <span className={styles.phaseCount}>({group.sets.length})</span>
+              <span className={styles.phaseCount}>{group.sets.length}</span>
               <span className={styles.phaseRecord}>
                 {group.sets.filter((s) => s.didWin).length}–
                 {group.sets.filter((s) => !s.didWin).length}

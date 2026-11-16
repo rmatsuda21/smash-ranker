@@ -36,7 +36,7 @@ export const EntrantPicker = ({ onSelect }: Props) => {
       <div className={styles.header}>
         <h3 className={styles.title}>
           <Trans>Pick a player</Trans>
-          <span className={styles.count}>({entrantPool.length})</span>
+          <span className={styles.count}>{entrantPool.length}</span>
         </h3>
       </div>
       <Input

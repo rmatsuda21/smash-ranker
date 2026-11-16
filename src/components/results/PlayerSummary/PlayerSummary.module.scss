@@ -8,15 +8,15 @@
   gap: var(--space-3);
   padding: var(--space-3) var(--space-4);
   background: var(--gray-2);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-strong);
 }
 
 // start.gg player profile image — rounded square.
 .avatar {
   width: 44px;
   height: 44px;
-  border-radius: 8px;
+  border-radius: var(--radius);
   object-fit: cover;
   flex-shrink: 0;
   background: var(--gray-3);

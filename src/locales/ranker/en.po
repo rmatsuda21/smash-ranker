@@ -109,7 +109,7 @@ msgstr ""
 msgid "Are you sure you want to delete this asset?"
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:32
+#: src/components/results/ResultsApp/ResultsApp.tsx:31
 msgid "Asking start.gg very nicely..."
 msgstr ""
 
@@ -183,11 +183,11 @@ msgstr ""
 #~ msgid "Characters"
 #~ msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:44
+#: src/components/results/ResultsApp/ResultsApp.tsx:43
 msgid "Checking if the seed was fair..."
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:34
+#: src/components/results/ResultsApp/ResultsApp.tsx:33
 msgid "Checking who actually made it past pools..."
 msgstr ""
 
@@ -200,7 +200,6 @@ msgid "City"
 msgstr ""
 
 #: src/components/predict/PredictApp/PredictApp.tsx:145
-#: src/components/results/ResultsApp/ResultsApp.tsx:213
 #: src/components/top8/AssetSelector/AssetSelector.tsx:125
 #: src/components/top8/AssetSelector/AssetSelector.tsx:126
 msgid "Clear"
@@ -285,11 +284,11 @@ msgstr ""
 msgid "Counting the contenders..."
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:36
+#: src/components/results/ResultsApp/ResultsApp.tsx:35
 msgid "Counting the DQs so you don't have to..."
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:42
+#: src/components/results/ResultsApp/ResultsApp.tsx:41
 msgid "Counting the stocks. All of them..."
 msgstr ""
 
@@ -358,7 +357,7 @@ msgstr ""
 msgid "Date"
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:45
+#: src/components/results/ResultsApp/ResultsApp.tsx:44
 msgid "Deciding which loss was \"actually close\"..."
 msgstr ""
 
@@ -557,11 +556,11 @@ msgstr ""
 msgid "Failed to generate image"
 msgstr ""
 
-#: src/components/results/ResultsWorkspace/ResultsWorkspace.tsx:93
+#: src/components/results/ResultsWorkspace/ResultsWorkspace.tsx:94
 msgid "Fetching opponent data..."
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:43
+#: src/components/results/ResultsApp/ResultsApp.tsx:42
 msgid "Figuring out who got sent to losers..."
 msgstr ""
 
@@ -573,7 +572,7 @@ msgstr ""
 #~ msgid "Finding a font that says \"I'm cracked\"..."
 #~ msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:33
+#: src/components/results/ResultsApp/ResultsApp.tsx:32
 msgid "Finding everyone who showed up..."
 msgstr ""
 
@@ -595,7 +594,7 @@ msgid "Gamer Tag"
 msgstr ""
 
 #: src/components/predict/ActionBar/ActionBar.tsx:34
-#: src/components/results/ResultsWorkspace/ResultsWorkspace.tsx:95
+#: src/components/results/ResultsWorkspace/ResultsWorkspace.tsx:96
 msgid "Generate Graphic"
 msgstr ""
 
@@ -627,7 +626,7 @@ msgstr ""
 msgid "Home"
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:162
+#: src/components/results/ResultsApp/ResultsApp.tsx:220
 msgid "https://start.gg/tournament/.../event/..."
 msgstr ""
 
@@ -693,7 +692,8 @@ msgstr ""
 msgid "List view"
 msgstr ""
 
-#: src/components/shared/TournamentUrlInput/TournamentUrlInput.tsx:62
+#: src/components/shared/TournamentUrlInput/TournamentUrlInput.tsx:87
+#: src/components/shared/TournamentUrlInput/TournamentUrlInput.tsx:111
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:157
 msgid "Load"
 msgstr ""
@@ -727,14 +727,14 @@ msgstr ""
 msgid "Loading Configs..."
 msgstr ""
 
-#: src/components/results/ResultsWorkspace/ResultsWorkspace.tsx:81
+#: src/components/results/ResultsWorkspace/ResultsWorkspace.tsx:82
 msgid "Loading results"
 msgstr ""
 
 #: src/components/predict/PredictApp/PredictApp.tsx:106
 #: src/components/predict/PredictApp/PredictApp.tsx:158
-#: src/components/results/ResultsApp/ResultsApp.tsx:170
-#: src/components/results/ResultsApp/ResultsApp.tsx:230
+#: src/components/results/ResultsApp/ResultsApp.tsx:228
+#: src/components/results/ResultsApp/ResultsApp.tsx:283
 msgid "Loading tournament"
 msgstr ""
 
@@ -750,11 +750,11 @@ msgstr ""
 #~ msgid "Locking in the recap..."
 #~ msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:46
+#: src/components/results/ResultsApp/ResultsApp.tsx:45
 msgid "Looking for the game 5 last stock..."
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:37
+#: src/components/results/ResultsApp/ResultsApp.tsx:36
 msgid "Looking for the guy who entered as \"test\"..."
 msgstr ""
 
@@ -831,7 +831,7 @@ msgstr ""
 msgid "No preview available"
 msgstr ""
 
-#: src/components/shared/DropDownSelect/DropDownSelect.tsx:309
+#: src/components/shared/DropDownSelect/DropDownSelect.tsx:313
 msgid "No results found"
 msgstr ""
 
@@ -878,7 +878,7 @@ msgstr ""
 msgid "Output: {outputWidth} × {outputHeight} px"
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:152
+#: src/components/results/ResultsApp/ResultsApp.tsx:209
 msgid "Paste a start.gg event URL, pick a player, and generate a shareable recap of their run."
 msgstr ""
 
@@ -890,6 +890,7 @@ msgstr ""
 msgid "Paste a tournament URL to predict placements and share your picks."
 msgstr ""
 
+#: src/components/results/ResultsApp/ResultsApp.tsx:258
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:86
 msgid "Paste URL"
 msgstr ""
@@ -898,7 +899,7 @@ msgstr ""
 msgid "Pick a player"
 msgstr ""
 
-#: src/components/results/ResultsWorkspace/ResultsWorkspace.tsx:102
+#: src/components/results/ResultsWorkspace/ResultsWorkspace.tsx:103
 msgid "Pick a player to see their results."
 msgstr ""
 
@@ -980,7 +981,7 @@ msgid "Prefix"
 msgstr ""
 
 #: src/components/predict/PredictApp/PredictApp.tsx:167
-#: src/components/results/ResultsApp/ResultsApp.tsx:239
+#: src/components/results/ResultsApp/ResultsApp.tsx:292
 #: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:189
 msgid "Preview"
 msgstr ""
@@ -1005,7 +1006,7 @@ msgstr ""
 msgid "Ranker"
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:35
+#: src/components/results/ResultsApp/ResultsApp.tsx:34
 msgid "Reading the bracket upside down..."
 msgstr ""
 
@@ -1061,7 +1062,7 @@ msgstr ""
 msgid "Results"
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:41
+#: src/components/results/ResultsApp/ResultsApp.tsx:40
 msgid "Rewatching every set at 2x speed..."
 msgstr ""
 
@@ -1109,8 +1110,8 @@ msgstr ""
 msgid "Search variables…"
 msgstr ""
 
-#: src/components/shared/DropDownSelect/DropDownSelect.tsx:292
-#: src/components/shared/DropDownSelect/DropDownSelect.tsx:293
+#: src/components/shared/DropDownSelect/DropDownSelect.tsx:296
+#: src/components/shared/DropDownSelect/DropDownSelect.tsx:297
 msgid "Search..."
 msgstr ""
 
@@ -1203,7 +1204,7 @@ msgstr ""
 msgid "Square Variant"
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:177
+#: src/components/results/ResultsApp/ResultsApp.tsx:235
 msgid "start.gg only"
 msgstr ""
 
@@ -1382,7 +1383,7 @@ msgstr ""
 msgid "Tournament not found"
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:149
+#: src/components/results/ResultsApp/ResultsApp.tsx:206
 msgid "Tournament Recap"
 msgstr ""
 
@@ -1398,7 +1399,8 @@ msgstr ""
 msgid "Tournament State"
 msgstr ""
 
-#: src/components/shared/TournamentUrlInput/TournamentUrlInput.tsx:52
+#: src/components/shared/TournamentUrlInput/TournamentUrlInput.tsx:70
+#: src/components/shared/TournamentUrlInput/TournamentUrlInput.tsx:101
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:171
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:112
 #: src/consts/top8/placeholders.ts:35

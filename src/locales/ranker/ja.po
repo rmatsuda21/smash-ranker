@@ -109,7 +109,7 @@ msgstr "{0}個の素材を削除しますか？"
 msgid "Are you sure you want to delete this asset?"
 msgstr "この素材を消しますか？"
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:32
+#: src/components/results/ResultsApp/ResultsApp.tsx:31
 msgid "Asking start.gg very nicely..."
 msgstr "start.ggに丁寧にお願いしています..."
 
@@ -183,11 +183,11 @@ msgstr "Challonge APIエラー: {0}"
 #~ msgid "Characters"
 #~ msgstr "使用キャラ"
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:44
+#: src/components/results/ResultsApp/ResultsApp.tsx:43
 msgid "Checking if the seed was fair..."
 msgstr "シードが妥当だったか確認中..."
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:34
+#: src/components/results/ResultsApp/ResultsApp.tsx:33
 msgid "Checking who actually made it past pools..."
 msgstr "予選を本当に抜けた人を確認中..."
 
@@ -200,7 +200,6 @@ msgid "City"
 msgstr "市区町村"
 
 #: src/components/predict/PredictApp/PredictApp.tsx:145
-#: src/components/results/ResultsApp/ResultsApp.tsx:213
 #: src/components/top8/AssetSelector/AssetSelector.tsx:125
 #: src/components/top8/AssetSelector/AssetSelector.tsx:126
 msgid "Clear"
@@ -285,11 +284,11 @@ msgstr "人数"
 msgid "Counting the contenders..."
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:36
+#: src/components/results/ResultsApp/ResultsApp.tsx:35
 msgid "Counting the DQs so you don't have to..."
 msgstr "代わりにDQの数を数えています..."
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:42
+#: src/components/results/ResultsApp/ResultsApp.tsx:41
 msgid "Counting the stocks. All of them..."
 msgstr "ストックを数えています。全部です..."
 
@@ -358,7 +357,7 @@ msgstr "ダーク"
 msgid "Date"
 msgstr "日付"
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:45
+#: src/components/results/ResultsApp/ResultsApp.tsx:44
 msgid "Deciding which loss was \"actually close\"..."
 msgstr "どの負けが「実は惜しかった」か判定中..."
 
@@ -557,11 +556,11 @@ msgstr "大会データの取得に失敗しました"
 msgid "Failed to generate image"
 msgstr "画像の生成に失敗しました"
 
-#: src/components/results/ResultsWorkspace/ResultsWorkspace.tsx:93
+#: src/components/results/ResultsWorkspace/ResultsWorkspace.tsx:94
 msgid "Fetching opponent data..."
 msgstr "対戦相手のデータを取得中..."
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:43
+#: src/components/results/ResultsApp/ResultsApp.tsx:42
 msgid "Figuring out who got sent to losers..."
 msgstr "誰がルーザーズに落とされたか調べています..."
 
@@ -573,7 +572,7 @@ msgstr "ファイル名"
 #~ msgid "Finding a font that says \"I'm cracked\"..."
 #~ msgstr "「俺つよい」感のあるフォントを探しています..."
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:33
+#: src/components/results/ResultsApp/ResultsApp.tsx:32
 msgid "Finding everyone who showed up..."
 msgstr "会場に来た人を全員探しています..."
 
@@ -595,7 +594,7 @@ msgid "Gamer Tag"
 msgstr "選手名"
 
 #: src/components/predict/ActionBar/ActionBar.tsx:34
-#: src/components/results/ResultsWorkspace/ResultsWorkspace.tsx:95
+#: src/components/results/ResultsWorkspace/ResultsWorkspace.tsx:96
 msgid "Generate Graphic"
 msgstr "画像を生成"
 
@@ -627,7 +626,7 @@ msgstr "グリッド表示"
 msgid "Home"
 msgstr "ホーム"
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:162
+#: src/components/results/ResultsApp/ResultsApp.tsx:220
 msgid "https://start.gg/tournament/.../event/..."
 msgstr "https://start.gg/tournament/.../event/..."
 
@@ -693,7 +692,8 @@ msgstr "ライト"
 msgid "List view"
 msgstr "リスト表示"
 
-#: src/components/shared/TournamentUrlInput/TournamentUrlInput.tsx:62
+#: src/components/shared/TournamentUrlInput/TournamentUrlInput.tsx:87
+#: src/components/shared/TournamentUrlInput/TournamentUrlInput.tsx:111
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:157
 msgid "Load"
 msgstr "取得"
@@ -727,14 +727,14 @@ msgstr "キャラクター読み込み中"
 msgid "Loading Configs..."
 msgstr "読み込み中..."
 
-#: src/components/results/ResultsWorkspace/ResultsWorkspace.tsx:81
+#: src/components/results/ResultsWorkspace/ResultsWorkspace.tsx:82
 msgid "Loading results"
 msgstr "リザルト読み込み中"
 
 #: src/components/predict/PredictApp/PredictApp.tsx:106
 #: src/components/predict/PredictApp/PredictApp.tsx:158
-#: src/components/results/ResultsApp/ResultsApp.tsx:170
-#: src/components/results/ResultsApp/ResultsApp.tsx:230
+#: src/components/results/ResultsApp/ResultsApp.tsx:228
+#: src/components/results/ResultsApp/ResultsApp.tsx:283
 msgid "Loading tournament"
 msgstr "大会読み込み中"
 
@@ -750,11 +750,11 @@ msgstr ""
 #~ msgid "Locking in the recap..."
 #~ msgstr "リザルトを確定中..."
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:46
+#: src/components/results/ResultsApp/ResultsApp.tsx:45
 msgid "Looking for the game 5 last stock..."
 msgstr "5戦目ラストストックの名場面を探しています..."
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:37
+#: src/components/results/ResultsApp/ResultsApp.tsx:36
 msgid "Looking for the guy who entered as \"test\"..."
 msgstr "「test」で登録した人を探しています..."
 
@@ -831,7 +831,7 @@ msgstr "プレイヤーが見つかりません"
 msgid "No preview available"
 msgstr "プレビューを表示できません"
 
-#: src/components/shared/DropDownSelect/DropDownSelect.tsx:309
+#: src/components/shared/DropDownSelect/DropDownSelect.tsx:313
 msgid "No results found"
 msgstr "該当する結果がありません"
 
@@ -878,7 +878,7 @@ msgstr "元コンセプトとインスピレーション"
 msgid "Output: {outputWidth} × {outputHeight} px"
 msgstr "出力: {outputWidth} × {outputHeight} px"
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:152
+#: src/components/results/ResultsApp/ResultsApp.tsx:209
 msgid "Paste a start.gg event URL, pick a player, and generate a shareable recap of their run."
 msgstr "start.ggのイベントURLを貼り付けて選手を選び、共有できるリザルト画像を作成しよう。"
 
@@ -890,6 +890,7 @@ msgstr "大会URLを貼り付け"
 msgid "Paste a tournament URL to predict placements and share your picks."
 msgstr "大会URLを貼り付けて順位を予想し、予想を共有しましょう。"
 
+#: src/components/results/ResultsApp/ResultsApp.tsx:258
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:86
 msgid "Paste URL"
 msgstr "大会URL"
@@ -898,7 +899,7 @@ msgstr "大会URL"
 msgid "Pick a player"
 msgstr "選手を選択"
 
-#: src/components/results/ResultsWorkspace/ResultsWorkspace.tsx:102
+#: src/components/results/ResultsWorkspace/ResultsWorkspace.tsx:103
 msgid "Pick a player to see their results."
 msgstr "選手を選んでリザルトを表示。"
 
@@ -980,7 +981,7 @@ msgid "Prefix"
 msgstr "所属"
 
 #: src/components/predict/PredictApp/PredictApp.tsx:167
-#: src/components/results/ResultsApp/ResultsApp.tsx:239
+#: src/components/results/ResultsApp/ResultsApp.tsx:292
 #: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:189
 msgid "Preview"
 msgstr "プレビュー"
@@ -1005,7 +1006,7 @@ msgstr "品質"
 msgid "Ranker"
 msgstr "リザルト作成"
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:35
+#: src/components/results/ResultsApp/ResultsApp.tsx:34
 msgid "Reading the bracket upside down..."
 msgstr "トーナメント表を逆さまに読んでいます..."
 
@@ -1061,7 +1062,7 @@ msgstr "アプリ初期化"
 msgid "Results"
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:41
+#: src/components/results/ResultsApp/ResultsApp.tsx:40
 msgid "Rewatching every set at 2x speed..."
 msgstr "全セットを2倍速で見返しています..."
 
@@ -1109,8 +1110,8 @@ msgstr "プレイヤーを検索..."
 msgid "Search variables…"
 msgstr "変数を検索…"
 
-#: src/components/shared/DropDownSelect/DropDownSelect.tsx:292
-#: src/components/shared/DropDownSelect/DropDownSelect.tsx:293
+#: src/components/shared/DropDownSelect/DropDownSelect.tsx:296
+#: src/components/shared/DropDownSelect/DropDownSelect.tsx:297
 msgid "Search..."
 msgstr "検索..."
 
@@ -1203,7 +1204,7 @@ msgstr "容量"
 msgid "Square Variant"
 msgstr "スクエアバリアント"
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:177
+#: src/components/results/ResultsApp/ResultsApp.tsx:235
 msgid "start.gg only"
 msgstr "start.gg のみ対応"
 
@@ -1382,7 +1383,7 @@ msgstr "大会名"
 msgid "Tournament not found"
 msgstr "大会が見つかりませんでした"
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:149
+#: src/components/results/ResultsApp/ResultsApp.tsx:206
 msgid "Tournament Recap"
 msgstr "大会振り返り"
 
@@ -1398,7 +1399,8 @@ msgstr "大会リザルト画像"
 msgid "Tournament State"
 msgstr "大会都道府県"
 
-#: src/components/shared/TournamentUrlInput/TournamentUrlInput.tsx:52
+#: src/components/shared/TournamentUrlInput/TournamentUrlInput.tsx:70
+#: src/components/shared/TournamentUrlInput/TournamentUrlInput.tsx:101
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:171
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:112
 #: src/consts/top8/placeholders.ts:35

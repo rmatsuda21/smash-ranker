@@ -1,29 +1,39 @@
 @use "@/_theme" as *;
 
+// Same trigger as the popover buttons in the tier list design bar.
 .trigger {
+  box-sizing: border-box;
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  height: 28px;
-  padding: 0 var(--space-3);
+  height: 30px;
+  padding: 0 var(--space-2);
   border: 1px solid var(--border-strong);
   border-radius: var(--radius);
-  background: transparent;
+  background-color: var(--bg-raised);
   color: var(--fg-2);
-  font: inherit;
-  font-size: var(--font-size-xs);
-  font-weight: 600;
+  font-family: inherit;
+  font-size: var(--font-size-sm);
+  font-weight: 700;
   cursor: pointer;
   transition:
-    background var(--duration-base) var(--ease-standard),
-    color var(--duration-base) var(--ease-standard),
-    border-color var(--duration-base) var(--ease-standard);
+    background-color var(--duration-fast) var(--ease-in-out),
+    border-color var(--duration-fast) var(--ease-in-out),
+    color var(--duration-fast) var(--ease-in-out);
 
   &:hover,
   &[aria-expanded="true"] {
-    background: var(--gray-3);
+    background-color: var(--gray-4);
     color: var(--fg-1);
-    border-color: var(--gray-6);
+  }
+
+  &[aria-expanded="true"] {
+    border-color: var(--accent-7);
+  }
+
+  @include mobile {
+    height: 36px;
+    padding: 0 var(--space-3);
   }
 
   &:focus-visible {
@@ -52,8 +62,9 @@
 }
 
 .sectionLabel {
-  font-size: 12px;
-  font-weight: 600;
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  line-height: 1.2;
   color: var(--fg-3);
   padding: 0 var(--space-1);
 }
@@ -72,7 +83,7 @@
   width: 100%;
   padding: var(--space-2) var(--space-2);
   border: 1px solid transparent;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius);
   background: none;
   color: var(--fg-2);
   font: inherit;
@@ -83,7 +94,7 @@
     border-color var(--duration-base) var(--ease-standard);
 
   &:hover {
-    background: var(--gray-3);
+    background: var(--gray-4);
   }
 
   &:focus-visible {
@@ -92,8 +103,8 @@
   }
 
   &.active {
-    background: var(--accent-2);
-    border-color: var(--accent-6);
+    background: var(--accent-3);
+    border-color: var(--accent-7);
     color: var(--fg-1);
 
     .layoutIcon {
@@ -109,8 +120,8 @@
   width: 28px;
   height: 28px;
   border-radius: var(--radius-sm);
-  background: var(--gray-3);
-  color: var(--fg-3);
+  background: var(--gray-5);
+  color: var(--fg-2);
   font-size: 13px;
   flex-shrink: 0;
 }
@@ -123,13 +134,13 @@
 }
 
 .layoutName {
-  font-size: 13px;
+  font-size: var(--font-size-sm);
   font-weight: 600;
 }
 
 .layoutHint {
-  font-size: 11px;
-  color: var(--fg-4);
+  font-size: var(--font-size-xs);
+  color: var(--fg-3);
 }
 
 // Style: a 2×2 grid of swatches that preview the card treatment.
@@ -146,7 +157,7 @@
   gap: var(--space-2);
   padding: var(--space-2);
   border: 1px solid transparent;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius);
   background: none;
   color: var(--fg-2);
   font: inherit;
@@ -156,7 +167,7 @@
     border-color var(--duration-base) var(--ease-standard);
 
   &:hover {
-    background: var(--gray-3);
+    background: var(--gray-4);
   }
 
   &:focus-visible {
@@ -165,14 +176,14 @@
   }
 
   &.active {
-    background: var(--accent-2);
-    border-color: var(--accent-6);
+    background: var(--accent-3);
+    border-color: var(--accent-7);
     color: var(--fg-1);
   }
 }
 
 .styleName {
-  font-size: 12px;
+  font-size: var(--font-size-sm);
   font-weight: 600;
   text-align: center;
 }

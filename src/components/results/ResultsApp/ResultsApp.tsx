@@ -6,7 +6,6 @@ import { useLingui } from "@lingui/react";
 import { type MessageDescriptor } from "@lingui/core";
 import { FaChartLine } from "react-icons/fa6";
 
-import { Button } from "@/components/shared/Button/Button";
 import { Modal } from "@/components/shared/Modal/Modal";
 import { TournamentUrlInput } from "@/components/shared/TournamentUrlInput/TournamentUrlInput";
 import { FetchingState } from "@/components/shared/FetchingState/FetchingState";
@@ -46,9 +45,53 @@ const PLAYER_TAGLINES: MessageDescriptor[] = [
   msg`Looking for the game 5 last stock...`,
 ];
 
+type TournamentIdentityProps = {
+  href: string;
+  iconUrl: string;
+  name: string;
+  meta: string;
+};
+
+// Which tournament is loaded: icon, name, then event and date. Links to the
+// tournament page when its URL is known.
+const TournamentIdentity = ({
+  href,
+  iconUrl,
+  name,
+  meta,
+}: TournamentIdentityProps) => {
+  const content = (
+    <>
+      {iconUrl && (
+        <img className={styles.tournamentIcon} src={iconUrl} alt="" />
+      )}
+      <div className={styles.tournamentText}>
+        <h2 className={styles.tournamentName}>{name}</h2>
+        {meta && <p className={styles.tournamentMeta}>{meta}</p>}
+      </div>
+    </>
+  );
+
+  return href ? (
+    <a
+      className={styles.tournamentInfo}
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+    >
+      {content}
+    </a>
+  ) : (
+    <div className={styles.tournamentInfo}>{content}</div>
+  );
+};
+
 export const ResultsApp = () => {
   const tournamentName = useResultsStore((s) => s.tournamentName);
   const eventName = useResultsStore((s) => s.eventName);
+  const tournamentDate = useResultsStore((s) => s.tournamentDate);
+  const tournamentUrl = useResultsStore((s) => s.tournamentUrl);
+  const tournamentIconUrl = useResultsStore((s) => s.tournamentIconUrl);
   const entrantPool = useResultsStore((s) => s.entrantPool);
   const error = useResultsStore((s) => s.error);
   const fetchingPool = useResultsStore((s) => s.fetchingPool);
@@ -61,7 +104,7 @@ export const ResultsApp = () => {
   const { fetchFallback } = useFetchPlayerFallbackCharacter();
   const videogameId = useResultsStore((s) => s.videogameId);
   const fallbackCharacters = useResultsStore((s) => s.fallbackCharacters);
-  const { _ } = useLingui();
+  const { _, i18n } = useLingui();
 
   const [previewOpen, setPreviewOpen] = useState(false);
   const previewCacheRef = useRef<ResultsPreviewCache | null>(null);
@@ -138,9 +181,23 @@ export const ResultsApp = () => {
 
   const hasData = entrantPool.length > 0;
 
+  const formattedDate = useMemo(() => {
+    if (!tournamentDate) return "";
+    const date = new Date(tournamentDate);
+    if (Number.isNaN(date.getTime())) return "";
+    return new Intl.DateTimeFormat(i18n.locale, { dateStyle: "medium" }).format(
+      date,
+    );
+  }, [tournamentDate, i18n.locale]);
+  const tournamentMeta = [eventName, formattedDate].filter(Boolean).join(" · ");
+
+  // On a phone the field shares the toolbar row with the tournament until it
+  // is focused, and only has room for a couple of words.
+  const isNarrow = window.matchMedia("(max-width: 768px)").matches;
+
   if (!hasData) {
     return (
-      <div className={styles.root}>
+      <div className={cn(styles.root, styles.landing)}>
         <div className={styles.emptyState}>
           <div className={styles.emptyIcon}>
             <FaChartLine />
@@ -159,6 +216,7 @@ export const ResultsApp = () => {
               onLoad={fetchEntrants}
               isFetching={fetchingPool}
               inputId="results-tournament-url"
+              variant="pill"
               placeholder={_(msg`https://start.gg/tournament/.../event/...`)}
             />
           </div>
@@ -184,11 +242,22 @@ export const ResultsApp = () => {
 
   return (
     <div className={styles.root}>
-      <TournamentUrlInput
-        onLoad={fetchEntrants}
-        isFetching={fetchingPool}
-        inputId="results-tournament-url"
-      />
+      <header className={styles.header}>
+        <TournamentIdentity
+          href={tournamentUrl}
+          iconUrl={tournamentIconUrl}
+          name={tournamentName}
+          meta={tournamentMeta}
+        />
+        <TournamentUrlInput
+          className={styles.urlInput}
+          onLoad={fetchEntrants}
+          isFetching={fetchingPool}
+          inputId="results-tournament-url"
+          variant="pill"
+          placeholder={isNarrow ? _(msg`Paste URL`) : undefined}
+        />
+      </header>
 
       {error && <p className={styles.error}>{error}</p>}
 
@@ -199,22 +268,6 @@ export const ResultsApp = () => {
         )}
         aria-busy={fetchingPool}
       >
-        <div className={styles.tournamentHeader}>
-          <div className={styles.tournamentInfo}>
-            <h2 className={styles.tournamentName}>{tournamentName}</h2>
-            {eventName && <p className={styles.eventName}>{eventName}</p>}
-          </div>
-          <div className={styles.headerActions}>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => dispatch({ type: "RESET" })}
-            >
-              <Trans>Clear</Trans>
-            </Button>
-          </div>
-        </div>
-
         <ResultsWorkspace
           onSelectEntrant={handleSelect}
           onGenerate={handleGenerate}
