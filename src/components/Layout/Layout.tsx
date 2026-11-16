@@ -1,5 +1,6 @@
 import { useCallback, useRef, useState } from "react";
 import { FaGear } from "react-icons/fa6";
+import { Link } from "wouter";
 
 import { useDismissOnEscape } from "@/hooks/useDismiss";
 
@@ -8,6 +9,8 @@ import { NavOverlay } from "./NavOverlay/NavOverlay";
 import { SettingsModal } from "./SettingsModal/SettingsModal";
 import { StockConfetti } from "./StockConfetti/StockConfetti";
 import { useDateBasedEgg } from "@/hooks/useDateBasedEgg";
+import { UserAvatar } from "@/components/user/UserAvatar/UserAvatar";
+import { useAuthUser } from "@/store/authStore";
 
 import styles from "./Layout.module.scss";
 const LOGO_EFFECTS = [
@@ -23,6 +26,7 @@ const BURST_THRESHOLD = 10;
 const BURST_COOLDOWN_MS = 8000;
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {
+  const user = useAuthUser();
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
@@ -97,6 +101,16 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
           <span className={styles.betaTag}>beta</span>
         </div>
         <div className={styles.actions}>
+          {user && (
+            <Link
+              href="/me"
+              className={styles.profileLink}
+              aria-label={user.gamerTag}
+              onClick={closeNav}
+            >
+              <UserAvatar user={user} size={26} />
+            </Link>
+          )}
           <button
             className={styles.gearButton}
             onClick={openSettings}

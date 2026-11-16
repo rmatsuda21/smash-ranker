@@ -6,6 +6,9 @@ const characterById = new Map<string, CharacterEntry>(
   characters.map((c) => [c.id, c]),
 );
 
+export const isKnownCharacter = (characterId: string): boolean =>
+  characterById.has(characterId);
+
 export const getCharacterDisplayName = (
   characterId: string,
   locale: string,

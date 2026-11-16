@@ -70,6 +70,22 @@
   gap: var(--space-1);
 }
 
+.profileLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  transition: box-shadow var(--duration-base) var(--ease-standard);
+
+  &:hover,
+  &:focus-visible {
+    box-shadow: 0 0 0 2px var(--accent-9);
+    outline: none;
+  }
+}
+
 .gearButton {
   display: flex;
   align-items: center;

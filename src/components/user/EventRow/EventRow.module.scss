@@ -1,0 +1,195 @@
+@use "@/_theme" as *;
+
+.row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  padding: var(--space-3);
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  transition:
+    border-color var(--duration-slow) var(--ease-in-out),
+    background var(--duration-slow) var(--ease-in-out);
+
+  &:hover {
+    border-color: var(--brand-outline);
+    background: var(--bg-raised);
+  }
+}
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--brand-softer);
+  color: var(--brand);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.text {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+// Text wraps rather than being cut off: the name is what the user is
+// scanning for, and the end of the meta line is where the event was.
+.name {
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  color: var(--fg-1);
+  line-height: 1.25;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+.meta {
+  font-size: var(--font-size-sm);
+  color: var(--fg-3);
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.placement {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-pill);
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  color: var(--fg-2);
+  font-size: var(--font-size-sm);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+
+  strong {
+    font-weight: 800;
+    color: var(--fg-1);
+  }
+
+  &.gold {
+    border-color: var(--medal-gold);
+    strong {
+      color: var(--medal-gold);
+    }
+  }
+
+  &.silver {
+    border-color: var(--medal-silver);
+  }
+
+  &.bronze {
+    border-color: var(--medal-bronze);
+    strong {
+      color: var(--medal-bronze);
+    }
+  }
+
+  &.upcoming {
+    color: var(--brand-text);
+    border-color: var(--brand-outline);
+    font-weight: 600;
+  }
+
+  // Gold on a white surface is unreadable.
+  [data-theme="light"] &.gold strong,
+  [data-theme="light"] &.bronze strong {
+    color: var(--fg-1);
+  }
+}
+
+.outOf {
+  color: var(--fg-3);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.action {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: 28px;
+  padding: 0 var(--space-3);
+  border-radius: var(--radius);
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--fg-1);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background-color var(--duration-base) var(--ease-standard),
+    border-color var(--duration-base) var(--ease-standard),
+    color var(--duration-base) var(--ease-standard);
+
+  svg {
+    font-size: 0.9em;
+    color: var(--brand);
+  }
+
+  &:hover {
+    border-color: var(--brand);
+    background: var(--brand-softer);
+  }
+
+  &.primary {
+    border-color: var(--brand);
+  }
+}
+
+.lg .action {
+  height: 36px;
+  padding: 0 var(--space-4);
+  font-size: var(--font-size-md);
+
+  &.primary {
+    background: var(--brand);
+    color: #fff;
+
+    svg {
+      color: inherit;
+    }
+
+    &:hover {
+      background: var(--brand-hover);
+      border-color: var(--brand-hover);
+    }
+  }
+}
+
+@include mobile {
+  .row {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+
+  .row > .actions {
+    grid-column: 1 / -1;
+  }
+
+  .action {
+    height: 36px;
+    flex: 1;
+    justify-content: center;
+  }
+}

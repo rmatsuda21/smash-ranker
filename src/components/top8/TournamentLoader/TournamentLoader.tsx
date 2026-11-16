@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import cn from "classnames";
 import { msg } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
@@ -13,7 +13,8 @@ import { usePlayerStore } from "@/store/playerStore";
 import { useTournamentStore } from "@/store/tournamentStore";
 import { PREF_KEYS } from "@/consts/prefKeys";
 import { useConfirmation } from "@/hooks/useConfirmation";
-import { detectPlatformAndSlug } from "@/consts/platforms";
+import { detectPlatformAndSlug, slugToUrl } from "@/consts/platforms";
+import { clearToolLink, readToolLink } from "@/utils/user/toolLinks";
 import { logEvent } from "@/utils/observability/log";
 
 import styles from "./TournamentLoader.module.scss";
@@ -29,7 +30,12 @@ type Props = {
 
 export const TournamentLoader = ({ className }: Props) => {
   const { _ } = useLingui();
-  const [url, setUrl] = useState("");
+  // Arriving from a "Top 8 graphic" link (home page, profile) starts with
+  // that event's URL filled in and asks to load it.
+  const [url, setUrl] = useState(() => {
+    const link = readToolLink();
+    return link ? slugToUrl("startgg", link.slug) : "";
+  });
   const inputRef = useRef<HTMLInputElement>(null);
   const [isFocused, setIsFocused] = useState(false);
 
@@ -78,6 +84,17 @@ export const TournamentLoader = ({ className }: Props) => {
       ),
       rememberKey: PREF_KEYS.NEEDS_TOURNAMENT_LOAD_CONFIRMATION,
     });
+
+  const didAutoLoadRef = useRef(false);
+  useEffect(() => {
+    if (didAutoLoadRef.current) return;
+    didAutoLoadRef.current = true;
+    if (!readToolLink()) return;
+    clearToolLink();
+    if (isValid) confirmLoad();
+    // Runs once, for the link the page was opened with.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // On a phone the field shares the toolbar row until it is focused, and
   // only has room for a few words.

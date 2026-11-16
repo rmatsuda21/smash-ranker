@@ -1,5 +1,6 @@
-import { useCallback, useRef } from "react";
+import { lazy, Suspense, useCallback, useRef } from "react";
 import { Link } from "wouter";
+import cn from "classnames";
 import { Trans } from "@lingui/react/macro";
 import {
   FaTrophy,
@@ -13,14 +14,25 @@ import { useFeatureFlag } from "@/hooks/useFeatureFlags";
 import { Card } from "@/components/shared/Card/Card";
 import { Badge } from "@/components/shared/Badge/Badge";
 import { SiteFooter } from "@/components/shared/SiteFooter/SiteFooter";
+import { LoginPrompt } from "@/components/home/LoginPrompt/LoginPrompt";
+import { useAuthUser } from "@/store/authStore";
 
 import styles from "./home.module.scss";
+
+// Only logged-in users need it, and it brings the start.gg client along.
+const RecentTournaments = lazy(() =>
+  import("@/components/home/RecentTournaments/RecentTournaments").then((m) => ({
+    default: m.RecentTournaments,
+  })),
+);
 
 export const Home = () => {
   const orb1Ref = useRef<HTMLDivElement>(null);
   const orb2Ref = useRef<HTMLDivElement>(null);
   const thumbnailEnabled = useFeatureFlag("thumbnail-enabled");
   const resultsEnabled = useFeatureFlag("results-enabled");
+  const user = useAuthUser();
+  const gamerTag = user?.gamerTag;
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     const { clientWidth, clientHeight } = e.currentTarget;
@@ -36,11 +48,14 @@ export const Home = () => {
   }, []);
 
   return (
-    <div className={styles.root} onMouseMove={handleMouseMove}>
+    <div
+      className={cn(styles.root, user && styles.rootWide)}
+      onMouseMove={handleMouseMove}
+    >
       <div ref={orb1Ref} className={styles.orb1} aria-hidden="true" />
       <div ref={orb2Ref} className={styles.orb2} aria-hidden="true" />
 
-      <section className={styles.hero}>
+      <section className={cn(styles.hero, user && styles.heroCompact)}>
         <div className={styles.heroContent}>
           <div className={styles.logoWrap}>
             <div className={styles.blob} aria-hidden="true" />
@@ -49,11 +64,28 @@ export const Home = () => {
           <h1 className={styles.title}>
             Smash <span className={styles.accentText}>Ranker</span>
           </h1>
-          <p className={styles.tagline}>
-            <Trans>Your one-stop site for Smash Bros graphics!</Trans>
-          </p>
+          {user ? (
+            <p className={styles.tagline}>
+              <Trans>
+                Welcome back, <strong>{gamerTag}</strong>
+              </Trans>
+            </p>
+          ) : (
+            <>
+              <p className={styles.tagline}>
+                <Trans>Your one-stop site for Smash Bros graphics!</Trans>
+              </p>
+              <LoginPrompt />
+            </>
+          )}
         </div>
       </section>
+
+      {user && (
+        <Suspense>
+          <RecentTournaments />
+        </Suspense>
+      )}
 
       <section className={styles.tools}>
         <h2 className={styles.sectionTitle}>

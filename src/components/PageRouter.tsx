@@ -12,6 +12,8 @@ const PredictPage = lazy(() => import("@/pages/predict"));
 const ResultsPage = lazy(() => import("@/pages/results"));
 const ThumbnailPage = lazy(() => import("@/pages/thumbnail"));
 const TosPage = lazy(() => import("@/pages/tos"));
+const MePage = lazy(() => import("@/pages/me"));
+const OAuthCallbackPage = lazy(() => import("@/pages/oauthCallback"));
 
 export const PageRouter = () => {
   const thumbnailEnabled = useFeatureFlag("thumbnail-enabled");
@@ -49,6 +51,16 @@ export const PageRouter = () => {
           </Suspense>
         </Route>
       )}
+      <Route path="/me">
+        <Suspense>
+          <MePage />
+        </Suspense>
+      </Route>
+      <Route path="/oauth/callback">
+        <Suspense>
+          <OAuthCallbackPage />
+        </Suspense>
+      </Route>
       <Route path="/tos">
         <Suspense>
           <TosPage />

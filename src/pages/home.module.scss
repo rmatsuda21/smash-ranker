@@ -119,6 +119,21 @@
   overflow: hidden auto;
   gap: var(--space-10);
   padding-bottom: var(--space-2);
+
+  // Width of the page's content column; RecentTournaments reads it too.
+  --home-width: 700px;
+}
+
+// Logged in there is more to show (the user's tournaments beside each
+// other, every tool in one row), so the column widens on desktop.
+.rootWide {
+  @include wide {
+    --home-width: 1200px;
+
+    .cardGrid {
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    }
+  }
 }
 
 // ==========================================
@@ -238,6 +253,38 @@
   font-weight: 400;
   color: var(--fg-3);
   max-width: 400px;
+
+  strong {
+    color: var(--fg-1);
+    font-weight: 700;
+  }
+}
+
+// Logged in: the hero steps back so the user's tournaments lead the page.
+.heroCompact {
+  padding-top: var(--space-6);
+
+  .heroContent {
+    gap: var(--space-2);
+  }
+
+  .logoWrap {
+    width: 56px;
+    height: 56px;
+  }
+
+  .heroLogo {
+    width: 44px;
+    height: 44px;
+  }
+
+  .title {
+    font-size: var(--display-md);
+  }
+
+  .tagline {
+    font-size: var(--font-size-lg);
+  }
 }
 
 // ==========================================
@@ -252,7 +299,7 @@
   align-items: center;
   gap: var(--space-5);
   width: 100%;
-  max-width: 700px;
+  max-width: var(--home-width);
   padding: 0 var(--space-5);
 }
 

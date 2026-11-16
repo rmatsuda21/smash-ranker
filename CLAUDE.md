@@ -8,6 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ```bash
 bun dev              # Start dev server (Vite, port 5173)
+bun run dev:https    # Dev server on https://local.smash-ranker.app:5173 (mkcert certificate in `.certs/`; needs a hosts entry to 127.0.0.1) — the address for testing start.gg login
 bun run dev:vercel   # Start dev server via Vercel CLI (enables serverless functions)
 bun run build            # Production build (tsc + vite build)
 bun run build:analyze    # Build with bundle size analysis
@@ -45,7 +46,7 @@ No test runner is configured. Use `bun lint` and `bun build` to validate changes
 
 - `src/App.tsx` — Root with urql GraphQL provider + Lingui i18n provider
 - `src/components/PageRouter.tsx` — Wouter-based routing. Lazy-loads `/tier`, `/predict`, `/results`, and `/thumbnail` via `React.lazy` + `Suspense`.
-- Routes: `/` → home; `/ranker` → main Top 8 editor; `/tier` → tier list maker; `/predict` → tournament prediction maker; `/results` → per-player tournament recap (gated by the `results-enabled` feature flag); `/thumbnail` → thumbnail/graphic editor (gated by the `thumbnail-enabled` feature flag).
+- Routes: `/` → home (shows the user's recent tournaments when logged in); `/me` → logged-in user's profile (stats + every tournament entered); `/oauth/callback` → start.gg login return; `/ranker` → main Top 8 editor; `/tier` → tier list maker; `/predict` → tournament prediction maker; `/results` → per-player tournament recap (gated by the `results-enabled` feature flag); `/thumbnail` → thumbnail/graphic editor (gated by the `thumbnail-enabled` feature flag).
 
 ### State Management (Zustand)
 
@@ -62,6 +63,21 @@ All stores live in `src/store/` and use Zustand's persist middleware (localStora
 - **resultsStore** — `/results` state: tournament metadata, entrant pool, selected entrant, `playerResults` (placement, W-L, set list), separate `fetchingPool` and `fetchingResults` flags. Reducer-based.
 - **thumbnailStore** — `/thumbnail` design state: `ThumbnailDesign` element tree (groups + leaves). Reducer-based with custom history integration via `historyStore`.
 - **thumbnailEditorStore** — `/thumbnail` UI state (not persisted): selection, hover, zoom/pan, grid/snap settings, active sidebar tab, Konva `Stage` ref.
+
+### start.gg Login & Profile (`/me`)
+
+Users can log in with start.gg (OAuth authorization-code flow, scope `user.identity`). Logging in changes the home page (their latest tournaments with one-click links into the tools), adds `/me`, and makes every start.gg request go out with the user's own token.
+
+- **Flow** — `LoginPrompt` (`src/components/home/LoginPrompt/`) calls `startLogin()` (`src/utils/auth/oauth.ts`) → start.gg → `/oauth/callback` (`src/pages/oauthCallback.tsx`) → `completeLogin()` POSTs the code to `/api/auth`, which holds the client secret. The redirect URI is always `<origin>/oauth/callback` and must be registered on the start.gg application. The login button is hidden when `VITE_START_GG_CLIENT_ID` is unset.
+- **Tokens** — the access token (7 days) is returned to the browser and kept in `authStore` (persisted), because the browser calls start.gg directly. The refresh token lives only in an HttpOnly, SameSite=Strict cookie scoped to `/api/auth`. `src/utils/auth/session.ts` renews the session on app start when it is within two days of expiry.
+- **Shared client** — `src/utils/startgg/client.ts` exports the one urql client used by `/ranker`, `/predict`, `/results` and the profile fetchers. It sends the user's token when there is a valid one and `VITE_START_GG_TOKEN` otherwise; if start.gg rejects the user's token (it answers 400 "Invalid authentication token", not 401) it refreshes once and then falls back to the app token. **Do not create another start.gg client.**
+- **Never query `currentUser` through the shared client** — after a fallback it would describe the app token's owner. `fetchCurrentUser` uses a bare fetch with the explicit token; everything else looks the user up by `user(slug:)`.
+- **Data** — `src/utils/user/`: `fetchUserEvents.ts` (`user.events` with `userEntrant(userId)` for seed/placement; 60 per page ≈ 420 complexity), `fetchUserSets.ts` (`player.sets` with per-game picks; keep pages under 50), `careerStats.ts` (pure: `computeCareerStats`, `computeSetStats`), `toolLinks.ts`. Hooks in `src/hooks/user/`.
+- **Tool links** — `rankerLink(slug)` → `/ranker?s=<event slug>` (read by `TournamentLoader`, which asks before loading), `recapLink(slug, entrantId)` → `/results?s=…&e=…` (read by `ResultsApp`, which loads the event and selects the entrant), `predictLink(slug)` → the existing `/predict?d=` invite. The parameters are removed from the address bar once acted on.
+- **Components** — `src/components/user/`: `UserPage` (header, stats, list), `StatsBoard` (animated stat tiles; rendered only once all events are loaded so numbers count up once), `EventList` (search + show more), `EventRow` (shared with the home page's `RecentTournaments`), `UserAvatar`. An account with no tournaments gets `EmptyProfile` in place of the stats and list.
+- **Layout** — the page is up to 1280px wide. `StatsBoard` is a 6-column grid on desktop (four single tiles + one double, then rows of three doubles, so rows end flush), 4 columns up to 1100px, 2 on a phone; keep the tile order and spans consistent with that when adding a tile. `EventList` is two columns from 1200px.
+- **Back navigation** — scroll position, the search text and how many tournaments "Show more" had revealed are stored on the page's own history entry (`src/utils/user/pageMemory.ts`, `useScrollMemory`), so Back returns to the same tournament while a fresh visit starts at the top. Scroll is restored once the page has its final height (events loaded, set tiles settled).
+- **Tournament icons** are requested with `crossOrigin="anonymous"` (falling back to a plain request on error): the ranker later `fetch`es the same file, and a copy cached without CORS headers makes that fetch fail.
 
 ### Tier List (`/tier`)
 
@@ -214,7 +230,7 @@ Tournament data can be loaded from **start.gg**, **Challonge**, or **Tonamel**. 
 - **Challonge** — REST API v1 (`https://api.challonge.com/v1`) proxied through a Vercel serverless function (`api/challonge.ts`) to keep the API key server-side. Hook: `src/hooks/top8/useFetchChallonge.ts`. Uses `include_participants=1` to fetch tournament + participants in a single request.
 - **Tonamel** — GraphQL API (`https://tonamel.com/graphql`) proxied through Vercel serverless functions. Uses two endpoints: a management endpoint for placements (competition → tournaments → blocks → podium) and a public endpoint for metadata/participants. Requires CSRF token fetched from `tonamel.com/api/csrf_token`. No API key needed. Hook: `src/hooks/top8/useFetchTonamel.ts`. Tournament images are proxied through `api/tonamel-image.ts` (allowlisted hosts) and stored in IndexedDB to avoid CORS. Tonamel does not provide location data, so `location` is set to `{}`.
 
-The Vite dev server includes dev proxy plugins (`vite.config.ts`) for both Challonge (`challongeDevProxy`) and Tonamel (`tonamelDevProxy`, `tonamelImageProxy`) that proxy `/api/challonge`, `/api/tonamel`, and `/api/tonamel-image` requests locally, so loading works with both `bun dev` and `bun run dev:vercel`.
+The Vite dev server includes dev proxy plugins (`vite.config.ts`) for start.gg login (`authDevProxy`, runs `api/auth.ts`), Challonge (`challongeDevProxy`) and Tonamel (`tonamelDevProxy`, `tonamelImageProxy`) that proxy `/api/challonge`, `/api/tonamel`, and `/api/tonamel-image` requests locally, so loading works with both `bun dev` and `bun run dev:vercel`.
 
 ### i18n (Lingui)
 
@@ -245,13 +261,15 @@ Vercel serverless functions live in the `api/` directory:
 - `api/tonamel-image.ts` — Image proxy for Tonamel tournament icons. Accepts `?url=<image_url>`. Allowlisted hosts: `assets.tonamel.com`, `img.tonamel.com`, `p1-c2db36b0.imageflux.jp`.
 - `api/prediction-image.ts` — GET endpoint that renders a `/predict` graphic server-side. Reads the payload from a base64url-encoded `d` query param so responses are URL-addressed and CDN-cacheable. Uses `satori` (JSX → SVG) + `@resvg/resvg-js` (SVG → PNG) at 2× pixel ratio. Bundles M PLUS Rounded 1c fonts from `api/fonts/` and pulls character stock images from the `SmashRankerAssets` GitHub repo. Module-scope LRU caches dedupe character/icon fetches and rendered PNGs across requests on a warm instance.
 - `api/results-image.ts` — same pattern as `prediction-image.ts`, but renders a per-player tournament recap (tournament header + player summary stats + chronological set list). Width 380px / output 760px. Accepts the payload as GET `?d=` or, for payloads too long for a URL, POST `{ d }`. Validates payload (`MAX_SETS = 64`, `MAX_CHARACTERS_PER_SIDE = 4`, character-id regex). Module-scope LRU caches for tournament icon, character icons (256 entries), and rendered PNGs.
+- `api/auth.ts` — start.gg login. POST `{ action: "exchange", code }` / `{ action: "refresh" }` / `{ action: "logout" }`. Requires an allowed `Origin` header (`requireAllowedOrigin`), returns `{ accessToken, expiresIn }` and manages the refresh-token cookie. One function for all three actions to stay under the Vercel function count. Token calls live in `api/_lib/startggOAuth.ts`.
 - `api/flags.ts` — Feature-flag endpoint backed by `@vercel/flags-core`. Returns `{ "thumbnail-enabled": boolean, ... }`. Falls back to defaults if the `FLAGS` env var is missing. Pass `?debug=1` for evaluation reasons.
 - `api/vercel/flags.ts` — Vercel Flags discovery endpoint.
 
 ### Environment Variables
 
 - `VITE_START_GG_TOKEN` — start.gg API token
-- `START_GG_OAUTH_SECRET` — start.gg OAuth secret (server-side)
+- `VITE_START_GG_CLIENT_ID` — start.gg OAuth application id (public; also read server-side by `api/auth.ts`). Login is hidden when unset.
+- `START_GG_OAUTH_SECRET` — start.gg OAuth application secret (server-side, used by `api/auth.ts`)
 - `CHALLONGE_API_KEY` — Challonge API v1 key (server-side, used by `api/challonge.ts`)
 - `VITE_SENTRY_DSN` — Sentry DSN for the client SDK (public; embedded in the bundle). Leave unset locally to silence Sentry during `bun dev`.
 - `SENTRY_DSN` — Sentry DSN for `api/*` functions (server-side).

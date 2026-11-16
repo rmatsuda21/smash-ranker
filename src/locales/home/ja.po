@@ -13,66 +13,70 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/pages/home.tsx:152
+#: src/pages/home.tsx:184
 msgid "Create custom YouTube thumbnails for your Smash sets!"
 msgstr "対戦動画のYouTubeサムネを簡単作成。"
 
-#: src/pages/home.tsx:102
+#: src/pages/home.tsx:134
 msgid "Create your own fully customizable character tier lists."
 msgstr "自分のキャラティア表を作ろう。"
 
-#: src/pages/home.tsx:79
+#: src/pages/home.tsx:111
 msgid "Easily generate your own tournament graphics with full customization."
 msgstr "大会リザルト画像作成を極限まで楽にしました。"
 
-#: src/pages/home.tsx:193
+#: src/pages/home.tsx:225
 msgid "I have many exiciting tools on the way 🔧 Stay tuned!"
 msgstr "色々な新ツールを開発中です 🔧 お楽しみに！"
 
-#: src/pages/home.tsx:187
+#: src/pages/home.tsx:219
 msgid "In Development"
 msgstr "開発中"
 
-#: src/pages/home.tsx:175
+#: src/pages/home.tsx:207
 msgid "Like making bracket predictions? Why not share yours with your friends with a cool graphic!"
 msgstr "みんなで大会予想を画像で共有しあおう。"
 
-#: src/pages/home.tsx:190
+#: src/pages/home.tsx:222
 msgid "More tools on the way"
 msgstr "まだまだ新機能製作中"
 
-#: src/pages/home.tsx:147
+#: src/pages/home.tsx:179
 msgid "New"
 msgstr "新着"
 
-#: src/pages/home.tsx:171
+#: src/pages/home.tsx:203
 msgid "Predictions"
 msgstr "順位予想"
 
-#: src/pages/home.tsx:125
+#: src/pages/home.tsx:157
 msgid "Share your tournament results with a nice graphic!"
 msgstr "自分の戦績をきれいな画像で共有しよう。"
 
-#: src/pages/home.tsx:145
+#: src/pages/home.tsx:177
 msgid "Thumbnail Maker"
 msgstr "サムネ作成"
 
-#: src/pages/home.tsx:98
+#: src/pages/home.tsx:130
 msgid "Tier List Maker"
 msgstr "ティア表作成"
 
-#: src/pages/home.tsx:60
+#: src/pages/home.tsx:92
 msgid "Tools"
 msgstr "ツール一覧"
 
-#: src/pages/home.tsx:75
+#: src/pages/home.tsx:107
 msgid "Tournament Ranker"
 msgstr "リザルト作成"
 
-#: src/pages/home.tsx:121
+#: src/pages/home.tsx:153
 msgid "Tournament Recap"
 msgstr "大会振り返り"
 
-#: src/pages/home.tsx:53
+#: src/pages/home.tsx:69
+msgid "Welcome back, <0>{gamerTag}</0>"
+msgstr "おかえりなさい、<0>{gamerTag}</0>さん"
+
+#: src/pages/home.tsx:76
 msgid "Your one-stop site for Smash Bros graphics!"
 msgstr "スマブラの画像作成ならスマラン！"

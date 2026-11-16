@@ -24,6 +24,8 @@ import {
   hasFallbackEntry,
 } from "@/utils/results/fallbackCharacters";
 import { logEvent } from "@/utils/observability/log";
+import { slugToUrl } from "@/consts/platforms";
+import { clearToolLink, readToolLink } from "@/utils/user/toolLinks";
 
 import styles from "./ResultsApp.module.scss";
 
@@ -124,6 +126,25 @@ export const ResultsApp = () => {
     lastFetchedRef.current = selectedEntrantId;
     fetchPlayerResults(selectedEntrantId);
   }, [selectedEntrantId, playerResults, fetchingResults, fetchPlayerResults]);
+
+  // Arriving from a "Recap" link (home page, profile): load that event and,
+  // once its entrants are in, pick the linked player.
+  const didAutoLoadRef = useRef(false);
+  useEffect(() => {
+    if (didAutoLoadRef.current) return;
+    didAutoLoadRef.current = true;
+    const link = readToolLink();
+    if (!link) return;
+    clearToolLink();
+
+    const url = slugToUrl("startgg", link.slug);
+    void fetchEntrants(url).then(() => {
+      const state = useResultsStore.getState();
+      if (!link.entrantId || state.tournamentUrl !== url) return;
+      if (!state.entrantPool.some((e) => e.id === link.entrantId)) return;
+      dispatch({ type: "SELECT_ENTRANT", payload: link.entrantId });
+    });
+  }, [fetchEntrants, dispatch]);
 
   // Fan out fallback-character fetches only for entrants whose fallback
   // would actually be rendered — i.e. those with at least one set where

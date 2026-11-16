@@ -11,17 +11,10 @@
 export type TournamentPlatform = "startgg" | "challonge" | "tonamel";
 
 export type FetchFailureKind =
-  | "query_error"
-  | "not_found"
-  | "multi_group"
-  | "post_process";
+  "query_error" | "not_found" | "multi_group" | "post_process";
 
 export type ExportSurface =
-  | "predict"
-  | "ranker"
-  | "tier"
-  | "thumbnail"
-  | "results";
+  "predict" | "ranker" | "tier" | "thumbnail" | "results";
 
 export type ShareMethod = "clipboard" | "url";
 
@@ -39,6 +32,10 @@ export type EventName =
   | "results_load"
   | "results_fetch_fail"
   | "results_entrant_select"
+  // start.gg login
+  | "user_login"
+  | "user_login_fail"
+  | "user_logout"
   // Editor engagement
   | "panel_switch"
   // Graphic export funnel

@@ -1,0 +1,506 @@
+@use "@/_theme" as *;
+
+@keyframes tileIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes growUp {
+  from {
+    transform: scaleY(0);
+  }
+}
+
+@keyframes growRight {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+@keyframes drawRing {
+  from {
+    stroke-dashoffset: var(--ring-length);
+  }
+}
+
+@keyframes medalPop {
+  0% {
+    transform: scale(0) rotate(-30deg);
+  }
+  70% {
+    transform: scale(1.2) rotate(6deg);
+  }
+  100% {
+    transform: none;
+  }
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.5;
+  }
+}
+
+// Six columns on a desktop: four single tiles and one double fill a row,
+// then three doubles, so every row ends flush. Four columns in between,
+// two on a phone.
+.board {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-auto-flow: dense;
+  gap: var(--space-3);
+}
+
+@media (max-width: 1100px) {
+  .board {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.tile {
+  // Stagger by position in the board.
+  --delay: calc(var(--i, 0) * 70ms);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--bg-surface);
+  animation: tileIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) var(--delay) backwards;
+  transition:
+    border-color var(--duration-slow) var(--ease-in-out),
+    transform var(--duration-slow) var(--ease-in-out);
+
+  &:hover {
+    border-color: var(--brand-outline);
+    transform: translateY(-2px);
+  }
+}
+
+.wide {
+  grid-column: span 2;
+}
+
+.pending {
+  grid-column: 1 / -1;
+  align-items: center;
+  justify-content: center;
+  min-height: 72px;
+  color: var(--fg-3);
+  font-size: var(--font-size-md);
+  border-style: dashed;
+  animation:
+    tileIn 0.5s ease-out var(--delay) backwards,
+    pulse 1.6s ease-in-out infinite;
+}
+
+.label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--fg-3);
+
+  svg {
+    color: var(--brand);
+  }
+}
+
+.number {
+  font-size: var(--display-md);
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--fg-1);
+  font-variant-numeric: tabular-nums;
+}
+
+.word {
+  font-size: var(--title-size);
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--fg-1);
+  overflow-wrap: anywhere;
+}
+
+.caption {
+  font-size: var(--font-size-sm);
+  line-height: 1.45;
+  color: var(--fg-3);
+  overflow-wrap: anywhere;
+
+  strong {
+    color: var(--fg-1);
+    font-weight: 700;
+  }
+}
+
+// ------------------------------------------
+// Trophy shelf
+// ------------------------------------------
+
+.shelf {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-2);
+}
+
+.medal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-2);
+  border-radius: var(--radius-md);
+  background: var(--bg-raised);
+  font-size: var(--font-size-sm);
+  color: var(--fg-3);
+
+  svg {
+    font-size: 20px;
+    color: var(--medal);
+    animation: medalPop 0.6s cubic-bezier(0.3, 1.4, 0.5, 1)
+      calc(var(--delay) + 250ms) backwards;
+  }
+
+  .number {
+    font-size: var(--title-size);
+  }
+
+  &.gold {
+    --medal: var(--medal-gold);
+  }
+
+  &.silver {
+    --medal: var(--medal-silver);
+
+    svg {
+      animation-delay: calc(var(--delay) + 350ms);
+    }
+  }
+
+  &.bronze {
+    --medal: var(--medal-bronze);
+
+    svg {
+      animation-delay: calc(var(--delay) + 450ms);
+    }
+  }
+}
+
+// ------------------------------------------
+// Ahead of the field
+// ------------------------------------------
+
+.fieldRow {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+}
+
+.field {
+  height: 10px;
+  border-radius: var(--radius-pill);
+  background: var(--bg-raised);
+  overflow: hidden;
+}
+
+.fieldFill {
+  display: block;
+  width: var(--fill);
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--accent-5), var(--brand));
+  transform-origin: left;
+  animation: growRight 1.1s cubic-bezier(0.2, 0.8, 0.2, 1)
+    calc(var(--delay) + 200ms) backwards;
+}
+
+// ------------------------------------------
+// Activity chart
+// ------------------------------------------
+
+.chart {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--space-1);
+  // Fills whatever height the row gives the tile.
+  flex: 1;
+  min-height: 84px;
+}
+
+.chartColumn {
+  display: grid;
+  grid-template-rows: 14px minmax(0, 1fr) 14px;
+  justify-items: center;
+  gap: 2px;
+}
+
+.chartCount,
+.chartMonth {
+  font-size: var(--font-size-xs);
+  line-height: 14px;
+  color: var(--fg-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.chartBar {
+  align-self: end;
+  width: 100%;
+  max-width: 24px;
+  height: var(--h);
+  min-height: 3px;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  background: var(--brand);
+  transform-origin: bottom;
+  animation: growUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1)
+    calc(var(--delay) + 150ms + var(--bar) * 40ms) backwards;
+}
+
+.chartBarEmpty {
+  background: var(--border);
+}
+
+// ------------------------------------------
+// Facts list
+// ------------------------------------------
+
+.facts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--font-size-md);
+  line-height: 1.4;
+  color: var(--fg-2);
+  overflow-wrap: anywhere;
+
+  strong {
+    color: var(--fg-1);
+    font-weight: 700;
+  }
+}
+
+// ------------------------------------------
+// Win-rate ring
+// ------------------------------------------
+
+.ringTile {
+  align-items: flex-start;
+}
+
+.ring {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  align-self: center;
+
+  svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+  }
+
+  circle {
+    fill: none;
+    stroke-width: 8;
+  }
+}
+
+.ringTrack {
+  stroke: var(--bg-raised);
+}
+
+.ringValue {
+  stroke: var(--brand);
+  stroke-linecap: round;
+  stroke-dashoffset: var(--ring-offset);
+  animation: drawRing 1.2s cubic-bezier(0.2, 0.8, 0.2, 1)
+    calc(var(--delay) + 150ms) backwards;
+}
+
+.ringLabel {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .number {
+    font-size: var(--title-size);
+  }
+}
+
+// ------------------------------------------
+// Records and matchups
+// ------------------------------------------
+
+.recordBar {
+  display: flex;
+  gap: 2px;
+  height: 6px;
+
+  span {
+    border-radius: var(--radius-pill);
+    background: var(--border-strong);
+  }
+
+  span:first-child {
+    background: var(--brand);
+  }
+}
+
+.matchup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+
+  & + & {
+    margin-top: var(--space-1);
+  }
+}
+
+.matchupHead {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+.matchupTitle {
+  flex-shrink: 0;
+  font-size: var(--font-size-sm);
+  color: var(--fg-3);
+}
+
+.matchupName {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  color: var(--fg-1);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.matchupRecord {
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  color: var(--fg-1);
+  font-variant-numeric: tabular-nums;
+}
+
+// ------------------------------------------
+// Characters
+// ------------------------------------------
+
+.characters {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.character {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 12em) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-sm);
+  color: var(--fg-3);
+
+  img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+  }
+}
+
+.characterName {
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  color: var(--fg-1);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.characterBar {
+  height: 8px;
+  border-radius: var(--radius-pill);
+  background: var(--bg-raised);
+  overflow: hidden;
+
+  span {
+    display: block;
+    width: var(--fill);
+    height: 100%;
+    border-radius: inherit;
+    background: var(--brand);
+    transform-origin: left;
+    animation: growRight 0.9s cubic-bezier(0.2, 0.8, 0.2, 1)
+      calc(var(--delay) + 200ms + var(--bar) * 120ms) backwards;
+  }
+}
+
+.characterGames {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+// ------------------------------------------
+// Narrow screens: two columns, wide tiles span both
+// ------------------------------------------
+
+@include mobile {
+  .board {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-2);
+  }
+
+  .tile {
+    padding: var(--space-3);
+  }
+
+  .number {
+    font-size: 28px;
+  }
+
+  .character {
+    grid-template-columns: 28px minmax(0, 1fr) auto;
+  }
+
+  .characterBar {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tile,
+  .pending,
+  .medal svg,
+  .fieldFill,
+  .chartBar,
+  .ringValue,
+  .characterBar span {
+    animation: none;
+  }
+
+  .tile:hover {
+    transform: none;
+  }
+}

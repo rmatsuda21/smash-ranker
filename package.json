@@ -8,6 +8,7 @@
   },
   "scripts": {
     "dev": "bunx --bun vite --host",
+    "dev:https": "DEV_HTTPS=true bunx --bun vite --host --port 5173 --strictPort",
     "dev:vercel": "bunx vercel dev",
     "build": "tsc -b && bunx --bun vite build",
     "build:analyze": "ANALYZE=true bunx --bun vite build",

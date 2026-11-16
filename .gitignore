@@ -35,3 +35,6 @@ dist-ssr
 
 # Golden-image check output
 tests/goldens/.diff/
+
+# Local https certificate for `bun run dev:https` (made with mkcert)
+.certs/

@@ -6,6 +6,10 @@ import { Layout } from "@/components/Layout/Layout";
 import { PageRouter } from "@/components/PageRouter";
 import { FeatureFlagsProvider } from "@/components/FeatureFlagsProvider";
 import { ToastProvider } from "@/components/Toast";
+import { renewSessionIfNeeded } from "@/utils/auth/session";
+
+// Keep a start.gg login alive between visits.
+renewSessionIfNeeded();
 
 function App() {
   return (

@@ -1,0 +1,293 @@
+@use "@/_theme" as *;
+
+@keyframes riseIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -100% 0;
+  }
+}
+
+.root {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  width: 100%;
+  max-width: var(--home-width, 700px);
+  padding: 0 var(--space-5);
+}
+
+.heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.sectionTitle {
+  font-size: var(--font-size-xs);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--fg-muted);
+}
+
+.allLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--brand-text);
+  text-decoration: none;
+
+  svg {
+    font-size: 0.85em;
+    transition: transform var(--duration-base) var(--ease-standard);
+  }
+
+  &:hover svg {
+    transform: translateX(3px);
+  }
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.featured {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--brand-outline);
+  background:
+    radial-gradient(
+      120% 140% at 100% 0%,
+      var(--brand-softer) 0%,
+      transparent 60%
+    ),
+    var(--bg-surface);
+  animation: riseIn 0.5s ease-out backwards;
+}
+
+.featuredLabel {
+  position: absolute;
+  top: calc(var(--space-2) * -1);
+  left: var(--space-4);
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-pill);
+  background: var(--brand);
+  color: #fff;
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.featuredHead {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.featuredText {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.featuredName {
+  font-size: var(--font-size-xl);
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--fg-1);
+  overflow-wrap: anywhere;
+}
+
+.featuredMeta {
+  font-size: var(--font-size-sm);
+  color: var(--fg-3);
+  line-height: 1.4;
+}
+
+.featuredChip {
+  flex-shrink: 0;
+  font-size: var(--font-size-md);
+  padding: var(--space-1) var(--space-3);
+}
+
+.stats {
+  display: none;
+  margin: 0;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--bg-raised);
+
+  dt {
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    color: var(--fg-3);
+  }
+
+  dd {
+    margin: 0;
+    font-size: var(--font-size-xl);
+    font-weight: 800;
+    line-height: 1.2;
+    color: var(--fg-1);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .statNote {
+    font-size: var(--font-size-xs);
+    font-weight: 400;
+    color: var(--fg-3);
+  }
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.listRow {
+  animation: riseIn 0.45s ease-out backwards;
+}
+
+.note {
+  padding: var(--space-4);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-md);
+  color: var(--fg-3);
+  font-size: var(--font-size-md);
+  line-height: 1.5;
+  text-align: center;
+}
+
+.skeletons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.skeletonFeatured,
+.skeletonRow {
+  border-radius: var(--radius-md);
+  background: linear-gradient(
+    90deg,
+    var(--bg-surface) 30%,
+    var(--bg-raised) 50%,
+    var(--bg-surface) 70%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+}
+
+.skeletonFeatured {
+  height: 148px;
+  border-radius: var(--radius-lg);
+}
+
+.skeletonRow {
+  height: 66px;
+}
+
+// Desktop: the latest tournament and the ones before it sit side by side.
+@include wide {
+  .stats {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    gap: var(--space-2);
+  }
+
+  // The stats carry the placement, so the chip would repeat it.
+  .hasStats .featuredChip {
+    display: none;
+  }
+
+  .bodySplit {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    align-items: stretch;
+
+    .featured {
+      justify-content: space-between;
+    }
+
+    .list {
+      justify-content: space-between;
+    }
+  }
+
+  .skeletons {
+    display: grid;
+    grid-template-columns: 2fr 3fr;
+    gap: var(--space-3);
+  }
+
+  .skeletonFeatured {
+    grid-row: span 2;
+    height: auto;
+    min-height: 148px;
+  }
+}
+
+@include mobile {
+  .root {
+    padding: 0 var(--space-4);
+  }
+
+  .featured {
+    padding: var(--space-4);
+  }
+
+  .featuredHead {
+    flex-wrap: wrap;
+  }
+
+  .featuredText {
+    // Icon + text on the first line, the chip wraps under them.
+    flex-basis: calc(100% - 56px - var(--space-3));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .featured,
+  .listRow,
+  .skeletonFeatured,
+  .skeletonRow {
+    animation: none;
+  }
+}

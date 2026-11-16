@@ -1,22 +1,11 @@
-import { cacheExchange, Client, fetchExchange, Provider } from "urql";
+import { Provider } from "urql";
 
 import { PredictApp } from "@/components/predict/PredictApp/PredictApp";
-
-const client = new Client({
-  url: "https://api.start.gg/gql/alpha",
-  exchanges: [cacheExchange, fetchExchange],
-  fetchOptions: () => {
-    const token = import.meta.env.VITE_START_GG_TOKEN;
-
-    return {
-      headers: { authorization: token ? `Bearer ${token}` : "" },
-    };
-  },
-});
+import { startggClient } from "@/utils/startgg/client";
 
 const PredictPage = () => {
   return (
-    <Provider value={client}>
+    <Provider value={startggClient}>
       <PredictApp />
     </Provider>
   );

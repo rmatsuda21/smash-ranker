@@ -1,0 +1,245 @@
+@use "@/_theme" as *;
+
+@keyframes headerIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes spinRing {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -100% 0;
+  }
+}
+
+.root {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden auto;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-5) var(--space-10);
+}
+
+// ------------------------------------------
+// Header
+// ------------------------------------------
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  animation: headerIn 0.5s ease-out backwards;
+}
+
+// A slowly turning accent ring around the picture.
+.avatarWrap {
+  position: relative;
+  flex-shrink: 0;
+  padding: 4px;
+  border-radius: 50%;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: conic-gradient(
+      var(--brand),
+      var(--accent-5),
+      transparent 55%,
+      var(--brand)
+    );
+    animation: spinRing 6s linear infinite;
+  }
+}
+
+.avatar {
+  position: relative;
+  border: 3px solid var(--bg-app);
+}
+
+.identity {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.tag {
+  font-size: var(--display-md);
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--fg-1);
+  overflow-wrap: anywhere;
+}
+
+.prefix {
+  margin-right: var(--space-2);
+  color: var(--fg-3);
+  font-weight: 600;
+}
+
+.details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-3);
+  font-size: var(--font-size-md);
+  color: var(--fg-3);
+
+  span {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+  }
+
+  svg {
+    font-size: 0.85em;
+    color: var(--brand);
+  }
+}
+
+.headerActions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-2);
+}
+
+.profileLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--brand-text);
+  text-decoration: none;
+  white-space: nowrap;
+
+  svg {
+    font-size: 0.85em;
+  }
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// ------------------------------------------
+// States
+// ------------------------------------------
+
+.statsSkeleton {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: var(--space-3);
+
+  @media (max-width: 1100px) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  span {
+    height: 120px;
+    border-radius: var(--radius-lg);
+    background: linear-gradient(
+      90deg,
+      var(--bg-surface) 30%,
+      var(--bg-raised) 50%,
+      var(--bg-surface) 70%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.4s linear infinite;
+  }
+
+  span:nth-child(5),
+  span:nth-child(6) {
+    grid-column: span 2;
+  }
+}
+
+.error {
+  padding: var(--space-5);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-md);
+  color: var(--fg-3);
+  font-size: var(--font-size-md);
+  text-align: center;
+}
+
+.signedOut {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  text-align: center;
+}
+
+.signedOutTitle {
+  font-size: var(--display-md);
+  font-weight: 800;
+  line-height: 1.15;
+  color: var(--fg-1);
+}
+
+.signedOutText {
+  max-width: 420px;
+  font-size: var(--font-size-md);
+  line-height: 1.5;
+  color: var(--fg-3);
+}
+
+@include mobile {
+  .content {
+    gap: var(--space-6);
+    padding: var(--space-4) var(--space-4) var(--space-8);
+  }
+
+  .header {
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    font-size: 26px;
+  }
+
+  .headerActions {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .statsSkeleton {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-2);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header,
+  .avatarWrap::before,
+  .statsSkeleton span {
+    animation: none;
+  }
+}

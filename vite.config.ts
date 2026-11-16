@@ -1,3 +1,4 @@
+import fs from "fs";
 import path from "path";
 import { createLogger, defineConfig } from "vite";
 
@@ -11,6 +12,7 @@ import { tonamelDevProxy } from "./vite-plugins/tonamelDevProxy";
 import { tonamelImageProxy } from "./vite-plugins/tonamelImageProxy";
 import { predictionImageDevProxy } from "./vite-plugins/predictionImageDevProxy";
 import { resultsImageDevProxy } from "./vite-plugins/resultsImageDevProxy";
+import { authDevProxy } from "./vite-plugins/authDevProxy";
 
 // Silence Vite's "Failed to load source map for ..." warnings for packages
 // that ship JS with `//# sourceMappingURL=` comments but don't publish the
@@ -35,9 +37,36 @@ export default defineConfig(() => {
   // Source-map upload only runs when SENTRY_AUTH_TOKEN is present (CI/Vercel
   // build). Without the token the build still succeeds — local builds skip it.
   const shouldUploadSentry = Boolean(process.env.SENTRY_AUTH_TOKEN);
+  // `bun run dev:https` serves the dev site at
+  // https://local.smash-ranker.app:5173, the address for testing start.gg
+  // login locally: start.gg does not accept `localhost` in a redirect URI.
+  // Browsers force https on every `.app` domain and refuse to click through
+  // a certificate warning there, so the certificate has to be one this
+  // machine trusts. Make it with mkcert (see .env.example).
+  const useHttps = process.env.DEV_HTTPS === "true";
+  const devHost = "local.smash-ranker.app";
+  const certFile = path.resolve(__dirname, ".certs/dev.pem");
+  const keyFile = path.resolve(__dirname, ".certs/dev-key.pem");
+  if (useHttps && !(fs.existsSync(certFile) && fs.existsSync(keyFile))) {
+    throw new Error(
+      "dev:https needs .certs/dev.pem and .certs/dev-key.pem. Create them with:\n" +
+        `  mkcert -install && mkdir -p .certs && mkcert -cert-file .certs/dev.pem -key-file .certs/dev-key.pem ${devHost} localhost`,
+    );
+  }
 
   return {
     customLogger,
+    server: {
+      allowedHosts: [devHost],
+      ...(useHttps
+        ? {
+            https: {
+              cert: fs.readFileSync(certFile),
+              key: fs.readFileSync(keyFile),
+            },
+          }
+        : {}),
+    },
     define: {
       __BUILD_TIME__: JSON.stringify(new Date().toISOString()),
     },
@@ -56,6 +85,7 @@ export default defineConfig(() => {
       tonamelImageProxy(),
       predictionImageDevProxy(),
       resultsImageDevProxy(),
+      authDevProxy(),
       shouldUploadSentry &&
         sentryVitePlugin({
           org: process.env.SENTRY_ORG,

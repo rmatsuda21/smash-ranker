@@ -7,6 +7,7 @@ import type { MessageDescriptor } from "@lingui/core";
 import cn from "classnames";
 
 import { useFeatureFlag } from "@/hooks/useFeatureFlags";
+import { useAuthUser } from "@/store/authStore";
 import { SiteFooter } from "@/components/shared/SiteFooter/SiteFooter";
 
 import styles from "./NavOverlay.module.scss";
@@ -15,10 +16,13 @@ type NavItem = {
   label: MessageDescriptor;
   href: string;
   flag?: "thumbnail-enabled" | "results-enabled";
+  // Only shown while logged in with start.gg.
+  loggedIn?: boolean;
 };
 
 const NAV_ITEMS: NavItem[] = [
   { label: msg`Home`, href: "/" },
+  { label: msg`My Tournaments`, href: "/me", loggedIn: true },
   { label: msg`Ranker`, href: "/ranker" },
   {
     label: msg`Recap`,
@@ -49,14 +53,16 @@ export const NavOverlay = ({ isOpen, onClose }: Props) => {
   const closeTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const thumbnailEnabled = useFeatureFlag("thumbnail-enabled");
   const resultsEnabled = useFeatureFlag("results-enabled");
+  const isLoggedIn = useAuthUser() !== null;
   const visibleItems = useMemo(
     () =>
       NAV_ITEMS.filter((item) => {
+        if (item.loggedIn && !isLoggedIn) return false;
         if (item.flag === "thumbnail-enabled") return thumbnailEnabled;
         if (item.flag === "results-enabled") return resultsEnabled;
         return true;
       }),
-    [thumbnailEnabled, resultsEnabled],
+    [thumbnailEnabled, resultsEnabled, isLoggedIn],
   );
 
   // Handle mount/unmount with close animation

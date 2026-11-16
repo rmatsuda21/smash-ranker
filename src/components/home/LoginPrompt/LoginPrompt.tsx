@@ -1,0 +1,32 @@
+import { Trans } from "@lingui/react/macro";
+import { FaArrowRight, FaRightToBracket } from "react-icons/fa6";
+
+import { isLoginAvailable, startLogin } from "@/utils/auth/oauth";
+
+import styles from "./LoginPrompt.module.scss";
+
+// Logged-out home page: one quiet line under the hero that offers the login.
+export const LoginPrompt = ({ returnTo = "/" }: { returnTo?: string }) => {
+  if (!isLoginAvailable()) return null;
+
+  return (
+    <button
+      type="button"
+      className={styles.prompt}
+      onClick={() => startLogin(returnTo)}
+    >
+      <span className={styles.mark}>
+        <FaRightToBracket aria-hidden="true" />
+      </span>
+      <span className={styles.text}>
+        <span className={styles.title}>
+          <Trans>Log in with start.gg</Trans>
+        </span>
+        <span className={styles.caption}>
+          <Trans>Jump straight to graphics for your own tournaments</Trans>
+        </span>
+      </span>
+      <FaArrowRight className={styles.arrow} aria-hidden="true" />
+    </button>
+  );
+};

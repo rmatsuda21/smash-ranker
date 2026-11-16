@@ -15,8 +15,16 @@ const ALLOWED_ORIGINS: readonly string[] = [
   "https://www.smash-ranker.vercel.app",
 ];
 
-/** Exact-match hostnames (any scheme/port). For local dev. */
-const ALLOWED_HOSTNAMES: readonly string[] = ["localhost", "127.0.0.1"];
+/**
+ * Exact-match hostnames (any scheme/port). For local dev.
+ * `local.smash-ranker.app` is the developer's own machine under a real
+ * hostname (`bun run dev:https`), which start.gg requires of a redirect URI.
+ */
+const ALLOWED_HOSTNAMES: readonly string[] = [
+  "localhost",
+  "127.0.0.1",
+  "local.smash-ranker.app",
+];
 
 /**
  * Hostname suffixes accepted regardless of subdomain. Use sparingly — every
@@ -67,4 +75,17 @@ export const assertSameOrigin = (req: VercelRequest): void => {
   if (!origin) return;
   if (isAllowedOrigin(origin)) return;
   throw new ForbiddenError("Origin not allowed");
+};
+
+/**
+ * Strict variant for state-changing routes that rely on cookies (`auth`):
+ * the Origin header must be present and allowed. Browsers always send it on
+ * POST, so a missing one means a non-browser caller. Returns the origin.
+ */
+export const requireAllowedOrigin = (req: VercelRequest): string => {
+  const origin = headerString(req.headers.origin);
+  if (!origin || !isAllowedOrigin(origin)) {
+    throw new ForbiddenError("Origin not allowed");
+  }
+  return origin;
 };

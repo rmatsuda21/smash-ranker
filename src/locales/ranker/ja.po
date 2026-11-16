@@ -13,15 +13,15 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:138
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:155
 msgid "(https://challonge.com/[tournament])"
 msgstr "(https://challonge.com/[大会名])"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:136
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:153
 msgid "(https://start.gg/tournament/[name]/event/[event])"
 msgstr "(https://start.gg/tournament/[大会名]/event/[イベント名])"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:140
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:157
 msgid "(https://tonamel.com/competition/[slug])"
 msgstr "(https://tonamel.com/competition/[スラッグ])"
 
@@ -29,6 +29,11 @@ msgstr "(https://tonamel.com/competition/[スラッグ])"
 #: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:299
 msgid "{0} assets"
 msgstr "{0}件のアセット"
+
+#. placeholder {0}: character.games
+#: src/components/user/StatsBoard/StatsBoard.tsx:488
+msgid "{0} games"
+msgstr "{0}試合"
 
 #. placeholder {0}: file.name
 #: src/hooks/useAssetUpload.ts:25
@@ -39,6 +44,12 @@ msgstr "{0}が容量オーバーです！（最大2MB）"
 #: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:297
 msgid "{0} selected"
 msgstr "{0}件選択中"
+
+#. placeholder {0}: career.homeTurf.count
+#. placeholder {1}: career.cityCount
+#: src/components/user/StatsBoard/StatsBoard.tsx:207
+msgid "{0} tournaments here, {1} cities in all"
+msgstr "ここで{0}大会、全部で{1}都市"
 
 #: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:68
 msgid "{playerCount} Players (Dark)"
@@ -51,6 +62,17 @@ msgstr "{playerCount}人用（ライト）"
 #: src/consts/top8/placeholders.ts:36
 msgid "# of Entrants"
 msgstr "参加人数"
+
+#. placeholder {0}: setStats.wins
+#. placeholder {1}: setStats.losses
+#. placeholder {2}: setStats.setCount
+#: src/components/user/StatsBoard/StatsBoard.tsx:397
+msgid "<0>{0}–{1}</0> over your last {2} sets"
+msgstr "直近{2}セットで<0>{0}勝{1}敗</0>"
+
+#: src/components/user/StatsBoard/StatsBoard.tsx:360
+msgid "<0>{weekdayName}</0> is your tournament day"
+msgstr "大会といえば<0>{weekdayName}</0>"
 
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:64
 msgid "16 Player Variant"
@@ -84,9 +106,17 @@ msgstr "アクセントカラー"
 #~ msgid "Adding a little sparkle to the win column..."
 #~ msgstr "勝ち星にちょっとキラキラを足しています..."
 
+#: src/components/user/StatsBoard/StatsBoard.tsx:272
+msgid "Ahead of the field"
+msgstr "参加者の中での位置"
+
 #: src/components/predict/PredictApp/PredictApp.tsx:74
 msgid "All current predictions will be removed."
 msgstr "現在の予想がすべて削除されます。"
+
+#: src/components/home/RecentTournaments/RecentTournaments.tsx:114
+msgid "All tournaments & stats"
+msgstr "すべての大会と戦績"
 
 #: src/components/results/ResultsPreview/ResultsPreview.tsx:67
 #~ msgid "Almost there, just one more stock..."
@@ -96,7 +126,7 @@ msgstr "現在の予想がすべて削除されます。"
 msgid "Amber"
 msgstr "アンバー"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:77
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:83
 msgid "Any current player and tournament data will be overwritten."
 msgstr "現在の選手と大会データは上書きされます。"
 
@@ -109,7 +139,7 @@ msgstr "{0}個の素材を削除しますか？"
 msgid "Are you sure you want to delete this asset?"
 msgstr "この素材を消しますか？"
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:31
+#: src/components/results/ResultsApp/ResultsApp.tsx:33
 msgid "Asking start.gg very nicely..."
 msgstr "start.ggに丁寧にお願いしています..."
 
@@ -126,6 +156,10 @@ msgstr "シードで自動入力"
 msgid "Avatar"
 msgstr "アイコン"
 
+#: src/pages/oauthCallback.tsx:68
+msgid "Back to home"
+msgstr "ホームに戻る"
+
 #: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:373
 msgid "Back to plain text"
 msgstr "プレーンテキストに戻る"
@@ -133,6 +167,27 @@ msgstr "プレーンテキストに戻る"
 #: src/components/top8/DesignEditor/DesignEditor.tsx:38
 msgid "Background Image"
 msgstr "背景画像"
+
+#: src/components/home/RecentTournaments/RecentTournaments.tsx:60
+msgid "Beat your seed"
+msgstr "シード以上の結果"
+
+#: src/components/home/RecentTournaments/RecentTournaments.tsx:64
+msgid "Below your seed"
+msgstr "シードを下回る結果"
+
+#. placeholder {0}: formatOrdinal(career.bestFinish.placement!, i18n.locale)
+#. placeholder {1}: career.bestFinish.numEntrants
+#. placeholder {2}: career.bestFinish.tournament.name
+#: src/components/user/StatsBoard/StatsBoard.tsx:256
+msgid "Best run: <0>{0} of {1}</0> at {2}"
+msgstr "最高成績：{2}で<0>{1}人中{0}</0>"
+
+#. placeholder {0}: career.biggestBracket.numEntrants
+#. placeholder {1}: career.biggestBracket.tournament.name
+#: src/components/user/StatsBoard/StatsBoard.tsx:367
+msgid "Biggest bracket: <0>{0} entrants</0> at {1}"
+msgstr "最大規模の大会：{1}（<0>{0}人</0>）"
 
 #: src/components/top8/SettingsPanel/AccentColorPicker.tsx:27
 msgid "Blue"
@@ -149,6 +204,16 @@ msgstr "両プレイヤーを左右に、スコアを中央に表示"
 #: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:36
 msgid "Bracket"
 msgstr "ブラケット"
+
+#: src/components/user/StatsBoard/StatsBoard.tsx:178
+msgid "Bracket company"
+msgstr "同じトーナメントの仲間"
+
+#. placeholder {0}: monthLabel(career.busiestMonth.month, "long")
+#. placeholder {1}: career.busiestMonth.count
+#: src/components/user/StatsBoard/StatsBoard.tsx:333
+msgid "Busiest month ever: <0>{0}</0> with {1} tournaments"
+msgstr "一番忙しかった月：<0>{0}</0>（{1}大会）"
 
 #: src/components/shared/SiteFooter/SiteFooter.tsx:35
 #: src/components/top8/InfoPanel/InfoPanel.tsx:74
@@ -183,11 +248,11 @@ msgstr "Challonge APIエラー: {0}"
 #~ msgid "Characters"
 #~ msgstr "使用キャラ"
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:43
+#: src/components/results/ResultsApp/ResultsApp.tsx:45
 msgid "Checking if the seed was fair..."
 msgstr "シードが妥当だったか確認中..."
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:33
+#: src/components/results/ResultsApp/ResultsApp.tsx:35
 msgid "Checking who actually made it past pools..."
 msgstr "予選を本当に抜けた人を確認中..."
 
@@ -236,6 +301,10 @@ msgstr ""
 msgid "Compact"
 msgstr "コンパクト"
 
+#: src/components/user/StatsBoard/StatsBoard.tsx:172
+msgid "Competing since {sinceYear}"
+msgstr "{sinceYear}年から参戦"
+
 #: src/hooks/predict/useFetchPredictionEntrants.ts:241
 #: src/hooks/top8/useFetchTonamel.ts:202
 msgid "Competition not found"
@@ -271,6 +340,15 @@ msgstr ""
 msgid "Copy image"
 msgstr "画像をコピー"
 
+#: src/pages/oauthCallback.tsx:59
+msgid "Couldn't log you in"
+msgstr "ログインできませんでした"
+
+#: src/components/home/RecentTournaments/RecentTournaments.tsx:130
+#: src/components/user/UserPage/UserPage.tsx:137
+msgid "Couldn't reach start.gg for your tournaments. Try again in a bit."
+msgstr "start.ggから大会を取得できませんでした。少し待ってからもう一度お試しください。"
+
 #: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:54
 msgid "Count"
 msgstr "人数"
@@ -284,11 +362,11 @@ msgstr "人数"
 msgid "Counting the contenders..."
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:35
+#: src/components/results/ResultsApp/ResultsApp.tsx:37
 msgid "Counting the DQs so you don't have to..."
 msgstr "代わりにDQの数を数えています..."
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:41
+#: src/components/results/ResultsApp/ResultsApp.tsx:43
 msgid "Counting the stocks. All of them..."
 msgstr "ストックを数えています。全部です..."
 
@@ -357,7 +435,7 @@ msgstr "ダーク"
 msgid "Date"
 msgstr "日付"
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:44
+#: src/components/results/ResultsApp/ResultsApp.tsx:46
 msgid "Deciding which loss was \"actually close\"..."
 msgstr "どの負けが「実は惜しかった」か判定中..."
 
@@ -501,7 +579,7 @@ msgstr "{0}を入力..."
 msgid "Enter a number from {MIN_PLAYERS} to {MAX_PLAYERS}."
 msgstr "{MIN_PLAYERS}〜{MAX_PLAYERS}の数字を入力してください。"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:134
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:151
 msgid "Enter a start.gg, Challonge, or Tonamel event URL"
 msgstr "start.gg、Challonge、またはTonamelの大会URLを入れてください"
 
@@ -511,6 +589,10 @@ msgstr "start.gg、Challonge、またはTonamelの大会URLを入れてくださ
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:156
 msgid "Entrants"
 msgstr "参加人数"
+
+#: src/components/user/StatsBoard/StatsBoard.tsx:183
+msgid "entrants across every bracket you've been in"
+msgstr "これまで出た大会の参加者の合計"
 
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:130
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:131
@@ -556,11 +638,15 @@ msgstr "大会データの取得に失敗しました"
 msgid "Failed to generate image"
 msgstr "画像の生成に失敗しました"
 
+#: src/components/user/StatsBoard/StatsBoard.tsx:432
+msgid "Familiar faces"
+msgstr "おなじみの相手"
+
 #: src/components/results/ResultsWorkspace/ResultsWorkspace.tsx:94
 msgid "Fetching opponent data..."
 msgstr "対戦相手のデータを取得中..."
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:42
+#: src/components/results/ResultsApp/ResultsApp.tsx:44
 msgid "Figuring out who got sent to losers..."
 msgstr "誰がルーザーズに落とされたか調べています..."
 
@@ -568,13 +654,31 @@ msgstr "誰がルーザーズに落とされたか調べています..."
 msgid "Filename"
 msgstr "ファイル名"
 
+#: src/components/user/EmptyProfile/EmptyProfile.tsx:53
+msgid "Find a tournament on start.gg"
+msgstr "start.ggで大会を探す"
+
 #: src/components/results/ResultsPreview/ResultsPreview.tsx:64
 #~ msgid "Finding a font that says \"I'm cracked\"..."
 #~ msgstr "「俺つよい」感のあるフォントを探しています..."
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:32
+#: src/components/results/ResultsApp/ResultsApp.tsx:34
 msgid "Finding everyone who showed up..."
 msgstr "会場に来た人を全員探しています..."
+
+#: src/components/home/RecentTournaments/RecentTournaments.tsx:72
+msgid "Finish"
+msgstr "成績"
+
+#. placeholder {0}: career.seedBeaten.beaten
+#. placeholder {1}: career.seedBeaten.seeded
+#: src/components/user/StatsBoard/StatsBoard.tsx:293
+msgid "Finished above your seed in <0>{0}</0> of {1} brackets"
+msgstr "{1}大会中<0>{0}</0>大会でシードより上の順位"
+
+#: src/components/home/RecentTournaments/RecentTournaments.tsx:62
+msgid "Finished on seed"
+msgstr "シード通りの結果"
 
 #: src/components/top8/DesignEditor/DesignEditor.tsx:31
 msgid "Font"
@@ -610,6 +714,10 @@ msgstr "プレビュー作成中..."
 #~ msgid "Generating recap"
 #~ msgstr "リザルト生成中"
 
+#: src/components/user/StatsBoard/StatsBoard.tsx:383
+msgid "Going through your recent sets..."
+msgstr "最近のセットを集計中..."
+
 #: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:51
 msgid "Gradient edge"
 msgstr "グラデーション枠"
@@ -622,11 +730,19 @@ msgstr "グリーン"
 msgid "Grid view"
 msgstr "グリッド表示"
 
-#: src/components/Layout/NavOverlay/NavOverlay.tsx:21
+#: src/components/user/StatsBoard/StatsBoard.tsx:346
+msgid "Habits"
+msgstr "傾向"
+
+#: src/components/Layout/NavOverlay/NavOverlay.tsx:24
 msgid "Home"
 msgstr "ホーム"
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:220
+#: src/components/user/StatsBoard/StatsBoard.tsx:200
+msgid "Home turf"
+msgstr "ホーム"
+
+#: src/components/results/ResultsApp/ResultsApp.tsx:241
 msgid "https://start.gg/tournament/.../event/..."
 msgstr "https://start.gg/tournament/.../event/..."
 
@@ -662,6 +778,10 @@ msgstr "参加"
 msgid "Join the official server for help, feedback, and updates!"
 msgstr "公式サーバーで情報発信を行なってます！"
 
+#: src/components/home/LoginPrompt/LoginPrompt.tsx:26
+msgid "Jump straight to graphics for your own tournaments"
+msgstr "自分が出た大会の画像をすぐに作れます"
+
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:54
 msgid "Kagaribi"
 msgstr "篝火"
@@ -677,6 +797,18 @@ msgstr "L"
 #: src/components/top8/SettingsPanel/LanguagePicker.tsx:41
 msgid "Language"
 msgstr "言語"
+
+#: src/components/user/StatsBoard/StatsBoard.tsx:306
+msgid "Last 12 months"
+msgstr "直近12か月"
+
+#: src/components/user/StatsBoard/StatsBoard.tsx:408
+msgid "Last-game sets"
+msgstr "フルセット"
+
+#: src/components/home/RecentTournaments/RecentTournaments.tsx:154
+msgid "Latest"
+msgstr "最新"
 
 #: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:97
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:257
@@ -694,7 +826,7 @@ msgstr "リスト表示"
 
 #: src/components/shared/TournamentUrlInput/TournamentUrlInput.tsx:87
 #: src/components/shared/TournamentUrlInput/TournamentUrlInput.tsx:111
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:157
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:174
 msgid "Load"
 msgstr "取得"
 
@@ -711,7 +843,7 @@ msgstr "テンプレを読み込む: {0}"
 msgid "Load Template?"
 msgstr "テンプレートを読み込みますか？"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:75
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:81
 msgid "Load Tournament?"
 msgstr "大会を読み込みますか？"
 
@@ -727,14 +859,18 @@ msgstr "キャラクター読み込み中"
 msgid "Loading Configs..."
 msgstr "読み込み中..."
 
+#: src/components/user/EventList/EventList.tsx:102
+msgid "Loading more from start.gg..."
+msgstr "start.ggから続きを読み込み中..."
+
 #: src/components/results/ResultsWorkspace/ResultsWorkspace.tsx:82
 msgid "Loading results"
 msgstr "リザルト読み込み中"
 
 #: src/components/predict/PredictApp/PredictApp.tsx:106
 #: src/components/predict/PredictApp/PredictApp.tsx:158
-#: src/components/results/ResultsApp/ResultsApp.tsx:228
-#: src/components/results/ResultsApp/ResultsApp.tsx:283
+#: src/components/results/ResultsApp/ResultsApp.tsx:249
+#: src/components/results/ResultsApp/ResultsApp.tsx:304
 msgid "Loading tournament"
 msgstr "大会読み込み中"
 
@@ -750,11 +886,27 @@ msgstr ""
 #~ msgid "Locking in the recap..."
 #~ msgstr "リザルトを確定中..."
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:45
+#: src/components/home/LoginPrompt/LoginPrompt.tsx:23
+msgid "Log in with start.gg"
+msgstr "start.ggでログイン"
+
+#: src/components/user/UserPage/UserPage.tsx:57
+msgid "Log in with start.gg to see every tournament you've entered and make graphics for them in one click."
+msgstr "start.ggでログインすると、これまで出た大会が一覧で見られて、ワンクリックで画像を作れます。"
+
+#: src/components/user/UserPage/UserPage.tsx:114
+msgid "Log out"
+msgstr "ログアウト"
+
+#: src/pages/oauthCallback.tsx:75
+msgid "Logging you in with start.gg..."
+msgstr "start.ggでログイン中..."
+
+#: src/components/results/ResultsApp/ResultsApp.tsx:47
 msgid "Looking for the game 5 last stock..."
 msgstr "5戦目ラストストックの名場面を探しています..."
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:36
+#: src/components/results/ResultsApp/ResultsApp.tsx:38
 msgid "Looking for the guy who entered as \"test\"..."
 msgstr "「test」で登録した人を探しています..."
 
@@ -765,6 +917,14 @@ msgstr "応援クラファン実施中です。"
 #: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:191
 msgid "Lower values reduce file size at the cost of detail."
 msgstr ""
+
+#: src/components/user/StatsBoard/StatsBoard.tsx:460
+msgid "Mains"
+msgstr "メインキャラ"
+
+#: src/components/user/EmptyProfile/EmptyProfile.tsx:58
+msgid "Make a Top 8 from any link"
+msgstr "リンクからTop 8を作る"
 
 #: src/components/results/ResultsPreview/ResultsPreview.tsx:63
 #~ msgid "Making the upsets look extra dramatic..."
@@ -795,9 +955,25 @@ msgstr "画像が見つかりません"
 msgid "Mode"
 msgstr ""
 
+#: src/components/user/EventRow/EventRow.tsx:50
+msgid "My recap"
+msgstr "自分の戦績"
+
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:276
 msgid "My Templates"
 msgstr "マイテンプレ"
+
+#: src/components/Layout/NavOverlay/NavOverlay.tsx:25
+msgid "My Tournaments"
+msgstr "マイ大会"
+
+#: src/components/user/StatsBoard/StatsBoard.tsx:443
+msgid "Nemesis"
+msgstr "天敵"
+
+#: src/components/user/StatsBoard/StatsBoard.tsx:449
+msgid "Never lost to"
+msgstr "無敗の相手"
 
 #: src/components/top8/AssetManager/AssetsModal/AssetGrid/AssetGrid.tsx:45
 #: src/components/top8/AssetSelector/AssetPicker.tsx:128
@@ -816,6 +992,10 @@ msgstr "キャラクター情報なし"
 #: src/components/results/SetList/SetList.tsx:43
 msgid "No completed sets found for this player."
 msgstr "この選手の試合データが見つかりません。"
+
+#: src/components/user/StatsBoard/StatsBoard.tsx:219
+msgid "No in-person tournaments yet"
+msgstr "オフライン大会の参加はまだありません"
 
 #: src/hooks/predict/useFetchPredictionEntrants.ts:141
 #: src/hooks/results/useFetchResultsEntrantPool.ts:121
@@ -839,10 +1019,34 @@ msgstr "該当する結果がありません"
 msgid "No text content defined in this design."
 msgstr "このデザインにはテキストが定義されていません。"
 
+#: src/components/user/EventList/EventList.tsx:85
+msgid "No tournaments match \"{query}\"."
+msgstr "「{query}」に一致する大会はありません。"
+
+#: src/components/user/EventList/EventList.tsx:76
+#~ msgid "No tournaments on your start.gg account yet."
+#~ msgstr "start.ggアカウントに大会がまだありません。"
+
+#: src/components/home/RecentTournaments/RecentTournaments.tsx:138
+msgid "No tournaments on your start.gg account yet. Once you enter one it shows up here."
+msgstr "start.ggアカウントに大会がまだありません。参加するとここに表示されます。"
+
 #: src/components/top8/CharacterEditor/CharacterSelect/CharacterSelect.tsx:34
 #: src/components/top8/PlayersEditor/CountryDropDown.tsx:38
 msgid "None"
 msgstr "なし"
+
+#: src/components/home/RecentTournaments/RecentTournaments.tsx:48
+msgid "of {numEntrants} entrants"
+msgstr "{numEntrants}人中"
+
+#: src/components/home/RecentTournaments/RecentTournaments.tsx:78
+msgid "of the bracket"
+msgstr "参加者全体のうち"
+
+#: src/components/user/StatsBoard/StatsBoard.tsx:278
+msgid "of the bracket finishes behind you, on average"
+msgstr "の参加者より上の順位（平均）"
 
 #: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:37
 msgid "One line per player, like a bracket match box"
@@ -851,6 +1055,15 @@ msgstr "ブラケットの対戦枠のように1プレイヤー1行"
 #: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:42
 msgid "One line per set, tap a set for details"
 msgstr "1セット1行、タップで詳細を表示"
+
+#: src/components/user/EmptyProfile/EmptyProfile.tsx:42
+msgid "One-click graphics for every tournament"
+msgstr "どの大会もワンクリックで画像に"
+
+#: src/components/user/StatsBoard/StatsBoard.tsx:216
+#: src/hooks/user/useEventMeta.ts:19
+msgid "Online"
+msgstr "オンライン"
 
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:190
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:191
@@ -878,11 +1091,11 @@ msgstr "元コンセプトとインスピレーション"
 msgid "Output: {outputWidth} × {outputHeight} px"
 msgstr "出力: {outputWidth} × {outputHeight} px"
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:209
+#: src/components/results/ResultsApp/ResultsApp.tsx:230
 msgid "Paste a start.gg event URL, pick a player, and generate a shareable recap of their run."
 msgstr "start.ggのイベントURLを貼り付けて選手を選び、共有できるリザルト画像を作成しよう。"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:86
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:103
 msgid "Paste a tournament URL"
 msgstr "大会URLを貼り付け"
 
@@ -890,8 +1103,8 @@ msgstr "大会URLを貼り付け"
 msgid "Paste a tournament URL to predict placements and share your picks."
 msgstr "大会URLを貼り付けて順位を予想し、予想を共有しましょう。"
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:258
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:86
+#: src/components/results/ResultsApp/ResultsApp.tsx:279
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:103
 msgid "Paste URL"
 msgstr "大会URL"
 
@@ -911,6 +1124,7 @@ msgstr "ピンク"
 msgid "Pixel Ratio"
 msgstr "ピクセル比"
 
+#: src/components/home/RecentTournaments/RecentTournaments.tsx:43
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:261
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:262
 msgid "Placement"
@@ -964,11 +1178,15 @@ msgstr ""
 msgid "Post"
 msgstr "ポスト"
 
+#: src/components/user/EventRow/EventRow.tsx:33
+msgid "Predict"
+msgstr "予想する"
+
 #: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:28
 msgid "Prediction size"
 msgstr "予想人数"
 
-#: src/components/Layout/NavOverlay/NavOverlay.tsx:34
+#: src/components/Layout/NavOverlay/NavOverlay.tsx:38
 #: src/components/predict/PredictApp/PredictApp.tsx:87
 #: src/components/predict/PredictionListPanel/PredictionListPanel.tsx:84
 #: src/components/predict/PredictionWorkspace/PredictionWorkspace.tsx:39
@@ -981,7 +1199,7 @@ msgid "Prefix"
 msgstr "所属"
 
 #: src/components/predict/PredictApp/PredictApp.tsx:167
-#: src/components/results/ResultsApp/ResultsApp.tsx:292
+#: src/components/results/ResultsApp/ResultsApp.tsx:313
 #: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:189
 msgid "Preview"
 msgstr "プレビュー"
@@ -1002,11 +1220,11 @@ msgstr "パープル"
 msgid "Quality"
 msgstr "品質"
 
-#: src/components/Layout/NavOverlay/NavOverlay.tsx:22
+#: src/components/Layout/NavOverlay/NavOverlay.tsx:26
 msgid "Ranker"
 msgstr "リザルト作成"
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:34
+#: src/components/results/ResultsApp/ResultsApp.tsx:36
 msgid "Reading the bracket upside down..."
 msgstr "トーナメント表を逆さまに読んでいます..."
 
@@ -1018,13 +1236,17 @@ msgstr "トーナメント表を逆さまに読んでいます..."
 msgid "Reading the tea leaves..."
 msgstr ""
 
-#: src/components/Layout/NavOverlay/NavOverlay.tsx:24
+#: src/components/Layout/NavOverlay/NavOverlay.tsx:28
 msgid "Recap"
 msgstr "大会振り返り"
 
 #: src/components/results/ResultsApp/ResultsApp.tsx:42
 #~ msgid "Recapping the run..."
 #~ msgstr "リザルトを振り返り中..."
+
+#: src/components/user/StatsBoard/StatsBoard.tsx:391
+msgid "Recent sets"
+msgstr "最近のセット"
 
 #: src/components/top8/SettingsPanel/AccentColorPicker.tsx:25
 msgid "Red"
@@ -1041,6 +1263,12 @@ msgstr "テンプレートのプレビュー画像をすべて再生成します
 #: src/components/top8/SettingsPanel/ThumbnailRegenButton.tsx:42
 msgid "Regenerate Thumbnails"
 msgstr "サムネイルを再生成"
+
+#. placeholder {0}: career.series.name
+#. placeholder {1}: career.series.count
+#: src/components/user/StatsBoard/StatsBoard.tsx:352
+msgid "Regular at <0>{0}</0> ({1} times)"
+msgstr "<0>{0}</0>の常連（{1}回）"
 
 #. placeholder {0}: font.fontFamily
 #: src/components/top8/DesignEditor/CustomFontManager/CustomFontManager.tsx:57
@@ -1062,9 +1290,17 @@ msgstr "アプリ初期化"
 msgid "Results"
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:40
+#: src/components/results/ResultsApp/ResultsApp.tsx:42
 msgid "Rewatching every set at 2x speed..."
 msgstr "全セットを2倍速で見返しています..."
+
+#: src/components/user/StatsBoard/StatsBoard.tsx:437
+msgid "Rival"
+msgstr "ライバル"
+
+#: src/components/user/EmptyProfile/EmptyProfile.tsx:38
+msgid "Rivals and the characters you play most"
+msgstr "ライバルとよく使うキャラ"
 
 #: src/components/predict/PredictApp/PredictApp.tsx:34
 msgid "Rounding up the squad..."
@@ -1106,6 +1342,11 @@ msgstr "アセットを検索"
 msgid "Search players..."
 msgstr "プレイヤーを検索..."
 
+#: src/components/user/EventList/EventList.tsx:66
+#: src/components/user/EventList/EventList.tsx:67
+msgid "Search tournaments"
+msgstr "大会を検索"
+
 #: src/components/top8/SocialPostComposer/TemplatePicker.tsx:45
 msgid "Search variables…"
 msgstr "変数を検索…"
@@ -1117,6 +1358,10 @@ msgstr "検索..."
 
 #: src/components/results/PlayerSummary/PlayerSummary.tsx:127
 msgid "seed"
+msgstr "シード"
+
+#: src/components/home/RecentTournaments/RecentTournaments.tsx:55
+msgid "Seed"
 msgstr "シード"
 
 #: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:207
@@ -1184,9 +1429,13 @@ msgstr "SNSでシェア"
 msgid "Sharpening the seeds..."
 msgstr ""
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:130
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:147
 msgid "Show help"
 msgstr "ヘルプを表示"
+
+#: src/components/user/EventList/EventList.tsx:97
+msgid "Show more"
+msgstr "もっと見る"
 
 #: src/components/top8/Ranker/Ranker.tsx:111
 msgid "Shrink preview"
@@ -1204,9 +1453,13 @@ msgstr "容量"
 msgid "Square Variant"
 msgstr "スクエアバリアント"
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:235
+#: src/components/results/ResultsApp/ResultsApp.tsx:256
 msgid "start.gg only"
 msgstr "start.gg のみ対応"
+
+#: src/components/user/UserPage/UserPage.tsx:109
+msgid "start.gg profile"
+msgstr "start.ggプロフィール"
 
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:211
 msgid "State"
@@ -1215,6 +1468,10 @@ msgstr "州・都道府県"
 #: src/components/top8/InfoPanel/InfoPanel.tsx:105
 msgid "Stock icons"
 msgstr "ストックアイコン"
+
+#: src/components/user/StatsBoard/StatsBoard.tsx:189
+msgid "Streak"
+msgstr "連続参加"
 
 #: src/components/top8/InfoPanel/InfoPanel.tsx:56
 msgid "Support"
@@ -1275,10 +1532,18 @@ msgstr "テキストはデザインレイアウトで設定されます。"
 msgid "Texts"
 msgstr "テキスト"
 
+#: src/pages/oauthCallback.tsx:62
+msgid "The start.gg login didn't go through. Nothing was changed — you can try again from the home page."
+msgstr "start.ggでのログインが完了しませんでした。何も変更されていません。ホームからもう一度お試しください。"
+
 #: src/components/top8/SettingsPanel/ThemePicker.tsx:44
 #: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:107
 msgid "Theme"
 msgstr "テーマ"
+
+#: src/components/user/EmptyProfile/EmptyProfile.tsx:25
+msgid "There are no tournaments on your start.gg account yet. Enter one and it shows up here, ready to turn into a graphic."
+msgstr "start.ggアカウントに大会がまだありません。参加するとここに表示され、すぐに画像を作れます。"
 
 #: src/components/top8/SocialPostComposer/TemplateSelector.tsx:35
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:233
@@ -1297,7 +1562,7 @@ msgstr "アプリのデータを初期状態に戻すと保存されているテ
 msgid "This will reset all player data for this slot."
 msgstr "このスロットの選手情報がすべてリセットされます。"
 
-#: src/components/Layout/NavOverlay/NavOverlay.tsx:30
+#: src/components/Layout/NavOverlay/NavOverlay.tsx:34
 msgid "Thumbnail Maker"
 msgstr "サムネ作成"
 
@@ -1305,7 +1570,7 @@ msgstr "サムネ作成"
 msgid "Thumbnails"
 msgstr "サムネイル"
 
-#: src/components/Layout/NavOverlay/NavOverlay.tsx:28
+#: src/components/Layout/NavOverlay/NavOverlay.tsx:32
 msgid "Tier List"
 msgstr "ティア表作成"
 
@@ -1319,18 +1584,28 @@ msgstr ""
 msgid "Tonamel API error: {0}"
 msgstr "Tonamel APIエラー: {0}"
 
+#: src/components/home/RecentTournaments/RecentTournaments.tsx:75
+msgid "Top {topPercent}%"
+msgstr "上位{topPercent}%"
+
 #: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:21
 msgid "Top 16"
 msgstr "Top 16"
 
+#: src/components/user/StatsBoard/StatsBoard.tsx:243
 #: src/utils/social/builtInTemplates.ts:21
 msgid "Top 3"
 msgstr "Top 3"
 
 #: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:20
+#: src/components/user/StatsBoard/StatsBoard.tsx:250
 #: src/utils/social/builtInTemplates.ts:32
 msgid "Top 8"
 msgstr "Top 8"
+
+#: src/components/user/EventRow/EventRow.tsx:42
+msgid "Top 8 graphic"
+msgstr "Top 8画像"
 
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:72
 msgid "Top8er"
@@ -1383,7 +1658,7 @@ msgstr "大会名"
 msgid "Tournament not found"
 msgstr "大会が見つかりませんでした"
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:206
+#: src/components/results/ResultsApp/ResultsApp.tsx:227
 msgid "Tournament Recap"
 msgstr "大会振り返り"
 
@@ -1402,12 +1677,20 @@ msgstr "大会都道府県"
 #: src/components/shared/TournamentUrlInput/TournamentUrlInput.tsx:70
 #: src/components/shared/TournamentUrlInput/TournamentUrlInput.tsx:101
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:171
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:112
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:129
 #: src/consts/top8/placeholders.ts:35
 #: src/utils/social/templateTokens.ts:15
 #: src/utils/social/templateTokens.ts:47
 msgid "Tournament URL"
 msgstr "大会URL"
+
+#: src/components/user/StatsBoard/StatsBoard.tsx:167
+msgid "Tournaments"
+msgstr "大会"
+
+#: src/components/user/StatsBoard/StatsBoard.tsx:228
+msgid "Trophy shelf"
+msgstr "トロフィー棚"
 
 #: src/utils/social/builtInTemplates.ts:48
 msgid "Trophy spotlight"
@@ -1428,6 +1711,10 @@ msgstr "形式"
 #: src/components/top8/Ranker/Header/Header.tsx:35
 msgid "Undo"
 msgstr "元に戻す"
+
+#: src/components/user/EventRow/EventRow.tsx:70
+msgid "Upcoming"
+msgstr "開催予定"
 
 #. placeholder {0}: formatRelative(BUILD_DATE, i18n.locale)
 #: src/components/home/LastUpdateTracker.tsx:33
@@ -1481,6 +1768,15 @@ msgstr "vs"
 msgid "W"
 msgstr "W"
 
+#: src/components/user/StatsBoard/StatsBoard.tsx:194
+msgid "weeks in a row with a tournament, at your longest"
+msgstr "週連続で大会に参加（最長）"
+
+#. placeholder {0}: setStats.longestWinStreak
+#: src/components/user/StatsBoard/StatsBoard.tsx:419
+msgid "when it goes the distance. Best win streak: {0}"
+msgstr "最終ゲームまでもつれたセット。最長連勝：{0}"
+
 #. placeholder {0}: winnerHandle[1]
 #: src/utils/social/templateTokens.ts:20
 msgid "Winner #{0} handle"
@@ -1508,6 +1804,10 @@ msgstr "{placement}位のタグ"
 msgid "Winners"
 msgstr "上位選手"
 
+#: src/components/user/StatsBoard/StatsBoard.tsx:236
+msgid "Wins"
+msgstr "優勝"
+
 #: src/components/top8/SocialPostComposer/PlatformTabs.tsx:23
 msgid "X"
 msgstr "X"
@@ -1519,6 +1819,23 @@ msgstr "Xハンドル"
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:225
 msgid "Your current design will be overwritten!"
 msgstr "現在のデザインは上書きされます！"
+
+#: src/components/user/EmptyProfile/EmptyProfile.tsx:22
+msgid "Your first bracket is still ahead of you"
+msgstr "最初の大会はこれから"
+
+#: src/components/user/EmptyProfile/EmptyProfile.tsx:34
+msgid "Your record, trophies and streaks"
+msgstr "戦績、入賞歴、連続参加"
+
+#: src/components/home/RecentTournaments/RecentTournaments.tsx:110
+#: src/components/user/EventList/EventList.tsx:58
+msgid "Your tournaments"
+msgstr "あなたの大会"
+
+#: src/components/user/UserPage/UserPage.tsx:54
+msgid "Your tournaments, in one place"
+msgstr "あなたの大会をひとつの場所に"
 
 #: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:154
 msgid "Zoom In"
