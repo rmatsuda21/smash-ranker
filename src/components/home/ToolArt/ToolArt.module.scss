@@ -1,0 +1,54 @@
+// The drawings are plain SVG files with fixed (dark theme) colours, so they
+// open anywhere. Here their shapes are recoloured by class: mixed from the
+// theme's foreground and brand colours, the art follows the theme and accent
+// without a second set of tokens.
+
+.art {
+  display: block;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--fg-1) 4%, transparent);
+
+  svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  :global {
+    .tool-tile {
+      fill: color-mix(in srgb, var(--fg-1) 9%, transparent);
+    }
+
+    .tool-figure {
+      fill: color-mix(in srgb, var(--fg-1) 30%, transparent);
+    }
+
+    .tool-bar {
+      fill: color-mix(in srgb, var(--fg-1) 22%, transparent);
+    }
+
+    .tool-accent {
+      fill: var(--brand);
+    }
+
+    .tool-accent-soft {
+      fill: color-mix(in srgb, var(--brand) 28%, transparent);
+    }
+
+    // The highlighted item of a drawing (the winner, the dragged entry).
+    .tool-lead {
+      fill: color-mix(in srgb, var(--brand) 22%, transparent);
+      stroke: var(--brand);
+    }
+
+    .tool-badge {
+      fill: var(--fg-1);
+    }
+
+    .tool-badge-ink {
+      fill: var(--bg-surface);
+    }
+  }
+}

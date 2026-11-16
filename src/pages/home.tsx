@@ -2,18 +2,15 @@ import { lazy, Suspense, useCallback, useRef } from "react";
 import { Link } from "wouter";
 import cn from "classnames";
 import { Trans } from "@lingui/react/macro";
-import {
-  FaTrophy,
-  FaLayerGroup,
-  FaListOl,
-  FaPhotoFilm,
-  FaClipboardList,
-} from "react-icons/fa6";
+import { useLingui } from "@lingui/react";
+import { msg } from "@lingui/core/macro";
+import type { MessageDescriptor } from "@lingui/core";
 
 import { useFeatureFlag } from "@/hooks/useFeatureFlags";
 import { Card } from "@/components/shared/Card/Card";
 import { Badge } from "@/components/shared/Badge/Badge";
 import { SiteFooter } from "@/components/shared/SiteFooter/SiteFooter";
+import { ToolArt, type ToolArtKind } from "@/components/home/ToolArt/ToolArt";
 import { LoginPrompt } from "@/components/home/LoginPrompt/LoginPrompt";
 import { useAuthUser } from "@/store/authStore";
 
@@ -26,13 +23,65 @@ const RecentTournaments = lazy(() =>
   })),
 );
 
+type Tool = {
+  to: string;
+  art: ToolArtKind;
+  title: MessageDescriptor;
+  // A few words at most: the drawing does the explaining.
+  caption: MessageDescriptor;
+  flag?: "thumbnail-enabled" | "results-enabled";
+  isNew?: boolean;
+};
+
+const TOOLS: Tool[] = [
+  {
+    to: "/ranker",
+    art: "ranker",
+    title: msg`Tournament Ranker`,
+    caption: msg`Top 8 graphics`,
+  },
+  {
+    to: "/tier",
+    art: "tier",
+    title: msg`Tier List Maker`,
+    caption: msg`Character tier lists`,
+  },
+  {
+    to: "/results",
+    art: "recap",
+    title: msg`Tournament Recap`,
+    caption: msg`Your run, set by set`,
+    flag: "results-enabled",
+  },
+  {
+    to: "/thumbnail",
+    art: "thumbnail",
+    title: msg`Thumbnail Maker`,
+    caption: msg`Video thumbnails`,
+    flag: "thumbnail-enabled",
+    isNew: true,
+  },
+  {
+    to: "/predict",
+    art: "predict",
+    title: msg`Predictions`,
+    caption: msg`Bracket predictions`,
+  },
+];
+
 export const Home = () => {
+  const { _ } = useLingui();
   const orb1Ref = useRef<HTMLDivElement>(null);
   const orb2Ref = useRef<HTMLDivElement>(null);
   const thumbnailEnabled = useFeatureFlag("thumbnail-enabled");
   const resultsEnabled = useFeatureFlag("results-enabled");
   const user = useAuthUser();
   const gamerTag = user?.gamerTag;
+  const tools = TOOLS.filter(
+    (tool) =>
+      !tool.flag ||
+      (tool.flag === "results-enabled" ? resultsEnabled : thumbnailEnabled),
+  );
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     const { clientWidth, clientHeight } = e.currentTarget;
@@ -91,125 +140,31 @@ export const Home = () => {
         <h2 className={styles.sectionTitle}>
           <Trans>Tools</Trans>
         </h2>
-        <div className={styles.cardGrid}>
-          <Card
-            as={Link}
-            to="/ranker"
-            variant="interactive"
-            className={styles.card}
-            style={{ animationDelay: "0.1s" }}
-          >
-            <div className={styles.cardHeader}>
-              <div className={styles.cardIcon}>
-                <FaTrophy />
-              </div>
-              <h3 className={styles.cardTitle}>
-                <Trans>Tournament Ranker</Trans>
-              </h3>
-            </div>
-            <p className={styles.cardDescription}>
-              <Trans>
-                Easily generate your own tournament graphics with full
-                customization.
-              </Trans>
-            </p>
-          </Card>
-
-          <Card
-            as={Link}
-            to="/tier"
-            variant="interactive"
-            className={styles.card}
-            style={{ animationDelay: "0.25s" }}
-          >
-            <div className={styles.cardHeader}>
-              <div className={styles.cardIcon}>
-                <FaLayerGroup />
-              </div>
-              <h3 className={styles.cardTitle}>
-                <Trans>Tier List Maker</Trans>
-              </h3>
-            </div>
-            <p className={styles.cardDescription}>
-              <Trans>
-                Create your own fully customizable character tier lists.
-              </Trans>
-            </p>
-          </Card>
-
-          {resultsEnabled && (
+        <div
+          className={styles.cardGrid}
+          style={{ "--tool-count": tools.length } as React.CSSProperties}
+        >
+          {tools.map((tool, i) => (
             <Card
+              key={tool.to}
               as={Link}
-              to="/results"
+              to={tool.to}
               variant="interactive"
               className={styles.card}
-              style={{ animationDelay: "0.4s" }}
+              style={{ animationDelay: `${0.1 + i * 0.1}s` }}
             >
-              <div className={styles.cardHeader}>
-                <div className={styles.cardIcon}>
-                  <FaClipboardList />
-                </div>
-                <h3 className={styles.cardTitle}>
-                  <Trans>Tournament Recap</Trans>
-                </h3>
+              <ToolArt kind={tool.art} />
+              {tool.isNew && (
+                <Badge variant="new" className={styles.cardBadge}>
+                  <Trans>New</Trans>
+                </Badge>
+              )}
+              <div className={styles.cardText}>
+                <h3 className={styles.cardTitle}>{_(tool.title)}</h3>
+                <p className={styles.cardCaption}>{_(tool.caption)}</p>
               </div>
-              <p className={styles.cardDescription}>
-                <Trans>
-                  Share your tournament results with a nice graphic!
-                </Trans>
-              </p>
             </Card>
-          )}
-
-          {thumbnailEnabled && (
-            <Card
-              as={Link}
-              to="/thumbnail"
-              variant="interactive"
-              className={styles.card}
-              style={{ animationDelay: "0.55s" }}
-            >
-              <div className={styles.cardHeader}>
-                <div className={styles.cardIcon}>
-                  <FaPhotoFilm />
-                </div>
-                <h3 className={styles.cardTitle}>
-                  <Trans>Thumbnail Maker</Trans>
-                  <Badge variant="new">
-                    <Trans>New</Trans>
-                  </Badge>
-                </h3>
-              </div>
-              <p className={styles.cardDescription}>
-                <Trans>
-                  Create custom YouTube thumbnails for your Smash sets!
-                </Trans>
-              </p>
-            </Card>
-          )}
-
-          <Card
-            as={Link}
-            to="/predict"
-            variant="interactive"
-            className={styles.card}
-            style={{ animationDelay: "0.7s" }}
-          >
-            <div className={styles.cardHeader}>
-              <div className={styles.cardIcon}>
-                <FaListOl />
-              </div>
-              <h3 className={styles.cardTitle}>
-                <Trans>Predictions</Trans>
-              </h3>
-            </div>
-            <p className={styles.cardDescription}>
-              <Trans>
-                Like making bracket predictions? Why not share yours with your
-                friends with a cool graphic!
-              </Trans>
-            </p>
-          </Card>
+          ))}
         </div>
       </section>
 
