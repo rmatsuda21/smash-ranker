@@ -11,13 +11,24 @@ import { loadFamily } from "@/utils/fonts/fontLoader";
 type Props = {
   value: string;
   onChange: (fontFamily: string) => void;
+  /** Weights to fetch for the picked font. Omit to fetch all of them. */
+  weights?: number[];
+  /** Shown when `value` is not one of the fonts on offer. */
+  placeholder?: string;
+  className?: string;
 };
 
 // Controlled font picker for per-element font selection. Uses the same
 // DropDownSelect + FontOption (with live preview) as the Ranker, but does NOT
 // touch the global selectedFont state — each text element owns its own font,
 // so picking a font in one template never bleeds into another.
-export const TextFontSelect = ({ value, onChange }: Props) => {
+export const TextFontSelect = ({
+  value,
+  onChange,
+  weights,
+  placeholder,
+  className,
+}: Props) => {
   const fonts = useFontStore((state) => state.fonts);
   const fetching = useFontStore((state) => state.fetching);
   const error = useFontStore((state) => state.error);
@@ -37,11 +48,11 @@ export const TextFontSelect = ({ value, onChange }: Props) => {
       onChange(fontFamily);
       // Just load the font so it can render — don't update the global
       // `selectedFont` (that would leak into other templates).
-      loadFamily(fontFamily).catch(() => {
+      loadFamily(fontFamily, weights).catch(() => {
         /* TextNode redraws on resolution and fails open to fallback fonts */
       });
     },
-    [onChange],
+    [onChange, weights],
   );
 
   const renderOption = useCallback(
@@ -58,6 +69,8 @@ export const TextFontSelect = ({ value, onChange }: Props) => {
       error={error}
       searchable
       renderOption={renderOption}
+      placeholder={placeholder}
+      className={className}
     />
   );
 };

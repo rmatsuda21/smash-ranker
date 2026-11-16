@@ -94,8 +94,11 @@
   color: var(--fg-3);
 }
 
+// Fixed width: the name is drawn in its own font, and a trigger that grew
+// with it would shift the bar and the popover under the pointer.
 .fontName {
-  max-width: 96px;
+  width: 128px;
+  text-align: left;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -119,13 +122,18 @@
   gap: var(--space-1);
 }
 
+// Fixed width, so the font list under it stays the same size whatever font
+// is picked.
 .fontPopover {
+  box-sizing: border-box;
+  width: 280px;
   gap: var(--space-3);
   padding: var(--space-3);
 }
 
 .dropdown {
   width: 100%;
+  min-width: 0;
 }
 
 // The shared Slider colours its label with the accent; match the quiet

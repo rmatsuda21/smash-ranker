@@ -4,6 +4,7 @@ import { msg } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 
 import { LabelFont, TierListLayout } from "@/types/tierlist/TierList";
+import { labelFontFamilyCss } from "@/utils/tierlist/labelFont";
 
 import styles from "./TierLabel.module.scss";
 
@@ -57,7 +58,7 @@ export const TierLabel = ({
       )}
       style={{
         backgroundColor: color,
-        fontFamily: labelFont.family,
+        fontFamily: labelFontFamilyCss(labelFont.family),
         fontSize: labelFont.size,
         fontWeight: labelFont.weight,
         ...extraStyle,

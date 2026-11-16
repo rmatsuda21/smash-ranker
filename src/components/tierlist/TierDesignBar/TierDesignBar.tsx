@@ -23,6 +23,14 @@ import { RadioGroup } from "@/components/shared/RadioGroup/RadioGroup";
 import { Slider } from "@/components/shared/Slider/Slider";
 import { Popover } from "@/components/shared/Popover/Popover";
 import { FieldGroup } from "@/components/top8/EditorForm/EditorForm";
+import { TextFontSelect } from "@/components/thumbnail/Pickers/TextFontSelect";
+import { useFontStore } from "@/store/fontStore";
+import { pickClosestWeight } from "@/utils/fonts/weightFallback";
+import {
+  isLegacyFontStack,
+  labelFontDisplayName,
+  labelFontFamilyCss,
+} from "@/utils/tierlist/labelFont";
 import { useTierListStore } from "@/store/tierListStore";
 import {
   TIER_PALETTES,
@@ -38,41 +46,20 @@ import {
 
 import styles from "./TierDesignBar.module.scss";
 
-const FONT_FAMILY_SOURCE: {
-  id: string;
-  value: string;
-  label: MessageDescriptor;
-}[] = [
-  { id: "inherit", value: "inherit", label: msg`Default` },
-  { id: "arial", value: "Arial, sans-serif", label: msg`Arial` },
-  { id: "impact", value: "Impact, sans-serif", label: msg`Impact` },
-  { id: "georgia", value: "Georgia, serif", label: msg`Georgia` },
-  { id: "courier", value: "'Courier New', monospace", label: msg`Courier` },
-  {
-    id: "comic-sans",
-    value: "'Comic Sans MS', cursive",
-    label: msg`Comic Sans`,
-  },
-  { id: "times", value: "'Times New Roman', serif", label: msg`Times` },
-  {
-    id: "trebuchet",
-    value: "'Trebuchet MS', sans-serif",
-    label: msg`Trebuchet`,
-  },
-  { id: "verdana", value: "Verdana, sans-serif", label: msg`Verdana` },
-];
+const WEIGHT_LABELS: Record<number, MessageDescriptor> = {
+  100: msg`Thin`,
+  200: msg`Extra Light`,
+  300: msg`Light`,
+  400: msg`Normal`,
+  500: msg`Medium`,
+  600: msg`Semi-Bold`,
+  700: msg`Bold`,
+  800: msg`Extra Bold`,
+  900: msg`Black`,
+};
 
-const FONT_WEIGHT_SOURCE: {
-  id: string;
-  value: number;
-  label: MessageDescriptor;
-}[] = [
-  { id: "400", value: 400, label: msg`Normal` },
-  { id: "600", value: 600, label: msg`Semi-Bold` },
-  { id: "700", value: 700, label: msg`Bold` },
-  { id: "800", value: 800, label: msg`Extra Bold` },
-  { id: "900", value: 900, label: msg`Black` },
-];
+// What a system font stack from an older list can be asked for.
+const LEGACY_WEIGHTS = [400, 600, 700, 800, 900];
 
 type Props = {
   className?: string;
@@ -96,19 +83,42 @@ export const TierDesignBar = ({ className }: Props) => {
   const paletteRef = useRef<HTMLButtonElement>(null);
   const fontRef = useRef<HTMLButtonElement>(null);
 
-  const fontFamilyOptions: DropDownItem<string>[] = FONT_FAMILY_SOURCE.map(
-    ({ id, value, label }) => ({ id, value, display: _(label) }),
+  // The weights the chosen font actually ships, so every option in the
+  // weight list looks different from the others.
+  const fontWeights = useFontStore(
+    (state) =>
+      Array.from(state.fonts).find((f) => f.fontFamily === labelFont.family)
+        ?.weights,
   );
-  const fontWeightOptions: DropDownItem<number>[] = FONT_WEIGHT_SOURCE.map(
-    ({ id, value, label }) => ({ id, value, display: _(label) }),
-  );
+  const weights = isLegacyFontStack(labelFont.family)
+    ? LEGACY_WEIGHTS
+    : (fontWeights ?? [labelFont.weight]);
+  const selectedWeight = pickClosestWeight(labelFont.weight, weights);
+  const fontWeightOptions: DropDownItem<number>[] = weights.map((weight) => ({
+    id: String(weight),
+    value: weight,
+    display: WEIGHT_LABELS[weight] ? _(WEIGHT_LABELS[weight]) : String(weight),
+  }));
+
+  const handleFontChange = (family: string) => {
+    const shipped = Array.from(useFontStore.getState().fonts).find(
+      (f) => f.fontFamily === family,
+    )?.weights;
+    dispatch({
+      type: "SET_LABEL_FONT",
+      font: {
+        family,
+        weight: shipped
+          ? pickClosestWeight(labelFont.weight, shipped)
+          : labelFont.weight,
+      },
+    });
+  };
 
   const activePalette =
     TIER_PALETTES.find((p) => p.id === activePaletteId) ??
     TIER_PALETTES.find((p) => p.id === DEFAULT_PALETTE_ID)!;
-  const activeFont =
-    FONT_FAMILY_SOURCE.find((f) => f.value === labelFont.family) ??
-    FONT_FAMILY_SOURCE[0];
+  const fontName = labelFontDisplayName(labelFont.family);
 
   const toggle = (menu: Exclude<OpenMenu, null>) =>
     setOpenMenu((current) => (current === menu ? null : menu));
@@ -255,9 +265,9 @@ export const TierDesignBar = ({ className }: Props) => {
         >
           <span
             className={styles.fontName}
-            style={{ fontFamily: labelFont.family }}
+            style={{ fontFamily: labelFontFamilyCss(labelFont.family) }}
           >
-            {_(activeFont.label)}
+            {fontName}
           </span>
           <span className={styles.fontSize}>{labelFont.size}</span>
           <FaChevronDown className={styles.caret} aria-hidden="true" />
@@ -315,19 +325,18 @@ export const TierDesignBar = ({ className }: Props) => {
         className={cn(styles.popover, styles.fontPopover)}
       >
         <FieldGroup label={<Trans>Font Family</Trans>}>
-          <DropDownSelect
-            options={fontFamilyOptions}
-            selectedValue={labelFont.family}
-            onChange={(value) =>
-              dispatch({ type: "SET_LABEL_FONT", font: { family: value } })
-            }
+          <TextFontSelect
+            value={labelFont.family}
+            onChange={handleFontChange}
+            weights={[labelFont.weight]}
+            placeholder={fontName}
             className={styles.dropdown}
           />
         </FieldGroup>
         <FieldGroup label={<Trans>Font Weight</Trans>}>
           <DropDownSelect
             options={fontWeightOptions}
-            selectedValue={labelFont.weight}
+            selectedValue={selectedWeight}
             onChange={(value) =>
               dispatch({ type: "SET_LABEL_FONT", font: { weight: value } })
             }

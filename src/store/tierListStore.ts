@@ -3,6 +3,7 @@ import { createJSONStorage, devtools, persist } from "zustand/middleware";
 
 import { characters } from "@/consts/top8/ultCharacters.json";
 import { DEFAULT_PALETTE_ID } from "@/consts/tierlist/tierPalettes";
+import { DEFAULT_LABEL_FONT_FAMILY } from "@/utils/tierlist/labelFont";
 import {
   ImageDisplayMode,
   LabelFont,
@@ -88,7 +89,7 @@ const initialState: TierListState = {
   imageMode: "stock",
   tierListWidth: 600,
   layout: "side",
-  labelFont: { family: "inherit", size: 24, weight: 700 },
+  labelFont: { family: DEFAULT_LABEL_FONT_FAMILY, size: 24, weight: 700 },
   title: "",
   titleAlign: "center",
   activePaletteId: DEFAULT_PALETTE_ID,
@@ -300,11 +301,22 @@ export const useTierListStore = create<TierListStore>()(
           titleAlign: state.titleAlign,
           activePaletteId: state.activePaletteId,
         }),
-        version: 2,
+        version: 3,
         migrate: (persisted, version) => {
           const state = persisted as Record<string, unknown>;
           if (version < 2) {
             state.activePaletteId = DEFAULT_PALETTE_ID;
+          }
+          if (version < 3) {
+            // "inherit" was the app font; name it so the font picker can
+            // show it. Other old values are system font stacks and stay.
+            const labelFont = state.labelFont as LabelFont | undefined;
+            if (labelFont?.family === "inherit") {
+              state.labelFont = {
+                ...labelFont,
+                family: DEFAULT_LABEL_FONT_FAMILY,
+              };
+            }
           }
           return state as unknown as TierListStore;
         },

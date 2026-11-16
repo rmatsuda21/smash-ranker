@@ -5,6 +5,7 @@ import { msg } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 
 import { LabelFont, TitleAlign } from "@/types/tierlist/TierList";
+import { labelFontFamilyCss } from "@/utils/tierlist/labelFont";
 
 import styles from "./TierListTitle.module.scss";
 
@@ -52,7 +53,7 @@ export const TierListTitle = ({
   } as const;
 
   const fontStyle: React.CSSProperties = {
-    fontFamily: labelFont.family,
+    fontFamily: labelFontFamilyCss(labelFont.family),
     fontSize: labelFont.size * 1.5,
     fontWeight: labelFont.weight,
     justifyContent: alignToJustify[titleAlign],

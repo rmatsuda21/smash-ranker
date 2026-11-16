@@ -54,7 +54,11 @@ const TriggerContent = <T,>({
   }
 
   if (!selectedOption) {
-    return <div className={styles.content}>{placeholder}</div>;
+    return (
+      <div className={styles.content}>
+        <span className={styles.label}>{placeholder}</span>
+      </div>
+    );
   }
 
   return (
@@ -68,7 +72,7 @@ const TriggerContent = <T,>({
           loading="eager"
         />
       )}
-      {selectedOption.display}
+      <span className={styles.label}>{selectedOption.display}</span>
     </div>
   );
 };

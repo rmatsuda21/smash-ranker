@@ -40,6 +40,8 @@ import {
   getColorsForTierCount,
   DEFAULT_PALETTE_ID,
 } from "@/consts/tierlist/tierPalettes";
+import { loadFamily } from "@/utils/fonts/fontLoader";
+import { isLegacyFontStack } from "@/utils/tierlist/labelFont";
 import { preloadCharacterImages } from "@/utils/top8/preloadCharacterImages";
 
 import styles from "./TierListApp.module.scss";
@@ -157,6 +159,16 @@ export const TierListApp = () => {
   useEffect(() => {
     preloadCharacterImages();
   }, []);
+
+  // Fetch the label font (only the weight in use) for a saved list and
+  // whenever the weight changes. Until it arrives the labels show in the
+  // fallback font.
+  useEffect(() => {
+    if (isLegacyFontStack(labelFont.family)) return;
+    loadFamily(labelFont.family, [labelFont.weight]).catch(() => {
+      /* stays on the fallback font */
+    });
+  }, [labelFont.family, labelFont.weight]);
 
   const handleDragStart = useCallback((event: DragStartEvent) => {
     setActiveId(event.active.id as string);

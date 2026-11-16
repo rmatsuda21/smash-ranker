@@ -68,6 +68,9 @@ export const TierListToolbar = ({ exportRef }: Props) => {
         // Non-fatal — fallback to sans-serif if loading fails.
       }
 
+      // A label font picked a moment ago may still be downloading.
+      await document.fonts.ready;
+
       // Painted straight from the live layout (see renderElementToCanvas).
       // The canvas is already cropped to the non-ignored content, so an
       // empty-title placeholder doesn't leave a blank band.
