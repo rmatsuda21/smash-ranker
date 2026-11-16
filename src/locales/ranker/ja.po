@@ -734,7 +734,7 @@ msgstr "グリッド表示"
 msgid "Habits"
 msgstr "傾向"
 
-#: src/components/Layout/NavOverlay/NavOverlay.tsx:24
+#: src/components/Layout/NavOverlay/NavOverlay.tsx:21
 msgid "Home"
 msgstr "ホーム"
 
@@ -964,8 +964,8 @@ msgid "My Templates"
 msgstr "マイテンプレ"
 
 #: src/components/Layout/NavOverlay/NavOverlay.tsx:25
-msgid "My Tournaments"
-msgstr "マイ大会"
+#~ msgid "My Tournaments"
+#~ msgstr "マイ大会"
 
 #: src/components/user/StatsBoard/StatsBoard.tsx:443
 msgid "Nemesis"
@@ -1186,7 +1186,7 @@ msgstr "予想する"
 msgid "Prediction size"
 msgstr "予想人数"
 
-#: src/components/Layout/NavOverlay/NavOverlay.tsx:38
+#: src/components/Layout/NavOverlay/NavOverlay.tsx:34
 #: src/components/predict/PredictApp/PredictApp.tsx:87
 #: src/components/predict/PredictionListPanel/PredictionListPanel.tsx:84
 #: src/components/predict/PredictionWorkspace/PredictionWorkspace.tsx:39
@@ -1220,7 +1220,7 @@ msgstr "パープル"
 msgid "Quality"
 msgstr "品質"
 
-#: src/components/Layout/NavOverlay/NavOverlay.tsx:26
+#: src/components/Layout/NavOverlay/NavOverlay.tsx:22
 msgid "Ranker"
 msgstr "リザルト作成"
 
@@ -1236,7 +1236,7 @@ msgstr "トーナメント表を逆さまに読んでいます..."
 msgid "Reading the tea leaves..."
 msgstr ""
 
-#: src/components/Layout/NavOverlay/NavOverlay.tsx:28
+#: src/components/Layout/NavOverlay/NavOverlay.tsx:24
 msgid "Recap"
 msgstr "大会振り返り"
 
@@ -1562,7 +1562,7 @@ msgstr "アプリのデータを初期状態に戻すと保存されているテ
 msgid "This will reset all player data for this slot."
 msgstr "このスロットの選手情報がすべてリセットされます。"
 
-#: src/components/Layout/NavOverlay/NavOverlay.tsx:34
+#: src/components/Layout/NavOverlay/NavOverlay.tsx:30
 msgid "Thumbnail Maker"
 msgstr "サムネ作成"
 
@@ -1570,7 +1570,7 @@ msgstr "サムネ作成"
 msgid "Thumbnails"
 msgstr "サムネイル"
 
-#: src/components/Layout/NavOverlay/NavOverlay.tsx:32
+#: src/components/Layout/NavOverlay/NavOverlay.tsx:28
 msgid "Tier List"
 msgstr "ティア表作成"
 
