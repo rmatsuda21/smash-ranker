@@ -113,7 +113,7 @@ const basePlayer: PlayerDesign = {
           fill: "text",
           align: "left",
           verticalAlign: "middle",
-          position: { x: 0, y: -3 },
+          position: { x: 0, y: 0 },
           size: { width: 30, height: CHARACTER_IMAGE_SIZE },
         },
         {

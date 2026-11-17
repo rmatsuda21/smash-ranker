@@ -11,6 +11,7 @@ import { BackgroundContent } from "./BackgroundContent";
 import { PlayersContent } from "./PlayersContent";
 import { TournamentContent } from "./TournamentContent";
 import { useLatestCallback } from "@/hooks/useLatestCallback";
+import { useTextMetricsVersion } from "@/hooks/top8/useTextMetricsVersion";
 import type { SceneDesign } from "@/hooks/top8/useSceneFactoryContext";
 
 type Props = {
@@ -54,15 +55,30 @@ export const StaticScene = ({
     [colorPalette, textPalette, bgAssetId, bgImageDarkness],
   );
 
+  const metricsVersion = useTextMetricsVersion();
+
   const effectiveCanvasSize = useMemo(
     () =>
       getEffectiveCanvasSize(
-        canvasSize,
-        design.dynamicPlayerHeight,
-        design.players.length,
+        {
+          canvasSize,
+          dynamicPlayerHeight: design.dynamicPlayerHeight,
+          basePlayer: design.basePlayer,
+          players: design.players,
+        },
         players,
+        fontFamily,
       ),
-    [canvasSize, design.dynamicPlayerHeight, design.players.length, players],
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- metricsVersion: remeasure once fonts load
+    [
+      canvasSize,
+      design.dynamicPlayerHeight,
+      design.basePlayer,
+      design.players,
+      players,
+      fontFamily,
+      metricsVersion,
+    ],
   );
 
   const playerConfigs = useMemo(
@@ -72,8 +88,17 @@ export const StaticScene = ({
         design.players,
         design.dynamicPlayerHeight,
         players,
+        fontFamily,
       ),
-    [design.basePlayer, design.players, design.dynamicPlayerHeight, players],
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- metricsVersion: remeasure once fonts load
+    [
+      design.basePlayer,
+      design.players,
+      design.dynamicPlayerHeight,
+      players,
+      fontFamily,
+      metricsVersion,
+    ],
   );
 
   const [ready, setReady] = useState({

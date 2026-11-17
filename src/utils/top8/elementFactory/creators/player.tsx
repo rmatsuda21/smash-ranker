@@ -158,9 +158,13 @@ export const createCustomAltCharacterImageElement: ElementCreator<
 
   if (!player) return null;
 
-  const characters = element.includeMainCharacter
+  const allCharacters = element.includeMainCharacter
     ? player.characters
     : player.characters.slice(1);
+  const characters =
+    element.characterIndex === undefined
+      ? allCharacters
+      : allCharacters.slice(element.characterIndex, element.characterIndex + 1);
 
   if (characters.length === 0) return null;
 

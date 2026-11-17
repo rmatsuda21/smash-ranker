@@ -1,7 +1,9 @@
 import { useMemo } from "react";
 import { useShallow } from "zustand/react/shallow";
 
+import { useTextMetricsVersion } from "@/hooks/top8/useTextMetricsVersion";
 import { useCanvasStore } from "@/store/canvasStore";
+import { useFontStore } from "@/store/fontStore";
 import { usePlayerStore } from "@/store/playerStore";
 import { getEffectiveCanvasSize } from "@/utils/top8/scene";
 
@@ -13,19 +15,33 @@ export function useEffectiveCanvasSize() {
   const dynamicPlayerHeight = useCanvasStore(
     (state) => state.design.dynamicPlayerHeight,
   );
-  const slotCount = useCanvasStore(
-    (state) => state.design.players?.length ?? 0,
-  );
+  const basePlayer = useCanvasStore((state) => state.design.basePlayer);
+  const playerSlots = useCanvasStore((state) => state.design.players);
   const players = usePlayerStore((state) => state.players);
+  const fontFamily = useFontStore((state) => state.displayedFont);
+  const metricsVersion = useTextMetricsVersion();
 
   return useMemo(
     () =>
       getEffectiveCanvasSize(
-        canvasSize,
-        dynamicPlayerHeight,
-        slotCount,
+        {
+          canvasSize,
+          dynamicPlayerHeight,
+          basePlayer,
+          players: playerSlots ?? [],
+        },
         players,
+        fontFamily,
       ),
-    [canvasSize, dynamicPlayerHeight, slotCount, players],
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- metricsVersion: remeasure once fonts load
+    [
+      canvasSize,
+      dynamicPlayerHeight,
+      basePlayer,
+      playerSlots,
+      players,
+      fontFamily,
+      metricsVersion,
+    ],
   );
 }

@@ -2,7 +2,9 @@ import { useMemo } from "react";
 import { useShallow } from "zustand/react/shallow";
 
 import type { SceneDesign } from "@/hooks/top8/useSceneFactoryContext";
+import { useTextMetricsVersion } from "@/hooks/top8/useTextMetricsVersion";
 import { useCanvasStore } from "@/store/canvasStore";
+import { useFontStore } from "@/store/fontStore";
 import { usePlayerStore } from "@/store/playerStore";
 import { getPlayerConfigs } from "@/utils/top8/scene";
 
@@ -35,9 +37,26 @@ export const usePlayerConfigs = () => {
     (state) => state.design.dynamicPlayerHeight,
   );
 
+  const fontFamily = useFontStore((state) => state.displayedFont);
+  const metricsVersion = useTextMetricsVersion();
+
   return useMemo(
     () =>
-      getPlayerConfigs(basePlayer, playerSlots, dynamicPlayerHeight, players),
-    [basePlayer, playerSlots, dynamicPlayerHeight, players],
+      getPlayerConfigs(
+        basePlayer,
+        playerSlots,
+        dynamicPlayerHeight,
+        players,
+        fontFamily,
+      ),
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- metricsVersion: remeasure once fonts load
+    [
+      basePlayer,
+      playerSlots,
+      dynamicPlayerHeight,
+      players,
+      fontFamily,
+      metricsVersion,
+    ],
   );
 };

@@ -53,9 +53,13 @@ export const getElementMainSize = (
 
       if (!player) return 0;
 
-      const numItems = altEl.includeMainCharacter
+      const totalItems = altEl.includeMainCharacter
         ? player.characters.length
         : player.characters.length - 1;
+      const numItems =
+        altEl.characterIndex === undefined
+          ? totalItems
+          : Math.min(1, totalItems - altEl.characterIndex);
 
       if (numItems <= 0) return 0;
 

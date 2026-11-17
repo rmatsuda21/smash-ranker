@@ -51,11 +51,11 @@ msgstr ""
 msgid "{0} tournaments here, {1} cities in all"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:68
+#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:80
 msgid "{playerCount} Players (Dark)"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:69
+#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:81
 msgid "{playerCount} Players (Light)"
 msgstr ""
 
@@ -74,27 +74,33 @@ msgstr ""
 msgid "<0>{weekdayName}</0> is your tournament day"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:64
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:108
 msgid "16 Player Variant"
+msgstr ""
+
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:90
+msgid "16 Players (Light)"
 msgstr ""
 
 #: src/components/top8/SocialPostComposer/PlatformPreview.tsx:105
 msgid "1s"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:100
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:144
 msgid "4 Players (Dark)"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:112
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:156
 msgid "4 Players (Light)"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:94
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:84
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:138
 msgid "8 Players (Dark)"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:106
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:78
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:150
 msgid "8 Players (Light)"
 msgstr ""
 
@@ -229,7 +235,7 @@ msgid "Calling it for the record..."
 msgstr ""
 
 #: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:76
-#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:167
+#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:189
 #: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:180
 msgid "Cancel"
 msgstr ""
@@ -380,15 +386,19 @@ msgstr ""
 #~ msgid "Create"
 #~ msgstr ""
 
-#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:91
+#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:112
 msgid "Create a minimal template with a specific player count."
+msgstr ""
+
+#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:108
+msgid "Create a standings template with a specific player count."
 msgstr ""
 
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:246
 #~ msgid "Create New Template"
 #~ msgstr ""
 
-#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:170
+#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:192
 msgid "Create Template"
 msgstr ""
 
@@ -419,15 +429,23 @@ msgid "Custom images"
 msgstr ""
 
 #: src/components/top8/TemplateEditor/TemplateGroup.tsx:102
-msgid "Custom Minimal"
-msgstr ""
+#~ msgid "Custom Minimal"
+#~ msgstr ""
 
-#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:88
+#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:103
 msgid "Custom Minimal Template"
 msgstr ""
 
+#: src/components/top8/TemplateEditor/TemplateGroup.tsx:102
+msgid "Custom player count"
+msgstr ""
+
+#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:101
+msgid "Custom Standings Template"
+msgstr ""
+
 #: src/components/top8/SettingsPanel/ThemePicker.tsx:20
-#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:55
+#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:67
 msgid "Dark"
 msgstr ""
 
@@ -469,7 +487,7 @@ msgstr ""
 msgid "Delete template: {0}"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:232
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:284
 msgid "Delete Template?"
 msgstr ""
 
@@ -575,7 +593,7 @@ msgstr ""
 msgid "Enter {0}..."
 msgstr ""
 
-#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:145
+#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:167
 msgid "Enter a number from {MIN_PLAYERS} to {MAX_PLAYERS}."
 msgstr ""
 
@@ -726,7 +744,7 @@ msgstr ""
 msgid "Green"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:245
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:297
 msgid "Grid view"
 msgstr ""
 
@@ -782,7 +800,7 @@ msgstr ""
 msgid "Jump straight to graphics for your own tournaments"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:54
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:98
 msgid "Kagaribi"
 msgstr ""
 
@@ -811,16 +829,16 @@ msgid "Latest"
 msgstr ""
 
 #: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:97
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:257
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:309
 msgid "Layout"
 msgstr ""
 
 #: src/components/top8/SettingsPanel/ThemePicker.tsx:21
-#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:56
+#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:68
 msgid "Light"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:244
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:296
 msgid "List view"
 msgstr ""
 
@@ -839,7 +857,7 @@ msgstr ""
 msgid "Load template: {0}"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:224
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:276
 msgid "Load Template?"
 msgstr ""
 
@@ -847,7 +865,7 @@ msgstr ""
 msgid "Load Tournament?"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:252
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:304
 msgid "Loading a template replaces your current design."
 msgstr ""
 
@@ -939,7 +957,7 @@ msgstr ""
 msgid "Many cups of coffee were consumed during development 👀"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:90
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:134
 msgid "Minimal"
 msgstr ""
 
@@ -959,7 +977,7 @@ msgstr ""
 msgid "My recap"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:276
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:328
 msgid "My Templates"
 msgstr ""
 
@@ -1078,8 +1096,8 @@ msgstr ""
 #~ msgid "Or drag and drop"
 #~ msgstr "Or drag and drop"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:58
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:76
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:102
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:120
 msgid "Original"
 msgstr ""
 
@@ -1134,7 +1152,7 @@ msgstr ""
 msgid "Player {slot}"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:119
+#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:141
 msgid "Player Count"
 msgstr ""
 
@@ -1310,7 +1328,7 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:288
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:340
 msgid "Save Design"
 msgstr ""
 
@@ -1322,7 +1340,7 @@ msgstr ""
 msgid "Save Template"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:292
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:344
 msgid "Save your current design as a template to reuse it later."
 msgstr ""
 
@@ -1449,8 +1467,12 @@ msgstr ""
 msgid "Size"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:82
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:126
 msgid "Square Variant"
+msgstr ""
+
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:74
+msgid "Standings"
 msgstr ""
 
 #: src/components/results/ResultsApp/ResultsApp.tsx:256
@@ -1506,7 +1528,7 @@ msgstr ""
 msgid "Template name"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:156
+#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:178
 #: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:169
 #: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:171
 msgid "Template Name"
@@ -1537,7 +1559,7 @@ msgid "The start.gg login didn't go through. Nothing was changed — you can try
 msgstr ""
 
 #: src/components/top8/SettingsPanel/ThemePicker.tsx:44
-#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:107
+#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:129
 msgid "Theme"
 msgstr ""
 
@@ -1546,7 +1568,7 @@ msgid "There are no tournaments on your start.gg account yet. Enter one and it s
 msgstr ""
 
 #: src/components/top8/SocialPostComposer/TemplateSelector.tsx:35
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:233
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:285
 msgid "This template will be permanently deleted."
 msgstr ""
 
@@ -1607,7 +1629,7 @@ msgstr ""
 msgid "Top 8 graphic"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:72
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:116
 msgid "Top8er"
 msgstr ""
 
@@ -1816,7 +1838,7 @@ msgstr ""
 msgid "X Handle"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:225
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:277
 msgid "Your current design will be overwritten!"
 msgstr ""
 

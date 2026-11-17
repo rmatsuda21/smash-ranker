@@ -17,8 +17,13 @@ import {
   minimalLightDesign,
   minimal4LightDesign,
   createMinimalDesign,
-  type MinimalTheme,
 } from "@/designs/minimal";
+import {
+  standingsLightDesign,
+  standingsDarkDesign,
+  standings16LightDesign,
+  createStandingsDesign,
+} from "@/designs/standings";
 import { kagaribiDesign } from "@/designs/kagaribi";
 import { kagaribi16Design } from "@/designs/kagaribi16";
 import { Button } from "@/components/shared/Button/Button";
@@ -30,7 +35,11 @@ import { loadFamily } from "@/utils/fonts/fontLoader";
 import { collectDesignFontWeights } from "@/utils/fonts/designWeights";
 import { useConfirmation } from "@/hooks/useConfirmation";
 import { CreateTemplateModal } from "@/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal";
-import { CreateMinimalTemplateModal } from "@/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal";
+import {
+  CreateMinimalTemplateModal,
+  type CustomTemplateStyle,
+  type CustomTemplateTheme,
+} from "@/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal";
 import { TemplateGroup } from "@/components/top8/TemplateEditor/TemplateGroup";
 import { EditorPanel } from "@/components/top8/EditorForm/EditorForm";
 
@@ -48,7 +57,42 @@ type DefaultTemplateGroup = {
   templates: DefaultTemplate[];
 };
 
+const CUSTOM_DESIGN_FACTORIES: Record<
+  CustomTemplateStyle,
+  (playerCount: number, theme: CustomTemplateTheme) => DBTemplate["design"]
+> = {
+  minimal: createMinimalDesign,
+  standings: createStandingsDesign,
+};
+
+const isCustomTemplateStyle = (id: string): id is CustomTemplateStyle =>
+  id in CUSTOM_DESIGN_FACTORIES;
+
 const DEFAULT_TEMPLATE_GROUPS: DefaultTemplateGroup[] = [
+  {
+    id: "standings",
+    name: msg`Standings`,
+    templates: [
+      {
+        id: "standings-light",
+        name: msg`8 Players (Light)`,
+        design: standingsLightDesign,
+        font: "Noto Sans JP",
+      },
+      {
+        id: "standings-dark",
+        name: msg`8 Players (Dark)`,
+        design: standingsDarkDesign,
+        font: "Noto Sans JP",
+      },
+      {
+        id: "standings-16-light",
+        name: msg`16 Players (Light)`,
+        design: standings16LightDesign,
+        font: "Noto Sans JP",
+      },
+    ],
+  },
   {
     id: "kagaribi",
     name: msg`Kagaribi`,
@@ -123,8 +167,11 @@ export const TemplateEditor = ({ className }: Props) => {
     useTemplateDB();
   const [userTemplates, setUserTemplates] = useState<DBTemplate[]>([]);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [isCreateMinimalModalOpen, setIsCreateMinimalModalOpen] =
-    useState(false);
+  const [customTemplateStyle, setCustomTemplateStyle] =
+    useState<CustomTemplateStyle | null>(null);
+  // Kept while the modal closes so its text doesn't change mid-animation.
+  const [lastCustomStyle, setLastCustomStyle] =
+    useState<CustomTemplateStyle>("minimal");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [loadingTemplateId, setLoadingTemplateId] = useState<string | null>(
     null,
@@ -203,17 +250,22 @@ export const TemplateEditor = ({ className }: Props) => {
     setIsCreateModalOpen(false);
   };
 
-  const handleCreateMinimalTemplate = (
+  const openCustomTemplateModal = (style: CustomTemplateStyle) => {
+    setLastCustomStyle(style);
+    setCustomTemplateStyle(style);
+  };
+
+  const handleCreateCustomTemplate = (
     name: string,
     playerCount: number,
-    theme: MinimalTheme,
+    theme: CustomTemplateTheme,
   ) => {
     addTemplate({
       name,
-      design: createMinimalDesign(playerCount, theme),
+      design: CUSTOM_DESIGN_FACTORIES[lastCustomStyle](playerCount, theme),
       font: "Noto Sans JP",
     }).then(() => {
-      setIsCreateMinimalModalOpen(false);
+      setCustomTemplateStyle(null);
     });
   };
 
@@ -303,8 +355,8 @@ export const TemplateEditor = ({ className }: Props) => {
           viewMode={viewMode}
           loadingTemplateId={loadingTemplateId}
           onCreateCustom={
-            group.id === "minimal"
-              ? () => setIsCreateMinimalModalOpen(true)
+            isCustomTemplateStyle(group.id)
+              ? () => openCustomTemplateModal(group.id as CustomTemplateStyle)
               : undefined
           }
         />
@@ -317,9 +369,10 @@ export const TemplateEditor = ({ className }: Props) => {
         createTemplate={handleCreateTemplate}
       />
       <CreateMinimalTemplateModal
-        isOpen={isCreateMinimalModalOpen}
-        onClose={() => setIsCreateMinimalModalOpen(false)}
-        createTemplate={handleCreateMinimalTemplate}
+        isOpen={customTemplateStyle !== null}
+        templateStyle={lastCustomStyle}
+        onClose={() => setCustomTemplateStyle(null)}
+        createTemplate={handleCreateCustomTemplate}
       />
     </EditorPanel>
   );

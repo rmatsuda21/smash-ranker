@@ -7,7 +7,6 @@ import type { Design, ElementConfig, PlayerDesign } from "@/types/top8/Design";
 import type { PlayerInfo } from "@/types/top8/Player";
 import {
   computeDynamicPlayerLayout,
-  computePlayerHeightDelta,
   mergePlayerSlots,
 } from "@/utils/top8/dynamicPlayerHeight";
 
@@ -20,6 +19,7 @@ export const getPlayerConfigs = (
   playerSlots: Design["players"],
   dynamicPlayerHeight: Design["dynamicPlayerHeight"],
   players: PlayerInfo[],
+  fontFamily?: string,
 ): PlayerDesign[] => {
   if (dynamicPlayerHeight) {
     return computeDynamicPlayerLayout(
@@ -27,31 +27,38 @@ export const getPlayerConfigs = (
       playerSlots,
       players,
       dynamicPlayerHeight,
+      fontFamily,
     ).configs;
   }
   return mergePlayerSlots(basePlayer, playerSlots);
 };
 
 /** Canvas size after dynamic player height has grown the players that occupy
- *  a slot. Returns `canvasSize` itself when nothing grows. */
+ *  a slot. Returns `design.canvasSize` itself when nothing grows. */
 export const getEffectiveCanvasSize = (
-  canvasSize: CanvasSize,
-  dynamicPlayerHeight: Design["dynamicPlayerHeight"],
-  slotCount: number,
+  design: Pick<
+    Design,
+    "canvasSize" | "basePlayer" | "players" | "dynamicPlayerHeight"
+  >,
   players: PlayerInfo[],
+  fontFamily?: string,
 ): CanvasSize => {
+  const { canvasSize, dynamicPlayerHeight } = design;
   if (!dynamicPlayerHeight) return canvasSize;
 
-  let totalDelta = 0;
-  for (let i = 0; i < Math.min(slotCount, players.length); i++) {
-    totalDelta += computePlayerHeightDelta(
-      dynamicPlayerHeight,
-      players[i].characters?.length ?? 0,
-    );
-  }
+  const { totalHeightDelta } = computeDynamicPlayerLayout(
+    design.basePlayer,
+    design.players,
+    players,
+    dynamicPlayerHeight,
+    fontFamily,
+  );
 
-  if (totalDelta === 0) return canvasSize;
-  return { width: canvasSize.width, height: canvasSize.height + totalDelta };
+  if (totalHeightDelta === 0) return canvasSize;
+  return {
+    width: canvasSize.width,
+    height: canvasSize.height + totalHeightDelta,
+  };
 };
 
 /** Stretches full-height background rects when the canvas has grown. */

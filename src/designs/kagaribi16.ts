@@ -6,6 +6,7 @@ import {
 } from "@/types/top8/Design";
 import { DesignPlaceholder } from "@/consts/top8/placeholders";
 import { RenderCondition } from "@/consts/top8/renderConditions";
+import { baselineShift } from "@/utils/top8/baselineShift";
 
 const CANVAS_WIDTH = 1920;
 const CANVAS_HEIGHT = 1080;
@@ -22,6 +23,8 @@ const FOOTER_BOTTOM = CANVAS_HEIGHT - VERT_PADDING;
 const FIRST_PL_WIDTH = 350;
 const RIGHT_CARD_WIDTH = 345;
 const RIGHT_CARD_HEIGHT = 80;
+// Tag size in the right-hand cards (9th and below).
+const TAG_FONT_SIZE = 22;
 
 // Middle area = total - 1st place - right col - 2 gaps = 1123px.
 // Top row (3 squares + 2 gaps): TOP_ROW_SIZE = (1123 - 40) / 3 = 361.
@@ -276,18 +279,17 @@ const createHorizontalPlayerElements = (): ElementConfig[] => {
           shadowOffset: { x: 1, y: 1 },
           align: "right",
           verticalAlign: "middle",
-          position: { x: 0, y: 0 },
+          position: { x: 0, y: baselineShift(25, TAG_FONT_SIZE) },
           size: { width: placementWidth, height: 36 },
         },
         {
-          // Inner flex sized to the tag's height and bottom-aligns its
-          // children, so prefix shares the tag's baseline. The outer flex
-          // (align: "center") then centers this whole sub-row vertically in
-          // the card, which keeps the tag visually centered.
+          // Everything in the row is middle-aligned, which centers the tag's
+          // capitals in the card. The placement and the prefix are a
+          // different size, so each is shifted onto the tag's baseline.
           name: "Name",
           type: "flexGroup",
           direction: "row",
-          align: "end",
+          align: "center",
           gap: 4,
           position: { x: 0, y: 0 },
           size: { height: 22 },
@@ -300,19 +302,19 @@ const createHorizontalPlayerElements = (): ElementConfig[] => {
               fontSize: 12,
               fontWeight: 400,
               fill: "prefixText",
-              verticalAlign: "bottom",
+              verticalAlign: "middle",
               conditions: [DesignPlaceholder.PLAYER_PREFIX],
-              position: { x: 0, y: 0 },
-              size: { height: 14 },
+              position: { x: 0, y: baselineShift(12, TAG_FONT_SIZE) },
+              size: { height: 22 },
             },
             {
               name: "Tag",
               type: "smartText",
               text: DesignPlaceholder.PLAYER_TAG,
-              fontSize: 22,
+              fontSize: TAG_FONT_SIZE,
               fontWeight: 400,
               fill: "text",
-              verticalAlign: "bottom",
+              verticalAlign: "middle",
               shadowColor: "placementShadow",
               shadowBlur: 3,
               shadowOffset: { x: 1, y: 1 },

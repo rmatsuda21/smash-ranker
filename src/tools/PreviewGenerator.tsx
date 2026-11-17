@@ -24,6 +24,11 @@ import {
 } from "@/designs/minimal";
 import { kagaribiDesign } from "@/designs/kagaribi";
 import { kagaribi16Design } from "@/designs/kagaribi16";
+import {
+  standingsLightDesign,
+  standingsDarkDesign,
+  standings16LightDesign,
+} from "@/designs/standings";
 
 declare global {
   interface Window {
@@ -84,6 +89,24 @@ const BUILT_IN_TEMPLATES: PreviewTemplate[] = [
     design: kagaribi16Design,
     font: "Dela Gothic One",
   },
+  {
+    id: "standings-light",
+    name: "8 Players (Light)",
+    design: standingsLightDesign,
+    font: "Noto Sans JP",
+  },
+  {
+    id: "standings-dark",
+    name: "8 Players (Dark)",
+    design: standingsDarkDesign,
+    font: "Noto Sans JP",
+  },
+  {
+    id: "standings-16-light",
+    name: "16 Players (Light)",
+    design: standings16LightDesign,
+    font: "Noto Sans JP",
+  },
 ];
 
 const samplePlayers = createSamplePlayers(24);
@@ -108,6 +131,14 @@ const GOLDEN_ONLY_TEMPLATES: PreviewTemplate[] = [
     id: "minimal-dark-dynamic-height",
     name: "8 Players (Dark), multi-character",
     design: minimalDarkDesign,
+    font: "Noto Sans JP",
+    players: multiCharacterPlayers,
+  },
+  // Characters that continue the name's line and wrap under the flag.
+  {
+    id: "standings-light-wrapped",
+    name: "Standings, multi-character",
+    design: standingsLightDesign,
     font: "Noto Sans JP",
     players: multiCharacterPlayers,
   },
@@ -162,10 +193,9 @@ const TemplateRenderer = ({
   const stageRef = useRef<KonvaStage>(null);
   const players = template.players ?? samplePlayers;
   const stageSize = getEffectiveCanvasSize(
-    template.design.canvasSize,
-    template.design.dynamicPlayerHeight,
-    template.design.players.length,
+    template.design,
     players,
+    template.font,
   );
   const [isSceneReady, setIsSceneReady] = useState(false);
   const [captured, setCaptured] = useState(false);

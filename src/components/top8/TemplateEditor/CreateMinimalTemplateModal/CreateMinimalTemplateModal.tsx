@@ -11,7 +11,9 @@ import {
   type RadioGroupOption,
 } from "@/components/shared/RadioGroup/RadioGroup";
 import { Field, FieldGroup } from "@/components/top8/EditorForm/EditorForm";
-import type { MinimalTheme } from "@/designs/minimal";
+
+export type CustomTemplateStyle = "minimal" | "standings";
+export type CustomTemplateTheme = "dark" | "light";
 
 import styles from "./CreateMinimalTemplateModal.module.scss";
 
@@ -21,16 +23,24 @@ const PLAYER_COUNT_PRESETS = [4, 8, 16, 32];
 
 type Props = {
   isOpen: boolean;
+  /** Which built-in template the custom one is a variation of. */
+  templateStyle: CustomTemplateStyle;
   onClose: () => void;
   createTemplate: (
     name: string,
     playerCount: number,
-    theme: MinimalTheme,
+    theme: CustomTemplateTheme,
   ) => void;
+};
+
+const DEFAULT_THEME: Record<CustomTemplateStyle, CustomTemplateTheme> = {
+  minimal: "dark",
+  standings: "light",
 };
 
 export const CreateMinimalTemplateModal = ({
   isOpen,
+  templateStyle,
   onClose,
   createTemplate,
 }: Props) => {
@@ -40,18 +50,20 @@ export const CreateMinimalTemplateModal = ({
   const nameId = useId();
   // Kept as typed, so the field can be cleared and retyped.
   const [countText, setCountText] = useState("8");
-  const [theme, setTheme] = useState<MinimalTheme>("dark");
+  const [theme, setTheme] = useState<CustomTemplateTheme>(
+    DEFAULT_THEME[templateStyle],
+  );
   // Null until the user types a name of their own.
   const [customName, setCustomName] = useState<string | null>(null);
 
   useEffect(() => {
     if (!isOpen) return;
     setCountText("8");
-    setTheme("dark");
+    setTheme(DEFAULT_THEME[templateStyle]);
     setCustomName(null);
-  }, [isOpen]);
+  }, [isOpen, templateStyle]);
 
-  const themeOptions: RadioGroupOption<MinimalTheme>[] = [
+  const themeOptions: RadioGroupOption<CustomTemplateTheme>[] = [
     { value: "dark", label: _(msg`Dark`) },
     { value: "light", label: _(msg`Light`) },
   ];
@@ -85,12 +97,22 @@ export const CreateMinimalTemplateModal = ({
       >
         <header className={styles.header}>
           <h2 id={titleId} className={styles.title}>
-            <Trans>Custom Minimal Template</Trans>
+            {templateStyle === "standings" ? (
+              <Trans>Custom Standings Template</Trans>
+            ) : (
+              <Trans>Custom Minimal Template</Trans>
+            )}
           </h2>
           <p className={styles.description}>
-            <Trans>
-              Create a minimal template with a specific player count.
-            </Trans>
+            {templateStyle === "standings" ? (
+              <Trans>
+                Create a standings template with a specific player count.
+              </Trans>
+            ) : (
+              <Trans>
+                Create a minimal template with a specific player count.
+              </Trans>
+            )}
           </p>
         </header>
 

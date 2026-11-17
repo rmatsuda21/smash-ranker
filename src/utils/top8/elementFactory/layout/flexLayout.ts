@@ -13,6 +13,8 @@ import { evaluateElementCondition } from "@/utils/top8/evaluateElementCondition"
 
 import { getElementCrossSize, getElementMainSize } from "./measureElement";
 
+const FLEX_EPSILON = 0.01;
+
 interface FlexChildInfo {
   element: ElementConfig;
   originalIndex: number;
@@ -22,6 +24,41 @@ interface FlexChildInfo {
   flexGrow: boolean;
   flexShrink: boolean;
 }
+
+/**
+ * In a wrapping row, an `inline` character list is replaced by one item per
+ * character so each icon takes part in line breaking on its own.
+ */
+const expandInlineCharacters = (
+  elements: ElementConfig[],
+  context: ElementFactoryContext,
+): ElementConfig[] => {
+  if (
+    !elements.some((el) => el.type === "customAltCharacterImage" && el.inline)
+  ) {
+    return elements;
+  }
+
+  return elements.flatMap<ElementConfig>((el) => {
+    if (el.type !== "customAltCharacterImage" || !el.inline) return [el];
+
+    const characters = context.player?.characters ?? [];
+    const count = el.includeMainCharacter
+      ? characters.length
+      : characters.length - 1;
+    const cellWidth = el.elementTemplate?.size?.width ?? 70;
+    const cellHeight = el.elementTemplate?.size?.height ?? cellWidth;
+
+    return Array.from({ length: Math.max(0, count) }, (_, characterIndex) => ({
+      ...el,
+      id: `${el.id ?? "inlineCharacter"}-${characterIndex}`,
+      inline: false,
+      characterIndex,
+      columns: 1,
+      size: { width: cellWidth, height: cellHeight },
+    }));
+  });
+};
 
 const collectVisibleChildren = (
   elements: ElementConfig[],
@@ -92,7 +129,9 @@ const applyFlexSizing = (
   const totalSize = sizes.reduce((sum, s) => sum + s, 0);
   const remainingSpace = containerMainSize - totalSize - totalGaps;
 
-  if (remainingSpace === 0) return sizes;
+  // Sizes that add up to the container can miss it by a rounding error.
+  // Shrinking a text by that sliver would make it refit at a smaller size.
+  if (Math.abs(remainingSpace) < FLEX_EPSILON) return sizes;
 
   if (remainingSpace > 0) {
     // Grow
@@ -192,7 +231,9 @@ export const layoutFlexChildren = (
     : (element.size?.width ?? 0);
 
   const visibleChildren = collectVisibleChildren(
-    element.elements,
+    isRow && wrap
+      ? expandInlineCharacters(element.elements, context)
+      : element.elements,
     direction,
     context,
   );
@@ -269,4 +310,29 @@ export const layoutFlexChildren = (
   }
 
   return positionedChildren;
+};
+
+/**
+ * Height a wrapping row `flexGroup` takes up once its children are broken
+ * into lines: the tallest child of each line, plus the gap between lines.
+ * Matches what `layoutFlexChildren` draws.
+ */
+export const measureWrappedFlexHeight = (
+  element: FlexGroupElementConfig,
+  context: ElementFactoryContext,
+): number => {
+  const { gap = 0 } = element;
+  const children = collectVisibleChildren(
+    expandInlineCharacters(element.elements, context),
+    "row",
+    context,
+  );
+  if (children.length === 0) return 0;
+
+  const lines = buildFlexLines(children, element.size?.width ?? 0, gap, true);
+  return lines.reduce(
+    (height, line, i) =>
+      height + Math.max(...line.map((c) => c.crossSize), 0) + (i > 0 ? gap : 0),
+    0,
+  );
 };

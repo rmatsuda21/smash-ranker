@@ -204,6 +204,14 @@ export interface CustomAltCharacterImageElementConfig extends BaseElementConfig 
   imageType?: CharacterImageType;
   /** When true, include the main character as the first grid item. */
   includeMainCharacter?: boolean;
+  /**
+   * Inside a wrapping row `flexGroup`: each character becomes a flex item of
+   * its own (sized by `elementTemplate`), so the icons continue the line
+   * after their siblings and wrap with it instead of forming a grid.
+   */
+  inline?: boolean;
+  /** Draw only the character at this index (set by the inline expansion). */
+  characterIndex?: number;
   elementTemplate?: ElementConfig;
   gap?: number;
   rowGap?: number;
@@ -291,9 +299,16 @@ export interface Design {
   /** Render 1st-place player on top (last in draw order). */
   reversePlayerZOrder?: boolean;
   /** When set, player cards grow taller to accommodate extra character icon rows. */
-  dynamicPlayerHeight?: {
-    rowHeight: number;
-    gap: number;
-    maxPerRow: number;
-  };
+  dynamicPlayerHeight?: DynamicPlayerHeight;
 }
+
+export type DynamicPlayerHeight =
+  /** A character grid with a fixed number of icons per row. */
+  | { rowHeight: number; gap: number; maxPerRow: number }
+  /**
+   * A wrapping row `flexGroup` (found by id in the player's elements) whose
+   * line count depends on the player's content. The player grows by however
+   * much taller than its configured height the group lays out, and so do the
+   * player's top-level elements that span its full height.
+   */
+  | { wrapGroupId: string };

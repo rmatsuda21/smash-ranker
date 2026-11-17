@@ -31,12 +31,28 @@ const createCache = <T>() => {
 
 const caches: Map<string, unknown>[] = [];
 
+let metricsVersion = 0;
+const metricsListeners = new Set<() => void>();
+
 // A measurement taken before a font finished loading used fallback metrics.
 if (typeof document !== "undefined" && document.fonts) {
   document.fonts.addEventListener("loadingdone", () => {
     for (const cache of caches) cache.clear();
+    metricsVersion++;
+    for (const listener of metricsListeners) listener();
   });
 }
+
+/** Changes whenever earlier measurements may be stale (a font finished
+ *  loading). For layout that is memoized on measured text. */
+export const getTextMetricsVersion = () => metricsVersion;
+
+export const subscribeTextMetrics = (listener: () => void) => {
+  metricsListeners.add(listener);
+  return () => {
+    metricsListeners.delete(listener);
+  };
+};
 
 /** Drops `undefined` values so Konva falls back to its own defaults. */
 const defined = <T extends object>(config: T): T =>
@@ -125,28 +141,48 @@ const anchorOffsets = (
 let glyphContext: CanvasRenderingContext2D | null | undefined;
 
 /**
- * How far the glyphs of `text` sit from true vertical center. Konva centers
- * the line box, not the ink, so text without descenders looks low; this is
- * the shift that centers what is actually drawn.
+ * How far below the vertical center of its box Konva draws the capitals of
+ * middle-aligned text; subtracting it from the node's offset centers them.
+ *
+ * Konva puts the alphabetic baseline at the box center plus half of
+ * (font ascent - font descent), which centers the font's whole line box.
+ * That box reserves more room above the capitals than below them (accents,
+ * CJK), so the capitals end up low: about 0.07em in Noto Sans JP.
+ *
+ * It is measured from a fixed capital, not from the text being drawn, so it
+ * depends only on the font: every string in the same font and size ends up
+ * on the same baseline. Centering each string's own ink would move "Ego"
+ * (descender) and "KKV | MC" (tall bar) off the baseline of the "Prez"
+ * beside them.
  */
-const middleAlignCorrection = (node: KonvaText, text: string): number => {
+const middleAlignCorrection = (node: KonvaText): number => {
   glyphContext ??= document.createElement("canvas").getContext("2d");
   if (!glyphContext) return 0;
 
   glyphContext.font = `${node.fontStyle()} ${node.fontSize()}px ${node.fontFamily()}`;
-  glyphContext.textBaseline = "middle";
-  const metrics = glyphContext.measureText(text);
+  glyphContext.textBaseline = "alphabetic";
+  const cap = glyphContext.measureText("H");
+  // Same glyph and fallbacks Konva reads its line box from.
+  const line = glyphContext.measureText("M");
 
   if (
-    metrics.actualBoundingBoxAscent === undefined ||
-    metrics.actualBoundingBoxDescent === undefined
+    cap.actualBoundingBoxAscent === undefined ||
+    cap.actualBoundingBoxDescent === undefined
   ) {
     return 0;
   }
 
-  return (
-    (metrics.actualBoundingBoxAscent - metrics.actualBoundingBoxDescent) / 2
-  );
+  const lineAscent = line.fontBoundingBoxAscent ?? line.actualBoundingBoxAscent;
+  const lineDescent =
+    line.fontBoundingBoxDescent ?? line.actualBoundingBoxDescent;
+
+  // Both are heights above the baseline: where the capitals' center is, and
+  // where Konva puts the center of the box.
+  const capCenter =
+    (cap.actualBoundingBoxAscent - cap.actualBoundingBoxDescent) / 2;
+  const boxCenter = (lineAscent - lineDescent) / 2;
+
+  return capCenter - boxCenter;
 };
 
 const fitCache = createCache<FittedText>();
@@ -191,7 +227,7 @@ const computeFit = ({
     node.height(),
   );
   const correction =
-    verticalAlign === "middle" ? middleAlignCorrection(node, text) : 0;
+    verticalAlign === "middle" ? middleAlignCorrection(node) : 0;
 
   return { fontSize: fitted, offsetX, offsetY: offsetY - correction };
 };

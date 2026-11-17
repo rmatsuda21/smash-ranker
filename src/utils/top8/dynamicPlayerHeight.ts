@@ -1,16 +1,64 @@
-import type { Design, ElementConfig, PlayerDesign } from "@/types/top8/Design";
+import type {
+  DynamicPlayerHeight,
+  ElementConfig,
+  FlexGroupElementConfig,
+  PlayerDesign,
+} from "@/types/top8/Design";
 import type { PlayerInfo } from "@/types/top8/Player";
+import { measureWrappedFlexHeight } from "@/utils/top8/elementFactory/layout/flexLayout";
 
-type DynamicHeightConfig = NonNullable<Design["dynamicPlayerHeight"]>;
+const findFlexGroup = (
+  elements: ElementConfig[],
+  id: string,
+): FlexGroupElementConfig | undefined => {
+  for (const el of elements) {
+    if (el.type === "flexGroup" && el.id === id) return el;
+    if ("elements" in el && el.elements) {
+      const found = findFlexGroup(el.elements, id);
+      if (found) return found;
+    }
+  }
+  return undefined;
+};
 
+/**
+ * How much taller than its configured height a player has to be drawn.
+ * `fontFamily` only matters to wrap-based designs, whose line breaks depend
+ * on measured text.
+ */
 export function computePlayerHeightDelta(
-  config: DynamicHeightConfig,
-  characterCount: number,
+  config: DynamicPlayerHeight,
+  playerConfig: PlayerDesign,
+  player: PlayerInfo | undefined,
+  fontFamily: string | undefined,
 ): number {
+  if (!player) return 0;
+
+  if ("wrapGroupId" in config) {
+    const group = findFlexGroup(playerConfig.elements, config.wrapGroupId);
+    if (!group) return 0;
+    const height = measureWrappedFlexHeight(group, { player, fontFamily });
+    return Math.max(0, Math.ceil(height - (group.size?.height ?? 0)));
+  }
+
+  const characterCount = player.characters?.length ?? 0;
   if (characterCount <= config.maxPerRow) return 0;
   const rows = Math.ceil(characterCount / config.maxPerRow);
   return (rows - 1) * (config.rowHeight + config.gap);
 }
+
+/** Wrap-based designs: top-level elements spanning the player's full height
+ *  (backgrounds, highlights) grow with it. */
+const growFullHeightElements = (
+  elements: ElementConfig[],
+  playerHeight: number,
+  heightDelta: number,
+): ElementConfig[] =>
+  elements.map((el) =>
+    el.size?.height === playerHeight
+      ? { ...el, size: { ...el.size, height: playerHeight + heightDelta } }
+      : el,
+  );
 
 /**
  * Recursively patch element tree, increasing heights for specific elements
@@ -83,6 +131,7 @@ function patchPlayerElements(
 
 type SlotLayout = {
   basePlayer: PlayerDesign;
+  wrap: boolean;
   delta: number;
   offsetY: number;
   config: PlayerDesign;
@@ -98,11 +147,13 @@ const layoutSlot = (
   slot: Partial<PlayerDesign>,
   delta: number,
   offsetY: number,
+  wrap = false,
 ): PlayerDesign => {
   const cached = slotLayoutCache.get(slot);
   if (
     cached &&
     cached.basePlayer === basePlayer &&
+    cached.wrap === wrap &&
     cached.delta === delta &&
     cached.offsetY === offsetY
   ) {
@@ -112,7 +163,9 @@ const layoutSlot = (
   const config: PlayerDesign = { ...basePlayer, ...slot };
 
   if (delta > 0) {
-    config.elements = patchPlayerElements(config.elements, delta);
+    config.elements = wrap
+      ? growFullHeightElements(config.elements, config.size.height, delta)
+      : patchPlayerElements(config.elements, delta);
     config.size = { ...config.size, height: config.size.height + delta };
   }
 
@@ -120,7 +173,7 @@ const layoutSlot = (
     config.position = { ...config.position, y: config.position.y + offsetY };
   }
 
-  slotLayoutCache.set(slot, { basePlayer, delta, offsetY, config });
+  slotLayoutCache.set(slot, { basePlayer, wrap, delta, offsetY, config });
   return config;
 };
 
@@ -135,18 +188,23 @@ export function computeDynamicPlayerLayout(
   basePlayer: PlayerDesign,
   playerOverrides: Partial<PlayerDesign>[],
   players: PlayerInfo[],
-  dynamicHeight: DynamicHeightConfig,
+  dynamicHeight: DynamicPlayerHeight,
+  fontFamily?: string,
 ): { configs: PlayerDesign[]; totalHeightDelta: number } {
+  const wrap = "wrapGroupId" in dynamicHeight;
   let cumulativeDelta = 0;
   const configs: PlayerDesign[] = [];
 
   for (let i = 0; i < playerOverrides.length; i++) {
-    const characterCount = players[i]?.characters?.length ?? 0;
-    const delta = computePlayerHeightDelta(dynamicHeight, characterCount);
-
-    configs.push(
-      layoutSlot(basePlayer, playerOverrides[i], delta, cumulativeDelta),
+    const slot = playerOverrides[i];
+    const delta = computePlayerHeightDelta(
+      dynamicHeight,
+      { ...basePlayer, ...slot },
+      players[i],
+      fontFamily,
     );
+
+    configs.push(layoutSlot(basePlayer, slot, delta, cumulativeDelta, wrap));
     cumulativeDelta += delta;
   }
 

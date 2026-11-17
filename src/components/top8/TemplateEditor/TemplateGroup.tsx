@@ -99,7 +99,7 @@ export const TemplateGroup = ({
                   <FaPlus size={14} />
                 </span>
                 <span className={styles.createCustomLabel}>
-                  <Trans>Custom Minimal</Trans>
+                  <Trans>Custom player count</Trans>
                 </span>
               </button>
             )}
