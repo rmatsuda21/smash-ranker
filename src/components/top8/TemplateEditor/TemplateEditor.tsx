@@ -70,30 +70,6 @@ const isCustomTemplateStyle = (id: string): id is CustomTemplateStyle =>
 
 const DEFAULT_TEMPLATE_GROUPS: DefaultTemplateGroup[] = [
   {
-    id: "standings",
-    name: msg`Standings`,
-    templates: [
-      {
-        id: "standings-light",
-        name: msg`8 Players (Light)`,
-        design: standingsLightDesign,
-        font: "Noto Sans JP",
-      },
-      {
-        id: "standings-dark",
-        name: msg`8 Players (Dark)`,
-        design: standingsDarkDesign,
-        font: "Noto Sans JP",
-      },
-      {
-        id: "standings-16-light",
-        name: msg`16 Players (Light)`,
-        design: standings16LightDesign,
-        font: "Noto Sans JP",
-      },
-    ],
-  },
-  {
     id: "kagaribi",
     name: msg`Kagaribi`,
     templates: [
@@ -125,6 +101,30 @@ const DEFAULT_TEMPLATE_GROUPS: DefaultTemplateGroup[] = [
         id: "top8er-squares",
         name: msg`Square Variant`,
         design: squaresDesign,
+        font: "Noto Sans JP",
+      },
+    ],
+  },
+  {
+    id: "standings",
+    name: msg`Standings`,
+    templates: [
+      {
+        id: "standings-light",
+        name: msg`8 Players (Light)`,
+        design: standingsLightDesign,
+        font: "Noto Sans JP",
+      },
+      {
+        id: "standings-dark",
+        name: msg`8 Players (Dark)`,
+        design: standingsDarkDesign,
+        font: "Noto Sans JP",
+      },
+      {
+        id: "standings-16-light",
+        name: msg`16 Players (Light)`,
+        design: standings16LightDesign,
         font: "Noto Sans JP",
       },
     ],
