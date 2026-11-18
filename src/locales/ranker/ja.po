@@ -52,12 +52,12 @@ msgid "{0} tournaments here, {1} cities in all"
 msgstr "ここで{0}大会、全部で{1}都市"
 
 #: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:79
-msgid "{playerCount} Players (Dark)"
-msgstr "{playerCount}人用（ダーク）"
+#~ msgid "{playerCount} Players (Dark)"
+#~ msgstr "{playerCount}人用（ダーク）"
 
 #: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:80
-msgid "{playerCount} Players (Light)"
-msgstr "{playerCount}人用（ライト）"
+#~ msgid "{playerCount} Players (Light)"
+#~ msgstr "{playerCount}人用（ライト）"
 
 #: src/consts/top8/placeholders.ts:39
 msgid "# of Entrants"
@@ -74,7 +74,7 @@ msgstr "直近{2}セットで<0>{0}勝{1}敗</0>"
 msgid "<0>{weekdayName}</0> is your tournament day"
 msgstr "大会といえば<0>{weekdayName}</0>"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:79
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:58
 msgid "16 Player Variant"
 msgstr "16人用"
 
@@ -87,27 +87,27 @@ msgid "1s"
 msgstr ""
 
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:133
-msgid "4 Players (Dark)"
-msgstr "4人用（ダーク）"
+#~ msgid "4 Players (Dark)"
+#~ msgstr "4人用（ダーク）"
 
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:145
-msgid "4 Players (Light)"
-msgstr "4人用（ライト）"
+#~ msgid "4 Players (Light)"
+#~ msgstr "4人用（ライト）"
 
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:127
-msgid "8 Players (Dark)"
-msgstr "8人用（ダーク）"
+#~ msgid "8 Players (Dark)"
+#~ msgstr "8人用（ダーク）"
 
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:139
-msgid "8 Players (Light)"
-msgstr "8人用（ライト）"
+#~ msgid "8 Players (Light)"
+#~ msgstr "8人用（ライト）"
 
 #: src/components/top8/SettingsPanel/AccentColorPicker.tsx:70
 msgid "Accent Color"
 msgstr "アクセントカラー"
 
-#: src/components/top8/PlayersEditor/PlayerCountControl.tsx:95
-#: src/components/top8/PlayersEditor/PlayerCountControl.tsx:96
+#: src/components/top8/PlayersEditor/PlayerCountControl.tsx:98
+#: src/components/top8/PlayersEditor/PlayerCountControl.tsx:99
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:218
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:219
 msgid "Add player"
@@ -240,7 +240,6 @@ msgid "Calling it for the record..."
 msgstr ""
 
 #: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:76
-#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:178
 #: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:180
 msgid "Cancel"
 msgstr "キャンセル"
@@ -308,7 +307,7 @@ msgstr "カラーパレット"
 msgid "Commit"
 msgstr ""
 
-#: src/components/top8/PlayersEditor/PlayerCountControl.tsx:104
+#: src/components/top8/PlayersEditor/PlayerCountControl.tsx:107
 msgid "Common player counts"
 msgstr "よく使う人数"
 
@@ -396,8 +395,8 @@ msgstr "国"
 #~ msgstr "作成"
 
 #: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:102
-msgid "Create a minimal template with a specific player count."
-msgstr "指定の数の選手でミニマルテンプレを作成"
+#~ msgid "Create a minimal template with a specific player count."
+#~ msgstr "指定の数の選手でミニマルテンプレを作成"
 
 #: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:108
 #~ msgid "Create a standings template with a specific player count."
@@ -408,8 +407,8 @@ msgstr "指定の数の選手でミニマルテンプレを作成"
 #~ msgstr "新規テンプレ作成"
 
 #: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:181
-msgid "Create Template"
-msgstr "テンプレートを作成"
+#~ msgid "Create Template"
+#~ msgstr "テンプレートを作成"
 
 #: src/components/top8/InfoPanel/InfoPanel.tsx:17
 msgid "Created by"
@@ -442,20 +441,20 @@ msgstr "カスタム画像"
 #~ msgstr "作成"
 
 #: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:99
-msgid "Custom Minimal Template"
-msgstr "自作ミニマルテンプレート"
+#~ msgid "Custom Minimal Template"
+#~ msgstr "自作ミニマルテンプレート"
 
 #: src/components/top8/TemplateEditor/TemplateGroup.tsx:102
-msgid "Custom player count"
-msgstr "作成"
+#~ msgid "Custom player count"
+#~ msgstr "作成"
 
 #: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:101
 #~ msgid "Custom Standings Template"
 #~ msgstr "自作順位表テンプレート"
 
 #: src/components/top8/SettingsPanel/ThemePicker.tsx:20
-#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:66
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:115
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:94
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:106
 msgid "Dark"
 msgstr "ダーク"
 
@@ -497,7 +496,7 @@ msgstr "テンプレートを削除"
 msgid "Delete template: {0}"
 msgstr "テンプレを削除: {0}"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:282
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:225
 msgid "Delete Template?"
 msgstr "テンプレートを削除しますか？"
 
@@ -604,8 +603,8 @@ msgid "Enter {0}..."
 msgstr "{0}を入力..."
 
 #: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:156
-msgid "Enter a number from {MIN_PLAYERS} to {MAX_PLAYERS}."
-msgstr "{MIN_PLAYERS}〜{MAX_PLAYERS}の数字を入力してください。"
+#~ msgid "Enter a number from {MIN_PLAYERS} to {MAX_PLAYERS}."
+#~ msgstr "{MIN_PLAYERS}〜{MAX_PLAYERS}の数字を入力してください。"
 
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:151
 msgid "Enter a start.gg, Challonge, or Tonamel event URL"
@@ -754,7 +753,7 @@ msgstr "グラデーション枠"
 msgid "Green"
 msgstr "グリーン"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:295
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:238
 msgid "Grid view"
 msgstr "グリッド表示"
 
@@ -810,7 +809,7 @@ msgstr "公式サーバーで情報発信を行なってます！"
 msgid "Jump straight to graphics for your own tournaments"
 msgstr "自分が出た大会の画像をすぐに作れます"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:69
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:48
 msgid "Kagaribi"
 msgstr "篝火"
 
@@ -839,17 +838,17 @@ msgid "Latest"
 msgstr "最新"
 
 #: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:97
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:307
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:250
 msgid "Layout"
 msgstr "レイアウト"
 
 #: src/components/top8/SettingsPanel/ThemePicker.tsx:21
-#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:67
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:109
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:88
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:112
 msgid "Light"
 msgstr "ライト"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:294
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:237
 msgid "List view"
 msgstr "リスト表示"
 
@@ -868,7 +867,7 @@ msgstr "トーナメントを読み込んで投稿を作成してください。
 msgid "Load template: {0}"
 msgstr "テンプレを読み込む: {0}"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:274
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:217
 msgid "Load Template?"
 msgstr "テンプレートを読み込みますか？"
 
@@ -876,7 +875,7 @@ msgstr "テンプレートを読み込みますか？"
 msgid "Load Tournament?"
 msgstr "大会を読み込みますか？"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:302
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:245
 msgid "Loading a template replaces your current design."
 msgstr "テンプレを読み込むと、現在のデザインは置き換えられます。"
 
@@ -968,7 +967,7 @@ msgstr "素材管理"
 msgid "Many cups of coffee were consumed during development 👀"
 msgstr "珈琲一杯分から！"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:123
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:102
 msgid "Minimal"
 msgstr "ミニマル"
 
@@ -988,7 +987,7 @@ msgstr ""
 msgid "My recap"
 msgstr "自分の戦績"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:326
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:269
 msgid "My Templates"
 msgstr "マイテンプレ"
 
@@ -1107,8 +1106,8 @@ msgstr "テンプレートエディタを開く"
 #~ msgid "Or drag and drop"
 #~ msgstr "ドラッグ・ドロップも対応"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:73
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:91
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:52
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:70
 msgid "Original"
 msgstr "オリジナル"
 
@@ -1164,7 +1163,6 @@ msgid "Player {slot}"
 msgstr "プレイヤー{slot}"
 
 #: src/components/top8/PlayersEditor/PlayerCountControl.tsx:63
-#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:130
 msgid "Player Count"
 msgstr "選手数"
 
@@ -1345,7 +1343,7 @@ msgstr "メンバーを集合中..."
 msgid "Save"
 msgstr "保存"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:338
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:281
 msgid "Save Design"
 msgstr "デザインを保存"
 
@@ -1357,7 +1355,7 @@ msgstr "デザインをテンプレとして保存"
 msgid "Save Template"
 msgstr "テンプレを保存"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:342
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:285
 msgid "Save your current design as a template to reuse it later."
 msgstr "現在のデザインをテンプレとして保存すると、あとで再利用できます。"
 
@@ -1484,11 +1482,11 @@ msgstr "プレビューを縮小"
 msgid "Size"
 msgstr "容量"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:97
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:76
 msgid "Square Variant"
 msgstr "スクエアバリアント"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:105
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:84
 msgid "Standings"
 msgstr "順位表"
 
@@ -1545,7 +1543,6 @@ msgstr "テンプレート"
 msgid "Template name"
 msgstr "テンプレート名"
 
-#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:167
 #: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:169
 #: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:171
 msgid "Template Name"
@@ -1576,7 +1573,6 @@ msgid "The start.gg login didn't go through. Nothing was changed — you can try
 msgstr "start.ggでのログインが完了しませんでした。何も変更されていません。ホームからもう一度お試しください。"
 
 #: src/components/top8/SettingsPanel/ThemePicker.tsx:44
-#: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:118
 msgid "Theme"
 msgstr "テーマ"
 
@@ -1585,7 +1581,7 @@ msgid "There are no tournaments on your start.gg account yet. Enter one and it s
 msgstr "start.ggアカウントに大会がまだありません。参加するとここに表示され、すぐに画像を作れます。"
 
 #: src/components/top8/SocialPostComposer/TemplateSelector.tsx:35
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:283
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:226
 msgid "This template will be permanently deleted."
 msgstr "このテンプレートは完全に削除されます。"
 
@@ -1646,7 +1642,7 @@ msgstr "Top 8"
 msgid "Top 8 graphic"
 msgstr "Top 8画像"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:87
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:66
 msgid "Top8er"
 msgstr "Top8er"
 
@@ -1859,7 +1855,7 @@ msgstr "X"
 msgid "X Handle"
 msgstr "Xハンドル"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:275
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:218
 msgid "Your current design will be overwritten!"
 msgstr "現在のデザインは上書きされます！"
 

@@ -1,7 +1,6 @@
 import { useId, useState } from "react";
 import cn from "classnames";
-import { FaChevronDown, FaPlus } from "react-icons/fa6";
-import { Trans } from "@lingui/react/macro";
+import { FaChevronDown } from "react-icons/fa6";
 
 import { DBTemplate } from "@/types/Repository";
 import { TemplatePreview } from "@/components/top8/TemplateEditor/TemplatePreview/TemplatePreview";
@@ -17,7 +16,6 @@ type Props = {
   onDeleteTemplate?: (templateId: string) => void;
   viewMode: "grid" | "list";
   loadingTemplateId: string | null;
-  onCreateCustom?: () => void;
   /** Shown at the end of the header, next to the group name. */
   action?: React.ReactNode;
   /** Shown in place of the templates when the group has none. */
@@ -31,13 +29,12 @@ export const TemplateGroup = ({
   onDeleteTemplate,
   viewMode,
   loadingTemplateId,
-  onCreateCustom,
   action,
   emptyHint,
 }: Props) => {
   const [collapsed, setCollapsed] = useState(false);
   const bodyId = useId();
-  const isEmpty = templates.length === 0 && !onCreateCustom;
+  const isEmpty = templates.length === 0;
 
   return (
     <EditorCard className={styles.group}>
@@ -89,20 +86,6 @@ export const TemplateGroup = ({
                 isLoading={loadingTemplateId === template.id}
               />
             ))}
-            {onCreateCustom && (
-              <button
-                type="button"
-                className={styles.createCustom}
-                onClick={onCreateCustom}
-              >
-                <span className={styles.createCustomTile}>
-                  <FaPlus size={14} />
-                </span>
-                <span className={styles.createCustomLabel}>
-                  <Trans>Custom player count</Trans>
-                </span>
-              </button>
-            )}
           </div>
         )}
       </div>

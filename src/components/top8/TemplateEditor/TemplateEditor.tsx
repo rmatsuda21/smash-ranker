@@ -11,13 +11,7 @@ import { useTemplateDB } from "@/hooks/useConfigDb";
 import { Spinner } from "@/components/shared/Spinner/Spinner";
 import { top8erDesign } from "@/designs/top8er";
 import { squaresDesign } from "@/designs/squares";
-import {
-  minimalDarkDesign,
-  minimal4DarkDesign,
-  minimalLightDesign,
-  minimal4LightDesign,
-  createMinimalDesign,
-} from "@/designs/minimal";
+import { minimalDarkDesign, minimalLightDesign } from "@/designs/minimal";
 import { standingsLightDesign, standingsDarkDesign } from "@/designs/standings";
 import { kagaribiDesign } from "@/designs/kagaribi";
 import { kagaribi16Design } from "@/designs/kagaribi16";
@@ -31,11 +25,6 @@ import { collectDesignFontWeights } from "@/utils/fonts/designWeights";
 import { resizePlayerSlots } from "@/utils/top8/playerCount";
 import { useConfirmation } from "@/hooks/useConfirmation";
 import { CreateTemplateModal } from "@/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal";
-import {
-  CreateMinimalTemplateModal,
-  type CustomTemplateStyle,
-  type CustomTemplateTheme,
-} from "@/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal";
 import { TemplateGroup } from "@/components/top8/TemplateEditor/TemplateGroup";
 import { EditorPanel } from "@/components/top8/EditorForm/EditorForm";
 
@@ -52,16 +41,6 @@ type DefaultTemplateGroup = {
   name: MessageDescriptor;
   templates: DefaultTemplate[];
 };
-
-const CUSTOM_DESIGN_FACTORIES: Record<
-  CustomTemplateStyle,
-  (playerCount: number, theme: CustomTemplateTheme) => DBTemplate["design"]
-> = {
-  minimal: createMinimalDesign,
-};
-
-const isCustomTemplateStyle = (id: string): id is CustomTemplateStyle =>
-  id in CUSTOM_DESIGN_FACTORIES;
 
 const DEFAULT_TEMPLATE_GROUPS: DefaultTemplateGroup[] = [
   {
@@ -105,15 +84,15 @@ const DEFAULT_TEMPLATE_GROUPS: DefaultTemplateGroup[] = [
     name: msg`Standings`,
     templates: [
       {
-        id: "standings-light",
-        name: msg`Light`,
-        design: standingsLightDesign,
-        font: "Noto Sans JP",
-      },
-      {
         id: "standings-dark",
         name: msg`Dark`,
         design: standingsDarkDesign,
+        font: "Noto Sans JP",
+      },
+      {
+        id: "standings-light",
+        name: msg`Light`,
+        design: standingsLightDesign,
         font: "Noto Sans JP",
       },
     ],
@@ -124,26 +103,14 @@ const DEFAULT_TEMPLATE_GROUPS: DefaultTemplateGroup[] = [
     templates: [
       {
         id: "minimal-dark",
-        name: msg`8 Players (Dark)`,
+        name: msg`Dark`,
         design: minimalDarkDesign,
         font: "Noto Sans JP",
       },
       {
-        id: "minimal-4-dark",
-        name: msg`4 Players (Dark)`,
-        design: minimal4DarkDesign,
-        font: "Noto Sans JP",
-      },
-      {
         id: "minimal-light",
-        name: msg`8 Players (Light)`,
+        name: msg`Light`,
         design: minimalLightDesign,
-        font: "Noto Sans JP",
-      },
-      {
-        id: "minimal-4-light",
-        name: msg`4 Players (Light)`,
-        design: minimal4LightDesign,
         font: "Noto Sans JP",
       },
     ],
@@ -156,11 +123,6 @@ export const TemplateEditor = ({ className }: Props) => {
     useTemplateDB();
   const [userTemplates, setUserTemplates] = useState<DBTemplate[]>([]);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [customTemplateStyle, setCustomTemplateStyle] =
-    useState<CustomTemplateStyle | null>(null);
-  // Kept while the modal closes so its text doesn't change mid-animation.
-  const [lastCustomStyle, setLastCustomStyle] =
-    useState<CustomTemplateStyle>("minimal");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [loadingTemplateId, setLoadingTemplateId] = useState<string | null>(
     null,
@@ -248,25 +210,6 @@ export const TemplateEditor = ({ className }: Props) => {
     setIsCreateModalOpen(false);
   };
 
-  const openCustomTemplateModal = (style: CustomTemplateStyle) => {
-    setLastCustomStyle(style);
-    setCustomTemplateStyle(style);
-  };
-
-  const handleCreateCustomTemplate = (
-    name: string,
-    playerCount: number,
-    theme: CustomTemplateTheme,
-  ) => {
-    addTemplate({
-      name,
-      design: CUSTOM_DESIGN_FACTORIES[lastCustomStyle](playerCount, theme),
-      font: "Noto Sans JP",
-    }).then(() => {
-      setCustomTemplateStyle(null);
-    });
-  };
-
   const {
     confirm: confirmTemplateClick,
     confirmationDialog: templateClickConfirmation,
@@ -352,11 +295,6 @@ export const TemplateEditor = ({ className }: Props) => {
           onTemplateClick={confirmTemplateClick}
           viewMode={viewMode}
           loadingTemplateId={loadingTemplateId}
-          onCreateCustom={
-            isCustomTemplateStyle(group.id)
-              ? () => openCustomTemplateModal(group.id as CustomTemplateStyle)
-              : undefined
-          }
         />
       ))}
       {templateClickConfirmation}
@@ -365,12 +303,6 @@ export const TemplateEditor = ({ className }: Props) => {
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}
         createTemplate={handleCreateTemplate}
-      />
-      <CreateMinimalTemplateModal
-        isOpen={customTemplateStyle !== null}
-        templateStyle={lastCustomStyle}
-        onClose={() => setCustomTemplateStyle(null)}
-        createTemplate={handleCreateCustomTemplate}
       />
     </EditorPanel>
   );

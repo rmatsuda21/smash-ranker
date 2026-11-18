@@ -145,96 +145,9 @@
   }
 }
 
-// Shaped like a template tile: a 16:9 dashed box with its name underneath.
-.createCustom {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
-  padding: 0;
-  border: none;
-  background: none;
-  cursor: pointer;
-  color: var(--fg-3);
-  font-family: inherit;
-  text-align: start;
-
-  &:hover {
-    color: var(--accent-9);
-
-    .createCustomTile {
-      border-color: var(--accent-9);
-    }
-  }
-
-  &:focus-visible {
-    outline: none;
-
-    .createCustomTile {
-      outline: 2px solid var(--accent-9);
-      outline-offset: 1px;
-    }
-  }
-}
-
-.createCustomTile {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px dashed var(--border-strong);
-  border-radius: var(--radius);
-  transition: border-color var(--duration-base) var(--ease-standard);
-}
-
-.createCustomLabel {
-  // Lines up with the names under the other tiles.
-  min-height: 22px;
-  display: flex;
-  align-items: center;
-  font-size: var(--font-size-sm);
-  font-weight: 600;
-}
-
-// In the list a full-size empty tile would be mostly blank: one short row.
-.templates:not(.grid) .createCustom {
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-2);
-  height: 44px;
-  border: 1px dashed var(--border-strong);
-  border-radius: var(--radius);
-  transition: border-color var(--duration-base) var(--ease-standard);
-
-  &:hover {
-    border-color: var(--accent-9);
-  }
-
-  &:focus-visible {
-    outline: 2px solid var(--accent-9);
-    outline-offset: 1px;
-  }
-
-  .createCustomTile {
-    width: auto;
-    aspect-ratio: auto;
-    border: none;
-    outline: none;
-  }
-
-  .createCustomLabel {
-    min-height: 0;
-  }
-}
-
 @include mobile {
   .viewMode button {
     width: 36px;
     height: 32px;
-  }
-
-  .createCustomLabel {
-    min-height: 32px;
   }
 }

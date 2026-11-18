@@ -16,12 +16,7 @@ import { CharacerData, PlayerInfo } from "@/types/top8/Player";
 
 import { top8erDesign } from "@/designs/top8er";
 import { squaresDesign } from "@/designs/squares";
-import {
-  minimalDarkDesign,
-  minimal4DarkDesign,
-  minimalLightDesign,
-  minimal4LightDesign,
-} from "@/designs/minimal";
+import { minimalDarkDesign, minimalLightDesign } from "@/designs/minimal";
 import { kagaribiDesign } from "@/designs/kagaribi";
 import { kagaribi16Design } from "@/designs/kagaribi16";
 import { standingsLightDesign, standingsDarkDesign } from "@/designs/standings";
@@ -52,26 +47,14 @@ const BUILT_IN_TEMPLATES: PreviewTemplate[] = [
   },
   {
     id: "minimal-dark",
-    name: "8 Players (Dark)",
+    name: "Dark",
     design: minimalDarkDesign,
     font: "Noto Sans JP",
   },
   {
-    id: "minimal-4-dark",
-    name: "4 Players (Dark)",
-    design: minimal4DarkDesign,
-    font: "Noto Sans JP",
-  },
-  {
     id: "minimal-light",
-    name: "8 Players (Light)",
+    name: "Light",
     design: minimalLightDesign,
-    font: "Noto Sans JP",
-  },
-  {
-    id: "minimal-4-light",
-    name: "4 Players (Light)",
-    design: minimal4LightDesign,
     font: "Noto Sans JP",
   },
   {
@@ -87,15 +70,15 @@ const BUILT_IN_TEMPLATES: PreviewTemplate[] = [
     font: "Dela Gothic One",
   },
   {
-    id: "standings-light",
-    name: "Light",
-    design: standingsLightDesign,
-    font: "Noto Sans JP",
-  },
-  {
     id: "standings-dark",
     name: "Dark",
     design: standingsDarkDesign,
+    font: "Noto Sans JP",
+  },
+  {
+    id: "standings-light",
+    name: "Light",
+    design: standingsLightDesign,
     font: "Noto Sans JP",
   },
 ];
@@ -126,6 +109,18 @@ const GOLDEN_ONLY_TEMPLATES: PreviewTemplate[] = [
     players: multiCharacterPlayers,
   },
   // Player count changed in the Players tab (`dynamicPlayerCount`).
+  {
+    id: "minimal-4-dark",
+    name: "Minimal dark, 4 players",
+    design: resizePlayerSlots(minimalDarkDesign, 4),
+    font: "Noto Sans JP",
+  },
+  {
+    id: "minimal-4-light",
+    name: "Minimal light, 4 players",
+    design: resizePlayerSlots(minimalLightDesign, 4),
+    font: "Noto Sans JP",
+  },
   {
     id: "standings-16-light",
     name: "Standings, 16 players",

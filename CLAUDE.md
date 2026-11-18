@@ -214,7 +214,7 @@ When `Design.dynamicPlayerHeight` is set, player cards grow taller at render tim
 
 ### Dynamic Player Count
 
-A design opts in with `Design.dynamicPlayerCount` (`{ slotPitch, min, max, slotOverrides? }`); only the standings template does, which is why it has one light and one dark entry in the picker instead of per-count variants. Designs without it keep a fixed number of slots.
+A design opts in with `Design.dynamicPlayerCount` (`{ slotPitch, min, max, slotOverrides? }`); the standings and minimal templates do, which is why each has one light and one dark entry in the picker instead of per-count variants. Designs without it keep a fixed number of slots.
 
 - **Resize** — `resizePlayerSlots(design, count)` in `src/utils/top8/playerCount.ts` (pure) truncates or appends `design.players`, and changes the canvas height and full-height background rects by `slotPitch` per slot. Slots must be a vertical stack. `slotOverrides[i]` is what slot `i` adds to `basePlayer` (podium styling), re-applied when a removed slot comes back. Store action: `SET_PLAYER_COUNT` on `canvasStore` (undoable).
 - **Player data is never resized with it** — `playerStore` already holds 32 players (tournament loads overfetch, see `MIN_FETCH_COUNT`), so a new slot shows the next player in the standings and a removed one keeps its data. `usePlayerCount` (`src/hooks/top8/usePlayerCount.ts`) pads with blank players if the data is short and keeps the selection inside the slots. Keep `max` at or under 32 unless the fetch count grows too.

@@ -1,79 +1,92 @@
 import { Design, LayerDesign, PlayerDesign } from "@/types/top8/Design";
 import { DesignPlaceholder } from "@/consts/top8/placeholders";
 import { RenderCondition } from "@/consts/top8/renderConditions";
+import { baselineShift } from "@/utils/top8/baselineShift";
 
 const CANVAS_WIDTH = 800;
-const PADDING_BLOCK = 12;
-const PADDING_INLINE = 12;
+const PADDING_BLOCK = 28;
+const PADDING_INLINE = 32;
 const TOURNAMENT_ICON_SIZE = 100;
+const HEADER_GAP = 24;
 const PLAYER_SPACING = 8;
 const PLAYER_WIDTH = CANVAS_WIDTH - PADDING_INLINE * 2;
 const PLAYER_HEIGHT = 68;
 const PLAYER_PADDING_BLOCK = 10;
-const PLAYER_PADDING_LEFT = 20;
+const PLACEMENT_WIDTH = 44;
 const FLAG_SIZE = 36;
 const CHARACTER_IMAGE_SIZE = 48;
+const CHARACTER_RADIUS = 8;
+const TAG_FONT_SIZE = 28;
+const PREFIX_FONT_SIZE = 22;
 
 export type MinimalTheme = "dark" | "light";
 
 const darkPalette: Design["colorPalette"] = {
   backgroundStart: {
-    color: "rgb(25, 25, 25)",
+    color: "rgb(24, 24, 27)",
     name: "Gradient Start",
     group: "Background",
   },
   backgroundEnd: {
-    color: "rgb(0, 0, 0)",
+    color: "rgb(12, 12, 14)",
     name: "Gradient End",
     group: "Background",
   },
-  primary: {
-    color: "rgba(142, 142, 142, 0.21)",
-    name: "Main BG",
+  divider: {
+    color: "rgba(255, 255, 255, 0.1)",
+    name: "Divider",
     group: "Player",
   },
   characterBackground: {
-    color: "rgb(236, 236, 236)",
+    color: "rgba(255, 255, 255, 0.08)",
     name: "Character BG",
     group: "Player",
   },
   characterBorder: {
-    color: "rgb(255, 255, 255)",
+    color: "rgba(255, 255, 255, 0.14)",
     name: "Character Border",
     group: "Player",
   },
-  text: { color: "rgb(255, 255, 255)", name: "Text", group: "Text" },
-  prefixText: { color: "rgb(128, 128, 128)", name: "Prefix", group: "Text" },
+  text: { color: "rgb(245, 245, 245)", name: "Text", group: "Text" },
+  mutedText: {
+    color: "rgb(150, 150, 156)",
+    name: "Secondary Text",
+    group: "Text",
+  },
 };
 
 const lightPalette: Design["colorPalette"] = {
   backgroundStart: {
-    color: "rgb(245, 245, 245)",
+    color: "rgb(251, 251, 250)",
     name: "Gradient Start",
     group: "Background",
   },
   backgroundEnd: {
-    color: "rgb(220, 220, 220)",
+    color: "rgb(240, 240, 238)",
     name: "Gradient End",
     group: "Background",
   },
-  primary: {
-    color: "rgba(0, 0, 0, 0.08)",
-    name: "Main BG",
+  divider: {
+    color: "rgba(0, 0, 0, 0.1)",
+    name: "Divider",
     group: "Player",
   },
   characterBackground: {
-    color: "rgb(255, 255, 255)",
+    color: "rgba(0, 0, 0, 0.05)",
     name: "Character BG",
     group: "Player",
   },
   characterBorder: {
-    color: "rgb(40, 40, 40)",
+    color: "rgba(0, 0, 0, 0.12)",
     name: "Character Border",
     group: "Player",
   },
-  text: { color: "rgb(20, 20, 20)", name: "Text", group: "Text" },
-  prefixText: { color: "rgb(120, 120, 120)", name: "Prefix", group: "Text" },
+  text: { color: "rgb(24, 24, 27)", name: "Text", group: "Text" },
+  mutedText: {
+    color: "rgb(120, 120, 126)",
+    name: "Secondary Text",
+    group: "Text",
+  },
 };
 
 const palettes: Record<MinimalTheme, Design["colorPalette"]> = {
@@ -85,36 +98,35 @@ const basePlayer: PlayerDesign = {
   position: { x: PADDING_INLINE, y: 190 },
   size: { width: PLAYER_WIDTH, height: PLAYER_HEIGHT },
   scale: { x: 1, y: 1 },
+  // A ledger: no card behind the row, just a hairline above it. Placement
+  // and prefix are quiet so the name carries the row.
   elements: [
     {
       type: "rect",
-      fill: "primary",
-      position: { x: 0, y: 0 },
-      size: { width: PLAYER_WIDTH, height: PLAYER_HEIGHT },
+      id: "divider",
+      fill: "divider",
+      position: { x: 0, y: -PLAYER_SPACING / 2 - 1 },
+      size: { width: PLAYER_WIDTH, height: 2 },
     },
     {
       type: "flexGroup",
       id: "main",
       name: "Main",
-      position: { x: PLAYER_PADDING_LEFT, y: PLAYER_PADDING_BLOCK },
-      size: {
-        width: PLAYER_WIDTH - PLAYER_PADDING_LEFT - PLAYER_PADDING_BLOCK,
-        height: PLAYER_HEIGHT,
-      },
+      position: { x: 0, y: PLAYER_PADDING_BLOCK },
+      size: { width: PLAYER_WIDTH, height: PLAYER_HEIGHT },
       direction: "row",
-      justify: "center",
-      gap: 20,
+      gap: 16,
       elements: [
         {
           type: "smartText",
           text: DesignPlaceholder.PLAYER_PLACEMENT,
-          fontSize: 40,
-          fontWeight: 900,
-          fill: "text",
-          align: "left",
+          fontSize: 32,
+          fontWeight: 800,
+          fill: "mutedText",
+          align: "center",
           verticalAlign: "middle",
           position: { x: 0, y: 0 },
-          size: { width: 30, height: CHARACTER_IMAGE_SIZE },
+          size: { width: PLACEMENT_WIDTH, height: CHARACTER_IMAGE_SIZE },
         },
         {
           type: "playerFlag",
@@ -126,11 +138,11 @@ const basePlayer: PlayerDesign = {
         {
           type: "flexGroup",
           id: "fullNameGroup",
-          position: { x: 0, y: -6 },
-          size: { height: 45 },
+          position: { x: 0, y: 0 },
+          size: { height: CHARACTER_IMAGE_SIZE },
           direction: "row",
-          align: "end",
-          gap: 3,
+          align: "center",
+          gap: 8,
           conditions: [DesignPlaceholder.PLAYER_PREFIX],
           flex: { grow: true },
           elements: [
@@ -138,22 +150,27 @@ const basePlayer: PlayerDesign = {
               type: "smartText",
               text: `${DesignPlaceholder.PLAYER_PREFIX}`,
               id: "fullNameText",
-              fontSize: 18,
-              verticalAlign: "bottom",
-              fontWeight: 900,
-              fill: "prefixText",
-              position: { x: 0, y: 0 },
+              fontSize: PREFIX_FONT_SIZE,
+              fontWeight: 500,
+              fill: "mutedText",
+              verticalAlign: "middle",
+              // Smaller than the tag, so shifted onto its baseline.
+              position: {
+                x: 0,
+                y: baselineShift(PREFIX_FONT_SIZE, TAG_FONT_SIZE),
+              },
+              size: { height: CHARACTER_IMAGE_SIZE },
             },
             {
               type: "smartText",
-              text: `${DesignPlaceholder.PLAYER_TAG}`,
+              text: DesignPlaceholder.PLAYER_TAG,
               id: "tagText",
-              fontSize: 28,
-              verticalAlign: "bottom",
-              fontWeight: 900,
+              fontSize: TAG_FONT_SIZE,
+              fontWeight: 700,
               fill: "text",
+              verticalAlign: "middle",
               position: { x: 0, y: 0 },
-              size: { height: 40 },
+              size: { height: CHARACTER_IMAGE_SIZE },
               flex: { shrink: true },
             },
           ],
@@ -162,14 +179,14 @@ const basePlayer: PlayerDesign = {
           type: "smartText",
           text: DesignPlaceholder.PLAYER_TAG,
           id: "tagText",
-          conditions: [RenderCondition.NOT, DesignPlaceholder.PLAYER_PREFIX],
-          fontSize: 28,
-          align: "left",
-          verticalAlign: "bottom",
-          fontWeight: 900,
+          fontSize: TAG_FONT_SIZE,
+          fontWeight: 700,
           fill: "text",
-          position: { x: 0, y: -6 },
-          size: { height: 45 },
+          verticalAlign: "middle",
+          position: { x: 0, y: 0 },
+          size: { height: CHARACTER_IMAGE_SIZE },
+          conditions: [RenderCondition.NOT, DesignPlaceholder.PLAYER_PREFIX],
+          align: "left",
           flex: { shrink: true, grow: true },
         },
         {
@@ -211,14 +228,14 @@ const basePlayer: PlayerDesign = {
                   height: CHARACTER_IMAGE_SIZE,
                 },
                 clip: true,
-                clipCornerRadius: 4,
+                clipCornerRadius: CHARACTER_RADIUS,
                 elements: [
                   {
                     type: "rect",
                     id: "altCharacterBackground",
                     fill: "characterBackground",
                     position: { x: 0, y: 0 },
-                    cornerRadius: 4,
+                    cornerRadius: CHARACTER_RADIUS,
                   },
                   {
                     type: "characterImage",
@@ -234,7 +251,7 @@ const basePlayer: PlayerDesign = {
                     stroke: "characterBorder",
                     strokeWidth: 2,
                     position: { x: 0, y: 0 },
-                    cornerRadius: 4,
+                    cornerRadius: CHARACTER_RADIUS,
                   },
                 ],
               },
@@ -246,14 +263,17 @@ const basePlayer: PlayerDesign = {
   ],
 };
 
-const createMinimalDesign = (
-  playerCount: number,
-  theme: MinimalTheme = "dark",
-): Design => {
+const DEFAULT_PLAYER_COUNT = 8;
+const MAX_PLAYER_COUNT = 32;
+
+// Built with the default number of rows. The count is changed afterwards in
+// the Players tab (`dynamicPlayerCount`, `resizePlayerSlots`).
+const createMinimalDesign = (theme: MinimalTheme): Design => {
+  const playerCount = DEFAULT_PLAYER_COUNT;
   const canvasHeight =
     PADDING_BLOCK * 2 +
     TOURNAMENT_ICON_SIZE +
-    PLAYER_SPACING +
+    HEADER_GAP +
     PLAYER_HEIGHT * playerCount +
     PLAYER_SPACING * (playerCount - 1);
 
@@ -315,17 +335,36 @@ const createMinimalDesign = (
             },
             direction: "column",
             justify: "center",
-            gap: 8,
+            gap: 10,
             elements: [
+              {
+                type: "smartText",
+                id: "topLeftText",
+                name: "Top Left Text",
+                textId: "tournamentName",
+                fontSize: 38,
+                fontWeight: 800,
+                fill: "text",
+                align: "left",
+                position: { x: 0, y: 0 },
+                size: {
+                  width:
+                    CANVAS_WIDTH -
+                    PADDING_INLINE * 2 -
+                    TOURNAMENT_ICON_SIZE -
+                    20,
+                },
+                selectable: true,
+              },
               {
                 type: "smartText",
                 id: "topRightText",
                 name: "Top Right Text",
                 position: { x: 0, y: 0 },
                 textId: "tournamentInfo",
-                fontSize: 24,
-                fontWeight: 900,
-                fill: "text",
+                fontSize: 20,
+                fontWeight: 500,
+                fill: "mutedText",
                 size: {
                   width:
                     CANVAS_WIDTH -
@@ -334,25 +373,6 @@ const createMinimalDesign = (
                     20,
                 },
                 align: "left",
-                selectable: true,
-              },
-              {
-                type: "smartText",
-                id: "topLeftText",
-                name: "Top Left Text",
-                textId: "tournamentName",
-                fontSize: 40,
-                fontWeight: 900,
-                fill: "text",
-                align: "left",
-                position: { x: 0, y: 0 },
-                size: {
-                  width:
-                    CANVAS_WIDTH -
-                    PADDING_INLINE * 2 -
-                    TOURNAMENT_ICON_SIZE -
-                    20,
-                },
                 selectable: true,
               },
             ],
@@ -370,7 +390,7 @@ const createMinimalDesign = (
       y:
         PADDING_BLOCK +
         TOURNAMENT_ICON_SIZE +
-        PLAYER_SPACING +
+        HEADER_GAP +
         index * (PLAYER_HEIGHT + PLAYER_SPACING),
     },
     size: { width: PLAYER_WIDTH, height: PLAYER_HEIGHT },
@@ -404,12 +424,13 @@ const createMinimalDesign = (
       gap: 6,
       maxPerRow: 6,
     },
+    dynamicPlayerCount: {
+      slotPitch: PLAYER_HEIGHT + PLAYER_SPACING,
+      min: 1,
+      max: MAX_PLAYER_COUNT,
+    },
   };
 };
 
-export const minimalDarkDesign = createMinimalDesign(8, "dark");
-export const minimal4DarkDesign = createMinimalDesign(4, "dark");
-export const minimalLightDesign = createMinimalDesign(8, "light");
-export const minimal4LightDesign = createMinimalDesign(4, "light");
-
-export { createMinimalDesign };
+export const minimalDarkDesign = createMinimalDesign("dark");
+export const minimalLightDesign = createMinimalDesign("light");
