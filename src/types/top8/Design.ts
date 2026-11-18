@@ -300,6 +300,12 @@ export interface Design {
   reversePlayerZOrder?: boolean;
   /** When set, player cards grow taller to accommodate extra character icon rows. */
   dynamicPlayerHeight?: DynamicPlayerHeight;
+  /**
+   * Height the layout sets aside for the tournament icon, above the players.
+   * A tournament without an icon gets that space back: players move up and
+   * the canvas gets shorter by this much.
+   */
+  tournamentIconSpace?: number;
 }
 
 export type DynamicPlayerHeight =

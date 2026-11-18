@@ -10,6 +10,7 @@ import { DBTemplate } from "@/types/Repository";
 import { RenderProfileContext } from "@/components/top8/Canvas/RenderProfileContext";
 import { StaticScene } from "@/components/top8/Canvas/scene/StaticScene";
 import { createSamplePlayers } from "@/utils/top8/samplePlayers";
+import { getEffectiveCanvasSize, getUnusedIconSpace } from "@/utils/top8/scene";
 import { TournamentInfo } from "@/types/top8/Tournament";
 import {
   OFFSCREEN_PROFILE,
@@ -246,6 +247,18 @@ const RenderedPreview = (props: Props) => {
     };
   }, [imageDataUrl]);
 
+  // The sample tournament has no icon, so a design that reserves space for
+  // one renders shorter than its stored canvas size.
+  const stageSize = getEffectiveCanvasSize(
+    template.design,
+    samplePlayers,
+    template.font,
+    getUnusedIconSpace(
+      template.design.tournamentIconSpace,
+      sampleTournament.iconSrc,
+    ),
+  );
+
   return (
     <PreviewShell
       {...props}
@@ -255,8 +268,8 @@ const RenderedPreview = (props: Props) => {
           <div className={styles.hiddenStage}>
             <Stage
               ref={stageRef}
-              width={template.design.canvasSize.width}
-              height={template.design.canvasSize.height}
+              width={stageSize.width}
+              height={stageSize.height}
               listening={false}
               pixelRatio={1}
             >

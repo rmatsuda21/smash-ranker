@@ -5,7 +5,11 @@ import { shallow } from "zustand/shallow";
 import type { Design } from "@/types/top8/Design";
 import type { PlayerInfo } from "@/types/top8/Player";
 import type { TournamentInfo } from "@/types/top8/Tournament";
-import { getEffectiveCanvasSize, getPlayerConfigs } from "@/utils/top8/scene";
+import {
+  getEffectiveCanvasSize,
+  getPlayerConfigs,
+  getUnusedIconSpace,
+} from "@/utils/top8/scene";
 
 import { BackgroundContent } from "./BackgroundContent";
 import { PlayersContent } from "./PlayersContent";
@@ -56,6 +60,10 @@ export const StaticScene = ({
   );
 
   const metricsVersion = useTextMetricsVersion();
+  const unusedIconSpace = getUnusedIconSpace(
+    design.tournamentIconSpace,
+    tournament.iconSrc,
+  );
 
   const effectiveCanvasSize = useMemo(
     () =>
@@ -68,6 +76,7 @@ export const StaticScene = ({
         },
         players,
         fontFamily,
+        unusedIconSpace,
       ),
     // eslint-disable-next-line react-hooks/exhaustive-deps -- metricsVersion: remeasure once fonts load
     [
@@ -78,6 +87,7 @@ export const StaticScene = ({
       players,
       fontFamily,
       metricsVersion,
+      unusedIconSpace,
     ],
   );
 
@@ -89,6 +99,7 @@ export const StaticScene = ({
         design.dynamicPlayerHeight,
         players,
         fontFamily,
+        unusedIconSpace,
       ),
     // eslint-disable-next-line react-hooks/exhaustive-deps -- metricsVersion: remeasure once fonts load
     [
@@ -98,6 +109,7 @@ export const StaticScene = ({
       players,
       fontFamily,
       metricsVersion,
+      unusedIconSpace,
     ],
   );
 

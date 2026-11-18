@@ -13,8 +13,9 @@ const PADDING_INLINE = 56;
 const CONTENT_WIDTH = CANVAS_WIDTH - PADDING_INLINE * 2;
 
 const TOP_BAR_HEIGHT = 12;
-const HEADER_TOP = 44;
-const HEADER_HEIGHT = 272;
+const HEADER_TOP = 54;
+const HEADER_HEIGHT = 262;
+const HEADER_GAP = 14;
 // Wide enough for a banner; a square icon is centred in it.
 const HEADER_IMAGE_HEIGHT = 136;
 const PLAYERS_TOP = HEADER_TOP + HEADER_HEIGHT + 24;
@@ -355,8 +356,10 @@ const createStandingsDesign = (
         size: { width: CONTENT_WIDTH, height: HEADER_HEIGHT },
         direction: "column",
         align: "center",
-        justify: "center",
-        gap: 14,
+        // From the top, so the name stays put when there is no image and the
+        // players move up into its space (`tournamentIconSpace`).
+        justify: "start",
+        gap: HEADER_GAP,
         elements: [
           {
             type: "tournamentIcon",
@@ -438,6 +441,7 @@ const createStandingsDesign = (
     basePlayer,
     players,
     dynamicPlayerHeight: { wrapGroupId: "content" },
+    tournamentIconSpace: HEADER_IMAGE_HEIGHT + HEADER_GAP,
   };
 };
 

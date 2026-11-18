@@ -169,7 +169,7 @@ const layoutSlot = (
     config.size = { ...config.size, height: config.size.height + delta };
   }
 
-  if (offsetY > 0) {
+  if (offsetY !== 0) {
     config.position = { ...config.position, y: config.position.y + offsetY };
   }
 
@@ -177,12 +177,14 @@ const layoutSlot = (
   return config;
 };
 
-/** Base player merged with each slot's overrides, with no height changes. */
+/** Base player merged with each slot's overrides, with no height changes.
+ *  `offsetY` moves every player down (negative: up). */
 export const mergePlayerSlots = (
   basePlayer: PlayerDesign,
   playerOverrides: Partial<PlayerDesign>[],
+  offsetY = 0,
 ): PlayerDesign[] =>
-  playerOverrides.map((slot) => layoutSlot(basePlayer, slot, 0, 0));
+  playerOverrides.map((slot) => layoutSlot(basePlayer, slot, 0, offsetY));
 
 export function computeDynamicPlayerLayout(
   basePlayer: PlayerDesign,
@@ -190,6 +192,8 @@ export function computeDynamicPlayerLayout(
   players: PlayerInfo[],
   dynamicHeight: DynamicPlayerHeight,
   fontFamily?: string,
+  /** Moves every player down (negative: up) before any growth. */
+  offsetY = 0,
 ): { configs: PlayerDesign[]; totalHeightDelta: number } {
   const wrap = "wrapGroupId" in dynamicHeight;
   let cumulativeDelta = 0;
@@ -204,7 +208,9 @@ export function computeDynamicPlayerLayout(
       fontFamily,
     );
 
-    configs.push(layoutSlot(basePlayer, slot, delta, cumulativeDelta, wrap));
+    configs.push(
+      layoutSlot(basePlayer, slot, delta, offsetY + cumulativeDelta, wrap),
+    );
     cumulativeDelta += delta;
   }
 

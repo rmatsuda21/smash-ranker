@@ -7,7 +7,7 @@ import { Stage as KonvaStage } from "konva/lib/Stage";
 import { RenderProfileContext } from "@/components/top8/Canvas/RenderProfileContext";
 import { StaticScene } from "@/components/top8/Canvas/scene/StaticScene";
 import { OFFSCREEN_PROFILE } from "@/utils/top8/renderProfile";
-import { getEffectiveCanvasSize } from "@/utils/top8/scene";
+import { getEffectiveCanvasSize, getUnusedIconSpace } from "@/utils/top8/scene";
 import { createSamplePlayers } from "@/utils/top8/samplePlayers";
 import { loadFamily } from "@/utils/fonts/fontLoader";
 import { TournamentInfo } from "@/types/top8/Tournament";
@@ -196,6 +196,10 @@ const TemplateRenderer = ({
     template.design,
     players,
     template.font,
+    getUnusedIconSpace(
+      template.design.tournamentIconSpace,
+      sampleTournament.iconSrc,
+    ),
   );
   const [isSceneReady, setIsSceneReady] = useState(false);
   const [captured, setCaptured] = useState(false);

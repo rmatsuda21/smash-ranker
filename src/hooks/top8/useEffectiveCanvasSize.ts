@@ -5,9 +5,21 @@ import { useTextMetricsVersion } from "@/hooks/top8/useTextMetricsVersion";
 import { useCanvasStore } from "@/store/canvasStore";
 import { useFontStore } from "@/store/fontStore";
 import { usePlayerStore } from "@/store/playerStore";
-import { getEffectiveCanvasSize } from "@/utils/top8/scene";
+import { useTournamentStore } from "@/store/tournamentStore";
+import { getEffectiveCanvasSize, getUnusedIconSpace } from "@/utils/top8/scene";
 
-/** The current design's canvas size after dynamic player height. */
+/** Space the current design reserves for a tournament icon that the current
+ *  tournament doesn't have. */
+export function useUnusedIconSpace() {
+  const tournamentIconSpace = useCanvasStore(
+    (state) => state.design.tournamentIconSpace,
+  );
+  const iconSrc = useTournamentStore((state) => state.info.iconSrc);
+  return getUnusedIconSpace(tournamentIconSpace, iconSrc);
+}
+
+/** The current design's canvas size after dynamic player height and unused
+ *  tournament icon space. */
 export function useEffectiveCanvasSize() {
   const canvasSize = useCanvasStore(
     useShallow((state) => state.design.canvasSize),
@@ -20,6 +32,7 @@ export function useEffectiveCanvasSize() {
   const players = usePlayerStore((state) => state.players);
   const fontFamily = useFontStore((state) => state.displayedFont);
   const metricsVersion = useTextMetricsVersion();
+  const unusedIconSpace = useUnusedIconSpace();
 
   return useMemo(
     () =>
@@ -32,6 +45,7 @@ export function useEffectiveCanvasSize() {
         },
         players,
         fontFamily,
+        unusedIconSpace,
       ),
     // eslint-disable-next-line react-hooks/exhaustive-deps -- metricsVersion: remeasure once fonts load
     [
@@ -42,6 +56,7 @@ export function useEffectiveCanvasSize() {
       players,
       fontFamily,
       metricsVersion,
+      unusedIconSpace,
     ],
   );
 }

@@ -3,6 +3,7 @@ import { useShallow } from "zustand/react/shallow";
 
 import type { SceneDesign } from "@/hooks/top8/useSceneFactoryContext";
 import { useTextMetricsVersion } from "@/hooks/top8/useTextMetricsVersion";
+import { useUnusedIconSpace } from "@/hooks/top8/useEffectiveCanvasSize";
 import { useCanvasStore } from "@/store/canvasStore";
 import { useFontStore } from "@/store/fontStore";
 import { usePlayerStore } from "@/store/playerStore";
@@ -39,6 +40,7 @@ export const usePlayerConfigs = () => {
 
   const fontFamily = useFontStore((state) => state.displayedFont);
   const metricsVersion = useTextMetricsVersion();
+  const unusedIconSpace = useUnusedIconSpace();
 
   return useMemo(
     () =>
@@ -48,6 +50,7 @@ export const usePlayerConfigs = () => {
         dynamicPlayerHeight,
         players,
         fontFamily,
+        unusedIconSpace,
       ),
     // eslint-disable-next-line react-hooks/exhaustive-deps -- metricsVersion: remeasure once fonts load
     [
@@ -57,6 +60,7 @@ export const usePlayerConfigs = () => {
       players,
       fontFamily,
       metricsVersion,
+      unusedIconSpace,
     ],
   );
 };
