@@ -9,11 +9,21 @@ const DATE_FORMAT = new Intl.DateTimeFormat("en-US", {
   year: "numeric",
 });
 
-const formatDate = (date: Date | string | undefined): string | undefined => {
+/** MM/DD/YYYY */
+const NUMERIC_DATE_FORMAT = new Intl.DateTimeFormat("en-US", {
+  month: "2-digit",
+  day: "2-digit",
+  year: "numeric",
+});
+
+const formatDate = (
+  date: Date | string | undefined,
+  format: Intl.DateTimeFormat = DATE_FORMAT,
+): string | undefined => {
   if (!date) return undefined;
   const dateObj = typeof date === "string" ? new Date(date) : date;
   if (isNaN(dateObj.getTime())) return undefined;
-  return DATE_FORMAT.format(dateObj);
+  return format.format(dateObj);
 };
 
 /** The value a single placeholder stands for, or `undefined` when the data
@@ -41,6 +51,8 @@ const resolvePlaceholder = (
       return tournament?.eventName;
     case DesignPlaceholder.TOURNAMENT_DATE:
       return formatDate(tournament?.date);
+    case DesignPlaceholder.TOURNAMENT_DATE_NUMERIC:
+      return formatDate(tournament?.date, NUMERIC_DATE_FORMAT);
     case DesignPlaceholder.TOURNAMENT_LOCATION:
       return [
         tournament?.location.city,

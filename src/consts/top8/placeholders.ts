@@ -7,6 +7,8 @@ export enum DesignPlaceholder {
   TOURNAMENT_NAME = "<📝>",
   EVENT_NAME = "<🎮>",
   TOURNAMENT_DATE = "<📅>",
+  /** The date as MM/DD/YYYY. */
+  TOURNAMENT_DATE_NUMERIC = "<📅🔢>",
   TOURNAMENT_LOCATION = "<🌍>",
   TOURNAMENT_CITY = "<🏙️>",
   TOURNAMENT_STATE = "<🏙️🏙️>",
@@ -28,6 +30,7 @@ const TournamentPlaceholderMessages: Partial<
   [DesignPlaceholder.TOURNAMENT_NAME]: msg`Tournament Name`,
   [DesignPlaceholder.EVENT_NAME]: msg`Event Name`,
   [DesignPlaceholder.TOURNAMENT_DATE]: msg`Tournament Date`,
+  [DesignPlaceholder.TOURNAMENT_DATE_NUMERIC]: msg`Tournament Date (MM/DD/YYYY)`,
   [DesignPlaceholder.TOURNAMENT_LOCATION]: msg`Tournament Full Address`,
   [DesignPlaceholder.TOURNAMENT_CITY]: msg`Tournament City`,
   [DesignPlaceholder.TOURNAMENT_STATE]: msg`Tournament State`,

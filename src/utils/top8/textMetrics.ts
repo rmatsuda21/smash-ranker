@@ -216,6 +216,16 @@ const computeFit = ({
       node.fontSize(fitted);
       measuredWidth = node.measureSize(text).width;
     }
+
+    // The loop above undershoots (safety margin, rounding down), which
+    // leaves the text visibly smaller than its box. Step back up to the
+    // largest whole size that still fits.
+    while (fitted < fontSize) {
+      node.fontSize(fitted + 1);
+      if (node.measureSize(text).width > width) break;
+      fitted += 1;
+    }
+    node.fontSize(fitted);
   }
 
   // Now give it the real box to read the laid-out size (text that still

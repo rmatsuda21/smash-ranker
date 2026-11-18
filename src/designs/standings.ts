@@ -14,7 +14,11 @@ const CONTENT_WIDTH = CANVAS_WIDTH - PADDING_INLINE * 2;
 
 const TOP_BAR_HEIGHT = 12;
 const HEADER_TOP = 54;
-const HEADER_HEIGHT = 262;
+const HEADER_HEIGHT = 253;
+// The name's line box leaves room under its letters, so the info line is
+// pulled up to sit closer to it. The rule under it moves up with it.
+const HEADER_INFO_LIFT = 9;
+const TOURNAMENT_NAME_FONT_SIZE = 46;
 const HEADER_GAP = 14;
 // Wide enough for a banner; a square icon is centred in it.
 const HEADER_IMAGE_HEIGHT = 136;
@@ -33,7 +37,8 @@ const CONTENT_RIGHT = 20;
 const CONTENT_GAP = 10;
 const FLAG_WIDTH = 44;
 // Prefix and tag together. Leaves room for the flag and one character on
-// the first line; a longer name shrinks to fit.
+// the first line. When they don't fit, only the tag shrinks, so prefixes
+// stay the same size on every row.
 const NAME_MAX_WIDTH =
   CONTENT_WIDTH -
   CONTENT_LEFT -
@@ -215,7 +220,6 @@ const createPlayerElements = (style: RowStyle): ElementConfig[] => [
               y: baselineShift(PREFIX_FONT_SIZE, TAG_FONT_SIZE),
             },
             size: { height: ICON_SIZE },
-            flex: { shrink: true },
           },
           {
             type: "smartText",
@@ -376,12 +380,15 @@ const createStandingsDesign = (
             id: "tournamentNameText",
             name: "Tournament Name",
             textId: "tournamentName",
-            fontSize: 46,
+            fontSize: TOURNAMENT_NAME_FONT_SIZE,
             fontWeight: 900,
             fill: "text",
             align: "center",
+            // A long name shrinks to fit on one line and stays centred in
+            // the space a full-size name takes.
+            verticalAlign: "middle",
             position: { x: 0, y: 0 },
-            size: { width: CONTENT_WIDTH },
+            size: { width: CONTENT_WIDTH, height: TOURNAMENT_NAME_FONT_SIZE },
             selectable: true,
           },
           {
@@ -393,7 +400,7 @@ const createStandingsDesign = (
             fontWeight: 500,
             fill: "mutedText",
             align: "center",
-            position: { x: 0, y: 0 },
+            position: { x: 0, y: -HEADER_INFO_LIFT },
             size: { width: CONTENT_WIDTH },
             selectable: true,
           },
@@ -401,7 +408,7 @@ const createStandingsDesign = (
             type: "rect",
             id: "headerRule",
             fill: "accent",
-            position: { x: 0, y: 8 },
+            position: { x: 0, y: 8 - HEADER_INFO_LIFT },
             size: { width: 72, height: 6 },
             cornerRadius: 3,
           },
@@ -432,7 +439,7 @@ const createStandingsDesign = (
         name: "Tournament Name",
       },
       tournamentInfo: {
-        text: `${DesignPlaceholder.ENTRANTS} Entrants  ·  ${DesignPlaceholder.TOURNAMENT_LOCATION}  ·  ${DesignPlaceholder.TOURNAMENT_DATE}`,
+        text: `${DesignPlaceholder.ENTRANTS} Entrants  ·  ${DesignPlaceholder.TOURNAMENT_LOCATION}  ·  ${DesignPlaceholder.TOURNAMENT_DATE_NUMERIC}`,
         name: "Tournament Info",
       },
     },

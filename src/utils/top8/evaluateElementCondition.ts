@@ -26,6 +26,7 @@ const isConditionMet = (
     case DesignPlaceholder.EVENT_NAME:
       return Boolean(tournament?.eventName);
     case DesignPlaceholder.TOURNAMENT_DATE:
+    case DesignPlaceholder.TOURNAMENT_DATE_NUMERIC:
       return Boolean(tournament?.date);
     case DesignPlaceholder.TOURNAMENT_LOCATION:
       return (

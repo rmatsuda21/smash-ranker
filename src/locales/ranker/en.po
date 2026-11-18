@@ -59,7 +59,7 @@ msgstr ""
 msgid "{playerCount} Players (Light)"
 msgstr ""
 
-#: src/consts/top8/placeholders.ts:36
+#: src/consts/top8/placeholders.ts:39
 msgid "# of Entrants"
 msgstr ""
 
@@ -74,11 +74,11 @@ msgstr ""
 msgid "<0>{weekdayName}</0> is your tournament day"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:108
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:84
 msgid "16 Player Variant"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:90
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:126
 msgid "16 Players (Light)"
 msgstr ""
 
@@ -94,12 +94,12 @@ msgstr ""
 msgid "4 Players (Light)"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:84
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:120
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:138
 msgid "8 Players (Dark)"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:78
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:114
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:150
 msgid "8 Players (Light)"
 msgstr ""
@@ -483,7 +483,7 @@ msgid "Delete template"
 msgstr ""
 
 #. placeholder {0}: template.name
-#: src/components/top8/TemplateEditor/TemplatePreview/TemplatePreview.tsx:110
+#: src/components/top8/TemplateEditor/TemplatePreview/TemplatePreview.tsx:111
 msgid "Delete template: {0}"
 msgstr ""
 
@@ -614,7 +614,7 @@ msgstr ""
 
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:130
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:131
-#: src/consts/top8/placeholders.ts:29
+#: src/consts/top8/placeholders.ts:31
 msgid "Event Name"
 msgstr ""
 
@@ -800,7 +800,7 @@ msgstr ""
 msgid "Jump straight to graphics for your own tournaments"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:98
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:74
 msgid "Kagaribi"
 msgstr ""
 
@@ -853,7 +853,7 @@ msgid "Load a tournament to compose a post."
 msgstr ""
 
 #. placeholder {0}: template.name
-#: src/components/top8/TemplateEditor/TemplatePreview/TemplatePreview.tsx:89
+#: src/components/top8/TemplateEditor/TemplatePreview/TemplatePreview.tsx:90
 msgid "Load template: {0}"
 msgstr ""
 
@@ -1096,8 +1096,8 @@ msgstr ""
 #~ msgid "Or drag and drop"
 #~ msgstr "Or drag and drop"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:102
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:120
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:78
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:96
 msgid "Original"
 msgstr ""
 
@@ -1156,19 +1156,19 @@ msgstr ""
 msgid "Player Count"
 msgstr ""
 
-#: src/consts/top8/placeholders.ts:43
+#: src/consts/top8/placeholders.ts:46
 msgid "Player Country"
 msgstr ""
 
-#: src/consts/top8/placeholders.ts:44
+#: src/consts/top8/placeholders.ts:47
 msgid "Player Name (w/ Prefix)"
 msgstr ""
 
-#: src/consts/top8/placeholders.ts:42
+#: src/consts/top8/placeholders.ts:45
 msgid "Player Placement"
 msgstr ""
 
-#: src/consts/top8/placeholders.ts:46
+#: src/consts/top8/placeholders.ts:49
 msgid "Player Prefix"
 msgstr ""
 
@@ -1176,7 +1176,7 @@ msgstr ""
 msgid "Player results not available."
 msgstr ""
 
-#: src/consts/top8/placeholders.ts:45
+#: src/consts/top8/placeholders.ts:48
 msgid "Player Tag"
 msgstr ""
 
@@ -1467,11 +1467,11 @@ msgstr ""
 msgid "Size"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:126
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:102
 msgid "Square Variant"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:74
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:110
 msgid "Standings"
 msgstr ""
 
@@ -1629,7 +1629,7 @@ msgstr ""
 msgid "Top 8 graphic"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:116
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:92
 msgid "Top8er"
 msgstr ""
 
@@ -1642,11 +1642,11 @@ msgstr ""
 msgid "Tournament & Player data"
 msgstr ""
 
-#: src/consts/top8/placeholders.ts:32
+#: src/consts/top8/placeholders.ts:35
 msgid "Tournament City"
 msgstr ""
 
-#: src/consts/top8/placeholders.ts:34
+#: src/consts/top8/placeholders.ts:37
 msgid "Tournament Country"
 msgstr ""
 
@@ -1655,11 +1655,15 @@ msgstr ""
 msgid "Tournament date"
 msgstr ""
 
-#: src/consts/top8/placeholders.ts:30
+#: src/consts/top8/placeholders.ts:32
 msgid "Tournament Date"
 msgstr ""
 
-#: src/consts/top8/placeholders.ts:31
+#: src/consts/top8/placeholders.ts:33
+msgid "Tournament Date (MM/DD/YYYY)"
+msgstr ""
+
+#: src/consts/top8/placeholders.ts:34
 msgid "Tournament Full Address"
 msgstr ""
 
@@ -1670,7 +1674,7 @@ msgstr ""
 
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:120
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:121
-#: src/consts/top8/placeholders.ts:28
+#: src/consts/top8/placeholders.ts:30
 msgid "Tournament Name"
 msgstr ""
 
@@ -1692,7 +1696,7 @@ msgstr ""
 msgid "Tournament results graphic"
 msgstr ""
 
-#: src/consts/top8/placeholders.ts:33
+#: src/consts/top8/placeholders.ts:36
 msgid "Tournament State"
 msgstr ""
 
@@ -1700,7 +1704,7 @@ msgstr ""
 #: src/components/shared/TournamentUrlInput/TournamentUrlInput.tsx:101
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:171
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:129
-#: src/consts/top8/placeholders.ts:35
+#: src/consts/top8/placeholders.ts:38
 #: src/utils/social/templateTokens.ts:15
 #: src/utils/social/templateTokens.ts:47
 msgid "Tournament URL"
@@ -1722,7 +1726,7 @@ msgstr ""
 #~ msgid "Twitter"
 #~ msgstr ""
 
-#: src/consts/top8/placeholders.ts:47
+#: src/consts/top8/placeholders.ts:50
 msgid "Twitter Handle"
 msgstr ""
 
