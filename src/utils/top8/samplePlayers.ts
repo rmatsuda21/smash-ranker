@@ -25,6 +25,22 @@ export const createBlankPlayer = (placement: number): PlayerInfo => ({
   country: "",
 });
 
+/** `players` followed by blank players (with the placement of their slot)
+ *  up to `targetCount`. Returns `players` itself when it is long enough. */
+export const padPlayersWithBlanks = (
+  players: PlayerInfo[],
+  targetCount: number,
+): PlayerInfo[] => {
+  if (players.length >= targetCount) return players;
+
+  const placements = getPlacements(targetCount);
+  const padded = [...players];
+  for (let i = players.length; i < targetCount; i++) {
+    padded.push(createBlankPlayer(placements[i]));
+  }
+  return padded;
+};
+
 export const assignPlacementsToPlayers = (
   players: PlayerInfo[],
 ): PlayerInfo[] => {

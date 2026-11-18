@@ -6,8 +6,7 @@ import { useTournamentStore } from "@/store/tournamentStore";
 import { assetRepository } from "@/db/repository";
 import {
   assignPlacementsToPlayers,
-  createBlankPlayer,
-  getPlacements,
+  padPlayersWithBlanks,
 } from "@/utils/top8/samplePlayers";
 import { getMultiGroupError } from "@/consts/errors";
 import { EMPTY_CHARACTER_ID } from "@/consts/top8/characters";
@@ -169,22 +168,6 @@ const parseTournamentInfo = async (
     url: `https://tonamel.com/competition/${slug}`,
     iconSrc,
   };
-};
-
-const padPlayersWithBlanks = (
-  players: PlayerInfo[],
-  targetCount: number,
-): PlayerInfo[] => {
-  if (players.length >= targetCount) return players;
-
-  const placements = getPlacements(targetCount);
-  const padded = [...players];
-
-  for (let i = players.length; i < targetCount; i++) {
-    padded.push(createBlankPlayer(placements[i]));
-  }
-
-  return padded;
 };
 
 export const useFetchTonamel = () => {

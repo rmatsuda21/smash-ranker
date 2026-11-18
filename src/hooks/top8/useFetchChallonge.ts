@@ -5,8 +5,7 @@ import { usePlayerStore } from "@/store/playerStore";
 import { useTournamentStore } from "@/store/tournamentStore";
 import {
   assignPlacementsToPlayers,
-  createBlankPlayer,
-  getPlacements,
+  padPlayersWithBlanks,
 } from "@/utils/top8/samplePlayers";
 import { EMPTY_CHARACTER_ID } from "@/consts/top8/characters";
 import { useToast } from "@/components/Toast";
@@ -80,22 +79,6 @@ const parseTournamentInfo = (
     url: tournament.full_challonge_url || "",
     iconSrc: undefined,
   };
-};
-
-const padPlayersWithBlanks = (
-  players: PlayerInfo[],
-  targetCount: number,
-): PlayerInfo[] => {
-  if (players.length >= targetCount) return players;
-
-  const placements = getPlacements(targetCount);
-  const padded = [...players];
-
-  for (let i = players.length; i < targetCount; i++) {
-    padded.push(createBlankPlayer(placements[i]));
-  }
-
-  return padded;
 };
 
 export const useFetchChallonge = () => {

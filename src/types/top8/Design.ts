@@ -306,6 +306,24 @@ export interface Design {
    * the canvas gets shorter by this much.
    */
   tournamentIconSpace?: number;
+  /**
+   * When set, the number of player slots can be changed in the Players tab.
+   * Slots are a vertical stack: one is added under the last, and the canvas
+   * and full-height background rects change height with them.
+   */
+  dynamicPlayerCount?: DynamicPlayerCount;
+}
+
+export interface DynamicPlayerCount {
+  /** Distance from the top of one slot to the top of the next. */
+  slotPitch: number;
+  min: number;
+  max: number;
+  /**
+   * What the slot at each index adds to `basePlayer` (e.g. podium styling),
+   * so a removed slot gets it back when it is added again.
+   */
+  slotOverrides?: Partial<PlayerDesign>[];
 }
 
 export type DynamicPlayerHeight =

@@ -12,7 +12,7 @@ import {
 } from "@/components/shared/RadioGroup/RadioGroup";
 import { Field, FieldGroup } from "@/components/top8/EditorForm/EditorForm";
 
-export type CustomTemplateStyle = "minimal" | "standings";
+export type CustomTemplateStyle = "minimal";
 export type CustomTemplateTheme = "dark" | "light";
 
 import styles from "./CreateMinimalTemplateModal.module.scss";
@@ -35,7 +35,6 @@ type Props = {
 
 const DEFAULT_THEME: Record<CustomTemplateStyle, CustomTemplateTheme> = {
   minimal: "dark",
-  standings: "light",
 };
 
 export const CreateMinimalTemplateModal = ({
@@ -97,22 +96,12 @@ export const CreateMinimalTemplateModal = ({
       >
         <header className={styles.header}>
           <h2 id={titleId} className={styles.title}>
-            {templateStyle === "standings" ? (
-              <Trans>Custom Standings Template</Trans>
-            ) : (
-              <Trans>Custom Minimal Template</Trans>
-            )}
+            <Trans>Custom Minimal Template</Trans>
           </h2>
           <p className={styles.description}>
-            {templateStyle === "standings" ? (
-              <Trans>
-                Create a standings template with a specific player count.
-              </Trans>
-            ) : (
-              <Trans>
-                Create a minimal template with a specific player count.
-              </Trans>
-            )}
+            <Trans>
+              Create a minimal template with a specific player count.
+            </Trans>
           </p>
         </header>
 

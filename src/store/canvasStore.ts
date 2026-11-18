@@ -12,6 +12,7 @@ import {
 import { useFontStore } from "@/store/fontStore";
 import { loadFamily } from "@/utils/fonts/fontLoader";
 import { collectDesignFontWeights } from "@/utils/fonts/designWeights";
+import { resizePlayerSlots } from "@/utils/top8/playerCount";
 
 const DEFAULT_FONT = "Dela Gothic One";
 
@@ -51,7 +52,9 @@ export type CanvasAction =
       type: "UPDATE_TEXT_CONTENT";
       payload: { id: string; value: { text: string; name: string } };
     }
-  | { type: "SET_FONT"; payload: string };
+  | { type: "SET_FONT"; payload: string }
+  /** Only for designs with `dynamicPlayerCount`; clamped to its range. */
+  | { type: "SET_PLAYER_COUNT"; payload: number };
 
 const HISTORY_ACTION_TYPES: Set<string> = new Set([
   "SET_BACKGROUND_IMG",
@@ -59,6 +62,7 @@ const HISTORY_ACTION_TYPES: Set<string> = new Set([
   "SET_BACKGROUND_IMAGE_DARKNESS",
   "UPDATE_COLOR_PALETTE",
   "SET_FONT",
+  "SET_PLAYER_COUNT",
 ]);
 
 const HISTORY_CLEARING_ACTIONS: Set<string> = new Set(["SET_DESIGN"]);
@@ -84,6 +88,8 @@ function captureUndoData(state: CanvasState, action: CanvasAction): unknown {
       };
     case "SET_FONT":
       return state.font;
+    case "SET_PLAYER_COUNT":
+      return state.design.players.length;
     default:
       return null;
   }
@@ -105,6 +111,7 @@ function captureRedoData(state: CanvasState, action: CanvasAction): unknown {
         },
       };
     case "SET_FONT":
+    case "SET_PLAYER_COUNT":
       return action.payload;
     default:
       return null;
@@ -224,6 +231,8 @@ const canvasReducer = (
       };
     case "SET_FONT":
       return { font: action.payload };
+    case "SET_PLAYER_COUNT":
+      return { design: resizePlayerSlots(state.design, action.payload) };
     default:
       return state;
   }
@@ -297,6 +306,9 @@ function applyHistoryEntry(
       );
       return { font: fontFamily };
     }
+
+    case "SET_PLAYER_COUNT":
+      return { design: resizePlayerSlots(state.design, data as number) };
 
     default:
       return state;

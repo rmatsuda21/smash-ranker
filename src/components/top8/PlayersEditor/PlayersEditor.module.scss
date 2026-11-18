@@ -1,5 +1,120 @@
 @use "@/_theme" as *;
 
+// Shown for designs whose player count can change: label, stepper, presets.
+.playerCount {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.playerCountLabel {
+  margin-right: auto;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--fg-2);
+}
+
+.stepper {
+  display: flex;
+  align-items: stretch;
+  height: 28px;
+
+  background-color: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  transition: border-color var(--duration-base) var(--ease-standard);
+
+  &:has(.stepperInput:focus) {
+    border-color: var(--accent-9);
+  }
+}
+
+.stepperButton {
+  width: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: pointer;
+
+  color: var(--fg-2);
+  background: none;
+  border: none;
+  border-radius: var(--radius-sm);
+  transition: color var(--duration-base) var(--ease-standard);
+
+  &:hover:not(:disabled) {
+    color: var(--fg-1);
+  }
+
+  &:disabled {
+    color: var(--fg-4);
+    cursor: default;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent-9);
+    outline-offset: 1px;
+  }
+}
+
+.stepperInput {
+  width: 32px;
+  padding: 0;
+
+  color: var(--fg-1);
+  font-family: inherit;
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  background: none;
+  border: none;
+  outline: none;
+}
+
+.countPresets {
+  display: flex;
+  gap: var(--space-1);
+}
+
+.countPreset {
+  min-width: 32px;
+  height: 28px;
+  padding: 0 var(--space-2);
+  cursor: pointer;
+
+  color: var(--fg-2);
+  font-family: inherit;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  background-color: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  transition:
+    color var(--duration-base) var(--ease-standard),
+    border-color var(--duration-base) var(--ease-standard);
+
+  &:hover {
+    color: var(--fg-1);
+    border-color: var(--gray-8);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent-9);
+    outline-offset: 1px;
+  }
+
+  &.active {
+    color: var(--accent-11);
+    background-color: var(--brand-soft);
+    border-color: var(--accent-9);
+  }
+}
+
 // Roster strip: one chip per slot, the selected one filled.
 .playerSelector {
   flex-shrink: 0;
@@ -44,6 +159,12 @@
     color: #fff;
     background-color: var(--accent-9);
   }
+}
+
+// Last chip of the strip when the design can take another player.
+.addSlot {
+  justify-content: center;
+  border: 1px dashed var(--border);
 }
 
 .slotIcon {
@@ -177,6 +298,21 @@ button.clearPlayer {
     position: sticky;
     top: 0;
     z-index: var(--z-raised);
+  }
+
+  .stepper,
+  .countPreset {
+    height: 36px;
+  }
+
+  .stepperButton,
+  .countPreset {
+    min-width: 36px;
+  }
+
+  .stepperInput {
+    // 16px keeps iOS from zooming the page on focus.
+    font-size: 16px;
   }
 
   .customToggle {

@@ -24,11 +24,8 @@ import {
 } from "@/designs/minimal";
 import { kagaribiDesign } from "@/designs/kagaribi";
 import { kagaribi16Design } from "@/designs/kagaribi16";
-import {
-  standingsLightDesign,
-  standingsDarkDesign,
-  standings16LightDesign,
-} from "@/designs/standings";
+import { standingsLightDesign, standingsDarkDesign } from "@/designs/standings";
+import { resizePlayerSlots } from "@/utils/top8/playerCount";
 
 declare global {
   interface Window {
@@ -91,20 +88,14 @@ const BUILT_IN_TEMPLATES: PreviewTemplate[] = [
   },
   {
     id: "standings-light",
-    name: "8 Players (Light)",
+    name: "Light",
     design: standingsLightDesign,
     font: "Noto Sans JP",
   },
   {
     id: "standings-dark",
-    name: "8 Players (Dark)",
+    name: "Dark",
     design: standingsDarkDesign,
-    font: "Noto Sans JP",
-  },
-  {
-    id: "standings-16-light",
-    name: "16 Players (Light)",
-    design: standings16LightDesign,
     font: "Noto Sans JP",
   },
 ];
@@ -133,6 +124,13 @@ const GOLDEN_ONLY_TEMPLATES: PreviewTemplate[] = [
     design: minimalDarkDesign,
     font: "Noto Sans JP",
     players: multiCharacterPlayers,
+  },
+  // Player count changed in the Players tab (`dynamicPlayerCount`).
+  {
+    id: "standings-16-light",
+    name: "Standings, 16 players",
+    design: resizePlayerSlots(standingsLightDesign, 16),
+    font: "Noto Sans JP",
   },
   // Characters that continue the name's line and wrap under the flag.
   {

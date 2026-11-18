@@ -212,6 +212,15 @@ When `Design.dynamicPlayerHeight` is set, player cards grow taller at render tim
 - **Hook** — `src/hooks/top8/useEffectiveCanvasSize.ts` returns canvas size adjusted for total height delta. Thin store wrapper over `getEffectiveCanvasSize` in `src/utils/top8/scene.ts`.
 - **`customAltCharacterImage`** — Supports `includeMainCharacter: true` to render all characters (main + alts) in a single grid. When `columns` is set, the grid uses fixed column count with the template's preferred cell size (no dynamic resizing). The `getElementMainSize` function in `layout/measureElement.ts` also respects `includeMainCharacter` and `columns` for accurate flex width calculation.
 
+### Dynamic Player Count
+
+A design opts in with `Design.dynamicPlayerCount` (`{ slotPitch, min, max, slotOverrides? }`); only the standings template does, which is why it has one light and one dark entry in the picker instead of per-count variants. Designs without it keep a fixed number of slots.
+
+- **Resize** — `resizePlayerSlots(design, count)` in `src/utils/top8/playerCount.ts` (pure) truncates or appends `design.players`, and changes the canvas height and full-height background rects by `slotPitch` per slot. Slots must be a vertical stack. `slotOverrides[i]` is what slot `i` adds to `basePlayer` (podium styling), re-applied when a removed slot comes back. Store action: `SET_PLAYER_COUNT` on `canvasStore` (undoable).
+- **Player data is never resized with it** — `playerStore` already holds 32 players (tournament loads overfetch, see `MIN_FETCH_COUNT`), so a new slot shows the next player in the standings and a removed one keeps its data. `usePlayerCount` (`src/hooks/top8/usePlayerCount.ts`) pads with blank players if the data is short and keeps the selection inside the slots. Keep `max` at or under 32 unless the fetch count grows too.
+- **UI** — `PlayerCountControl` in the Players tab (stepper, typed number, 4/8/16/32 presets) plus a "+" chip at the end of the roster strip; both render only when the design has the flag.
+- **Template loads** — loading a built-in template with the flag while the current design also has it keeps the current count (`loadTemplate`); saved templates keep the count they were saved with.
+
 ### Persistence (IndexedDB)
 
 `src/db/indexDB.ts` initializes the DB. Separate modules handle:

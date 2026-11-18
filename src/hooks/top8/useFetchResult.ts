@@ -12,8 +12,7 @@ import { useTournamentStore } from "@/store/tournamentStore";
 import { assetRepository } from "@/db/repository";
 import {
   assignPlacementsToPlayers,
-  createBlankPlayer,
-  getPlacements,
+  padPlayersWithBlanks,
 } from "@/utils/top8/samplePlayers";
 import { getMultiGroupError } from "@/consts/errors";
 import { EMPTY_CHARACTER_ID } from "@/consts/top8/characters";
@@ -322,24 +321,6 @@ const filterValidImages = (
   if (!images) return [];
 
   return images.filter((img): img is TournamentImage => img !== null);
-};
-
-const padPlayersWithBlanks = (
-  players: PlayerInfo[],
-  targetCount: number,
-): PlayerInfo[] => {
-  if (players.length >= targetCount) {
-    return players;
-  }
-
-  const placements = getPlacements(targetCount);
-  const paddedPlayers = [...players];
-
-  for (let i = players.length; i < targetCount; i++) {
-    paddedPlayers.push(createBlankPlayer(placements[i]));
-  }
-
-  return paddedPlayers;
 };
 
 const buildTournamentInfo = (

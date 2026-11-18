@@ -313,12 +313,19 @@ const basePlayer: PlayerDesign = {
   elements: restElements,
 };
 
-const SLOT_ELEMENTS = [firstElements, secondElements, thirdElements];
+const SLOT_OVERRIDES: Partial<PlayerDesign>[] = [
+  { elements: firstElements },
+  { elements: secondElements },
+  { elements: thirdElements },
+];
 
-const createStandingsDesign = (
-  playerCount: number,
-  theme: StandingsTheme = "light",
-): Design => {
+const DEFAULT_PLAYER_COUNT = 8;
+const MAX_PLAYER_COUNT = 32;
+
+// Built with the default number of rows. The count is changed afterwards in
+// the Players tab (`dynamicPlayerCount`, `resizePlayerSlots`).
+const createStandingsDesign = (theme: StandingsTheme): Design => {
+  const playerCount = DEFAULT_PLAYER_COUNT;
   const canvasHeight =
     PLAYERS_TOP +
     ROW_HEIGHT * playerCount +
@@ -425,7 +432,7 @@ const createStandingsDesign = (
       y: PLAYERS_TOP + index * (ROW_HEIGHT + ROW_SPACING),
     },
     size: { width: CONTENT_WIDTH, height: ROW_HEIGHT },
-    ...(SLOT_ELEMENTS[index] ? { elements: SLOT_ELEMENTS[index] } : {}),
+    ...SLOT_OVERRIDES[index],
   }));
 
   return {
@@ -449,11 +456,14 @@ const createStandingsDesign = (
     players,
     dynamicPlayerHeight: { wrapGroupId: "content" },
     tournamentIconSpace: HEADER_IMAGE_HEIGHT + HEADER_GAP,
+    dynamicPlayerCount: {
+      slotPitch: ROW_HEIGHT + ROW_SPACING,
+      min: 1,
+      max: MAX_PLAYER_COUNT,
+      slotOverrides: SLOT_OVERRIDES,
+    },
   };
 };
 
-export const standingsLightDesign = createStandingsDesign(8, "light");
-export const standingsDarkDesign = createStandingsDesign(8, "dark");
-export const standings16LightDesign = createStandingsDesign(16, "light");
-
-export { createStandingsDesign };
+export const standingsLightDesign = createStandingsDesign("light");
+export const standingsDarkDesign = createStandingsDesign("dark");

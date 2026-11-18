@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { HiOutlineUserRemove } from "react-icons/hi";
-import { FaChevronDown, FaUser } from "react-icons/fa6";
+import { FaChevronDown, FaPlus, FaUser } from "react-icons/fa6";
 import cn from "classnames";
 import debounce from "lodash/debounce";
 import { msg } from "@lingui/core/macro";
@@ -25,6 +25,8 @@ import {
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
 import { createBlankPlayer } from "@/utils/top8/samplePlayers";
 import { useConfirmation } from "@/hooks/useConfirmation";
+import { usePlayerCount } from "@/hooks/top8/usePlayerCount";
+import { PlayerCountControl } from "@/components/top8/PlayersEditor/PlayerCountControl";
 
 import styles from "./PlayersEditor.module.scss";
 
@@ -39,6 +41,7 @@ export const PlayersEditor = ({ className }: Props) => {
     (state) => state.selectedPlayerIndex,
   );
   const dispatch = usePlayerStore((state) => state.dispatch);
+  const playerCount = usePlayerCount();
 
   const [tempPlayer, setTempPlayer] = useState<PlayerInfo | undefined>(
     players[selectedPlayerIndex],
@@ -197,8 +200,27 @@ export const PlayersEditor = ({ className }: Props) => {
 
   return (
     <EditorPanel className={className}>
+      {playerCount.adjustable && (
+        <PlayerCountControl
+          count={playerCount.count}
+          min={playerCount.min}
+          max={playerCount.max}
+          onChange={playerCount.setCount}
+        />
+      )}
       <div className={styles.playerSelector} role="group">
         <PlayerSelector />
+        {playerCount.adjustable && playerCount.count < playerCount.max && (
+          <button
+            type="button"
+            className={cn(styles.slot, styles.addSlot)}
+            onClick={() => playerCount.setCount(playerCount.count + 1)}
+            aria-label={_(msg`Add player`)}
+            title={_(msg`Add player`)}
+          >
+            <FaPlus size={12} />
+          </button>
+        )}
       </div>
 
       <EditorCard disabled={disabled}>

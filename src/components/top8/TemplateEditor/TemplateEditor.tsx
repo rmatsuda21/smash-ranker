@@ -18,12 +18,7 @@ import {
   minimal4LightDesign,
   createMinimalDesign,
 } from "@/designs/minimal";
-import {
-  standingsLightDesign,
-  standingsDarkDesign,
-  standings16LightDesign,
-  createStandingsDesign,
-} from "@/designs/standings";
+import { standingsLightDesign, standingsDarkDesign } from "@/designs/standings";
 import { kagaribiDesign } from "@/designs/kagaribi";
 import { kagaribi16Design } from "@/designs/kagaribi16";
 import { Button } from "@/components/shared/Button/Button";
@@ -33,6 +28,7 @@ import { usePlayerStore } from "@/store/playerStore";
 import { useFontStore } from "@/store/fontStore";
 import { loadFamily } from "@/utils/fonts/fontLoader";
 import { collectDesignFontWeights } from "@/utils/fonts/designWeights";
+import { resizePlayerSlots } from "@/utils/top8/playerCount";
 import { useConfirmation } from "@/hooks/useConfirmation";
 import { CreateTemplateModal } from "@/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal";
 import {
@@ -62,7 +58,6 @@ const CUSTOM_DESIGN_FACTORIES: Record<
   (playerCount: number, theme: CustomTemplateTheme) => DBTemplate["design"]
 > = {
   minimal: createMinimalDesign,
-  standings: createStandingsDesign,
 };
 
 const isCustomTemplateStyle = (id: string): id is CustomTemplateStyle =>
@@ -111,20 +106,14 @@ const DEFAULT_TEMPLATE_GROUPS: DefaultTemplateGroup[] = [
     templates: [
       {
         id: "standings-light",
-        name: msg`8 Players (Light)`,
+        name: msg`Light`,
         design: standingsLightDesign,
         font: "Noto Sans JP",
       },
       {
         id: "standings-dark",
-        name: msg`8 Players (Dark)`,
+        name: msg`Dark`,
         design: standingsDarkDesign,
-        font: "Noto Sans JP",
-      },
-      {
-        id: "standings-16-light",
-        name: msg`16 Players (Light)`,
-        design: standings16LightDesign,
         font: "Noto Sans JP",
       },
     ],
@@ -235,7 +224,16 @@ export const TemplateEditor = ({ className }: Props) => {
       });
       // Skip history for font change since SET_DESIGN will clear history anyway
       await selectFont(template.font, true);
-      dispatch({ type: "SET_DESIGN", payload: template.design });
+      // A built-in template whose player count is adjustable keeps the count
+      // the user already chose, so switching between its variants (light to
+      // dark) doesn't drop rows. A saved template keeps the count it was
+      // saved with.
+      const current = useCanvasStore.getState().design;
+      const design =
+        defaultTemplate && current.dynamicPlayerCount
+          ? resizePlayerSlots(template.design, current.players.length)
+          : template.design;
+      dispatch({ type: "SET_DESIGN", payload: design });
       playerDispatch({ type: "CLEAR_SELECTED_PLAYER" });
     }
 
