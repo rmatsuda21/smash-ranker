@@ -9,6 +9,13 @@ const DATE_FORMAT = new Intl.DateTimeFormat("en-US", {
   year: "numeric",
 });
 
+/** "st", "nd", "rd" or "th" for a positive whole number. */
+const ordinalSuffix = (n: number): string => {
+  const lastTwo = n % 100;
+  if (lastTwo >= 11 && lastTwo <= 13) return "th";
+  return ["th", "st", "nd", "rd"][n % 10] ?? "th";
+};
+
 /** MM/DD/YYYY */
 const NUMERIC_DATE_FORMAT = new Intl.DateTimeFormat("en-US", {
   month: "2-digit",
@@ -35,6 +42,8 @@ const resolvePlaceholder = (
   switch (placeholder) {
     case DesignPlaceholder.PLAYER_PLACEMENT:
       return player?.placement?.toString();
+    case DesignPlaceholder.PLAYER_PLACEMENT_SUFFIX:
+      return player?.placement ? ordinalSuffix(player.placement) : undefined;
     case DesignPlaceholder.PLAYER_COUNTRY:
       return player?.country;
     case DesignPlaceholder.PLAYER_NAME:

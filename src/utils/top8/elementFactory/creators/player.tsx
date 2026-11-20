@@ -54,8 +54,10 @@ export const createCharacterImageElement: ElementCreator<
     characterId: character.id,
     alt: character.alt,
   });
-  let cropOffset = characterCrop.offset;
-  let cropScale = characterCrop.scale * (element.cropScaleMultiplier ?? 1);
+  let cropOffset = element.uncropped ? { x: 0, y: 0 } : characterCrop.offset;
+  let cropScale =
+    (element.uncropped ? 1 : characterCrop.scale) *
+    (element.cropScaleMultiplier ?? 1);
 
   if (player.avatarImgSrc) {
     // A custom avatar replaces the character art and is shown uncropped.
@@ -83,6 +85,7 @@ export const createCharacterImageElement: ElementCreator<
       shadowBlur={element.shadowBlur}
       shadowOpacity={element.shadowOpacity}
       fillMode={element.fillMode ?? "contain"}
+      tone={element.tone}
       perfectDrawEnabled={context.perfectDraw}
     />
   );

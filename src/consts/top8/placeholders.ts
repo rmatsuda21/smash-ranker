@@ -17,6 +17,8 @@ export enum DesignPlaceholder {
   ENTRANTS = "<👥>",
   // Player placeholders
   PLAYER_PLACEMENT = "<🥇>",
+  /** The English ordinal suffix of the placement: st, nd, rd, th. */
+  PLAYER_PLACEMENT_SUFFIX = "<🥇🔤>",
   PLAYER_COUNTRY = "<🎌>",
   PLAYER_NAME = "<👤>",
   PLAYER_TAG = "<🏷️>",
@@ -43,6 +45,7 @@ const PlayerPlaceholderMessages: Partial<
   Record<DesignPlaceholder, MessageDescriptor>
 > = {
   [DesignPlaceholder.PLAYER_PLACEMENT]: msg`Player Placement`,
+  [DesignPlaceholder.PLAYER_PLACEMENT_SUFFIX]: msg`Player Placement Suffix (st, nd, rd, th)`,
   [DesignPlaceholder.PLAYER_COUNTRY]: msg`Player Country`,
   [DesignPlaceholder.PLAYER_NAME]: msg`Player Name (w/ Prefix)`,
   [DesignPlaceholder.PLAYER_TAG]: msg`Player Tag`,

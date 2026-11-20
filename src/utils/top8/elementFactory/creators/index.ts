@@ -17,7 +17,11 @@ import {
   createFlexGroupElement,
   createFlexGridElement,
 } from "./layout";
-import { createRectElement } from "./shape";
+import {
+  createPatternElement,
+  createPolygonElement,
+  createRectElement,
+} from "./shape";
 
 /** The creator for each element type: a function from one element config
  *  to the Konva node that draws it. */
@@ -32,6 +36,8 @@ export const elementCreators = {
   altCharacterImage: createAltCharacterImageElement,
   customAltCharacterImage: createCustomAltCharacterImageElement,
   rect: createRectElement,
+  polygon: createPolygonElement,
+  pattern: createPatternElement,
   customImage: createCustomImageElement,
   svg: createSvgElement,
   tournamentIcon: createTournamentIconElement,

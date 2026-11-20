@@ -56,9 +56,8 @@ const isConditionMet = (
 };
 
 /**
- * Evaluates an element's `conditions` list. `RenderCondition.NOT` negates
- * the condition that follows it, and the last condition in the list decides
- * the result.
+ * Evaluates an element's `conditions` list: every condition has to hold.
+ * `RenderCondition.NOT` negates the condition that follows it.
  */
 export const evaluateElementCondition = (
   conditions: (DesignPlaceholder | RenderCondition)[] | undefined,
@@ -66,7 +65,6 @@ export const evaluateElementCondition = (
 ) => {
   if (!conditions) return true;
 
-  let shouldRender = true;
   let negate = false;
   for (const condition of conditions) {
     if (condition === RenderCondition.NOT) {
@@ -75,8 +73,8 @@ export const evaluateElementCondition = (
     }
 
     const met = isConditionMet(condition, context);
-    shouldRender = negate ? !met : met;
+    if (negate ? met : !met) return false;
     negate = false;
   }
-  return shouldRender;
+  return true;
 };

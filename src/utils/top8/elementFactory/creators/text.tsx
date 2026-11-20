@@ -13,6 +13,7 @@ import { resolveColor } from "@/utils/top8/resolveColor";
 import { resolveElementText } from "@/utils/top8/resolveElementText";
 import { composeFontStyle } from "@/utils/fonts/fontLoader";
 import { getElementKey } from "../elementKey";
+import { getWrappedTextFontSize } from "../layout/measureElement";
 
 /** Everything `text` and `smartText` resolve the same way. */
 const resolveTextProps = (
@@ -45,11 +46,16 @@ const resolveTextProps = (
     shadowOpacity: element.shadowOpacity,
     stroke: resolveColor(element.stroke as string | undefined, palette),
     strokeWidth: element.strokeWidth,
+    // Outlined lettering: the stroke goes under the fill so it thickens the
+    // letters outwards instead of eating into them.
+    fillAfterStrokeEnabled: element.fillAfterStrokeEnabled,
+    lineJoin: element.lineJoin,
     perfectDrawEnabled: context.perfectDraw,
   };
 };
 
-/** Text at its configured size, wrapping inside its box. */
+/** Text wrapping inside its box, at its configured size unless a
+ *  `maxHeight` makes it shrink. */
 export const createTextElement: ElementCreator<TextElementConfig> = ({
   element,
   index,
@@ -58,6 +64,7 @@ export const createTextElement: ElementCreator<TextElementConfig> = ({
   <Text
     key={getElementKey(element, index)}
     {...resolveTextProps(element, context)}
+    fontSize={getWrappedTextFontSize(element, context)}
     verticalAlign={element.verticalAlign ?? "top"}
     wrap="word"
   />

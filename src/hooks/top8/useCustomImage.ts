@@ -3,6 +3,7 @@ import { Image as KonvaImage } from "konva/lib/shapes/Image";
 
 import { LRUCache } from "@/utils/LRUCache";
 import { getDeviceRenderProfile } from "@/utils/top8/renderProfile";
+import type { ImageTone } from "@/types/top8/Design";
 
 // Decoded sources are kept so interactive edits (resize, crop, template
 // switch) re-bake instantly. Profiles that opt out keep none: character art
@@ -28,6 +29,46 @@ const isIdbImageUrl = (src: string) => src.startsWith(IDB_IMAGE_PREFIX);
 const releaseCanvas = (canvas: HTMLCanvasElement) => {
   canvas.width = 0;
   canvas.height = 0;
+};
+
+const SUPPORTS_CANVAS_FILTER =
+  typeof CanvasRenderingContext2D !== "undefined" &&
+  "filter" in CanvasRenderingContext2D.prototype;
+
+const toneToCssFilter = (tone: ImageTone): string =>
+  [
+    tone.grayscale ? "grayscale(1)" : "",
+    tone.contrast !== undefined ? `contrast(${tone.contrast})` : "",
+    tone.brightness !== undefined ? `brightness(${tone.brightness})` : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+/** The same result as `toneToCssFilter`, for browsers without `ctx.filter`
+ *  (Safari before 18). Runs once per bake, on the slot-sized canvas. */
+const applyToneToPixels = (
+  ctx: CanvasRenderingContext2D,
+  canvas: HTMLCanvasElement,
+  tone: ImageTone,
+) => {
+  const image = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const { data } = image;
+  const contrast = tone.contrast ?? 1;
+  const brightness = tone.brightness ?? 1;
+
+  for (let i = 0; i < data.length; i += 4) {
+    let r = data[i];
+    let g = data[i + 1];
+    let b = data[i + 2];
+    if (tone.grayscale) {
+      r = g = b = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+    }
+    data[i] = ((r - 127.5) * contrast + 127.5) * brightness;
+    data[i + 1] = ((g - 127.5) * contrast + 127.5) * brightness;
+    data[i + 2] = ((b - 127.5) * contrast + 127.5) * brightness;
+  }
+
+  ctx.putImageData(image, 0, 0);
 };
 
 const fetchSource = (imageSrc: string): Promise<HTMLImageElement> =>
@@ -102,6 +143,7 @@ export const useCustomImage = ({
   cropOffset: { x: cropOffsetX, y: cropOffsetY } = { x: 0, y: 0 },
   cropScale = 1,
   flipX = false,
+  tone,
   bakeScale,
   onReady,
   onError,
@@ -115,6 +157,8 @@ export const useCustomImage = ({
   cropOffset?: { x: number; y: number };
   cropScale?: number;
   flipX?: boolean;
+  /** Colour treatment baked into the canvas. */
+  tone?: ImageTone;
   /** Backing pixels per design pixel for the baked canvas. Defaults to the
    *  device pixel ratio capped at 2. */
   bakeScale?: number;
@@ -130,6 +174,10 @@ export const useCustomImage = ({
   onErrorRef.current = onError;
 
   const scale = bakeScale ?? Math.min(window.devicePixelRatio || 1, 2);
+
+  const toneGrayscale = tone?.grayscale;
+  const toneContrast = tone?.contrast;
+  const toneBrightness = tone?.brightness;
 
   useEffect(() => {
     let cancelled = false;
@@ -206,7 +254,23 @@ export const useCustomImage = ({
         ctx.translate(width, 0);
         ctx.scale(-1, 1);
       }
+      const bakedTone: ImageTone | undefined =
+        toneGrayscale ||
+        toneContrast !== undefined ||
+        toneBrightness !== undefined
+          ? {
+              grayscale: toneGrayscale,
+              contrast: toneContrast,
+              brightness: toneBrightness,
+            }
+          : undefined;
+      if (bakedTone && SUPPORTS_CANVAS_FILTER) {
+        ctx.filter = toneToCssFilter(bakedTone);
+      }
       fitImage(ctx);
+      if (bakedTone && !SUPPORTS_CANVAS_FILTER) {
+        applyToneToPixels(ctx, canvas, bakedTone);
+      }
 
       setFinalImage(canvas);
       onReadyRef.current?.();
@@ -243,6 +307,9 @@ export const useCustomImage = ({
     align,
     flipX,
     scale,
+    toneGrayscale,
+    toneContrast,
+    toneBrightness,
   ]);
 
   // Free a baked canvas once the node has moved on to its replacement.

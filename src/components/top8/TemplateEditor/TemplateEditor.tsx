@@ -13,6 +13,7 @@ import { top8erDesign } from "@/designs/top8er";
 import { squaresDesign } from "@/designs/squares";
 import { minimalDarkDesign, minimalLightDesign } from "@/designs/minimal";
 import { standingsLightDesign, standingsDarkDesign } from "@/designs/standings";
+import { comicBookDesign } from "@/designs/comicBook";
 import { kagaribiDesign } from "@/designs/kagaribi";
 import { kagaribi16Design } from "@/designs/kagaribi16";
 import { Button } from "@/components/shared/Button/Button";
@@ -94,6 +95,18 @@ const DEFAULT_TEMPLATE_GROUPS: DefaultTemplateGroup[] = [
         name: msg`Light`,
         design: standingsLightDesign,
         font: "Noto Sans JP",
+      },
+    ],
+  },
+  {
+    id: "comic-book",
+    name: msg`Comic Book`,
+    templates: [
+      {
+        id: "comic-book",
+        name: msg`Original`,
+        design: comicBookDesign,
+        font: "Dela Gothic One",
       },
     ],
   },

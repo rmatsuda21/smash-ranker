@@ -20,6 +20,7 @@ import { minimalDarkDesign, minimalLightDesign } from "@/designs/minimal";
 import { kagaribiDesign } from "@/designs/kagaribi";
 import { kagaribi16Design } from "@/designs/kagaribi16";
 import { standingsLightDesign, standingsDarkDesign } from "@/designs/standings";
+import { comicBookDesign } from "@/designs/comicBook";
 import { resizePlayerSlots } from "@/utils/top8/playerCount";
 
 declare global {
@@ -81,6 +82,12 @@ const BUILT_IN_TEMPLATES: PreviewTemplate[] = [
     design: standingsLightDesign,
     font: "Noto Sans JP",
   },
+  {
+    id: "comic-book",
+    name: "Original",
+    design: comicBookDesign,
+    font: "Dela Gothic One",
+  },
 ];
 
 const samplePlayers = createSamplePlayers(24);
@@ -98,6 +105,47 @@ const multiCharacterPlayers = samplePlayers.map((player, index) => {
   };
 });
 
+// A different fighter in every slot, with prefixes, flags and long tags, for
+// templates whose look depends on the character art.
+const CAST_IDS = [
+  "1453",
+  "1766",
+  "1332",
+  "1795",
+  "1286",
+  "1317",
+  "1331",
+  "1846",
+];
+const CAST_TAGS = [
+  "Kairo",
+  "Lumen",
+  "Sable",
+  "ふたりのきわみ",
+  "Dusk",
+  "Piko",
+  "Brask",
+  "Onyx",
+];
+const CAST_PREFIXES = ["NVX", "ARC", "", "TKO", "", "ARC", "", "NVX"];
+const CAST_COUNTRIES = ["JP", "US", "MX", "FR", "", "CA", "US", "KR"];
+const castPlayers = samplePlayers.map((player, index) =>
+  index < CAST_IDS.length
+    ? {
+        ...player,
+        gamerTag: CAST_TAGS[index],
+        prefix: CAST_PREFIXES[index],
+        country: CAST_COUNTRIES[index],
+        characters: [
+          { id: CAST_IDS[index], alt: 0 as CharacerData["alt"] },
+          ...(index === 1 || index === 4
+            ? [{ id: "1302", alt: 0 as CharacerData["alt"] }]
+            : []),
+        ],
+      }
+    : player,
+);
+
 // Golden-only cases: variations of built-in templates that exercise code the
 // plain templates don't. They never become picker thumbnails.
 const GOLDEN_ONLY_TEMPLATES: PreviewTemplate[] = [
@@ -107,6 +155,13 @@ const GOLDEN_ONLY_TEMPLATES: PreviewTemplate[] = [
     design: minimalDarkDesign,
     font: "Noto Sans JP",
     players: multiCharacterPlayers,
+  },
+  {
+    id: "comic-book-cast",
+    name: "Comic Book, varied cast",
+    design: comicBookDesign,
+    font: "Dela Gothic One",
+    players: castPlayers,
   },
   // Player count changed in the Players tab (`dynamicPlayerCount`).
   {

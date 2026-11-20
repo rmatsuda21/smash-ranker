@@ -2,6 +2,7 @@ import { ComponentProps, memo, useCallback, useEffect, useRef } from "react";
 import { Image } from "react-konva";
 
 import { useCustomImage } from "@/hooks/top8/useCustomImage";
+import type { ImageTone } from "@/types/top8/Design";
 import { useAssetLoad } from "@/components/top8/Canvas/AssetLoadBoundary";
 import {
   useBitmapScale,
@@ -24,6 +25,7 @@ type Props = Omit<ComponentProps<typeof Image>, "image"> & {
   onError?: (error: Error) => void;
   fillMode?: "contain" | "cover";
   align?: "center" | "left" | "right" | "top" | "bottom";
+  tone?: ImageTone;
 };
 
 const CustomImageComponent = ({
@@ -44,6 +46,7 @@ const CustomImageComponent = ({
   onError,
   fillMode = "contain",
   align = "center",
+  tone,
   ...rest
 }: Props) => {
   const shadowOpacity = hasShadow ? (_shadowOpacity ?? 1) : 0;
@@ -83,6 +86,7 @@ const CustomImageComponent = ({
     offset,
     cropOffset,
     cropScale,
+    tone,
     bakeScale,
     onReady: handleReady,
     onError: handleError,
@@ -150,6 +154,9 @@ export const CustomImage = memo(
       prevProps.cropScale === nextProps.cropScale &&
       prevProps.fillMode === nextProps.fillMode &&
       prevProps.align === nextProps.align &&
+      prevProps.tone?.grayscale === nextProps.tone?.grayscale &&
+      prevProps.tone?.contrast === nextProps.tone?.contrast &&
+      prevProps.tone?.brightness === nextProps.tone?.brightness &&
       areOffsetsEqual(prevProps.offset, nextProps.offset) &&
       areOffsetsEqual(prevProps.cropOffset, nextProps.cropOffset) &&
       areOffsetsEqual(prevProps.shadowOffset, nextProps.shadowOffset)

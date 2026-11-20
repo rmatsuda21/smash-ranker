@@ -13,9 +13,40 @@ import type { ElementFactoryContext } from "@/types/top8/ElementFactory";
 import { composeFontStyle } from "@/utils/fonts/fontLoader";
 import { evaluateElementCondition } from "@/utils/top8/evaluateElementCondition";
 import { resolveElementText } from "@/utils/top8/resolveElementText";
-import { measureTextBoxWidth } from "@/utils/top8/textMetrics";
+import {
+  fitWrappedFontSize,
+  measureTextBoxHeight,
+  measureTextBoxWidth,
+} from "@/utils/top8/textMetrics";
 
 import { findOptimalSquareGrid } from "./gridLayout";
+
+/** Font size a wrapping `text` renders at: its own, or smaller when it has
+ *  a `maxHeight` its wrapped lines would otherwise exceed. */
+export const getWrappedTextFontSize = (
+  element: TextElementConfig,
+  context: ElementFactoryContext,
+): number => {
+  const fontSize = element.fontSize ?? 20;
+  if (element.maxHeight === undefined || element.size?.width === undefined) {
+    return fontSize;
+  }
+
+  const fontFamily = context.fontFamily ?? "Arial";
+
+  return fitWrappedFontSize({
+    text: resolveElementText(element, context),
+    fontSize,
+    fontFamily,
+    fontStyle: composeFontStyle(
+      fontFamily,
+      element.fontWeight,
+      element.fontStyle,
+    ),
+    width: element.size.width,
+    maxHeight: element.maxHeight,
+  });
+};
 
 /** Size along the main axis: `flex.basis` when set, otherwise measured from
  *  the element's content or taken from its configured size. */
@@ -132,9 +163,42 @@ export const getElementMainSize = (
   }
 
   if (element.size?.height === undefined) {
+    // Wrapping text with a fixed width is as tall as its wrapped lines.
+    if (element.type === "text" && element.size?.width !== undefined) {
+      const fontFamily = context.fontFamily ?? "Arial";
+
+      return measureTextBoxHeight({
+        text: resolveElementText(element, context),
+        fontSize: getWrappedTextFontSize(element, context),
+        fontFamily,
+        fontStyle: composeFontStyle(
+          fontFamily,
+          element.fontWeight,
+          element.fontStyle,
+        ),
+        width: element.size.width,
+      });
+    }
+
     if (element.type === "text" || element.type === "smartText") {
       const textEl = element as TextElementConfig | SmartTextElementConfig;
       return textEl.fontSize ?? 20;
+    }
+
+    // A group with no height of its own is as tall as its content.
+    if (element.type === "group") {
+      const bottom = (element.elements ?? []).reduce(
+        (max, child) =>
+          child.hidden || !evaluateElementCondition(child.conditions, context)
+            ? max
+            : Math.max(
+                max,
+                child.position.y + getElementMainSize(child, "column", context),
+              ),
+        0,
+      );
+
+      return bottom * (element.scale?.y ?? 1);
     }
   }
 

@@ -59,7 +59,7 @@ msgstr "ここで{0}大会、全部で{1}都市"
 #~ msgid "{playerCount} Players (Light)"
 #~ msgstr "{playerCount}人用（ライト）"
 
-#: src/consts/top8/placeholders.ts:39
+#: src/consts/top8/placeholders.ts:41
 msgid "# of Entrants"
 msgstr "参加人数"
 
@@ -74,7 +74,7 @@ msgstr "直近{2}セットで<0>{0}勝{1}敗</0>"
 msgid "<0>{weekdayName}</0> is your tournament day"
 msgstr "大会といえば<0>{weekdayName}</0>"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:58
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:59
 msgid "16 Player Variant"
 msgstr "16人用"
 
@@ -303,6 +303,10 @@ msgstr "閉じる"
 msgid "Color Palette"
 msgstr "カラーパレット"
 
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:103
+msgid "Comic Book"
+msgstr "コミック"
+
 #: src/components/top8/SettingsPanel/DeveloperSettings.tsx:60
 msgid "Commit"
 msgstr ""
@@ -453,8 +457,8 @@ msgstr "カスタム画像"
 #~ msgstr "自作順位表テンプレート"
 
 #: src/components/top8/SettingsPanel/ThemePicker.tsx:20
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:94
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:106
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:89
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:119
 msgid "Dark"
 msgstr "ダーク"
 
@@ -496,7 +500,7 @@ msgstr "テンプレートを削除"
 msgid "Delete template: {0}"
 msgstr "テンプレを削除: {0}"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:225
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:238
 msgid "Delete Template?"
 msgstr "テンプレートを削除しますか？"
 
@@ -623,7 +627,7 @@ msgstr "これまで出た大会の参加者の合計"
 
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:130
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:131
-#: src/consts/top8/placeholders.ts:31
+#: src/consts/top8/placeholders.ts:33
 msgid "Event Name"
 msgstr "イベント名"
 
@@ -753,7 +757,7 @@ msgstr "グラデーション枠"
 msgid "Green"
 msgstr "グリーン"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:238
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:251
 msgid "Grid view"
 msgstr "グリッド表示"
 
@@ -809,7 +813,7 @@ msgstr "公式サーバーで情報発信を行なってます！"
 msgid "Jump straight to graphics for your own tournaments"
 msgstr "自分が出た大会の画像をすぐに作れます"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:48
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:49
 msgid "Kagaribi"
 msgstr "篝火"
 
@@ -838,17 +842,17 @@ msgid "Latest"
 msgstr "最新"
 
 #: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:97
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:250
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:263
 msgid "Layout"
 msgstr "レイアウト"
 
 #: src/components/top8/SettingsPanel/ThemePicker.tsx:21
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:88
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:112
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:95
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:125
 msgid "Light"
 msgstr "ライト"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:237
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:250
 msgid "List view"
 msgstr "リスト表示"
 
@@ -867,7 +871,7 @@ msgstr "トーナメントを読み込んで投稿を作成してください。
 msgid "Load template: {0}"
 msgstr "テンプレを読み込む: {0}"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:217
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:230
 msgid "Load Template?"
 msgstr "テンプレートを読み込みますか？"
 
@@ -875,7 +879,7 @@ msgstr "テンプレートを読み込みますか？"
 msgid "Load Tournament?"
 msgstr "大会を読み込みますか？"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:245
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:258
 msgid "Loading a template replaces your current design."
 msgstr "テンプレを読み込むと、現在のデザインは置き換えられます。"
 
@@ -967,7 +971,7 @@ msgstr "素材管理"
 msgid "Many cups of coffee were consumed during development 👀"
 msgstr "珈琲一杯分から！"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:102
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:115
 msgid "Minimal"
 msgstr "ミニマル"
 
@@ -987,7 +991,7 @@ msgstr ""
 msgid "My recap"
 msgstr "自分の戦績"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:269
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:282
 msgid "My Templates"
 msgstr "マイテンプレ"
 
@@ -1106,8 +1110,9 @@ msgstr "テンプレートエディタを開く"
 #~ msgid "Or drag and drop"
 #~ msgstr "ドラッグ・ドロップも対応"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:52
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:70
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:53
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:71
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:107
 msgid "Original"
 msgstr "オリジナル"
 
@@ -1166,19 +1171,23 @@ msgstr "プレイヤー{slot}"
 msgid "Player Count"
 msgstr "選手数"
 
-#: src/consts/top8/placeholders.ts:46
+#: src/consts/top8/placeholders.ts:49
 msgid "Player Country"
 msgstr "選手の国"
 
-#: src/consts/top8/placeholders.ts:47
+#: src/consts/top8/placeholders.ts:50
 msgid "Player Name (w/ Prefix)"
 msgstr "選手名（所属付き）"
 
-#: src/consts/top8/placeholders.ts:45
+#: src/consts/top8/placeholders.ts:47
 msgid "Player Placement"
 msgstr "選手順位"
 
-#: src/consts/top8/placeholders.ts:49
+#: src/consts/top8/placeholders.ts:48
+msgid "Player Placement Suffix (st, nd, rd, th)"
+msgstr "順位の接尾辞（st, nd, rd, th）"
+
+#: src/consts/top8/placeholders.ts:52
 msgid "Player Prefix"
 msgstr "選手所属"
 
@@ -1186,7 +1195,7 @@ msgstr "選手所属"
 msgid "Player results not available."
 msgstr "選手のリザルトを取得できません。"
 
-#: src/consts/top8/placeholders.ts:48
+#: src/consts/top8/placeholders.ts:51
 msgid "Player Tag"
 msgstr "選手タグ"
 
@@ -1343,7 +1352,7 @@ msgstr "メンバーを集合中..."
 msgid "Save"
 msgstr "保存"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:281
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:294
 msgid "Save Design"
 msgstr "デザインを保存"
 
@@ -1355,7 +1364,7 @@ msgstr "デザインをテンプレとして保存"
 msgid "Save Template"
 msgstr "テンプレを保存"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:285
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:298
 msgid "Save your current design as a template to reuse it later."
 msgstr "現在のデザインをテンプレとして保存すると、あとで再利用できます。"
 
@@ -1482,11 +1491,11 @@ msgstr "プレビューを縮小"
 msgid "Size"
 msgstr "容量"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:76
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:77
 msgid "Square Variant"
 msgstr "スクエアバリアント"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:84
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:85
 msgid "Standings"
 msgstr "順位表"
 
@@ -1581,7 +1590,7 @@ msgid "There are no tournaments on your start.gg account yet. Enter one and it s
 msgstr "start.ggアカウントに大会がまだありません。参加するとここに表示され、すぐに画像を作れます。"
 
 #: src/components/top8/SocialPostComposer/TemplateSelector.tsx:35
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:226
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:239
 msgid "This template will be permanently deleted."
 msgstr "このテンプレートは完全に削除されます。"
 
@@ -1642,7 +1651,7 @@ msgstr "Top 8"
 msgid "Top 8 graphic"
 msgstr "Top 8画像"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:66
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:67
 msgid "Top8er"
 msgstr "Top8er"
 
@@ -1655,11 +1664,11 @@ msgstr "大会情報"
 msgid "Tournament & Player data"
 msgstr "大会・選手情報"
 
-#: src/consts/top8/placeholders.ts:35
+#: src/consts/top8/placeholders.ts:37
 msgid "Tournament City"
 msgstr "大会市区町村"
 
-#: src/consts/top8/placeholders.ts:37
+#: src/consts/top8/placeholders.ts:39
 msgid "Tournament Country"
 msgstr "大会国"
 
@@ -1668,15 +1677,15 @@ msgstr "大会国"
 msgid "Tournament date"
 msgstr "大会の日付"
 
-#: src/consts/top8/placeholders.ts:32
+#: src/consts/top8/placeholders.ts:34
 msgid "Tournament Date"
 msgstr "大会日付"
 
-#: src/consts/top8/placeholders.ts:33
+#: src/consts/top8/placeholders.ts:35
 msgid "Tournament Date (MM/DD/YYYY)"
 msgstr "大会日付（MM/DD/YYYY）"
 
-#: src/consts/top8/placeholders.ts:34
+#: src/consts/top8/placeholders.ts:36
 msgid "Tournament Full Address"
 msgstr "大会住所"
 
@@ -1687,7 +1696,7 @@ msgstr "大会名"
 
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:120
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:121
-#: src/consts/top8/placeholders.ts:30
+#: src/consts/top8/placeholders.ts:32
 msgid "Tournament Name"
 msgstr "大会名"
 
@@ -1709,7 +1718,7 @@ msgstr "現在、リザルトは start.gg のみ対応しています。start.gg
 msgid "Tournament results graphic"
 msgstr "大会リザルト画像"
 
-#: src/consts/top8/placeholders.ts:36
+#: src/consts/top8/placeholders.ts:38
 msgid "Tournament State"
 msgstr "大会都道府県"
 
@@ -1717,7 +1726,7 @@ msgstr "大会都道府県"
 #: src/components/shared/TournamentUrlInput/TournamentUrlInput.tsx:101
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:171
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:129
-#: src/consts/top8/placeholders.ts:38
+#: src/consts/top8/placeholders.ts:40
 #: src/utils/social/templateTokens.ts:15
 #: src/utils/social/templateTokens.ts:47
 msgid "Tournament URL"
@@ -1739,7 +1748,7 @@ msgstr "優勝者スポットライト"
 #~ msgid "Twitter"
 #~ msgstr "X"
 
-#: src/consts/top8/placeholders.ts:50
+#: src/consts/top8/placeholders.ts:53
 msgid "Twitter Handle"
 msgstr "Xアカウント"
 
@@ -1855,7 +1864,7 @@ msgstr "X"
 msgid "X Handle"
 msgstr "Xハンドル"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:218
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:231
 msgid "Your current design will be overwritten!"
 msgstr "現在のデザインは上書きされます！"
 

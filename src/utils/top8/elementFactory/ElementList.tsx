@@ -36,6 +36,7 @@ const isContainer = (element: ElementConfig) =>
 /**
  * The clip path for an element with `clip` set.
  *
+ * `clipPoints` clips to a polygon in the element's own coordinate space.
  * Elements with `clipCornerRadius` clip to their own bounds (e.g. rounded
  * character image groups). All other clips use the parent container's size
  * (e.g. kagaribi character overflow clipping).
@@ -44,6 +45,19 @@ const getClip = (
   element: ElementConfig,
   containerSize: { width: number; height: number },
 ) => {
+  const points = element.clipPoints;
+  if (points && points.length >= 3) {
+    const clipFunc = (ctx: SceneContext) => {
+      ctx.beginPath();
+      ctx.moveTo(points[0].x, points[0].y);
+      for (let i = 1; i < points.length; i++) {
+        ctx.lineTo(points[i].x, points[i].y);
+      }
+      ctx.closePath();
+    };
+    return { clipFunc, toSelf: true };
+  }
+
   if (!element.clip) return undefined;
 
   const toSelf = Boolean(element.clipCornerRadius);
@@ -70,6 +84,24 @@ const getClip = (
   };
 
   return { clipFunc, toSelf };
+};
+
+/** Rotation, skew and scale for elements that set them. Selectable elements
+ *  get theirs from `SelectableElement` instead. */
+const getTransform = (element: ElementConfig) => {
+  const { rotation, skew, scale } = element;
+  const scaleX = scale?.x ?? 1;
+  const scaleY = scale?.y ?? 1;
+  if (!rotation && !skew?.x && !skew?.y && scaleX === 1 && scaleY === 1) {
+    return undefined;
+  }
+  return {
+    rotation: rotation ?? 0,
+    skewX: skew?.x ?? 0,
+    skewY: skew?.y ?? 0,
+    scaleX,
+    scaleY,
+  };
 };
 
 /**
@@ -131,14 +163,16 @@ const renderElement = (
   }
 
   const listening = isContainer(element);
+  const transform = getTransform(element);
 
-  if (!filters && !clip) {
+  if (!filters && !clip && !transform) {
     return withProps(node, { key, listening });
   }
 
   // A clip to the element's own bounds is drawn in the element's coordinate
-  // space, so the wrapper takes over its position.
-  const wrapperOwnsPosition = clip?.toSelf ?? false;
+  // space, and a rotation, skew or scale pivots on its position. Either way the
+  // wrapper takes over the position.
+  const wrapperOwnsPosition = (clip?.toSelf ?? false) || Boolean(transform);
   const inner = withProps(node, {
     listening,
     ...(wrapperOwnsPosition && { x: 0, y: 0 }),
@@ -146,6 +180,7 @@ const renderElement = (
   const wrapperProps = {
     x: wrapperOwnsPosition ? element.position.x : undefined,
     y: wrapperOwnsPosition ? element.position.y : undefined,
+    ...transform,
     clipFunc: clip?.clipFunc,
     listening,
     draggable: context.options?.editable ?? false,

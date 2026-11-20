@@ -1,7 +1,12 @@
-import { Rect } from "react-konva";
+import { Line, Rect } from "react-konva";
 
 import { ConicGradientRect } from "@/components/top8/Canvas/ConicGradientRect";
-import type { RectElementConfig } from "@/types/top8/Design";
+import { PatternFill } from "@/components/top8/Canvas/PatternFill";
+import type {
+  PatternElementConfig,
+  PolygonElementConfig,
+  RectElementConfig,
+} from "@/types/top8/Design";
 import type { ElementCreator } from "@/types/top8/ElementFactory";
 import { resolveColor } from "@/utils/top8/resolveColor";
 import {
@@ -87,3 +92,50 @@ export const createRectElement: ElementCreator<RectElementConfig> = ({
     />
   );
 };
+
+export const createPolygonElement: ElementCreator<PolygonElementConfig> = ({
+  element,
+  index,
+  context,
+}) => {
+  const palette = context.design?.colorPalette;
+
+  return (
+    <Line
+      key={getElementKey(element, index)}
+      x={element.position.x}
+      y={element.position.y}
+      points={element.points.flatMap((point) => [point.x, point.y])}
+      closed
+      fill={resolveColor(element.fill, palette)}
+      stroke={resolveColor(element.stroke, palette)}
+      strokeWidth={element.strokeWidth}
+      lineJoin={element.lineJoin ?? "miter"}
+      perfectDrawEnabled={context.perfectDraw}
+    />
+  );
+};
+
+export const createPatternElement: ElementCreator<PatternElementConfig> = ({
+  element,
+  index,
+  context,
+}) => (
+  <PatternFill
+    key={getElementKey(element, index)}
+    x={element.position.x}
+    y={element.position.y}
+    width={element.size?.width ?? context.containerSize?.width ?? 100}
+    height={element.size?.height ?? context.containerSize?.height ?? 100}
+    pattern={element.pattern}
+    color={
+      resolveColor(element.color, context.design?.colorPalette) ?? "#000000"
+    }
+    opacity={element.opacity}
+    spacing={element.spacing}
+    weight={element.weight}
+    angle={element.angle}
+    center={element.center}
+    rays={element.rays}
+  />
+);

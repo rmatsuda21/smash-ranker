@@ -78,6 +78,36 @@ export const measureTextBoxWidth = (input: BoxWidthInput): number =>
     new KonvaText(defined({ ...input, wrap: "word" })).width(),
   );
 
+const boxHeightCache = createCache<number>();
+
+/** Height of a word-wrapped text box of a fixed width: one line box per
+ *  wrapped line. */
+export const measureTextBoxHeight = (
+  input: BoxWidthInput & { width: number },
+): number =>
+  boxHeightCache(JSON.stringify(input), () =>
+    new KonvaText(defined({ ...input, wrap: "word" })).height(),
+  );
+
+const wrappedFitCache = createCache<number>();
+
+/** Largest font size, up to `fontSize`, at which the text wrapped to `width`
+ *  is no taller than `maxHeight`. */
+export const fitWrappedFontSize = (
+  input: BoxWidthInput & { width: number; maxHeight: number },
+): number =>
+  wrappedFitCache(JSON.stringify(input), () => {
+    const { maxHeight, ...box } = input;
+    let fontSize = box.fontSize;
+    while (
+      fontSize > MIN_FONT_SIZE &&
+      measureTextBoxHeight({ ...box, fontSize }) > maxHeight
+    ) {
+      fontSize -= 1;
+    }
+    return fontSize;
+  });
+
 export type TextAnchor =
   | "topLeft"
   | "topRight"

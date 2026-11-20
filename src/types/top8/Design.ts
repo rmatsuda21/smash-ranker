@@ -28,6 +28,8 @@ export type ElementType =
   | "flexGroup"
   | "flexGrid"
   | "rect"
+  | "polygon"
+  | "pattern"
   | "svg"
   | "customImage"
   | "characterImage"
@@ -55,6 +57,20 @@ export interface FlexItemConfig {
   basis?: number;
 }
 
+export type Point = { x: number; y: number };
+
+/**
+ * Colour treatment baked into an image when it loads, so it costs nothing per
+ * frame and has no size limit (unlike `filterEffects`, which the mobile
+ * profile skips for large elements). `contrast` and `brightness` are
+ * multipliers: 1 leaves the image unchanged.
+ */
+export interface ImageTone {
+  grayscale?: boolean;
+  contrast?: number;
+  brightness?: number;
+}
+
 interface BaseElementConfig {
   id?: string;
   position: { x: number; y: number };
@@ -65,9 +81,16 @@ interface BaseElementConfig {
     maxHeight?: number;
   };
   scale?: { x: number; y: number };
+  /** Degrees, about the element's position (its top-left corner). */
   rotation?: number;
+  /** Shear factors (Konva `skewX`/`skewY`): 0.2 leans the element by 20% of
+   *  its height. */
+  skew?: { x?: number; y?: number };
   offset?: { x: number; y: number };
   clip?: boolean;
+  /** Clips the element to this polygon, given in the element's own
+   *  coordinate space. Takes the place of `clip`. */
+  clipPoints?: Point[];
   clipCornerRadius?: number;
   /** Extend clip bounds beyond the container in specific directions (pixels). */
   clipOffset?: { top?: number; right?: number; bottom?: number; left?: number };
@@ -86,6 +109,9 @@ export interface TextElementConfig
   text?: string;
   textId?: string;
   fontSize?: number;
+  /** With a fixed width: the font shrinks until the wrapped lines are no
+   *  taller than this. */
+  maxHeight?: number;
   fontWeight?: number;
   fontStyle?: string;
   fill?: string;
@@ -167,6 +193,39 @@ export interface RectElementConfig
   cornerRadius?: number | number[];
 }
 
+/** A closed shape through `points`, relative to the element's position. */
+export interface PolygonElementConfig extends BaseElementConfig {
+  type: "polygon";
+  points: Point[];
+  fill?: string;
+  stroke?: string;
+  strokeWidth?: number;
+  lineJoin?: "miter" | "round" | "bevel";
+}
+
+/**
+ * A screentone filling the element's box.
+ * - `dots`: a grid of dots `spacing` apart, each of radius `weight`.
+ * - `lines`: parallel lines `spacing` apart, `weight` thick.
+ * - `burst`: `rays` wedges radiating from `center`; `weight` (0–1) is the
+ *   share of the circle they cover.
+ */
+export interface PatternElementConfig extends BaseElementConfig {
+  type: "pattern";
+  pattern: "dots" | "lines" | "burst";
+  /** Hex, rgba, or palette key. */
+  color?: string;
+  opacity?: number;
+  spacing?: number;
+  weight?: number;
+  /** Degrees. Rotates the dot grid or the lines. */
+  angle?: number;
+  /** Burst only: normalized centre (0–1), defaults to the middle. */
+  center?: Point;
+  /** Burst only. */
+  rays?: number;
+}
+
 export interface CustomImageElementConfig
   extends BaseElementConfig, Partial<ComponentProps<typeof Image>> {
   type: "customImage";
@@ -182,6 +241,10 @@ export interface CharacterImageElementConfig
   shadowEnabled?: boolean;
   fillMode?: ImageFillMode;
   cropScaleMultiplier?: number;
+  /** Show the whole render instead of the character's stored close-up
+   *  crop. `cropScaleMultiplier` still applies. */
+  uncropped?: boolean;
+  tone?: ImageTone;
 }
 
 export interface AltCharacterImageElementConfig extends BaseElementConfig {
@@ -262,6 +325,8 @@ export type ElementConfig =
   | AltCharacterImageElementConfig
   | CustomAltCharacterImageElementConfig
   | RectElementConfig
+  | PolygonElementConfig
+  | PatternElementConfig
   | CustomImageElementConfig
   | SvgElementConfig
   | TournamentIconElementConfig

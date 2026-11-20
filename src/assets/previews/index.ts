@@ -1,17 +1,21 @@
 import top8er from "./top8er.webp";
 import top8er_squares from "./top8er-squares.webp";
-import minimal from "./minimal.webp";
-import minimal_4 from "./minimal-4.webp";
-import minimal_16 from "./minimal-16.webp";
-import minimal_24 from "./minimal-24.webp";
+import minimal_dark from "./minimal-dark.webp";
+import minimal_light from "./minimal-light.webp";
 import kagaribi from "./kagaribi.webp";
+import kagaribi_16 from "./kagaribi-16.webp";
+import standings_dark from "./standings-dark.webp";
+import standings_light from "./standings-light.webp";
+import comic_book from "./comic-book.webp";
 
 export const defaultPreviews: Record<string, string> = {
   top8er: top8er,
   "top8er-squares": top8er_squares,
-  minimal: minimal,
-  "minimal-4": minimal_4,
-  "minimal-16": minimal_16,
-  "minimal-24": minimal_24,
+  "minimal-dark": minimal_dark,
+  "minimal-light": minimal_light,
   kagaribi: kagaribi,
+  "kagaribi-16": kagaribi_16,
+  "standings-dark": standings_dark,
+  "standings-light": standings_light,
+  "comic-book": comic_book,
 };
