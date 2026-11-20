@@ -181,7 +181,7 @@ Fonts are sourced from **Fontsource** (https://fontsource.org) — no Google Fon
 
 The Top 8 graphic is rendered via **Konva** (2D canvas) through React-Konva. The canvas tree is driven entirely by the `canvasStore` design state. Key concepts:
 
-- **Designs** (`src/designs/`) — predefined layout templates (`top8er`, `minimal`, `squares`, `kagaribi`, `standings`, `comicBook`, `neonSign`). Each design is a typed object describing all canvas elements. The kagaribi template uses `altCharacterImage` with `flow: "column"` and `rows: 6` to display alt character icons in a top-right vertical grid that grows leftward.
+- **Designs** (`src/designs/`) — predefined layout templates (`top8er`, `minimal`, `squares`, `kagaribi`, `standings`, `comicBook`, `neonSign`, `highScore`). Each design is a typed object describing all canvas elements. The kagaribi template uses `altCharacterImage` with `flow: "column"` and `rows: 6` to display alt character icons in a top-right vertical grid that grows leftward.
 - **Element types** — `text`, `smartText`, `image`, `group`, `flexGroup`, `flexGrid`, `rect`, `polygon`, `pattern`, `svg`, `customImage`, `characterImage`, `altCharacterImage`, `customAltCharacterImage`, `tournamentIcon`, `playerFlag`
 - **Element factory** (`src/utils/top8/elementFactory/`) — turns element configs into Konva nodes:
   - `ElementList.tsx` — the `<ElementList elements context />` component is the only way configs become nodes. Per element it checks `hidden`/`conditions`, calls the type's creator, then wraps the result from the outside in: `SelectableElement` (when `selectable`), `FilteredElement` (when `filterEffects`), a clipping `Group` (when `clip`).
@@ -230,6 +230,15 @@ A design opts in with `Design.dynamicPlayerCount` (`{ slotPitch, min, max, slotO
 - **Player data is never resized with it** — `playerStore` already holds 32 players (tournament loads overfetch, see `MIN_FETCH_COUNT`), so a new slot shows the next player in the standings and a removed one keeps its data. `usePlayerCount` (`src/hooks/top8/usePlayerCount.ts`) pads with blank players if the data is short and keeps the selection inside the slots. Keep `max` at or under 32 unless the fetch count grows too.
 - **UI** — `PlayerCountControl` in the Players tab (stepper, typed number, 4/8/16/32 presets) plus a "+" chip at the end of the roster strip; both render only when the design has the flag.
 - **Template loads** — loading a built-in template with the flag while the current design also has it keeps the current count (`loadTemplate`); saved templates keep the count they were saved with.
+
+### Player Table
+
+A design whose players are the rows of a table opts in with `Design.playerTable` (`{ width, gap, columns }`); High Score does. Column widths depend on every player, so they are worked out before anything renders.
+
+- **Columns** — each is `{ id, width, grow?, optional? }`. `width` is a number (fixed) or `{ min, max }` (as wide as the widest cell, within the range); both include the trailing `gap`. An `optional` column is left out when no player has anything in it. With `align: "center"`, cells in a column wider than its widest cell are inset so the widest is centred (High Score's Fighters when everyone plays one character); the header stays at the left edge. The `grow` column gets its own width first and then all the room left over; when the columns don't fit, the others narrow to their minimum, last one first.
+- **Elements** — a top-level player or tournament element joins a column with `column: "<id>"`: it gets the column's width, its `position.x` counts from the column's left edge, and it is hidden with the column. Headers are tournament elements (editable `textId`s) with `column` set.
+- **Code** — `src/utils/top8/playerTable.ts` (`layoutPlayerTable`, `placeInColumns`, pure). `getPlayerConfigs` applies it to the players and `getTournamentElements` (both in `scene.ts`) to the tournament layer; **render tournament elements through `getTournamentElements` / `useTournamentElements`, not straight from the design.**
+- **Ellipsis** — `smartText` takes `overflow: "ellipsis"` to keep its font size and cut text wider than its box, for a column that has reached its maximum.
 
 ### Persistence (IndexedDB)
 

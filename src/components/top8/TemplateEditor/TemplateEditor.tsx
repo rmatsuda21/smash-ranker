@@ -15,6 +15,7 @@ import { minimalDarkDesign, minimalLightDesign } from "@/designs/minimal";
 import { standingsLightDesign, standingsDarkDesign } from "@/designs/standings";
 import { comicBookDesign } from "@/designs/comicBook";
 import { neonSignDesign } from "@/designs/neonSign";
+import { highScoreDesign } from "@/designs/highScore";
 import { kagaribiDesign } from "@/designs/kagaribi";
 import { kagaribi16Design } from "@/designs/kagaribi16";
 import { Button } from "@/components/shared/Button/Button";
@@ -120,6 +121,18 @@ const DEFAULT_TEMPLATE_GROUPS: DefaultTemplateGroup[] = [
         name: msg`Original`,
         design: neonSignDesign,
         font: "M PLUS Rounded 1c",
+      },
+    ],
+  },
+  {
+    id: "high-score",
+    name: msg`High Score`,
+    templates: [
+      {
+        id: "high-score",
+        name: msg`Original`,
+        design: highScoreDesign,
+        font: "DotGothic16",
       },
     ],
   },

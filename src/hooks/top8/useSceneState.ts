@@ -7,7 +7,10 @@ import { useUnusedIconSpace } from "@/hooks/top8/useEffectiveCanvasSize";
 import { useCanvasStore } from "@/store/canvasStore";
 import { useFontStore } from "@/store/fontStore";
 import { usePlayerStore } from "@/store/playerStore";
-import { getPlayerConfigs } from "@/utils/top8/scene";
+import type { PlayerInfo } from "@/types/top8/Player";
+import { getPlayerConfigs, getTournamentElements } from "@/utils/top8/scene";
+
+const NO_PLAYERS: PlayerInfo[] = [];
 
 /** The current design's palettes and background-image settings, stable until
  *  one of them actually changes. */
@@ -38,6 +41,8 @@ export const usePlayerConfigs = () => {
     (state) => state.design.dynamicPlayerHeight,
   );
 
+  const playerTable = useCanvasStore((state) => state.design.playerTable);
+
   const fontFamily = useFontStore((state) => state.displayedFont);
   const metricsVersion = useTextMetricsVersion();
   const unusedIconSpace = useUnusedIconSpace();
@@ -51,6 +56,7 @@ export const usePlayerConfigs = () => {
         players,
         fontFamily,
         unusedIconSpace,
+        playerTable,
       ),
     // eslint-disable-next-line react-hooks/exhaustive-deps -- metricsVersion: remeasure once fonts load
     [
@@ -61,6 +67,43 @@ export const usePlayerConfigs = () => {
       fontFamily,
       metricsVersion,
       unusedIconSpace,
+      playerTable,
+    ],
+  );
+};
+
+/** The current design's tournament elements, with table headers placed over
+ *  their columns. The stored array itself for a design without a table. */
+export const useTournamentElements = () => {
+  const elements = useCanvasStore((state) => state.design.tournament?.elements);
+  const playerTable = useCanvasStore((state) => state.design.playerTable);
+  const basePlayer = useCanvasStore((state) => state.design.basePlayer);
+  const playerSlots = useCanvasStore((state) => state.design.players);
+  // Only a table depends on the players; without one, don't subscribe.
+  const players = usePlayerStore((state) =>
+    playerTable ? state.players : NO_PLAYERS,
+  );
+
+  const fontFamily = useFontStore((state) => state.displayedFont);
+  const metricsVersion = useTextMetricsVersion();
+
+  return useMemo(
+    () =>
+      getTournamentElements(
+        elements,
+        { basePlayer, players: playerSlots, playerTable },
+        players,
+        fontFamily,
+      ),
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- metricsVersion: remeasure once fonts load
+    [
+      elements,
+      basePlayer,
+      playerSlots,
+      playerTable,
+      players,
+      fontFamily,
+      metricsVersion,
     ],
   );
 };

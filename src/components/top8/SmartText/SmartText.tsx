@@ -6,6 +6,8 @@ import { fitText, type TextAnchor } from "@/utils/top8/textMetrics";
 
 type SmartTextProps = TextConfig & {
   anchor?: TextAnchor;
+  /** `ellipsis` keeps the font size and cuts text that is too wide. */
+  overflow?: "shrink" | "ellipsis";
 };
 
 /**
@@ -30,8 +32,10 @@ export const SmartText = (props: SmartTextProps) => {
     padding,
     lineHeight,
     letterSpacing,
+    overflow = "shrink",
     ...restProps
   } = props;
+  const shrink = overflow !== "ellipsis";
 
   const fitted = useMemo(
     () =>
@@ -47,6 +51,7 @@ export const SmartText = (props: SmartTextProps) => {
         padding,
         lineHeight,
         letterSpacing,
+        shrink,
       }),
     [
       text,
@@ -60,6 +65,7 @@ export const SmartText = (props: SmartTextProps) => {
       padding,
       lineHeight,
       letterSpacing,
+      shrink,
     ],
   );
 
@@ -85,7 +91,8 @@ export const SmartText = (props: SmartTextProps) => {
       fontStyle={fontStyle}
       verticalAlign={verticalAlign}
       letterSpacing={letterSpacing}
-      wrap="word"
+      wrap={shrink ? "word" : "none"}
+      ellipsis={!shrink}
       {...restProps}
     />
   );

@@ -8,6 +8,7 @@ import standings_dark from "./standings-dark.webp";
 import standings_light from "./standings-light.webp";
 import comic_book from "./comic-book.webp";
 import neon_sign from "./neon-sign.webp";
+import high_score from "./high-score.webp";
 
 export const defaultPreviews: Record<string, string> = {
   top8er: top8er,
@@ -20,4 +21,5 @@ export const defaultPreviews: Record<string, string> = {
   "standings-light": standings_light,
   "comic-book": comic_book,
   "neon-sign": neon_sign,
+  "high-score": high_score,
 };

@@ -128,6 +128,9 @@ type FitInput = {
   height?: number;
   anchor: TextAnchor;
   verticalAlign?: string;
+  /** `false` keeps the design's size whatever the width (the text is cut
+   *  off instead). */
+  shrink?: boolean;
 } & Pick<
   TextConfig,
   "fontFamily" | "fontStyle" | "padding" | "lineHeight" | "letterSpacing"
@@ -225,6 +228,7 @@ const computeFit = ({
   height,
   anchor,
   verticalAlign,
+  shrink = true,
   ...typography
 }: FitInput): FittedText => {
   if (!text) return { fontSize, offsetX: 0, offsetY: 0 };
@@ -232,9 +236,14 @@ const computeFit = ({
   // Single-line node for the fit loop: no box, so nothing wraps.
   const node = new KonvaText(defined({ ...typography, text, fontSize }));
 
+  // `measureSize` leaves letter spacing out; Konva adds it after every
+  // character when it lays the line out.
+  const spacing = (typography.letterSpacing ?? 0) * text.length;
+  const measure = () => node.measureSize(text).width + spacing;
+
   let fitted = fontSize;
-  if (width) {
-    let measuredWidth = node.measureSize(text).width;
+  if (width && shrink) {
+    let measuredWidth = measure();
 
     for (let i = 0; measuredWidth > width && i < MAX_FIT_ITERATIONS; i++) {
       const nextSize = Math.max(
@@ -245,7 +254,7 @@ const computeFit = ({
 
       fitted = nextSize;
       node.fontSize(fitted);
-      measuredWidth = node.measureSize(text).width;
+      measuredWidth = measure();
     }
 
     // The loop above undershoots (safety margin, rounding down), which
@@ -253,7 +262,7 @@ const computeFit = ({
     // largest whole size that still fits.
     while (fitted < fontSize) {
       node.fontSize(fitted + 1);
-      if (node.measureSize(text).width > width) break;
+      if (measure() > width) break;
       fitted += 1;
     }
     node.fontSize(fitted);
@@ -261,7 +270,7 @@ const computeFit = ({
 
   // Now give it the real box to read the laid-out size (text that still
   // overflows at the minimum size wraps and gets taller).
-  node.setAttrs(defined({ width, height, wrap: "word" }));
+  node.setAttrs(defined({ width, height, wrap: shrink ? "word" : "none" }));
   const { offsetX, offsetY } = anchorOffsets(
     anchor,
     node.width(),

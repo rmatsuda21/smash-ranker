@@ -101,6 +101,13 @@ interface BaseElementConfig {
   filterEffects?: ElementFilterConfig[];
   flex?: FlexItemConfig;
   textTransform?: "uppercase" | "lowercase";
+  /**
+   * A column of the design's `playerTable`. The element is as wide as the
+   * column, its `position.x` counts from the column's left edge, and it is
+   * hidden when the column is left out. Top-level player and tournament
+   * elements only.
+   */
+  column?: string;
 }
 
 export interface TextElementConfig
@@ -135,6 +142,9 @@ export interface SmartTextElementConfig
   align?: HorizontalAlign;
   verticalAlign?: VerticalAlign;
   anchor?: Anchor;
+  /** What text wider than its box does: get smaller (the default), or keep
+   *  its size and end in an ellipsis. */
+  overflow?: "shrink" | "ellipsis";
   shadowColor?: string;
   shadowBlur?: number;
   shadowOffset?: { x: number; y: number };
@@ -391,6 +401,37 @@ export interface Design {
    * and full-height background rects change height with them.
    */
   dynamicPlayerCount?: DynamicPlayerCount;
+  /**
+   * When set, the players are the rows of a table whose column widths depend
+   * on what the players have in them. Elements join a column with `column`.
+   */
+  playerTable?: PlayerTable;
+}
+
+export interface TableColumn {
+  id: string;
+  /**
+   * A fixed width, or the range for a column that is as wide as its widest
+   * cell. Both include the gap that follows the column.
+   */
+  width: number | { min: number; max: number };
+  /** Takes the room the other columns leave, past its own maximum if there
+   *  is any. One per table. */
+  grow?: boolean;
+  /** Left out, with its header, when no player has anything in it. */
+  optional?: boolean;
+  /** `center`: in a column wider than its widest cell, the cells move in
+   *  together so that the widest one is centred. The header stays put. */
+  align?: "start" | "center";
+}
+
+export interface PlayerTable {
+  width: number;
+  /** Space kept clear at the right of every column. */
+  gap: number;
+  /** Left to right. When they don't all fit, the columns other than the
+   *  `grow` one narrow to their minimum, the last one first. */
+  columns: TableColumn[];
 }
 
 export interface DynamicPlayerCount {

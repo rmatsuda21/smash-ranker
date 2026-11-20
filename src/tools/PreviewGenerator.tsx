@@ -22,6 +22,7 @@ import { kagaribi16Design } from "@/designs/kagaribi16";
 import { standingsLightDesign, standingsDarkDesign } from "@/designs/standings";
 import { comicBookDesign } from "@/designs/comicBook";
 import { neonSignDesign } from "@/designs/neonSign";
+import { highScoreDesign } from "@/designs/highScore";
 import { resizePlayerSlots } from "@/utils/top8/playerCount";
 
 declare global {
@@ -95,6 +96,12 @@ const BUILT_IN_TEMPLATES: PreviewTemplate[] = [
     design: neonSignDesign,
     font: "M PLUS Rounded 1c",
   },
+  {
+    id: "high-score",
+    name: "Original",
+    design: highScoreDesign,
+    font: "DotGothic16",
+  },
 ];
 
 const samplePlayers = createSamplePlayers(24);
@@ -153,6 +160,21 @@ const castPlayers = samplePlayers.map((player, index) =>
     : player,
 );
 
+// A name too long for its column beside a player with many characters, for
+// tables that have to share the width out.
+const crowdedPlayers = castPlayers.map((player, index) => ({
+  ...player,
+  ...(index === 2 && {
+    gamerTag: "The Longest Gamer Tag In The Whole Bracket By Far",
+  }),
+  ...(index === 5 && {
+    characters: Array.from({ length: 11 }, (_, alt) => ({
+      id: CAST_IDS[alt % CAST_IDS.length],
+      alt: 0 as CharacerData["alt"],
+    })),
+  }),
+}));
+
 // Golden-only cases: variations of built-in templates that exercise code the
 // plain templates don't. They never become picker thumbnails.
 const GOLDEN_ONLY_TEMPLATES: PreviewTemplate[] = [
@@ -184,6 +206,28 @@ const GOLDEN_ONLY_TEMPLATES: PreviewTemplate[] = [
     design: neonSignDesign,
     font: "M PLUS Rounded 1c",
     players: multiCharacterPlayers,
+  },
+  {
+    id: "high-score-cast",
+    name: "High Score, varied cast",
+    design: highScoreDesign,
+    font: "DotGothic16",
+    players: castPlayers,
+  },
+  {
+    id: "high-score-multi",
+    name: "High Score, multi-character",
+    design: highScoreDesign,
+    font: "DotGothic16",
+    players: multiCharacterPlayers,
+  },
+  // Table columns: Name at its widest, Fighters narrowed to what is left.
+  {
+    id: "high-score-crowded",
+    name: "High Score, long name and many characters",
+    design: highScoreDesign,
+    font: "DotGothic16",
+    players: crowdedPlayers,
   },
   // Player count changed in the Players tab (`dynamicPlayerCount`).
   {

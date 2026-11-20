@@ -10,6 +10,7 @@ import {
   computeDynamicPlayerLayout,
   mergePlayerSlots,
 } from "@/utils/top8/dynamicPlayerHeight";
+import { layoutPlayerTable, placeInColumns } from "@/utils/top8/playerTable";
 
 type CanvasSize = Design["canvasSize"];
 
@@ -30,18 +31,47 @@ export const getPlayerConfigs = (
   fontFamily?: string,
   /** From `getUnusedIconSpace`. */
   unusedIconSpace = 0,
+  playerTable?: Design["playerTable"],
 ): PlayerDesign[] => {
-  if (dynamicPlayerHeight) {
-    return computeDynamicPlayerLayout(
-      basePlayer,
-      playerSlots,
-      players,
-      dynamicPlayerHeight,
-      fontFamily,
-      -unusedIconSpace,
-    ).configs;
-  }
-  return mergePlayerSlots(basePlayer, playerSlots, -unusedIconSpace);
+  const configs = dynamicPlayerHeight
+    ? computeDynamicPlayerLayout(
+        basePlayer,
+        playerSlots,
+        players,
+        dynamicPlayerHeight,
+        fontFamily,
+        -unusedIconSpace,
+      ).configs
+    : mergePlayerSlots(basePlayer, playerSlots, -unusedIconSpace);
+
+  if (!playerTable) return configs;
+
+  const layout = layoutPlayerTable(playerTable, configs, players, fontFamily);
+  return configs.map((config) => ({
+    ...config,
+    elements: placeInColumns(config.elements, layout, playerTable.gap, true),
+  }));
+};
+
+/** The tournament layer's elements, with those that belong to a column of
+ *  the design's player table (its headers) placed over that column. Returns
+ *  `elements` itself for a design without a table. */
+export const getTournamentElements = (
+  elements: ElementConfig[] | undefined,
+  design: Pick<Design, "basePlayer" | "players" | "playerTable">,
+  players: PlayerInfo[],
+  fontFamily?: string,
+): ElementConfig[] | undefined => {
+  const { playerTable } = design;
+  if (!playerTable || !elements) return elements;
+
+  const layout = layoutPlayerTable(
+    playerTable,
+    mergePlayerSlots(design.basePlayer, design.players),
+    players,
+    fontFamily,
+  );
+  return placeInColumns(elements, layout, playerTable.gap);
 };
 
 /** Canvas size after dynamic player height has grown the players that occupy

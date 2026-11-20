@@ -82,5 +82,6 @@ export const createSmartTextElement: ElementCreator<SmartTextElementConfig> = ({
     {...resolveTextProps(element, context)}
     verticalAlign={element.verticalAlign}
     anchor={element.anchor}
+    overflow={element.overflow}
   />
 );

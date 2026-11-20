@@ -7,7 +7,10 @@ import { useShallow } from "zustand/react/shallow";
 import { useCanvasStore } from "@/store/canvasStore";
 import { useTournamentStore } from "@/store/tournamentStore";
 import { TournamentContent } from "@/components/top8/Canvas/scene/TournamentContent";
-import { useSceneDesign } from "@/hooks/top8/useSceneState";
+import {
+  useSceneDesign,
+  useTournamentElements,
+} from "@/hooks/top8/useSceneState";
 import { useFontStore } from "@/store/fontStore";
 import { useEditorStore } from "@/store/editorStore";
 import { EditorTab } from "@/types/top8/Editor";
@@ -17,7 +20,7 @@ export const TournamentLayer = ({ onReady }: { onReady?: () => void }) => {
   const groupRef = useRef<KonvaGroup>(null);
 
   const displayedFont = useFontStore((state) => state.displayedFont);
-  const layout = useCanvasStore((state) => state.design.tournament);
+  const elements = useTournamentElements();
   const canvasSize = useCanvasStore(
     useShallow((state) => state.design.canvasSize),
   );
@@ -57,7 +60,7 @@ export const TournamentLayer = ({ onReady }: { onReady?: () => void }) => {
   }, [
     selectedElementIndex,
     // Re-attach whenever the elements may have been rebuilt.
-    layout?.elements,
+    elements,
     displayedFont,
     tournament,
     design,
@@ -67,7 +70,7 @@ export const TournamentLayer = ({ onReady }: { onReady?: () => void }) => {
     <Layer>
       <Group ref={groupRef} width={canvasSize.width} height={canvasSize.height}>
         <TournamentContent
-          elements={layout?.elements}
+          elements={elements}
           canvasSize={canvasSize}
           design={design}
           fontFamily={displayedFont}

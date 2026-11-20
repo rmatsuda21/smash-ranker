@@ -8,6 +8,7 @@ import type { TournamentInfo } from "@/types/top8/Tournament";
 import {
   getEffectiveCanvasSize,
   getPlayerConfigs,
+  getTournamentElements,
   getUnusedIconSpace,
 } from "@/utils/top8/scene";
 
@@ -100,16 +101,42 @@ export const StaticScene = ({
         players,
         fontFamily,
         unusedIconSpace,
+        design.playerTable,
       ),
     // eslint-disable-next-line react-hooks/exhaustive-deps -- metricsVersion: remeasure once fonts load
     [
       design.basePlayer,
       design.players,
       design.dynamicPlayerHeight,
+      design.playerTable,
       players,
       fontFamily,
       metricsVersion,
       unusedIconSpace,
+    ],
+  );
+
+  const tournamentElements = useMemo(
+    () =>
+      getTournamentElements(
+        design.tournament?.elements,
+        {
+          basePlayer: design.basePlayer,
+          players: design.players,
+          playerTable: design.playerTable,
+        },
+        players,
+        fontFamily,
+      ),
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- metricsVersion: remeasure once fonts load
+    [
+      design.tournament?.elements,
+      design.basePlayer,
+      design.players,
+      design.playerTable,
+      players,
+      fontFamily,
+      metricsVersion,
     ],
   );
 
@@ -163,7 +190,7 @@ export const StaticScene = ({
         listening={false}
       >
         <TournamentContent
-          elements={design.tournament?.elements}
+          elements={tournamentElements}
           canvasSize={canvasSize}
           design={sceneDesign}
           fontFamily={fontFamily}
