@@ -67,6 +67,7 @@ type BoxWidthInput = {
   fontStyle: string;
   /** Fixed box width, when the element has one. */
   width?: number;
+  letterSpacing?: number;
 };
 
 const boxWidthCache = createCache<number>();

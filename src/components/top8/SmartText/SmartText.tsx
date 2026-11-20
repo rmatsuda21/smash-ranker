@@ -84,6 +84,7 @@ export const SmartText = (props: SmartTextProps) => {
       fontFamily={fontFamily}
       fontStyle={fontStyle}
       verticalAlign={verticalAlign}
+      letterSpacing={letterSpacing}
       wrap="word"
       {...restProps}
     />

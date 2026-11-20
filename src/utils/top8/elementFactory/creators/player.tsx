@@ -50,14 +50,18 @@ export const createCharacterImageElement: ElementCreator<
   const character = player.characters[0];
   const characterCrop = getCharacterCrop(character.id, character.alt);
 
+  const isStock = element.imageType === "stock";
+  // A stock icon is already just the head, so it has no crop to apply.
+  const uncropped = element.uncropped || isStock;
+
   let imageSrc = getCharImgUrl({
     characterId: character.id,
     alt: character.alt,
+    type: isStock ? "stock" : "main",
   });
-  let cropOffset = element.uncropped ? { x: 0, y: 0 } : characterCrop.offset;
+  let cropOffset = uncropped ? { x: 0, y: 0 } : characterCrop.offset;
   let cropScale =
-    (element.uncropped ? 1 : characterCrop.scale) *
-    (element.cropScaleMultiplier ?? 1);
+    (uncropped ? 1 : characterCrop.scale) * (element.cropScaleMultiplier ?? 1);
 
   if (player.avatarImgSrc) {
     // A custom avatar replaces the character art and is shown uncropped.
@@ -299,7 +303,8 @@ function renderCustomAltWithTemplate(
     effectiveRows * cellHeight + (effectiveRows - 1) * rowGap;
 
   const actualContainerWidth = gridContentWidth;
-  const actualContainerHeight = Math.min(gridContentHeight, containerHeight);
+  // A grid shorter than its box is aligned inside the box.
+  const actualContainerHeight = containerHeight;
 
   const gridOffsetX = calculateGridAlignOffset(
     justify,
@@ -334,7 +339,9 @@ function renderCustomAltWithTemplate(
         y={gridOffsetY + y}
       >
         {renderTemplateForCharacter(
-          template,
+          // The template's own size is the preferred cell; draw it at the
+          // size the grid settled on.
+          { ...template, size: cellSize },
           character,
           imageType,
           idx,

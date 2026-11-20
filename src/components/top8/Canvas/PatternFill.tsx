@@ -25,9 +25,13 @@ const TILE_SCALE = 4;
 
 const tileCache = new Map<string, HTMLCanvasElement>();
 
-/** One repeat of a dot grid or of a set of horizontal lines. */
+/** Bricks are this many courses long. */
+const BRICK_ASPECT = 3;
+
+/** One repeat of a dot grid, of a set of horizontal lines, or of two
+ *  courses of brickwork. */
 const getTile = (
-  pattern: "dots" | "lines",
+  pattern: "dots" | "lines" | "brick",
   color: string,
   spacing: number,
   weight: number,
@@ -38,12 +42,20 @@ const getTile = (
 
   const size = Math.max(1, Math.round(spacing * TILE_SCALE));
   const tile = document.createElement("canvas");
-  tile.width = size;
-  tile.height = size;
+  tile.width = pattern === "brick" ? size * BRICK_ASPECT : size;
+  tile.height = pattern === "brick" ? size * 2 : size;
   const ctx = tile.getContext("2d");
   if (ctx) {
     ctx.fillStyle = color;
-    if (pattern === "dots") {
+    if (pattern === "brick") {
+      const mortar = weight * TILE_SCALE;
+      // A bed joint over each course, and one head joint per course, the
+      // second course's half a brick along.
+      ctx.fillRect(0, 0, tile.width, mortar);
+      ctx.fillRect(0, size, tile.width, mortar);
+      ctx.fillRect(0, 0, mortar, size);
+      ctx.fillRect(tile.width / 2, size, mortar, size);
+    } else if (pattern === "dots") {
       ctx.beginPath();
       ctx.arc(size / 2, size / 2, weight * TILE_SCALE, 0, Math.PI * 2);
       ctx.fill();

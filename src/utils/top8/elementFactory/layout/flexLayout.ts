@@ -220,6 +220,7 @@ export const layoutFlexChildren = (
     justify = "start",
     wrap = false,
     wrapDirection = "start",
+    stretch = false,
   } = element;
 
   const isRow = direction === "row";
@@ -280,11 +281,10 @@ export const layoutFlexChildren = (
       const child = line[i];
       const childMainSize = sizes[i];
 
-      const alignOffset = calculateAlignOffset(
-        align,
-        alignmentCrossSize,
-        child.crossSize,
-      );
+      const stretched = stretch && containerCrossSize > 0;
+      const alignOffset = stretched
+        ? 0
+        : calculateAlignOffset(align, alignmentCrossSize, child.crossSize);
 
       const childOffsetX = child.element.position?.x ?? 0;
       const childOffsetY = child.element.position?.y ?? 0;
@@ -300,6 +300,10 @@ export const layoutFlexChildren = (
         size: {
           ...child.element.size,
           ...(isRow ? { width: childMainSize } : { height: childMainSize }),
+          ...(stretched &&
+            (isRow
+              ? { height: containerCrossSize }
+              : { width: containerCrossSize })),
         },
       });
 

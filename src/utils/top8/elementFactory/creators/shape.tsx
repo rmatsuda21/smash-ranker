@@ -31,6 +31,11 @@ export const createRectElement: ElementCreator<RectElementConfig> = ({
     perfectDrawEnabled: context.perfectDraw,
     stroke: resolveColor(element.stroke as string | undefined, palette),
     strokeWidth: element.strokeWidth,
+    shadowColor: resolveColor(element.shadowColor, palette),
+    shadowBlur: element.shadowBlur,
+    shadowOffset: element.shadowOffset,
+    shadowOpacity: element.shadowOpacity,
+    opacity: element.opacity,
   };
 
   const gradient = fill != null && typeof fill === "object" ? fill : undefined;

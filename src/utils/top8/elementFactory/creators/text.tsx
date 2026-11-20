@@ -50,6 +50,7 @@ const resolveTextProps = (
     // letters outwards instead of eating into them.
     fillAfterStrokeEnabled: element.fillAfterStrokeEnabled,
     lineJoin: element.lineJoin,
+    letterSpacing: element.letterSpacing,
     perfectDrawEnabled: context.perfectDraw,
   };
 };

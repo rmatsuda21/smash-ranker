@@ -163,6 +163,9 @@ export interface FlexGroupElementConfig
   justify?: FlexJustify;
   wrap?: boolean;
   wrapDirection?: "start" | "end";
+  /** Children take the container's cross size (a column's width, a row's
+   *  height) in place of their own, so text in a column can shrink to fit. */
+  stretch?: boolean;
 }
 
 export type FlexGridFlow = "row" | "column";
@@ -191,6 +194,12 @@ export interface RectElementConfig
   type: "rect";
   fill?: string | GradientConfig;
   cornerRadius?: number | number[];
+  /** Hex, rgba, or palette key. With a blur and no offset, a glow. */
+  shadowColor?: string;
+  shadowBlur?: number;
+  shadowOffset?: { x: number; y: number };
+  shadowOpacity?: number;
+  opacity?: number;
 }
 
 /** A closed shape through `points`, relative to the element's position. */
@@ -209,10 +218,12 @@ export interface PolygonElementConfig extends BaseElementConfig {
  * - `lines`: parallel lines `spacing` apart, `weight` thick.
  * - `burst`: `rays` wedges radiating from `center`; `weight` (0–1) is the
  *   share of the circle they cover.
+ * - `brick`: the mortar lines of a running-bond wall, courses `spacing`
+ *   tall and `weight` thick.
  */
 export interface PatternElementConfig extends BaseElementConfig {
   type: "pattern";
-  pattern: "dots" | "lines" | "burst";
+  pattern: "dots" | "lines" | "burst" | "brick";
   /** Hex, rgba, or palette key. */
   color?: string;
   opacity?: number;
@@ -241,6 +252,9 @@ export interface CharacterImageElementConfig
   shadowEnabled?: boolean;
   fillMode?: ImageFillMode;
   cropScaleMultiplier?: number;
+  /** `stock` draws the character's small head icon instead of the render,
+   *  uncropped. Defaults to `render`. */
+  imageType?: "stock" | "render";
   /** Show the whole render instead of the character's stored close-up
    *  crop. `cropScaleMultiplier` still applies. */
   uncropped?: boolean;

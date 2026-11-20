@@ -74,7 +74,7 @@ msgstr ""
 msgid "<0>{weekdayName}</0> is your tournament day"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:59
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:60
 msgid "16 Player Variant"
 msgstr ""
 
@@ -303,7 +303,7 @@ msgstr ""
 msgid "Color Palette"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:103
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:104
 msgid "Comic Book"
 msgstr ""
 
@@ -457,8 +457,8 @@ msgstr ""
 #~ msgstr ""
 
 #: src/components/top8/SettingsPanel/ThemePicker.tsx:20
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:89
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:119
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:90
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:132
 msgid "Dark"
 msgstr ""
 
@@ -500,7 +500,7 @@ msgstr ""
 msgid "Delete template: {0}"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:238
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:251
 msgid "Delete Template?"
 msgstr ""
 
@@ -757,7 +757,7 @@ msgstr ""
 msgid "Green"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:251
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:264
 msgid "Grid view"
 msgstr ""
 
@@ -813,7 +813,7 @@ msgstr ""
 msgid "Jump straight to graphics for your own tournaments"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:49
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:50
 msgid "Kagaribi"
 msgstr ""
 
@@ -842,17 +842,17 @@ msgid "Latest"
 msgstr ""
 
 #: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:97
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:263
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:276
 msgid "Layout"
 msgstr ""
 
 #: src/components/top8/SettingsPanel/ThemePicker.tsx:21
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:95
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:125
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:96
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:138
 msgid "Light"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:250
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:263
 msgid "List view"
 msgstr ""
 
@@ -871,7 +871,7 @@ msgstr ""
 msgid "Load template: {0}"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:230
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:243
 msgid "Load Template?"
 msgstr ""
 
@@ -879,7 +879,7 @@ msgstr ""
 msgid "Load Tournament?"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:258
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:271
 msgid "Loading a template replaces your current design."
 msgstr ""
 
@@ -971,7 +971,7 @@ msgstr ""
 msgid "Many cups of coffee were consumed during development 👀"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:115
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:128
 msgid "Minimal"
 msgstr ""
 
@@ -991,7 +991,7 @@ msgstr ""
 msgid "My recap"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:282
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:295
 msgid "My Templates"
 msgstr ""
 
@@ -1001,6 +1001,10 @@ msgstr ""
 
 #: src/components/user/StatsBoard/StatsBoard.tsx:443
 msgid "Nemesis"
+msgstr ""
+
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:116
+msgid "Neon Sign"
 msgstr ""
 
 #: src/components/user/StatsBoard/StatsBoard.tsx:449
@@ -1110,9 +1114,10 @@ msgstr ""
 #~ msgid "Or drag and drop"
 #~ msgstr "Or drag and drop"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:53
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:71
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:107
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:54
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:72
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:108
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:120
 msgid "Original"
 msgstr ""
 
@@ -1352,7 +1357,7 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:294
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:307
 msgid "Save Design"
 msgstr ""
 
@@ -1364,7 +1369,7 @@ msgstr ""
 msgid "Save Template"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:298
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:311
 msgid "Save your current design as a template to reuse it later."
 msgstr ""
 
@@ -1491,11 +1496,11 @@ msgstr ""
 msgid "Size"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:77
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:78
 msgid "Square Variant"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:85
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:86
 msgid "Standings"
 msgstr ""
 
@@ -1590,7 +1595,7 @@ msgid "There are no tournaments on your start.gg account yet. Enter one and it s
 msgstr ""
 
 #: src/components/top8/SocialPostComposer/TemplateSelector.tsx:35
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:239
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:252
 msgid "This template will be permanently deleted."
 msgstr ""
 
@@ -1651,7 +1656,7 @@ msgstr ""
 msgid "Top 8 graphic"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:67
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:68
 msgid "Top8er"
 msgstr ""
 
@@ -1864,7 +1869,7 @@ msgstr ""
 msgid "X Handle"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:231
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:244
 msgid "Your current design will be overwritten!"
 msgstr ""
 

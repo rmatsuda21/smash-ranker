@@ -21,6 +21,7 @@ import { kagaribiDesign } from "@/designs/kagaribi";
 import { kagaribi16Design } from "@/designs/kagaribi16";
 import { standingsLightDesign, standingsDarkDesign } from "@/designs/standings";
 import { comicBookDesign } from "@/designs/comicBook";
+import { neonSignDesign } from "@/designs/neonSign";
 import { resizePlayerSlots } from "@/utils/top8/playerCount";
 
 declare global {
@@ -87,6 +88,12 @@ const BUILT_IN_TEMPLATES: PreviewTemplate[] = [
     name: "Original",
     design: comicBookDesign,
     font: "Dela Gothic One",
+  },
+  {
+    id: "neon-sign",
+    name: "Original",
+    design: neonSignDesign,
+    font: "M PLUS Rounded 1c",
   },
 ];
 
@@ -162,6 +169,21 @@ const GOLDEN_ONLY_TEMPLATES: PreviewTemplate[] = [
     design: comicBookDesign,
     font: "Dela Gothic One",
     players: castPlayers,
+  },
+  {
+    id: "neon-sign-cast",
+    name: "Neon Sign, varied cast",
+    design: neonSignDesign,
+    font: "M PLUS Rounded 1c",
+    players: castPlayers,
+  },
+  // Extra characters: two at full size, then a grid.
+  {
+    id: "neon-sign-multi",
+    name: "Neon Sign, multi-character",
+    design: neonSignDesign,
+    font: "M PLUS Rounded 1c",
+    players: multiCharacterPlayers,
   },
   // Player count changed in the Players tab (`dynamicPlayerCount`).
   {

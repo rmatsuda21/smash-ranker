@@ -14,6 +14,7 @@ import { squaresDesign } from "@/designs/squares";
 import { minimalDarkDesign, minimalLightDesign } from "@/designs/minimal";
 import { standingsLightDesign, standingsDarkDesign } from "@/designs/standings";
 import { comicBookDesign } from "@/designs/comicBook";
+import { neonSignDesign } from "@/designs/neonSign";
 import { kagaribiDesign } from "@/designs/kagaribi";
 import { kagaribi16Design } from "@/designs/kagaribi16";
 import { Button } from "@/components/shared/Button/Button";
@@ -107,6 +108,18 @@ const DEFAULT_TEMPLATE_GROUPS: DefaultTemplateGroup[] = [
         name: msg`Original`,
         design: comicBookDesign,
         font: "Dela Gothic One",
+      },
+    ],
+  },
+  {
+    id: "neon-sign",
+    name: msg`Neon Sign`,
+    templates: [
+      {
+        id: "neon-sign",
+        name: msg`Original`,
+        design: neonSignDesign,
+        font: "M PLUS Rounded 1c",
       },
     ],
   },

@@ -7,6 +7,7 @@ import kagaribi_16 from "./kagaribi-16.webp";
 import standings_dark from "./standings-dark.webp";
 import standings_light from "./standings-light.webp";
 import comic_book from "./comic-book.webp";
+import neon_sign from "./neon-sign.webp";
 
 export const defaultPreviews: Record<string, string> = {
   top8er: top8er,
@@ -18,4 +19,5 @@ export const defaultPreviews: Record<string, string> = {
   "standings-dark": standings_dark,
   "standings-light": standings_light,
   "comic-book": comic_book,
+  "neon-sign": neon_sign,
 };

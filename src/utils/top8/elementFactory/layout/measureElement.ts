@@ -75,6 +75,7 @@ export const getElementMainSize = (
           textEl.fontStyle,
         ),
         width: textEl.size?.width,
+        letterSpacing: textEl.letterSpacing,
       });
     }
 
@@ -156,6 +157,19 @@ export const getElementMainSize = (
         }
 
         return Math.min(contentWidth, element.size.maxWidth);
+      }
+
+      // A column is as wide as its widest child.
+      if (flexDirection === "column" && flexEl.elements) {
+        const widest = flexEl.elements.reduce(
+          (max, child) =>
+            child.hidden || !evaluateElementCondition(child.conditions, context)
+              ? max
+              : Math.max(max, getElementMainSize(child, "row", context)),
+          0,
+        );
+
+        return Math.min(widest, element.size.maxWidth);
       }
     }
 
