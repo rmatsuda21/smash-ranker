@@ -3,6 +3,8 @@ import { useClient } from "urql";
 import { graphql } from "@/gql";
 import { useResultsStore } from "@/store/resultsStore";
 import { logWarning } from "@/utils/observability/log";
+import { getGameForStartggVideogame } from "@/utils/games";
+import { isKnownCharacter } from "@/utils/top8/characterCatalog";
 import {
   getLocalPlayersData,
   getLocalMainCharacterId,
@@ -102,11 +104,14 @@ export const useFetchPlayerFallbackCharacter = () => {
 
     // 1. Try the better-gg snapshot first. Saves a start.gg round trip
     //    and query-complexity budget when the player is in the dataset.
-    if (playerId) {
+    //    The snapshot holds one game's mains, so it is only read for the
+    //    games the registry says it covers; for any other game it would
+    //    put that game's character on this event's players.
+    if (playerId && getGameForStartggVideogame(videogameId)?.hasPlayerDataset) {
       try {
         const local = await getLocalPlayersData();
         const localCharId = getLocalMainCharacterId(local, playerId);
-        if (localCharId) {
+        if (localCharId && isKnownCharacter(localCharId)) {
           resolve(localCharId);
           return;
         }
@@ -158,7 +163,8 @@ export const useFetchPlayerFallbackCharacter = () => {
               const charId = selection?.character?.id
                 ? String(selection.character.id)
                 : null;
-              if (!charId) continue;
+              // A pick with no art (another game, Random) can't be drawn.
+              if (!charId || !isKnownCharacter(charId)) continue;
               usage.set(charId, (usage.get(charId) ?? 0) + 1);
             }
           }

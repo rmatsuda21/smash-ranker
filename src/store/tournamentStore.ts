@@ -2,12 +2,13 @@ import { create } from "zustand";
 import { createJSONStorage, devtools, persist } from "zustand/middleware";
 
 import { TournamentInfo } from "@/types/top8/Tournament";
-import { CharacterGame } from "@/types/top8/Character";
+import { GameId } from "@/types/Game";
+import { DEFAULT_GAME } from "@/consts/games";
 
 interface TournamentState {
   info: TournamentInfo;
   // Which game's characters the pickers list.
-  game: CharacterGame;
+  game: GameId;
   fetching: boolean;
   error: string;
   selectedElementIndex: number;
@@ -29,7 +30,7 @@ type TournamentAction =
   | { type: "CLEAR_SELECTED_ELEMENT" }
   | { type: "SET_ICON"; payload: string }
   | { type: "CLEAR_ICON" }
-  | { type: "SET_GAME"; payload: CharacterGame }
+  | { type: "SET_GAME"; payload: GameId }
   | { type: "RESET" };
 
 const tournamentReducer = (
@@ -98,7 +99,7 @@ const initialState: TournamentState = {
     location: { city: "Somewhere", state: "World", country: "Japan" },
     entrants: 69,
   },
-  game: "ultimate",
+  game: DEFAULT_GAME,
   fetching: false,
   error: "",
   selectedElementIndex: -1,

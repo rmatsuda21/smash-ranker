@@ -20,6 +20,7 @@ import {
   DropDownItem,
 } from "@/components/shared/DropDownSelect/DropDownSelect";
 import { RadioGroup } from "@/components/shared/RadioGroup/RadioGroup";
+import { GameSwitch } from "@/components/shared/GameSwitch/GameSwitch";
 import { Slider } from "@/components/shared/Slider/Slider";
 import { Popover } from "@/components/shared/Popover/Popover";
 import { FieldGroup } from "@/components/top8/EditorForm/EditorForm";
@@ -72,6 +73,7 @@ type OpenMenu = "palette" | "font" | null;
 export const TierDesignBar = ({ className }: Props) => {
   const { _ } = useLingui();
   const dispatch = useTierListStore((s) => s.dispatch);
+  const game = useTierListStore((s) => s.game);
   const layout = useTierListStore((s) => s.layout);
   const imageMode = useTierListStore((s) => s.imageMode);
   const labelFont = useTierListStore((s) => s.labelFont);
@@ -125,6 +127,16 @@ export const TierDesignBar = ({ className }: Props) => {
 
   return (
     <div className={cn(styles.bar, className)}>
+      <div className={styles.group}>
+        <span className={styles.label}>
+          <Trans>Game</Trans>
+        </span>
+        <GameSwitch
+          value={game}
+          onChange={(value) => dispatch({ type: "SET_GAME", game: value })}
+        />
+      </div>
+
       <div className={styles.group}>
         <span className={styles.label}>
           <Trans>Layout</Trans>

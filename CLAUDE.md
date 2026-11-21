@@ -215,13 +215,16 @@ The Top 8 graphic is rendered via **Konva** (2D canvas) through React-Konva. The
 
 ### Characters and games
 
-Character art lives in the `SmashRankerAssets` GitHub repo as `main/<id>/<alt>.webp` (render) and `stock/<id>/<alt>.webp` (head icon), where `<id>` is the start.gg character id. Those ids never repeat between games, so one folder layout and `getCharImgUrl` serve every game.
+Character art lives in the `SmashRankerAssets` GitHub repo as `main/<id>/<alt>.webp` (render) and `stock/<id>/<alt>.webp` (head icon), where `<id>` is the start.gg character id. Those ids never repeat between games, so one folder layout and `getCharImgUrl` serve every game, and anything that only draws a character needs no game at all.
 
-- **Lists** — `src/consts/top8/ultCharacters.json` (Ultimate) and `meleeCharacters.json` (Melee; 4–6 alts per character, id 628 "Sheik / Zelda" drawn as Sheik). Each entry has names, alt count and names, and the crop (`cropOffset`, `cropScale`) used for player cards.
-- **Catalog** — `src/utils/top8/characterCatalog.ts` is the only importer of those files: `getCharacter(id)` and `getCharacterGame(id)` work across games (names, crops, alt pickers), `getCharactersForGame(game)` is for pickers. **Do not import a character JSON directly.**
-- **Which game the ranker's picker lists** — `game` on `tournamentStore` (`SET_GAME`), switched by the `RadioGroup` in `CharacterEditor` and set from the event's start.gg videogame id when a tournament loads (`getGameForStartggVideogame`). A selected character from the other game stays in the list.
-- **Ultimate only for now** — the tier list, the confetti, the stock preload and the thumbnail editor's character picker.
-- **Adding a game** — import its art into the asset repo, add a JSON list, and register it in the catalog and `CharacterGame`.
+- **Game registry** — `GameId` (`src/types/Game.ts`) and `GAMES` (`src/consts/games.ts`) are the one place a game is described: label, start.gg videogame id, the name fragments Challonge/Tonamel use, the default character, and whether the better-gg player dataset covers it. `src/utils/games.ts` has the lookups (`getGameForStartggVideogame`, `getGameForName`). **Do not compare against a game id or hard-code a videogame id anywhere else — add a field to the registry.**
+- **Lists** — `src/consts/top8/ultCharacters.json` (Ultimate) and `meleeCharacters.json` (Melee; 4–6 alts per character, id 628 "Sheik / Zelda" drawn as Sheik, id 1744 Random drawn with a copy of Ultimate's Random art). Each entry has names, alt count and names, and the crop (`cropOffset`, `cropScale`) used for player cards.
+- **Catalog** — `src/utils/top8/characterCatalog.ts` is the only importer of those files: `getCharacter(id)`, `getCharacterGame(id)` and `isKnownCharacter(id)` work across games (names, crops, alt pickers), `getCharactersForGame(game)` is for pickers. **Do not import a character JSON directly.**
+- **Unknown ids** — start.gg returns picks from games the site has no art for, and picks with no art (Random). Everything that takes character ids from start.gg (`useFetchResult`, the recap's `parseCharacterSelections` and fallback lookup, the profile stats) filters them with `isKnownCharacter`; do the same in a new fetcher.
+- **Game switch** — `GameSwitch` (`src/components/shared/GameSwitch/`) lists every game in the registry. Each tool keeps its own game: `game` on `tournamentStore` for the ranker (set from the event when a tournament loads, on all three platforms), `game` on `tierListStore` for the tier list, local state in the thumbnail editor's character properties. `CharacterSelect` and `CharacterList` take the game as a required prop; a selected character from another game stays in the list.
+- **Tier list** — one game at a time. `SET_GAME` parks the current game's placements (pool and each tier's characters) under `parked` and restores the other game's, so switching back and forth loses nothing; tiers, colours and the look are shared.
+- **Recap fallback character** — the better-gg dataset holds Ultimate mains only, so `useFetchPlayerFallbackCharacter` reads it only when the event's game has `hasPlayerDataset`; other games go straight to start.gg's `recentStandings`, which is filtered by videogame.
+- **Adding a game** — import its art into the asset repo, add a JSON list, add the id to `GameId`; the compiler then asks for its `GAMES` entry and its list in the catalog. Pickers, the switch, the tier list, the confetti and the preload pick it up from there.
 
 ### Dynamic Player Height
 

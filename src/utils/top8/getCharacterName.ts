@@ -1,8 +1,5 @@
 import { getCharacter } from "@/utils/top8/characterCatalog";
 
-export const isKnownCharacter = (characterId: string): boolean =>
-  getCharacter(characterId) !== undefined;
-
 export const getCharacterDisplayName = (
   characterId: string,
   locale: string,

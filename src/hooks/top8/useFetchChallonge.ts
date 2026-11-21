@@ -8,6 +8,7 @@ import {
   padPlayersWithBlanks,
 } from "@/utils/top8/samplePlayers";
 import { EMPTY_CHARACTER_ID } from "@/consts/top8/characters";
+import { getGameForName } from "@/utils/games";
 import { useToast } from "@/components/Toast";
 import { logEvent } from "@/utils/observability/log";
 
@@ -97,6 +98,8 @@ export const useFetchChallonge = () => {
         type: "SET_TOURNAMENT_INFO",
         payload: tournamentInfo,
       });
+      const game = getGameForName(data.tournament.game_name);
+      if (game) tournamentDispatch({ type: "SET_GAME", payload: game.id });
 
       const players = parseParticipants(data.tournament.participants ?? []);
       const paddedPlayers = padPlayersWithBlanks(players, playerCount);

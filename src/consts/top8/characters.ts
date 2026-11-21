@@ -1,11 +1,4 @@
-import { CharacterGame } from "@/types/top8/Character";
-
 export const EMPTY_CHARACTER_ID = "";
-// Character a newly added slot starts with (Jigglypuff / Fox).
-export const DEFAULT_ADD_CHARACTER_ID: Record<CharacterGame, string> = {
-  ultimate: "1293",
-  melee: "6",
-};
 
 // Dark gray variant of favicon.svg for canvas rendering (white is hard to see against placement text)
 export const EMPTY_CHARACTER_DARK_IMG = `data:image/svg+xml,${encodeURIComponent(

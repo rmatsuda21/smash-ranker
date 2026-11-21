@@ -198,7 +198,7 @@ interface ResultsStore extends ResultsState {
 // fields with defaults. Without this, an older persisted shape can crash
 // render code that destructures fields that didn't exist yet (we hit this
 // exact bug when `rankings` was first added to PlayerTournamentResults).
-const RESULTS_STORE_VERSION = 1;
+const RESULTS_STORE_VERSION = 2;
 
 export const useResultsStore = create<ResultsStore>()(
   devtools(
@@ -228,8 +228,9 @@ export const useResultsStore = create<ResultsStore>()(
           merged.fetchingPool = false;
           merged.fetchingResults = false;
           merged.error = "";
-          // Future migration branches go here, keyed off `version`.
-          void version;
+          // Before version 2 a fallback character could come from another
+          // game than the event's; drop them so they are looked up again.
+          if (version < 2) merged.fallbackCharacters = {};
           return merged;
         },
         partialize: (state) => ({

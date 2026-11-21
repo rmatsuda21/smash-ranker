@@ -16,7 +16,8 @@ import {
 } from "@/utils/top8/samplePlayers";
 import { getMultiGroupError } from "@/consts/errors";
 import { EMPTY_CHARACTER_ID } from "@/consts/top8/characters";
-import { getGameForStartggVideogame } from "@/utils/top8/characterCatalog";
+import { isKnownCharacter } from "@/utils/top8/characterCatalog";
+import { getGameForStartggVideogame } from "@/utils/games";
 import { useToast } from "@/components/Toast";
 import { logError, logEvent, logWarning } from "@/utils/observability/log";
 const IDB_IMAGES_BASE_URL = "/idb-images/";
@@ -291,9 +292,14 @@ const countCharacterUsage = (
 };
 
 const sortCharactersByUsage = (usageCount: Map<string, number>): string[] => {
-  return Array.from(usageCount.entries())
-    .sort((a, b) => b[1] - a[1])
-    .map(([characterId]) => String(characterId));
+  return (
+    Array.from(usageCount.entries())
+      .sort((a, b) => b[1] - a[1])
+      .map(([characterId]) => String(characterId))
+      // Picks the site has no art for (another game, or Random) would draw
+      // as broken images.
+      .filter(isKnownCharacter)
+  );
 };
 
 const addCharactersToPlayers = async (
@@ -420,7 +426,7 @@ export const useFetchResult = () => {
 
       const tournamentInfo = buildTournamentInfo(event, storedImages);
       const game = getGameForStartggVideogame(event.videogame?.id);
-      if (game) tournamentDispatch({ type: "SET_GAME", payload: game });
+      if (game) tournamentDispatch({ type: "SET_GAME", payload: game.id });
       tournamentDispatch({
         type: "SET_TOURNAMENT_INFO",
         payload: tournamentInfo,

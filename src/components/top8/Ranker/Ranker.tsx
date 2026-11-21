@@ -9,6 +9,7 @@ import { preloadCharacterImages } from "@/utils/top8/preloadCharacterImages";
 import { isMobile } from "@/utils/isMobile";
 import { getDeviceRenderProfile } from "@/utils/top8/renderProfile";
 import { useEditorStore } from "@/store/editorStore";
+import { useTournamentStore } from "@/store/tournamentStore";
 import { useEffectiveCanvasSize } from "@/hooks/top8/useEffectiveCanvasSize";
 import { useVirtualKeyboard } from "@/hooks/useVirtualKeyboard";
 import { SidePanel } from "@/components/top8/SidePanel/SidePanel";
@@ -53,9 +54,10 @@ export const Ranker = () => {
     }
   }, []);
 
+  const game = useTournamentStore((state) => state.game);
   useEffect(() => {
-    preloadCharacterImages();
-  }, []);
+    preloadCharacterImages(game);
+  }, [game]);
 
   const isPreviewExpanded = mobile && isCanvasExpanded && !isTyping;
 

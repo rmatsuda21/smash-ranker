@@ -10,6 +10,7 @@ import type {
   PlayerRanking,
   PlayerSet,
 } from "@/types/results/PlayerTournamentResults";
+import { isKnownCharacter } from "@/utils/top8/characterCatalog";
 import {
   filterAndSortRankings,
   getPlayerRankingOverrides,
@@ -112,6 +113,9 @@ export const parseCharacterSelections = (
       const character = selection?.character;
       if (!character?.id) continue;
       const charId = String(character.id);
+      // A pick with no art (a game the site doesn't cover, Random) is left
+      // out, so the side falls back to the player's usual character.
+      if (!isKnownCharacter(charId)) continue;
       const charName = character.name || charId;
       const selectionEntrantId =
         selection?.entrant?.id != null ? String(selection.entrant.id) : null;

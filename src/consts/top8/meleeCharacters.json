@@ -323,6 +323,18 @@
       },
       "cropScale": 1.65,
       "nameJa": "シーク / ゼルダ"
+    },
+    {
+      "name": "Random",
+      "id": "1744",
+      "alts": 1,
+      "altNames": ["Random"],
+      "cropOffset": {
+        "x": 0,
+        "y": -0.05
+      },
+      "cropScale": 0.8,
+      "nameJa": "ランダム"
     }
   ]
 }

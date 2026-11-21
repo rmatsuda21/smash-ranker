@@ -23,10 +23,8 @@ import {
 } from "@/utils/user/careerStats";
 import { formatOrdinal } from "@/utils/user/ordinal";
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
-import {
-  getCharacterDisplayName,
-  isKnownCharacter,
-} from "@/utils/top8/getCharacterName";
+import { getCharacterDisplayName } from "@/utils/top8/getCharacterName";
+import { isKnownCharacter } from "@/utils/top8/characterCatalog";
 
 import styles from "./StatsBoard.module.scss";
 

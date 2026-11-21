@@ -1,5 +1,3 @@
-export type CharacterGame = "ultimate" | "melee";
-
 export type CharacterAltOverride = {
   cropOffset?: { x: number; y: number };
   cropScale?: number;

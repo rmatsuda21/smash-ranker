@@ -1,4 +1,4 @@
-import { useCallback, useId, useMemo } from "react";
+import { useCallback, useId, useMemo, useState } from "react";
 import {
   FaAlignCenter,
   FaAlignLeft,
@@ -27,6 +27,10 @@ import {
   TournamentIconElement,
 } from "@/types/thumbnail/ThumbnailDesign";
 import { ColorInput } from "@/components/shared/ColorInput/ColorInput";
+import { GameSwitch } from "@/components/shared/GameSwitch/GameSwitch";
+import { DEFAULT_GAME } from "@/consts/games";
+import { getCharacterGame } from "@/utils/top8/characterCatalog";
+import { GameId } from "@/types/Game";
 import { CharacterSelect } from "@/components/top8/CharacterEditor/CharacterSelect/CharacterSelect";
 import { CharacterAltPicker } from "@/components/top8/CharacterEditor/CharacterAltPicker/CharacterAltPicker";
 import { FlagPicker } from "@/components/thumbnail/Pickers/FlagPicker";
@@ -231,7 +235,11 @@ const SingleElementProperties = ({
         <ImageProperties element={element} update={update} />
       )}
       {element.type === "character" && (
-        <CharacterProperties element={element} update={update} />
+        <CharacterProperties
+          key={element.id}
+          element={element}
+          update={update}
+        />
       )}
       {element.type === "flag" && (
         <FlagProperties element={element} update={update} />
@@ -648,12 +656,21 @@ const CharacterProperties = ({
   ) => void;
 }) => {
   const fieldId = useId();
+  // The list starts on the game of the element's character.
+  const [game, setGame] = useState<GameId>(
+    () => getCharacterGame(element.characterId) ?? DEFAULT_GAME,
+  );
   return (
     <div className={styles.section}>
       <h4>Character</h4>
       <div className={styles.row}>
+        <label>Game</label>
+        <GameSwitch value={game} onChange={setGame} />
+      </div>
+      <div className={styles.row}>
         <label>Character</label>
         <CharacterSelect
+          game={game}
           selectedCharacter={{ id: element.characterId, alt: element.alt as 0 }}
           onValueChange={(id) =>
             update(element.id, element, { characterId: id, alt: 0 })

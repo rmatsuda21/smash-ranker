@@ -1,6 +1,7 @@
 import { getCharactersForGame } from "@/utils/top8/characterCatalog";
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
 import { CharacerData } from "@/types/top8/Player";
+import { GameId } from "@/types/Game";
 import { logWarning } from "@/utils/observability/log";
 
 const CACHE_NAME = "character-stocks-v1";
@@ -60,9 +61,10 @@ const scheduleIdleWork = (
   });
 };
 
-export const preloadCharacterImages = async (): Promise<void> => {
-  // Ultimate only: the other games' icons load when their list is opened.
-  const urls = getCharactersForGame("ultimate").map((character) =>
+// Warms the cache with one game's head icons, so its picker opens with
+// every icon already there. Call it again when the game changes.
+export const preloadCharacterImages = async (game: GameId): Promise<void> => {
+  const urls = getCharactersForGame(game).map((character) =>
     getCharImgUrl({
       characterId: character.id,
       alt: 0 as CharacerData["alt"],
@@ -78,5 +80,5 @@ export const preloadCharacterImages = async (): Promise<void> => {
     });
   }
 
-  console.log(`[Preload] Cached ${urls.length} character stock images`);
+  console.log(`[Preload] Cached ${urls.length} ${game} character stock images`);
 };

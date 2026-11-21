@@ -1,13 +1,11 @@
 import { memo, useEffect, useMemo } from "react";
 
-import { getCharactersForGame } from "@/utils/top8/characterCatalog";
+import { getAllCharacters } from "@/utils/top8/characterCatalog";
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
 
 import styles from "./StockConfetti.module.scss";
 
-const CHARACTER_IDS: readonly string[] = getCharactersForGame("ultimate").map(
-  (c) => c.id,
-);
+const CHARACTER_IDS: readonly string[] = getAllCharacters().map((c) => c.id);
 
 const PIECE_COUNT = 35;
 const MIN_DURATION_MS = 2200;

@@ -2,6 +2,9 @@ import { create } from "zustand";
 import { createJSONStorage, devtools, persist } from "zustand/middleware";
 
 import { getCharactersForGame } from "@/utils/top8/characterCatalog";
+import { DEFAULT_GAME } from "@/consts/games";
+import { isGameId } from "@/utils/games";
+import { GameId } from "@/types/Game";
 import { DEFAULT_PALETTE_ID } from "@/consts/tierlist/tierPalettes";
 import { DEFAULT_LABEL_FONT_FAMILY } from "@/utils/tierlist/labelFont";
 import {
@@ -13,7 +16,18 @@ import {
   TitleAlign,
 } from "@/types/tierlist/TierList";
 
+// Where one game's characters sat when the list was switched to another
+// game: its pool, and the characters of each tier by tier id.
+type ParkedPlacements = {
+  pool: string[];
+  tiers: Record<string, string[]>;
+};
+
 interface TierListState {
+  // The game being ranked. `tiers` and `pool` hold only its characters.
+  game: GameId;
+  // The other games' placements, put back when the list returns to them.
+  parked: Partial<Record<GameId, ParkedPlacements>>;
   tiers: Tier[];
   pool: string[];
   characters: Record<string, TierCharacter>;
@@ -40,6 +54,7 @@ type TierListAction =
   | { type: "MOVE_TIER"; fromIndex: number; toIndex: number }
   | { type: "SET_CHARACTER_ALT"; instanceId: string; alt: number }
   | { type: "SET_IMAGE_MODE"; mode: ImageDisplayMode }
+  | { type: "SET_GAME"; game: GameId }
   | { type: "RESET_ALL" }
   | { type: "CLEAR_TIERS" }
   | { type: "SET_TIER_LIST_WIDTH"; width: number }
@@ -59,14 +74,16 @@ const DEFAULT_TIERS: Tier[] = [
   { id: "tier-e", name: "E", color: "#7fffff", characterIds: [] },
 ];
 
-const buildInitialCharacters = (): {
+const buildInitialCharacters = (
+  game: GameId,
+): {
   characters: Record<string, TierCharacter>;
   pool: string[];
 } => {
   const charMap: Record<string, TierCharacter> = {};
   const pool: string[] = [];
 
-  for (const char of getCharactersForGame("ultimate")) {
+  for (const char of getCharactersForGame(game)) {
     const instanceId = `char-${char.id}-0`;
     charMap[instanceId] = {
       instanceId,
@@ -80,9 +97,11 @@ const buildInitialCharacters = (): {
 };
 
 const { characters: initialCharacters, pool: initialPool } =
-  buildInitialCharacters();
+  buildInitialCharacters(DEFAULT_GAME);
 
 const initialState: TierListState = {
+  game: DEFAULT_GAME,
+  parked: {},
   tiers: DEFAULT_TIERS,
   pool: initialPool,
   characters: initialCharacters,
@@ -201,9 +220,48 @@ const tierListReducer = (
       };
     }
 
+    case "SET_GAME": {
+      if (action.game === state.game) return {};
+
+      const parked = {
+        ...state.parked,
+        [state.game]: {
+          pool: state.pool,
+          tiers: Object.fromEntries(
+            state.tiers.map((tier) => [tier.id, tier.characterIds]),
+          ),
+        },
+      };
+      const saved = parked[action.game];
+      delete parked[action.game];
+
+      const fresh = buildInitialCharacters(action.game);
+      // Keeps the alts already chosen for this game's characters.
+      const characters = { ...fresh.characters, ...state.characters };
+
+      const placed = new Set<string>();
+      const take = (ids: string[] = []) =>
+        ids.filter((id) => {
+          if (!fresh.characters[id] || placed.has(id)) return false;
+          placed.add(id);
+          return true;
+        });
+
+      const tiers = state.tiers.map((tier) => ({
+        ...tier,
+        characterIds: take(saved?.tiers[tier.id]),
+      }));
+      // The saved pool, then anything left over: characters of a tier that
+      // was removed in the meantime, or ones the game has gained since.
+      const pool = [...take(saved?.pool), ...take(fresh.pool)];
+
+      return { game: action.game, parked, characters, tiers, pool };
+    }
+
     case "RESET_ALL": {
-      const { characters: chars, pool } = buildInitialCharacters();
+      const { characters: chars, pool } = buildInitialCharacters(state.game);
       return {
+        parked: {},
         tiers: DEFAULT_TIERS,
         pool,
         characters: chars,
@@ -290,6 +348,8 @@ export const useTierListStore = create<TierListStore>()(
         name: "tier-list-store",
         storage: createJSONStorage(() => localStorage),
         partialize: (state) => ({
+          game: state.game,
+          parked: state.parked,
           tiers: state.tiers,
           pool: state.pool,
           characters: state.characters,
@@ -301,7 +361,7 @@ export const useTierListStore = create<TierListStore>()(
           titleAlign: state.titleAlign,
           activePaletteId: state.activePaletteId,
         }),
-        version: 3,
+        version: 4,
         migrate: (persisted, version) => {
           const state = persisted as Record<string, unknown>;
           if (version < 2) {
@@ -317,6 +377,12 @@ export const useTierListStore = create<TierListStore>()(
                 family: DEFAULT_LABEL_FONT_FAMILY,
               };
             }
+          }
+          // Lists from before the game switch are Ultimate lists; a game
+          // that is no longer offered falls back the same way.
+          if (!isGameId(state.game)) {
+            state.game = DEFAULT_GAME;
+            state.parked = {};
           }
           return state as unknown as TierListStore;
         },

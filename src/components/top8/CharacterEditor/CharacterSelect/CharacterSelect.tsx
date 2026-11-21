@@ -14,21 +14,21 @@ import {
 } from "@/utils/top8/getCharacterName";
 import { DropDownSelect } from "@/components/shared/DropDownSelect/DropDownSelect";
 import { CharacerData } from "@/types/top8/Player";
-import { CharacterGame } from "@/types/top8/Character";
+import { GameId } from "@/types/Game";
 
 type Props = {
   selectedCharacter?: CharacerData;
   onValueChange: (value: string) => void;
   disabled?: boolean;
   // Which game's characters to list.
-  game?: CharacterGame;
+  game: GameId;
 };
 
 const CharacterSelectComponent = ({
   selectedCharacter,
   onValueChange,
   disabled = false,
-  game = "ultimate",
+  game,
 }: Props) => {
   const { _, i18n } = useLingui();
 

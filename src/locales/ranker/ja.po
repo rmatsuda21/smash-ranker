@@ -31,7 +31,7 @@ msgid "{0} assets"
 msgstr "{0}件のアセット"
 
 #. placeholder {0}: character.games
-#: src/components/user/StatsBoard/StatsBoard.tsx:488
+#: src/components/user/StatsBoard/StatsBoard.tsx:486
 msgid "{0} games"
 msgstr "{0}試合"
 
@@ -47,7 +47,7 @@ msgstr "{0}件選択中"
 
 #. placeholder {0}: career.homeTurf.count
 #. placeholder {1}: career.cityCount
-#: src/components/user/StatsBoard/StatsBoard.tsx:207
+#: src/components/user/StatsBoard/StatsBoard.tsx:205
 msgid "{0} tournaments here, {1} cities in all"
 msgstr "ここで{0}大会、全部で{1}都市"
 
@@ -66,11 +66,11 @@ msgstr "参加人数"
 #. placeholder {0}: setStats.wins
 #. placeholder {1}: setStats.losses
 #. placeholder {2}: setStats.setCount
-#: src/components/user/StatsBoard/StatsBoard.tsx:397
+#: src/components/user/StatsBoard/StatsBoard.tsx:395
 msgid "<0>{0}–{1}</0> over your last {2} sets"
 msgstr "直近{2}セットで<0>{0}勝{1}敗</0>"
 
-#: src/components/user/StatsBoard/StatsBoard.tsx:360
+#: src/components/user/StatsBoard/StatsBoard.tsx:358
 msgid "<0>{weekdayName}</0> is your tournament day"
 msgstr "大会といえば<0>{weekdayName}</0>"
 
@@ -117,7 +117,7 @@ msgstr "選手を追加"
 #~ msgid "Adding a little sparkle to the win column..."
 #~ msgstr "勝ち星にちょっとキラキラを足しています..."
 
-#: src/components/user/StatsBoard/StatsBoard.tsx:272
+#: src/components/user/StatsBoard/StatsBoard.tsx:270
 msgid "Ahead of the field"
 msgstr "参加者の中での位置"
 
@@ -190,13 +190,13 @@ msgstr "シードを下回る結果"
 #. placeholder {0}: formatOrdinal(career.bestFinish.placement!, i18n.locale)
 #. placeholder {1}: career.bestFinish.numEntrants
 #. placeholder {2}: career.bestFinish.tournament.name
-#: src/components/user/StatsBoard/StatsBoard.tsx:256
+#: src/components/user/StatsBoard/StatsBoard.tsx:254
 msgid "Best run: <0>{0} of {1}</0> at {2}"
 msgstr "最高成績：{2}で<0>{1}人中{0}</0>"
 
 #. placeholder {0}: career.biggestBracket.numEntrants
 #. placeholder {1}: career.biggestBracket.tournament.name
-#: src/components/user/StatsBoard/StatsBoard.tsx:367
+#: src/components/user/StatsBoard/StatsBoard.tsx:365
 msgid "Biggest bracket: <0>{0} entrants</0> at {1}"
 msgstr "最大規模の大会：{1}（<0>{0}人</0>）"
 
@@ -216,13 +216,13 @@ msgstr "両プレイヤーを左右に、スコアを中央に表示"
 msgid "Bracket"
 msgstr "ブラケット"
 
-#: src/components/user/StatsBoard/StatsBoard.tsx:178
+#: src/components/user/StatsBoard/StatsBoard.tsx:176
 msgid "Bracket company"
 msgstr "同じトーナメントの仲間"
 
 #. placeholder {0}: monthLabel(career.busiestMonth.month, "long")
 #. placeholder {1}: career.busiestMonth.count
-#: src/components/user/StatsBoard/StatsBoard.tsx:333
+#: src/components/user/StatsBoard/StatsBoard.tsx:331
 msgid "Busiest month ever: <0>{0}</0> with {1} tournaments"
 msgstr "一番忙しかった月：<0>{0}</0>（{1}大会）"
 
@@ -250,7 +250,7 @@ msgstr "カードのスタイル"
 
 #. placeholder {0}: res.status
 #: src/hooks/predict/useFetchPredictionEntrants.ts:207
-#: src/hooks/top8/useFetchChallonge.ts:42
+#: src/hooks/top8/useFetchChallonge.ts:43
 msgid "Challonge API error: {0}"
 msgstr "Challonge APIエラー: {0}"
 
@@ -319,12 +319,12 @@ msgstr "よく使う人数"
 msgid "Compact"
 msgstr "コンパクト"
 
-#: src/components/user/StatsBoard/StatsBoard.tsx:172
+#: src/components/user/StatsBoard/StatsBoard.tsx:170
 msgid "Competing since {sinceYear}"
 msgstr "{sinceYear}年から参戦"
 
 #: src/hooks/predict/useFetchPredictionEntrants.ts:241
-#: src/hooks/top8/useFetchTonamel.ts:185
+#: src/hooks/top8/useFetchTonamel.ts:186
 msgid "Competition not found"
 msgstr "大会が見つかりませんでした"
 
@@ -541,7 +541,7 @@ msgstr "表示オプション"
 msgid "Don't show again"
 msgstr "次回から表示しない"
 
-#: src/components/top8/Ranker/Ranker.tsx:101
+#: src/components/top8/Ranker/Ranker.tsx:103
 msgid "Done"
 msgstr "完了"
 
@@ -597,7 +597,7 @@ msgstr "画像に表示されるテキストを編集できます。"
 msgid "English"
 msgstr "英語"
 
-#: src/components/top8/Ranker/Ranker.tsx:112
+#: src/components/top8/Ranker/Ranker.tsx:114
 msgid "Enlarge preview"
 msgstr "プレビューを拡大"
 
@@ -621,7 +621,7 @@ msgstr "start.gg、Challonge、またはTonamelの大会URLを入れてくださ
 msgid "Entrants"
 msgstr "参加人数"
 
-#: src/components/user/StatsBoard/StatsBoard.tsx:183
+#: src/components/user/StatsBoard/StatsBoard.tsx:181
 msgid "entrants across every bracket you've been in"
 msgstr "これまで出た大会の参加者の合計"
 
@@ -636,7 +636,7 @@ msgstr "イベント名"
 msgid "Export"
 msgstr "エクスポート"
 
-#: src/hooks/top8/useFetchChallonge.ts:112
+#: src/hooks/top8/useFetchChallonge.ts:115
 msgid "Failed to fetch Challonge tournament"
 msgstr "Challonge大会の取得に失敗しました"
 
@@ -649,7 +649,7 @@ msgstr "選手のリザルトを取得できませんでした"
 msgid "Failed to fetch seeds"
 msgstr "シード情報の取得に失敗しました"
 
-#: src/hooks/top8/useFetchTonamel.ts:218
+#: src/hooks/top8/useFetchTonamel.ts:221
 msgid "Failed to fetch Tonamel tournament"
 msgstr "Tonamel大会の取得に失敗しました"
 
@@ -658,8 +658,8 @@ msgstr "Tonamel大会の取得に失敗しました"
 msgid "Failed to fetch tournament"
 msgstr "大会情報の取得に失敗しました"
 
-#: src/hooks/top8/useFetchResult.ts:446
-#: src/hooks/top8/useFetchResult.ts:448
+#: src/hooks/top8/useFetchResult.ts:450
+#: src/hooks/top8/useFetchResult.ts:452
 msgid "Failed to fetch tournament data"
 msgstr "大会データの取得に失敗しました"
 
@@ -669,7 +669,7 @@ msgstr "大会データの取得に失敗しました"
 msgid "Failed to generate image"
 msgstr "画像の生成に失敗しました"
 
-#: src/components/user/StatsBoard/StatsBoard.tsx:432
+#: src/components/user/StatsBoard/StatsBoard.tsx:430
 msgid "Familiar faces"
 msgstr "おなじみの相手"
 
@@ -703,7 +703,7 @@ msgstr "成績"
 
 #. placeholder {0}: career.seedBeaten.beaten
 #. placeholder {1}: career.seedBeaten.seeded
-#: src/components/user/StatsBoard/StatsBoard.tsx:293
+#: src/components/user/StatsBoard/StatsBoard.tsx:291
 msgid "Finished above your seed in <0>{0}</0> of {1} brackets"
 msgstr "{1}大会中<0>{0}</0>大会でシードより上の順位"
 
@@ -745,7 +745,7 @@ msgstr "プレビュー作成中..."
 #~ msgid "Generating recap"
 #~ msgstr "リザルト生成中"
 
-#: src/components/user/StatsBoard/StatsBoard.tsx:383
+#: src/components/user/StatsBoard/StatsBoard.tsx:381
 msgid "Going through your recent sets..."
 msgstr "最近のセットを集計中..."
 
@@ -761,7 +761,7 @@ msgstr "グリーン"
 msgid "Grid view"
 msgstr "グリッド表示"
 
-#: src/components/user/StatsBoard/StatsBoard.tsx:346
+#: src/components/user/StatsBoard/StatsBoard.tsx:344
 msgid "Habits"
 msgstr "傾向"
 
@@ -773,7 +773,7 @@ msgstr "ハイスコア"
 msgid "Home"
 msgstr "ホーム"
 
-#: src/components/user/StatsBoard/StatsBoard.tsx:200
+#: src/components/user/StatsBoard/StatsBoard.tsx:198
 msgid "Home turf"
 msgstr "ホーム"
 
@@ -833,11 +833,11 @@ msgstr "L"
 msgid "Language"
 msgstr "言語"
 
-#: src/components/user/StatsBoard/StatsBoard.tsx:306
+#: src/components/user/StatsBoard/StatsBoard.tsx:304
 msgid "Last 12 months"
 msgstr "直近12か月"
 
-#: src/components/user/StatsBoard/StatsBoard.tsx:408
+#: src/components/user/StatsBoard/StatsBoard.tsx:406
 msgid "Last-game sets"
 msgstr "フルセット"
 
@@ -954,7 +954,7 @@ msgstr "応援クラファン実施中です。"
 msgid "Lower values reduce file size at the cost of detail."
 msgstr ""
 
-#: src/components/user/StatsBoard/StatsBoard.tsx:460
+#: src/components/user/StatsBoard/StatsBoard.tsx:458
 msgid "Mains"
 msgstr "メインキャラ"
 
@@ -975,7 +975,7 @@ msgstr "素材管理"
 msgid "Many cups of coffee were consumed during development 👀"
 msgstr "珈琲一杯分から！"
 
-#: src/components/top8/CharacterEditor/CharacterEditor.tsx:75
+#: src/consts/games.ts:19
 msgid "Melee"
 msgstr "DX"
 
@@ -1007,7 +1007,7 @@ msgstr "マイテンプレ"
 #~ msgid "My Tournaments"
 #~ msgstr "マイ大会"
 
-#: src/components/user/StatsBoard/StatsBoard.tsx:443
+#: src/components/user/StatsBoard/StatsBoard.tsx:441
 msgid "Nemesis"
 msgstr "天敵"
 
@@ -1015,7 +1015,7 @@ msgstr "天敵"
 msgid "Neon Sign"
 msgstr "ネオンサイン"
 
-#: src/components/user/StatsBoard/StatsBoard.tsx:449
+#: src/components/user/StatsBoard/StatsBoard.tsx:447
 msgid "Never lost to"
 msgstr "無敗の相手"
 
@@ -1037,7 +1037,7 @@ msgstr "キャラクター情報なし"
 msgid "No completed sets found for this player."
 msgstr "この選手の試合データが見つかりません。"
 
-#: src/components/user/StatsBoard/StatsBoard.tsx:219
+#: src/components/user/StatsBoard/StatsBoard.tsx:217
 msgid "No in-person tournaments yet"
 msgstr "オフライン大会の参加はまだありません"
 
@@ -1075,7 +1075,7 @@ msgstr "「{query}」に一致する大会はありません。"
 msgid "No tournaments on your start.gg account yet. Once you enter one it shows up here."
 msgstr "start.ggアカウントに大会がまだありません。参加するとここに表示されます。"
 
-#: src/components/top8/CharacterEditor/CharacterSelect/CharacterSelect.tsx:43
+#: src/components/top8/CharacterEditor/CharacterSelect/CharacterSelect.tsx:45
 #: src/components/top8/PlayersEditor/CountryDropDown.tsx:38
 msgid "None"
 msgstr "なし"
@@ -1088,7 +1088,7 @@ msgstr "{numEntrants}人中"
 msgid "of the bracket"
 msgstr "参加者全体のうち"
 
-#: src/components/user/StatsBoard/StatsBoard.tsx:278
+#: src/components/user/StatsBoard/StatsBoard.tsx:276
 msgid "of the bracket finishes behind you, on average"
 msgstr "の参加者より上の順位（平均）"
 
@@ -1104,7 +1104,7 @@ msgstr "1セット1行、タップで詳細を表示"
 msgid "One-click graphics for every tournament"
 msgstr "どの大会もワンクリックで画像に"
 
-#: src/components/user/StatsBoard/StatsBoard.tsx:216
+#: src/components/user/StatsBoard/StatsBoard.tsx:214
 #: src/hooks/user/useEventMeta.ts:19
 msgid "Online"
 msgstr "オンライン"
@@ -1295,7 +1295,7 @@ msgstr "大会振り返り"
 #~ msgid "Recapping the run..."
 #~ msgstr "リザルトを振り返り中..."
 
-#: src/components/user/StatsBoard/StatsBoard.tsx:391
+#: src/components/user/StatsBoard/StatsBoard.tsx:389
 msgid "Recent sets"
 msgstr "最近のセット"
 
@@ -1317,7 +1317,7 @@ msgstr "サムネイルを再生成"
 
 #. placeholder {0}: career.series.name
 #. placeholder {1}: career.series.count
-#: src/components/user/StatsBoard/StatsBoard.tsx:352
+#: src/components/user/StatsBoard/StatsBoard.tsx:350
 msgid "Regular at <0>{0}</0> ({1} times)"
 msgstr "<0>{0}</0>の常連（{1}回）"
 
@@ -1350,7 +1350,7 @@ msgstr ""
 msgid "Rewatching every set at 2x speed..."
 msgstr "全セットを2倍速で見返しています..."
 
-#: src/components/user/StatsBoard/StatsBoard.tsx:437
+#: src/components/user/StatsBoard/StatsBoard.tsx:435
 msgid "Rival"
 msgstr "ライバル"
 
@@ -1446,7 +1446,7 @@ msgstr "全選択"
 msgid "Select an asset to preview"
 msgstr "素材を選択してプレビュー"
 
-#: src/components/top8/CharacterEditor/CharacterSelect/CharacterSelect.tsx:80
+#: src/components/top8/CharacterEditor/CharacterSelect/CharacterSelect.tsx:88
 msgid "Select Character"
 msgstr "キャラクター選択"
 
@@ -1493,7 +1493,7 @@ msgstr "ヘルプを表示"
 msgid "Show more"
 msgstr "もっと見る"
 
-#: src/components/top8/Ranker/Ranker.tsx:111
+#: src/components/top8/Ranker/Ranker.tsx:113
 msgid "Shrink preview"
 msgstr "プレビューを縮小"
 
@@ -1529,7 +1529,7 @@ msgstr "州・都道府県"
 msgid "Stock icons"
 msgstr "ストックアイコン"
 
-#: src/components/user/StatsBoard/StatsBoard.tsx:189
+#: src/components/user/StatsBoard/StatsBoard.tsx:187
 msgid "Streak"
 msgstr "連続参加"
 
@@ -1638,7 +1638,7 @@ msgstr ""
 
 #. placeholder {0}: res.status
 #: src/hooks/predict/useFetchPredictionEntrants.ts:237
-#: src/hooks/top8/useFetchTonamel.ts:56
+#: src/hooks/top8/useFetchTonamel.ts:57
 msgid "Tonamel API error: {0}"
 msgstr "Tonamel APIエラー: {0}"
 
@@ -1650,13 +1650,13 @@ msgstr "上位{topPercent}%"
 msgid "Top 16"
 msgstr "Top 16"
 
-#: src/components/user/StatsBoard/StatsBoard.tsx:243
+#: src/components/user/StatsBoard/StatsBoard.tsx:241
 #: src/utils/social/builtInTemplates.ts:21
 msgid "Top 3"
 msgstr "Top 3"
 
 #: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:20
-#: src/components/user/StatsBoard/StatsBoard.tsx:250
+#: src/components/user/StatsBoard/StatsBoard.tsx:248
 #: src/utils/social/builtInTemplates.ts:32
 msgid "Top 8"
 msgstr "Top 8"
@@ -1716,7 +1716,7 @@ msgstr "大会名"
 
 #: src/hooks/predict/useFetchPredictionEntrants.ts:123
 #: src/hooks/results/useFetchResultsEntrantPool.ts:97
-#: src/hooks/top8/useFetchResult.ts:372
+#: src/hooks/top8/useFetchResult.ts:376
 msgid "Tournament not found"
 msgstr "大会が見つかりませんでした"
 
@@ -1746,11 +1746,11 @@ msgstr "大会都道府県"
 msgid "Tournament URL"
 msgstr "大会URL"
 
-#: src/components/user/StatsBoard/StatsBoard.tsx:167
+#: src/components/user/StatsBoard/StatsBoard.tsx:165
 msgid "Tournaments"
 msgstr "大会"
 
-#: src/components/user/StatsBoard/StatsBoard.tsx:228
+#: src/components/user/StatsBoard/StatsBoard.tsx:226
 msgid "Trophy shelf"
 msgstr "トロフィー棚"
 
@@ -1770,7 +1770,7 @@ msgstr "Xアカウント"
 msgid "Type"
 msgstr "形式"
 
-#: src/components/top8/CharacterEditor/CharacterEditor.tsx:74
+#: src/consts/games.ts:11
 msgid "Ultimate"
 msgstr "SP"
 
@@ -1834,12 +1834,12 @@ msgstr "vs"
 msgid "W"
 msgstr "W"
 
-#: src/components/user/StatsBoard/StatsBoard.tsx:194
+#: src/components/user/StatsBoard/StatsBoard.tsx:192
 msgid "weeks in a row with a tournament, at your longest"
 msgstr "週連続で大会に参加（最長）"
 
 #. placeholder {0}: setStats.longestWinStreak
-#: src/components/user/StatsBoard/StatsBoard.tsx:419
+#: src/components/user/StatsBoard/StatsBoard.tsx:417
 msgid "when it goes the distance. Best win streak: {0}"
 msgstr "最終ゲームまでもつれたセット。最長連勝：{0}"
 
@@ -1870,7 +1870,7 @@ msgstr "{placement}位のタグ"
 msgid "Winners"
 msgstr "上位選手"
 
-#: src/components/user/StatsBoard/StatsBoard.tsx:236
+#: src/components/user/StatsBoard/StatsBoard.tsx:234
 msgid "Wins"
 msgstr "優勝"
 

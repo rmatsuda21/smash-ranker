@@ -156,9 +156,10 @@ export const TierListApp = () => {
     }),
   );
 
+  const game = useTierListStore((s) => s.game);
   useEffect(() => {
-    preloadCharacterImages();
-  }, []);
+    preloadCharacterImages(game);
+  }, [game]);
 
   // Fetch the label font (only the weight in use) for a saved list and
   // whenever the weight changes. Until it arrives the labels show in the
