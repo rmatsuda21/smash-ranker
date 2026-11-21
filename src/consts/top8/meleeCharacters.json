@@ -1,0 +1,328 @@
+{
+  "characters": [
+    {
+      "name": "Bowser",
+      "id": "1",
+      "alts": 4,
+      "altNames": ["Default", "Red", "Blue", "Black"],
+      "cropOffset": {
+        "x": 0.11,
+        "y": -0.08
+      },
+      "cropScale": 1.15,
+      "nameJa": "クッパ"
+    },
+    {
+      "name": "Captain Falcon",
+      "id": "2",
+      "alts": 6,
+      "altNames": ["Default", "Black", "Red", "White", "Green", "Blue"],
+      "cropOffset": {
+        "x": -0.03,
+        "y": 0.28
+      },
+      "cropScale": 1.9,
+      "nameJa": "キャプテン・ファルコン"
+    },
+    {
+      "name": "Donkey Kong",
+      "id": "3",
+      "alts": 5,
+      "altNames": ["Default", "Black", "Red", "Blue", "Green"],
+      "cropOffset": {
+        "x": 0.03,
+        "y": 0.1
+      },
+      "cropScale": 1.25,
+      "nameJa": "ドンキーコング"
+    },
+    {
+      "name": "Dr. Mario",
+      "id": "4",
+      "alts": 5,
+      "altNames": ["Default", "Red", "Blue", "Green", "Black"],
+      "cropOffset": {
+        "x": 0.04,
+        "y": 0.18
+      },
+      "cropScale": 1.38,
+      "nameJa": "ドクターマリオ"
+    },
+    {
+      "name": "Falco",
+      "id": "5",
+      "alts": 4,
+      "altNames": ["Default", "Red", "Blue", "Green"],
+      "cropOffset": {
+        "x": -0.07,
+        "y": 0.28
+      },
+      "cropScale": 1.9,
+      "nameJa": "ファルコ"
+    },
+    {
+      "name": "Fox",
+      "id": "6",
+      "alts": 4,
+      "altNames": ["Default", "Red", "Blue", "Green"],
+      "cropOffset": {
+        "x": 0.09,
+        "y": 0.21
+      },
+      "cropScale": 1.5,
+      "nameJa": "フォックス"
+    },
+    {
+      "name": "Ganondorf",
+      "id": "7",
+      "alts": 5,
+      "altNames": ["Default", "Red", "Blue", "Green", "Purple"],
+      "cropOffset": {
+        "x": 0.22,
+        "y": 0.24
+      },
+      "cropScale": 1.5,
+      "nameJa": "ガノンドロフ"
+    },
+    {
+      "name": "Ice Climbers",
+      "id": "8",
+      "alts": 4,
+      "altNames": ["Default", "Green", "Orange", "Red"],
+      "cropOffset": {
+        "x": 0.08,
+        "y": 0.11
+      },
+      "cropScale": 1.15,
+      "nameJa": "アイスクライマー"
+    },
+    {
+      "name": "Jigglypuff",
+      "id": "9",
+      "alts": 5,
+      "altNames": ["Default", "Red", "Blue", "Green", "Yellow"],
+      "cropOffset": {
+        "x": 0,
+        "y": 0
+      },
+      "cropScale": 1,
+      "nameJa": "プリン"
+    },
+    {
+      "name": "Kirby",
+      "id": "10",
+      "alts": 6,
+      "altNames": ["Default", "Yellow", "Blue", "Red", "Green", "White"],
+      "cropOffset": {
+        "x": 0,
+        "y": 0
+      },
+      "cropScale": 1,
+      "nameJa": "カービィ"
+    },
+    {
+      "name": "Link",
+      "id": "11",
+      "alts": 5,
+      "altNames": ["Default", "Red", "Blue", "Black", "White"],
+      "cropOffset": {
+        "x": 0.03,
+        "y": 0.21
+      },
+      "cropScale": 1.52,
+      "nameJa": "リンク"
+    },
+    {
+      "name": "Luigi",
+      "id": "12",
+      "alts": 4,
+      "altNames": ["Default", "White", "Blue", "Pink"],
+      "cropOffset": {
+        "x": -0.12,
+        "y": 0.22
+      },
+      "cropScale": 1.67,
+      "nameJa": "ルイージ"
+    },
+    {
+      "name": "Mario",
+      "id": "13",
+      "alts": 5,
+      "altNames": ["Default", "Yellow", "Black", "Blue", "Green"],
+      "cropOffset": {
+        "x": -0.02,
+        "y": 0.22
+      },
+      "cropScale": 1.6,
+      "nameJa": "マリオ"
+    },
+    {
+      "name": "Marth",
+      "id": "14",
+      "alts": 5,
+      "altNames": ["Default", "Red", "Green", "Black", "White"],
+      "cropOffset": {
+        "x": -0.05,
+        "y": 0.28
+      },
+      "cropScale": 1.9,
+      "nameJa": "マルス"
+    },
+    {
+      "name": "Mewtwo",
+      "id": "15",
+      "alts": 4,
+      "altNames": ["Default", "Red", "Blue", "Green"],
+      "cropOffset": {
+        "x": 0.05,
+        "y": 0.19
+      },
+      "cropScale": 1.83,
+      "nameJa": "ミュウツー"
+    },
+    {
+      "name": "Mr. Game & Watch",
+      "id": "16",
+      "alts": 4,
+      "altNames": ["Default", "Red", "Blue", "Green"],
+      "cropOffset": {
+        "x": 0.02,
+        "y": 0.02
+      },
+      "cropScale": 1.05,
+      "nameJa": "Mr.ゲーム＆ウォッチ"
+    },
+    {
+      "name": "Ness",
+      "id": "17",
+      "alts": 4,
+      "altNames": ["Default", "Yellow", "Blue", "Green"],
+      "cropOffset": {
+        "x": -0.05,
+        "y": 0.14
+      },
+      "cropScale": 1.5,
+      "nameJa": "ネス"
+    },
+    {
+      "name": "Peach",
+      "id": "18",
+      "alts": 5,
+      "altNames": ["Default", "Yellow", "White", "Blue", "Green"],
+      "cropOffset": {
+        "x": 0.02,
+        "y": 0.28
+      },
+      "cropScale": 1.9,
+      "nameJa": "ピーチ"
+    },
+    {
+      "name": "Pichu",
+      "id": "19",
+      "alts": 4,
+      "altNames": ["Default", "Red", "Blue", "Green"],
+      "cropOffset": {
+        "x": -0.08,
+        "y": 0.04
+      },
+      "cropScale": 1.2,
+      "nameJa": "ピチュー"
+    },
+    {
+      "name": "Pikachu",
+      "id": "20",
+      "alts": 4,
+      "altNames": ["Default", "Red", "Blue", "Green"],
+      "cropOffset": {
+        "x": 0.05,
+        "y": 0.1
+      },
+      "cropScale": 1.3,
+      "nameJa": "ピカチュウ"
+    },
+    {
+      "name": "Roy",
+      "id": "21",
+      "alts": 5,
+      "altNames": ["Default", "Red", "Blue", "Green", "Yellow"],
+      "cropOffset": {
+        "x": 0.01,
+        "y": 0.2
+      },
+      "cropScale": 1.5,
+      "nameJa": "ロイ"
+    },
+    {
+      "name": "Samus",
+      "id": "22",
+      "alts": 5,
+      "altNames": ["Default", "Pink", "Black", "Green", "Purple"],
+      "cropOffset": {
+        "x": -0.11,
+        "y": 0.28
+      },
+      "cropScale": 1.9,
+      "nameJa": "サムス"
+    },
+    {
+      "name": "Sheik",
+      "id": "23",
+      "alts": 5,
+      "altNames": ["Default", "Red", "Blue", "Green", "White"],
+      "cropOffset": {
+        "x": -0.17,
+        "y": -0.24
+      },
+      "cropScale": 1.65,
+      "nameJa": "シーク"
+    },
+    {
+      "name": "Yoshi",
+      "id": "24",
+      "alts": 6,
+      "altNames": ["Default", "Red", "Blue", "Yellow", "Pink", "Cyan"],
+      "cropOffset": {
+        "x": 0.03,
+        "y": 0.2
+      },
+      "cropScale": 1.5,
+      "nameJa": "ヨッシー"
+    },
+    {
+      "name": "Young Link",
+      "id": "25",
+      "alts": 5,
+      "altNames": ["Default", "Red", "Blue", "White", "Black"],
+      "cropOffset": {
+        "x": -0.13,
+        "y": 0.2
+      },
+      "cropScale": 1.49,
+      "nameJa": "こどもリンク"
+    },
+    {
+      "name": "Zelda",
+      "id": "26",
+      "alts": 5,
+      "altNames": ["Default", "Red", "Blue", "Green", "White"],
+      "cropOffset": {
+        "x": -0.21,
+        "y": 0.28
+      },
+      "cropScale": 1.9,
+      "nameJa": "ゼルダ"
+    },
+    {
+      "name": "Sheik / Zelda",
+      "id": "628",
+      "alts": 5,
+      "altNames": ["Default", "Red", "Blue", "Green", "White"],
+      "cropOffset": {
+        "x": -0.17,
+        "y": -0.24
+      },
+      "cropScale": 1.65,
+      "nameJa": "シーク / ゼルダ"
+    }
+  ]
+}

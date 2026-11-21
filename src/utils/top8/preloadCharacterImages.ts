@@ -1,4 +1,4 @@
-import { characters } from "@/consts/top8/ultCharacters.json";
+import { getCharactersForGame } from "@/utils/top8/characterCatalog";
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
 import { CharacerData } from "@/types/top8/Player";
 import { logWarning } from "@/utils/observability/log";
@@ -61,7 +61,8 @@ const scheduleIdleWork = (
 };
 
 export const preloadCharacterImages = async (): Promise<void> => {
-  const urls = characters.map((character) =>
+  // Ultimate only: the other games' icons load when their list is opened.
+  const urls = getCharactersForGame("ultimate").map((character) =>
     getCharImgUrl({
       characterId: character.id,
       alt: 0 as CharacerData["alt"],

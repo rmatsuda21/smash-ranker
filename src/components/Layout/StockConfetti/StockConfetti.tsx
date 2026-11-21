@@ -1,11 +1,11 @@
 import { memo, useEffect, useMemo } from "react";
 
-import ultCharacters from "@/consts/top8/ultCharacters.json";
+import { getCharactersForGame } from "@/utils/top8/characterCatalog";
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
 
 import styles from "./StockConfetti.module.scss";
 
-const CHARACTER_IDS: readonly string[] = ultCharacters.characters.map(
+const CHARACTER_IDS: readonly string[] = getCharactersForGame("ultimate").map(
   (c) => c.id,
 );
 

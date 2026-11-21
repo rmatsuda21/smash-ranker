@@ -213,6 +213,16 @@ The Top 8 graphic is rendered via **Konva** (2D canvas) through React-Konva. The
 - **Color resolution** (`src/utils/top8/resolveColor.ts`) — maps palette keys to hex values
 - **SVG processing** (`src/hooks/top8/useSvgImage.ts`) — fetches SVGs and recolors them for flags/icons
 
+### Characters and games
+
+Character art lives in the `SmashRankerAssets` GitHub repo as `main/<id>/<alt>.webp` (render) and `stock/<id>/<alt>.webp` (head icon), where `<id>` is the start.gg character id. Those ids never repeat between games, so one folder layout and `getCharImgUrl` serve every game.
+
+- **Lists** — `src/consts/top8/ultCharacters.json` (Ultimate) and `meleeCharacters.json` (Melee; 4–6 alts per character, id 628 "Sheik / Zelda" drawn as Sheik). Each entry has names, alt count and names, and the crop (`cropOffset`, `cropScale`) used for player cards.
+- **Catalog** — `src/utils/top8/characterCatalog.ts` is the only importer of those files: `getCharacter(id)` and `getCharacterGame(id)` work across games (names, crops, alt pickers), `getCharactersForGame(game)` is for pickers. **Do not import a character JSON directly.**
+- **Which game the ranker's picker lists** — `game` on `tournamentStore` (`SET_GAME`), switched by the `RadioGroup` in `CharacterEditor` and set from the event's start.gg videogame id when a tournament loads (`getGameForStartggVideogame`). A selected character from the other game stays in the list.
+- **Ultimate only for now** — the tier list, the confetti, the stock preload and the thumbnail editor's character picker.
+- **Adding a game** — import its art into the asset repo, add a JSON list, and register it in the catalog and `CharacterGame`.
+
 ### Dynamic Player Height
 
 When `Design.dynamicPlayerHeight` is set, player cards grow taller at render time to accommodate multiple rows of character icons. This is computed without mutating the stored design:

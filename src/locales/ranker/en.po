@@ -658,8 +658,8 @@ msgstr ""
 msgid "Failed to fetch tournament"
 msgstr ""
 
-#: src/hooks/top8/useFetchResult.ts:440
-#: src/hooks/top8/useFetchResult.ts:442
+#: src/hooks/top8/useFetchResult.ts:446
+#: src/hooks/top8/useFetchResult.ts:448
 msgid "Failed to fetch tournament data"
 msgstr ""
 
@@ -975,6 +975,10 @@ msgstr ""
 msgid "Many cups of coffee were consumed during development 👀"
 msgstr ""
 
+#: src/components/top8/CharacterEditor/CharacterEditor.tsx:75
+msgid "Melee"
+msgstr ""
+
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:141
 msgid "Minimal"
 msgstr ""
@@ -1071,7 +1075,7 @@ msgstr ""
 msgid "No tournaments on your start.gg account yet. Once you enter one it shows up here."
 msgstr ""
 
-#: src/components/top8/CharacterEditor/CharacterSelect/CharacterSelect.tsx:34
+#: src/components/top8/CharacterEditor/CharacterSelect/CharacterSelect.tsx:43
 #: src/components/top8/PlayersEditor/CountryDropDown.tsx:38
 msgid "None"
 msgstr ""
@@ -1442,7 +1446,7 @@ msgstr ""
 msgid "Select an asset to preview"
 msgstr ""
 
-#: src/components/top8/CharacterEditor/CharacterSelect/CharacterSelect.tsx:62
+#: src/components/top8/CharacterEditor/CharacterSelect/CharacterSelect.tsx:80
 msgid "Select Character"
 msgstr ""
 
@@ -1712,7 +1716,7 @@ msgstr ""
 
 #: src/hooks/predict/useFetchPredictionEntrants.ts:123
 #: src/hooks/results/useFetchResultsEntrantPool.ts:97
-#: src/hooks/top8/useFetchResult.ts:368
+#: src/hooks/top8/useFetchResult.ts:372
 msgid "Tournament not found"
 msgstr ""
 
@@ -1764,6 +1768,10 @@ msgstr ""
 
 #: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:179
 msgid "Type"
+msgstr ""
+
+#: src/components/top8/CharacterEditor/CharacterEditor.tsx:74
+msgid "Ultimate"
 msgstr ""
 
 #: src/components/top8/Ranker/Header/Header.tsx:35

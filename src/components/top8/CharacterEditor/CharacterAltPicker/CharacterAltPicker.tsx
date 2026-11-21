@@ -1,8 +1,8 @@
-import { useEffect, useMemo, useRef } from "react";
+import { CSSProperties, useMemo } from "react";
 
-import { characters } from "@/consts/top8/ultCharacters.json";
 import { EMPTY_CHARACTER_ID } from "@/consts/top8/characters";
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
+import { getCharacter } from "@/utils/top8/characterCatalog";
 import { CharacerData } from "@/types/top8/Player";
 import { useTooltip } from "@/hooks/useTooltip";
 
@@ -56,7 +56,7 @@ const AltOption = ({
 const getAltsAndIcons = (characterId?: string) => {
   if (characterId === EMPTY_CHARACTER_ID) return [];
 
-  const character = characters.find((c) => c.id === characterId);
+  const character = characterId ? getCharacter(characterId) : undefined;
 
   if (!character || !characterId) {
     return Array.from({ length: 8 }, (_, i) => ({
@@ -86,37 +86,24 @@ export const CharacterAltPicker = ({
   onAltChange,
   disabled = false,
 }: Props) => {
-  const wrapperRef = useRef<HTMLDivElement>(null);
-
-  const altsAndIcons = useMemo(() => {
-    const alts = getAltsAndIcons(selectedCharacter?.id);
-
-    if (wrapperRef.current) {
-      wrapperRef.current.style.setProperty("--num-alts", String(alts.length));
-      wrapperRef.current.style.setProperty(
-        "--selected-alt",
-        String(selectedCharacter?.alt),
-      );
-    }
-
-    return alts;
-  }, [selectedCharacter?.id, selectedCharacter?.alt]);
-
-  useEffect(() => {
-    if (wrapperRef.current) {
-      wrapperRef.current.style.setProperty(
-        "--selected-alt",
-        String(selectedCharacter?.alt || 0),
-      );
-    }
-  }, [selectedCharacter?.alt]);
+  const altsAndIcons = useMemo(
+    () => getAltsAndIcons(selectedCharacter?.id),
+    [selectedCharacter?.id],
+  );
 
   if (altsAndIcons.length === 0) return null;
 
   return (
     <div
-      ref={wrapperRef}
       className={styles.container}
+      // Characters differ in how many alts they have (Melee: 4 to 6), so the
+      // highlight's width and position come from the current list.
+      style={
+        {
+          "--num-alts": altsAndIcons.length,
+          "--selected-alt": selectedCharacter?.alt ?? 0,
+        } as CSSProperties
+      }
       role="radiogroup"
       aria-label="Character alternate costume"
     >

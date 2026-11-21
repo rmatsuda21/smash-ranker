@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { createJSONStorage, devtools, persist } from "zustand/middleware";
 
-import { characters } from "@/consts/top8/ultCharacters.json";
+import { getCharactersForGame } from "@/utils/top8/characterCatalog";
 import { DEFAULT_PALETTE_ID } from "@/consts/tierlist/tierPalettes";
 import { DEFAULT_LABEL_FONT_FAMILY } from "@/utils/tierlist/labelFont";
 import {
@@ -66,7 +66,7 @@ const buildInitialCharacters = (): {
   const charMap: Record<string, TierCharacter> = {};
   const pool: string[] = [];
 
-  for (const char of characters) {
+  for (const char of getCharactersForGame("ultimate")) {
     const instanceId = `char-${char.id}-0`;
     charMap[instanceId] = {
       instanceId,

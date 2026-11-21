@@ -16,6 +16,7 @@ import {
 } from "@/utils/top8/samplePlayers";
 import { getMultiGroupError } from "@/consts/errors";
 import { EMPTY_CHARACTER_ID } from "@/consts/top8/characters";
+import { getGameForStartggVideogame } from "@/utils/top8/characterCatalog";
 import { useToast } from "@/components/Toast";
 import { logError, logEvent, logWarning } from "@/utils/observability/log";
 const IDB_IMAGES_BASE_URL = "/idb-images/";
@@ -41,6 +42,9 @@ const EventStandingsQueryDoc = graphql(`
       id
       name
       startAt
+      videogame {
+        id
+      }
       tournament {
         name
         addrState
@@ -415,6 +419,8 @@ export const useFetchResult = () => {
       ]);
 
       const tournamentInfo = buildTournamentInfo(event, storedImages);
+      const game = getGameForStartggVideogame(event.videogame?.id);
+      if (game) tournamentDispatch({ type: "SET_GAME", payload: game });
       tournamentDispatch({
         type: "SET_TOURNAMENT_INFO",
         payload: tournamentInfo,

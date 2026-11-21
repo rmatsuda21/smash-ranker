@@ -3,6 +3,7 @@ import { FaPlus } from "react-icons/fa6";
 import cn from "classnames";
 
 import { CharacerData } from "@/types/top8/Player";
+import { CharacterGame } from "@/types/top8/Character";
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
 import { DEFAULT_ADD_CHARACTER_ID } from "@/consts/top8/characters";
 
@@ -14,6 +15,7 @@ type Props = {
   selectedIndex: number;
   setSelectedIndex: (index: number) => void;
   disabled?: boolean;
+  game?: CharacterGame;
 };
 
 export const CharacterList = ({
@@ -22,12 +24,13 @@ export const CharacterList = ({
   selectedIndex,
   setSelectedIndex,
   disabled = false,
+  game = "ultimate",
 }: Props) => {
   const addCharacter = () => {
     if (!characters) return;
     onCharactersChange([
       ...characters,
-      { id: DEFAULT_ADD_CHARACTER_ID, alt: 0 },
+      { id: DEFAULT_ADD_CHARACTER_ID[game], alt: 0 },
     ]);
     setSelectedIndex(characters.length);
   };

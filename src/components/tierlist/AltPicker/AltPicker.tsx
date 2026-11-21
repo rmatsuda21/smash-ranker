@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useLingui } from "@lingui/react/macro";
 
-import { characters } from "@/consts/top8/ultCharacters.json";
+import { getCharacter } from "@/utils/top8/characterCatalog";
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
 import { getCharacterDisplayName } from "@/utils/top8/getCharacterName";
 import { useTierListStore } from "@/store/tierListStore";
@@ -33,7 +33,7 @@ export const AltPicker = ({
   const character = useTierListStore((s) => s.characters[instanceId]);
   const ref = useRef<HTMLDivElement>(null);
 
-  const charData = characters.find((c) => c.id === character?.characterId);
+  const charData = character ? getCharacter(character.characterId) : undefined;
   const altCount = charData?.alts ?? 8;
 
   // "manual", not "auto": this opens on right-click, and native light dismiss
