@@ -658,8 +658,8 @@ msgstr ""
 msgid "Failed to fetch tournament"
 msgstr ""
 
-#: src/hooks/top8/useFetchResult.ts:450
 #: src/hooks/top8/useFetchResult.ts:452
+#: src/hooks/top8/useFetchResult.ts:454
 msgid "Failed to fetch tournament data"
 msgstr ""
 
@@ -975,9 +975,21 @@ msgstr ""
 msgid "Many cups of coffee were consumed during development 👀"
 msgstr ""
 
-#: src/consts/games.ts:19
+#: src/consts/games.ts:24
 msgid "Melee"
 msgstr ""
+
+#: src/components/top8/InfoPanel/InfoPanel.tsx:143
+msgid "Melee asset packs"
+msgstr ""
+
+#: src/components/top8/InfoPanel/InfoPanel.tsx:129
+msgid "Melee renders & icons, by Efisio, Cjag, Cahalan and Radzo73"
+msgstr ""
+
+#: src/components/top8/InfoPanel/InfoPanel.tsx:129
+#~ msgid "Melee renders & icons, by Efisio, Cjag, Cahalan and Radzo73, via TournamentStreamHelper"
+#~ msgstr ""
 
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:141
 msgid "Minimal"
@@ -1075,7 +1087,7 @@ msgstr ""
 msgid "No tournaments on your start.gg account yet. Once you enter one it shows up here."
 msgstr ""
 
-#: src/components/top8/CharacterEditor/CharacterSelect/CharacterSelect.tsx:45
+#: src/components/top8/CharacterEditor/CharacterSelect/CharacterSelect.tsx:43
 #: src/components/top8/PlayersEditor/CountryDropDown.tsx:38
 msgid "None"
 msgstr ""
@@ -1446,7 +1458,7 @@ msgstr ""
 msgid "Select an asset to preview"
 msgstr ""
 
-#: src/components/top8/CharacterEditor/CharacterSelect/CharacterSelect.tsx:88
+#: src/components/top8/CharacterEditor/CharacterSelect/CharacterSelect.tsx:80
 msgid "Select Character"
 msgstr ""
 
@@ -1716,7 +1728,7 @@ msgstr ""
 
 #: src/hooks/predict/useFetchPredictionEntrants.ts:123
 #: src/hooks/results/useFetchResultsEntrantPool.ts:97
-#: src/hooks/top8/useFetchResult.ts:376
+#: src/hooks/top8/useFetchResult.ts:378
 msgid "Tournament not found"
 msgstr ""
 

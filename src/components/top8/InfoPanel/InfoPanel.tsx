@@ -117,6 +117,32 @@ export const InfoPanel = ({ className }: Props) => {
                 <Trans>Tournament & Player data</Trans>
               </span>
             </div>
+            <div>
+              <a
+                href="https://github.com/joaorb64/StreamHelperAssets/tree/main/games/ssbm"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Melee CSProject
+              </a>
+              <span className={styles.creditDesc}>
+                <Trans>
+                  Melee renders & icons, by Efisio, Cjag, Cahalan and Radzo73
+                </Trans>
+              </span>
+            </div>
+            <div>
+              <a
+                href="https://github.com/joaorb64/TournamentStreamHelper"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                TournamentStreamHelper
+              </a>
+              <span className={styles.creditDesc}>
+                <Trans>Melee asset packs</Trans>
+              </span>
+            </div>
           </div>
         </section>
       </div>

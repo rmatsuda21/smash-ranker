@@ -658,8 +658,8 @@ msgstr "Tonamel大会の取得に失敗しました"
 msgid "Failed to fetch tournament"
 msgstr "大会情報の取得に失敗しました"
 
-#: src/hooks/top8/useFetchResult.ts:450
 #: src/hooks/top8/useFetchResult.ts:452
+#: src/hooks/top8/useFetchResult.ts:454
 msgid "Failed to fetch tournament data"
 msgstr "大会データの取得に失敗しました"
 
@@ -975,9 +975,21 @@ msgstr "素材管理"
 msgid "Many cups of coffee were consumed during development 👀"
 msgstr "珈琲一杯分から！"
 
-#: src/consts/games.ts:19
+#: src/consts/games.ts:24
 msgid "Melee"
 msgstr "DX"
+
+#: src/components/top8/InfoPanel/InfoPanel.tsx:143
+msgid "Melee asset packs"
+msgstr "DXのアセットパック"
+
+#: src/components/top8/InfoPanel/InfoPanel.tsx:129
+msgid "Melee renders & icons, by Efisio, Cjag, Cahalan and Radzo73"
+msgstr "DXのレンダー・アイコン（Efisio、Cjag、Cahalan、Radzo73）"
+
+#: src/components/top8/InfoPanel/InfoPanel.tsx:129
+#~ msgid "Melee renders & icons, by Efisio, Cjag, Cahalan and Radzo73, via TournamentStreamHelper"
+#~ msgstr "DXのレンダー・アイコン（Efisio、Cjag、Cahalan、Radzo73）、TournamentStreamHelper経由"
 
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:141
 msgid "Minimal"
@@ -1075,7 +1087,7 @@ msgstr "「{query}」に一致する大会はありません。"
 msgid "No tournaments on your start.gg account yet. Once you enter one it shows up here."
 msgstr "start.ggアカウントに大会がまだありません。参加するとここに表示されます。"
 
-#: src/components/top8/CharacterEditor/CharacterSelect/CharacterSelect.tsx:45
+#: src/components/top8/CharacterEditor/CharacterSelect/CharacterSelect.tsx:43
 #: src/components/top8/PlayersEditor/CountryDropDown.tsx:38
 msgid "None"
 msgstr "なし"
@@ -1446,7 +1458,7 @@ msgstr "全選択"
 msgid "Select an asset to preview"
 msgstr "素材を選択してプレビュー"
 
-#: src/components/top8/CharacterEditor/CharacterSelect/CharacterSelect.tsx:88
+#: src/components/top8/CharacterEditor/CharacterSelect/CharacterSelect.tsx:80
 msgid "Select Character"
 msgstr "キャラクター選択"
 
@@ -1716,7 +1728,7 @@ msgstr "大会名"
 
 #: src/hooks/predict/useFetchPredictionEntrants.ts:123
 #: src/hooks/results/useFetchResultsEntrantPool.ts:97
-#: src/hooks/top8/useFetchResult.ts:376
+#: src/hooks/top8/useFetchResult.ts:378
 msgid "Tournament not found"
 msgstr "大会が見つかりませんでした"
 
