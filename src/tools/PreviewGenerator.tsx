@@ -23,6 +23,7 @@ import { standingsLightDesign, standingsDarkDesign } from "@/designs/standings";
 import { comicBookDesign } from "@/designs/comicBook";
 import { neonSignDesign } from "@/designs/neonSign";
 import { highScoreDesign } from "@/designs/highScore";
+import { colourBarsDesign } from "@/designs/colourBars";
 import {
   tapeDesign,
   tapeMintDesign,
@@ -141,6 +142,12 @@ const BUILT_IN_TEMPLATES: PreviewTemplate[] = [
     name: "Night",
     design: tapeNightDesign,
     font: "Dela Gothic One",
+  },
+  {
+    id: "colour-bars",
+    name: "Original",
+    design: colourBarsDesign,
+    font: "Noto Sans JP",
   },
 ];
 
@@ -340,6 +347,44 @@ const GOLDEN_ONLY_TEMPLATES: PreviewTemplate[] = [
     name: "Tape, long names",
     design: tapeDesign,
     font: "Dela Gothic One",
+    players: longNamePlayers,
+    tournament: longNameTournament,
+  },
+  {
+    id: "colour-bars-cast",
+    name: "Colour Bars, varied cast",
+    design: colourBarsDesign,
+    font: "Noto Sans JP",
+    players: castPlayers,
+  },
+  {
+    id: "colour-bars-multi",
+    name: "Colour Bars, multi-character",
+    design: colourBarsDesign,
+    font: "Noto Sans JP",
+    players: multiCharacterPlayers,
+  },
+  // A winner whose render is wider than it is tall: it has to fit the bar.
+  {
+    id: "colour-bars-wide",
+    name: "Colour Bars, wide render",
+    design: colourBarsDesign,
+    font: "Noto Sans JP",
+    players: castPlayers.map((player, index) =>
+      index === 0
+        ? {
+            ...player,
+            characters: [{ id: "1302", alt: 7 as CharacerData["alt"] }],
+          }
+        : player,
+    ),
+  },
+  // Names that shrink, then cut, down the bars; a long title beside an icon.
+  {
+    id: "colour-bars-crowded",
+    name: "Colour Bars, long names",
+    design: colourBarsDesign,
+    font: "Noto Sans JP",
     players: longNamePlayers,
     tournament: longNameTournament,
   },

@@ -16,6 +16,7 @@ import { standingsLightDesign, standingsDarkDesign } from "@/designs/standings";
 import { comicBookDesign } from "@/designs/comicBook";
 import { neonSignDesign } from "@/designs/neonSign";
 import { highScoreDesign } from "@/designs/highScore";
+import { colourBarsDesign } from "@/designs/colourBars";
 import {
   tapeDesign,
   tapeMintDesign,
@@ -176,6 +177,18 @@ const DEFAULT_TEMPLATE_GROUPS: DefaultTemplateGroup[] = [
         name: msg`Night`,
         design: tapeNightDesign,
         font: "Dela Gothic One",
+      },
+    ],
+  },
+  {
+    id: "colour-bars",
+    name: msg`Colour Bars`,
+    templates: [
+      {
+        id: "colour-bars",
+        name: msg`Original`,
+        design: colourBarsDesign,
+        font: "Noto Sans JP",
       },
     ],
   },

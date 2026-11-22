@@ -95,6 +95,7 @@ export const createCharacterImageElement: ElementCreator<
       shadowBlur={element.shadowBlur}
       shadowOpacity={element.shadowOpacity}
       fillMode={element.fillMode ?? "contain"}
+      align={element.align}
       tone={element.tone}
       perfectDrawEnabled={context.perfectDraw}
     />

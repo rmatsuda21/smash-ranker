@@ -280,6 +280,9 @@ export interface CharacterImageElementConfig
   /** Show the whole render instead of the character's stored close-up
    *  crop. `cropScaleMultiplier` still applies. */
   uncropped?: boolean;
+  /** Where art that does not fill its box sits in it. Defaults to the
+   *  centre. */
+  align?: ImageAlign;
   tone?: ImageTone;
 }
 
