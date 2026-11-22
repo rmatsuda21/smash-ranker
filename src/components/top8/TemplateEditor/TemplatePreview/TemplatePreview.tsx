@@ -10,8 +10,8 @@ import { DBTemplate } from "@/types/Repository";
 import { RenderProfileContext } from "@/components/top8/Canvas/RenderProfileContext";
 import { StaticScene } from "@/components/top8/Canvas/scene/StaticScene";
 import { createSamplePlayers } from "@/utils/top8/samplePlayers";
+import { SAMPLE_TOURNAMENT } from "@/utils/top8/sampleTournament";
 import { getEffectiveCanvasSize, getUnusedIconSpace } from "@/utils/top8/scene";
-import { TournamentInfo } from "@/types/top8/Tournament";
 import {
   OFFSCREEN_PROFILE,
   getDeviceRenderProfile,
@@ -51,18 +51,7 @@ type Props = {
 
 const samplePlayers = createSamplePlayers(20);
 
-const sampleTournament: TournamentInfo = {
-  tournamentName: "Some Tournament",
-  eventName: "Some Event",
-  date: new Date(1999, 10, 7).toISOString(),
-  location: {
-    city: "College Station",
-    state: "TX",
-    country: "US",
-  },
-  entrants: 69,
-  url: "https://start.gg/420-69-tournament",
-};
+const sampleTournament = SAMPLE_TOURNAMENT;
 
 // One template: the thumbnail is the button that loads it, with the name
 // (and Delete, for the user's own templates) underneath.

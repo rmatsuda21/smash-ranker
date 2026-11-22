@@ -4,6 +4,7 @@ import { createJSONStorage, devtools, persist } from "zustand/middleware";
 import { TournamentInfo } from "@/types/top8/Tournament";
 import { GameId } from "@/types/Game";
 import { DEFAULT_GAME } from "@/consts/games";
+import { SAMPLE_TOURNAMENT } from "@/utils/top8/sampleTournament";
 
 interface TournamentState {
   info: TournamentInfo;
@@ -92,13 +93,7 @@ const tournamentReducer = (
 };
 
 const initialState: TournamentState = {
-  info: {
-    tournamentName: `Tournament Name`,
-    eventName: `Event Name`,
-    date: new Date(1999, 10, 7).toISOString(),
-    location: { city: "Somewhere", state: "World", country: "Japan" },
-    entrants: 69,
-  },
+  info: SAMPLE_TOURNAMENT,
   game: DEFAULT_GAME,
   fetching: false,
   error: "",

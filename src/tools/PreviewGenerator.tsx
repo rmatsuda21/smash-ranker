@@ -8,7 +8,10 @@ import { RenderProfileContext } from "@/components/top8/Canvas/RenderProfileCont
 import { StaticScene } from "@/components/top8/Canvas/scene/StaticScene";
 import { OFFSCREEN_PROFILE } from "@/utils/top8/renderProfile";
 import { getEffectiveCanvasSize, getUnusedIconSpace } from "@/utils/top8/scene";
-import { createSamplePlayers } from "@/utils/top8/samplePlayers";
+import {
+  createSamplePlayers,
+  SAMPLE_LINEUP_COUNT,
+} from "@/utils/top8/samplePlayers";
 import { loadFamily } from "@/utils/fonts/fontLoader";
 import { TournamentInfo } from "@/types/top8/Tournament";
 import { DBTemplate } from "@/types/Repository";
@@ -38,6 +41,9 @@ import {
   tapeSkyDesign,
 } from "@/designs/tape";
 import { resizePlayerSlots } from "@/utils/top8/playerCount";
+import { applyRenderStyle } from "@/utils/top8/renderStyle";
+import { RenderStyleId } from "@/types/Game";
+import { SAMPLE_TOURNAMENT } from "@/utils/top8/sampleTournament";
 
 declare global {
   interface Window {
@@ -50,6 +56,8 @@ declare global {
 type PreviewTemplate = DBTemplate & {
   players?: PlayerInfo[];
   tournament?: TournamentInfo;
+  // Draws the characters in this render style where they have art in it.
+  renderStyle?: RenderStyleId;
 };
 
 const BUILT_IN_TEMPLATES: PreviewTemplate[] = [
@@ -106,6 +114,7 @@ const BUILT_IN_TEMPLATES: PreviewTemplate[] = [
     name: "Original",
     design: comicBookDesign,
     font: "Dela Gothic One",
+    renderStyle: "mural",
   },
   {
     id: "neon-sign",
@@ -130,6 +139,7 @@ const BUILT_IN_TEMPLATES: PreviewTemplate[] = [
     name: "Mint",
     design: tapeMintDesign,
     font: "Dela Gothic One",
+    renderStyle: "mural",
   },
   {
     id: "tape-sky",
@@ -148,6 +158,7 @@ const BUILT_IN_TEMPLATES: PreviewTemplate[] = [
     name: "Night",
     design: tapeNightDesign,
     font: "Dela Gothic One",
+    renderStyle: "mural",
   },
   {
     id: "colour-bars",
@@ -181,18 +192,7 @@ const BUILT_IN_TEMPLATES: PreviewTemplate[] = [
   },
 ];
 
-const sampleTournament: TournamentInfo = {
-  tournamentName: "Some Tournament",
-  eventName: "Some Event",
-  date: new Date(1999, 10, 7).toISOString(),
-  location: {
-    city: "College Station",
-    state: "TX",
-    country: "US",
-  },
-  entrants: 69,
-  url: "https://start.gg/420-69-tournament",
-};
+const sampleTournament = SAMPLE_TOURNAMENT;
 
 // A name that needs two lines, with an icon beside it.
 const longNameTournament: TournamentInfo = {
@@ -202,7 +202,18 @@ const longNameTournament: TournamentInfo = {
   iconSrc: "/og-default.png",
 };
 
-const samplePlayers = createSamplePlayers(24);
+const sampleLineups = Array.from({ length: SAMPLE_LINEUP_COUNT }, (_, lineup) =>
+  createSamplePlayers(24, lineup),
+);
+const samplePlayers = sampleLineups[0];
+
+// Templates with no players of their own get one of the lineups, picked from
+// the id so it stays the same when templates are added.
+const lineupFor = (id: string) =>
+  sampleLineups[
+    Array.from(id).reduce((sum, char) => sum + char.charCodeAt(0), 0) %
+      sampleLineups.length
+  ];
 
 // Players with enough characters to wrap onto extra rows, which is what
 // makes dynamic player height grow cards and the canvas.
@@ -217,8 +228,8 @@ const multiCharacterPlayers = samplePlayers.map((player, index) => {
   };
 });
 
-// A different fighter in every slot, with prefixes, flags and long tags, for
-// templates whose look depends on the character art.
+// The sample players already have a different fighter in every slot, with
+// prefixes and flags; the cases below start from them.
 const CAST_IDS = [
   "1453",
   "1766",
@@ -229,34 +240,7 @@ const CAST_IDS = [
   "1331",
   "1846",
 ];
-const CAST_TAGS = [
-  "Kairo",
-  "Lumen",
-  "Sable",
-  "ふたりのきわみ",
-  "Dusk",
-  "Piko",
-  "Brask",
-  "Onyx",
-];
-const CAST_PREFIXES = ["NVX", "ARC", "", "TKO", "", "ARC", "", "NVX"];
-const CAST_COUNTRIES = ["JP", "US", "MX", "FR", "", "CA", "US", "KR"];
-const castPlayers = samplePlayers.map((player, index) =>
-  index < CAST_IDS.length
-    ? {
-        ...player,
-        gamerTag: CAST_TAGS[index],
-        prefix: CAST_PREFIXES[index],
-        country: CAST_COUNTRIES[index],
-        characters: [
-          { id: CAST_IDS[index], alt: 0 as CharacerData["alt"] },
-          ...(index === 1 || index === 4
-            ? [{ id: "1302", alt: 0 as CharacerData["alt"] }]
-            : []),
-        ],
-      }
-    : player,
-);
+const castPlayers = samplePlayers;
 
 // A name too long for its column beside a player with many characters, for
 // tables that have to share the width out.
@@ -276,7 +260,7 @@ const crowdedPlayers = castPlayers.map((player, index) => ({
 // Long tags and sponsors next to short ones, for name plates that shrink
 // and cut.
 const LONG_TAGS = [
-  "Kairo",
+  "Reo M",
   "Kumonosu Thunderstorm",
   "VantaBlackMagicWoman99",
   "Lumen",
@@ -297,7 +281,13 @@ const LONG_PREFIXES = [
 ];
 const longNamePlayers = castPlayers.map((player, index) =>
   index < LONG_TAGS.length
-    ? { ...player, gamerTag: LONG_TAGS[index], prefix: LONG_PREFIXES[index] }
+    ? {
+        ...player,
+        gamerTag: LONG_TAGS[index],
+        prefix: LONG_PREFIXES[index],
+        // One player with no flag.
+        ...(index === 2 && { country: "" }),
+      }
     : player,
 );
 
@@ -505,7 +495,10 @@ const TemplateRenderer = ({
   onCaptured: (id: string, dataUrl: string) => void;
 }) => {
   const stageRef = useRef<KonvaStage>(null);
-  const players = template.players ?? samplePlayers;
+  const basePlayers = template.players ?? lineupFor(template.id);
+  const players = template.renderStyle
+    ? applyRenderStyle(basePlayers, template.renderStyle)
+    : basePlayers;
   const tournament = template.tournament ?? sampleTournament;
   const stageSize = getEffectiveCanvasSize(
     template.design,
