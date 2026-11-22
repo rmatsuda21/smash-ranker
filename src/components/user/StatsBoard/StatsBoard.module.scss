@@ -167,7 +167,7 @@
 
   svg {
     font-size: 20px;
-    color: var(--medal);
+    color: var(--medal-gold);
     animation: medalPop 0.6s cubic-bezier(0.3, 1.4, 0.5, 1)
       calc(var(--delay) + 250ms) backwards;
   }
@@ -176,24 +176,12 @@
     font-size: var(--title-size);
   }
 
-  &.gold {
-    --medal: var(--medal-gold);
+  &:nth-child(2) svg {
+    animation-delay: calc(var(--delay) + 350ms);
   }
 
-  &.silver {
-    --medal: var(--medal-silver);
-
-    svg {
-      animation-delay: calc(var(--delay) + 350ms);
-    }
-  }
-
-  &.bronze {
-    --medal: var(--medal-bronze);
-
-    svg {
-      animation-delay: calc(var(--delay) + 450ms);
-    }
+  &:nth-child(3) svg {
+    animation-delay: calc(var(--delay) + 450ms);
   }
 }
 

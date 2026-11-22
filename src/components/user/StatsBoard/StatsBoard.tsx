@@ -3,6 +3,7 @@ import cn from "classnames";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import {
+  FaAward,
   FaBolt,
   FaCalendarDays,
   FaFire,
@@ -227,22 +228,22 @@ export const StatsBoard = ({ events, sets, setsLoading }: Props) => {
         icon={<FaMedal aria-hidden="true" />}
       >
         <div className={styles.shelf}>
-          <div className={cn(styles.medal, styles.gold)}>
+          <div className={styles.medal}>
             <FaTrophy aria-hidden="true" />
             <CountUp value={career.wins} />
             <span>
               <Trans>Wins</Trans>
             </span>
           </div>
-          <div className={cn(styles.medal, styles.silver)}>
-            <FaMedal aria-hidden="true" />
+          <div className={styles.medal}>
+            <FaRankingStar aria-hidden="true" />
             <CountUp value={career.podiums} />
             <span>
               <Trans>Top 3</Trans>
             </span>
           </div>
-          <div className={cn(styles.medal, styles.bronze)}>
-            <FaRankingStar aria-hidden="true" />
+          <div className={styles.medal}>
+            <FaAward aria-hidden="true" />
             <CountUp value={career.top8s} />
             <span>
               <Trans>Top 8</Trans>

@@ -37,6 +37,8 @@ import { DBTemplate } from "@/types/Repository";
 import { useCanvasStore } from "@/store/canvasStore";
 import { usePlayerStore } from "@/store/playerStore";
 import { useFontStore } from "@/store/fontStore";
+import { useTemplateFavoritesStore } from "@/store/templateFavoritesStore";
+import { logEvent } from "@/utils/observability/log";
 import { loadFamily } from "@/utils/fonts/fontLoader";
 import { collectDesignFontWeights } from "@/utils/fonts/designWeights";
 import { resizePlayerSlots } from "@/utils/top8/playerCount";
@@ -262,6 +264,13 @@ export const TemplateEditor = ({ className }: Props) => {
   const dispatch = useCanvasStore((state) => state.dispatch);
   const playerDispatch = usePlayerStore((state) => state.dispatch);
   const selectFont = useFontStore((state) => state.selectFont);
+  const favoriteIds = useTemplateFavoritesStore((state) => state.favoriteIds);
+  const toggleFavorite = useTemplateFavoritesStore(
+    (state) => state.toggleFavorite,
+  );
+  const removeFavorite = useTemplateFavoritesStore(
+    (state) => state.removeFavorite,
+  );
 
   useEffect(() => {
     const fetchTemplates = async () => {
@@ -290,6 +299,42 @@ export const TemplateEditor = ({ className }: Props) => {
       })),
     [_],
   );
+
+  // Favorited templates, newest first. A built-in variant is named after its
+  // group here ("Tape · Mint"), since "Mint" alone says nothing outside it.
+  // Ids with no template behind them (a deleted one) are skipped.
+  const favoriteTemplates = useMemo(() => {
+    const byId = new Map<string, DBTemplate>();
+    for (const group of templateGroups) {
+      for (const template of group.templates) {
+        byId.set(template.id, {
+          ...template,
+          name:
+            group.templates.length > 1
+              ? `${group.name} · ${template.name}`
+              : group.name,
+        });
+      }
+    }
+    for (const template of userTemplates) byId.set(template.id, template);
+
+    return favoriteIds
+      .map((id) => byId.get(id))
+      .filter((template) => template !== undefined);
+  }, [favoriteIds, templateGroups, userTemplates]);
+
+  const handleToggleFavorite = (id: string) => {
+    logEvent("template_favorite", {
+      template_id: id,
+      is_favorite: !favoriteIds.includes(id),
+    });
+    toggleFavorite(id);
+  };
+
+  const handleDeleteTemplate = async (id: string) => {
+    await deleteTemplate(id);
+    removeFavorite(id);
+  };
 
   const loadTemplate = async (id: string) => {
     setLoadingTemplateId(id);
@@ -352,7 +397,7 @@ export const TemplateEditor = ({ className }: Props) => {
   const {
     confirm: confirmDeleteTemplate,
     confirmationDialog: deleteTemplateConfirmation,
-  } = useConfirmation(deleteTemplate, {
+  } = useConfirmation(handleDeleteTemplate, {
     title: _(msg`Delete Template?`),
     description: _(msg`This template will be permanently deleted.`),
   });
@@ -395,11 +440,25 @@ export const TemplateEditor = ({ className }: Props) => {
         </div>
       </div>
 
+      {favoriteTemplates.length > 0 && (
+        <TemplateGroup
+          templates={favoriteTemplates}
+          name={_(msg`Favorites`)}
+          analyticsGroup="favorites"
+          onTemplateClick={confirmTemplateClick}
+          favoriteIds={favoriteIds}
+          onToggleFavorite={handleToggleFavorite}
+          viewMode={viewMode}
+          loadingTemplateId={loadingTemplateId}
+        />
+      )}
       <TemplateGroup
         templates={userTemplates}
         name={_(msg`My Templates`)}
         onTemplateClick={confirmTemplateClick}
         onDeleteTemplate={confirmDeleteTemplate}
+        favoriteIds={favoriteIds}
+        onToggleFavorite={handleToggleFavorite}
         viewMode={viewMode}
         loadingTemplateId={loadingTemplateId}
         action={
@@ -424,6 +483,8 @@ export const TemplateEditor = ({ className }: Props) => {
           templates={group.templates}
           name={group.name}
           onTemplateClick={confirmTemplateClick}
+          favoriteIds={favoriteIds}
+          onToggleFavorite={handleToggleFavorite}
           viewMode={viewMode}
           loadingTemplateId={loadingTemplateId}
         />

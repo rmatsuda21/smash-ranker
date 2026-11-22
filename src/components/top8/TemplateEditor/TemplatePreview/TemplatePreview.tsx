@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Stage, Layer } from "react-konva";
 import { Stage as KonvaStage } from "konva/lib/Stage";
 import cn from "classnames";
-import { FaTrash } from "react-icons/fa6";
+import { FaRegStar, FaStar, FaTrash } from "react-icons/fa6";
 import { msg } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 
@@ -45,6 +45,8 @@ type Props = {
   template: DBTemplate;
   onClick: () => void;
   onDelete?: () => void;
+  isFavorite?: boolean;
+  onToggleFavorite?: () => void;
   className?: string;
   isLoading?: boolean;
 };
@@ -54,11 +56,14 @@ const samplePlayers = createSamplePlayers(20);
 const sampleTournament = SAMPLE_TOURNAMENT;
 
 // One template: the thumbnail is the button that loads it, with the name
-// (and Delete, for the user's own templates) underneath.
+// (plus the favorite star, and Delete for the user's own templates)
+// underneath.
 const PreviewShell = ({
   template,
   onClick,
   onDelete,
+  isFavorite = false,
+  onToggleFavorite,
   className,
   isLoading,
   offscreen,
@@ -92,10 +97,27 @@ const PreviewShell = ({
         <span className={styles.name} title={template.name}>
           {template.name}
         </span>
+        {onToggleFavorite && (
+          <button
+            type="button"
+            className={cn(styles.captionButton, styles.favoriteButton, {
+              [styles.favorited]: isFavorite,
+            })}
+            onClick={onToggleFavorite}
+            aria-pressed={isFavorite}
+            aria-label={
+              isFavorite
+                ? _(msg`Remove from favorites: ${template.name}`)
+                : _(msg`Add to favorites: ${template.name}`)
+            }
+          >
+            {isFavorite ? <FaStar size={12} /> : <FaRegStar size={12} />}
+          </button>
+        )}
         {onDelete && (
           <button
             type="button"
-            className={styles.deleteButton}
+            className={cn(styles.captionButton, styles.deleteButton)}
             onClick={onDelete}
             aria-label={_(msg`Delete template: ${template.name}`)}
           >

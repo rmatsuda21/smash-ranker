@@ -95,6 +95,30 @@ export const InfoPanel = ({ className }: Props) => {
             </div>
             <div>
               <a
+                href="https://kagaribi.tokyo/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Kagaribi
+              </a>
+              <span className={styles.creditDesc}>
+                <Trans>Template design inspiration</Trans>
+              </span>
+            </div>
+            <div>
+              <a
+                href="https://x.com/SmashAwesome"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Sumaosame
+              </a>
+              <span className={styles.creditDesc}>
+                <Trans>Template design inspiration</Trans>
+              </span>
+            </div>
+            <div>
+              <a
                 href="https://www.ssbwiki.com"
                 target="_blank"
                 rel="noopener noreferrer"

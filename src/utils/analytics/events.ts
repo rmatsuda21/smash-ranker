@@ -45,6 +45,7 @@ export type EventName =
   | "graphic_share"
   // Customization
   | "template_select"
+  | "template_favorite"
   | "custom_font_upload"
   | "custom_font_upload_fail"
   | "custom_asset_upload";

@@ -14,6 +14,10 @@ type Props = {
   name: string;
   onTemplateClick: (templateId: string) => void;
   onDeleteTemplate?: (templateId: string) => void;
+  favoriteIds: string[];
+  onToggleFavorite: (templateId: string) => void;
+  /** Group name reported with template_select; defaults to `name`. */
+  analyticsGroup?: string;
   viewMode: "grid" | "list";
   loadingTemplateId: string | null;
   /** Shown at the end of the header, next to the group name. */
@@ -27,6 +31,9 @@ export const TemplateGroup = ({
   name,
   onTemplateClick,
   onDeleteTemplate,
+  favoriteIds,
+  onToggleFavorite,
+  analyticsGroup,
   viewMode,
   loadingTemplateId,
   action,
@@ -75,7 +82,7 @@ export const TemplateGroup = ({
                   onTemplateClick(template.id);
                   logEvent("template_select", {
                     template_id: template.id,
-                    template_group: name,
+                    template_group: analyticsGroup ?? name,
                   });
                 }}
                 onDelete={
@@ -83,6 +90,8 @@ export const TemplateGroup = ({
                     ? () => onDeleteTemplate(template.id)
                     : undefined
                 }
+                isFavorite={favoriteIds.includes(template.id)}
+                onToggleFavorite={() => onToggleFavorite(template.id)}
                 isLoading={loadingTemplateId === template.id}
               />
             ))}
