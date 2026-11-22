@@ -4,6 +4,7 @@ import { AssetLoadBoundary } from "@/components/top8/Canvas/AssetLoadBoundary";
 import { ElementList } from "@/utils/top8/elementFactory";
 import { fitBackgroundToCanvas } from "@/utils/top8/scene";
 import type { Design, ElementConfig } from "@/types/top8/Design";
+import type { TournamentInfo } from "@/types/top8/Tournament";
 
 import {
   useSceneFactoryContext,
@@ -19,6 +20,9 @@ type Props = {
   effectiveCanvasSize: Design["canvasSize"];
   design: SceneDesign;
   fontFamily: string;
+  /** For background text that names the tournament (it sits under the
+   *  players, where tournament layer text cannot go). */
+  tournament?: TournamentInfo;
   onReady?: () => void;
 };
 
@@ -31,6 +35,7 @@ export const BackgroundContent = memo(
     effectiveCanvasSize,
     design,
     fontFamily,
+    tournament,
     onReady,
   }: Props) => {
     const factoryContext = useSceneFactoryContext();
@@ -51,8 +56,9 @@ export const BackgroundContent = memo(
         containerSize: effectiveCanvasSize,
         design,
         fontFamily,
+        tournament,
       }),
-      [factoryContext, effectiveCanvasSize, design, fontFamily],
+      [factoryContext, effectiveCanvasSize, design, fontFamily, tournament],
     );
 
     return (

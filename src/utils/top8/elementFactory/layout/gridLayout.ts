@@ -42,6 +42,44 @@ export const findOptimalSquareGrid = (
   return { columns: bestColumns, cellSize: bestCellSize };
 };
 
+/**
+ * Sizing strategy for square cells stacked in columns (`flow: "column"`
+ * character lists): cells keep `preferredSize`, `maxRows` to a column, while
+ * the columns that takes fit the container's width. Past that the cells
+ * shrink, a pixel at a time, with as many to a column as the height allows.
+ */
+export const fitColumnStacks = (
+  numItems: number,
+  maxRows: number,
+  preferredSize: number,
+  containerWidth: number,
+  containerHeight: number,
+  columnGap: number,
+  rowGap: number,
+): { rows: number; columns: number; cellSize: number } => {
+  const MIN_CELL_SIZE = 10;
+  let rows = 1;
+  let columns = numItems;
+  let cellSize = preferredSize;
+
+  for (; cellSize >= MIN_CELL_SIZE; cellSize--) {
+    const fitting = Math.max(
+      1,
+      Math.floor((containerHeight + rowGap) / (cellSize + rowGap)),
+    );
+    const perColumn =
+      cellSize === preferredSize ? Math.min(maxRows, fitting) : fitting;
+    rows = Math.min(perColumn, numItems);
+    columns = Math.ceil(numItems / perColumn);
+
+    if (columns * cellSize + (columns - 1) * columnGap <= containerWidth) {
+      break;
+    }
+  }
+
+  return { rows, columns, cellSize: Math.max(cellSize, MIN_CELL_SIZE) };
+};
+
 interface GridDimensions {
   rows: number;
   columns: number;

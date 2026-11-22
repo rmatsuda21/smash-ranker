@@ -16,6 +16,7 @@ import { standingsLightDesign, standingsDarkDesign } from "@/designs/standings";
 import { comicBookDesign } from "@/designs/comicBook";
 import { neonSignDesign } from "@/designs/neonSign";
 import { highScoreDesign } from "@/designs/highScore";
+import { tapeDesign } from "@/designs/tape";
 import { kagaribiDesign } from "@/designs/kagaribi";
 import { kagaribi16Design } from "@/designs/kagaribi16";
 import { Button } from "@/components/shared/Button/Button";
@@ -133,6 +134,18 @@ const DEFAULT_TEMPLATE_GROUPS: DefaultTemplateGroup[] = [
         name: msg`Original`,
         design: highScoreDesign,
         font: "DotGothic16",
+      },
+    ],
+  },
+  {
+    id: "tape",
+    name: msg`Tape`,
+    templates: [
+      {
+        id: "tape",
+        name: msg`Original`,
+        design: tapeDesign,
+        font: "Dela Gothic One",
       },
     ],
   },

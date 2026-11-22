@@ -12,6 +12,7 @@ import { PlayersContent } from "@/components/top8/Canvas/scene/PlayersContent";
 import { usePlayerStore } from "@/store/playerStore";
 import { useCanvasStore } from "@/store/canvasStore";
 import { useFontStore } from "@/store/fontStore";
+import { useTournamentStore } from "@/store/tournamentStore";
 import { PlayerInfo } from "@/types/top8/Player";
 import { useEffectiveCanvasSize } from "@/hooks/top8/useEffectiveCanvasSize";
 import { usePlayerConfigs, useSceneDesign } from "@/hooks/top8/useSceneState";
@@ -131,6 +132,7 @@ const EditableContentLayersComponent = ({
   const hoverRectsByPlayerId = useRef<Map<string, KonvaRect>>(new Map());
 
   const players = usePlayerStore((state) => state.players);
+  const tournament = useTournamentStore((state) => state.info);
   const displayedFont = useFontStore((state) => state.displayedFont);
   const editable = useCanvasStore((state) => state.editable);
   const backgroundElements = useCanvasStore(
@@ -176,6 +178,7 @@ const EditableContentLayersComponent = ({
             effectiveCanvasSize={effectiveCanvasSize}
             design={design}
             fontFamily={displayedFont}
+            tournament={tournament}
             onReady={onBackgroundReady}
           />
         </Group>

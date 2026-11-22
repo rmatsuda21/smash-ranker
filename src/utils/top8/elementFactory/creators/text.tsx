@@ -83,5 +83,14 @@ export const createSmartTextElement: ElementCreator<SmartTextElementConfig> = ({
     verticalAlign={element.verticalAlign}
     anchor={element.anchor}
     overflow={element.overflow}
+    minFontSize={element.minFontSize}
+    background={
+      element.background && {
+        ...element.background,
+        fill:
+          resolveColor(element.background.fill, context.design?.colorPalette) ??
+          element.background.fill,
+      }
+    }
   />
 );

@@ -170,6 +170,7 @@ export const StaticScene = ({
           effectiveCanvasSize={effectiveCanvasSize}
           design={sceneDesign}
           fontFamily={fontFamily}
+          tournament={tournament}
           onReady={markReady.background}
         />
       </Group>

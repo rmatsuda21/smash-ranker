@@ -131,6 +131,9 @@ type FitInput = {
   /** `false` keeps the design's size whatever the width (the text is cut
    *  off instead). */
   shrink?: boolean;
+  /** Smallest size the fit goes down to. Text too wide even then is
+   *  `truncated`. */
+  minFontSize?: number;
 } & Pick<
   TextConfig,
   "fontFamily" | "fontStyle" | "padding" | "lineHeight" | "letterSpacing"
@@ -142,6 +145,10 @@ export type FittedText = {
   /** Node offset that puts the anchor point at the node's position. */
   offsetX: number;
   offsetY: number;
+  /** Width of the text at the fitted size, no wider than the box. */
+  textWidth: number;
+  /** Still too wide at `minFontSize`: draw it on one line with an ellipsis. */
+  truncated: boolean;
 };
 
 const anchorOffsets = (
@@ -229,9 +236,13 @@ const computeFit = ({
   anchor,
   verticalAlign,
   shrink = true,
+  minFontSize,
   ...typography
 }: FitInput): FittedText => {
-  if (!text) return { fontSize, offsetX: 0, offsetY: 0 };
+  if (!text) {
+    return { fontSize, offsetX: 0, offsetY: 0, textWidth: 0, truncated: false };
+  }
+  const smallest = Math.min(minFontSize ?? MIN_FONT_SIZE, fontSize);
 
   // Single-line node for the fit loop: no box, so nothing wraps.
   const node = new KonvaText(defined({ ...typography, text, fontSize }));
@@ -248,7 +259,7 @@ const computeFit = ({
     for (let i = 0; measuredWidth > width && i < MAX_FIT_ITERATIONS; i++) {
       const nextSize = Math.max(
         Math.floor(fitted * (width / measuredWidth) * FIT_SAFETY_MARGIN),
-        MIN_FONT_SIZE,
+        smallest,
       );
       if (nextSize === fitted) break;
 
@@ -268,9 +279,16 @@ const computeFit = ({
     node.fontSize(fitted);
   }
 
+  const measuredWidth = measure();
+  const truncated =
+    shrink && minFontSize !== undefined && !!width && measuredWidth > width;
+  const textWidth = width ? Math.min(measuredWidth, width) : measuredWidth;
+
   // Now give it the real box to read the laid-out size (text that still
-  // overflows at the minimum size wraps and gets taller).
-  node.setAttrs(defined({ width, height, wrap: shrink ? "word" : "none" }));
+  // overflows at the minimum size wraps and gets taller, unless it is cut).
+  node.setAttrs(
+    defined({ width, height, wrap: shrink && !truncated ? "word" : "none" }),
+  );
   const { offsetX, offsetY } = anchorOffsets(
     anchor,
     node.width(),
@@ -279,7 +297,13 @@ const computeFit = ({
   const correction =
     verticalAlign === "middle" ? middleAlignCorrection(node) : 0;
 
-  return { fontSize: fitted, offsetX, offsetY: offsetY - correction };
+  return {
+    fontSize: fitted,
+    offsetX,
+    offsetY: offsetY - correction,
+    textWidth,
+    truncated,
+  };
 };
 
 /** Shrinks text to fit its box width and resolves its anchor offsets. */

@@ -145,10 +145,22 @@ export interface SmartTextElementConfig
   /** What text wider than its box does: get smaller (the default), or keep
    *  its size and end in an ellipsis. */
   overflow?: "shrink" | "ellipsis";
+  /** Shrinking stops at this size; text still too wide is cut with an
+   *  ellipsis. Without it text shrinks as far as it has to. */
+  minFontSize?: number;
+  /** A filled box behind the text that is as wide as the text itself (at
+   *  the size it was fitted to) plus `padding`: a label or name tab. */
+  background?: TextBackground;
   shadowColor?: string;
   shadowBlur?: number;
   shadowOffset?: { x: number; y: number };
   shadowOpacity?: number;
+}
+
+export interface TextBackground {
+  /** Hex, rgba, or palette key. */
+  fill: string;
+  padding?: { top?: number; right?: number; bottom?: number; left?: number };
 }
 
 export interface ImageElementConfig
@@ -308,6 +320,13 @@ export interface CustomAltCharacterImageElementConfig extends BaseElementConfig 
   align?: FlexAlign;
   justify?: FlexAlign;
   alignLastRow?: FlexAlign;
+  /**
+   * With an `elementTemplate` and `rows`: `column` stacks the characters
+   * top to bottom, `rows` to a column, starting at the right edge of the box
+   * and adding columns to the left. Cells keep the template's size unless
+   * `rows` of them are taller than the box.
+   */
+  flow?: FlexGridFlow;
 }
 
 export interface SvgElementConfig

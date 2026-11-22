@@ -23,6 +23,7 @@ import { standingsLightDesign, standingsDarkDesign } from "@/designs/standings";
 import { comicBookDesign } from "@/designs/comicBook";
 import { neonSignDesign } from "@/designs/neonSign";
 import { highScoreDesign } from "@/designs/highScore";
+import { tapeDesign } from "@/designs/tape";
 import { resizePlayerSlots } from "@/utils/top8/playerCount";
 
 declare global {
@@ -33,7 +34,10 @@ declare global {
   }
 }
 
-type PreviewTemplate = DBTemplate & { players?: PlayerInfo[] };
+type PreviewTemplate = DBTemplate & {
+  players?: PlayerInfo[];
+  tournament?: TournamentInfo;
+};
 
 const BUILT_IN_TEMPLATES: PreviewTemplate[] = [
   {
@@ -102,7 +106,34 @@ const BUILT_IN_TEMPLATES: PreviewTemplate[] = [
     design: highScoreDesign,
     font: "DotGothic16",
   },
+  {
+    id: "tape",
+    name: "Original",
+    design: tapeDesign,
+    font: "Dela Gothic One",
+  },
 ];
+
+const sampleTournament: TournamentInfo = {
+  tournamentName: "Some Tournament",
+  eventName: "Some Event",
+  date: new Date(1999, 10, 7).toISOString(),
+  location: {
+    city: "College Station",
+    state: "TX",
+    country: "US",
+  },
+  entrants: 69,
+  url: "https://start.gg/420-69-tournament",
+};
+
+// A name that needs two lines, with an icon beside it.
+const longNameTournament: TournamentInfo = {
+  ...sampleTournament,
+  tournamentName: "Yokohama Harbor Clash Championship Series 12: Winter Finals",
+  eventName: "Ultimate Singles",
+  iconSrc: "/og-default.png",
+};
 
 const samplePlayers = createSamplePlayers(24);
 
@@ -175,6 +206,34 @@ const crowdedPlayers = castPlayers.map((player, index) => ({
   }),
 }));
 
+// Long tags and sponsors next to short ones, for name plates that shrink
+// and cut.
+const LONG_TAGS = [
+  "Kairo",
+  "Kumonosu Thunderstorm",
+  "VantaBlackMagicWoman99",
+  "Lumen",
+  "Hollow the Unbreakable",
+  "テンキーおじさん（本物）",
+  "Brask",
+  "xX_Ostrich_Runner_Xx",
+];
+const LONG_PREFIXES = [
+  "Yokohama Bay Gaming",
+  "KMO",
+  "",
+  "PXL",
+  "Team Hollow Knights JP",
+  "",
+  "LYS",
+  "SDJ",
+];
+const longNamePlayers = castPlayers.map((player, index) =>
+  index < LONG_TAGS.length
+    ? { ...player, gamerTag: LONG_TAGS[index], prefix: LONG_PREFIXES[index] }
+    : player,
+);
+
 // Golden-only cases: variations of built-in templates that exercise code the
 // plain templates don't. They never become picker thumbnails.
 const GOLDEN_ONLY_TEMPLATES: PreviewTemplate[] = [
@@ -228,6 +287,31 @@ const GOLDEN_ONLY_TEMPLATES: PreviewTemplate[] = [
     design: highScoreDesign,
     font: "DotGothic16",
     players: crowdedPlayers,
+  },
+  {
+    id: "tape-cast",
+    name: "Tape, varied cast",
+    design: tapeDesign,
+    font: "Dela Gothic One",
+    players: castPlayers,
+  },
+  // Stacks of extra characters, wrapping into a second column.
+  {
+    id: "tape-multi",
+    name: "Tape, multi-character",
+    design: tapeDesign,
+    font: "Dela Gothic One",
+    players: multiCharacterPlayers,
+  },
+  // Tape that has to shrink, then cut, long names and sponsors; a title on
+  // two lines beside the tournament's icon.
+  {
+    id: "tape-crowded",
+    name: "Tape, long names",
+    design: tapeDesign,
+    font: "Dela Gothic One",
+    players: longNamePlayers,
+    tournament: longNameTournament,
   },
   // Player count changed in the Players tab (`dynamicPlayerCount`).
   {
@@ -284,19 +368,6 @@ const CAPTURE_OPTIONS = GOLDEN_MODE
   ? { mimeType: "image/png", pixelRatio: 0.5 }
   : { mimeType: "image/webp", quality: 0.5 };
 
-const sampleTournament: TournamentInfo = {
-  tournamentName: "Some Tournament",
-  eventName: "Some Event",
-  date: new Date(1999, 10, 7).toISOString(),
-  location: {
-    city: "College Station",
-    state: "TX",
-    country: "US",
-  },
-  entrants: 69,
-  url: "https://start.gg/420-69-tournament",
-};
-
 const TemplateRenderer = ({
   template,
   onCaptured,
@@ -306,14 +377,12 @@ const TemplateRenderer = ({
 }) => {
   const stageRef = useRef<KonvaStage>(null);
   const players = template.players ?? samplePlayers;
+  const tournament = template.tournament ?? sampleTournament;
   const stageSize = getEffectiveCanvasSize(
     template.design,
     players,
     template.font,
-    getUnusedIconSpace(
-      template.design.tournamentIconSpace,
-      sampleTournament.iconSrc,
-    ),
+    getUnusedIconSpace(template.design.tournamentIconSpace, tournament.iconSrc),
   );
   const [isSceneReady, setIsSceneReady] = useState(false);
   const [captured, setCaptured] = useState(false);
@@ -355,7 +424,7 @@ const TemplateRenderer = ({
             <StaticScene
               design={template.design}
               players={players}
-              tournament={sampleTournament}
+              tournament={tournament}
               fontFamily={template.font}
               onReady={handleSceneReady}
             />

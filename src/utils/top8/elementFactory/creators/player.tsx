@@ -24,6 +24,7 @@ import { createFlexGridElement } from "./layout";
 import {
   calculateGridAlignOffset,
   findOptimalSquareGrid,
+  fitColumnStacks,
   placeGridCells,
 } from "../layout/gridLayout";
 import { getElementKey } from "../elementKey";
@@ -263,7 +264,9 @@ function renderCustomAltWithTemplate(
     align = "start",
     justify = "start",
     alignLastRow = "start",
+    flow = "row",
   } = element;
+  const isColumnFlow = flow === "column" && fixedRows !== undefined;
 
   const numItems = characters.length;
   const preferredCellSize = template.size?.width ?? 70;
@@ -282,13 +285,30 @@ function renderCustomAltWithTemplate(
     rowGap,
   );
 
-  const effectiveColumns = fixedColumns ?? optimalGrid.columns;
-  const effectiveRows = fixedRows ?? Math.ceil(numItems / effectiveColumns);
+  const stacks = isColumnFlow
+    ? fitColumnStacks(
+        numItems,
+        fixedRows,
+        preferredCellSize,
+        containerWidth,
+        containerHeight,
+        columnGap,
+        rowGap,
+      )
+    : undefined;
+
+  const effectiveColumns =
+    stacks?.columns ?? fixedColumns ?? optimalGrid.columns;
+  const effectiveRows =
+    stacks?.rows ?? fixedRows ?? Math.ceil(numItems / effectiveColumns);
 
   let cellWidth: number;
   let cellHeight: number;
 
-  if (fixedColumns) {
+  if (stacks) {
+    cellWidth = stacks.cellSize;
+    cellHeight = stacks.cellSize;
+  } else if (fixedColumns) {
     cellWidth = preferredCellSize;
     cellHeight = preferredCellSize;
   } else if (fixedRows) {
@@ -308,7 +328,11 @@ function renderCustomAltWithTemplate(
   const gridContentHeight =
     effectiveRows * cellHeight + (effectiveRows - 1) * rowGap;
 
-  const actualContainerWidth = gridContentWidth;
+  // Stacks are placed inside the box's width (they start at its right
+  // edge); row grids are only ever as wide as their content.
+  const actualContainerWidth = isColumnFlow
+    ? (element.size?.width ?? gridContentWidth)
+    : gridContentWidth;
   // A grid shorter than its box is aligned inside the box.
   const actualContainerHeight = containerHeight;
 
@@ -332,8 +356,14 @@ function renderCustomAltWithTemplate(
     columnGap,
     rowGap,
     alignLastRow,
+    flow: isColumnFlow ? "column" : "row",
   });
-  const cellSize = { width: cellWidth, height: cellHeight };
+  // Stacks draw the template at its own size and scale the whole cell, so
+  // what is inside the template shrinks with it.
+  const cellScale = stacks ? cellWidth / preferredCellSize : 1;
+  const cellSize = stacks
+    ? { width: preferredCellSize, height: preferredCellSize }
+    : { width: cellWidth, height: cellHeight };
 
   const renderedElements = characters.map((character, idx) => {
     const { x, y } = cells[idx];
@@ -343,6 +373,8 @@ function renderCustomAltWithTemplate(
         key={`custom-alt-wrapper-${idx}`}
         x={gridOffsetX + x}
         y={gridOffsetY + y}
+        scaleX={cellScale}
+        scaleY={cellScale}
       >
         {renderTemplateForCharacter(
           // The template's own size is the preferred cell; draw it at the

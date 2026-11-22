@@ -14,6 +14,7 @@ import { composeFontStyle } from "@/utils/fonts/fontLoader";
 import { evaluateElementCondition } from "@/utils/top8/evaluateElementCondition";
 import { resolveElementText } from "@/utils/top8/resolveElementText";
 import {
+  fitText,
   fitWrappedFontSize,
   measureTextBoxHeight,
   measureTextBoxWidth,
@@ -192,6 +193,27 @@ export const getElementMainSize = (
         ),
         width: element.size.width,
       });
+    }
+
+    // Text that shrinks to a fixed width is as tall as the size it ends up at.
+    if (element.type === "smartText" && element.size?.width !== undefined) {
+      const fontFamily = context.fontFamily ?? "Arial";
+
+      return fitText({
+        text: resolveElementText(element, context),
+        fontSize: element.fontSize ?? 20,
+        fontFamily,
+        fontStyle: composeFontStyle(
+          fontFamily,
+          element.fontWeight,
+          element.fontStyle,
+        ),
+        width: element.size.width,
+        anchor: "topLeft",
+        letterSpacing: element.letterSpacing,
+        shrink: element.overflow !== "ellipsis",
+        minFontSize: element.minFontSize,
+      }).fontSize;
     }
 
     if (element.type === "text" || element.type === "smartText") {
