@@ -95,7 +95,7 @@ export const InfoPanel = ({ className }: Props) => {
             </div>
             <div>
               <a
-                href="https://kagaribi.tokyo/"
+                href="https://x.com/KAGARIBI_smash"
                 target="_blank"
                 rel="noopener noreferrer"
               >
