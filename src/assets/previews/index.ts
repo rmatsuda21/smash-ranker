@@ -15,6 +15,9 @@ import tape_sky from "./tape-sky.webp";
 import tape_pink from "./tape-pink.webp";
 import tape_night from "./tape-night.webp";
 import colour_bars from "./colour-bars.webp";
+import colour_bars_signal from "./colour-bars-signal.webp";
+import colour_bars_pastel from "./colour-bars-pastel.webp";
+import colour_bars_mono from "./colour-bars-mono.webp";
 
 export const defaultPreviews: Record<string, string> = {
   "top8er": top8er,
@@ -34,4 +37,7 @@ export const defaultPreviews: Record<string, string> = {
   "tape-pink": tape_pink,
   "tape-night": tape_night,
   "colour-bars": colour_bars,
+  "colour-bars-signal": colour_bars_signal,
+  "colour-bars-pastel": colour_bars_pastel,
+  "colour-bars-mono": colour_bars_mono,
 };

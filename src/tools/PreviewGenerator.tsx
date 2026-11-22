@@ -23,7 +23,12 @@ import { standingsLightDesign, standingsDarkDesign } from "@/designs/standings";
 import { comicBookDesign } from "@/designs/comicBook";
 import { neonSignDesign } from "@/designs/neonSign";
 import { highScoreDesign } from "@/designs/highScore";
-import { colourBarsDesign } from "@/designs/colourBars";
+import {
+  colourBarsDesign,
+  colourBarsMonoDesign,
+  colourBarsPastelDesign,
+  colourBarsSignalDesign,
+} from "@/designs/colourBars";
 import {
   tapeDesign,
   tapeMintDesign,
@@ -147,6 +152,24 @@ const BUILT_IN_TEMPLATES: PreviewTemplate[] = [
     id: "colour-bars",
     name: "Original",
     design: colourBarsDesign,
+    font: "Noto Sans JP",
+  },
+  {
+    id: "colour-bars-signal",
+    name: "Signal",
+    design: colourBarsSignalDesign,
+    font: "Noto Sans JP",
+  },
+  {
+    id: "colour-bars-pastel",
+    name: "Pastel",
+    design: colourBarsPastelDesign,
+    font: "Noto Sans JP",
+  },
+  {
+    id: "colour-bars-mono",
+    name: "Mono",
+    design: colourBarsMonoDesign,
     font: "Noto Sans JP",
   },
 ];

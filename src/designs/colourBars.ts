@@ -41,19 +41,100 @@ const BAR_KEYS = [
   "bar8",
 ];
 
-const colorPalette: Design["colorPalette"] = {
+type Rgb = [number, number, number];
+
+/** A set of colours: one per bar in placement order, and the colour of the
+ *  lettering on them, which has to read on all eight. */
+type Colorway = { bars: Rgb[]; text: Rgb };
+
+const BAR_NAMES = [
+  "1st",
+  "2nd",
+  "3rd",
+  "4th",
+  "5th",
+  "5th (2)",
+  "7th",
+  "7th (2)",
+];
+
+const rgb = ([r, g, b]: Rgb) => `rgb(${r}, ${g}, ${b})`;
+
+const createPalette = ({ bars, text }: Colorway): Design["colorPalette"] => ({
   ground: { color: "rgb(17, 17, 17)", name: "Ground", group: "Card" },
-  text: { color: "rgb(255, 255, 255)", name: "Text", group: "Card" },
+  text: { color: rgb(text), name: "Lettering", group: "Bars" },
+  title: { color: "rgb(255, 255, 255)", name: "Title", group: "Card" },
   muted: { color: "rgb(184, 184, 184)", name: "Details", group: "Card" },
-  bar1: { color: "rgb(179, 38, 30)", name: "1st", group: "Bars" },
-  bar2: { color: "rgb(31, 79, 181)", name: "2nd", group: "Bars" },
-  bar3: { color: "rgb(169, 80, 15)", name: "3rd", group: "Bars" },
-  bar4: { color: "rgb(176, 63, 116)", name: "4th", group: "Bars" },
-  bar5: { color: "rgb(74, 103, 43)", name: "5th", group: "Bars" },
-  bar6: { color: "rgb(27, 118, 125)", name: "5th (2)", group: "Bars" },
-  bar7: { color: "rgb(90, 62, 140)", name: "7th", group: "Bars" },
-  bar8: { color: "rgb(133, 100, 0)", name: "7th (2)", group: "Bars" },
-};
+  ...Object.fromEntries(
+    BAR_KEYS.map((key, i) => [
+      key,
+      { color: rgb(bars[i]), name: BAR_NAMES[i], group: "Bars" },
+    ]),
+  ),
+});
+
+const WHITE: Rgb = [255, 255, 255];
+const INK: Rgb = [17, 17, 17];
+
+const COLORWAYS = {
+  // Deep, slightly muted colours under white lettering.
+  original: {
+    bars: [
+      [179, 38, 30],
+      [31, 79, 181],
+      [169, 80, 15],
+      [176, 63, 116],
+      [74, 103, 43],
+      [27, 118, 125],
+      [90, 62, 140],
+      [133, 100, 0],
+    ],
+    text: WHITE,
+  },
+  // A broadcast test pattern: white, then the bright bars in their usual
+  // order, under dark lettering.
+  signal: {
+    bars: [
+      [236, 236, 230],
+      [238, 214, 30],
+      [44, 208, 222],
+      [58, 204, 92],
+      [226, 92, 214],
+      [238, 78, 62],
+      [92, 132, 255],
+      [176, 176, 170],
+    ],
+    text: INK,
+  },
+  // Soft tints under dark lettering.
+  pastel: {
+    bars: [
+      [255, 176, 190],
+      [255, 204, 164],
+      [255, 232, 158],
+      [186, 232, 180],
+      [164, 226, 222],
+      [170, 208, 250],
+      [200, 190, 250],
+      [238, 190, 236],
+    ],
+    text: [38, 30, 62],
+  },
+  // One red bar for the winner, greys stepping down for the rest.
+  mono: {
+    bars: [
+      [200, 40, 34],
+      [96, 96, 100],
+      [84, 84, 88],
+      [72, 72, 76],
+      [62, 62, 66],
+      [52, 52, 56],
+      [43, 43, 47],
+      [35, 35, 39],
+    ],
+    text: WHITE,
+  },
+} satisfies Record<string, Colorway>;
 
 /** Small spaced capitals: placements and details. */
 const label = {
@@ -431,7 +512,7 @@ const tournament: LayerDesign = {
           textId: "tournamentName",
           fontSize: 35,
           fontWeight: WEIGHT,
-          fill: "text",
+          fill: "title",
           verticalAlign: "middle",
           position: p(0, 0),
           size: { height: FOOTER_HEIGHT },
@@ -457,11 +538,11 @@ const tournament: LayerDesign = {
   ],
 };
 
-export const colourBarsDesign: Design = {
-  name: "Colour Bars",
+const createColourBarsDesign = (name: string, colors: Colorway): Design => ({
+  name,
   canvasSize: { width: CANVAS_WIDTH, height: CANVAS_HEIGHT },
   canvasDisplayScale: 0.25,
-  colorPalette,
+  colorPalette: createPalette(colors),
   textPalette: {
     tournamentName: {
       text: `${DesignPlaceholder.TOURNAMENT_NAME}`,
@@ -481,4 +562,21 @@ export const colourBarsDesign: Design = {
   tournament,
   basePlayer,
   players,
-};
+});
+
+export const colourBarsDesign = createColourBarsDesign(
+  "Colour Bars",
+  COLORWAYS.original,
+);
+export const colourBarsSignalDesign = createColourBarsDesign(
+  "Colour Bars (Signal)",
+  COLORWAYS.signal,
+);
+export const colourBarsPastelDesign = createColourBarsDesign(
+  "Colour Bars (Pastel)",
+  COLORWAYS.pastel,
+);
+export const colourBarsMonoDesign = createColourBarsDesign(
+  "Colour Bars (Mono)",
+  COLORWAYS.mono,
+);

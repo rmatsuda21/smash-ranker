@@ -16,7 +16,12 @@ import { standingsLightDesign, standingsDarkDesign } from "@/designs/standings";
 import { comicBookDesign } from "@/designs/comicBook";
 import { neonSignDesign } from "@/designs/neonSign";
 import { highScoreDesign } from "@/designs/highScore";
-import { colourBarsDesign } from "@/designs/colourBars";
+import {
+  colourBarsDesign,
+  colourBarsMonoDesign,
+  colourBarsPastelDesign,
+  colourBarsSignalDesign,
+} from "@/designs/colourBars";
 import {
   tapeDesign,
   tapeMintDesign,
@@ -188,6 +193,24 @@ const DEFAULT_TEMPLATE_GROUPS: DefaultTemplateGroup[] = [
         id: "colour-bars",
         name: msg`Original`,
         design: colourBarsDesign,
+        font: "Noto Sans JP",
+      },
+      {
+        id: "colour-bars-signal",
+        name: msg`Signal`,
+        design: colourBarsSignalDesign,
+        font: "Noto Sans JP",
+      },
+      {
+        id: "colour-bars-pastel",
+        name: msg`Pastel`,
+        design: colourBarsPastelDesign,
+        font: "Noto Sans JP",
+      },
+      {
+        id: "colour-bars-mono",
+        name: msg`Mono`,
+        design: colourBarsMonoDesign,
         font: "Noto Sans JP",
       },
     ],
