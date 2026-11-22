@@ -301,6 +301,7 @@ msgstr "予想をクリアしますか？"
 #: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:208
 #: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:287
 #: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:310
+#: src/components/user/PlayerCardModal/PlayerCardModal.tsx:121
 msgid "Close"
 msgstr "閉じる"
 
@@ -350,12 +351,14 @@ msgstr ""
 #: src/components/results/ResultsExportBar/ResultsExportBar.tsx:122
 #: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:227
 #: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:422
+#: src/components/user/PlayerCardModal/PlayerCardModal.tsx:163
 msgid "Copied!"
 msgstr "コピー完了"
 
 #: src/components/predict/ExportBar/ExportBar.tsx:99
 #: src/components/results/ResultsExportBar/ResultsExportBar.tsx:121
 #: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:226
+#: src/components/user/PlayerCardModal/PlayerCardModal.tsx:162
 msgid "Copy"
 msgstr "コピー"
 
@@ -372,7 +375,7 @@ msgid "Couldn't log you in"
 msgstr "ログインできませんでした"
 
 #: src/components/home/RecentTournaments/RecentTournaments.tsx:130
-#: src/components/user/UserPage/UserPage.tsx:183
+#: src/components/user/UserPage/UserPage.tsx:211
 msgid "Couldn't reach start.gg for your tournaments. Try again in a bit."
 msgstr "start.ggから大会を取得できませんでした。少し待ってからもう一度お試しください。"
 
@@ -562,6 +565,7 @@ msgstr "ドット"
 #: src/components/results/ResultsExportBar/ResultsExportBar.tsx:117
 #: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:213
 #: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:222
+#: src/components/user/PlayerCardModal/PlayerCardModal.tsx:157
 msgid "Download"
 msgstr "ダウンロード"
 
@@ -639,6 +643,10 @@ msgstr "これまで出た大会の参加者の合計"
 #: src/consts/top8/placeholders.ts:33
 msgid "Event Name"
 msgstr "イベント名"
+
+#: src/components/user/PlayerCardLauncher/PlayerCardLauncher.tsx:52
+msgid "Events"
+msgstr "大会"
 
 #: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:85
 #: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:88
@@ -939,12 +947,12 @@ msgstr ""
 msgid "Log in with start.gg"
 msgstr "start.ggでログイン"
 
-#: src/components/user/UserPage/UserPage.tsx:91
+#: src/components/user/UserPage/UserPage.tsx:99
 msgid "Log in with start.gg to see every tournament you've entered and make graphics for them in one click."
 msgstr "start.ggでログインすると、これまで出た大会が一覧で見られて、ワンクリックで画像を作れます。"
 
-#: src/components/user/UserPage/UserPage.tsx:170
-#: src/components/user/UserPage/UserPage.tsx:175
+#: src/components/user/UserPage/UserPage.tsx:198
+#: src/components/user/UserPage/UserPage.tsx:203
 msgid "Log out"
 msgstr "ログアウト"
 
@@ -1028,6 +1036,10 @@ msgstr ""
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:215
 msgid "Mono"
 msgstr "モノクロ"
+
+#: src/components/user/PlayerCardModal/PlayerCardModal.tsx:140
+msgid "Move your mouse over the card"
+msgstr "カードの上でマウスを動かしてみよう"
 
 #: src/consts/games.ts:12
 msgid "Mural"
@@ -1164,6 +1176,10 @@ msgstr "リンクを開く"
 msgid "Open template editor"
 msgstr "テンプレートエディタを開く"
 
+#: src/components/user/PlayerCardLauncher/PlayerCardLauncher.tsx:98
+msgid "Open your player card"
+msgstr "プレイヤーカードを開く"
+
 #: src/components/shared/FileUploader/FileUploader.tsx:156
 #~ msgid "Or drag and drop"
 #~ msgstr "ドラッグ・ドロップも対応"
@@ -1238,6 +1254,15 @@ msgstr "順位"
 #: src/components/top8/PlayersEditor/PlayerSelector.tsx:40
 msgid "Player {slot}"
 msgstr "プレイヤー{slot}"
+
+#: src/components/user/PlayerCardLauncher/PlayerCardLauncher.tsx:99
+msgid "Player card"
+msgstr "プレイヤーカード"
+
+#. placeholder {0}: data.tag
+#: src/components/user/PlayerCardModal/PlayerCardModal.tsx:132
+msgid "Player card for {0}"
+msgstr "{0}のプレイヤーカード"
 
 #: src/components/top8/PlayersEditor/PlayerCountControl.tsx:63
 msgid "Player Count"
@@ -1522,6 +1547,7 @@ msgid "Selected"
 msgstr "選択済み"
 
 #: src/components/results/SetList/SetList.tsx:72
+#: src/components/user/PlayerCardLauncher/PlayerCardLauncher.tsx:55
 msgid "Sets"
 msgstr "試合"
 
@@ -1531,6 +1557,7 @@ msgstr ""
 
 #: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:238
 #: src/components/top8/SocialShareButton/SocialShareButton.tsx:50
+#: src/components/user/PlayerCardModal/PlayerCardModal.tsx:148
 msgid "Share"
 msgstr "シェア"
 
@@ -1596,8 +1623,8 @@ msgstr "順位表"
 msgid "start.gg only"
 msgstr "start.gg のみ対応"
 
-#: src/components/user/UserPage/UserPage.tsx:159
-#: src/components/user/UserPage/UserPage.tsx:162
+#: src/components/user/UserPage/UserPage.tsx:187
+#: src/components/user/UserPage/UserPage.tsx:190
 msgid "start.gg profile"
 msgstr "start.ggプロフィール"
 
@@ -1605,7 +1632,7 @@ msgstr "start.ggプロフィール"
 msgid "State"
 msgstr "州・都道府県"
 
-#: src/components/user/UserPage/UserPage.tsx:214
+#: src/components/user/UserPage/UserPage.tsx:244
 msgid "Stats"
 msgstr "スタッツ"
 
@@ -1641,6 +1668,10 @@ msgstr "ブラケットの神に祈り中..."
 #: src/components/predict/PredictionListPanel/PredictionListPanel.tsx:111
 msgid "Tap entrants to add predictions"
 msgstr "参加者をタップして予想に追加"
+
+#: src/components/user/PlayerCardModal/PlayerCardModal.tsx:138
+msgid "Tap the card, then tilt your phone"
+msgstr "カードをタップして、スマホを傾けてみよう"
 
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:157
 msgid "Tape"
@@ -1743,12 +1774,14 @@ msgstr "上位{topPercent}%"
 msgid "Top 16"
 msgstr "Top 16"
 
+#: src/components/user/PlayerCardLauncher/PlayerCardLauncher.tsx:56
 #: src/components/user/StatsBoard/StatsBoard.tsx:243
 #: src/utils/social/builtInTemplates.ts:21
 msgid "Top 3"
 msgstr "Top 3"
 
 #: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:20
+#: src/components/user/PlayerCardLauncher/PlayerCardLauncher.tsx:54
 #: src/components/user/StatsBoard/StatsBoard.tsx:250
 #: src/utils/social/builtInTemplates.ts:32
 msgid "Top 8"
@@ -1840,7 +1873,7 @@ msgid "Tournament URL"
 msgstr "大会URL"
 
 #: src/components/user/StatsBoard/StatsBoard.tsx:167
-#: src/components/user/UserPage/UserPage.tsx:202
+#: src/components/user/UserPage/UserPage.tsx:230
 msgid "Tournaments"
 msgstr "大会"
 
@@ -1964,6 +1997,7 @@ msgstr "{placement}位のタグ"
 msgid "Winners"
 msgstr "上位選手"
 
+#: src/components/user/PlayerCardLauncher/PlayerCardLauncher.tsx:53
 #: src/components/user/StatsBoard/StatsBoard.tsx:236
 msgid "Wins"
 msgstr "優勝"
@@ -1984,11 +2018,15 @@ msgstr "現在のデザインは上書きされます！"
 msgid "Your first bracket is still ahead of you"
 msgstr "最初の大会はこれから"
 
+#: src/components/user/PlayerCardModal/PlayerCardModal.tsx:116
+msgid "Your player card"
+msgstr "あなたのプレイヤーカード"
+
 #: src/components/user/EmptyProfile/EmptyProfile.tsx:34
 msgid "Your record, trophies and streaks"
 msgstr "戦績、入賞歴、連続参加"
 
-#: src/components/user/UserPage/UserPage.tsx:244
+#: src/components/user/UserPage/UserPage.tsx:275
 msgid "Your stats"
 msgstr "あなたのスタッツ"
 
@@ -1997,7 +2035,7 @@ msgstr "あなたのスタッツ"
 msgid "Your tournaments"
 msgstr "あなたの大会"
 
-#: src/components/user/UserPage/UserPage.tsx:88
+#: src/components/user/UserPage/UserPage.tsx:96
 msgid "Your tournaments, in one place"
 msgstr "あなたの大会をひとつの場所に"
 

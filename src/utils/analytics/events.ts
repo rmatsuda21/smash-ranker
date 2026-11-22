@@ -14,7 +14,7 @@ export type FetchFailureKind =
   "query_error" | "not_found" | "multi_group" | "post_process";
 
 export type ExportSurface =
-  "predict" | "ranker" | "tier" | "thumbnail" | "results";
+  "predict" | "ranker" | "tier" | "thumbnail" | "results" | "player_card";
 
 export type ShareMethod = "clipboard" | "url";
 

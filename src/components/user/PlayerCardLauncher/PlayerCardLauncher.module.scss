@@ -1,0 +1,74 @@
+@keyframes sweep {
+  0%,
+  55% {
+    transform: translateX(-130%) skewX(-18deg);
+  }
+  85%,
+  100% {
+    transform: translateX(230%) skewX(-18deg);
+  }
+}
+
+@keyframes deal {
+  from {
+    opacity: 0;
+    transform: rotate(-14deg) translateY(8px) scale(0.9);
+  }
+}
+
+// The card, held at a slight angle. It straightens and lifts under the
+// pointer (the hover rules are on the button, in UserPage's styles).
+.card {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 5 / 7;
+  border-radius: 9%/6.5%;
+  overflow: hidden;
+  transform: rotate(-5deg);
+  box-shadow: 0 6px 14px -6px rgba(0, 0, 0, 0.6);
+  transition:
+    transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  animation: deal 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+
+  button:hover > &,
+  button:focus-visible > & {
+    transform: rotate(0deg) translateY(-2px) scale(1.08);
+    box-shadow: 0 12px 22px -8px rgba(0, 0, 0, 0.7);
+  }
+}
+
+.face {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+// A band of light crossing the foil every few seconds.
+.shine {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.55),
+    rgba(190, 240, 255, 0.35),
+    transparent
+  );
+  width: 60%;
+  mix-blend-mode: overlay;
+  animation: sweep 4.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .shine {
+    animation: none;
+  }
+
+  .shine {
+    transform: translateX(60%) skewX(-18deg);
+  }
+}

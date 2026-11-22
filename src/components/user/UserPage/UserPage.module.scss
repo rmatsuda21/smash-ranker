@@ -117,6 +117,34 @@
   }
 }
 
+// Where the miniature player card sits: an empty box of the card's shape
+// until the card is ready, then a button.
+.cardSlot {
+  flex-shrink: 0;
+  display: block;
+  width: 60px;
+  aspect-ratio: 5 / 7;
+  margin: 0 var(--space-3);
+  padding: 0;
+  border: none;
+  border-radius: 6px;
+  background: none;
+
+  &:is(button) {
+    cursor: pointer;
+  }
+
+  &:is(span) {
+    border: 1px dashed var(--border-strong);
+    transform: rotate(-5deg);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--brand);
+    outline-offset: 6px;
+  }
+}
+
 .headerActions {
   display: flex;
   flex-direction: column;
@@ -383,11 +411,17 @@
     }
   }
 
-  // Icon buttons beside the name instead of a row of their own.
+  .cardSlot {
+    width: 40px;
+    margin: 0 var(--space-1);
+  }
+
+  // Two small icon buttons, one over the other, so the name keeps its room
+  // beside the card.
   .headerActions {
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
-    gap: var(--space-1);
+    gap: 0;
   }
 
   .actionLabel {
@@ -397,8 +431,8 @@
   .profileLink,
   .logout {
     justify-content: center;
-    width: 40px;
-    height: 40px;
+    width: 32px;
+    height: 32px;
     padding: 0;
     border-radius: var(--radius-md);
     font-size: var(--font-size-md);

@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { lazy, Suspense, useLayoutEffect, useRef, useState } from "react";
 import cn from "classnames";
 import { Trans } from "@lingui/react/macro";
 import { msg } from "@lingui/core/macro";
@@ -38,6 +38,12 @@ const MAX_EVENT_PAGES = 10;
 // Three pages of sets (about 135) is enough for rivals and mains without
 // walking a whole career of them.
 const SET_PAGES = 3;
+
+const PlayerCardLauncher = lazy(() =>
+  import("@/components/user/PlayerCardLauncher/PlayerCardLauncher").then(
+    (m) => ({ default: m.PlayerCardLauncher }),
+  ),
+);
 // Matches the `wide` mixin: from here the list and the stats sit side by
 // side; below it they are two tabs.
 const WIDE_QUERY = "(min-width: 1024px)";
@@ -113,6 +119,8 @@ export const UserPage = () => {
   // to them.
   const showStats = isWide || tab === "stats";
 
+  const cardSlot = <span className={styles.cardSlot} aria-hidden="true" />;
+
   const selectTab = (next: UserPageTab) => {
     setTab(next);
     writeUserPageMemory({ tab: next });
@@ -154,6 +162,22 @@ export const UserPage = () => {
               )}
             </p>
           </div>
+          {/* The player card, in miniature: it is drawn from the stats, so
+              its place is held until they are in. */}
+          {!isEmpty && !isFailed && (
+            <Suspense fallback={cardSlot}>
+              {eventsSettled && setsStatus !== "loading" ? (
+                <PlayerCardLauncher
+                  user={user}
+                  events={events}
+                  sets={sets}
+                  className={styles.cardSlot}
+                />
+              ) : (
+                cardSlot
+              )}
+            </Suspense>
+          )}
           <div className={styles.headerActions}>
             <a
               className={styles.profileLink}
