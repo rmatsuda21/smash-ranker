@@ -4,10 +4,10 @@ import type { UserSet } from "@/types/user/UserSet";
 import { startggClient } from "@/utils/startgg/client";
 
 const UserSetsQueryDoc = graphql(`
-  query UserSets($playerId: ID!, $page: Int!, $perPage: Int!) {
+  query UserSets($playerId: ID!, $page: Int!, $perPage: Int!, $eventIds: [ID]) {
     player(id: $playerId) {
       id
-      sets(page: $page, perPage: $perPage) {
+      sets(page: $page, perPage: $perPage, filters: { eventIds: $eventIds }) {
         pageInfo {
           totalPages
         }
@@ -108,12 +108,21 @@ const toUserSet = (node: SetNode, playerId: string): UserSet | null => {
 // complexity per 40), so pages stay under 50.
 export const USER_SETS_PER_PAGE = 45;
 
+// Sets have no game filter of their own, so they are narrowed to a game by
+// its events. `eventIds` must not be empty: start.gg reads an empty list as
+// no filter at all.
 export const fetchUserSetsPage = async (
   playerId: string,
+  eventIds: string[],
   page: number,
 ): Promise<{ sets: UserSet[]; totalPages: number }> => {
   const result = await startggClient
-    .query(UserSetsQueryDoc, { playerId, page, perPage: USER_SETS_PER_PAGE })
+    .query(UserSetsQueryDoc, {
+      playerId,
+      page,
+      perPage: USER_SETS_PER_PAGE,
+      eventIds,
+    })
     .toPromise();
 
   const connection = result.data?.player?.sets;

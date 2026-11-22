@@ -1,15 +1,29 @@
+import { GAMES } from "@/consts/games";
 import { graphql } from "@/gql";
 import type { UserEventsQuery } from "@/gql/graphql";
+import type { GameId } from "@/types/Game";
 import type { UserEvent } from "@/types/user/UserEvent";
 import { startggClient } from "@/utils/startgg/client";
 
 // Looked up by slug rather than `currentUser` so the result is the same
 // whichever token the request ends up going out with.
 const UserEventsQueryDoc = graphql(`
-  query UserEvents($slug: String!, $userId: ID!, $page: Int!, $perPage: Int!) {
+  query UserEvents(
+    $slug: String!
+    $userId: ID!
+    $page: Int!
+    $perPage: Int!
+    $videogameIds: [ID]
+  ) {
     user(slug: $slug) {
       id
-      events(query: { page: $page, perPage: $perPage }) {
+      events(
+        query: {
+          page: $page
+          perPage: $perPage
+          filter: { videogameId: $videogameIds }
+        }
+      ) {
         pageInfo {
           total
           totalPages
@@ -88,9 +102,12 @@ export type UserEventsPage = {
   totalPages: number;
 };
 
-// Newest first (start.gg's order), upcoming registrations included.
+// The user's events in the given games, newest first (start.gg's order),
+// upcoming registrations included. start.gg does the filtering, so `total`
+// counts those games only.
 export const fetchUserEventsPage = async (
   user: { slug: string; id: string },
+  games: GameId[],
   page: number,
   perPage: number,
 ): Promise<UserEventsPage> => {
@@ -100,6 +117,7 @@ export const fetchUserEventsPage = async (
       userId: user.id,
       page,
       perPage,
+      videogameIds: games.map((game) => GAMES[game].startggVideogameId),
     })
     .toPromise();
 

@@ -6,4 +6,6 @@ export const PREF_KEYS = {
   THEME: "theme",
   ACCENT_COLOR: "accent-color",
   CUSTOM_ACCENT_COLOR: "custom-accent-color",
+  // Which game the profile page shows.
+  PROFILE_GAME: "profile-game",
 };

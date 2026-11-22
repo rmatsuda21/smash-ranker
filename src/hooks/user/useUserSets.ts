@@ -6,49 +6,70 @@ import { fetchUserSetsPage } from "@/utils/user/fetchUserSets";
 import { logWarning } from "@/utils/observability/log";
 
 type State = {
-  playerId: string | null;
+  key: string | null;
   sets: UserSet[];
   status: "idle" | "loading" | "done" | "error";
 };
 
-const EMPTY: State = { playerId: null, sets: [], status: "idle" };
+const EMPTY: State = { key: null, sets: [], status: "idle" };
 
-// The logged-in user's most recent sets (`maxPages` pages of them), fetched
-// in full before anything is returned so the stats built on them do not
-// shift while loading.
-export const useUserSets = (maxPages: number) => {
+const finished = new Map<string, State>();
+
+// The logged-in user's most recent sets (`maxPages` pages of them) from the
+// given events, fetched in full before anything is returned so the stats
+// built on them do not shift while loading. `eventIds` is a comma-separated
+// list (a string, so it can be compared between renders): null while the
+// events are not known yet, "" when there are none.
+export const useUserSets = (maxPages: number, eventIds: string | null) => {
   const playerId = useAuthUser()?.playerId ?? null;
+  const key = playerId && eventIds !== null ? `${playerId}:${eventIds}` : null;
   const [state, setState] = useState<State>(EMPTY);
 
   useEffect(() => {
-    if (!playerId) return;
+    // No events means no sets, and nothing to ask start.gg for.
+    if (!playerId || !key || !eventIds || finished.has(key)) return;
     let cancelled = false;
 
     (async () => {
-      setState({ playerId, sets: [], status: "loading" });
+      setState({ key, sets: [], status: "loading" });
       try {
         let sets: UserSet[] = [];
         for (let page = 1; page <= maxPages; page++) {
-          const result = await fetchUserSetsPage(playerId, page);
+          const result = await fetchUserSetsPage(
+            playerId,
+            eventIds.split(","),
+            page,
+          );
           if (cancelled) return;
           sets = [...sets, ...result.sets];
           if (page >= result.totalPages) break;
         }
-        setState({ playerId, sets, status: "done" });
+        const next: State = { key, sets, status: "done" };
+        finished.set(key, next);
+        setState(next);
       } catch (err) {
         if (cancelled) return;
         logWarning("user sets fetch failed", {
           area: "user",
           error: err instanceof Error ? err.message : String(err),
         });
-        setState({ playerId, sets: [], status: "error" });
+        setState({ key, sets: [], status: "error" });
       }
     })();
 
     return () => {
       cancelled = true;
     };
-  }, [playerId, maxPages]);
+  }, [playerId, key, eventIds, maxPages]);
 
-  return state.playerId === playerId ? state : EMPTY;
+  // The events the sets come from are still on their way.
+  if (playerId && eventIds === null) {
+    return { ...EMPTY, status: "loading" as const };
+  }
+  if (!key) return EMPTY;
+  if (eventIds === "") return { ...EMPTY, key, status: "done" as const };
+  return (
+    finished.get(key) ??
+    (state.key === key ? state : { ...EMPTY, status: "loading" as const })
+  );
 };

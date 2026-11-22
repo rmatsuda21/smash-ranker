@@ -1,4 +1,11 @@
-import { lazy, Suspense, useLayoutEffect, useRef, useState } from "react";
+import {
+  lazy,
+  Suspense,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import cn from "classnames";
 import { Trans } from "@lingui/react/macro";
 import { msg } from "@lingui/core/macro";
@@ -11,18 +18,26 @@ import {
 } from "react-icons/fa6";
 
 import { Button } from "@/components/shared/Button/Button";
+import { GameSwitch } from "@/components/shared/GameSwitch/GameSwitch";
 import { LoginPrompt } from "@/components/home/LoginPrompt/LoginPrompt";
 import { EmptyProfile } from "@/components/user/EmptyProfile/EmptyProfile";
 import { EventList } from "@/components/user/EventList/EventList";
 import { StatsBoard } from "@/components/user/StatsBoard/StatsBoard";
 import { UserAvatar } from "@/components/user/UserAvatar/UserAvatar";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
+import { useUserGameCounts } from "@/hooks/user/useUserGameCounts";
 import { useUserEvents } from "@/hooks/user/useUserEvents";
 import { useUserSets } from "@/hooks/user/useUserSets";
 import { useScrollMemory } from "@/hooks/user/useScrollMemory";
 import { useAuthUser } from "@/store/authStore";
+import type { GameId } from "@/types/Game";
 import { logout } from "@/utils/auth/session";
 import { logEvent } from "@/utils/observability/log";
+import {
+  getPlayedGames,
+  pickProfileGame,
+  rememberProfileGame,
+} from "@/utils/user/profileGame";
 import {
   readUserPageMemory,
   writeUserPageMemory,
@@ -56,11 +71,33 @@ export const UserPage = () => {
     () => readUserPageMemory().tab ?? "list",
   );
   const [, navigate] = useLocation();
+  // Everything on the page is about one game. `chosen` is a pick made on
+  // this visit; before one, it is the game the user last looked at (or, if
+  // they have nothing in it, the one they play most).
+  const gameCounts = useUserGameCounts();
+  const [chosen, setChosen] = useState<GameId | null>(null);
+  const game = chosen ?? pickProfileGame(gameCounts);
+  const playedGames = getPlayedGames(gameCounts);
+
   const { events, total, status } = useUserEvents({
+    game,
     perPage: EVENTS_PER_PAGE,
     maxPages: MAX_EVENT_PAGES,
   });
-  const { sets, status: setsStatus } = useUserSets(SET_PAGES);
+  // Sets are narrowed to the game through its events: the most recent page
+  // of them holds far more sets than the stats read. Known as soon as that
+  // page is in, and unchanged by the pages after it.
+  const setEventIds = useMemo(
+    () =>
+      status === "idle" || (status === "loading" && events.length === 0)
+        ? null
+        : events
+            .slice(0, EVENTS_PER_PAGE)
+            .map((event) => event.id)
+            .join(","),
+    [status, events],
+  );
+  const { sets, status: setsStatus } = useUserSets(SET_PAGES, setEventIds);
 
   // The page is at its final height once the events are in and the set
   // tiles above the list have stopped loading.
@@ -121,6 +158,14 @@ export const UserPage = () => {
 
   const cardSlot = <span className={styles.cardSlot} aria-hidden="true" />;
 
+  const selectGame = (next: GameId) => {
+    setChosen(next);
+    rememberProfileGame(next);
+    // A different list: start it from the top.
+    if (rootRef.current) rootRef.current.scrollTop = 0;
+    if (listPaneRef.current) listPaneRef.current.scrollTop = 0;
+  };
+
   const selectTab = (next: UserPageTab) => {
     setTab(next);
     writeUserPageMemory({ tab: next });
@@ -162,12 +207,23 @@ export const UserPage = () => {
               )}
             </p>
           </div>
+          {/* Only for someone with events in more than one game. */}
+          {playedGames.length > 1 && (
+            <GameSwitch
+              className={styles.gameSwitch}
+              value={game}
+              games={playedGames}
+              onChange={selectGame}
+            />
+          )}
+
           {/* The player card, in miniature: it is drawn from the stats, so
               its place is held until they are in. */}
           {!isEmpty && !isFailed && (
             <Suspense fallback={cardSlot}>
               {eventsSettled && setsStatus !== "loading" ? (
                 <PlayerCardLauncher
+                  key={game}
                   user={user}
                   events={events}
                   sets={sets}
@@ -276,6 +332,7 @@ export const UserPage = () => {
                   </h2>
                   {eventsSettled ? (
                     <StatsBoard
+                      key={game}
                       events={events}
                       sets={sets}
                       setsLoading={setsStatus === "loading"}

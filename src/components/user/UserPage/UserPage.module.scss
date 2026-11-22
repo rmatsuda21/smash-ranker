@@ -117,6 +117,11 @@
   }
 }
 
+// Which game the page is about.
+.gameSwitch {
+  flex-shrink: 0;
+}
+
 // Where the miniature player card sits: an empty box of the card's shape
 // until the card is ready, then a button.
 .cardSlot {
@@ -408,6 +413,20 @@
       display: inline;
       margin-right: var(--space-1);
       vertical-align: -1px;
+    }
+  }
+
+  // A row of its own under the name.
+  .header {
+    flex-wrap: wrap;
+  }
+
+  .gameSwitch {
+    order: 1;
+    flex: 1 0 100%;
+
+    > button {
+      flex: 1;
     }
   }
 
