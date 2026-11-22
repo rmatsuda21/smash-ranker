@@ -48,7 +48,11 @@ export const createCharacterImageElement: ElementCreator<
   }
 
   const character = player.characters[0];
-  const characterCrop = getCharacterCrop(character.id, character.alt);
+  const characterCrop = getCharacterCrop(
+    character.id,
+    character.alt,
+    character.style,
+  );
 
   const isStock = element.imageType === "stock";
   // A stock icon is already just the head, so it has no crop to apply.
@@ -58,6 +62,7 @@ export const createCharacterImageElement: ElementCreator<
     characterId: character.id,
     alt: character.alt,
     type: isStock ? "stock" : "main",
+    style: character.style,
   });
   let cropOffset = uncropped ? { x: 0, y: 0 } : characterCrop.offset;
   let cropScale =
@@ -195,6 +200,7 @@ export const createCustomAltCharacterImageElement: ElementCreator<
         characterId: character.id,
         alt: character.alt,
         type: imageType === "render" ? "main" : "stock",
+        style: character.style,
       });
 
       return {
@@ -452,10 +458,15 @@ function renderTemplateForCharacter(
       characterId: character.id,
       alt: character.alt,
       type: imageType === "render" ? "main" : "stock",
+      style: character.style,
     });
 
     if (imageType === "render") {
-      const characterCrop = getCharacterCrop(character.id, character.alt);
+      const characterCrop = getCharacterCrop(
+        character.id,
+        character.alt,
+        character.style,
+      );
       const cropScale = characterCrop.scale * (charEl.cropScaleMultiplier ?? 1);
 
       return (

@@ -1,4 +1,4 @@
-import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
+import { getTierCharacterImageUrl } from "@/utils/tierlist/characterImage";
 import { ImageDisplayMode, TierCharacter } from "@/types/tierlist/TierList";
 
 import styles from "./CharacterImage.module.scss";
@@ -10,11 +10,11 @@ type Props = {
 };
 
 export const CharacterImage = ({ character, imageMode, size = 48 }: Props) => {
-  const url = getCharImgUrl({
-    characterId: character.characterId,
-    alt: character.alt,
-    type: imageMode,
-  });
+  const url = getTierCharacterImageUrl(
+    character.characterId,
+    character.alt,
+    imageMode,
+  );
 
   return (
     <img

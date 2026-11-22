@@ -1,0 +1,1183 @@
+{
+  "renders": {
+    "1271": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 3,
+      "cropOffset": {
+        "x": 0.17,
+        "y": 0.31
+      },
+      "altOverrides": {
+        "2": {
+          "cropScale": 3,
+          "cropOffset": {
+            "x": 0.27,
+            "y": 0.3
+          }
+        },
+        "4": {
+          "cropScale": 3,
+          "cropOffset": {
+            "x": 0.27,
+            "y": 0.3
+          }
+        },
+        "6": {
+          "cropScale": 3,
+          "cropOffset": {
+            "x": 0.27,
+            "y": 0.3
+          }
+        }
+      }
+    },
+    "1272": {
+      "alts": [1, 5, 6, 7],
+      "cropScale": 1.43,
+      "cropOffset": {
+        "x": -0.18,
+        "y": 0.06
+      },
+      "altOverrides": {
+        "5": {
+          "cropScale": 1.3,
+          "cropOffset": {
+            "x": -0.21,
+            "y": 0.22
+          }
+        },
+        "6": {
+          "cropScale": 1.34,
+          "cropOffset": {
+            "x": -0.18,
+            "y": 0.06
+          }
+        },
+        "7": {
+          "cropScale": 1.3,
+          "cropOffset": {
+            "x": -0.17,
+            "y": 0.15
+          }
+        }
+      }
+    },
+    "1273": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 1.35,
+      "cropOffset": {
+        "x": 0.07,
+        "y": 0.11
+      }
+    },
+    "1274": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 1.8,
+      "cropOffset": {
+        "x": -0.08,
+        "y": 0.34
+      }
+    },
+    "1275": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 2.49,
+      "cropOffset": {
+        "x": 0.02,
+        "y": 0.16
+      },
+      "altOverrides": {
+        "2": {
+          "cropScale": 2.29,
+          "cropOffset": {
+            "x": 0.01,
+            "y": 0.18
+          }
+        },
+        "4": {
+          "cropScale": 2.29,
+          "cropOffset": {
+            "x": 0.01,
+            "y": 0.18
+          }
+        },
+        "6": {
+          "cropScale": 2.29,
+          "cropOffset": {
+            "x": 0.01,
+            "y": 0.18
+          }
+        }
+      }
+    },
+    "1276": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 1.97,
+      "cropOffset": {
+        "x": 0.19,
+        "y": 0.31
+      }
+    },
+    "1277": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 1.47,
+      "cropOffset": {
+        "x": -0.06,
+        "y": 0.29
+      }
+    },
+    "1278": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 1.8,
+      "cropOffset": {
+        "x": 0.29,
+        "y": 0.08
+      }
+    },
+    "1279": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 1.49,
+      "cropOffset": {
+        "x": 0.22,
+        "y": 0.09
+      },
+      "altOverrides": {
+        "6": {
+          "cropScale": 1.69,
+          "cropOffset": {
+            "x": 0.26,
+            "y": 0.05
+          }
+        }
+      }
+    },
+    "1280": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 1.3,
+      "cropOffset": {
+        "x": 0.03,
+        "y": -0.13
+      }
+    },
+    "1282": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 1.51,
+      "cropOffset": {
+        "x": 0.07,
+        "y": 0.22
+      }
+    },
+    "1283": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 1.4,
+      "cropOffset": {
+        "x": 0.03,
+        "y": 0.08
+      }
+    },
+    "1285": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 1.58,
+      "cropOffset": {
+        "x": 0.29,
+        "y": 0.15
+      }
+    },
+    "1286": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 1.4,
+      "cropOffset": {
+        "x": 0.22,
+        "y": 0.21
+      }
+    },
+    "1287": {
+      "alts": [2, 4, 6, 7],
+      "cropScale": 1.8,
+      "cropOffset": {
+        "x": 0.12,
+        "y": 0.27
+      }
+    },
+    "1289": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 1.46,
+      "cropOffset": {
+        "x": 0.15,
+        "y": -0.1
+      }
+    },
+    "1290": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 1.51,
+      "cropOffset": {
+        "x": -0.07,
+        "y": -0.02
+      }
+    },
+    "1291": {
+      "alts": [2, 4, 6],
+      "cropScale": 2.31,
+      "cropOffset": {
+        "x": -0.16,
+        "y": 0.28
+      }
+    },
+    "1292": {
+      "alts": [1, 2, 7],
+      "cropScale": 1.31,
+      "cropOffset": {
+        "x": 0.03,
+        "y": 0.17
+      },
+      "altOverrides": {
+        "2": {
+          "cropScale": 1.3,
+          "cropOffset": {
+            "x": 0,
+            "y": 0.24
+          }
+        },
+        "7": {
+          "cropScale": 1.35,
+          "cropOffset": {
+            "x": -0.01,
+            "y": 0.24
+          }
+        }
+      }
+    },
+    "1293": {
+      "alts": [1, 3, 4],
+      "cropScale": 1.15,
+      "cropOffset": {
+        "x": 0.04,
+        "y": 0
+      },
+      "altOverrides": {
+        "3": {
+          "cropScale": 1.15,
+          "cropOffset": {
+            "x": -0.02,
+            "y": 0
+          }
+        }
+      }
+    },
+    "1294": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 1.36,
+      "cropOffset": {
+        "x": 0.08,
+        "y": 0.11
+      }
+    },
+    "1295": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 1.15,
+      "cropOffset": {
+        "x": -0.02,
+        "y": 0.02
+      }
+    },
+    "1296": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 2.31,
+      "cropOffset": {
+        "x": -0.03,
+        "y": 0.19
+      }
+    },
+    "1297": {
+      "alts": [1, 2, 3, 4, 5, 6],
+      "cropScale": 1.8,
+      "cropOffset": {
+        "x": -0.01,
+        "y": 0.27
+      }
+    },
+    "1298": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 1.69,
+      "cropOffset": {
+        "x": 0.04,
+        "y": 0.21
+      }
+    },
+    "1299": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 1.44,
+      "cropOffset": {
+        "x": -0.13,
+        "y": 0.23
+      }
+    },
+    "1300": {
+      "alts": [0, 1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 2.49,
+      "cropOffset": {
+        "x": -0.12,
+        "y": 0.12
+      }
+    },
+    "1301": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 3.4,
+      "cropOffset": {
+        "x": 0.38,
+        "y": -0.03
+      }
+    },
+    "1302": {
+      "alts": [1, 2, 3, 4, 5, 6],
+      "cropScale": 1.57,
+      "cropOffset": {
+        "x": -0.2,
+        "y": 0.15
+      }
+    },
+    "1304": {
+      "alts": [1, 3, 4, 5, 7],
+      "cropScale": 2.9,
+      "cropOffset": {
+        "x": -0.09,
+        "y": 0.35
+      }
+    },
+    "1305": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 1.45,
+      "cropOffset": {
+        "x": -0.16,
+        "y": 0.15
+      }
+    },
+    "1307": {
+      "alts": [0, 1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 1.45,
+      "cropOffset": {
+        "x": -0.01,
+        "y": -0.23
+      }
+    },
+    "1310": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 1.88,
+      "cropOffset": {
+        "x": -0.24,
+        "y": 0.21
+      }
+    },
+    "1311": {
+      "alts": [0],
+      "cropScale": 1.58,
+      "cropOffset": {
+        "x": -0.21,
+        "y": 0.1
+      }
+    },
+    "1313": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 1.3,
+      "cropOffset": {
+        "x": 0.2,
+        "y": 0.16
+      }
+    },
+    "1314": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 1.33,
+      "cropOffset": {
+        "x": -0.11,
+        "y": 0.09
+      },
+      "altOverrides": {
+        "4": {
+          "cropScale": 1.65,
+          "cropOffset": {
+            "x": -0.1,
+            "y": -0.04
+          }
+        },
+        "5": {
+          "cropScale": 1.65,
+          "cropOffset": {
+            "x": -0.1,
+            "y": -0.04
+          }
+        },
+        "6": {
+          "cropScale": 1.65,
+          "cropOffset": {
+            "x": -0.1,
+            "y": -0.04
+          }
+        },
+        "7": {
+          "cropScale": 1.65,
+          "cropOffset": {
+            "x": -0.1,
+            "y": -0.04
+          }
+        }
+      }
+    },
+    "1315": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 1.47,
+      "cropOffset": {
+        "x": 0.01,
+        "y": 0.01
+      }
+    },
+    "1316": {
+      "alts": [0, 1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 2.7,
+      "cropOffset": {
+        "x": 0,
+        "y": 0.25
+      }
+    },
+    "1317": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 1.8,
+      "cropOffset": {
+        "x": 0.11,
+        "y": 0.1
+      }
+    },
+    "1318": {
+      "alts": [2, 3, 4, 5, 6, 7],
+      "cropScale": 1.3,
+      "cropOffset": {
+        "x": -0.02,
+        "y": -0.15
+      },
+      "altOverrides": {
+        "6": {
+          "cropScale": 1.32,
+          "cropOffset": {
+            "x": -0.01,
+            "y": -0.17
+          }
+        }
+      }
+    },
+    "1319": {
+      "alts": [1, 2, 6, 7],
+      "cropScale": 1.31,
+      "cropOffset": {
+        "x": 0.09,
+        "y": -0.28
+      },
+      "altOverrides": {
+        "2": {
+          "cropScale": 1.34,
+          "cropOffset": {
+            "x": 0.09,
+            "y": -0.24
+          }
+        }
+      }
+    },
+    "1320": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 2.49,
+      "cropOffset": {
+        "x": 0.02,
+        "y": 0.02
+      }
+    },
+    "1321": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 1.6,
+      "cropOffset": {
+        "x": -0.04,
+        "y": 0.3
+      },
+      "altOverrides": {
+        "2": {
+          "cropScale": 1.52,
+          "cropOffset": {
+            "x": 0.03,
+            "y": 0.29
+          }
+        },
+        "4": {
+          "cropScale": 1.52,
+          "cropOffset": {
+            "x": 0.03,
+            "y": 0.29
+          }
+        },
+        "6": {
+          "cropScale": 1.52,
+          "cropOffset": {
+            "x": 0.03,
+            "y": 0.29
+          }
+        }
+      }
+    },
+    "1322": {
+      "alts": [0, 1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 1.35,
+      "cropOffset": {
+        "x": -0.15,
+        "y": 0.22
+      }
+    },
+    "1323": {
+      "alts": [2, 3, 4, 5, 6, 7],
+      "cropScale": 1.66,
+      "cropOffset": {
+        "x": 0.3,
+        "y": 0
+      }
+    },
+    "1324": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 1.53,
+      "cropOffset": {
+        "x": -0.01,
+        "y": 0.2
+      }
+    },
+    "1325": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 1.66,
+      "cropOffset": {
+        "x": 0.04,
+        "y": 0.2
+      }
+    },
+    "1326": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 1.69,
+      "cropOffset": {
+        "x": -0.02,
+        "y": 0.28
+      }
+    },
+    "1327": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 1.62,
+      "cropOffset": {
+        "x": -0.15,
+        "y": 0.29
+      }
+    },
+    "1328": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 1.6,
+      "cropOffset": {
+        "x": -0.11,
+        "y": 0.31
+      }
+    },
+    "1329": {
+      "alts": [1, 2, 3, 4, 5, 6],
+      "cropScale": 1.57,
+      "cropOffset": {
+        "x": 0.15,
+        "y": 0.22
+      }
+    },
+    "1330": {
+      "alts": [1, 2, 3, 4],
+      "cropScale": 2.7,
+      "cropOffset": {
+        "x": 0.11,
+        "y": 0.1
+      }
+    },
+    "1331": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 2.18,
+      "cropOffset": {
+        "x": 0.09,
+        "y": 0.31
+      },
+      "altOverrides": {
+        "7": {
+          "cropScale": 2.17,
+          "cropOffset": {
+            "x": 0.09,
+            "y": 0.29
+          }
+        }
+      }
+    },
+    "1332": {
+      "alts": [1, 2, 3, 4, 5, 7],
+      "cropScale": 1.3,
+      "cropOffset": {
+        "x": 0.17,
+        "y": 0.03
+      }
+    },
+    "1333": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 1.3,
+      "cropOffset": {
+        "x": 0.01,
+        "y": 0.17
+      }
+    },
+    "1334": {
+      "alts": [4, 6, 7],
+      "cropScale": 1.37,
+      "cropOffset": {
+        "x": 0.12,
+        "y": 0.02
+      },
+      "altOverrides": {
+        "6": {
+          "cropScale": 1.41,
+          "cropOffset": {
+            "x": 0.14,
+            "y": 0.02
+          }
+        },
+        "7": {
+          "cropScale": 1.41,
+          "cropOffset": {
+            "x": 0.14,
+            "y": 0.02
+          }
+        }
+      }
+    },
+    "1335": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 1.3,
+      "cropOffset": {
+        "x": 0.08,
+        "y": 0.19
+      },
+      "altOverrides": {
+        "2": {
+          "cropScale": 1.3,
+          "cropOffset": {
+            "x": 0.08,
+            "y": 0.19
+          }
+        },
+        "3": {
+          "cropScale": 1.3,
+          "cropOffset": {
+            "x": 0.1,
+            "y": 0.18
+          }
+        },
+        "4": {
+          "cropScale": 1.3,
+          "cropOffset": {
+            "x": 0.08,
+            "y": 0.19
+          }
+        },
+        "5": {
+          "cropScale": 1.3,
+          "cropOffset": {
+            "x": 0.1,
+            "y": 0.18
+          }
+        },
+        "6": {
+          "cropScale": 1.3,
+          "cropOffset": {
+            "x": 0.08,
+            "y": 0.19
+          }
+        },
+        "7": {
+          "cropScale": 1.3,
+          "cropOffset": {
+            "x": 0.1,
+            "y": 0.18
+          }
+        }
+      }
+    },
+    "1336": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 3,
+      "cropOffset": {
+        "x": -0.02,
+        "y": 0.24
+      }
+    },
+    "1337": {
+      "alts": [0, 1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 1.52,
+      "cropOffset": {
+        "x": -0.1,
+        "y": 0.27
+      }
+    },
+    "1338": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 1.3,
+      "cropOffset": {
+        "x": 0.22,
+        "y": -0.08
+      }
+    },
+    "1339": {
+      "alts": [0, 1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 1.76,
+      "cropOffset": {
+        "x": -0.11,
+        "y": 0.17
+      }
+    },
+    "1340": {
+      "alts": [0, 1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 2.31,
+      "cropOffset": {
+        "x": -0.12,
+        "y": 0.32
+      }
+    },
+    "1341": {
+      "alts": [0, 1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 2.49,
+      "cropOffset": {
+        "x": -0.26,
+        "y": 0.2
+      }
+    },
+    "1405": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 1.2,
+      "cropOffset": {
+        "x": 0.07,
+        "y": 0.23
+      }
+    },
+    "1406": {
+      "alts": [1, 2, 3, 5],
+      "cropScale": 1.32,
+      "cropOffset": {
+        "x": -0.01,
+        "y": 0.15
+      }
+    },
+    "1407": {
+      "alts": [0, 1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 1.4,
+      "cropOffset": {
+        "x": 0.13,
+        "y": 0.17
+      }
+    },
+    "1408": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 1.69,
+      "cropOffset": {
+        "x": 0.01,
+        "y": 0.3
+      }
+    },
+    "1409": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 2.7,
+      "cropOffset": {
+        "x": -0.12,
+        "y": 0.36
+      }
+    },
+    "1410": {
+      "alts": [0, 1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 3,
+      "cropOffset": {
+        "x": 0.01,
+        "y": 0.16
+      }
+    },
+    "1411": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 2.7,
+      "cropOffset": {
+        "x": 0.14,
+        "y": 0.25
+      }
+    },
+    "1412": {
+      "alts": [0, 1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 2.76,
+      "cropOffset": {
+        "x": 0.04,
+        "y": 0.03
+      }
+    },
+    "1413": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 1.45,
+      "cropOffset": {
+        "x": 0.13,
+        "y": -0.08
+      }
+    },
+    "1414": {
+      "alts": [0],
+      "cropScale": 1.58,
+      "cropOffset": {
+        "x": -0.11,
+        "y": 0.12
+      }
+    },
+    "1415": {
+      "alts": [0],
+      "cropScale": 1.3,
+      "cropOffset": {
+        "x": -0.21,
+        "y": 0.22
+      }
+    },
+    "1441": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 1.37,
+      "cropOffset": {
+        "x": 0.15,
+        "y": 0.15
+      },
+      "altOverrides": {
+        "2": {
+          "cropScale": 1.34,
+          "cropOffset": {
+            "x": 0.15,
+            "y": 0.15
+          }
+        },
+        "3": {
+          "cropScale": 1.34,
+          "cropOffset": {
+            "x": 0.15,
+            "y": 0.15
+          }
+        },
+        "4": {
+          "cropScale": 1.34,
+          "cropOffset": {
+            "x": 0.15,
+            "y": 0.15
+          }
+        },
+        "5": {
+          "cropScale": 1.34,
+          "cropOffset": {
+            "x": 0.15,
+            "y": 0.15
+          }
+        },
+        "6": {
+          "cropScale": 1.34,
+          "cropOffset": {
+            "x": 0.15,
+            "y": 0.15
+          }
+        },
+        "7": {
+          "cropScale": 1.34,
+          "cropOffset": {
+            "x": 0.15,
+            "y": 0.15
+          }
+        }
+      }
+    },
+    "1453": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 1.85,
+      "cropOffset": {
+        "x": -0.28,
+        "y": 0.21
+      }
+    },
+    "1526": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 3,
+      "cropOffset": {
+        "x": 0.05,
+        "y": 0
+      },
+      "altOverrides": {
+        "2": {
+          "cropScale": 1.6,
+          "cropOffset": {
+            "x": 0.11,
+            "y": 0.17
+          }
+        },
+        "3": {
+          "cropScale": 1.6,
+          "cropOffset": {
+            "x": 0.11,
+            "y": 0.17
+          }
+        },
+        "4": {
+          "cropScale": 1.6,
+          "cropOffset": {
+            "x": 0.11,
+            "y": 0.17
+          }
+        },
+        "6": {
+          "cropScale": 1.6,
+          "cropOffset": {
+            "x": 0.11,
+            "y": 0.17
+          }
+        },
+        "7": {
+          "cropScale": 1.6,
+          "cropOffset": {
+            "x": 0.11,
+            "y": 0.17
+          }
+        }
+      }
+    },
+    "1530": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 1.3,
+      "cropOffset": {
+        "x": 0.1,
+        "y": 0.06
+      }
+    },
+    "1532": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 1.8,
+      "cropOffset": {
+        "x": -0.11,
+        "y": 0.36
+      }
+    },
+    "1539": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 2.89,
+      "cropOffset": {
+        "x": 0.07,
+        "y": 0.18
+      },
+      "altOverrides": {
+        "3": {
+          "cropScale": 2.89,
+          "cropOffset": {
+            "x": 0.06,
+            "y": 0.16
+          }
+        },
+        "5": {
+          "cropScale": 2.89,
+          "cropOffset": {
+            "x": 0.06,
+            "y": 0.16
+          }
+        },
+        "7": {
+          "cropScale": 2.89,
+          "cropOffset": {
+            "x": 0.06,
+            "y": 0.16
+          }
+        }
+      }
+    },
+    "1746": {
+      "alts": [0],
+      "cropScale": 0.8,
+      "cropOffset": {
+        "x": 0,
+        "y": -0.05
+      }
+    },
+    "1747": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 2.49,
+      "cropOffset": {
+        "x": 0.27,
+        "y": 0.07
+      }
+    },
+    "1766": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 1.37,
+      "cropOffset": {
+        "x": 0,
+        "y": 0.21
+      }
+    },
+    "1777": {
+      "alts": [0, 1, 2, 3, 4, 5],
+      "cropScale": 3,
+      "cropOffset": {
+        "x": -0.26,
+        "y": 0.03
+      }
+    },
+    "1795": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 1.3,
+      "cropOffset": {
+        "x": 0,
+        "y": 0.2
+      }
+    },
+    "1846": {
+      "alts": [0, 1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 3,
+      "cropOffset": {
+        "x": 0.07,
+        "y": 0.4
+      },
+      "altOverrides": {
+        "1": {
+          "cropScale": 3,
+          "cropOffset": {
+            "x": 0.16,
+            "y": 0.4
+          }
+        },
+        "3": {
+          "cropScale": 3,
+          "cropOffset": {
+            "x": 0.16,
+            "y": 0.4
+          }
+        },
+        "5": {
+          "cropScale": 3,
+          "cropOffset": {
+            "x": 0.16,
+            "y": 0.4
+          }
+        },
+        "7": {
+          "cropScale": 3,
+          "cropOffset": {
+            "x": 0.16,
+            "y": 0.4
+          }
+        }
+      }
+    },
+    "1897": {
+      "alts": [2, 4, 6],
+      "cropScale": 1.6,
+      "cropOffset": {
+        "x": -0.05,
+        "y": 0.26
+      },
+      "altOverrides": {
+        "4": {
+          "cropScale": 1.56,
+          "cropOffset": {
+            "x": -0.07,
+            "y": 0.22
+          }
+        },
+        "6": {
+          "cropScale": 1.56,
+          "cropOffset": {
+            "x": -0.07,
+            "y": 0.22
+          }
+        }
+      }
+    },
+    "1795_p": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 1.6,
+      "cropOffset": {
+        "x": -0.03,
+        "y": 0.18
+      },
+      "altOverrides": {
+        "3": {
+          "cropScale": 1.52,
+          "cropOffset": {
+            "x": -0.08,
+            "y": 0.22
+          }
+        },
+        "4": {
+          "cropScale": 1.52,
+          "cropOffset": {
+            "x": -0.08,
+            "y": 0.22
+          }
+        },
+        "5": {
+          "cropScale": 1.52,
+          "cropOffset": {
+            "x": -0.08,
+            "y": 0.22
+          }
+        },
+        "6": {
+          "cropScale": 1.52,
+          "cropOffset": {
+            "x": -0.08,
+            "y": 0.22
+          }
+        },
+        "7": {
+          "cropScale": 1.52,
+          "cropOffset": {
+            "x": -0.08,
+            "y": 0.22
+          }
+        }
+      }
+    },
+    "1795_m": {
+      "alts": [1, 2, 3, 4, 5, 6, 7],
+      "cropScale": 1.8,
+      "cropOffset": {
+        "x": -0.04,
+        "y": 0.32
+      },
+      "altOverrides": {
+        "2": {
+          "cropScale": 2.03,
+          "cropOffset": {
+            "x": 0,
+            "y": 0.26
+          }
+        },
+        "3": {
+          "cropScale": 2.03,
+          "cropOffset": {
+            "x": 0,
+            "y": 0.26
+          }
+        },
+        "4": {
+          "cropScale": 2.03,
+          "cropOffset": {
+            "x": 0,
+            "y": 0.26
+          }
+        },
+        "5": {
+          "cropScale": 2.03,
+          "cropOffset": {
+            "x": 0,
+            "y": 0.26
+          }
+        },
+        "6": {
+          "cropScale": 2.03,
+          "cropOffset": {
+            "x": 0,
+            "y": 0.26
+          }
+        }
+      }
+    }
+  }
+}

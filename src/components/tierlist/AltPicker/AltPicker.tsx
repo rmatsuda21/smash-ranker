@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 import { useLingui } from "@lingui/react/macro";
 
 import { getCharacter } from "@/utils/top8/characterCatalog";
-import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
+import { getTierCharacterImageUrl } from "@/utils/tierlist/characterImage";
 import { getCharacterDisplayName } from "@/utils/top8/getCharacterName";
 import { useTierListStore } from "@/store/tierListStore";
 import { ImageDisplayMode } from "@/types/tierlist/TierList";
@@ -99,11 +99,11 @@ export const AltPicker = ({
             tooltipIsLabel
           >
             <img
-              src={getCharImgUrl({
-                characterId: character.characterId,
-                alt: i as 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7,
-                type: imageMode,
-              })}
+              src={getTierCharacterImageUrl(
+                character.characterId,
+                i,
+                imageMode,
+              )}
               alt={charData.altNames?.[i] ?? t`Alt ${i}`}
               width={40}
               height={40}

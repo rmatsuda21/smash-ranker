@@ -19,14 +19,20 @@ const CharacterNodeComponent = ({ element, draggable }: Props) => {
       getCharImgUrl({
         characterId: element.characterId,
         alt: element.alt as 0,
-        type: element.imageType,
+        type: element.imageType === "stock" ? "stock" : "main",
+        style: element.imageType === "mural" ? "mural" : undefined,
       }),
     [element.characterId, element.alt, element.imageType],
   );
 
   const crop = useMemo(
-    () => getCharacterCrop(element.characterId, element.alt),
-    [element.characterId, element.alt],
+    () =>
+      getCharacterCrop(
+        element.characterId,
+        element.alt,
+        element.imageType === "mural" ? "mural" : undefined,
+      ),
+    [element.characterId, element.alt, element.imageType],
   );
 
   const { finalImage, ref } = useCustomImage({

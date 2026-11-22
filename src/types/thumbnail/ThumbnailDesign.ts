@@ -56,7 +56,8 @@ export type CharacterElement = ThumbnailElementBase & {
   type: "character";
   characterId: string;
   alt: number;
-  imageType: "stock" | "main";
+  // "main" is the standard render, "mural" the mural render style.
+  imageType: "stock" | "main" | "mural";
   flipX: boolean;
   fillMode?: "contain" | "cover";
 };

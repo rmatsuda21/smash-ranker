@@ -29,7 +29,7 @@ import {
 import { ColorInput } from "@/components/shared/ColorInput/ColorInput";
 import { GameSwitch } from "@/components/shared/GameSwitch/GameSwitch";
 import { DEFAULT_GAME } from "@/consts/games";
-import { getCharacterGame } from "@/utils/top8/characterCatalog";
+import { getCharacterGame, getRenderSet } from "@/utils/top8/characterCatalog";
 import { GameId } from "@/types/Game";
 import { CharacterSelect } from "@/components/top8/CharacterEditor/CharacterSelect/CharacterSelect";
 import { CharacterAltPicker } from "@/components/top8/CharacterEditor/CharacterAltPicker/CharacterAltPicker";
@@ -678,7 +678,11 @@ const CharacterProperties = ({
         />
       </div>
       <CharacterAltPicker
-        selectedCharacter={{ id: element.characterId, alt: element.alt as 0 }}
+        selectedCharacter={{
+          id: element.characterId,
+          alt: element.alt as 0,
+          style: element.imageType === "mural" ? "mural" : undefined,
+        }}
         onAltChange={(alt) =>
           update(element.id, element, { alt: alt as number })
         }
@@ -690,11 +694,15 @@ const CharacterProperties = ({
           value={element.imageType}
           onChange={(e) =>
             update(element.id, element, {
-              imageType: e.target.value as "stock" | "main",
+              imageType: e.target.value as CharacterElement["imageType"],
             })
           }
         >
           <option value="main">Splash art</option>
+          {(element.imageType === "mural" ||
+            getRenderSet(element.characterId, "mural")) && (
+            <option value="mural">Mural art</option>
+          )}
           <option value="stock">Stock icon</option>
         </select>
       </div>

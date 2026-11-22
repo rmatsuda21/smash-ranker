@@ -33,6 +33,7 @@ import {
   labelFontFamilyCss,
 } from "@/utils/tierlist/labelFont";
 import { useTierListStore } from "@/store/tierListStore";
+import { GAMES, RENDER_STYLES } from "@/consts/games";
 import {
   TIER_PALETTES,
   getColorsForTierCount,
@@ -74,6 +75,8 @@ export const TierDesignBar = ({ className }: Props) => {
   const { _ } = useLingui();
   const dispatch = useTierListStore((s) => s.dispatch);
   const game = useTierListStore((s) => s.game);
+  // Offered only for a game that has mural art.
+  const hasMural = GAMES[game].renderStyles.includes("mural");
   const layout = useTierListStore((s) => s.layout);
   const imageMode = useTierListStore((s) => s.imageMode);
   const labelFont = useTierListStore((s) => s.labelFont);
@@ -179,13 +182,21 @@ export const TierDesignBar = ({ className }: Props) => {
           <Trans>Image Style</Trans>
         </span>
         <RadioGroup<ImageDisplayMode>
-          value={imageMode}
+          value={imageMode === "mural" && !hasMural ? "main" : imageMode}
           onChange={(value) =>
             dispatch({ type: "SET_IMAGE_MODE", mode: value })
           }
           options={[
             { value: "stock", label: <Trans>Stock</Trans> },
             { value: "main", label: <Trans>Main Art</Trans> },
+            ...(hasMural
+              ? [
+                  {
+                    value: "mural" as const,
+                    label: _(RENDER_STYLES.mural.label),
+                  },
+                ]
+              : []),
           ]}
         />
       </div>

@@ -163,7 +163,7 @@ msgstr "素材"
 msgid "Auto-fill by seed"
 msgstr "シードで自動入力"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:340
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:341
 msgid "Avatar"
 msgstr "アイコン"
 
@@ -280,7 +280,7 @@ msgstr "市区町村"
 msgid "Clear"
 msgstr "クリア"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:367
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:368
 msgid "Clear Player"
 msgstr "選手初期化"
 
@@ -388,7 +388,7 @@ msgstr "代わりにDQの数を数えています..."
 msgid "Counting the stocks. All of them..."
 msgstr "ストックを数えています。全部です..."
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:314
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:315
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:219
 msgid "Country"
 msgstr "国"
@@ -428,7 +428,7 @@ msgstr "クレジット & インスピレーション"
 msgid "Custom"
 msgstr "カスタム"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:348
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:349
 msgid "Custom Flag"
 msgstr "カスタムフラッグ"
 
@@ -436,7 +436,7 @@ msgstr "カスタムフラッグ"
 msgid "Custom Fonts"
 msgstr "カスタムフォント"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:330
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:331
 msgid "Custom images"
 msgstr "カスタム画像"
 
@@ -723,8 +723,8 @@ msgstr "フォント「{fontFamily}」はすでに追加されています。"
 msgid "Format"
 msgstr "フォーマット"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:258
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:259
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:260
 msgid "Gamer Tag"
 msgstr "選手名"
 
@@ -975,7 +975,7 @@ msgstr "素材管理"
 msgid "Many cups of coffee were consumed during development 👀"
 msgstr "珈琲一杯分から！"
 
-#: src/consts/games.ts:24
+#: src/consts/games.ts:37
 msgid "Melee"
 msgstr "DX"
 
@@ -1006,6 +1006,14 @@ msgstr "画像が見つかりません"
 #: src/components/top8/SettingsPanel/DeveloperSettings.tsx:54
 msgid "Mode"
 msgstr ""
+
+#: src/consts/games.ts:12
+msgid "Mural"
+msgstr "壁画"
+
+#: src/components/top8/InfoPanel/InfoPanel.tsx:155
+msgid "Mural alternate costume renders"
+msgstr "壁画のカラー違いレンダー"
 
 #: src/components/user/EventRow/EventRow.tsx:50
 msgid "My recap"
@@ -1146,6 +1154,10 @@ msgstr "オリジナル"
 msgid "Original concept & inspiration"
 msgstr "元コンセプトとインスピレーション"
 
+#: src/components/top8/InfoPanel/InfoPanel.tsx:167
+msgid "Original mural isolation"
+msgstr "壁画イラストの切り抜き"
+
 #: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:169
 msgid "Output: {outputWidth} × {outputHeight} px"
 msgstr "出力: {outputWidth} × {outputHeight} px"
@@ -1184,8 +1196,8 @@ msgid "Pixel Ratio"
 msgstr "ピクセル比"
 
 #: src/components/home/RecentTournaments/RecentTournaments.tsx:43
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:283
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:284
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:285
 msgid "Placement"
 msgstr "順位"
 
@@ -1256,8 +1268,8 @@ msgstr "予想人数"
 msgid "Predictions"
 msgstr "順位予想"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:270
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:271
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:272
 msgid "Prefix"
 msgstr "所属"
 
@@ -1521,6 +1533,10 @@ msgstr "容量"
 msgid "Square Variant"
 msgstr "スクエアバリアント"
 
+#: src/consts/games.ts:11
+msgid "Standard"
+msgstr "標準"
+
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:87
 msgid "Standings"
 msgstr "順位表"
@@ -1782,7 +1798,7 @@ msgstr "Xアカウント"
 msgid "Type"
 msgstr "形式"
 
-#: src/consts/games.ts:11
+#: src/consts/games.ts:23
 msgid "Ultimate"
 msgstr "SP"
 
@@ -1890,7 +1906,7 @@ msgstr "優勝"
 msgid "X"
 msgstr "X"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:308
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:309
 msgid "X Handle"
 msgstr "Xハンドル"
 

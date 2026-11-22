@@ -2,7 +2,8 @@ import { CSSProperties, useMemo } from "react";
 
 import { EMPTY_CHARACTER_ID } from "@/consts/top8/characters";
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
-import { getCharacter } from "@/utils/top8/characterCatalog";
+import { getCharacter, getRenderAlts } from "@/utils/top8/characterCatalog";
+import { RenderStyleId } from "@/types/Game";
 import { CharacerData } from "@/types/top8/Player";
 import { useTooltip } from "@/hooks/useTooltip";
 
@@ -53,7 +54,7 @@ const AltOption = ({
   );
 };
 
-const getAltsAndIcons = (characterId?: string) => {
+const getAltsAndIcons = (characterId?: string, style?: RenderStyleId) => {
   if (characterId === EMPTY_CHARACTER_ID) return [];
 
   const character = characterId ? getCharacter(characterId) : undefined;
@@ -67,7 +68,9 @@ const getAltsAndIcons = (characterId?: string) => {
     }));
   }
 
-  return Array.from({ length: character?.alts || 8 }, (_, i) => ({
+  // Only the costumes the render style has art for; the icons are the same
+  // in every style.
+  return getRenderAlts(characterId, style).map((i) => ({
     id: `${character?.id}-${i}`,
     alt: i as CharacerData["alt"],
     icon: getCharImgUrl({
@@ -87,8 +90,14 @@ export const CharacterAltPicker = ({
   disabled = false,
 }: Props) => {
   const altsAndIcons = useMemo(
-    () => getAltsAndIcons(selectedCharacter?.id),
-    [selectedCharacter?.id],
+    () => getAltsAndIcons(selectedCharacter?.id, selectedCharacter?.style),
+    [selectedCharacter?.id, selectedCharacter?.style],
+  );
+  // The highlight moves by position in the list, which is not the costume
+  // number once a style leaves some costumes out.
+  const selectedPosition = Math.max(
+    0,
+    altsAndIcons.findIndex(({ alt }) => alt === selectedCharacter?.alt),
   );
 
   if (altsAndIcons.length === 0) return null;
@@ -101,7 +110,7 @@ export const CharacterAltPicker = ({
       style={
         {
           "--num-alts": altsAndIcons.length,
-          "--selected-alt": selectedCharacter?.alt ?? 0,
+          "--selected-alt": selectedPosition,
         } as CSSProperties
       }
       role="radiogroup"

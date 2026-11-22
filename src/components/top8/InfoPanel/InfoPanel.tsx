@@ -143,6 +143,30 @@ export const InfoPanel = ({ className }: Props) => {
                 <Trans>Melee asset packs</Trans>
               </span>
             </div>
+            <div>
+              <a
+                href="https://x.com/MuralAltDrive"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                @MuralAltDrive
+              </a>
+              <span className={styles.creditDesc}>
+                <Trans>Mural alternate costume renders</Trans>
+              </span>
+            </div>
+            <div>
+              <a
+                href="https://x.com/ElevenZM"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                @ElevenZM
+              </a>
+              <span className={styles.creditDesc}>
+                <Trans>Original mural isolation</Trans>
+              </span>
+            </div>
           </div>
         </section>
       </div>

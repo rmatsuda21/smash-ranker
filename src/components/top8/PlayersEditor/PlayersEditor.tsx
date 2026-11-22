@@ -233,6 +233,7 @@ export const PlayersEditor = ({ className }: Props) => {
                   characterId: mainCharacter.id,
                   alt: mainCharacter.alt,
                   type: "main",
+                  style: mainCharacter.style,
                 })}
                 alt=""
                 draggable={false}

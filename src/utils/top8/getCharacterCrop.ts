@@ -1,5 +1,10 @@
 import { EMPTY_CHARACTER_ID } from "@/consts/top8/characters";
-import { getCharacter } from "@/utils/top8/characterCatalog";
+import {
+  getCharacter,
+  getRenderSet,
+  resolveRenderAlt,
+} from "@/utils/top8/characterCatalog";
+import { RenderStyleId } from "@/types/Game";
 
 export type CharacterCrop = {
   offset: { x: number; y: number };
@@ -9,6 +14,8 @@ export type CharacterCrop = {
 export const getCharacterCrop = (
   characterId: string,
   alt?: number,
+  // The render style being drawn; its art has its own crop.
+  style?: RenderStyleId,
 ): CharacterCrop => {
   const character = getCharacter(characterId);
 
@@ -18,6 +25,18 @@ export const getCharacterCrop = (
 
   if (!character) {
     return { offset: { x: 0, y: 0 }, scale: 1 };
+  }
+
+  const renderSet = getRenderSet(characterId, style);
+  if (renderSet) {
+    const override =
+      alt !== undefined
+        ? renderSet.altOverrides?.[resolveRenderAlt(characterId, alt, style)]
+        : undefined;
+    return {
+      offset: override?.cropOffset ?? renderSet.cropOffset ?? { x: 0, y: 0 },
+      scale: override?.cropScale ?? renderSet.cropScale ?? 1,
+    };
   }
 
   // Check for alt-specific overrides

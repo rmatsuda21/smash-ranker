@@ -11,7 +11,8 @@ export type Tier = {
   characterIds: string[];
 };
 
-export type ImageDisplayMode = "stock" | "main";
+// "main" is the standard render, "mural" the mural render style.
+export type ImageDisplayMode = "stock" | "main" | "mural";
 
 export type TierListLayout = "side" | "top" | "fancy";
 

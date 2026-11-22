@@ -163,7 +163,7 @@ msgstr ""
 msgid "Auto-fill by seed"
 msgstr ""
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:340
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:341
 msgid "Avatar"
 msgstr ""
 
@@ -280,7 +280,7 @@ msgstr ""
 msgid "Clear"
 msgstr ""
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:367
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:368
 msgid "Clear Player"
 msgstr ""
 
@@ -388,7 +388,7 @@ msgstr ""
 msgid "Counting the stocks. All of them..."
 msgstr ""
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:314
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:315
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:219
 msgid "Country"
 msgstr ""
@@ -428,7 +428,7 @@ msgstr ""
 msgid "Custom"
 msgstr "カスタム"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:348
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:349
 msgid "Custom Flag"
 msgstr ""
 
@@ -436,7 +436,7 @@ msgstr ""
 msgid "Custom Fonts"
 msgstr ""
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:330
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:331
 msgid "Custom images"
 msgstr ""
 
@@ -723,8 +723,8 @@ msgstr ""
 msgid "Format"
 msgstr ""
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:258
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:259
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:260
 msgid "Gamer Tag"
 msgstr ""
 
@@ -975,7 +975,7 @@ msgstr ""
 msgid "Many cups of coffee were consumed during development 👀"
 msgstr ""
 
-#: src/consts/games.ts:24
+#: src/consts/games.ts:37
 msgid "Melee"
 msgstr ""
 
@@ -1005,6 +1005,14 @@ msgstr ""
 
 #: src/components/top8/SettingsPanel/DeveloperSettings.tsx:54
 msgid "Mode"
+msgstr ""
+
+#: src/consts/games.ts:12
+msgid "Mural"
+msgstr ""
+
+#: src/components/top8/InfoPanel/InfoPanel.tsx:155
+msgid "Mural alternate costume renders"
 msgstr ""
 
 #: src/components/user/EventRow/EventRow.tsx:50
@@ -1146,6 +1154,10 @@ msgstr ""
 msgid "Original concept & inspiration"
 msgstr ""
 
+#: src/components/top8/InfoPanel/InfoPanel.tsx:167
+msgid "Original mural isolation"
+msgstr ""
+
 #: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:169
 msgid "Output: {outputWidth} × {outputHeight} px"
 msgstr ""
@@ -1184,8 +1196,8 @@ msgid "Pixel Ratio"
 msgstr ""
 
 #: src/components/home/RecentTournaments/RecentTournaments.tsx:43
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:283
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:284
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:285
 msgid "Placement"
 msgstr ""
 
@@ -1256,8 +1268,8 @@ msgstr ""
 msgid "Predictions"
 msgstr ""
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:270
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:271
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:272
 msgid "Prefix"
 msgstr ""
 
@@ -1521,6 +1533,10 @@ msgstr ""
 msgid "Square Variant"
 msgstr ""
 
+#: src/consts/games.ts:11
+msgid "Standard"
+msgstr ""
+
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:87
 msgid "Standings"
 msgstr ""
@@ -1782,7 +1798,7 @@ msgstr ""
 msgid "Type"
 msgstr ""
 
-#: src/consts/games.ts:11
+#: src/consts/games.ts:23
 msgid "Ultimate"
 msgstr ""
 
@@ -1890,7 +1906,7 @@ msgstr ""
 msgid "X"
 msgstr ""
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:308
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:309
 msgid "X Handle"
 msgstr ""
 

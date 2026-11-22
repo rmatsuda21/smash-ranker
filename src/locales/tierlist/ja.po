@@ -30,15 +30,15 @@ msgstr "カラー {i}"
 #~ msgid "Arial"
 #~ msgstr "Arial"
 
-#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:59
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:60
 msgid "Black"
 msgstr "ブラック"
 
-#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:57
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:58
 msgid "Bold"
 msgstr "ボールド"
 
-#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:220
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:231
 msgid "Center"
 msgstr "中央"
 
@@ -82,7 +82,7 @@ msgstr "クリックして名前を変更"
 msgid "Color"
 msgstr "色"
 
-#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:242
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:253
 msgid "Color Palette"
 msgstr "カラーパレット"
 
@@ -138,31 +138,31 @@ msgstr "全キャラが未ランクに戻ります。ティアは残ります。
 msgid "Every character is ranked. Drag one back here."
 msgstr "すべてのキャラクターをランク付けしました。ここにドラッグで戻せます。"
 
-#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:58
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:59
 msgid "Extra Bold"
 msgstr "エキストラボールド"
 
-#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:52
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:53
 msgid "Extra Light"
 msgstr "エクストラライト"
 
-#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:169
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:172
 msgid "Fancy"
 msgstr "ファンシー"
 
-#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:339
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:350
 msgid "Font Family"
 msgstr "フォント"
 
-#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:362
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:373
 msgid "Font Size"
 msgstr "フォントサイズ"
 
-#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:348
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:359
 msgid "Font Weight"
 msgstr "フォントウェイト"
 
-#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:132
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:135
 msgid "Game"
 msgstr "ゲーム"
 
@@ -170,7 +170,7 @@ msgstr "ゲーム"
 #~ msgid "Georgia"
 #~ msgstr "Georgia"
 
-#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:179
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:182
 msgid "Image Style"
 msgstr "画像スタイル"
 
@@ -178,7 +178,7 @@ msgstr "画像スタイル"
 #~ msgid "Impact"
 #~ msgstr "Impact"
 
-#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:268
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:279
 msgid "Label Font"
 msgstr "ラベルフォント"
 
@@ -186,23 +186,23 @@ msgstr "ラベルフォント"
 #~ msgid "Label Position"
 #~ msgstr "ラベルの位置"
 
-#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:142
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:145
 msgid "Layout"
 msgstr "レイアウト"
 
-#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:209
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:220
 msgid "Left"
 msgstr "左"
 
-#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:53
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:54
 msgid "Light"
 msgstr "ライト"
 
-#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:188
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:191
 msgid "Main Art"
 msgstr "メインアート"
 
-#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:55
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:56
 msgid "Medium"
 msgstr "ミディアム"
 
@@ -222,7 +222,7 @@ msgstr "上に移動"
 msgid "Neon"
 msgstr "ネオン"
 
-#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:54
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:55
 msgid "Normal"
 msgstr "ノーマル"
 
@@ -246,7 +246,7 @@ msgstr "パステル"
 #~ msgid "Reset width"
 #~ msgstr "幅をリセット"
 
-#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:231
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:242
 msgid "Right"
 msgstr "右"
 
@@ -254,7 +254,7 @@ msgstr "右"
 msgid "Save Image"
 msgstr "保存"
 
-#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:56
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:57
 msgid "Semi-Bold"
 msgstr "セミボールド"
 
@@ -262,7 +262,7 @@ msgstr "セミボールド"
 #~ msgid "Settings"
 #~ msgstr "設定"
 
-#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:152
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:155
 msgid "Side"
 msgstr "サイド"
 
@@ -274,11 +274,11 @@ msgstr "初期化"
 msgid "Start over?"
 msgstr "初期化しますか?"
 
-#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:187
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:190
 msgid "Stock"
 msgstr "ストック"
 
-#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:51
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:52
 msgid "Thin"
 msgstr "シン"
 
@@ -310,11 +310,11 @@ msgstr "ティア・タイトル・パレット・配置が初期状態に戻り
 #~ msgid "Times"
 #~ msgstr "Times"
 
-#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:195
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:206
 msgid "Title Alignment"
 msgstr "タイトル配置"
 
-#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:160
+#: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:163
 msgid "Top"
 msgstr "トップ"
 
