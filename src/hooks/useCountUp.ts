@@ -14,7 +14,8 @@ export const useCountUp = (target: number, durationMs = 1200): number => {
     let frame = 0;
     const start = performance.now();
     const tick = (now: number) => {
-      const progress = Math.min(1, (now - start) / durationMs);
+      // The first frame's timestamp can be earlier than `start`.
+      const progress = Math.min(1, Math.max(0, now - start) / durationMs);
       setValue(target * (1 - Math.pow(1 - progress, 3)));
       if (progress < 1) frame = requestAnimationFrame(tick);
     };

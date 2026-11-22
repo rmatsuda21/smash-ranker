@@ -2,11 +2,15 @@
 // itself: going Back to the page finds it again, while opening the page
 // afresh (a new history entry) starts at the top.
 
+export type UserPageTab = "list" | "stats";
+
 export type UserPageMemory = {
   scrollTop: number;
   // How many tournaments "Show more" had revealed.
   visible: number;
   query: string;
+  // Which pane a narrow screen was showing.
+  tab: UserPageTab;
 };
 
 const KEY = "userPage";

@@ -144,20 +144,140 @@
 }
 
 // ------------------------------------------
+// Panes: tournaments and stats
+// ------------------------------------------
+
+.panes {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  gap: var(--space-6);
+
+  @include wide {
+    // The list keeps to a narrow column; the stats get the rest.
+    grid-template-columns: clamp(360px, 34%, 420px) minmax(0, 1fr);
+  }
+}
+
+.listPane,
+.statsPane {
+  min-width: 0;
+}
+
+// Side by side, the page itself does not scroll: the header stays put and
+// each pane scrolls on its own, so the stats stay in view while the user
+// goes through their tournaments.
+@include wide {
+  .content.split {
+    height: 100%;
+    padding-bottom: 0;
+  }
+
+  .panes {
+    flex: 1;
+    min-height: 0;
+    grid-template-rows: minmax(0, 1fr);
+    align-items: stretch;
+  }
+
+  .listPane,
+  .statsPane {
+    overflow: hidden auto;
+    // Room for the scrollbar, and for the end of the content to clear the
+    // bottom of the window.
+    padding: 0 var(--space-2) var(--space-8) 0;
+    scrollbar-gutter: stable;
+  }
+}
+
+.statsPane {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+// Lines up with the tournament list's heading (its search field is 36px).
+.paneTitle {
+  display: none;
+  align-items: center;
+  min-height: 36px;
+  font-size: var(--title-size);
+  font-weight: 800;
+  color: var(--fg-1);
+
+  @include wide {
+    display: flex;
+  }
+}
+
+// Below the wide breakpoint the panes are tabs. The bar sticks to the top
+// so the other pane is one tap away from anywhere in a long list.
+.tabs {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-1);
+  // Bleeds to the screen edges so rows scrolling under it are covered.
+  margin: calc(-1 * var(--space-2)) calc(-1 * var(--space-4));
+  padding: var(--space-2) var(--space-4);
+  background: var(--bg-app);
+}
+
+.tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  height: 40px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  background: var(--bg-surface);
+  color: var(--fg-3);
+  font: inherit;
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background-color var(--duration-base) var(--ease-standard),
+    border-color var(--duration-base) var(--ease-standard),
+    color var(--duration-base) var(--ease-standard);
+
+  &:focus-visible {
+    outline: 2px solid var(--brand);
+    outline-offset: 2px;
+  }
+}
+
+.tabOn {
+  border-color: var(--brand-outline);
+  background: var(--brand-softer);
+  color: var(--fg-1);
+}
+
+.tabCount {
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-pill);
+  background: var(--bg-raised);
+  color: var(--fg-2);
+  font-size: var(--font-size-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+// ------------------------------------------
 // States
 // ------------------------------------------
 
+// Stands in for the board while every tournament is fetched: four single
+// tiles and three double ones, in the board's two columns.
 .statsSkeleton {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--space-3);
 
-  @media (max-width: 1100px) {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-
   span {
-    height: 120px;
+    height: 116px;
     border-radius: var(--radius-lg);
     background: linear-gradient(
       90deg,
@@ -169,9 +289,14 @@
     animation: shimmer 1.4s linear infinite;
   }
 
-  span:nth-child(5),
-  span:nth-child(6) {
+  span:nth-child(n + 5) {
     grid-column: span 2;
+    height: 150px;
+  }
+
+  // The board's four columns.
+  @media (min-width: 769px) and (max-width: 1023px), (min-width: 1200px) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 
@@ -209,29 +334,81 @@
   color: var(--fg-3);
 }
 
-@include mobile {
+// Tabbed layout: a one-line header, so the tournaments start near the top
+// of the screen.
+@media (max-width: 1023px) {
   .content {
-    gap: var(--space-6);
+    gap: var(--space-4);
     padding: var(--space-4) var(--space-4) var(--space-8);
   }
 
   .header {
-    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  .avatarWrap {
+    padding: 3px;
+  }
+
+  .avatar {
+    border-width: 2px;
+  }
+
+  .identity {
+    gap: var(--space-1);
   }
 
   .tag {
-    font-size: 26px;
+    font-size: 22px;
   }
 
+  // One line each, so a long place name does not make the header taller.
+  .details {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    font-size: var(--font-size-sm);
+
+    span {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      display: block;
+    }
+
+    svg {
+      display: inline;
+      margin-right: var(--space-1);
+      vertical-align: -1px;
+    }
+  }
+
+  // Icon buttons beside the name instead of a row of their own.
   .headerActions {
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
-    width: 100%;
+    gap: var(--space-1);
+  }
+
+  .actionLabel {
+    display: none;
+  }
+
+  .profileLink,
+  .logout {
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-md);
+  }
+
+  .profileLink svg {
+    font-size: 1em;
   }
 
   .statsSkeleton {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--space-2);
   }
 }

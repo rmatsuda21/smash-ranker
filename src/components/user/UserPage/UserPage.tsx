@@ -1,5 +1,8 @@
-import { useRef } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
+import cn from "classnames";
 import { Trans } from "@lingui/react/macro";
+import { msg } from "@lingui/core/macro";
+import { useLingui } from "@lingui/react";
 import { useLocation } from "wouter";
 import {
   FaArrowUpRightFromSquare,
@@ -13,12 +16,18 @@ import { EmptyProfile } from "@/components/user/EmptyProfile/EmptyProfile";
 import { EventList } from "@/components/user/EventList/EventList";
 import { StatsBoard } from "@/components/user/StatsBoard/StatsBoard";
 import { UserAvatar } from "@/components/user/UserAvatar/UserAvatar";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { useUserEvents } from "@/hooks/user/useUserEvents";
 import { useUserSets } from "@/hooks/user/useUserSets";
 import { useScrollMemory } from "@/hooks/user/useScrollMemory";
 import { useAuthUser } from "@/store/authStore";
 import { logout } from "@/utils/auth/session";
 import { logEvent } from "@/utils/observability/log";
+import {
+  readUserPageMemory,
+  writeUserPageMemory,
+  type UserPageTab,
+} from "@/utils/user/pageMemory";
 
 import styles from "./UserPage.module.scss";
 
@@ -29,9 +38,17 @@ const MAX_EVENT_PAGES = 10;
 // Three pages of sets (about 135) is enough for rivals and mains without
 // walking a whole career of them.
 const SET_PAGES = 3;
+// Matches the `wide` mixin: from here the list and the stats sit side by
+// side; below it they are two tabs.
+const WIDE_QUERY = "(min-width: 1024px)";
 
 export const UserPage = () => {
+  const { _ } = useLingui();
   const user = useAuthUser();
+  const isWide = useMediaQuery(WIDE_QUERY);
+  const [tab, setTab] = useState<UserPageTab>(
+    () => readUserPageMemory().tab ?? "list",
+  );
   const [, navigate] = useLocation();
   const { events, total, status } = useUserEvents({
     perPage: EVENTS_PER_PAGE,
@@ -41,11 +58,30 @@ export const UserPage = () => {
 
   // The page is at its final height once the events are in and the set
   // tiles above the list have stopped loading.
+  // On a wide screen the tournament list scrolls in its own pane.
   const rootRef = useRef<HTMLDivElement>(null);
+  const listPaneRef = useRef<HTMLDivElement>(null);
   useScrollMemory(
-    rootRef,
+    isWide ? listPaneRef : rootRef,
     (status === "done" || status === "error") && setsStatus !== "loading",
   );
+
+  // Switching tabs from far down one pane should not land far down the
+  // other: bring the top of the panes back under the (sticky) tab bar.
+  const tabsRef = useRef<HTMLDivElement>(null);
+  const panesRef = useRef<HTMLDivElement>(null);
+  const shownTabRef = useRef(tab);
+  useLayoutEffect(() => {
+    if (shownTabRef.current === tab) return;
+    shownTabRef.current = tab;
+    const root = rootRef.current;
+    const tabs = tabsRef.current;
+    const panes = panesRef.current;
+    if (!root || !tabs || !panes) return;
+    const overshoot =
+      tabs.getBoundingClientRect().bottom - panes.getBoundingClientRect().top;
+    if (overshoot > 0) root.scrollTop -= overshoot;
+  }, [tab]);
 
   if (!user) {
     return (
@@ -69,6 +105,19 @@ export const UserPage = () => {
     .join(", ");
   const eventsSettled = status === "done" || status === "error";
 
+  // An account with nothing to show (or nothing loaded) has no panes.
+  const isEmpty = status === "done" && events.length === 0;
+  const isFailed = status === "error" && events.length === 0;
+  const showList = isWide || tab === "list";
+  // Mounted only while visible, so the numbers count up when the user gets
+  // to them.
+  const showStats = isWide || tab === "stats";
+
+  const selectTab = (next: UserPageTab) => {
+    setTab(next);
+    writeUserPageMemory({ tab: next });
+  };
+
   const handleLogout = () => {
     logEvent("user_logout", {});
     void logout();
@@ -77,10 +126,16 @@ export const UserPage = () => {
 
   return (
     <div className={styles.root} ref={rootRef}>
-      <div className={styles.content}>
+      <div
+        className={cn(styles.content, !isFailed && !isEmpty && styles.split)}
+      >
         <header className={styles.header}>
           <div className={styles.avatarWrap}>
-            <UserAvatar user={user} size={88} className={styles.avatar} />
+            <UserAvatar
+              user={user}
+              size={isWide ? 88 : 56}
+              className={styles.avatar}
+            />
           </div>
           <div className={styles.identity}>
             <h1 className={styles.tag}>
@@ -105,47 +160,113 @@ export const UserPage = () => {
               href={`https://start.gg/${user.slug}`}
               target="_blank"
               rel="noreferrer"
+              aria-label={_(msg`start.gg profile`)}
             >
-              <Trans>start.gg profile</Trans>
+              <span className={styles.actionLabel}>
+                <Trans>start.gg profile</Trans>
+              </span>
               <FaArrowUpRightFromSquare aria-hidden="true" />
             </a>
-            <Button variant="ghost" size="sm" onClick={handleLogout}>
+            <Button
+              className={styles.logout}
+              variant="ghost"
+              size="sm"
+              aria-label={_(msg`Log out`)}
+              onClick={handleLogout}
+            >
               <FaRightFromBracket aria-hidden="true" />
-              <Trans>Log out</Trans>
+              <span className={styles.actionLabel}>
+                <Trans>Log out</Trans>
+              </span>
             </Button>
           </div>
         </header>
 
-        {eventsSettled && events.length > 0 ? (
-          <StatsBoard
-            events={events}
-            sets={sets}
-            setsLoading={setsStatus === "loading"}
-          />
-        ) : (
-          !eventsSettled && (
-            <div className={styles.statsSkeleton} aria-hidden="true">
-              {Array.from({ length: 6 }, (_, i) => (
-                <span key={i} />
-              ))}
-            </div>
-          )
-        )}
-
-        {status === "error" && events.length === 0 ? (
+        {isFailed ? (
           <p className={styles.error}>
             <Trans>
               Couldn't reach start.gg for your tournaments. Try again in a bit.
             </Trans>
           </p>
-        ) : status === "done" && events.length === 0 ? (
+        ) : isEmpty ? (
           <EmptyProfile />
         ) : (
-          <EventList
-            events={events}
-            total={total}
-            loading={status === "loading"}
-          />
+          <>
+            {!isWide && (
+              <div className={styles.tabs} role="tablist" ref={tabsRef}>
+                <button
+                  type="button"
+                  role="tab"
+                  id="user-tab-list"
+                  aria-selected={tab === "list"}
+                  aria-controls="user-pane-list"
+                  className={cn(styles.tab, tab === "list" && styles.tabOn)}
+                  onClick={() => selectTab("list")}
+                >
+                  <Trans>Tournaments</Trans>
+                  {total > 0 && (
+                    <span className={styles.tabCount}>{total}</span>
+                  )}
+                </button>
+                <button
+                  type="button"
+                  role="tab"
+                  id="user-tab-stats"
+                  aria-selected={tab === "stats"}
+                  aria-controls="user-pane-stats"
+                  className={cn(styles.tab, tab === "stats" && styles.tabOn)}
+                  onClick={() => selectTab("stats")}
+                >
+                  <Trans>Stats</Trans>
+                </button>
+              </div>
+            )}
+
+            {/* Two columns that grow on their own: stats arriving later
+                never push the tournaments down. */}
+            <div className={styles.panes} ref={panesRef}>
+              <div
+                className={styles.listPane}
+                ref={listPaneRef}
+                id="user-pane-list"
+                role={isWide ? undefined : "tabpanel"}
+                aria-labelledby={isWide ? undefined : "user-tab-list"}
+                hidden={!showList}
+              >
+                <EventList
+                  events={events}
+                  total={total}
+                  loading={status === "loading"}
+                />
+              </div>
+
+              {showStats && (
+                <aside
+                  className={styles.statsPane}
+                  id="user-pane-stats"
+                  role={isWide ? undefined : "tabpanel"}
+                  aria-labelledby={isWide ? undefined : "user-tab-stats"}
+                >
+                  <h2 className={styles.paneTitle}>
+                    <Trans>Your stats</Trans>
+                  </h2>
+                  {eventsSettled ? (
+                    <StatsBoard
+                      events={events}
+                      sets={sets}
+                      setsLoading={setsStatus === "loading"}
+                    />
+                  ) : (
+                    <div className={styles.statsSkeleton} aria-hidden="true">
+                      {[...Array(7).keys()].map((i) => (
+                        <span key={i} />
+                      ))}
+                    </div>
+                  )}
+                </aside>
+              )}
+            </div>
+          </>
         )}
       </div>
     </div>

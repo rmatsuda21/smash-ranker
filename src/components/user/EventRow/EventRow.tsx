@@ -126,15 +126,20 @@ export const TournamentIcon = ({
 
 type Props = {
   event: UserEvent;
+  // Buttons under the text at every width, for a list in a narrow column.
+  stacked?: boolean;
   className?: string;
   style?: React.CSSProperties;
 };
 
-export const EventRow = ({ event, className, style }: Props) => {
+export const EventRow = ({ event, stacked, className, style }: Props) => {
   const eventMeta = useEventMeta();
 
   return (
-    <li className={cn(styles.row, className)} style={style}>
+    <li
+      className={cn(styles.row, stacked && styles.stacked, className)}
+      style={style}
+    >
       <TournamentIcon event={event} />
       <div className={styles.text}>
         <p className={styles.name}>{event.tournament.name}</p>

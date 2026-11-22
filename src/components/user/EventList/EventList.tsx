@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import cn from "classnames";
 import { Trans } from "@lingui/react/macro";
 import { msg } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
@@ -14,8 +15,10 @@ import {
 
 import styles from "./EventList.module.scss";
 
-// Even, so a two-column list always ends on a full row.
+// Tournaments revealed per "Show more".
 const PAGE_SIZE = 16;
+// Enough to fill a screen while the first page loads.
+const SKELETON_ROWS = 8;
 
 type Props = {
   events: UserEvent[];
@@ -73,10 +76,16 @@ export const EventList = ({ events, loading, total }: Props) => {
         </label>
       </div>
 
-      {shown.length > 0 ? (
+      {loading && events.length === 0 ? (
+        <div className={cn(styles.list, styles.skeleton)} aria-hidden="true">
+          {[...Array(SKELETON_ROWS).keys()].map((i) => (
+            <span key={i} />
+          ))}
+        </div>
+      ) : shown.length > 0 ? (
         <ul className={styles.list}>
           {shown.map((event) => (
-            <EventRow key={event.id} event={event} />
+            <EventRow key={event.id} event={event} stacked />
           ))}
         </ul>
       ) : (

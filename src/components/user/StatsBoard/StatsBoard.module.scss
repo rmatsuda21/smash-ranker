@@ -47,17 +47,18 @@
   }
 }
 
-// Six columns on a desktop: four single tiles and one double fill a row,
-// then three doubles, so every row ends flush. Four columns in between,
-// two on a phone.
+// The board is the wide column beside the tournament list on a desktop and
+// a full-width tab below that. Four columns where there is room (a tablet's
+// tab, a desktop from 1200px): four single tiles fill a row and double ones
+// pair up. Two columns otherwise: singles pair up and doubles take a row.
 .board {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   grid-auto-flow: dense;
   gap: var(--space-3);
 }
 
-@media (max-width: 1100px) {
+@media (min-width: 769px) and (max-width: 1023px), (min-width: 1200px) {
   .board {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
@@ -450,12 +451,11 @@
 }
 
 // ------------------------------------------
-// Narrow screens: two columns, wide tiles span both
+// Phones: tighter tiles
 // ------------------------------------------
 
 @include mobile {
   .board {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--space-2);
   }
 

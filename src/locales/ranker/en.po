@@ -31,7 +31,7 @@ msgid "{0} assets"
 msgstr ""
 
 #. placeholder {0}: character.games
-#: src/components/user/StatsBoard/StatsBoard.tsx:486
+#: src/components/user/StatsBoard/StatsBoard.tsx:488
 msgid "{0} games"
 msgstr ""
 
@@ -47,7 +47,7 @@ msgstr ""
 
 #. placeholder {0}: career.homeTurf.count
 #. placeholder {1}: career.cityCount
-#: src/components/user/StatsBoard/StatsBoard.tsx:205
+#: src/components/user/StatsBoard/StatsBoard.tsx:207
 msgid "{0} tournaments here, {1} cities in all"
 msgstr ""
 
@@ -66,11 +66,11 @@ msgstr ""
 #. placeholder {0}: setStats.wins
 #. placeholder {1}: setStats.losses
 #. placeholder {2}: setStats.setCount
-#: src/components/user/StatsBoard/StatsBoard.tsx:395
+#: src/components/user/StatsBoard/StatsBoard.tsx:397
 msgid "<0>{0}–{1}</0> over your last {2} sets"
 msgstr ""
 
-#: src/components/user/StatsBoard/StatsBoard.tsx:358
+#: src/components/user/StatsBoard/StatsBoard.tsx:360
 msgid "<0>{weekdayName}</0> is your tournament day"
 msgstr ""
 
@@ -122,7 +122,7 @@ msgstr ""
 #~ msgid "Adding a little sparkle to the win column..."
 #~ msgstr ""
 
-#: src/components/user/StatsBoard/StatsBoard.tsx:270
+#: src/components/user/StatsBoard/StatsBoard.tsx:272
 msgid "Ahead of the field"
 msgstr ""
 
@@ -195,13 +195,13 @@ msgstr ""
 #. placeholder {0}: formatOrdinal(career.bestFinish.placement!, i18n.locale)
 #. placeholder {1}: career.bestFinish.numEntrants
 #. placeholder {2}: career.bestFinish.tournament.name
-#: src/components/user/StatsBoard/StatsBoard.tsx:254
+#: src/components/user/StatsBoard/StatsBoard.tsx:256
 msgid "Best run: <0>{0} of {1}</0> at {2}"
 msgstr ""
 
 #. placeholder {0}: career.biggestBracket.numEntrants
 #. placeholder {1}: career.biggestBracket.tournament.name
-#: src/components/user/StatsBoard/StatsBoard.tsx:365
+#: src/components/user/StatsBoard/StatsBoard.tsx:367
 msgid "Biggest bracket: <0>{0} entrants</0> at {1}"
 msgstr ""
 
@@ -221,13 +221,13 @@ msgstr ""
 msgid "Bracket"
 msgstr ""
 
-#: src/components/user/StatsBoard/StatsBoard.tsx:176
+#: src/components/user/StatsBoard/StatsBoard.tsx:178
 msgid "Bracket company"
 msgstr ""
 
 #. placeholder {0}: monthLabel(career.busiestMonth.month, "long")
 #. placeholder {1}: career.busiestMonth.count
-#: src/components/user/StatsBoard/StatsBoard.tsx:331
+#: src/components/user/StatsBoard/StatsBoard.tsx:333
 msgid "Busiest month ever: <0>{0}</0> with {1} tournaments"
 msgstr ""
 
@@ -328,7 +328,7 @@ msgstr ""
 msgid "Compact"
 msgstr ""
 
-#: src/components/user/StatsBoard/StatsBoard.tsx:170
+#: src/components/user/StatsBoard/StatsBoard.tsx:172
 msgid "Competing since {sinceYear}"
 msgstr ""
 
@@ -372,7 +372,7 @@ msgid "Couldn't log you in"
 msgstr ""
 
 #: src/components/home/RecentTournaments/RecentTournaments.tsx:130
-#: src/components/user/UserPage/UserPage.tsx:137
+#: src/components/user/UserPage/UserPage.tsx:183
 msgid "Couldn't reach start.gg for your tournaments. Try again in a bit."
 msgstr ""
 
@@ -630,7 +630,7 @@ msgstr ""
 msgid "Entrants"
 msgstr ""
 
-#: src/components/user/StatsBoard/StatsBoard.tsx:181
+#: src/components/user/StatsBoard/StatsBoard.tsx:183
 msgid "entrants across every bracket you've been in"
 msgstr ""
 
@@ -678,7 +678,7 @@ msgstr ""
 msgid "Failed to generate image"
 msgstr ""
 
-#: src/components/user/StatsBoard/StatsBoard.tsx:430
+#: src/components/user/StatsBoard/StatsBoard.tsx:432
 msgid "Familiar faces"
 msgstr ""
 
@@ -716,7 +716,7 @@ msgstr ""
 
 #. placeholder {0}: career.seedBeaten.beaten
 #. placeholder {1}: career.seedBeaten.seeded
-#: src/components/user/StatsBoard/StatsBoard.tsx:291
+#: src/components/user/StatsBoard/StatsBoard.tsx:293
 msgid "Finished above your seed in <0>{0}</0> of {1} brackets"
 msgstr ""
 
@@ -758,7 +758,7 @@ msgstr ""
 #~ msgid "Generating recap"
 #~ msgstr ""
 
-#: src/components/user/StatsBoard/StatsBoard.tsx:381
+#: src/components/user/StatsBoard/StatsBoard.tsx:383
 msgid "Going through your recent sets..."
 msgstr ""
 
@@ -774,7 +774,7 @@ msgstr ""
 msgid "Grid view"
 msgstr ""
 
-#: src/components/user/StatsBoard/StatsBoard.tsx:344
+#: src/components/user/StatsBoard/StatsBoard.tsx:346
 msgid "Habits"
 msgstr ""
 
@@ -786,7 +786,7 @@ msgstr ""
 msgid "Home"
 msgstr ""
 
-#: src/components/user/StatsBoard/StatsBoard.tsx:198
+#: src/components/user/StatsBoard/StatsBoard.tsx:200
 msgid "Home turf"
 msgstr ""
 
@@ -846,11 +846,11 @@ msgstr ""
 msgid "Language"
 msgstr ""
 
-#: src/components/user/StatsBoard/StatsBoard.tsx:304
+#: src/components/user/StatsBoard/StatsBoard.tsx:306
 msgid "Last 12 months"
 msgstr ""
 
-#: src/components/user/StatsBoard/StatsBoard.tsx:406
+#: src/components/user/StatsBoard/StatsBoard.tsx:408
 msgid "Last-game sets"
 msgstr ""
 
@@ -908,7 +908,7 @@ msgstr ""
 msgid "Loading Configs..."
 msgstr ""
 
-#: src/components/user/EventList/EventList.tsx:102
+#: src/components/user/EventList/EventList.tsx:111
 msgid "Loading more from start.gg..."
 msgstr ""
 
@@ -939,11 +939,12 @@ msgstr ""
 msgid "Log in with start.gg"
 msgstr ""
 
-#: src/components/user/UserPage/UserPage.tsx:57
+#: src/components/user/UserPage/UserPage.tsx:91
 msgid "Log in with start.gg to see every tournament you've entered and make graphics for them in one click."
 msgstr ""
 
-#: src/components/user/UserPage/UserPage.tsx:114
+#: src/components/user/UserPage/UserPage.tsx:170
+#: src/components/user/UserPage/UserPage.tsx:175
 msgid "Log out"
 msgstr ""
 
@@ -967,7 +968,7 @@ msgstr ""
 msgid "Lower values reduce file size at the cost of detail."
 msgstr ""
 
-#: src/components/user/StatsBoard/StatsBoard.tsx:458
+#: src/components/user/StatsBoard/StatsBoard.tsx:460
 msgid "Mains"
 msgstr ""
 
@@ -1048,7 +1049,7 @@ msgstr ""
 #~ msgid "My Tournaments"
 #~ msgstr ""
 
-#: src/components/user/StatsBoard/StatsBoard.tsx:441
+#: src/components/user/StatsBoard/StatsBoard.tsx:443
 msgid "Nemesis"
 msgstr ""
 
@@ -1056,7 +1057,7 @@ msgstr ""
 msgid "Neon Sign"
 msgstr ""
 
-#: src/components/user/StatsBoard/StatsBoard.tsx:447
+#: src/components/user/StatsBoard/StatsBoard.tsx:449
 msgid "Never lost to"
 msgstr ""
 
@@ -1082,7 +1083,7 @@ msgstr ""
 msgid "No completed sets found for this player."
 msgstr ""
 
-#: src/components/user/StatsBoard/StatsBoard.tsx:217
+#: src/components/user/StatsBoard/StatsBoard.tsx:219
 msgid "No in-person tournaments yet"
 msgstr ""
 
@@ -1108,7 +1109,7 @@ msgstr ""
 msgid "No text content defined in this design."
 msgstr ""
 
-#: src/components/user/EventList/EventList.tsx:85
+#: src/components/user/EventList/EventList.tsx:94
 msgid "No tournaments match \"{query}\"."
 msgstr ""
 
@@ -1133,7 +1134,7 @@ msgstr ""
 msgid "of the bracket"
 msgstr ""
 
-#: src/components/user/StatsBoard/StatsBoard.tsx:276
+#: src/components/user/StatsBoard/StatsBoard.tsx:278
 msgid "of the bracket finishes behind you, on average"
 msgstr ""
 
@@ -1149,7 +1150,7 @@ msgstr ""
 msgid "One-click graphics for every tournament"
 msgstr ""
 
-#: src/components/user/StatsBoard/StatsBoard.tsx:214
+#: src/components/user/StatsBoard/StatsBoard.tsx:216
 #: src/hooks/user/useEventMeta.ts:19
 msgid "Online"
 msgstr ""
@@ -1352,7 +1353,7 @@ msgstr ""
 #~ msgid "Recapping the run..."
 #~ msgstr ""
 
-#: src/components/user/StatsBoard/StatsBoard.tsx:389
+#: src/components/user/StatsBoard/StatsBoard.tsx:391
 msgid "Recent sets"
 msgstr ""
 
@@ -1374,7 +1375,7 @@ msgstr ""
 
 #. placeholder {0}: career.series.name
 #. placeholder {1}: career.series.count
-#: src/components/user/StatsBoard/StatsBoard.tsx:350
+#: src/components/user/StatsBoard/StatsBoard.tsx:352
 msgid "Regular at <0>{0}</0> ({1} times)"
 msgstr ""
 
@@ -1412,7 +1413,7 @@ msgstr ""
 msgid "Rewatching every set at 2x speed..."
 msgstr ""
 
-#: src/components/user/StatsBoard/StatsBoard.tsx:435
+#: src/components/user/StatsBoard/StatsBoard.tsx:437
 msgid "Rival"
 msgstr ""
 
@@ -1460,8 +1461,8 @@ msgstr ""
 msgid "Search players..."
 msgstr ""
 
-#: src/components/user/EventList/EventList.tsx:66
-#: src/components/user/EventList/EventList.tsx:67
+#: src/components/user/EventList/EventList.tsx:69
+#: src/components/user/EventList/EventList.tsx:70
 msgid "Search tournaments"
 msgstr ""
 
@@ -1551,7 +1552,7 @@ msgstr ""
 msgid "Show help"
 msgstr ""
 
-#: src/components/user/EventList/EventList.tsx:97
+#: src/components/user/EventList/EventList.tsx:106
 msgid "Show more"
 msgstr ""
 
@@ -1595,7 +1596,8 @@ msgstr ""
 msgid "start.gg only"
 msgstr ""
 
-#: src/components/user/UserPage/UserPage.tsx:109
+#: src/components/user/UserPage/UserPage.tsx:159
+#: src/components/user/UserPage/UserPage.tsx:162
 msgid "start.gg profile"
 msgstr ""
 
@@ -1603,11 +1605,15 @@ msgstr ""
 msgid "State"
 msgstr ""
 
+#: src/components/user/UserPage/UserPage.tsx:214
+msgid "Stats"
+msgstr ""
+
 #: src/components/top8/InfoPanel/InfoPanel.tsx:129
 msgid "Stock icons"
 msgstr ""
 
-#: src/components/user/StatsBoard/StatsBoard.tsx:187
+#: src/components/user/StatsBoard/StatsBoard.tsx:189
 msgid "Streak"
 msgstr ""
 
@@ -1737,13 +1743,13 @@ msgstr ""
 msgid "Top 16"
 msgstr ""
 
-#: src/components/user/StatsBoard/StatsBoard.tsx:241
+#: src/components/user/StatsBoard/StatsBoard.tsx:243
 #: src/utils/social/builtInTemplates.ts:21
 msgid "Top 3"
 msgstr ""
 
 #: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:20
-#: src/components/user/StatsBoard/StatsBoard.tsx:248
+#: src/components/user/StatsBoard/StatsBoard.tsx:250
 #: src/utils/social/builtInTemplates.ts:32
 msgid "Top 8"
 msgstr ""
@@ -1833,11 +1839,12 @@ msgstr ""
 msgid "Tournament URL"
 msgstr ""
 
-#: src/components/user/StatsBoard/StatsBoard.tsx:165
+#: src/components/user/StatsBoard/StatsBoard.tsx:167
+#: src/components/user/UserPage/UserPage.tsx:202
 msgid "Tournaments"
 msgstr ""
 
-#: src/components/user/StatsBoard/StatsBoard.tsx:226
+#: src/components/user/StatsBoard/StatsBoard.tsx:228
 msgid "Trophy shelf"
 msgstr ""
 
@@ -1921,12 +1928,12 @@ msgstr ""
 msgid "W"
 msgstr ""
 
-#: src/components/user/StatsBoard/StatsBoard.tsx:192
+#: src/components/user/StatsBoard/StatsBoard.tsx:194
 msgid "weeks in a row with a tournament, at your longest"
 msgstr ""
 
 #. placeholder {0}: setStats.longestWinStreak
-#: src/components/user/StatsBoard/StatsBoard.tsx:417
+#: src/components/user/StatsBoard/StatsBoard.tsx:419
 msgid "when it goes the distance. Best win streak: {0}"
 msgstr ""
 
@@ -1957,7 +1964,7 @@ msgstr ""
 msgid "Winners"
 msgstr ""
 
-#: src/components/user/StatsBoard/StatsBoard.tsx:234
+#: src/components/user/StatsBoard/StatsBoard.tsx:236
 msgid "Wins"
 msgstr ""
 
@@ -1981,12 +1988,16 @@ msgstr ""
 msgid "Your record, trophies and streaks"
 msgstr ""
 
+#: src/components/user/UserPage/UserPage.tsx:244
+msgid "Your stats"
+msgstr ""
+
 #: src/components/home/RecentTournaments/RecentTournaments.tsx:110
-#: src/components/user/EventList/EventList.tsx:58
+#: src/components/user/EventList/EventList.tsx:61
 msgid "Your tournaments"
 msgstr ""
 
-#: src/components/user/UserPage/UserPage.tsx:54
+#: src/components/user/UserPage/UserPage.tsx:88
 msgid "Your tournaments, in one place"
 msgstr ""
 

@@ -1,16 +1,28 @@
 @use "@/_theme" as *;
 
+@keyframes shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -100% 0;
+  }
+}
+
 .root {
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
 }
 
+// The list is a narrow column on a desktop: the search field drops under
+// the title when the two don't fit on a line.
 .heading {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-3);
+  gap: var(--space-2) var(--space-3);
 }
 
 .title {
@@ -36,7 +48,7 @@
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  width: 240px;
+  flex: 1 1 180px;
   height: 36px;
   padding: 0 var(--space-3);
   border: 1px solid var(--border-strong);
@@ -71,15 +83,49 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: var(--space-2);
-
-  // A row needs about 560px; past that, two columns (read across, newest
-  // first) show twice as many tournaments per screen.
-  @media (min-width: 1200px) {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+// The list scrolls in its own pane on a wide screen; the title and search
+// stay at the top of it.
+@include wide {
+  .heading {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    margin-bottom: calc(-1 * var(--space-1));
+    padding-bottom: var(--space-2);
+    background: var(--bg-app);
+  }
+}
+
+// A tablet's tab is wide enough for two columns of stacked rows.
+@media (min-width: 769px) and (max-width: 1023px) {
+  .list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+// Rows standing in for the first page of tournaments, at a row's height so
+// the page does not jump when they arrive.
+.skeleton span {
+  height: 122px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: linear-gradient(
+    90deg,
+    var(--bg-surface) 30%,
+    var(--bg-raised) 50%,
+    var(--bg-surface) 70%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
 }
 
 .empty,
@@ -94,14 +140,15 @@
   align-self: center;
 }
 
-@include mobile {
-  .heading {
-    flex-direction: column;
-    align-items: stretch;
+// Tabbed layout: the tab already says "Tournaments" and how many, so the
+// heading is just the search field.
+@media (max-width: 1023px) {
+  .title {
+    display: none;
   }
 
   .search {
-    width: auto;
+    flex: 1;
     height: 40px;
   }
 }

@@ -178,12 +178,12 @@
   }
 }
 
-@include mobile {
-  .row {
-    grid-template-columns: auto minmax(0, 1fr) auto;
-  }
+// Buttons on a line of their own: for a phone, and for a list in a narrow
+// column (`stacked`).
+@mixin stacked {
+  grid-template-columns: auto minmax(0, 1fr) auto;
 
-  .row > .actions {
+  > .actions {
     grid-column: 1 / -1;
   }
 
@@ -191,5 +191,15 @@
     height: 36px;
     flex: 1;
     justify-content: center;
+  }
+}
+
+.stacked {
+  @include stacked;
+}
+
+@include mobile {
+  .row {
+    @include stacked;
   }
 }
