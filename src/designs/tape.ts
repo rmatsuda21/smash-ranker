@@ -34,14 +34,89 @@ const TRANSPARENT = "rgba(0, 0, 0, 0)";
 
 const p = (x: number, y: number) => ({ x, y });
 
-const colorPalette: Design["colorPalette"] = {
-  ground: { color: "rgb(255, 214, 10)", name: "Ground", group: "Poster" },
-  halftone: { color: "rgb(242, 194, 0)", name: "Dots", group: "Poster" },
-  ink: { color: "rgb(28, 17, 71)", name: "Ink", group: "Poster" },
-  tape: { color: "rgb(255, 79, 94)", name: "Tape", group: "Poster" },
-  paper: { color: "rgb(255, 255, 255)", name: "Paper", group: "Poster" },
-  strip: { color: "rgb(17, 17, 17)", name: "Strip", group: "Cards" },
+type Rgb = [number, number, number];
+
+/** The poster's colours. `ink` has to stand out from `ground` (it is the
+ *  band, the cards and the title); text on the band and the strips is in
+ *  `ground`. */
+type TapeColors = {
+  ground: Rgb;
+  halftone: Rgb;
+  ink: Rgb;
+  tape: Rgb;
+  tapeText: Rgb;
+  /** The winner's card. */
+  paper: Rgb;
+  strip: Rgb;
 };
+
+const rgb = ([r, g, b]: Rgb) => `rgb(${r}, ${g}, ${b})`;
+
+const createPalette = (colors: TapeColors): Design["colorPalette"] => ({
+  ground: { color: rgb(colors.ground), name: "Ground", group: "Poster" },
+  halftone: { color: rgb(colors.halftone), name: "Dots", group: "Poster" },
+  ink: { color: rgb(colors.ink), name: "Ink", group: "Poster" },
+  paper: { color: rgb(colors.paper), name: "Paper", group: "Poster" },
+  tape: { color: rgb(colors.tape), name: "Tape", group: "Tape" },
+  tapeText: { color: rgb(colors.tapeText), name: "Name", group: "Tape" },
+  strip: { color: rgb(colors.strip), name: "Strip", group: "Cards" },
+});
+
+const WHITE: Rgb = [255, 255, 255];
+const BLACK: Rgb = [17, 17, 17];
+
+const COLORWAYS = {
+  // Yellow, violet and coral.
+  original: {
+    ground: [255, 214, 10],
+    halftone: [242, 194, 0],
+    ink: [28, 17, 71],
+    tape: [255, 79, 94],
+    tapeText: WHITE,
+    paper: WHITE,
+    strip: BLACK,
+  },
+  // Mint, deep teal and orange.
+  mint: {
+    ground: [142, 236, 200],
+    halftone: [112, 216, 178],
+    ink: [9, 52, 58],
+    tape: [255, 104, 41],
+    tapeText: WHITE,
+    paper: WHITE,
+    strip: BLACK,
+  },
+  // Sky blue, navy and magenta.
+  sky: {
+    ground: [96, 211, 255],
+    halftone: [62, 190, 240],
+    ink: [13, 27, 92],
+    tape: [255, 56, 136],
+    tapeText: WHITE,
+    paper: WHITE,
+    strip: BLACK,
+  },
+  // Pink, plum and electric blue.
+  pink: {
+    ground: [255, 168, 208],
+    halftone: [248, 140, 190],
+    ink: [62, 14, 78],
+    tape: [45, 92, 255],
+    tapeText: WHITE,
+    paper: WHITE,
+    strip: BLACK,
+  },
+  // The inverse: a dark ground with cream cards and band, lime strips.
+  night: {
+    ground: [18, 17, 26],
+    halftone: [36, 34, 50],
+    ink: [246, 240, 226],
+    tape: [255, 79, 94],
+    tapeText: WHITE,
+    paper: [44, 41, 62],
+    strip: [200, 255, 66],
+  },
+} satisfies Record<string, TapeColors>;
 
 type CardKind = "hero" | "large" | "small";
 type Card = {
@@ -185,7 +260,7 @@ const nameTab = ({ width, height, kind }: Card): ElementConfig => {
             conditions: [DesignPlaceholder.PLAYER_PREFIX],
             fontSize: style.prefix,
             minFontSize: Math.round(style.prefix * 0.7),
-            fill: "paper",
+            fill: "tapeText",
             // Lines its tape up with the name's left edge.
             position: p(prefixPad.x - tabPad.x, 0),
             size: { width: textWidth },
@@ -207,7 +282,7 @@ const nameTab = ({ width, height, kind }: Card): ElementConfig => {
             text: DesignPlaceholder.PLAYER_TAG,
             fontSize: style.name,
             minFontSize: style.minName,
-            fill: "paper",
+            fill: "tapeText",
             position: p(0, 0),
             size: { width: textWidth },
             background: {
@@ -375,7 +450,7 @@ const cardElements = (card: Card): ElementConfig[] => {
         {
           type: "rect",
           fill: TRANSPARENT,
-          stroke: "paper",
+          stroke: "tapeText",
           strokeWidth: 2.4,
           position: p(0, 0),
           size: flag,
@@ -691,11 +766,11 @@ const tournament: LayerDesign = {
   ],
 };
 
-export const tapeDesign: Design = {
-  name: "Tape",
+const createTapeDesign = (name: string, colors: TapeColors): Design => ({
+  name,
   canvasSize: { width: CANVAS_WIDTH, height: CANVAS_HEIGHT },
   canvasDisplayScale: 0.25,
-  colorPalette,
+  colorPalette: createPalette(colors),
   textPalette: {
     tournamentName: {
       text: `${DesignPlaceholder.TOURNAMENT_NAME}`,
@@ -723,4 +798,13 @@ export const tapeDesign: Design = {
   tournament,
   basePlayer,
   players,
-};
+});
+
+export const tapeDesign = createTapeDesign("Tape", COLORWAYS.original);
+export const tapeMintDesign = createTapeDesign("Tape (Mint)", COLORWAYS.mint);
+export const tapeSkyDesign = createTapeDesign("Tape (Sky)", COLORWAYS.sky);
+export const tapePinkDesign = createTapeDesign("Tape (Pink)", COLORWAYS.pink);
+export const tapeNightDesign = createTapeDesign(
+  "Tape (Night)",
+  COLORWAYS.night,
+);

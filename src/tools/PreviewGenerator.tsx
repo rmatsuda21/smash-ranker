@@ -23,7 +23,13 @@ import { standingsLightDesign, standingsDarkDesign } from "@/designs/standings";
 import { comicBookDesign } from "@/designs/comicBook";
 import { neonSignDesign } from "@/designs/neonSign";
 import { highScoreDesign } from "@/designs/highScore";
-import { tapeDesign } from "@/designs/tape";
+import {
+  tapeDesign,
+  tapeMintDesign,
+  tapeNightDesign,
+  tapePinkDesign,
+  tapeSkyDesign,
+} from "@/designs/tape";
 import { resizePlayerSlots } from "@/utils/top8/playerCount";
 
 declare global {
@@ -110,6 +116,30 @@ const BUILT_IN_TEMPLATES: PreviewTemplate[] = [
     id: "tape",
     name: "Original",
     design: tapeDesign,
+    font: "Dela Gothic One",
+  },
+  {
+    id: "tape-mint",
+    name: "Mint",
+    design: tapeMintDesign,
+    font: "Dela Gothic One",
+  },
+  {
+    id: "tape-sky",
+    name: "Sky",
+    design: tapeSkyDesign,
+    font: "Dela Gothic One",
+  },
+  {
+    id: "tape-pink",
+    name: "Pink",
+    design: tapePinkDesign,
+    font: "Dela Gothic One",
+  },
+  {
+    id: "tape-night",
+    name: "Night",
+    design: tapeNightDesign,
     font: "Dela Gothic One",
   },
 ];

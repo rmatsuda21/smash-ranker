@@ -10,6 +10,10 @@ import comic_book from "./comic-book.webp";
 import neon_sign from "./neon-sign.webp";
 import high_score from "./high-score.webp";
 import tape from "./tape.webp";
+import tape_mint from "./tape-mint.webp";
+import tape_sky from "./tape-sky.webp";
+import tape_pink from "./tape-pink.webp";
+import tape_night from "./tape-night.webp";
 
 export const defaultPreviews: Record<string, string> = {
   "top8er": top8er,
@@ -24,4 +28,8 @@ export const defaultPreviews: Record<string, string> = {
   "neon-sign": neon_sign,
   "high-score": high_score,
   "tape": tape,
+  "tape-mint": tape_mint,
+  "tape-sky": tape_sky,
+  "tape-pink": tape_pink,
+  "tape-night": tape_night,
 };
