@@ -52,7 +52,7 @@ const EventStandingsQueryDoc = graphql(`
         city
         countryCode
         url(tab: "", relative: false)
-        images {
+        images(type: "profile") {
           url
           type
           id

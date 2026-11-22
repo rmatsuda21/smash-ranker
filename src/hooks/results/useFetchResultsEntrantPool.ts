@@ -1,6 +1,5 @@
 import { useRef } from "react";
 import { useClient } from "urql";
-import * as countryList from "country-list";
 import { t } from "@lingui/core/macro";
 
 import { graphql } from "@/gql";
@@ -10,13 +9,7 @@ import type { ResultsEntrantSummary } from "@/types/results/ResultsEntrantSummar
 import { extractTournamentPalette } from "@/utils/predict/extractTournamentPalette";
 import { logEvent, logWarning } from "@/utils/observability/log";
 import { MISSING_SEED_FALLBACK } from "@/utils/results/parseStartggResults";
-
-// Pagination caps for the seed list. start.gg events typically register
-// well under 256 entrants; we cap at 4 pages × 64 = 256 to bound the
-// page-load latency and start.gg query-complexity budget. Tournaments
-// past this surface a warning so the cap can be revisited.
-const SEEDS_PER_PAGE = 64;
-const MAX_SEEDS_PAGES = 4;
+import { fetchEventEntrants } from "@/utils/startgg/fetchEventEntrants";
 
 const ResultsEventMetaQueryDoc = graphql(`
   query ResultsEventMeta($slug: String!) {
@@ -36,38 +29,13 @@ const ResultsEventMetaQueryDoc = graphql(`
           type
         }
       }
+      teamRosterSize {
+        maxPlayers
+      }
       phases {
         id
         phaseOrder
-      }
-    }
-  }
-`);
-
-const ResultsPhaseSeedsQueryDoc = graphql(`
-  query ResultsPhaseSeeds($phaseId: ID!, $perPage: Int!, $page: Int!) {
-    phase(id: $phaseId) {
-      seeds(query: { page: $page, perPage: $perPage }) {
-        pageInfo {
-          total
-          totalPages
-        }
-        nodes {
-          seedNum
-          entrant {
-            id
-            name
-            participants {
-              gamerTag
-              prefix
-              user {
-                location {
-                  country
-                }
-              }
-            }
-          }
-        }
+        numSeeds
       }
     }
   }
@@ -116,71 +84,16 @@ const fetchStartgg = async (
     ? event.tournament.countryCode.toLowerCase()
     : undefined;
 
-  const phases = (event.phases ?? []).filter(Boolean);
-  if (phases.length === 0) {
-    throw new Error(t`No phases found for this event`);
-  }
-  phases.sort((a, b) => (a!.phaseOrder ?? 0) - (b!.phaseOrder ?? 0));
-  const firstPhaseId = String(phases[0]!.id);
-
-  const allEntrants: ResultsEntrantSummary[] = [];
-  let page = 1;
-  let totalPages = 1;
-
-  while (page <= totalPages && page <= MAX_SEEDS_PAGES) {
-    const seedsResult = await client
-      .query(ResultsPhaseSeedsQueryDoc, {
-        phaseId: firstPhaseId,
-        perPage: SEEDS_PER_PAGE,
-        page,
-      })
-      .toPromise();
-
-    if (seedsResult.error || !seedsResult.data?.phase) {
-      throw new Error(seedsResult.error?.message || t`Failed to fetch seeds`);
-    }
-
-    const seedsData = seedsResult.data.phase.seeds;
-    if (page === 1) {
-      totalPages = seedsData?.pageInfo?.totalPages || 1;
-    }
-
-    const nodes = seedsData?.nodes || [];
-    for (const node of nodes) {
-      if (!node?.entrant) continue;
-      const entrant = node.entrant;
-      const participant = entrant.participants?.[0];
-      const countryName = participant?.user?.location?.country;
-      const countryCode = countryList.getCode(countryName ?? "");
-
-      allEntrants.push({
-        id: String(entrant.id),
-        name: participant?.gamerTag || entrant.name || "Unknown",
-        prefix: participant?.prefix || undefined,
-        seed: node.seedNum ?? MISSING_SEED_FALLBACK,
-        country: countryCode || undefined,
-      });
-    }
-
-    page++;
-  }
-
-  if (totalPages > MAX_SEEDS_PAGES) {
-    // Quietly truncating large events is the wrong call long-term; warn so
-    // we can revisit the cap if it shows up in logs.
-    logWarning("results entrant pool truncated", {
-      area: "results-fetch",
-      tournament_platform: "startgg",
-      tournament_slug: slug,
-      phase_id: firstPhaseId,
-      totalPages,
-      cap: MAX_SEEDS_PAGES,
-      perPage: SEEDS_PER_PAGE,
-      collected: allEntrants.length,
-    });
-  }
-
-  allEntrants.sort((a, b) => a.seed - b.seed);
+  const entrants = await fetchEventEntrants(client, {
+    slug,
+    phases: event.phases ?? [],
+    numEntrants,
+    rosterSize: event.teamRosterSize?.maxPlayers ?? 1,
+  });
+  const allEntrants: ResultsEntrantSummary[] = entrants.map((entrant) => ({
+    ...entrant,
+    seed: entrant.seed ?? MISSING_SEED_FALLBACK,
+  }));
 
   return {
     tournamentName,

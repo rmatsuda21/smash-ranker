@@ -1,5 +1,4 @@
 import { useClient } from "urql";
-import * as countryList from "country-list";
 import { t } from "@lingui/core/macro";
 
 import { graphql } from "@/gql";
@@ -8,8 +7,9 @@ import { detectPlatformAndSlug, slugToUrl } from "@/consts/platforms";
 import type { PredictionPlayer } from "@/types/predict/Prediction";
 import { extractTournamentPalette } from "@/utils/predict/extractTournamentPalette";
 import { logEvent } from "@/utils/observability/log";
+import { fetchEventEntrants } from "@/utils/startgg/fetchEventEntrants";
 
-// Step 1: Get event metadata + first phase ID
+// Event metadata, plus what fetchEventEntrants needs to plan its pages.
 const EventMetaQueryDoc = graphql(`
   query PredictionEventMeta($slug: String!) {
     event(slug: $slug) {
@@ -24,39 +24,13 @@ const EventMetaQueryDoc = graphql(`
           type
         }
       }
+      teamRosterSize {
+        maxPlayers
+      }
       phases {
         id
         phaseOrder
-      }
-    }
-  }
-`);
-
-// Step 2: Get seeds from the first phase (returns entrants in seed order)
-const PhaseSeedsQueryDoc = graphql(`
-  query PredictionPhaseSeeds($phaseId: ID!, $perPage: Int!, $page: Int!) {
-    phase(id: $phaseId) {
-      seeds(query: { page: $page, perPage: $perPage }) {
-        pageInfo {
-          total
-          totalPages
-        }
-        nodes {
-          seedNum
-          entrant {
-            id
-            name
-            participants {
-              gamerTag
-              prefix
-              user {
-                location {
-                  country
-                }
-              }
-            }
-          }
-        }
+        numSeeds
       }
     }
   }
@@ -114,7 +88,6 @@ const fetchStartgg = async (
   client: ReturnType<typeof useClient>,
   slug: string,
 ): Promise<FetchResult> => {
-  // Step 1: Get event metadata and find the first phase
   const metaResult = await client
     .query(EventMetaQueryDoc, { slug })
     .toPromise();
@@ -135,60 +108,16 @@ const fetchStartgg = async (
       ?.find((img) => img?.type === "profile")
       ?.url?.replace("http://", "https://") || "";
 
-  // Find the first phase (lowest phaseOrder)
-  const phases = (event.phases ?? []).filter(Boolean);
-  if (phases.length === 0) {
-    throw new Error(t`No phases found for this event`);
-  }
-  phases.sort((a, b) => (a!.phaseOrder ?? 0) - (b!.phaseOrder ?? 0));
-  const firstPhaseId = String(phases[0]!.id);
-
-  // Step 2: Fetch seeds from the first phase (already in seed order)
-  const allEntrants: PredictionPlayer[] = [];
-  let page = 1;
-  const perPage = 64;
-  let totalPages = 1;
-
-  while (page <= totalPages && page <= 4) {
-    const seedsResult = await client
-      .query(PhaseSeedsQueryDoc, {
-        phaseId: firstPhaseId,
-        perPage,
-        page,
-      })
-      .toPromise();
-
-    if (seedsResult.error || !seedsResult.data?.phase) {
-      throw new Error(seedsResult.error?.message || t`Failed to fetch seeds`);
-    }
-
-    const seedsData = seedsResult.data.phase.seeds;
-    if (page === 1) {
-      totalPages = seedsData?.pageInfo?.totalPages || 1;
-    }
-
-    const nodes = seedsData?.nodes || [];
-    for (const node of nodes) {
-      if (!node?.entrant) continue;
-      const entrant = node.entrant;
-      const participant = entrant.participants?.[0];
-      const countryName = participant?.user?.location?.country;
-      const countryCode = countryList.getCode(countryName ?? "");
-
-      allEntrants.push({
-        id: String(entrant.id),
-        name: participant?.gamerTag || entrant.name || "Unknown",
-        prefix: participant?.prefix || undefined,
-        seed: node.seedNum ?? 9999,
-        country: countryCode || undefined,
-      });
-    }
-
-    page++;
-  }
-
-  // Seeds from phase.seeds should already be in order, but sort to be safe
-  allEntrants.sort((a, b) => a.seed - b.seed);
+  const entrants = await fetchEventEntrants(client, {
+    slug,
+    phases: event.phases ?? [],
+    numEntrants: event.numEntrants ?? 0,
+    rosterSize: event.teamRosterSize?.maxPlayers ?? 1,
+  });
+  const allEntrants: PredictionPlayer[] = entrants.map((entrant) => ({
+    ...entrant,
+    seed: entrant.seed ?? 9999,
+  }));
 
   return {
     tournamentName,
