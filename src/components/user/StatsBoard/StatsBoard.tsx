@@ -3,6 +3,7 @@ import cn from "classnames";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import {
+  FaArrowTrendUp,
   FaAward,
   FaBolt,
   FaCalendarDays,
@@ -269,7 +270,7 @@ export const StatsBoard = ({ events, sets, setsLoading }: Props) => {
           index={index++}
           wide
           label={<Trans>Ahead of the field</Trans>}
-          icon={<FaRankingStar aria-hidden="true" />}
+          icon={<FaArrowTrendUp aria-hidden="true" />}
         >
           <div className={styles.fieldRow}>
             <CountUp value={career.outplacedPercent} suffix="%" />
