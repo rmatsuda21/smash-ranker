@@ -22,6 +22,7 @@ import {
   colourBarsPastelDesign,
   colourBarsSignalDesign,
 } from "@/designs/colourBars";
+import { sleeveDesign } from "@/designs/sleeve";
 import {
   tapeDesign,
   tapeMintDesign,
@@ -211,6 +212,18 @@ const DEFAULT_TEMPLATE_GROUPS: DefaultTemplateGroup[] = [
         id: "colour-bars-mono",
         name: msg`Mono`,
         design: colourBarsMonoDesign,
+        font: "Noto Sans JP",
+      },
+    ],
+  },
+  {
+    id: "sleeve",
+    name: msg`Sleeve`,
+    templates: [
+      {
+        id: "sleeve",
+        name: msg`Original`,
+        design: sleeveDesign,
         font: "Noto Sans JP",
       },
     ],

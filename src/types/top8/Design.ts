@@ -418,6 +418,14 @@ export interface Design {
    */
   tournamentIconSpace?: number;
   /**
+   * A horizontal band the layout sets aside for something the winner may not
+   * have (a sponsor line over their name). When the winner (the first
+   * player) does not meet `conditions`, the band is taken out: player slots
+   * and top-level tournament elements positioned at or below `y` move up by
+   * `height`, and the canvas gets shorter by it.
+   */
+  collapsibleBand?: CollapsibleBand;
+  /**
    * When set, the number of player slots can be changed in the Players tab.
    * Slots are a vertical stack: one is added under the last, and the canvas
    * and full-height background rects change height with them.
@@ -428,6 +436,12 @@ export interface Design {
    * on what the players have in them. Elements join a column with `column`.
    */
   playerTable?: PlayerTable;
+}
+
+export interface CollapsibleBand {
+  y: number;
+  height: number;
+  conditions: Condition[];
 }
 
 export interface TableColumn {

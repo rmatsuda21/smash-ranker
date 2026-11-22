@@ -18,6 +18,7 @@ import colour_bars from "./colour-bars.webp";
 import colour_bars_signal from "./colour-bars-signal.webp";
 import colour_bars_pastel from "./colour-bars-pastel.webp";
 import colour_bars_mono from "./colour-bars-mono.webp";
+import sleeve from "./sleeve.webp";
 
 export const defaultPreviews: Record<string, string> = {
   "top8er": top8er,
@@ -40,4 +41,5 @@ export const defaultPreviews: Record<string, string> = {
   "colour-bars-signal": colour_bars_signal,
   "colour-bars-pastel": colour_bars_pastel,
   "colour-bars-mono": colour_bars_mono,
+  "sleeve": sleeve,
 };

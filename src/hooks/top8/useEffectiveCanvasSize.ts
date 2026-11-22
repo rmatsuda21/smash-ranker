@@ -29,6 +29,9 @@ export function useEffectiveCanvasSize() {
   );
   const basePlayer = useCanvasStore((state) => state.design.basePlayer);
   const playerSlots = useCanvasStore((state) => state.design.players);
+  const collapsibleBand = useCanvasStore(
+    (state) => state.design.collapsibleBand,
+  );
   const players = usePlayerStore((state) => state.players);
   const fontFamily = useFontStore((state) => state.displayedFont);
   const metricsVersion = useTextMetricsVersion();
@@ -42,6 +45,7 @@ export function useEffectiveCanvasSize() {
           dynamicPlayerHeight,
           basePlayer,
           players: playerSlots ?? [],
+          collapsibleBand,
         },
         players,
         fontFamily,
@@ -53,6 +57,7 @@ export function useEffectiveCanvasSize() {
       dynamicPlayerHeight,
       basePlayer,
       playerSlots,
+      collapsibleBand,
       players,
       fontFamily,
       metricsVersion,

@@ -10,6 +10,7 @@ import {
   computeDynamicPlayerLayout,
   mergePlayerSlots,
 } from "@/utils/top8/dynamicPlayerHeight";
+import { evaluateElementCondition } from "@/utils/top8/evaluateElementCondition";
 import { layoutPlayerTable, placeInColumns } from "@/utils/top8/playerTable";
 
 type CanvasSize = Design["canvasSize"];
@@ -20,6 +21,35 @@ export const getUnusedIconSpace = (
   tournamentIconSpace: Design["tournamentIconSpace"],
   iconSrc: TournamentInfo["iconSrc"],
 ): number => (tournamentIconSpace && !iconSrc ? tournamentIconSpace : 0);
+
+/** The design's collapsible band, when the winner has nothing to put in it
+ *  and it is therefore taken out of the layout. */
+export const getCollapsedBand = (
+  band: Design["collapsibleBand"],
+  players: PlayerInfo[],
+): Design["collapsibleBand"] =>
+  band && !evaluateElementCondition(band.conditions, { player: players[0] })
+    ? band
+    : undefined;
+
+/** Moves what sits at or below a collapsed band up by its height. Returns
+ *  `items` itself when nothing moves. */
+const closeBand = <T extends { position?: { x: number; y: number } }>(
+  items: T[],
+  band: Design["collapsibleBand"],
+): T[] => {
+  if (!band || !items.some((item) => (item.position?.y ?? 0) >= band.y)) {
+    return items;
+  }
+  return items.map((item) =>
+    item.position && item.position.y >= band.y
+      ? {
+          ...item,
+          position: { x: item.position.x, y: item.position.y - band.height },
+        }
+      : item,
+  );
+};
 
 /** Per-slot player layout: base player merged with the slot's overrides,
  *  grown and shifted when the design opts into dynamic player height. */
@@ -32,8 +62,9 @@ export const getPlayerConfigs = (
   /** From `getUnusedIconSpace`. */
   unusedIconSpace = 0,
   playerTable?: Design["playerTable"],
+  collapsibleBand?: Design["collapsibleBand"],
 ): PlayerDesign[] => {
-  const configs = dynamicPlayerHeight
+  const laidOut = dynamicPlayerHeight
     ? computeDynamicPlayerLayout(
         basePlayer,
         playerSlots,
@@ -43,6 +74,10 @@ export const getPlayerConfigs = (
         -unusedIconSpace,
       ).configs
     : mergePlayerSlots(basePlayer, playerSlots, -unusedIconSpace);
+  const configs = closeBand(
+    laidOut,
+    getCollapsedBand(collapsibleBand, players),
+  );
 
   if (!playerTable) return configs;
 
@@ -58,12 +93,21 @@ export const getPlayerConfigs = (
  *  `elements` itself for a design without a table. */
 export const getTournamentElements = (
   elements: ElementConfig[] | undefined,
-  design: Pick<Design, "basePlayer" | "players" | "playerTable">,
+  design: Pick<
+    Design,
+    "basePlayer" | "players" | "playerTable" | "collapsibleBand"
+  >,
   players: PlayerInfo[],
   fontFamily?: string,
 ): ElementConfig[] | undefined => {
   const { playerTable } = design;
-  if (!playerTable || !elements) return elements;
+  if (!elements) return elements;
+
+  const closed = closeBand(
+    elements,
+    getCollapsedBand(design.collapsibleBand, players),
+  );
+  if (!playerTable) return closed;
 
   const layout = layoutPlayerTable(
     playerTable,
@@ -71,7 +115,7 @@ export const getTournamentElements = (
     players,
     fontFamily,
   );
-  return placeInColumns(elements, layout, playerTable.gap);
+  return placeInColumns(closed, layout, playerTable.gap);
 };
 
 /** Canvas size after dynamic player height has grown the players that occupy
@@ -80,7 +124,11 @@ export const getTournamentElements = (
 export const getEffectiveCanvasSize = (
   design: Pick<
     Design,
-    "canvasSize" | "basePlayer" | "players" | "dynamicPlayerHeight"
+    | "canvasSize"
+    | "basePlayer"
+    | "players"
+    | "dynamicPlayerHeight"
+    | "collapsibleBand"
   >,
   players: PlayerInfo[],
   fontFamily?: string,
@@ -98,7 +146,9 @@ export const getEffectiveCanvasSize = (
         fontFamily,
       ).totalHeightDelta
     : 0;
-  const delta = growth - unusedIconSpace;
+  const collapsed =
+    getCollapsedBand(design.collapsibleBand, players)?.height ?? 0;
+  const delta = growth - unusedIconSpace - collapsed;
 
   if (delta === 0) return canvasSize;
   return { width: canvasSize.width, height: canvasSize.height + delta };

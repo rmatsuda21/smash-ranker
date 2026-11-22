@@ -42,6 +42,9 @@ export const usePlayerConfigs = () => {
   );
 
   const playerTable = useCanvasStore((state) => state.design.playerTable);
+  const collapsibleBand = useCanvasStore(
+    (state) => state.design.collapsibleBand,
+  );
 
   const fontFamily = useFontStore((state) => state.displayedFont);
   const metricsVersion = useTextMetricsVersion();
@@ -57,6 +60,7 @@ export const usePlayerConfigs = () => {
         fontFamily,
         unusedIconSpace,
         playerTable,
+        collapsibleBand,
       ),
     // eslint-disable-next-line react-hooks/exhaustive-deps -- metricsVersion: remeasure once fonts load
     [
@@ -68,6 +72,7 @@ export const usePlayerConfigs = () => {
       metricsVersion,
       unusedIconSpace,
       playerTable,
+      collapsibleBand,
     ],
   );
 };
@@ -79,9 +84,13 @@ export const useTournamentElements = () => {
   const playerTable = useCanvasStore((state) => state.design.playerTable);
   const basePlayer = useCanvasStore((state) => state.design.basePlayer);
   const playerSlots = useCanvasStore((state) => state.design.players);
-  // Only a table depends on the players; without one, don't subscribe.
+  const collapsibleBand = useCanvasStore(
+    (state) => state.design.collapsibleBand,
+  );
+  // Only a table or a collapsible band depends on the players; without
+  // either, don't subscribe.
   const players = usePlayerStore((state) =>
-    playerTable ? state.players : NO_PLAYERS,
+    playerTable || collapsibleBand ? state.players : NO_PLAYERS,
   );
 
   const fontFamily = useFontStore((state) => state.displayedFont);
@@ -91,7 +100,7 @@ export const useTournamentElements = () => {
     () =>
       getTournamentElements(
         elements,
-        { basePlayer, players: playerSlots, playerTable },
+        { basePlayer, players: playerSlots, playerTable, collapsibleBand },
         players,
         fontFamily,
       ),
@@ -101,6 +110,7 @@ export const useTournamentElements = () => {
       basePlayer,
       playerSlots,
       playerTable,
+      collapsibleBand,
       players,
       fontFamily,
       metricsVersion,

@@ -29,6 +29,7 @@ import {
   colourBarsPastelDesign,
   colourBarsSignalDesign,
 } from "@/designs/colourBars";
+import { sleeveDesign } from "@/designs/sleeve";
 import {
   tapeDesign,
   tapeMintDesign,
@@ -170,6 +171,12 @@ const BUILT_IN_TEMPLATES: PreviewTemplate[] = [
     id: "colour-bars-mono",
     name: "Mono",
     design: colourBarsMonoDesign,
+    font: "Noto Sans JP",
+  },
+  {
+    id: "sleeve",
+    name: "Original",
+    design: sleeveDesign,
     font: "Noto Sans JP",
   },
 ];
@@ -407,6 +414,30 @@ const GOLDEN_ONLY_TEMPLATES: PreviewTemplate[] = [
     id: "colour-bars-crowded",
     name: "Colour Bars, long names",
     design: colourBarsDesign,
+    font: "Noto Sans JP",
+    players: longNamePlayers,
+    tournament: longNameTournament,
+  },
+  {
+    id: "sleeve-cast",
+    name: "Sleeve, varied cast",
+    design: sleeveDesign,
+    font: "Noto Sans JP",
+    players: castPlayers,
+  },
+  {
+    id: "sleeve-multi",
+    name: "Sleeve, multi-character",
+    design: sleeveDesign,
+    font: "Noto Sans JP",
+    players: multiCharacterPlayers,
+  },
+  // Names that shrink in the list rows; a title on several lines beside an
+  // icon.
+  {
+    id: "sleeve-crowded",
+    name: "Sleeve, long names",
+    design: sleeveDesign,
     font: "Noto Sans JP",
     players: longNamePlayers,
     tournament: longNameTournament,
