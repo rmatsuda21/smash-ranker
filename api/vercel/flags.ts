@@ -22,24 +22,44 @@ import { withLogging } from "../_lib/withLogging.js";
 // Every key in `FLAG_KEYS` (api/flags.ts) needs an entry here: the dashboard
 // reads this list on each production deployment and marks a flag it does not
 // find as "Unreferenced".
+//
+// It only counts a definition whose `origin` says it is a Vercel Flags flag of
+// this project (what `getProviderData` from `@flags-sdk/vercel` writes for
+// flags declared with the SDK). A bare description and options is shown in the
+// toolbar but leaves the flag "Unreferenced".
 const ON_OFF = [
   { value: false, label: "Off" },
   { value: true, label: "On" },
 ];
 
-const DEFINITIONS = {
+const DESCRIPTIONS = {
   "thumbnail-enabled": {
     description: "Enables the YouTube thumbnail editor at /thumbnail",
-    options: ON_OFF,
   },
   "results-enabled": {
     description: "Enables the per-player tournament recap at /results",
-    options: ON_OFF,
   },
   "recap-enabled": {
     description: "Enables the yearly recap story at /recap",
-    options: ON_OFF,
   },
+};
+
+// VERCEL_PROJECT_ID is one of the system environment variables Vercel sets on
+// every deployment.
+const getDefinitions = () => {
+  const projectId = process.env.VERCEL_PROJECT_ID;
+  return Object.fromEntries(
+    Object.entries(DESCRIPTIONS).map(([key, { description }]) => [
+      key,
+      {
+        description,
+        options: ON_OFF,
+        defaultValue: false,
+        declaredInCode: true,
+        ...(projectId ? { origin: { provider: "vercel", projectId } } : {}),
+      },
+    ]),
+  );
 };
 
 const handler = async (req: VercelRequest, res: VercelResponse) => {
@@ -53,7 +73,7 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
   res.setHeader("x-flags-sdk-version", version);
   res.setHeader("Cache-Control", "no-store");
   return res.json({
-    definitions: DEFINITIONS,
+    definitions: getDefinitions(),
     overrideEncryptionMode: "encrypted" as const,
   });
 };
