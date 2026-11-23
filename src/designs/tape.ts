@@ -140,7 +140,7 @@ const CARD_STYLE = {
     tabPad: { x: 29, top: 0, bottom: 9 },
     prefixPad: { x: 19, top: 8, bottom: 8 },
     tabLeft: -16,
-    tabLift: 96,
+    tabLift: 28,
     tabOverhang: 22,
     tilt: -3,
     stripText: 35,

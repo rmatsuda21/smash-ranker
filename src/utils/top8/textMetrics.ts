@@ -282,13 +282,26 @@ const computeFit = ({
   const measuredWidth = measure();
   const truncated =
     shrink && minFontSize !== undefined && !!width && measuredWidth > width;
-  const textWidth = width ? Math.min(measuredWidth, width) : measuredWidth;
 
   // Now give it the real box to read the laid-out size (text that still
   // overflows at the minimum size wraps and gets taller, unless it is cut).
   node.setAttrs(
-    defined({ width, height, wrap: shrink && !truncated ? "word" : "none" }),
+    defined({
+      width,
+      height,
+      wrap: shrink && !truncated ? "word" : "none",
+      ellipsis: truncated,
+    }),
   );
+  // Konva makes room for the ellipsis by dropping three characters, so cut
+  // text ends well short of the box's edge: report the line it draws, so a
+  // background behind it hugs the ellipsis. (`getTextWidth` is the width
+  // before the cut.)
+  const textWidth = truncated
+    ? (node.textArr[0]?.width ?? width)
+    : width
+      ? Math.min(measuredWidth, width)
+      : measuredWidth;
   const { offsetX, offsetY } = anchorOffsets(
     anchor,
     node.width(),
