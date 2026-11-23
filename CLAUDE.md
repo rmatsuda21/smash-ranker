@@ -161,7 +161,7 @@ A general-purpose graphic/thumbnail editor (vs-match cards, match banners, etc.)
 
 - **Provider** — `FeatureFlagsProvider` (`src/components/FeatureFlagsProvider.tsx`) fetches `/api/flags` once on mount and merges the response over local defaults. Expose flags via `useFeatureFlag(key)` / `useFeatureFlags()` from `src/hooks/useFeatureFlags.ts`.
 - **Local-dev defaults** — In `import.meta.env.DEV`, new flags default to **on** so contributors can work on them without hitting the API; in production they default to **off** until the dashboard says otherwise. Defaults also apply when `/api/flags` is unreachable (e.g. plain `bun dev` without `bun run dev:vercel`).
-- **Backend** — `api/flags.ts` is a Vercel function backed by `@vercel/flags-core`. Exposes `?debug=1` for diagnostic info; cached `public, max-age=60, stale-while-revalidate=300` at the edge. `api/vercel/flags.ts` is the discovery endpoint.
+- **Backend** — `api/flags.ts` is a Vercel function backed by `@vercel/flags-core`. Exposes `?debug=1` for diagnostic info; cached `public, max-age=60, stale-while-revalidate=300` at the edge. `api/vercel/flags.ts` is the discovery endpoint. The dashboard's evaluation counts come from the client itself, which reports them only from `@vercel/flags-core` 1.6.0 on.
 - **Adding a flag** — Add the key to both `FeatureFlagKey`/`DEFAULT_FLAGS` in `src/hooks/useFeatureFlags.ts` and `FLAG_KEYS`/`DEFAULTS` in `api/flags.ts`. Also add it to `DEFINITIONS` in `api/vercel/flags.ts`: the Vercel dashboard reads that list on each production deployment and marks a flag missing from it as "Unreferenced".
 
 ### TextEditor

@@ -34,6 +34,10 @@ const EVALUATE_TIMEOUT_MS = 2500;
 // across requests on a warm instance — only the first call pays the fetch
 // cost. `stream: false, polling: false` switches the controller to one-shot
 // fetch mode, which is the right shape for a stateless serverless function.
+//
+// Each `evaluate()` is also what the Vercel dashboard counts as the flag being
+// used: the client reports evaluations in the background (through `waitUntil`)
+// from @vercel/flags-core 1.6.0 on. Keep the package at or above that.
 const client = process.env.FLAGS
   ? createClient(process.env.FLAGS, { stream: false, polling: false })
   : null;
