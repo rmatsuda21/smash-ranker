@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { createPortal } from "react-dom";
 import cn from "classnames";
 import { Trans } from "@lingui/react/macro";
 import { useLocation } from "wouter";
@@ -275,6 +276,12 @@ export const RecapApp = () => {
     );
   }
 
-  // The year loads in the meantime; only the words wait for their catalog.
-  return <div className={styles.root}>{catalogReady ? body : null}</div>;
+  // Rendered on the body, not inside the layout: the layout's scrolling
+  // `main` is a stacking context of its own on iOS, which would leave the
+  // site header drawn over the story.
+  return createPortal(
+    // The year loads in the meantime; only the words wait for their catalog.
+    <div className={styles.root}>{catalogReady ? body : null}</div>,
+    document.body,
+  );
 };

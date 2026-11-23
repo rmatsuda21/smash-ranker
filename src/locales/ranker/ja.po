@@ -790,7 +790,7 @@ msgstr "傾向"
 msgid "High Score"
 msgstr "ハイスコア"
 
-#: src/components/Layout/NavOverlay/NavOverlay.tsx:21
+#: src/components/Layout/NavOverlay/NavOverlay.tsx:27
 msgid "Home"
 msgstr "ホーム"
 
@@ -1320,7 +1320,7 @@ msgstr "予想する"
 msgid "Prediction size"
 msgstr "予想人数"
 
-#: src/components/Layout/NavOverlay/NavOverlay.tsx:34
+#: src/components/Layout/NavOverlay/NavOverlay.tsx:41
 #: src/components/predict/PredictApp/PredictApp.tsx:87
 #: src/components/predict/PredictionListPanel/PredictionListPanel.tsx:84
 #: src/components/predict/PredictionWorkspace/PredictionWorkspace.tsx:39
@@ -1354,7 +1354,7 @@ msgstr "パープル"
 msgid "Quality"
 msgstr "品質"
 
-#: src/components/Layout/NavOverlay/NavOverlay.tsx:22
+#: src/components/Layout/NavOverlay/NavOverlay.tsx:28
 msgid "Ranker"
 msgstr "リザルト作成"
 
@@ -1370,10 +1370,11 @@ msgstr "トーナメント表を逆さまに読んでいます..."
 msgid "Reading the tea leaves..."
 msgstr ""
 
-#: src/components/Layout/NavOverlay/NavOverlay.tsx:24
+#: src/components/Layout/NavOverlay/NavOverlay.tsx:30
 msgid "Recap"
 msgstr "大会振り返り"
 
+#: src/components/Layout/NavOverlay/NavOverlay.tsx:34
 #: src/components/user/UserPage/UserPage.tsx:248
 #: src/components/user/UserPage/UserPage.tsx:251
 msgid "Recap {recapYear}"
@@ -1749,7 +1750,7 @@ msgstr "アプリのデータを初期状態に戻すと保存されているテ
 msgid "This will reset all player data for this slot."
 msgstr "このスロットの選手情報がすべてリセットされます。"
 
-#: src/components/Layout/NavOverlay/NavOverlay.tsx:30
+#: src/components/Layout/NavOverlay/NavOverlay.tsx:37
 msgid "Thumbnail Maker"
 msgstr "サムネ作成"
 
@@ -1757,7 +1758,7 @@ msgstr "サムネ作成"
 msgid "Thumbnails"
 msgstr "サムネイル"
 
-#: src/components/Layout/NavOverlay/NavOverlay.tsx:28
+#: src/components/Layout/NavOverlay/NavOverlay.tsx:35
 msgid "Tier List"
 msgstr "ティア表作成"
 

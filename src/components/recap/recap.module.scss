@@ -714,21 +714,26 @@ $land: cubic-bezier(0.2, 1.3, 0.4, 1);
   pointer-events: none;
   animation: mArt 1s $settle both 1.2s;
 }
+// Every step lists the same two filters. With a different list at each end
+// (brightness on the way in, drop-shadow at rest) WebKit, which is every
+// browser on an iPhone, leaves the art at the flash's brightness.
+$art-shadow: drop-shadow(2.4cqw 2.4cqw 0 #0e0d13);
+
 @keyframes mArt {
   0% {
     transform: translateX(70%);
-    filter: brightness(0);
+    filter: brightness(0) $art-shadow;
   }
   55% {
     transform: none;
-    filter: brightness(0);
+    filter: brightness(0) $art-shadow;
   }
   62% {
-    filter: brightness(3);
+    filter: brightness(3) $art-shadow;
   }
   100% {
     transform: none;
-    filter: drop-shadow(2.4cqw 2.4cqw 0 #0e0d13);
+    filter: brightness(1) $art-shadow;
   }
 }
 .name {

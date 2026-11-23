@@ -6,7 +6,8 @@ import { useLingui } from "@lingui/react";
 import type { MessageDescriptor } from "@lingui/core";
 import cn from "classnames";
 
-import { useFeatureFlag } from "@/hooks/useFeatureFlags";
+import { RECAP_YEAR } from "@/consts/recap/recap";
+import { useFeatureFlags, type FeatureFlagKey } from "@/hooks/useFeatureFlags";
 import { SiteFooter } from "@/components/shared/SiteFooter/SiteFooter";
 
 import styles from "./NavOverlay.module.scss";
@@ -14,8 +15,10 @@ import styles from "./NavOverlay.module.scss";
 type NavItem = {
   label: MessageDescriptor;
   href: string;
-  flag?: "thumbnail-enabled" | "results-enabled";
+  flag?: FeatureFlagKey;
 };
+
+const recapYear = RECAP_YEAR;
 
 const NAV_ITEMS: NavItem[] = [
   { label: msg`Home`, href: "/" },
@@ -25,6 +28,7 @@ const NAV_ITEMS: NavItem[] = [
     href: "/results",
     flag: "results-enabled",
   },
+  { label: msg`Recap ${recapYear}`, href: "/recap", flag: "recap-enabled" },
   { label: msg`Tier List`, href: "/tier" },
   {
     label: msg`Thumbnail Maker`,
@@ -47,16 +51,10 @@ export const NavOverlay = ({ isOpen, onClose }: Props) => {
   );
   const firstLinkRef = useRef<HTMLAnchorElement>(null);
   const closeTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
-  const thumbnailEnabled = useFeatureFlag("thumbnail-enabled");
-  const resultsEnabled = useFeatureFlag("results-enabled");
+  const flags = useFeatureFlags();
   const visibleItems = useMemo(
-    () =>
-      NAV_ITEMS.filter((item) => {
-        if (item.flag === "thumbnail-enabled") return thumbnailEnabled;
-        if (item.flag === "results-enabled") return resultsEnabled;
-        return true;
-      }),
-    [thumbnailEnabled, resultsEnabled],
+    () => NAV_ITEMS.filter((item) => !item.flag || flags[item.flag]),
+    [flags],
   );
 
   // Handle mount/unmount with close animation

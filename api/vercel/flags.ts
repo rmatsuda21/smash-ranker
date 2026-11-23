@@ -18,13 +18,27 @@ import { withLogging } from "../_lib/withLogging.js";
 // Flag metadata. Since these flags are managed in the Vercel Flags dashboard
 // (not declared in code via the `flag()` SDK wrapper), we construct the
 // definitions manually rather than using `getProviderData(flags)`.
+//
+// Every key in `FLAG_KEYS` (api/flags.ts) needs an entry here: the dashboard
+// reads this list on each production deployment and marks a flag it does not
+// find as "Unreferenced".
+const ON_OFF = [
+  { value: false, label: "Off" },
+  { value: true, label: "On" },
+];
+
 const DEFINITIONS = {
   "thumbnail-enabled": {
     description: "Enables the YouTube thumbnail editor at /thumbnail",
-    options: [
-      { value: false, label: "Off" },
-      { value: true, label: "On" },
-    ],
+    options: ON_OFF,
+  },
+  "results-enabled": {
+    description: "Enables the per-player tournament recap at /results",
+    options: ON_OFF,
+  },
+  "recap-enabled": {
+    description: "Enables the yearly recap story at /recap",
+    options: ON_OFF,
   },
 };
 
