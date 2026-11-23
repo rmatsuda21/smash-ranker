@@ -6,6 +6,8 @@ export type RecapGlobeGeo = {
   d3: typeof import("d3-geo");
   land: GeoPermissibleObjects;
   borders: GeoPermissibleObjects;
+  // Built once: the globe draws it every frame.
+  graticule: GeoPermissibleObjects;
 };
 
 let pending: Promise<RecapGlobeGeo> | null = null;
@@ -24,6 +26,7 @@ export const loadRecapGlobe = (): Promise<RecapGlobeGeo> => {
       const world = atlas.default as unknown as Topology;
       return {
         d3,
+        graticule: d3.geoGraticule10(),
         land: topojson.feature(world, world.objects.land),
         borders: topojson.mesh(
           world,

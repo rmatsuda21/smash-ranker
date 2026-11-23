@@ -26,7 +26,19 @@ const ROUTE = "#ffd60a";
 const HOME = "#e93d82";
 // How close the globe opens on home before it pulls back.
 const INTRO_ZOOM = 4.2;
-const MAX_ZOOM = 8;
+// Far enough in to tell apart venues in one metro area.
+const MAX_ZOOM = 40;
+// A second tap this soon and this close to the first is a double tap.
+const DOUBLE_TAP_MS = 320;
+const DOUBLE_TAP_RADIUS = 32;
+const DOUBLE_TAP_ZOOM = 2.5;
+// After a flick the globe keeps turning, losing speed over about this long,
+// until it is moving slower than this many pixels a millisecond.
+const SPIN_DECAY_MS = 320;
+const SPIN_STOP = 0.02;
+// Points along each route: the projection is told not to resample (it is
+// much cheaper per frame), so routes bring their own curve.
+const ROUTE_STEPS = 32;
 // Pins this far round the globe (radians) are over the horizon.
 const HORIZON = 1.52;
 // Every city gets a label from this zoom; below it, one per region.
@@ -56,6 +68,8 @@ export const RecapGlobe = ({
     // How much of each route is drawn and how big each pin is, 0–1.
     routes: cities.map(() => 1),
     pins: cities.map(() => 1),
+    // Being dragged, flicked or zoomed: drawn without its fine lines.
+    moving: false,
   });
   const hits = useRef<{ index: number; x: number; y: number }[]>([]);
   const selectedRef = useRef(selected);
@@ -76,14 +90,14 @@ export const RecapGlobe = ({
       canvas.height = height;
     }
 
-    const { rotation, zoom, routes, pins } = view.current;
+    const { rotation, zoom, routes, pins, moving } = view.current;
     const projection = geo.d3
       .geoOrthographic()
       .translate([width / 2, height / 2])
       .scale((Math.min(width, height) / 2) * 0.92 * zoom)
       .rotate(rotation)
       .clipAngle(90)
-      .precision(0.3);
+      .precision(0);
     const path = geo.d3.geoPath(projection, ctx);
     const home = cities[0];
 
@@ -93,20 +107,27 @@ export const RecapGlobe = ({
     path({ type: "Sphere" });
     ctx.fillStyle = SEA;
     ctx.fill();
-    ctx.beginPath();
-    path(geo.d3.geoGraticule10());
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.06)";
-    ctx.lineWidth = density;
-    ctx.stroke();
+    // The grid and the borders are faint and cost about as much as the land
+    // itself: they sit out while the globe is in motion and come back the
+    // moment it rests.
+    if (!moving) {
+      ctx.beginPath();
+      path(geo.graticule);
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.06)";
+      ctx.lineWidth = density;
+      ctx.stroke();
+    }
     ctx.beginPath();
     path(geo.land);
     ctx.fillStyle = LAND;
     ctx.fill();
-    ctx.beginPath();
-    path(geo.borders);
-    ctx.strokeStyle = SEA;
-    ctx.lineWidth = density * 0.8;
-    ctx.stroke();
+    if (!moving) {
+      ctx.beginPath();
+      path(geo.borders);
+      ctx.strokeStyle = SEA;
+      ctx.lineWidth = density * 0.8;
+      ctx.stroke();
+    }
     ctx.beginPath();
     path({ type: "Sphere" });
     ctx.strokeStyle = RIM;
@@ -120,12 +141,17 @@ export const RecapGlobe = ({
     ctx.lineCap = "round";
     cities.forEach((city, index) => {
       if (index === 0 || routes[index] <= 0) return;
-      const end = geo.d3.geoInterpolate(
+      const along = geo.d3.geoInterpolate(
         [home.lon, home.lat],
         [city.lon, city.lat],
-      )(routes[index]);
+      );
       ctx.beginPath();
-      path({ type: "LineString", coordinates: [[home.lon, home.lat], end] });
+      path({
+        type: "LineString",
+        coordinates: Array.from({ length: ROUTE_STEPS + 1 }, (_, step) =>
+          along((step / ROUTE_STEPS) * routes[index]),
+        ),
+      });
       ctx.stroke();
     });
     ctx.setLineDash([]);
@@ -312,7 +338,9 @@ export const RecapGlobe = ({
     return () => observer.disconnect();
   }, [draw]);
 
-  // Dragging, pinching and tapping, while exploring.
+  // Dragging, pinching and tapping, while exploring. Gestures only change
+  // the view; one loop repaints it, at most once a frame, eases the zoom and
+  // carries the globe on after a flick.
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas || !exploring) return;
@@ -320,15 +348,80 @@ export const RecapGlobe = ({
     const pointers = new Map<number, { x: number; y: number }>();
     let moved = 0;
     let lastSpread = 0;
-    const zoomBy = (factor: number) => {
-      state.zoom = Math.min(MAX_ZOOM, Math.max(1, state.zoom * factor));
+    let lastMiddle: { x: number; y: number } | null = null;
+    let lastMoveAt = 0;
+    let lastTap = { at: 0, x: 0, y: 0 };
+    // Degrees a millisecond the globe keeps turning at once it is let go.
+    let spin: [number, number] = [0, 0];
+    let zoomTarget = state.zoom;
+    // The rotation a double tap is taking the view to.
+    let glide: [number, number] | null = null;
+    let dirty = true;
+
+    const clampZoom = (zoom: number) => Math.min(MAX_ZOOM, Math.max(1, zoom));
+    const radius = () => {
+      const rect = canvas.getBoundingClientRect();
+      return (Math.min(rect.width, rect.height) / 2) * 0.92 * state.zoom;
+    };
+    // How far the globe turns under a finger that moves one pixel.
+    const degreesPerPixel = () => 180 / (Math.PI * radius());
+    const turn = (lon: number, lat: number) => {
+      state.rotation = [
+        state.rotation[0] + lon,
+        Math.max(-85, Math.min(85, state.rotation[1] + lat)),
+      ];
+      dirty = true;
     };
 
+    let last = performance.now();
+    let frame = requestAnimationFrame(function tick(now) {
+      const elapsed = Math.min(48, now - last);
+      last = now;
+      if (pointers.size === 0) {
+        if (glide) {
+          const ease = 1 - Math.exp(-elapsed / 110);
+          // The short way round.
+          const lon = ((glide[0] - state.rotation[0] + 540) % 360) - 180;
+          const lat = glide[1] - state.rotation[1];
+          turn(lon * ease, lat * ease);
+          if (Math.abs(lon) < 0.05 && Math.abs(lat) < 0.05) glide = null;
+        } else if (
+          Math.hypot(spin[0], spin[1]) / degreesPerPixel() >
+          SPIN_STOP
+        ) {
+          turn(spin[0] * elapsed, spin[1] * elapsed);
+          const friction = Math.exp(-elapsed / SPIN_DECAY_MS);
+          spin = [spin[0] * friction, spin[1] * friction];
+        }
+      }
+      if (Math.abs(zoomTarget - state.zoom) > state.zoom * 0.002) {
+        state.zoom += (zoomTarget - state.zoom) * (1 - Math.exp(-elapsed / 80));
+        dirty = true;
+      }
+      if (dirty) {
+        dirty = false;
+        state.moving = true;
+        draw();
+      } else if (state.moving) {
+        // At rest again: once more, with the fine lines.
+        state.moving = false;
+        draw();
+      }
+      frame = requestAnimationFrame(tick);
+    });
+
     const down = (event: PointerEvent) => {
-      canvas.setPointerCapture(event.pointerId);
+      try {
+        canvas.setPointerCapture(event.pointerId);
+      } catch {
+        // Not every pointer can be captured; the gesture works without it.
+      }
+      if (pointers.size === 0) moved = 0;
       pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
-      moved = 0;
       lastSpread = 0;
+      lastMiddle = null;
+      spin = [0, 0];
+      glide = null;
     };
     const move = (event: PointerEvent) => {
       const previous = pointers.get(event.pointerId);
@@ -336,32 +429,77 @@ export const RecapGlobe = ({
       const dx = event.clientX - previous.x;
       const dy = event.clientY - previous.y;
       pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
+      const degrees = degreesPerPixel();
+
       if (pointers.size >= 2) {
+        // Two fingers: their spread zooms, their middle drags.
         const [a, b] = [...pointers.values()];
         const spread = Math.hypot(a.x - b.x, a.y - b.y);
-        if (lastSpread) zoomBy(spread / lastSpread);
+        const middle = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
+        if (lastSpread) {
+          state.zoom = clampZoom((state.zoom * spread) / lastSpread);
+          zoomTarget = state.zoom;
+        }
+        if (lastMiddle) {
+          turn(
+            (middle.x - lastMiddle.x) * degrees,
+            -(middle.y - lastMiddle.y) * degrees,
+          );
+        }
         lastSpread = spread;
+        lastMiddle = middle;
         moved = Infinity;
-      } else {
-        moved += Math.abs(dx) + Math.abs(dy);
-        const rect = canvas.getBoundingClientRect();
-        const radius =
-          (Math.min(rect.width, rect.height) / 2) * 0.92 * state.zoom;
-        const degrees = 180 / (Math.PI * radius);
-        state.rotation = [
-          state.rotation[0] + dx * degrees,
-          Math.max(-85, Math.min(85, state.rotation[1] - dy * degrees)),
-        ];
+        dirty = true;
+        return;
       }
-      draw();
+
+      moved += Math.abs(dx) + Math.abs(dy);
+      turn(dx * degrees, -dy * degrees);
+      const now = performance.now();
+      const since = Math.max(1, now - lastMoveAt);
+      lastMoveAt = now;
+      // Smoothed, so one jittery sample at the end does not set the flick.
+      spin = [
+        spin[0] * 0.5 + ((dx * degrees) / since) * 0.5,
+        spin[1] * 0.5 + ((-dy * degrees) / since) * 0.5,
+      ];
     };
     const up = (event: PointerEvent) => {
       if (!pointers.delete(event.pointerId)) return;
       lastSpread = 0;
+      lastMiddle = null;
+      if (pointers.size > 0) {
+        spin = [0, 0];
+        return;
+      }
+      const now = performance.now();
+      // A finger that stopped before lifting does not throw the globe.
+      if (now - lastMoveAt > 90 || moved === Infinity) spin = [0, 0];
       if (moved >= 6) return;
+
+      spin = [0, 0];
       const rect = canvas.getBoundingClientRect();
       const x = event.clientX - rect.left;
       const y = event.clientY - rect.top;
+      const isDouble =
+        now - lastTap.at < DOUBLE_TAP_MS &&
+        Math.hypot(x - lastTap.x, y - lastTap.y) < DOUBLE_TAP_RADIUS;
+      if (isDouble && geoRef.current) {
+        // Zoom in on the spot that was tapped.
+        const spot = geoRef.current.d3
+          .geoOrthographic()
+          .translate([rect.width / 2, rect.height / 2])
+          .scale(radius())
+          .rotate(state.rotation)
+          .clipAngle(90)
+          .invert?.([x, y]);
+        if (spot) glide = [-spot[0], Math.max(-85, Math.min(85, -spot[1]))];
+        zoomTarget = clampZoom(state.zoom * DOUBLE_TAP_ZOOM);
+        lastTap = { at: 0, x, y };
+        return;
+      }
+      lastTap = { at: now, x, y };
+
       let nearest = -1;
       let distance = TAP_RADIUS;
       for (const hit of hits.current) {
@@ -375,8 +513,8 @@ export const RecapGlobe = ({
     };
     const wheel = (event: WheelEvent) => {
       event.preventDefault();
-      zoomBy(Math.exp(-event.deltaY * 0.0015));
-      draw();
+      glide = null;
+      zoomTarget = clampZoom(zoomTarget * Math.exp(-event.deltaY * 0.002));
     };
 
     canvas.addEventListener("pointerdown", down);
@@ -385,6 +523,8 @@ export const RecapGlobe = ({
     canvas.addEventListener("pointercancel", up);
     canvas.addEventListener("wheel", wheel, { passive: false });
     return () => {
+      cancelAnimationFrame(frame);
+      state.moving = false;
       canvas.removeEventListener("pointerdown", down);
       canvas.removeEventListener("pointermove", move);
       canvas.removeEventListener("pointerup", up);

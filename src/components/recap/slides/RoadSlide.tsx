@@ -117,7 +117,7 @@ export const RoadSlide = ({ recap }: { recap: Recap }) => {
       {exploring && (
         <>
           <p className={styles.exHint}>
-            <Trans>Drag to spin · pinch to zoom</Trans>
+            <Trans>Drag to spin · pinch or double-tap to zoom</Trans>
           </p>
           <button
             type="button"

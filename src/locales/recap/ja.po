@@ -189,8 +189,12 @@ msgid "Done"
 msgstr "完了"
 
 #: src/components/recap/slides/RoadSlide.tsx:120
-msgid "Drag to spin · pinch to zoom"
-msgstr "ドラッグで回転 · ピンチで拡大"
+msgid "Drag to spin · pinch or double-tap to zoom"
+msgstr "ドラッグで回転 · ピンチかダブルタップで拡大"
+
+#: src/components/recap/slides/RoadSlide.tsx:120
+#~ msgid "Drag to spin · pinch to zoom"
+#~ msgstr "ドラッグで回転 · ピンチで拡大"
 
 #: src/components/recap/slides/RoadSlide.tsx:113
 msgid "Explore the globe"
