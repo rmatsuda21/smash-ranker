@@ -10,6 +10,9 @@ const config: LinguiConfig = {
         "src/components/tierlist/**",
         "src/consts/tierlist/**",
         "src/pages/home.tsx",
+        // The recap has a catalog of its own: see lingui.recap.config.ts.
+        "src/components/recap/**",
+        "src/consts/recap/**",
       ],
     },
     {

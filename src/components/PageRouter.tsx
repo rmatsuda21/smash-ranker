@@ -11,6 +11,7 @@ const TierPage = lazy(() => import("@/pages/tier"));
 const PredictPage = lazy(() => import("@/pages/predict"));
 const ResultsPage = lazy(() => import("@/pages/results"));
 const ThumbnailPage = lazy(() => import("@/pages/thumbnail"));
+const RecapPage = lazy(() => import("@/pages/recap"));
 const TosPage = lazy(() => import("@/pages/tos"));
 const MePage = lazy(() => import("@/pages/me"));
 const OAuthCallbackPage = lazy(() => import("@/pages/oauthCallback"));
@@ -18,6 +19,7 @@ const OAuthCallbackPage = lazy(() => import("@/pages/oauthCallback"));
 export const PageRouter = () => {
   const thumbnailEnabled = useFeatureFlag("thumbnail-enabled");
   const resultsEnabled = useFeatureFlag("results-enabled");
+  const recapEnabled = useFeatureFlag("recap-enabled");
 
   return (
     <Switch>
@@ -48,6 +50,13 @@ export const PageRouter = () => {
         <Route path="/thumbnail">
           <Suspense>
             <ThumbnailPage />
+          </Suspense>
+        </Route>
+      )}
+      {recapEnabled && (
+        <Route path="/recap">
+          <Suspense>
+            <RecapPage />
           </Suspense>
         </Route>
       )}

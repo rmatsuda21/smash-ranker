@@ -1,0 +1,485 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2026-11-22 22:33-0500\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: en\n"
+
+#: src/components/recap/slides/TypeSlide.tsx:54
+msgid "{characters} different characters each took at least 5% of your games."
+msgstr ""
+
+#: src/components/recap/slides/RoadSlide.tsx:43
+msgid "{cities} cities"
+msgstr ""
+
+#: src/components/recap/slides/TypeSlide.tsx:73
+msgid "{cities} cities in {countries} countries, about {distance} km on the road."
+msgstr ""
+
+#: src/components/recap/slides/RoadSlide.tsx:141
+msgid "{cityCount} tournaments"
+msgstr ""
+
+#: src/components/recap/slides/RoadSlide.tsx:137
+msgid "{cityCount} tournaments · best finish {cityBest}"
+msgstr ""
+
+#: src/components/recap/slides/RoadSlide.tsx:44
+msgid "{countries} countries"
+msgstr ""
+
+#: src/components/recap/slides/BestRunSlide.tsx:97
+msgid "{earlyCount} earlier sets"
+msgstr ""
+
+#: src/components/recap/slides/RoadSlide.tsx:89
+msgid "{home} is home turf; {weekday} is your day."
+msgstr ""
+
+#: src/components/recap/slides/TypeSlide.tsx:67
+msgid "{homeCount} tournaments in {homeName}. Everyone there knows your name."
+msgstr ""
+
+#: src/components/recap/slides/TypeSlide.tsx:47
+msgid "{mainGames} of your {recorded} recorded games were on {mainName}. Nobody else got a look in."
+msgstr ""
+
+#: src/components/recap/slides/BestRunSlide.tsx:83
+msgid "{name}<0/>of {entrants}"
+msgstr ""
+
+#: src/components/recap/slides/BestRunSlide.tsx:77
+msgid "{name}<0/>of {entrants} · seeded {seed}"
+msgstr ""
+
+#: src/components/recap/slides/RoadSlide.tsx:99
+msgid "{offline}% offline"
+msgstr ""
+
+#: src/components/recap/slides/UpsetSlide.tsx:30
+msgid "{opponent} · seed"
+msgstr ""
+
+#: src/components/recap/slides/CoverSlide.tsx:109
+msgid "{place} of {entrants} at {name}"
+msgstr ""
+
+#: src/components/recap/slides/IntroSlide.tsx:52
+msgid "{tag}, your year in bracket is ready."
+msgstr ""
+
+#. Cover headline: the number of top 8 finishes
+#: src/components/recap/slides/CoverSlide.tsx:86
+msgid "{top8}"
+msgstr ""
+
+#. Cover headline: the number of tournaments entered
+#: src/components/recap/slides/CoverSlide.tsx:73
+msgid "{tournaments}"
+msgstr ""
+
+#: src/components/recap/slides/TypeSlide.tsx:84
+msgid "{upsets} upsets this year. Seeds mean nothing to you."
+msgstr ""
+
+#: src/components/recap/slides/TypeSlide.tsx:80
+msgid "{weeks} weeks in a row without missing a tournament."
+msgstr ""
+
+#: src/components/recap/slides/MainSlide.tsx:151
+msgid "{winRate}% of those sets won<0/>Picked in {share}% of your recorded games ({games})"
+msgstr ""
+
+#. Cover headline: the longest set win streak
+#: src/components/recap/slides/CoverSlide.tsx:95
+msgid "{winStreak}"
+msgstr ""
+
+#: src/components/recap/slides/CoverSlide.tsx:127
+msgid "{year} type"
+msgstr ""
+
+#: src/components/recap/slides/UpsetSlide.tsx:124
+msgid "<0>{beaten} of {seeded}</0> brackets finished above your seed."
+msgstr ""
+
+#: src/components/recap/slides/RecordSlide.tsx:91
+msgid "<0>{bestName} was your month:</0> {bestWins}–{bestLosses}."
+msgstr ""
+
+#: src/components/recap/slides/RivalSlide.tsx:128
+msgid "<0>{favoriteWins}–0</0> · never lost to"
+msgstr ""
+
+#: src/components/recap/slides/RivalSlide.tsx:118
+msgid "<0>{nemesisWins}–{nemesisLosses}</0> · toughest opponent"
+msgstr ""
+
+#: src/components/recap/slides/UpsetSlide.tsx:74
+msgid "<0>{score} at {tournament}.</0> Nobody had that on their bracket."
+msgstr ""
+
+#: src/components/recap/slides/GrindSlide.tsx:115
+msgid "<0>{seriesTitle}</0>, {seriesCount} times. The series you entered most."
+msgstr ""
+
+#: src/components/recap/slides/RoadSlide.tsx:84
+msgid "<0>About {distance} km travelled.</0> That is {laps} laps of the planet."
+msgstr ""
+
+#: src/components/recap/slides/UpsetSlide.tsx:81
+msgid "<0>At {tournament}.</0> Nobody had that on their bracket."
+msgstr ""
+
+#: src/components/recap/RecapApp/RecapApp.tsx:259
+msgid "Back"
+msgstr ""
+
+#: src/components/recap/slides/BestRunSlide.tsx:65
+msgid "Best run"
+msgstr ""
+
+#: src/components/recap/slides/UpsetSlide.tsx:42
+msgid "Biggest upset"
+msgstr ""
+
+#: src/components/recap/slides/RivalSlide.tsx:111
+msgid "Blue: you won. Black: they won. Numbers are the game count."
+msgstr ""
+
+#: src/components/recap/slides/BestRunSlide.tsx:130
+msgid "brackets won"
+msgstr ""
+
+#: src/components/recap/RecapStory/RecapStory.tsx:230
+msgid "Close"
+msgstr ""
+
+#: src/components/recap/slides/CoverSlide.tsx:257
+msgid "Copied!"
+msgstr ""
+
+#: src/components/recap/slides/CoverSlide.tsx:257
+msgid "Copy"
+msgstr ""
+
+#: src/components/recap/RecapApp/RecapApp.tsx:236
+msgid "Counting your sets"
+msgstr ""
+
+#: src/components/recap/slides/CoverSlide.tsx:129
+msgid "Cover star"
+msgstr ""
+
+#: src/components/recap/slides/RoadSlide.tsx:127
+msgid "Done"
+msgstr ""
+
+#: src/components/recap/slides/RoadSlide.tsx:120
+msgid "Drag to spin · pinch to zoom"
+msgstr ""
+
+#: src/components/recap/slides/RoadSlide.tsx:113
+msgid "Explore the globe"
+msgstr ""
+
+#: src/components/recap/slides/GrindSlide.tsx:51
+msgid "games played"
+msgstr ""
+
+#: src/consts/recap/playerTypes.ts:68
+msgid "Gatekeeper"
+msgstr ""
+
+#: src/consts/recap/playerTypes.ts:26
+msgid "Giant Slayer"
+msgstr ""
+
+#: src/components/recap/slides/RoadSlide.tsx:77
+msgid "Globe with routes from {home} to the cities you played in"
+msgstr ""
+
+#: src/components/recap/RecapApp/RecapApp.tsx:210
+msgid "Go to the home page"
+msgstr ""
+
+#: src/components/recap/slides/RivalSlide.tsx:91
+msgid "Head to head in {year} · all {total} sets, oldest first"
+msgstr ""
+
+#: src/components/recap/slides/RivalSlide.tsx:87
+msgid "Head to head in {year} · last {MAX_CHIPS} of {total} sets"
+msgstr ""
+
+#: src/consts/recap/playerTypes.ts:47
+msgid "Iron Regular"
+msgstr ""
+
+#. Losses, one letter after a number
+#. Losses, one letter after a number
+#. Losses, one letter after a number
+#: src/components/recap/slides/BestRunSlide.tsx:24
+#: src/components/recap/slides/MainSlide.tsx:142
+#: src/components/recap/slides/RecordSlide.tsx:43
+msgctxt "recap"
+msgid "L"
+msgstr ""
+
+#: src/consts/recap/playerTypes.ts:61
+msgid "Lab Rat"
+msgstr ""
+
+#: src/components/recap/slides/TypeSlide.tsx:60
+msgid "Last game, last stock. You won {deciderWins} of the {deciders} sets that went the distance."
+msgstr ""
+
+#: src/consts/recap/playerTypes.ts:40
+msgid "Local Legend"
+msgstr ""
+
+#: src/components/recap/RecapApp/RecapApp.tsx:207
+msgid "Log in with start.gg to see your year in bracket."
+msgstr ""
+
+#: src/consts/recap/playerTypes.ts:54
+msgid "Loyalist"
+msgstr ""
+
+#: src/components/recap/slides/UpsetSlide.tsx:92
+msgid "More upsets ({upsetCount} in all)"
+msgstr ""
+
+#: src/components/recap/slides/TypeSlide.tsx:165
+msgid "Move your mouse over the card to catch the foil."
+msgstr ""
+
+#: src/components/recap/RecapApp/RecapApp.tsx:253
+msgid "No tournaments on start.gg for {year}. Enter one and your recap starts here."
+msgstr ""
+
+#: src/components/recap/RecapApp/RecapApp.tsx:250
+msgid "Nothing yet"
+msgstr ""
+
+#: src/components/recap/slides/RecordSlide.tsx:60
+msgid "of your sets,<0/>won."
+msgstr ""
+
+#: src/components/recap/slides/RoadSlide.tsx:52
+msgid "On the road"
+msgstr ""
+
+#: src/components/recap/slides/RoadSlide.tsx:103
+msgid "online"
+msgstr ""
+
+#: src/components/recap/slides/MainSlide.tsx:169
+msgid "Picks by month."
+msgstr ""
+
+#: src/components/recap/slides/MainSlide.tsx:165
+msgid "Picks by month. {secondName} peaked in {peakName} ({peak}%)."
+msgstr ""
+
+#: src/components/recap/slides/TypeSlide.tsx:126
+msgid "Player type"
+msgstr ""
+
+#: src/components/recap/slides/GrindSlide.tsx:54
+msgid "players in your brackets"
+msgstr ""
+
+#: src/components/recap/RecapApp/RecapApp.tsx:242
+msgid "Reading every bracket you entered in {year}."
+msgstr ""
+
+#: src/components/recap/RecapApp/RecapApp.tsx:204
+msgid "Recap {year}"
+msgstr ""
+
+#: src/components/recap/slides/CoverSlide.tsx:260
+msgid "Replay"
+msgstr ""
+
+#: src/consts/recap/playerTypes.ts:33
+msgid "Road Warrior"
+msgstr ""
+
+#: src/consts/recap/playerTypes.ts:75
+msgid "Rookie"
+msgstr ""
+
+#: src/components/recap/slides/CoverSlide.tsx:254
+msgid "Save"
+msgstr ""
+
+#: src/components/recap/slides/UpsetSlide.tsx:108
+msgid "seed {seed} beat seed {opponentSeed}"
+msgstr ""
+
+#: src/components/recap/slides/CoverSlide.tsx:114
+msgid "Seed {seed} beat seed {opponentSeed}"
+msgstr ""
+
+#: src/components/recap/slides/CoverSlide.tsx:100
+msgid "set wins in a row."
+msgstr ""
+
+#: src/components/recap/slides/MainSlide.tsx:207
+msgid "Sets {wins}–{losses}<0/>{won}% won"
+msgstr ""
+
+#: src/components/recap/slides/GrindSlide.tsx:50
+msgid "sets played"
+msgstr ""
+
+#: src/components/recap/slides/RecordSlide.tsx:105
+msgid "sets won in a row, your best streak"
+msgstr ""
+
+#: src/components/recap/slides/CoverSlide.tsx:69
+msgid "sets. {winPercent}% of them won."
+msgstr ""
+
+#: src/components/recap/slides/CoverSlide.tsx:245
+msgid "Share"
+msgstr ""
+
+#: src/components/recap/slides/UpsetSlide.tsx:62
+msgid "Slayed"
+msgstr ""
+
+#: src/components/recap/slides/IntroSlide.tsx:33
+msgid "Smash Ranker Recap"
+msgstr ""
+
+#: src/components/recap/RecapApp/RecapApp.tsx:221
+msgid "start.gg did not answer. Try again in a minute."
+msgstr ""
+
+#: src/components/recap/slides/RoadSlide.tsx:145
+msgid "Tap a pin to see what you did in that city."
+msgstr ""
+
+#: src/components/recap/slides/IntroSlide.tsx:58
+msgid "Tap to go on · hold to pause"
+msgstr ""
+
+#: src/components/recap/RecapApp/RecapApp.tsx:218
+msgid "That didn't load"
+msgstr ""
+
+#: src/consts/recap/playerTypes.ts:19
+msgid "The Closer"
+msgstr ""
+
+#: src/components/recap/slides/CoverSlide.tsx:121
+msgid "The year-end issue · {year}"
+msgstr ""
+
+#: src/components/recap/slides/TypeSlide.tsx:163
+msgid "Tilt your phone to catch the foil."
+msgstr ""
+
+#: src/components/recap/slides/BestRunSlide.tsx:136
+msgid "top 3"
+msgstr ""
+
+#: src/components/recap/slides/BestRunSlide.tsx:142
+msgid "top 8"
+msgstr ""
+
+#: src/components/recap/slides/CoverSlide.tsx:91
+msgid "top 8 finishes."
+msgstr ""
+
+#: src/components/recap/slides/CoverSlide.tsx:80
+msgid "tournaments, {cities} cities."
+msgstr ""
+
+#: src/components/recap/slides/CoverSlide.tsx:81
+msgid "tournaments."
+msgstr ""
+
+#: src/components/recap/slides/GrindSlide.tsx:75
+msgid "tournaments<0/>entered"
+msgstr ""
+
+#: src/components/recap/RecapApp/RecapApp.tsx:228
+msgid "Try again"
+msgstr ""
+
+#: src/components/recap/slides/UpsetSlide.tsx:65
+msgid "Upset factor {factor}"
+msgstr ""
+
+#. Wins, one letter after a number
+#. Wins, one letter after a number
+#. Wins, one letter after a number
+#: src/components/recap/slides/BestRunSlide.tsx:20
+#: src/components/recap/slides/MainSlide.tsx:136
+#: src/components/recap/slides/RecordSlide.tsx:34
+msgctxt "recap"
+msgid "W"
+msgstr ""
+
+#: src/components/recap/slides/RecordSlide.tsx:129
+msgid "when the set went to the last game"
+msgstr ""
+
+#. After a number: 1 win
+#: src/components/recap/slides/RivalSlide.tsx:20
+msgid "win"
+msgstr ""
+
+#. After a number: 5 wins
+#: src/components/recap/slides/RivalSlide.tsx:22
+msgid "wins"
+msgstr ""
+
+#: src/components/recap/slides/GrindSlide.tsx:101
+msgid "Yellow is your longest run: <0>{streakWeeks} weeks</0> without missing one. {busiest} was the busiest, with {busiestCount}."
+msgstr ""
+
+#: src/components/recap/slides/UpsetSlide.tsx:56
+msgid "You · seed"
+msgstr ""
+
+#: src/components/recap/slides/TypeSlide.tsx:90
+msgid "You beat the players you are meant to beat, and very few get past you."
+msgstr ""
+
+#: src/components/recap/slides/GrindSlide.tsx:62
+msgid "You showed up."
+msgstr ""
+
+#: src/components/recap/slides/TypeSlide.tsx:115
+msgid "Your {year} player type"
+msgstr ""
+
+#: src/components/recap/slides/TypeSlide.tsx:87
+msgid "Your first year of brackets, and you showed up."
+msgstr ""
+
+#: src/components/recap/slides/MainSlide.tsx:116
+msgid "Your most played"
+msgstr ""
+
+#: src/components/recap/slides/CoverSlide.tsx:232
+msgid "Your recap as a magazine cover"
+msgstr ""
+
+#: src/components/recap/slides/RivalSlide.tsx:66
+msgid "Your rival · the player you faced most"
+msgstr ""
+
+#: src/components/recap/slides/RecordSlide.tsx:27
+msgid "Your set record"
+msgstr ""
+
+#: src/components/recap/slides/MainSlide.tsx:131
+msgid "Your sets on {name}"
+msgstr ""

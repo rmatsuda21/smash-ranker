@@ -14,7 +14,13 @@ export type FetchFailureKind =
   "query_error" | "not_found" | "multi_group" | "post_process";
 
 export type ExportSurface =
-  "predict" | "ranker" | "tier" | "thumbnail" | "results" | "player_card";
+  | "predict"
+  | "ranker"
+  | "tier"
+  | "thumbnail"
+  | "results"
+  | "player_card"
+  | "recap";
 
 export type ShareMethod = "clipboard" | "url";
 
@@ -36,6 +42,9 @@ export type EventName =
   | "user_login"
   | "user_login_fail"
   | "user_logout"
+  // Yearly recap
+  | "recap_open"
+  | "recap_finish"
   // Editor engagement
   | "panel_switch"
   // Graphic export funnel

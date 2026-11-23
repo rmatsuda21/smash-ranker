@@ -10,9 +10,10 @@ import cn from "classnames";
 import { Trans } from "@lingui/react/macro";
 import { msg } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
-import { useLocation } from "wouter";
+import { Link, useLocation } from "wouter";
 import {
   FaArrowUpRightFromSquare,
+  FaCirclePlay,
   FaLocationDot,
   FaRightFromBracket,
 } from "react-icons/fa6";
@@ -24,6 +25,8 @@ import { EmptyProfile } from "@/components/user/EmptyProfile/EmptyProfile";
 import { EventList } from "@/components/user/EventList/EventList";
 import { StatsBoard } from "@/components/user/StatsBoard/StatsBoard";
 import { UserAvatar } from "@/components/user/UserAvatar/UserAvatar";
+import { RECAP_YEAR } from "@/consts/recap/recap";
+import { useFeatureFlag } from "@/hooks/useFeatureFlags";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { useUserGameCounts } from "@/hooks/user/useUserGameCounts";
 import { useUserEvents } from "@/hooks/user/useUserEvents";
@@ -67,6 +70,8 @@ export const UserPage = () => {
   const { _ } = useLingui();
   const user = useAuthUser();
   const isWide = useMediaQuery(WIDE_QUERY);
+  const recapEnabled = useFeatureFlag("recap-enabled");
+  const recapYear = RECAP_YEAR;
   const [tab, setTab] = useState<UserPageTab>(
     () => readUserPageMemory().tab ?? "list",
   );
@@ -236,6 +241,18 @@ export const UserPage = () => {
             </Suspense>
           )}
           <div className={styles.headerActions}>
+            {recapEnabled && (
+              <Link
+                className={styles.profileLink}
+                href="/recap"
+                aria-label={_(msg`Recap ${recapYear}`)}
+              >
+                <span className={styles.actionLabel}>
+                  <Trans>Recap {recapYear}</Trans>
+                </span>
+                <FaCirclePlay aria-hidden="true" />
+              </Link>
+            )}
             <a
               className={styles.profileLink}
               href={`https://start.gg/${user.slug}`}

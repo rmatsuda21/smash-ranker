@@ -46,7 +46,7 @@ No test runner is configured. Use `bun lint` and `bun build` to validate changes
 
 - `src/App.tsx` — Root with urql GraphQL provider + Lingui i18n provider
 - `src/components/PageRouter.tsx` — Wouter-based routing. Lazy-loads `/tier`, `/predict`, `/results`, and `/thumbnail` via `React.lazy` + `Suspense`.
-- Routes: `/` → home (shows the user's recent tournaments when logged in); `/me` → logged-in user's profile (stats + every tournament entered); `/oauth/callback` → start.gg login return; `/ranker` → main Top 8 editor; `/tier` → tier list maker; `/predict` → tournament prediction maker; `/results` → per-player tournament recap (gated by the `results-enabled` feature flag); `/thumbnail` → thumbnail/graphic editor (gated by the `thumbnail-enabled` feature flag).
+- Routes: `/` → home (shows the user's recent tournaments when logged in); `/me` → logged-in user's profile (stats + every tournament entered); `/oauth/callback` → start.gg login return; `/ranker` → main Top 8 editor; `/tier` → tier list maker; `/predict` → tournament prediction maker; `/results` → per-player tournament recap (gated by the `results-enabled` feature flag); `/recap` → the logged-in player's yearly recap, played as a phone story (gated by the `recap-enabled` feature flag); `/thumbnail` → thumbnail/graphic editor (gated by the `thumbnail-enabled` feature flag).
 
 ### State Management (Zustand)
 
@@ -126,6 +126,20 @@ A per-player tournament recap generator: paste a start.gg event URL, fetch the e
 - **Preview & export** — `ResultsPreview` GETs `/api/results-image?d=<base64url(JSON)>` and renders the returned PNG; payloads over `MAX_GET_PAYLOAD_LENGTH` (players with many sets) are POSTed as `{ d }` because Vercel rejects URLs past roughly 32K characters. Same blob-caching pattern as `PredictionPreview` (`cacheRef`). `ResultsExportBar` handles download/clipboard with `export_surface: "results"` analytics. Tall graphics scroll inside the modal — no `+N more` truncation.
 - **Upset factor** — payload-only field (`upsetFactor` on `PlayerSet`). The graphic renders a badge when present and `> 0`; client doesn't compute it (planned to come from better-gg).
 - **Server renderer** — `api/results-image.ts` mirrors `api/prediction-image.ts`: satori + resvg, M PLUS Rounded 1c fonts, content-addressable LRU caches (tournament icon, character icons, PNG), ETag/304. Width 380px, output 760px. Pulls character stocks from the `SmashRankerAssets` GitHub repo (same path as `getCharImgUrl`).
+
+### Recap (`/recap`)
+
+The logged-in player's year, played like a phone story: ten slides that advance on their own, tap right or left to move, hold to pause. Mobile first; on a wide screen the story sits in a phone-shaped frame. **Gated by the `recap-enabled` feature flag.** The year is `RECAP_YEAR` (`src/consts/recap/recap.ts`), and the recap covers one game: the one the profile opens on (`pickProfileGame`).
+
+- **Data** — `src/utils/recap/`: `fetchRecapEvents.ts` (the user's events, read newest first until a page holds nothing from the year; adds `lat`/`lng` and `type` to what the profile asks for), `fetchRecapSets.ts` (`player.sets` narrowed by `eventIds`, with round names, both seeds and opponents' avatars; 18 a page because a set with avatars and picks is about 50 objects, four pages at a time), `computeRecap.ts` (pure: events + sets → `Recap`). `useRecap` (`src/hooks/recap/`) runs them and keeps finished recaps in memory. **Never send an empty `eventIds`** (see the profile's sets).
+- **Side brackets** — redemption, amateur, ladder and team events count as showing up but not towards placements, the best run or upsets. start.gg has no flag for them: `fetchRecapEvents` goes by the event's name and `type`.
+- **Story** — `RecapStory` mounts one slide at a time (keyed by slide id), so a slide's entrance animations are plain CSS that restarts on every visit: no "active" class. Progress bars and auto-advance are written to the DOM from one rAF loop. A slide that needs the story to wait (the globe being explored) calls `useRecapStory().setLocked(true)`. `RecapApp` builds the slide list and leaves out slides the player has nothing for (no upsets, no rival, no located tournaments).
+- **Styles** — one module for the whole story, `src/components/recap/recap.module.scss`, with its own palette (`--rc-*`) apart from the app's themes. Sizes are in `cqw` of the stage, so the story scales as one piece; text that can be long is sized with `fitSize` (`src/utils/recap/recapText.ts`). The display face is Big Shoulders Display, falling back to M PLUS Rounded 1c for Japanese.
+- **Globe** — `RecapGlobe` draws the player's cities on an orthographic globe (canvas, `d3-geo`, `topojson-client`, `world-atlas`, loaded through `loadRecapGlobe` in `src/utils/recap/loadGlobe.ts`: dynamic imports, so no other page pays for them, started as the recap opens so the slide does not wait). `computeRecap` picks the resting rotation (midpoint of the two farthest cities), which city is home, which are trips, and one labelled city per region; labels that would overlap are moved or left out.
+- **Player types** — nine, in `src/consts/recap/playerTypes.ts` (name and colours) with their emblems in `TypeEmblem.tsx`. `pickType` in `computeRecap.ts` chooses one by fixed rules, first match wins; `TypeSlide` words the reason.
+- **Share cover** — the last slide is a magazine cover drawn by one canvas painter, `src/utils/recap/recapCover.ts` (`drawRecapCover`, 1080×1920). The slide plays its layers in by passing the elapsed time; the shared image is the same painter with no time. **Change the cover in the painter, not in CSS**, as with the player card. The slide builds every string (`RecapCoverText`), so the painter has no i18n. Exports log `graphic_export_complete` with `export_surface: "recap"`.
+- **i18n** — the recap's strings are a catalog of their own (see i18n), loaded by `useRecapCatalog` when the recap opens; `RecapApp` renders no text until it is in. A string used in the recap and elsewhere is translated in both catalogs. A few labels read differently in the two languages on purpose (`{tournaments}` → `{tournaments}大会` on the cover; W/L → 勝/敗 under the `recap` message context).
+- **Development** — in a dev build, `/recap?u=<discriminator>` shows any player's recap with the app's own token (the slug's part after `user/`), and `&s=<slide id>` opens on one slide and holds it there (`intro`, `grind`, `main`, `record`, `best`, `upset`, `rival`, `road`, `type`, `cover`).
 
 ### Thumbnail (`/thumbnail`)
 
@@ -301,6 +315,7 @@ The Vite dev server includes dev proxy plugins (`vite.config.ts`) for start.gg l
 
 - Locales: `en`, `ja` — catalogs in `src/locales/{locale}.po`
 - After adding new `<Trans>` or `t\`\``strings, run`bun extract`then`bun compile`
+- Both commands run twice: once for `lingui.config.ts`, whose catalogs (`ranker`, `tierlist`, `home`) are merged into the one file every page loads at startup (`src/locales/{locale}.ts`), and once for `lingui.recap.config.ts`, which compiles the recap's strings to `src/locales/recap/{locale}.ts`. A merge cannot leave a catalog out, hence the second config. **A new area whose strings should not load at startup needs the same: its own config, an `exclude` in the main one, and a loader beside `loadRecapCatalog` in `src/i18n.ts`.**
 - Language preference stored in localStorage via `src/utils/prefs.ts`; defaults to browser language
 
 ### Styling
