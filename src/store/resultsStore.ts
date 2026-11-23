@@ -60,6 +60,12 @@ type ResultsAction =
         entrants: ResultsEntrantSummary[];
       };
     }
+  | {
+      // A player picked before the pool is in (a recap link): their results
+      // need only the event's game, so they load alongside the entrants.
+      type: "PRESELECT_ENTRANT";
+      payload: { entrantId: string; videogameId: string | null };
+    }
   | { type: "FETCH_POOL_FAIL"; payload: string }
   | { type: "SET_COLOR_PALETTE"; payload: PredictionPalette }
   | { type: "SELECT_ENTRANT"; payload: string }
@@ -124,13 +130,36 @@ const resultsReducer = (
         videogameId: action.payload.videogameId,
         colorPalette: DEFAULT_PREDICTION_PALETTE,
         entrantPool: action.payload.entrants,
-        selectedEntrantId: null,
+        // FETCH_POOL_START cleared the selection, so one that exists now was
+        // preselected for this pool: keep it if the player is in it.
+        ...(state.selectedEntrantId &&
+        action.payload.entrants.some(
+          (entrant) => entrant.id === state.selectedEntrantId,
+        )
+          ? {}
+          : {
+              selectedEntrantId: null,
+              playerResults: null,
+              fallbackCharacters: {},
+            }),
+      };
+
+    case "PRESELECT_ENTRANT":
+      return {
+        videogameId: action.payload.videogameId,
+        selectedEntrantId: action.payload.entrantId,
         playerResults: null,
         fallbackCharacters: {},
       };
 
     case "FETCH_POOL_FAIL":
-      return { fetchingPool: false, error: action.payload };
+      return {
+        fetchingPool: false,
+        error: action.payload,
+        selectedEntrantId: null,
+        playerResults: null,
+        fallbackCharacters: {},
+      };
 
     case "SET_COLOR_PALETTE":
       return { colorPalette: action.payload };

@@ -116,7 +116,11 @@ export const ResultsApp = () => {
   const lastFetchedRef = useRef<string | null>(null);
   const selectedEntrantId = useResultsStore((s) => s.selectedEntrantId);
   useEffect(() => {
-    if (!selectedEntrantId) return;
+    if (!selectedEntrantId) {
+      // So the same player can be selected again after a new pool load.
+      lastFetchedRef.current = null;
+      return;
+    }
     if (playerResults?.entrantId === selectedEntrantId) {
       lastFetchedRef.current = selectedEntrantId;
       return;
@@ -127,8 +131,9 @@ export const ResultsApp = () => {
     fetchPlayerResults(selectedEntrantId);
   }, [selectedEntrantId, playerResults, fetchingResults, fetchPlayerResults]);
 
-  // Arriving from a "Recap" link (home page, profile): load that event and,
-  // once its entrants are in, pick the linked player.
+  // Arriving from a "Recap" link (home page, profile): load that event and
+  // the linked player's results together. The selection is dropped again if
+  // the player turns out not to be in the event.
   const didAutoLoadRef = useRef(false);
   useEffect(() => {
     if (didAutoLoadRef.current) return;
@@ -137,14 +142,10 @@ export const ResultsApp = () => {
     if (!link) return;
     clearToolLink();
 
-    const url = slugToUrl("startgg", link.slug);
-    void fetchEntrants(url).then(() => {
-      const state = useResultsStore.getState();
-      if (!link.entrantId || state.tournamentUrl !== url) return;
-      if (!state.entrantPool.some((e) => e.id === link.entrantId)) return;
-      dispatch({ type: "SELECT_ENTRANT", payload: link.entrantId });
+    void fetchEntrants(slugToUrl("startgg", link.slug), {
+      selectEntrantId: link.entrantId ?? undefined,
     });
-  }, [fetchEntrants, dispatch]);
+  }, [fetchEntrants]);
 
   // Fan out fallback-character fetches only for entrants whose fallback
   // would actually be rendered — i.e. those with at least one set where

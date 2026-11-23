@@ -10,11 +10,17 @@ import {
   getLocalMainCharacterId,
 } from "@/utils/results/playerData";
 
-// `recentStandings` is capped at 20 by start.gg's schema. We were previously
-// asking for only 3 events, which left a lot of players without character data
-// when their first 3 tournaments had no recorded selections. 20 is the most
-// we can get from one query.
-const RECENT_STANDINGS_LIMIT = 20;
+// How far back to look for a main: the player's last few events in the game,
+// and their latest sets at each. Asking for start.gg's maximum of 20 events
+// with 16 sets each returned over 2000 objects for an active player, more
+// than the 1000 a request may return, so exactly the players with the most
+// data got no character (after a 3-4 second wait). Six events of ten sets is
+// around 500-700 objects and still dozens of sets with picks.
+const RECENT_STANDINGS_LIMIT = 6;
+const SETS_PER_STANDING = 10;
+// Tried once more with this many events if the first request is still refused
+// as too heavy.
+const RETRY_STANDINGS_LIMIT = 3;
 
 // Cap how long we wait for a fallback character before giving up and writing
 // null ("no character"). The fallback is best-effort decoration on top of an
@@ -28,6 +34,7 @@ const PlayerFallbackCharacterQueryDoc = graphql(`
     $entrantId: ID!
     $videogameId: ID!
     $limit: Int!
+    $perPage: Int!
   ) {
     entrant(id: $entrantId) {
       participants {
@@ -38,17 +45,16 @@ const PlayerFallbackCharacterQueryDoc = graphql(`
               id
               paginatedSets(
                 page: 1
-                perPage: 16
+                perPage: $perPage
                 sortType: RECENT
                 filters: { hideEmpty: true }
               ) {
                 nodes {
                   games {
                     selections {
+                      selectionType
+                      selectionValue
                       entrant {
-                        id
-                      }
-                      character {
                         id
                       }
                     }
@@ -123,13 +129,20 @@ export const useFetchPlayerFallbackCharacter = () => {
 
     // 2. Fall back to start.gg's recentStandings aggregation.
     try {
-      const result = await client
-        .query(PlayerFallbackCharacterQueryDoc, {
-          entrantId,
-          videogameId,
-          limit: RECENT_STANDINGS_LIMIT,
-        })
-        .toPromise();
+      const query = (limit: number) =>
+        client
+          .query(PlayerFallbackCharacterQueryDoc, {
+            entrantId,
+            videogameId,
+            limit,
+            perPage: SETS_PER_STANDING,
+          })
+          .toPromise();
+
+      let result = await query(RECENT_STANDINGS_LIMIT);
+      if (/complexity/i.test(result.error?.message ?? "")) {
+        result = await query(RETRY_STANDINGS_LIMIT);
+      }
 
       if (result.error || !result.data?.entrant) {
         resolve(null);
@@ -160,9 +173,11 @@ export const useFetchPlayerFallbackCharacter = () => {
                 ? String(selection.entrant.id)
                 : null;
               if (selEntrantId !== ownEntrantId) continue;
-              const charId = selection?.character?.id
-                ? String(selection.character.id)
-                : null;
+              const charId =
+                selection?.selectionType === "CHARACTER" &&
+                selection.selectionValue != null
+                  ? String(selection.selectionValue)
+                  : null;
               // A pick with no art (another game, Random) can't be drawn.
               if (!charId || !isKnownCharacter(charId)) continue;
               usage.set(charId, (usage.get(charId) ?? 0) + 1);

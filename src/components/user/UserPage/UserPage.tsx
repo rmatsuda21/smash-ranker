@@ -50,9 +50,9 @@ import styles from "./UserPage.module.scss";
 const EVENTS_PER_PAGE = 60;
 // Up to 600 events: everything, for all but the most travelled players.
 const MAX_EVENT_PAGES = 10;
-// Three pages of sets (about 135) is enough for rivals and mains without
-// walking a whole career of them.
-const SET_PAGES = 3;
+// Five pages of sets (140) is enough for rivals and mains without walking a
+// whole career of them.
+const SET_PAGES = 5;
 
 const PlayerCardLauncher = lazy(() =>
   import("@/components/user/PlayerCardLauncher/PlayerCardLauncher").then(
@@ -83,6 +83,7 @@ export const UserPage = () => {
     game,
     perPage: EVENTS_PER_PAGE,
     maxPages: MAX_EVENT_PAGES,
+    expectedTotal: gameCounts?.[game],
   });
   // Sets are narrowed to the game through its events: the most recent page
   // of them holds far more sets than the stats read. Known as soon as that

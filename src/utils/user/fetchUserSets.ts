@@ -104,36 +104,63 @@ const toUserSet = (node: SetNode, playerId: string): UserSet | null => {
   };
 };
 
-// Sets with per-game picks are expensive on start.gg's side (about 650
-// complexity per 40), so pages stay under 50.
-export const USER_SETS_PER_PAGE = 45;
+// A set with its slots and per-game picks is up to about 26 of start.gg's
+// 1000 objects per request for singles (more for teams), and start.gg takes
+// longer over a page the bigger it is. So pages are small and all requested
+// at once.
+const SETS_PER_PAGE = 28;
+// A page that is still too heavy is asked for again in halves, down to this.
+const MIN_SETS_PER_PAGE = 7;
 
-// Sets have no game filter of their own, so they are narrowed to a game by
-// its events. `eventIds` must not be empty: start.gg reads an empty list as
-// no filter at all.
-export const fetchUserSetsPage = async (
+const isTooComplex = (message: string | undefined): boolean =>
+  /complexity/i.test(message ?? "");
+
+// One page of sets. If start.gg refuses it for returning too many objects,
+// the same sets are fetched as two pages of half the size.
+const fetchSetsPage = async (
   playerId: string,
   eventIds: string[],
   page: number,
-): Promise<{ sets: UserSet[]; totalPages: number }> => {
+  perPage: number,
+): Promise<UserSet[]> => {
   const result = await startggClient
-    .query(UserSetsQueryDoc, {
-      playerId,
-      page,
-      perPage: USER_SETS_PER_PAGE,
-      eventIds,
-    })
+    .query(UserSetsQueryDoc, { playerId, page, perPage, eventIds })
     .toPromise();
 
   const connection = result.data?.player?.sets;
   if (result.error || !connection) {
+    if (
+      isTooComplex(result.error?.message) &&
+      perPage % 2 === 0 &&
+      perPage / 2 >= MIN_SETS_PER_PAGE
+    ) {
+      const halves = await Promise.all([
+        fetchSetsPage(playerId, eventIds, page * 2 - 1, perPage / 2),
+        fetchSetsPage(playerId, eventIds, page * 2, perPage / 2),
+      ]);
+      return halves.flat();
+    }
     throw new Error(result.error?.message || "Could not load sets");
   }
 
-  return {
-    sets: (connection.nodes ?? [])
-      .map((node) => (node ? toUserSet(node, playerId) : null))
-      .filter((set): set is UserSet => set !== null),
-    totalPages: connection.pageInfo?.totalPages ?? 1,
-  };
+  return (connection.nodes ?? [])
+    .map((node) => (node ? toUserSet(node, playerId) : null))
+    .filter((set): set is UserSet => set !== null);
+};
+
+// The player's most recent sets in the given events, newest first: `pages`
+// pages of them, requested together. Sets have no game filter of their own,
+// so they are narrowed to a game by its events. `eventIds` must not be empty:
+// start.gg reads an empty list as no filter at all.
+export const fetchUserSets = async (
+  playerId: string,
+  eventIds: string[],
+  pages: number,
+): Promise<UserSet[]> => {
+  const results = await Promise.all(
+    Array.from({ length: pages }, (_, index) =>
+      fetchSetsPage(playerId, eventIds, index + 1, SETS_PER_PAGE),
+    ),
+  );
+  return results.flat();
 };

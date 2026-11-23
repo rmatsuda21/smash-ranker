@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import { useAuthUser } from "@/store/authStore";
 import type { UserSet } from "@/types/user/UserSet";
-import { fetchUserSetsPage } from "@/utils/user/fetchUserSets";
+import { fetchUserSets } from "@/utils/user/fetchUserSets";
 import { logWarning } from "@/utils/observability/log";
 
 type State = {
@@ -33,17 +33,12 @@ export const useUserSets = (maxPages: number, eventIds: string | null) => {
     (async () => {
       setState({ key, sets: [], status: "loading" });
       try {
-        let sets: UserSet[] = [];
-        for (let page = 1; page <= maxPages; page++) {
-          const result = await fetchUserSetsPage(
-            playerId,
-            eventIds.split(","),
-            page,
-          );
-          if (cancelled) return;
-          sets = [...sets, ...result.sets];
-          if (page >= result.totalPages) break;
-        }
+        const sets = await fetchUserSets(
+          playerId,
+          eventIds.split(","),
+          maxPages,
+        );
+        if (cancelled) return;
         const next: State = { key, sets, status: "done" };
         finished.set(key, next);
         setState(next);

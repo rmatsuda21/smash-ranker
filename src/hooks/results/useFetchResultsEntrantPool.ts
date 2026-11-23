@@ -56,6 +56,8 @@ type FetchResult = {
 const fetchStartgg = async (
   client: ReturnType<typeof useClient>,
   slug: string,
+  // Called once the event itself is known, before its entrants are fetched.
+  onEvent: (event: { videogameId: string | null }) => void,
 ): Promise<FetchResult> => {
   const metaResult = await client
     .query(ResultsEventMetaQueryDoc, { slug })
@@ -83,6 +85,8 @@ const fetchStartgg = async (
   const tournamentCountry = event.tournament?.countryCode
     ? event.tournament.countryCode.toLowerCase()
     : undefined;
+
+  onEvent({ videogameId });
 
   const entrants = await fetchEventEntrants(client, {
     slug,
@@ -116,7 +120,12 @@ export const useFetchResultsEntrantPool = () => {
   // tournament B.
   const requestIdRef = useRef(0);
 
-  const fetchEntrants = async (url: string) => {
+  // `selectEntrantId` is a player to open once the event is known (a recap
+  // link). Their results are fetched while the entrant list is still loading.
+  const fetchEntrants = async (
+    url: string,
+    { selectEntrantId }: { selectEntrantId?: string } = {},
+  ) => {
     const detected = detectPlatformAndSlug(url);
     if (!detected) return;
 
@@ -142,7 +151,17 @@ export const useFetchResultsEntrantPool = () => {
     });
 
     try {
-      const result = await fetchStartgg(client, detected.slug);
+      const result = await fetchStartgg(
+        client,
+        detected.slug,
+        ({ videogameId }) => {
+          if (!selectEntrantId || myRequest !== requestIdRef.current) return;
+          dispatch({
+            type: "PRESELECT_ENTRANT",
+            payload: { entrantId: selectEntrantId, videogameId },
+          });
+        },
+      );
       if (myRequest !== requestIdRef.current) return;
       result.tournamentUrl = slugToUrl(detected.platform, detected.slug);
 
