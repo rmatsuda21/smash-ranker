@@ -69,6 +69,14 @@
   padding: 0 var(--space-1);
 }
 
+.sectionNote {
+  margin: 0;
+  padding: 0 var(--space-1);
+  font-size: var(--font-size-xs);
+  line-height: 1.35;
+  color: var(--fg-3);
+}
+
 // Layout: one row per option so the hint has room to explain the choice.
 .layoutGroup {
   display: flex;
@@ -179,6 +187,13 @@
     background: var(--accent-3);
     border-color: var(--accent-7);
     color: var(--fg-1);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    background: none;
+    border-color: transparent;
   }
 }
 

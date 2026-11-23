@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import {
   FaArrowRightArrowLeft,
   FaBars,
+  FaCodeBranch,
   FaSliders,
   FaTableList,
 } from "react-icons/fa6";
@@ -27,6 +28,11 @@ const LAYOUT_META: Record<
   SetListLayout,
   { label: MessageDescriptor; hint: MessageDescriptor; icon: React.ReactNode }
 > = {
+  path: {
+    label: msg`Path`,
+    hint: msg`The image draws your run as a line through the bracket`,
+    icon: <FaCodeBranch />,
+  },
   versus: {
     label: msg`Versus`,
     hint: msg`Both players side by side, score in the middle`,
@@ -132,6 +138,11 @@ export const SetListDisplaySettings = () => {
             <div className={styles.sectionLabel} id="set-list-style-label">
               <Trans>Card style</Trans>
             </div>
+            {layout === "path" && (
+              <p className={styles.sectionNote}>
+                <Trans>Path has its own look, so card styles are off.</Trans>
+              </p>
+            )}
             <div
               className={styles.styleGroup}
               role="radiogroup"
@@ -145,6 +156,7 @@ export const SetListDisplaySettings = () => {
                     type="button"
                     role="radio"
                     aria-checked={active}
+                    disabled={layout === "path"}
                     className={cn(styles.styleOption, {
                       [styles.active]: active,
                     })}

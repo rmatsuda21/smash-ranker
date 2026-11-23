@@ -213,11 +213,11 @@ msgstr "ブルー"
 msgid "Bluesky"
 msgstr "Bluesky"
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:32
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:38
 msgid "Both players side by side, score in the middle"
 msgstr "両プレイヤーを左右に、スコアを中央に表示"
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:36
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:42
 msgid "Bracket"
 msgstr "ブラケット"
 
@@ -249,7 +249,7 @@ msgstr ""
 msgid "Cancel"
 msgstr "キャンセル"
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:133
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:139
 msgid "Card style"
 msgstr "カードのスタイル"
 
@@ -325,7 +325,7 @@ msgstr ""
 msgid "Common player counts"
 msgstr "よく使う人数"
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:41
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:47
 msgid "Compact"
 msgstr "コンパクト"
 
@@ -482,7 +482,7 @@ msgstr "日付"
 msgid "Deciding which loss was \"actually close\"..."
 msgstr "どの負けが「実は惜しかった」か判定中..."
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:48
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:54
 msgid "Default"
 msgstr "デフォルト"
 
@@ -540,12 +540,12 @@ msgstr "開発者モード"
 msgid "Dimensions"
 msgstr "サイズ"
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:83
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:89
 msgid "Display"
 msgstr "表示"
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:76
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:77
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:82
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:83
 msgid "Display options"
 msgstr "表示オプション"
 
@@ -557,7 +557,7 @@ msgstr "次回から表示しない"
 msgid "Done"
 msgstr "完了"
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:49
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:55
 msgid "Dotted"
 msgstr "ドット"
 
@@ -581,8 +581,8 @@ msgstr "ダウンロード設定"
 msgid "Downloaded!"
 msgstr ""
 
-#: src/components/results/SetList/SetRow.tsx:246
-#: src/components/results/SetList/SetRow.tsx:292
+#: src/components/results/SetList/SetRow.tsx:247
+#: src/components/results/SetList/SetRow.tsx:293
 msgid "DQ"
 msgstr "DQ"
 
@@ -770,7 +770,7 @@ msgstr "プレビュー作成中..."
 msgid "Going through your recent sets..."
 msgstr "最近のセットを集計中..."
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:51
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:57
 msgid "Gradient edge"
 msgstr "グラデーション枠"
 
@@ -846,7 +846,7 @@ msgstr "篝火"
 msgid "Keeps the current layout, colors and font so you can load them again from My Templates."
 msgstr "現在のレイアウト・色・フォントを保存し、マイテンプレからいつでも読み込めます。"
 
-#: src/components/results/SetList/SetRow.tsx:236
+#: src/components/results/SetList/SetRow.tsx:237
 msgid "L"
 msgstr "L"
 
@@ -866,7 +866,7 @@ msgstr "フルセット"
 msgid "Latest"
 msgstr "最新"
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:97
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:103
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:426
 msgid "Layout"
 msgstr "レイアウト"
@@ -1150,11 +1150,11 @@ msgstr "参加者全体のうち"
 msgid "of the bracket finishes behind you, on average"
 msgstr "の参加者より上の順位（平均）"
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:37
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:43
 msgid "One line per player, like a bracket match box"
 msgstr "ブラケットの対戦枠のように1プレイヤー1行"
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:42
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:48
 msgid "One line per set, tap a set for details"
 msgstr "1セット1行、タップで詳細を表示"
 
@@ -1227,6 +1227,14 @@ msgstr "大会URL"
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:209
 msgid "Pastel"
 msgstr "パステル"
+
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:32
+msgid "Path"
+msgstr "パス"
+
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:143
+msgid "Path has its own look, so card styles are off."
+msgstr "パスは専用のデザインのため、カードスタイルは使えません。"
 
 #: src/components/results/EntrantPicker/EntrantPicker.tsx:38
 msgid "Pick a player"
@@ -1476,7 +1484,7 @@ msgstr "テンプレを保存"
 msgid "Save your current design as a template to reuse it later."
 msgstr "現在のデザインをテンプレとして保存すると、あとで再利用できます。"
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:50
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:56
 msgid "Scoreline"
 msgstr "スコアライン"
 
@@ -1721,6 +1729,10 @@ msgstr "テキストはデザインレイアウトで設定されます。"
 msgid "Texts"
 msgstr "テキスト"
 
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:33
+msgid "The image draws your run as a line through the bracket"
+msgstr "画像では勝ち上がりをブラケット上の線で描きます"
+
 #: src/pages/oauthCallback.tsx:62
 #~ msgid "The start.gg login didn't go through. Nothing was changed — you can try again from the home page."
 #~ msgstr "start.ggでのログインが完了しませんでした。何も変更されていません。ホームからもう一度お試しください。"
@@ -1951,7 +1963,7 @@ msgstr "画像をアップロード"
 msgid "Uploaded"
 msgstr "アップロード日"
 
-#: src/components/results/SetList/SetRow.tsx:158
+#: src/components/results/SetList/SetRow.tsx:159
 msgid "Upset Factor {upsetFactor}"
 msgstr "アップセットファクター {upsetFactor}"
 
@@ -1963,15 +1975,15 @@ msgstr "この画像を使う"
 msgid "Version"
 msgstr ""
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:31
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:37
 msgid "Versus"
 msgstr "対戦"
 
-#: src/components/results/SetList/SetRow.tsx:257
+#: src/components/results/SetList/SetRow.tsx:258
 msgid "vs"
 msgstr "vs"
 
-#: src/components/results/SetList/SetRow.tsx:236
+#: src/components/results/SetList/SetRow.tsx:237
 msgid "W"
 msgstr "W"
 

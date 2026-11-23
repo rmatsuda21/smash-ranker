@@ -12,7 +12,30 @@ import React from "react";
 import { BadRequestError, respondClientError } from "./_lib/errors.js";
 import { parseBase64UrlPayload, parseImageUrl } from "./_lib/validate.js";
 import { addBreadcrumb, withLogging } from "./_lib/withLogging.js";
-import { getSatoriFonts } from "./_lib/fonts.js";
+import { getPathFonts, getSatoriFonts } from "./_lib/fonts.js";
+import {
+  DEFAULT_DISPLAY,
+  SET_LIST_LAYOUTS,
+  SET_LIST_STYLES,
+  abbreviateRound,
+  computeSeedDeltaServer,
+  definedStyle,
+  estimateTextWidth,
+  groupSetsByPhase,
+  ordinal,
+  upsetTier,
+  withAlpha,
+  type PhaseGroup,
+  type PlayerInfo,
+  type PlayerRanking,
+  type PredictionPalette,
+  type RequestBody,
+  type ResultSet,
+  type SetListDisplay,
+  type SetListLayout,
+  type SetListStyle,
+} from "./_lib/resultsImageShared.js";
+import { buildPathGraphic, pathImageWidth } from "./_lib/resultsPathGraphic.js";
 
 // Sized for MAX_SETS sets with long names, rankings and character lists.
 const MAX_PAYLOAD_BYTES = 96 * 1024;
@@ -67,18 +90,6 @@ function lruSet<V>(cache: Map<string, V>, key: string, value: V, max: number) {
   }
 }
 
-type PredictionPalette = {
-  bgGradientStart: string;
-  bgGradientEnd: string;
-  accent: string;
-  accentRowBg: string;
-  textPrimary: string;
-  textSecondary: string;
-  textMuted: string;
-  textFooter: string;
-  borderSubtle: string;
-};
-
 const DEFAULT_PALETTE: PredictionPalette = {
   bgGradientStart: "#1e1e3a",
   bgGradientEnd: "#14142a",
@@ -89,77 +100,6 @@ const DEFAULT_PALETTE: PredictionPalette = {
   textMuted: "#8888aa",
   textFooter: "#4a4a60",
   borderSubtle: "rgba(255, 255, 255, 0.06)",
-};
-
-type SetOpponent = {
-  name: string;
-  prefix?: string;
-  country?: string;
-  topRanking?: PlayerRanking;
-  seed: number;
-  placement: number;
-  characters: string[];
-  fallbackCharacterId?: string | null;
-};
-
-type ResultSet = {
-  id: string;
-  fullRoundText: string;
-  scoreSelf: number;
-  scoreOpponent: number;
-  didWin: boolean;
-  isDQ: boolean;
-  upsetFactor?: number;
-  phaseId: string;
-  phaseName: string;
-  selfCharacters: string[];
-  opponent: SetOpponent;
-};
-
-type PlayerRanking = { title: string; rank: number; displayTitle?: string };
-
-type PlayerInfo = {
-  name: string;
-  prefix?: string;
-  country?: string;
-  iconUrl?: string;
-  rankings: PlayerRanking[];
-  seed: number;
-  placement: number;
-  wins: number;
-  losses: number;
-};
-
-// Mirrors src/types/results/SetListDisplay.ts.
-type SetListLayout = "versus" | "bracket" | "compact";
-type SetListStyle = "default" | "borderedDots" | "scoreline" | "gradientEdge";
-type SetListDisplay = { layout: SetListLayout; style: SetListStyle };
-const SET_LIST_LAYOUTS: readonly SetListLayout[] = [
-  "versus",
-  "bracket",
-  "compact",
-];
-const SET_LIST_STYLES: readonly SetListStyle[] = [
-  "default",
-  "borderedDots",
-  "scoreline",
-  "gradientEdge",
-];
-const DEFAULT_DISPLAY: SetListDisplay = { layout: "versus", style: "default" };
-
-type RequestBody = {
-  tournamentName: string;
-  eventName: string;
-  tournamentDate: string;
-  tournamentIconUrl: string;
-  tournamentCountry?: string | null;
-  numEntrants: number;
-  palette?: PredictionPalette;
-  locale?: string;
-  player: PlayerInfo;
-  fallbackCharacterId?: string | null;
-  sets: ResultSet[];
-  display?: SetListDisplay;
 };
 
 // --- Image fetching ---
@@ -310,12 +250,6 @@ async function preloadCharacterIcons(
 
 // --- Helpers ---
 
-function ordinal(n: number): string {
-  const s = ["th", "st", "nd", "rd"];
-  const v = n % 100;
-  return s[(v - 20) % 10] || s[v] || s[0];
-}
-
 // Bottom stats row: "{W}-{L} record · seed {N} {+Δ}". The seed delta is inline
 // text (not a pill), color-coded: accent for positive, warm red for negative,
 // muted for even/missing.
@@ -427,69 +361,6 @@ function buildRecordSeedRow(
         )
       : null,
   );
-}
-
-// Stylistic tier for the UF badge. Mirrors `upsetTier` in
-// src/utils/results/upsetFactor.ts; satori can't run that file directly so we
-// inline the tiny mapping here.
-type UpsetTier = "minor" | "notable" | "major" | "legendary";
-function upsetTier(uf: number): UpsetTier {
-  if (uf >= 9) return "legendary";
-  if (uf >= 6) return "major";
-  if (uf >= 3) return "notable";
-  return "minor";
-}
-
-// Placement-tier lookup, lifted from upsets.gg. Mirrors `SEED_TIERS` in
-// src/utils/results/upsetFactor.ts. Used for the tier-based seed delta in
-// the player summary band (how many bracket tiers up/down did they go vs
-// their seed projection).
-const SEED_TIERS_SERVER: ReadonlyArray<readonly [number, number, number]> = [
-  [1, 1, 0],
-  [2, 2, 1],
-  [3, 3, 2],
-  [4, 4, 3],
-  [5, 6, 4],
-  [7, 8, 5],
-  [9, 12, 6],
-  [13, 16, 7],
-  [17, 24, 8],
-  [25, 32, 9],
-  [33, 48, 10],
-  [49, 64, 11],
-  [65, 96, 12],
-  [97, 128, 13],
-  [129, 192, 14],
-  [193, 256, 15],
-  [257, 384, 16],
-  [385, 512, 17],
-  [513, 768, 18],
-  [769, 1024, 19],
-  [1025, 1536, 20],
-  [1537, 2048, 21],
-  [2049, 3072, 22],
-  [3073, 4096, 23],
-];
-
-function seedTierServer(seed: number): number | null {
-  if (!Number.isFinite(seed) || seed <= 0) return null;
-  const s = Math.floor(seed);
-  for (const [lo, hi, t] of SEED_TIERS_SERVER) {
-    if (s >= lo && s <= hi) return t;
-  }
-  return SEED_TIERS_SERVER[SEED_TIERS_SERVER.length - 1][2];
-}
-
-// Signed delta in tier space: positive when the player placed higher than
-// their seed projected, negative when they underperformed.
-function computeSeedDeltaServer(
-  seed: number,
-  placement: number,
-): number | null {
-  const s = seedTierServer(seed);
-  const p = seedTierServer(placement);
-  if (s == null || p == null) return null;
-  return s - p;
 }
 
 // satori-compatible inline style per tier. Bigger upset = more dramatic, but
@@ -638,71 +509,10 @@ function buildCharacterStack(
   );
 }
 
-type PhaseGroup = { id: string; name: string; sets: ResultSet[] };
-
-// Linear pass — sets are already sorted by (phaseOrder, startAt) upstream.
-function groupSetsByPhase(sets: ResultSet[]): PhaseGroup[] {
-  const groups: PhaseGroup[] = [];
-  for (const s of sets) {
-    const last = groups[groups.length - 1];
-    if (last && last.id === s.phaseId) {
-      last.sets.push(s);
-    } else {
-      groups.push({ id: s.phaseId, name: s.phaseName, sets: [s] });
-    }
-  }
-  return groups;
-}
-
-// Shortens start.gg round names the way the community does ("Winners
-// Semi-Final" → "WSF"). Mirrors src/utils/results/abbreviateRound.ts.
-const ROUND_STAGES: ReadonlyArray<readonly [RegExp, string]> = [
-  [/^grand\s*finals?\s*reset$/, "GFR"],
-  [/^grand\s*finals?$/, "GF"],
-  [/^quarter-?\s*finals?$/, "QF"],
-  [/^semi-?\s*finals?$/, "SF"],
-  [/^finals?$/, "F"],
-  [/^round\s*(\d+)$/, "R$1"],
-];
-function abbreviateRound(fullRoundText: string): string {
-  const m = fullRoundText.trim().match(/^(winners?|losers?)?\s*(.*)$/i);
-  if (!m) return fullRoundText;
-  const side = m[1] ? m[1][0].toUpperCase() : "";
-  const rest = m[2].toLowerCase();
-  for (const [re, out] of ROUND_STAGES) {
-    if (re.test(rest)) return side + rest.replace(re, out);
-  }
-  return fullRoundText;
-}
-
-// Satori has no color-mix(); build translucent accents from the hex.
-function withAlpha(hex: string, alpha: number): string {
-  const m = hex.trim().match(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i);
-  if (!m) return hex;
-  let c = m[1];
-  if (c.length === 3)
-    c = c
-      .split("")
-      .map((x) => x + x)
-      .join("");
-  const r = parseInt(c.slice(0, 2), 16);
-  const g = parseInt(c.slice(2, 4), 16);
-  const b = parseInt(c.slice(4, 6), 16);
-  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-}
-
 function dotPatternSvg(fill: string): string {
   return `data:image/svg+xml,${encodeURIComponent(
     `<svg width="12" height="12" xmlns="http://www.w3.org/2000/svg"><circle cx="1" cy="1" r="1" fill="${fill}"/></svg>`,
   )}`;
-}
-
-// Satori calls `.trim()` on string-valued style props, so a key whose value
-// is `undefined` crashes it. Strip those before handing a style to `h()`.
-function definedStyle(style: React.CSSProperties): React.CSSProperties {
-  return Object.fromEntries(
-    Object.entries(style).filter(([, v]) => v !== undefined),
-  ) as React.CSSProperties;
 }
 
 const WIN_GREEN = "#46a758";
@@ -1443,28 +1253,6 @@ function buildCompactCard(set: ResultSet, ctx: RowContext): React.ReactElement {
 }
 
 // --- Dynamic width ---
-
-// Rough advance widths for M PLUS Rounded 1c, per script. No font-metrics
-// library is bundled, so this is an estimate; it only decides how wide the
-// canvas gets. Anything still too long is ellipsized by the row itself.
-function estimateTextWidth(text: string, fontSize: number): number {
-  let em = 0;
-  for (const ch of text) {
-    const c = ch.codePointAt(0) ?? 0;
-    if (
-      (c >= 0x3000 && c <= 0x9fff) || // CJK punctuation, kana, kanji
-      (c >= 0xac00 && c <= 0xd7af) || // Hangul
-      (c >= 0xff00 && c <= 0xffef) // fullwidth forms
-    ) {
-      em += 1;
-    } else if (ch === " ") em += 0.3;
-    else if (/[0-9]/.test(ch)) em += 0.6;
-    else if (/[A-Z]/.test(ch)) em += 0.68;
-    else if (/[|.,:;'"!`-]/.test(ch)) em += 0.35;
-    else em += 0.56;
-  }
-  return em * fontSize;
-}
 
 function fullName(name: string, prefix?: string): string {
   return prefix ? `${prefix} | ${name}` : name;
@@ -2451,14 +2239,19 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
     ...(body.palette ?? {}),
   };
 
-  const graphic = buildGraphic(
-    body,
-    tournamentIcon,
-    playerIcon,
-    iconMap,
-    flagMap,
-    palette,
-  );
+  // Path is a whole graphic of its own (header, rail, rows), not a set-row
+  // layout inside the shared frame, so it has its own builder and fonts.
+  const isPath = (body.display ?? DEFAULT_DISPLAY).layout === "path";
+  const graphic = isPath
+    ? buildPathGraphic({
+        body,
+        tournamentIcon,
+        playerIcon,
+        iconMap,
+        flagMap,
+        palette,
+      })
+    : buildGraphic(body, tournamentIcon, playerIcon, iconMap, flagMap, palette);
 
   addBreadcrumb("results-image", "satori_start", {
     setCount: body.sets.length,
@@ -2466,10 +2259,10 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
   // Auto-height: omit `height` so satori fits the rendered content. The root
   // div has no fixed height; Resvg then scales the resulting SVG to 2× the
   // chosen width while preserving the aspect ratio satori computed.
-  const width = computeImageWidth(body);
+  const width = isPath ? pathImageWidth(body) : computeImageWidth(body);
   const svg = await satori(graphic, {
     width,
-    fonts: getSatoriFonts(),
+    fonts: isPath ? getPathFonts() : getSatoriFonts(),
   });
   addBreadcrumb("results-image", "satori_done");
 

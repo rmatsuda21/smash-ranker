@@ -96,7 +96,7 @@ export const SetList = () => {
                     fallbackCharacters,
                     set.opponent.id,
                   )}
-                  variant={variant}
+                  variant={layout === "path" ? "default" : variant}
                   layout={layout}
                 />
               ))}

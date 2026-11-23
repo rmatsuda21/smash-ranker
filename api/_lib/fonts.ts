@@ -3,10 +3,11 @@ import { readFileSync } from "fs";
 type SatoriFont = {
   name: string;
   data: Buffer;
-  weight: 400 | 800;
+  weight: 400 | 600 | 700 | 800;
 };
 
 let cached: SatoriFont[] | null = null;
+let cachedPath: SatoriFont[] | null = null;
 
 // Read on first use, not at module load. A function that throws while its
 // module is loading dies before `withLogging` runs, so the failure reaches
@@ -35,4 +36,44 @@ export const getSatoriFonts = (): SatoriFont[] => {
     },
   ];
   return cached;
+};
+
+// Fonts for the results graphic's Path layout: Barlow for text and Barlow
+// Condensed for numerals and labels. Barlow has no Japanese, so M PLUS Rounded
+// 1c follows them: satori takes a glyph a font lacks from the next font in the
+// list.
+export const getPathFonts = (): SatoriFont[] => {
+  if (cachedPath) return cachedPath;
+  cachedPath = [
+    {
+      name: "Barlow",
+      data: readFileSync(
+        new URL("../fonts/Barlow-Regular.ttf", import.meta.url),
+      ),
+      weight: 400,
+    },
+    {
+      name: "Barlow",
+      data: readFileSync(
+        new URL("../fonts/Barlow-SemiBold.ttf", import.meta.url),
+      ),
+      weight: 600,
+    },
+    {
+      name: "Barlow Condensed",
+      data: readFileSync(
+        new URL("../fonts/BarlowCondensed-SemiBold.ttf", import.meta.url),
+      ),
+      weight: 600,
+    },
+    {
+      name: "Barlow Condensed",
+      data: readFileSync(
+        new URL("../fonts/BarlowCondensed-Bold.ttf", import.meta.url),
+      ),
+      weight: 700,
+    },
+    ...getSatoriFonts(),
+  ];
+  return cachedPath;
 };

@@ -213,11 +213,11 @@ msgstr "ブルー"
 msgid "Bluesky"
 msgstr ""
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:32
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:38
 msgid "Both players side by side, score in the middle"
 msgstr ""
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:36
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:42
 msgid "Bracket"
 msgstr ""
 
@@ -249,7 +249,7 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:133
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:139
 msgid "Card style"
 msgstr ""
 
@@ -325,7 +325,7 @@ msgstr ""
 msgid "Common player counts"
 msgstr ""
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:41
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:47
 msgid "Compact"
 msgstr ""
 
@@ -482,7 +482,7 @@ msgstr ""
 msgid "Deciding which loss was \"actually close\"..."
 msgstr ""
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:48
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:54
 msgid "Default"
 msgstr ""
 
@@ -540,12 +540,12 @@ msgstr ""
 msgid "Dimensions"
 msgstr ""
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:83
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:89
 msgid "Display"
 msgstr ""
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:76
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:77
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:82
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:83
 msgid "Display options"
 msgstr ""
 
@@ -557,7 +557,7 @@ msgstr ""
 msgid "Done"
 msgstr ""
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:49
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:55
 msgid "Dotted"
 msgstr ""
 
@@ -581,8 +581,8 @@ msgstr ""
 msgid "Downloaded!"
 msgstr ""
 
-#: src/components/results/SetList/SetRow.tsx:246
-#: src/components/results/SetList/SetRow.tsx:292
+#: src/components/results/SetList/SetRow.tsx:247
+#: src/components/results/SetList/SetRow.tsx:293
 msgid "DQ"
 msgstr ""
 
@@ -770,7 +770,7 @@ msgstr ""
 msgid "Going through your recent sets..."
 msgstr ""
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:51
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:57
 msgid "Gradient edge"
 msgstr ""
 
@@ -846,7 +846,7 @@ msgstr ""
 msgid "Keeps the current layout, colors and font so you can load them again from My Templates."
 msgstr ""
 
-#: src/components/results/SetList/SetRow.tsx:236
+#: src/components/results/SetList/SetRow.tsx:237
 msgid "L"
 msgstr ""
 
@@ -866,7 +866,7 @@ msgstr ""
 msgid "Latest"
 msgstr ""
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:97
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:103
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:426
 msgid "Layout"
 msgstr ""
@@ -1150,11 +1150,11 @@ msgstr ""
 msgid "of the bracket finishes behind you, on average"
 msgstr ""
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:37
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:43
 msgid "One line per player, like a bracket match box"
 msgstr ""
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:42
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:48
 msgid "One line per set, tap a set for details"
 msgstr ""
 
@@ -1226,6 +1226,14 @@ msgstr ""
 
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:209
 msgid "Pastel"
+msgstr ""
+
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:32
+msgid "Path"
+msgstr ""
+
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:143
+msgid "Path has its own look, so card styles are off."
 msgstr ""
 
 #: src/components/results/EntrantPicker/EntrantPicker.tsx:38
@@ -1476,7 +1484,7 @@ msgstr ""
 msgid "Save your current design as a template to reuse it later."
 msgstr ""
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:50
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:56
 msgid "Scoreline"
 msgstr ""
 
@@ -1721,6 +1729,10 @@ msgstr ""
 msgid "Texts"
 msgstr ""
 
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:33
+msgid "The image draws your run as a line through the bracket"
+msgstr ""
+
 #: src/pages/oauthCallback.tsx:62
 #~ msgid "The start.gg login didn't go through. Nothing was changed — you can try again from the home page."
 #~ msgstr ""
@@ -1951,7 +1963,7 @@ msgstr ""
 msgid "Uploaded"
 msgstr ""
 
-#: src/components/results/SetList/SetRow.tsx:158
+#: src/components/results/SetList/SetRow.tsx:159
 msgid "Upset Factor {upsetFactor}"
 msgstr ""
 
@@ -1963,15 +1975,15 @@ msgstr ""
 msgid "Version"
 msgstr ""
 
-#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:31
+#: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:37
 msgid "Versus"
 msgstr ""
 
-#: src/components/results/SetList/SetRow.tsx:257
+#: src/components/results/SetList/SetRow.tsx:258
 msgid "vs"
 msgstr ""
 
-#: src/components/results/SetList/SetRow.tsx:236
+#: src/components/results/SetList/SetRow.tsx:237
 msgid "W"
 msgstr ""
 

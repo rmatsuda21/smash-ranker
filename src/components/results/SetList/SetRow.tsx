@@ -94,6 +94,7 @@ const VARIANT_CLASS: Record<SetListStyle, string | null> = {
 };
 
 const LAYOUT_CLASS: Record<SetListLayout, string> = {
+  path: styles.layoutCompact,
   versus: styles.layoutVersus,
   bracket: styles.layoutBracket,
   compact: styles.layoutCompact,
@@ -218,7 +219,7 @@ export const SetRow = ({
     />
   );
 
-  if (layout === "compact") {
+  if (layout === "compact" || layout === "path") {
     return (
       <div
         className={rootClass}
