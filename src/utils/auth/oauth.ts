@@ -19,6 +19,11 @@ const CLIENT_ID: string | undefined = import.meta.env.VITE_START_GG_CLIENT_ID;
 
 export const isLoginAvailable = (): boolean => Boolean(CLIENT_ID);
 
+// The pending login is kept in localStorage, not sessionStorage: on a phone the
+// callback often lands in another tab than the one that started the login
+// (start.gg's app or a sign-in provider takes over the link and hands back to
+// a new tab), and sessionStorage is per tab. It still expires after 15 minutes
+// and is used once.
 type PendingLogin = { state: string; returnTo: string; startedAt: number };
 
 export type SessionTokens = { accessToken: string; expiresIn: number };
@@ -32,7 +37,7 @@ export class LoginError extends Error {
 
 const readPending = (): PendingLogin | null => {
   try {
-    const raw = sessionStorage.getItem(PENDING_KEY);
+    const raw = localStorage.getItem(PENDING_KEY);
     if (!raw) return null;
     const parsed = JSON.parse(raw) as PendingLogin;
     if (Date.now() - parsed.startedAt > PENDING_MAX_AGE_MS) return null;
@@ -44,7 +49,7 @@ const readPending = (): PendingLogin | null => {
 
 const clearPending = () => {
   try {
-    sessionStorage.removeItem(PENDING_KEY);
+    localStorage.removeItem(PENDING_KEY);
   } catch {
     // Nothing to clear.
   }
@@ -62,7 +67,11 @@ export const startLogin = (returnTo: string = window.location.pathname) => {
     returnTo: safeReturnPath(returnTo),
     startedAt: Date.now(),
   };
-  sessionStorage.setItem(PENDING_KEY, JSON.stringify(pending));
+  try {
+    localStorage.setItem(PENDING_KEY, JSON.stringify(pending));
+  } catch {
+    throw new LoginError("Could not start login: storage is unavailable");
+  }
 
   const params = new URLSearchParams({
     response_type: "code",
@@ -91,7 +100,7 @@ const readTokens = async (response: Response): Promise<SessionTokens> => {
 };
 
 // Finishes a login from the callback URL's query string. A callback only
-// counts if this tab started a login (so a link someone else crafted cannot
+// counts if this browser started a login (so a link someone else crafted cannot
 // sign you into their account), and if start.gg echoes `state` it must match.
 export const completeLogin = async (
   search: string,

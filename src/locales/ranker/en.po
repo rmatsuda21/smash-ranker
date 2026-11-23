@@ -172,7 +172,7 @@ msgstr ""
 msgid "Avatar"
 msgstr ""
 
-#: src/pages/oauthCallback.tsx:68
+#: src/pages/oauthCallback.tsx:87
 msgid "Back to home"
 msgstr ""
 
@@ -370,7 +370,7 @@ msgstr ""
 msgid "Copy image"
 msgstr ""
 
-#: src/pages/oauthCallback.tsx:59
+#: src/pages/oauthCallback.tsx:70
 msgid "Couldn't log you in"
 msgstr ""
 
@@ -956,7 +956,7 @@ msgstr ""
 msgid "Log out"
 msgstr ""
 
-#: src/pages/oauthCallback.tsx:75
+#: src/pages/oauthCallback.tsx:94
 msgid "Logging you in with start.gg..."
 msgstr ""
 
@@ -1722,7 +1722,11 @@ msgid "Texts"
 msgstr ""
 
 #: src/pages/oauthCallback.tsx:62
-msgid "The start.gg login didn't go through. Nothing was changed — you can try again from the home page."
+#~ msgid "The start.gg login didn't go through. Nothing was changed — you can try again from the home page."
+#~ msgstr ""
+
+#: src/pages/oauthCallback.tsx:73
+msgid "The start.gg login didn't go through. Nothing was changed."
 msgstr ""
 
 #: src/components/top8/SettingsPanel/ThemePicker.tsx:44
@@ -1889,6 +1893,10 @@ msgstr ""
 
 #: src/utils/social/builtInTemplates.ts:48
 msgid "Trophy spotlight"
+msgstr ""
+
+#: src/pages/oauthCallback.tsx:83
+msgid "Try again"
 msgstr ""
 
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:233

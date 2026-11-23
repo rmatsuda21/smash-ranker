@@ -172,7 +172,7 @@ msgstr "シードで自動入力"
 msgid "Avatar"
 msgstr "アイコン"
 
-#: src/pages/oauthCallback.tsx:68
+#: src/pages/oauthCallback.tsx:87
 msgid "Back to home"
 msgstr "ホームに戻る"
 
@@ -370,7 +370,7 @@ msgstr ""
 msgid "Copy image"
 msgstr "画像をコピー"
 
-#: src/pages/oauthCallback.tsx:59
+#: src/pages/oauthCallback.tsx:70
 msgid "Couldn't log you in"
 msgstr "ログインできませんでした"
 
@@ -956,7 +956,7 @@ msgstr "start.ggでログインすると、これまで出た大会が一覧で�
 msgid "Log out"
 msgstr "ログアウト"
 
-#: src/pages/oauthCallback.tsx:75
+#: src/pages/oauthCallback.tsx:94
 msgid "Logging you in with start.gg..."
 msgstr "start.ggでログイン中..."
 
@@ -1722,8 +1722,12 @@ msgid "Texts"
 msgstr "テキスト"
 
 #: src/pages/oauthCallback.tsx:62
-msgid "The start.gg login didn't go through. Nothing was changed — you can try again from the home page."
-msgstr "start.ggでのログインが完了しませんでした。何も変更されていません。ホームからもう一度お試しください。"
+#~ msgid "The start.gg login didn't go through. Nothing was changed — you can try again from the home page."
+#~ msgstr "start.ggでのログインが完了しませんでした。何も変更されていません。ホームからもう一度お試しください。"
+
+#: src/pages/oauthCallback.tsx:73
+msgid "The start.gg login didn't go through. Nothing was changed."
+msgstr "start.ggでのログインが完了しませんでした。何も変更されていません。"
 
 #: src/components/top8/SettingsPanel/ThemePicker.tsx:44
 msgid "Theme"
@@ -1890,6 +1894,10 @@ msgstr "トロフィー棚"
 #: src/utils/social/builtInTemplates.ts:48
 msgid "Trophy spotlight"
 msgstr "優勝者スポットライト"
+
+#: src/pages/oauthCallback.tsx:83
+msgid "Try again"
+msgstr "もう一度試す"
 
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:233
 #~ msgid "Twitter"

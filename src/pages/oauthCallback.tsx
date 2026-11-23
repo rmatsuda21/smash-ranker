@@ -4,7 +4,11 @@ import { Trans } from "@lingui/react/macro";
 
 import { Spinner } from "@/components/shared/Spinner/Spinner";
 import { useAuthStore } from "@/store/authStore";
-import { completeLogin } from "@/utils/auth/oauth";
+import {
+  completeLogin,
+  isLoginAvailable,
+  startLogin,
+} from "@/utils/auth/oauth";
 import { fetchCurrentUser } from "@/utils/user/fetchCurrentUser";
 import { logEvent, logWarning } from "@/utils/observability/log";
 
@@ -39,6 +43,13 @@ const OAuthCallbackPage = () => {
         if (!cancelled) navigate(returnTo, { replace: true });
       })
       .catch((err) => {
+        // Already logged in: this is an old callback address opened again
+        // (a restored tab, the Back button), not a login that failed.
+        const { accessToken, expiresAt } = useAuthStore.getState();
+        if (accessToken && expiresAt > Date.now()) {
+          if (!cancelled) navigate("/", { replace: true });
+          return;
+        }
         logWarning("start.gg login failed", {
           area: "auth",
           error: err instanceof Error ? err.message : String(err),
@@ -60,10 +71,18 @@ const OAuthCallbackPage = () => {
           </h1>
           <p className={styles.description}>
             <Trans>
-              The start.gg login didn't go through. Nothing was changed — you
-              can try again from the home page.
+              The start.gg login didn't go through. Nothing was changed.
             </Trans>
           </p>
+          {isLoginAvailable() && (
+            <button
+              type="button"
+              className={styles.retry}
+              onClick={() => startLogin("/")}
+            >
+              <Trans>Try again</Trans>
+            </button>
+          )}
           <Link className={styles.link} href="/">
             <Trans>Back to home</Trans>
           </Link>
