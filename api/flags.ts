@@ -30,16 +30,23 @@ type DebugEntry = {
 
 const EVALUATE_TIMEOUT_MS = 2500;
 
-// Hoisted to module scope so Fluid Compute reuses the in-memory datafile
-// across requests on a warm instance — only the first call pays the fetch
-// cost. `stream: false, polling: false` switches the controller to one-shot
-// fetch mode, which is the right shape for a stateless serverless function.
+// Hoisted to module scope so a warm instance reuses the definitions it has
+// already loaded.
+//
+// Do not pass `polling: false` together with `stream: false`: that is the
+// client's offline mode, which loads the definitions once (from the copy
+// embedded at build time when there is one) and never looks again, so a flag
+// changed in the dashboard keeps its old value until the next deployment.
+// With polling left on, the client on Vercel compares the config version
+// Vercel sends with each request against what it holds and fetches when they
+// differ; elsewhere it polls. Streaming stays off: a function has no use for
+// an open connection, and it once made this route time out.
 //
 // Each `evaluate()` is also what the Vercel dashboard counts as the flag being
 // used: the client reports evaluations in the background (through `waitUntil`)
 // from @vercel/flags-core 1.6.0 on. Keep the package at or above that.
 const client = process.env.FLAGS
-  ? createClient(process.env.FLAGS, { stream: false, polling: false })
+  ? createClient(process.env.FLAGS, { stream: false })
   : null;
 
 const withTimeout = <T>(p: Promise<T>, ms: number): Promise<T> =>
