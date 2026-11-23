@@ -68,7 +68,7 @@ export const TournamentLoader = ({ className }: Props) => {
     });
 
     if (detected.platform === "startgg") {
-      fetchResult(detected.slug, fetchCount);
+      fetchResult(detected.slug, fetchCount, designPlayerCount);
     } else if (detected.platform === "challonge") {
       fetchChallonge(detected.slug, fetchCount);
     } else if (detected.platform === "tonamel") {

@@ -1,7 +1,8 @@
 import { create } from "zustand";
 import { createJSONStorage, devtools, persist } from "zustand/middleware";
 
-import { PlayerInfo } from "@/types/top8/Player";
+import { CharacerData, PlayerInfo } from "@/types/top8/Player";
+import { EMPTY_CHARACTER_ID } from "@/consts/top8/characters";
 import { createSamplePlayers } from "@/utils/top8/samplePlayers";
 import { applyRenderStyle } from "@/utils/top8/renderStyle";
 import { DEFAULT_RENDER_STYLE } from "@/consts/games";
@@ -27,7 +28,14 @@ type PlayerAction =
   | { type: "FETCH_PLAYERS" }
   | { type: "FETCH_PLAYERS_SUCCESS"; payload: PlayerInfo[] }
   | { type: "FETCH_PLAYERS_FAIL"; payload: string }
+  // Characters that arrived after the players did, by entrant id.
+  | { type: "FILL_PLAYER_CHARACTERS"; payload: Record<string, CharacerData[]> }
   | { type: "RESET" };
+
+const hasNoCharacter = (player: PlayerInfo): boolean =>
+  player.characters.length === 0 ||
+  (player.characters.length === 1 &&
+    player.characters[0].id === EMPTY_CHARACTER_ID);
 
 const playerReducer = (
   state: PlayerState,
@@ -61,6 +69,20 @@ const playerReducer = (
         fetching: false,
         players: applyRenderStyle(action.payload, state.renderStyle),
         error: "",
+      };
+    case "FILL_PLAYER_CHARACTERS":
+      return {
+        players: applyRenderStyle(
+          state.players.map((player) => {
+            const characters = action.payload[player.entrantId];
+            // Only a player still waiting for characters: one the user has
+            // given a character in the meantime keeps it.
+            return characters && hasNoCharacter(player)
+              ? { ...player, characters }
+              : player;
+          }),
+          state.renderStyle,
+        ),
       };
     case "FETCH_PLAYERS_FAIL":
       return { fetching: false, error: action.payload };

@@ -5,7 +5,7 @@ import * as countryList from "country-list";
 import { t } from "@lingui/core/macro";
 import { graphql } from "@/gql";
 import type { EventStandingsQuery, PlayerSetsQuery } from "@/gql/graphql";
-import { PlayerInfo } from "@/types/top8/Player";
+import { CharacerData, PlayerInfo } from "@/types/top8/Player";
 import { TournamentInfo } from "@/types/top8/Tournament";
 import { usePlayerStore } from "@/store/playerStore";
 import { useTournamentStore } from "@/store/tournamentStore";
@@ -307,6 +307,11 @@ const sortCharactersByUsage = (usageCount: Map<string, number>): string[] => {
   );
 };
 
+const toCharacters = (characterIds: string[]): CharacerData[] =>
+  characterIds.length > 0
+    ? characterIds.map((id) => ({ id, alt: 0 }))
+    : [{ id: EMPTY_CHARACTER_ID, alt: 0 }];
+
 const addCharactersToPlayers = async (
   client: Client,
   slug: string,
@@ -314,20 +319,55 @@ const addCharactersToPlayers = async (
 ): Promise<void> => {
   await Promise.all(
     players.map(async (player) => {
-      const characterIds = await fetchPlayerCharacters(
-        client,
-        slug,
-        player.entrantId,
+      player.characters = toCharacters(
+        await fetchPlayerCharacters(client, slug, player.entrantId),
       );
-
-      player.characters =
-        characterIds.length > 0
-          ? characterIds.map((id) => ({ id, alt: 0 }))
-          : [{ id: EMPTY_CHARACTER_ID, alt: 0 }];
-
-      player.id = String(player.id);
     }),
   );
+};
+
+// How many of the players the graphic is not showing are looked up at a time
+// once it is on screen.
+const BACKGROUND_CHUNK_SIZE = 6;
+
+// Characters for the players the design has no slot for yet (a load fetches
+// 32 players so a bigger template can be switched to without loading again).
+// They are filled in a few at a time after the graphic is up, and the work
+// stops as soon as another tournament starts loading, so loads in quick
+// succession do not pile requests up against start.gg's 80 a minute.
+const addCharactersInBackground = async (
+  client: Client,
+  slug: string,
+  players: PlayerInfo[],
+): Promise<void> => {
+  let cancelled = false;
+  const unsubscribe = usePlayerStore.subscribe((state) => {
+    if (state.fetching) cancelled = true;
+  });
+
+  try {
+    for (let i = 0; i < players.length; i += BACKGROUND_CHUNK_SIZE) {
+      const chunk = players.slice(i, i + BACKGROUND_CHUNK_SIZE);
+      const characters = await Promise.all(
+        chunk.map((player) =>
+          fetchPlayerCharacters(client, slug, player.entrantId),
+        ),
+      );
+      if (cancelled) return;
+
+      usePlayerStore.getState().dispatch({
+        type: "FILL_PLAYER_CHARACTERS",
+        payload: Object.fromEntries(
+          chunk.map((player, index) => [
+            player.entrantId,
+            toCharacters(characters[index]),
+          ]),
+        ),
+      });
+    }
+  } finally {
+    unsubscribe();
+  }
 };
 
 const filterValidImages = (
@@ -372,7 +412,13 @@ export const useFetchResult = () => {
   const tournamentDispatch = useTournamentStore((state) => state.dispatch);
   const { showToast } = useToast();
 
-  const fetchResult = async (slug: string, playerCount: number = 8) => {
+  // `playerCount` players are loaded; the first `visibleCount` (the design's
+  // slots) get their characters before the graphic is shown, the rest after.
+  const fetchResult = async (
+    slug: string,
+    playerCount: number = 8,
+    visibleCount: number = playerCount,
+  ) => {
     playerDispatch({ type: "FETCH_PLAYERS" });
 
     const result = await client
@@ -422,11 +468,14 @@ export const useFetchResult = () => {
 
     const validImages = filterValidImages(event.tournament?.images ?? null);
     const players = parseStandingsToPlayers(event.standings?.nodes ?? null);
+    const visiblePlayers = players.slice(0, visibleCount);
+    const laterPlayers = players.slice(visibleCount);
+    for (const player of laterPlayers) player.characters = toCharacters([]);
 
     try {
       const [storedImages] = await Promise.all([
         validImages.length > 0 ? storeTournamentImages(validImages) : undefined,
-        addCharactersToPlayers(client, slug, players),
+        addCharactersToPlayers(client, slug, visiblePlayers),
       ]);
 
       const tournamentInfo = buildTournamentInfo(event, storedImages);
@@ -443,6 +492,11 @@ export const useFetchResult = () => {
         tournament_platform: "startgg",
         player_count: playerCount,
       });
+
+      if (laterPlayers.length > 0) {
+        // fetchPlayerCharacters reports its own failures and never throws.
+        void addCharactersInBackground(client, slug, laterPlayers);
+      }
     } catch (error) {
       // Post-process failure: image storage, character fetch, IndexedDB write.
       // These are likely real bugs, not user-input issues — keep Sentry capture.
