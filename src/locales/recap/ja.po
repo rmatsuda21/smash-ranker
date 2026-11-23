@@ -13,7 +13,7 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/components/recap/slides/TypeSlide.tsx:54
+#: src/components/recap/slides/TypeSlide.tsx:53
 msgid "{characters} different characters each took at least 5% of your games."
 msgstr "{characters}キャラがそれぞれ全ゲームの5%以上。引き出しの多さが武器。"
 
@@ -21,7 +21,7 @@ msgstr "{characters}キャラがそれぞれ全ゲームの5%以上。引き出�
 msgid "{cities} cities"
 msgstr "{cities}都市"
 
-#: src/components/recap/slides/TypeSlide.tsx:73
+#: src/components/recap/slides/TypeSlide.tsx:72
 msgid "{cities} cities in {countries} countries, about {distance} km on the road."
 msgstr "{countries}か国{cities}都市、移動距離は約{distance}km。"
 
@@ -45,11 +45,11 @@ msgstr "序盤の{earlyCount}セット"
 msgid "{home} is home turf; {weekday} is your day."
 msgstr "ホームは{home}、いちばん多いのは{weekday}。"
 
-#: src/components/recap/slides/TypeSlide.tsx:67
+#: src/components/recap/slides/TypeSlide.tsx:66
 msgid "{homeCount} tournaments in {homeName}. Everyone there knows your name."
 msgstr "{homeName}で{homeCount}大会。地元で知らない人はいない。"
 
-#: src/components/recap/slides/TypeSlide.tsx:47
+#: src/components/recap/slides/TypeSlide.tsx:46
 msgid "{mainGames} of your {recorded} recorded games were on {mainName}. Nobody else got a look in."
 msgstr "記録のある{recorded}ゲームのうち{mainGames}ゲームが{mainName}。浮気はほとんどなし。"
 
@@ -87,11 +87,11 @@ msgstr "{top8}回"
 msgid "{tournaments}"
 msgstr "{tournaments}大会"
 
-#: src/components/recap/slides/TypeSlide.tsx:84
+#: src/components/recap/slides/TypeSlide.tsx:83
 msgid "{upsets} upsets this year. Seeds mean nothing to you."
 msgstr "今年の番狂わせは{upsets}回。シードは関係なし。"
 
-#: src/components/recap/slides/TypeSlide.tsx:80
+#: src/components/recap/slides/TypeSlide.tsx:79
 msgid "{weeks} weeks in a row without missing a tournament."
 msgstr "{weeks}週連続で大会に出場。"
 
@@ -164,7 +164,7 @@ msgstr "青＝あなたの勝ち　黒＝相手の勝ち　数字はゲームカ
 msgid "brackets won"
 msgstr "優勝"
 
-#: src/components/recap/RecapStory/RecapStory.tsx:234
+#: src/components/recap/RecapStory/RecapStory.tsx:230
 msgid "Close"
 msgstr "閉じる"
 
@@ -242,7 +242,7 @@ msgstr "敗"
 msgid "Lab Rat"
 msgstr "研究家"
 
-#: src/components/recap/slides/TypeSlide.tsx:60
+#: src/components/recap/slides/TypeSlide.tsx:59
 msgid "Last game, last stock. You won {deciderWins} of the {deciders} sets that went the distance."
 msgstr "最終ゲーム、ラストストック。フルセット{deciders}回のうち{deciderWins}回を勝ち切りました。"
 
@@ -263,8 +263,8 @@ msgid "More upsets ({upsetCount} in all)"
 msgstr "ほかの番狂わせ（全{upsetCount}回）"
 
 #: src/components/recap/slides/TypeSlide.tsx:165
-msgid "Move your mouse over the card to catch the foil."
-msgstr "カードの上でマウスを動かすとホロが光ります。"
+#~ msgid "Move your mouse over the card to catch the foil."
+#~ msgstr "カードの上でマウスを動かすとホロが光ります。"
 
 #: src/components/recap/RecapApp/RecapApp.tsx:254
 msgid "No tournaments on start.gg for {year}. Enter one and your recap starts here."
@@ -298,7 +298,7 @@ msgstr "月ごとの使用キャラ。"
 msgid "Picks by month. {secondName} peaked in {peakName} ({peak}%)."
 msgstr "月ごとの使用キャラ。{peakName}は{secondName}が{peak}%。"
 
-#: src/components/recap/slides/TypeSlide.tsx:126
+#: src/components/recap/slides/TypeSlide.tsx:118
 msgid "Player type"
 msgstr "プレイヤータイプ"
 
@@ -395,8 +395,8 @@ msgid "The year-end issue · {year}"
 msgstr "年間総集編 · {year}"
 
 #: src/components/recap/slides/TypeSlide.tsx:163
-msgid "Tilt your phone to catch the foil."
-msgstr "スマホを傾けるとホロが光ります。"
+#~ msgid "Tilt your phone to catch the foil."
+#~ msgstr "スマホを傾けるとホロが光ります。"
 
 #: src/components/recap/slides/BestRunSlide.tsx:136
 msgid "top 3"
@@ -462,7 +462,7 @@ msgstr "黄色は最長記録。<0>{streakWeeks}週連続</0>で出場しまし�
 msgid "You · seed"
 msgstr "あなた · シード"
 
-#: src/components/recap/slides/TypeSlide.tsx:90
+#: src/components/recap/slides/TypeSlide.tsx:89
 msgid "You beat the players you are meant to beat, and very few get past you."
 msgstr "勝つべき相手にきっちり勝つ。簡単には通さない。"
 
@@ -470,11 +470,11 @@ msgstr "勝つべき相手にきっちり勝つ。簡単には通さない。"
 msgid "You showed up."
 msgstr "今年もよく通った。"
 
-#: src/components/recap/slides/TypeSlide.tsx:115
+#: src/components/recap/slides/TypeSlide.tsx:111
 msgid "Your {year} player type"
 msgstr "{year}年のプレイヤータイプ"
 
-#: src/components/recap/slides/TypeSlide.tsx:87
+#: src/components/recap/slides/TypeSlide.tsx:86
 msgid "Your first year of brackets, and you showed up."
 msgstr "大会デビューの一年。まずは出場したことが大きい。"
 

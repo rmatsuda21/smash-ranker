@@ -13,7 +13,7 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/components/recap/slides/TypeSlide.tsx:54
+#: src/components/recap/slides/TypeSlide.tsx:53
 msgid "{characters} different characters each took at least 5% of your games."
 msgstr ""
 
@@ -21,7 +21,7 @@ msgstr ""
 msgid "{cities} cities"
 msgstr ""
 
-#: src/components/recap/slides/TypeSlide.tsx:73
+#: src/components/recap/slides/TypeSlide.tsx:72
 msgid "{cities} cities in {countries} countries, about {distance} km on the road."
 msgstr ""
 
@@ -45,11 +45,11 @@ msgstr ""
 msgid "{home} is home turf; {weekday} is your day."
 msgstr ""
 
-#: src/components/recap/slides/TypeSlide.tsx:67
+#: src/components/recap/slides/TypeSlide.tsx:66
 msgid "{homeCount} tournaments in {homeName}. Everyone there knows your name."
 msgstr ""
 
-#: src/components/recap/slides/TypeSlide.tsx:47
+#: src/components/recap/slides/TypeSlide.tsx:46
 msgid "{mainGames} of your {recorded} recorded games were on {mainName}. Nobody else got a look in."
 msgstr ""
 
@@ -87,11 +87,11 @@ msgstr ""
 msgid "{tournaments}"
 msgstr ""
 
-#: src/components/recap/slides/TypeSlide.tsx:84
+#: src/components/recap/slides/TypeSlide.tsx:83
 msgid "{upsets} upsets this year. Seeds mean nothing to you."
 msgstr ""
 
-#: src/components/recap/slides/TypeSlide.tsx:80
+#: src/components/recap/slides/TypeSlide.tsx:79
 msgid "{weeks} weeks in a row without missing a tournament."
 msgstr ""
 
@@ -164,7 +164,7 @@ msgstr ""
 msgid "brackets won"
 msgstr ""
 
-#: src/components/recap/RecapStory/RecapStory.tsx:234
+#: src/components/recap/RecapStory/RecapStory.tsx:230
 msgid "Close"
 msgstr ""
 
@@ -242,7 +242,7 @@ msgstr ""
 msgid "Lab Rat"
 msgstr ""
 
-#: src/components/recap/slides/TypeSlide.tsx:60
+#: src/components/recap/slides/TypeSlide.tsx:59
 msgid "Last game, last stock. You won {deciderWins} of the {deciders} sets that went the distance."
 msgstr ""
 
@@ -263,8 +263,8 @@ msgid "More upsets ({upsetCount} in all)"
 msgstr ""
 
 #: src/components/recap/slides/TypeSlide.tsx:165
-msgid "Move your mouse over the card to catch the foil."
-msgstr ""
+#~ msgid "Move your mouse over the card to catch the foil."
+#~ msgstr ""
 
 #: src/components/recap/RecapApp/RecapApp.tsx:254
 msgid "No tournaments on start.gg for {year}. Enter one and your recap starts here."
@@ -298,7 +298,7 @@ msgstr ""
 msgid "Picks by month. {secondName} peaked in {peakName} ({peak}%)."
 msgstr ""
 
-#: src/components/recap/slides/TypeSlide.tsx:126
+#: src/components/recap/slides/TypeSlide.tsx:118
 msgid "Player type"
 msgstr ""
 
@@ -395,8 +395,8 @@ msgid "The year-end issue · {year}"
 msgstr ""
 
 #: src/components/recap/slides/TypeSlide.tsx:163
-msgid "Tilt your phone to catch the foil."
-msgstr ""
+#~ msgid "Tilt your phone to catch the foil."
+#~ msgstr ""
 
 #: src/components/recap/slides/BestRunSlide.tsx:136
 msgid "top 3"
@@ -462,7 +462,7 @@ msgstr ""
 msgid "You · seed"
 msgstr ""
 
-#: src/components/recap/slides/TypeSlide.tsx:90
+#: src/components/recap/slides/TypeSlide.tsx:89
 msgid "You beat the players you are meant to beat, and very few get past you."
 msgstr ""
 
@@ -470,11 +470,11 @@ msgstr ""
 msgid "You showed up."
 msgstr ""
 
-#: src/components/recap/slides/TypeSlide.tsx:115
+#: src/components/recap/slides/TypeSlide.tsx:111
 msgid "Your {year} player type"
 msgstr ""
 
-#: src/components/recap/slides/TypeSlide.tsx:87
+#: src/components/recap/slides/TypeSlide.tsx:86
 msgid "Your first year of brackets, and you showed up."
 msgstr ""
 

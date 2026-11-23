@@ -35,7 +35,6 @@ import { useScrollMemory } from "@/hooks/user/useScrollMemory";
 import { useAuthUser } from "@/store/authStore";
 import type { GameId } from "@/types/Game";
 import { logout } from "@/utils/auth/session";
-import { requestMotionAccess } from "@/utils/motionAccess";
 import { logEvent } from "@/utils/observability/log";
 import {
   getPlayedGames,
@@ -246,9 +245,6 @@ export const UserPage = () => {
               <Link
                 className={styles.profileLink}
                 href="/recap"
-                // Asked for here, in the tap that opens the recap, so its
-                // tilting card needs no tap of its own.
-                onClick={requestMotionAccess}
                 aria-label={_(msg`Recap ${recapYear}`)}
               >
                 <span className={styles.actionLabel}>

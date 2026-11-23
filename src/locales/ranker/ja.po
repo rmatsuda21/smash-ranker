@@ -375,7 +375,7 @@ msgid "Couldn't log you in"
 msgstr "ログインできませんでした"
 
 #: src/components/home/RecentTournaments/RecentTournaments.tsx:130
-#: src/components/user/UserPage/UserPage.tsx:289
+#: src/components/user/UserPage/UserPage.tsx:285
 msgid "Couldn't reach start.gg for your tournaments. Try again in a bit."
 msgstr "start.ggから大会を取得できませんでした。少し待ってからもう一度お試しください。"
 
@@ -947,12 +947,12 @@ msgstr ""
 msgid "Log in with start.gg"
 msgstr "start.ggでログイン"
 
-#: src/components/user/UserPage/UserPage.tsx:143
+#: src/components/user/UserPage/UserPage.tsx:142
 msgid "Log in with start.gg to see every tournament you've entered and make graphics for them in one click."
 msgstr "start.ggでログインすると、これまで出た大会が一覧で見られて、ワンクリックで画像を作れます。"
 
-#: src/components/user/UserPage/UserPage.tsx:276
-#: src/components/user/UserPage/UserPage.tsx:281
+#: src/components/user/UserPage/UserPage.tsx:272
+#: src/components/user/UserPage/UserPage.tsx:277
 msgid "Log out"
 msgstr "ログアウト"
 
@@ -1375,8 +1375,8 @@ msgid "Recap"
 msgstr "大会振り返り"
 
 #: src/components/Layout/NavOverlay/NavOverlay.tsx:31
-#: src/components/user/UserPage/UserPage.tsx:252
-#: src/components/user/UserPage/UserPage.tsx:255
+#: src/components/user/UserPage/UserPage.tsx:248
+#: src/components/user/UserPage/UserPage.tsx:251
 msgid "Recap {recapYear}"
 msgstr "リキャップ {recapYear}"
 
@@ -1629,8 +1629,8 @@ msgstr "順位表"
 msgid "start.gg only"
 msgstr "start.gg のみ対応"
 
-#: src/components/user/UserPage/UserPage.tsx:265
-#: src/components/user/UserPage/UserPage.tsx:268
+#: src/components/user/UserPage/UserPage.tsx:261
+#: src/components/user/UserPage/UserPage.tsx:264
 msgid "start.gg profile"
 msgstr "start.ggプロフィール"
 
@@ -1638,7 +1638,7 @@ msgstr "start.ggプロフィール"
 msgid "State"
 msgstr "州・都道府県"
 
-#: src/components/user/UserPage/UserPage.tsx:322
+#: src/components/user/UserPage/UserPage.tsx:318
 msgid "Stats"
 msgstr "スタッツ"
 
@@ -1879,7 +1879,7 @@ msgid "Tournament URL"
 msgstr "大会URL"
 
 #: src/components/user/StatsBoard/StatsBoard.tsx:167
-#: src/components/user/UserPage/UserPage.tsx:308
+#: src/components/user/UserPage/UserPage.tsx:304
 msgid "Tournaments"
 msgstr "大会"
 
@@ -2032,7 +2032,7 @@ msgstr "あなたのプレイヤーカード"
 msgid "Your record, trophies and streaks"
 msgstr "戦績、入賞歴、連続参加"
 
-#: src/components/user/UserPage/UserPage.tsx:353
+#: src/components/user/UserPage/UserPage.tsx:349
 msgid "Your stats"
 msgstr "あなたのスタッツ"
 
@@ -2041,7 +2041,7 @@ msgstr "あなたのスタッツ"
 msgid "Your tournaments"
 msgstr "あなたの大会"
 
-#: src/components/user/UserPage/UserPage.tsx:140
+#: src/components/user/UserPage/UserPage.tsx:139
 msgid "Your tournaments, in one place"
 msgstr "あなたの大会をひとつの場所に"
 

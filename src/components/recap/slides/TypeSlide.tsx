@@ -1,4 +1,4 @@
-import { useRef, type CSSProperties } from "react";
+import type { CSSProperties } from "react";
 import cn from "classnames";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
@@ -8,7 +8,6 @@ import {
   PLAYER_TYPES,
   type PlayerTypeDefinition,
 } from "@/consts/recap/playerTypes";
-import { useCardTilt } from "@/hooks/user/useCardTilt";
 import type { Recap } from "@/types/recap/Recap";
 import { fitSize } from "@/utils/recap/recapText";
 import { getCharacter } from "@/utils/top8/characterCatalog";
@@ -96,8 +95,6 @@ const Reason = ({ recap }: { recap: Recap }) => {
 
 export const TypeSlide = ({ recap }: { recap: Recap }) => {
   const { _ } = useLingui();
-  const cardRef = useRef<HTMLDivElement>(null);
-  useCardTilt(cardRef);
 
   const index = Math.max(
     0,
@@ -106,7 +103,6 @@ export const TypeSlide = ({ recap }: { recap: Recap }) => {
   const type = PLAYER_TYPES[index];
   const name = _(type.name);
   const lines = name.split(" ");
-  const usesTouch = window.matchMedia("(pointer: coarse)").matches;
   const year = recap.year;
 
   return (
@@ -116,11 +112,7 @@ export const TypeSlide = ({ recap }: { recap: Recap }) => {
       </p>
       <div className={styles.card}>
         <div className={cn(styles.face, styles.faceBack)} />
-        <div
-          ref={cardRef}
-          className={cn(styles.face, styles.faceFront)}
-          style={colors(type)}
-        >
+        <div className={cn(styles.face, styles.faceFront)} style={colors(type)}>
           <p className={styles.typeNo}>
             <span>
               <Trans>Player type</Trans>
@@ -158,13 +150,6 @@ export const TypeSlide = ({ recap }: { recap: Recap }) => {
           <div className={styles.foil} />
         </div>
       </div>
-      <p className={styles.rise} style={{ "--i": 18 } as CSSProperties}>
-        {usesTouch ? (
-          <Trans>Tilt your phone to catch the foil.</Trans>
-        ) : (
-          <Trans>Move your mouse over the card to catch the foil.</Trans>
-        )}
-      </p>
       <div className={styles.minis} aria-hidden="true">
         {PLAYER_TYPES.map((other, i) => (
           <i

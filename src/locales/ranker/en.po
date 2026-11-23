@@ -375,7 +375,7 @@ msgid "Couldn't log you in"
 msgstr ""
 
 #: src/components/home/RecentTournaments/RecentTournaments.tsx:130
-#: src/components/user/UserPage/UserPage.tsx:289
+#: src/components/user/UserPage/UserPage.tsx:285
 msgid "Couldn't reach start.gg for your tournaments. Try again in a bit."
 msgstr ""
 
@@ -947,12 +947,12 @@ msgstr ""
 msgid "Log in with start.gg"
 msgstr ""
 
-#: src/components/user/UserPage/UserPage.tsx:143
+#: src/components/user/UserPage/UserPage.tsx:142
 msgid "Log in with start.gg to see every tournament you've entered and make graphics for them in one click."
 msgstr ""
 
-#: src/components/user/UserPage/UserPage.tsx:276
-#: src/components/user/UserPage/UserPage.tsx:281
+#: src/components/user/UserPage/UserPage.tsx:272
+#: src/components/user/UserPage/UserPage.tsx:277
 msgid "Log out"
 msgstr ""
 
@@ -1375,8 +1375,8 @@ msgid "Recap"
 msgstr ""
 
 #: src/components/Layout/NavOverlay/NavOverlay.tsx:31
-#: src/components/user/UserPage/UserPage.tsx:252
-#: src/components/user/UserPage/UserPage.tsx:255
+#: src/components/user/UserPage/UserPage.tsx:248
+#: src/components/user/UserPage/UserPage.tsx:251
 msgid "Recap {recapYear}"
 msgstr ""
 
@@ -1629,8 +1629,8 @@ msgstr ""
 msgid "start.gg only"
 msgstr ""
 
-#: src/components/user/UserPage/UserPage.tsx:265
-#: src/components/user/UserPage/UserPage.tsx:268
+#: src/components/user/UserPage/UserPage.tsx:261
+#: src/components/user/UserPage/UserPage.tsx:264
 msgid "start.gg profile"
 msgstr ""
 
@@ -1638,7 +1638,7 @@ msgstr ""
 msgid "State"
 msgstr ""
 
-#: src/components/user/UserPage/UserPage.tsx:322
+#: src/components/user/UserPage/UserPage.tsx:318
 msgid "Stats"
 msgstr ""
 
@@ -1879,7 +1879,7 @@ msgid "Tournament URL"
 msgstr ""
 
 #: src/components/user/StatsBoard/StatsBoard.tsx:167
-#: src/components/user/UserPage/UserPage.tsx:308
+#: src/components/user/UserPage/UserPage.tsx:304
 msgid "Tournaments"
 msgstr ""
 
@@ -2032,7 +2032,7 @@ msgstr ""
 msgid "Your record, trophies and streaks"
 msgstr ""
 
-#: src/components/user/UserPage/UserPage.tsx:353
+#: src/components/user/UserPage/UserPage.tsx:349
 msgid "Your stats"
 msgstr ""
 
@@ -2041,7 +2041,7 @@ msgstr ""
 msgid "Your tournaments"
 msgstr ""
 
-#: src/components/user/UserPage/UserPage.tsx:140
+#: src/components/user/UserPage/UserPage.tsx:139
 msgid "Your tournaments, in one place"
 msgstr ""
 
