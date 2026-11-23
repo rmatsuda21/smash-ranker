@@ -95,9 +95,13 @@ msgstr ""
 msgid "{weeks} weeks in a row without missing a tournament."
 msgstr ""
 
-#: src/components/recap/slides/MainSlide.tsx:151
-msgid "{winRate}% of those sets won<0/>Picked in {share}% of your recorded games ({games})"
+#: src/components/recap/slides/MainSlide.tsx:166
+msgid "{winRate}% of those sets won"
 msgstr ""
+
+#: src/components/recap/slides/MainSlide.tsx:151
+#~ msgid "{winRate}% of those sets won<0/>Picked in {share}% of your recorded games ({games})"
+#~ msgstr ""
 
 #. Cover headline: the longest set win streak
 #: src/components/recap/slides/CoverSlide.tsx:95
@@ -140,7 +144,7 @@ msgstr ""
 msgid "<0>At {tournament}.</0> Nobody had that on their bracket."
 msgstr ""
 
-#: src/components/recap/RecapApp/RecapApp.tsx:259
+#: src/components/recap/RecapApp/RecapApp.tsx:260
 msgid "Back"
 msgstr ""
 
@@ -160,7 +164,7 @@ msgstr ""
 msgid "brackets won"
 msgstr ""
 
-#: src/components/recap/RecapStory/RecapStory.tsx:230
+#: src/components/recap/RecapStory/RecapStory.tsx:234
 msgid "Close"
 msgstr ""
 
@@ -172,7 +176,7 @@ msgstr ""
 msgid "Copy"
 msgstr ""
 
-#: src/components/recap/RecapApp/RecapApp.tsx:236
+#: src/components/recap/RecapApp/RecapApp.tsx:237
 msgid "Counting your sets"
 msgstr ""
 
@@ -208,7 +212,7 @@ msgstr ""
 msgid "Globe with routes from {home} to the cities you played in"
 msgstr ""
 
-#: src/components/recap/RecapApp/RecapApp.tsx:210
+#: src/components/recap/RecapApp/RecapApp.tsx:211
 msgid "Go to the home page"
 msgstr ""
 
@@ -228,7 +232,7 @@ msgstr ""
 #. Losses, one letter after a number
 #. Losses, one letter after a number
 #: src/components/recap/slides/BestRunSlide.tsx:24
-#: src/components/recap/slides/MainSlide.tsx:142
+#: src/components/recap/slides/MainSlide.tsx:153
 #: src/components/recap/slides/RecordSlide.tsx:43
 msgctxt "recap"
 msgid "L"
@@ -246,7 +250,7 @@ msgstr ""
 msgid "Local Legend"
 msgstr ""
 
-#: src/components/recap/RecapApp/RecapApp.tsx:207
+#: src/components/recap/RecapApp/RecapApp.tsx:208
 msgid "Log in with start.gg to see your year in bracket."
 msgstr ""
 
@@ -262,11 +266,11 @@ msgstr ""
 msgid "Move your mouse over the card to catch the foil."
 msgstr ""
 
-#: src/components/recap/RecapApp/RecapApp.tsx:253
+#: src/components/recap/RecapApp/RecapApp.tsx:254
 msgid "No tournaments on start.gg for {year}. Enter one and your recap starts here."
 msgstr ""
 
-#: src/components/recap/RecapApp/RecapApp.tsx:250
+#: src/components/recap/RecapApp/RecapApp.tsx:251
 msgid "Nothing yet"
 msgstr ""
 
@@ -282,11 +286,15 @@ msgstr ""
 msgid "online"
 msgstr ""
 
-#: src/components/recap/slides/MainSlide.tsx:169
+#: src/components/recap/slides/MainSlide.tsx:175
+msgid "Picked in {share}% of your recorded games ({games})."
+msgstr ""
+
+#: src/components/recap/slides/MainSlide.tsx:183
 msgid "Picks by month."
 msgstr ""
 
-#: src/components/recap/slides/MainSlide.tsx:165
+#: src/components/recap/slides/MainSlide.tsx:179
 msgid "Picks by month. {secondName} peaked in {peakName} ({peak}%)."
 msgstr ""
 
@@ -298,11 +306,11 @@ msgstr ""
 msgid "players in your brackets"
 msgstr ""
 
-#: src/components/recap/RecapApp/RecapApp.tsx:242
+#: src/components/recap/RecapApp/RecapApp.tsx:243
 msgid "Reading every bracket you entered in {year}."
 msgstr ""
 
-#: src/components/recap/RecapApp/RecapApp.tsx:204
+#: src/components/recap/RecapApp/RecapApp.tsx:205
 msgid "Recap {year}"
 msgstr ""
 
@@ -334,7 +342,7 @@ msgstr ""
 msgid "set wins in a row."
 msgstr ""
 
-#: src/components/recap/slides/MainSlide.tsx:207
+#: src/components/recap/slides/MainSlide.tsx:221
 msgid "Sets {wins}–{losses}<0/>{won}% won"
 msgstr ""
 
@@ -362,7 +370,7 @@ msgstr ""
 msgid "Smash Ranker Recap"
 msgstr ""
 
-#: src/components/recap/RecapApp/RecapApp.tsx:221
+#: src/components/recap/RecapApp/RecapApp.tsx:222
 msgid "start.gg did not answer. Try again in a minute."
 msgstr ""
 
@@ -374,7 +382,7 @@ msgstr ""
 msgid "Tap to go on · hold to pause"
 msgstr ""
 
-#: src/components/recap/RecapApp/RecapApp.tsx:218
+#: src/components/recap/RecapApp/RecapApp.tsx:219
 msgid "That didn't load"
 msgstr ""
 
@@ -414,7 +422,7 @@ msgstr ""
 msgid "tournaments<0/>entered"
 msgstr ""
 
-#: src/components/recap/RecapApp/RecapApp.tsx:228
+#: src/components/recap/RecapApp/RecapApp.tsx:229
 msgid "Try again"
 msgstr ""
 
@@ -426,7 +434,7 @@ msgstr ""
 #. Wins, one letter after a number
 #. Wins, one letter after a number
 #: src/components/recap/slides/BestRunSlide.tsx:20
-#: src/components/recap/slides/MainSlide.tsx:136
+#: src/components/recap/slides/MainSlide.tsx:145
 #: src/components/recap/slides/RecordSlide.tsx:34
 msgctxt "recap"
 msgid "W"

@@ -130,29 +130,40 @@ export const MainSlide = ({ recap }: { recap: Recap }) => {
         <p className={styles.mRecLabel}>
           <Trans>Your sets on {name}</Trans>
         </p>
-        <p className={cn(styles.disp, styles.mRecValue)}>
-          <CountUp value={main.wins} delay={1700} />
-          <small>
-            <Trans context="recap" comment="Wins, one letter after a number">
-              W
-            </Trans>
-          </small>
-          <CountUp value={main.losses} delay={1700} />
-          <small>
-            <Trans context="recap" comment="Losses, one letter after a number">
-              L
-            </Trans>
-          </small>
+        <p
+          className={cn(styles.disp, styles.mRecValue)}
+          style={
+            {
+              // Sized so the longer of the two numbers fits the column.
+              "--fs": `${fitSize(`${Math.max(main.wins, main.losses)}W`, 15, 23)}cqw`,
+            } as CSSProperties
+          }
+        >
+          <span>
+            <CountUp value={main.wins} delay={1700} />
+            <small>
+              <Trans context="recap" comment="Wins, one letter after a number">
+                W
+              </Trans>
+            </small>
+          </span>
+          <span>
+            <CountUp value={main.losses} delay={1700} />
+            <small>
+              <Trans
+                context="recap"
+                comment="Losses, one letter after a number"
+              >
+                L
+              </Trans>
+            </small>
+          </span>
         </p>
         <div className={styles.mBar}>
           <b style={{ width: `${winRate}%` }} />
         </div>
         <p className={styles.mRecDetail}>
-          <Trans>
-            {winRate}% of those sets won
-            <br />
-            Picked in {share}% of your recorded games ({games})
-          </Trans>
+          <Trans>{winRate}% of those sets won</Trans>
         </p>
       </div>
 
@@ -161,6 +172,9 @@ export const MainSlide = ({ recap }: { recap: Recap }) => {
         className={cn(styles.mSub, styles.rise)}
         style={{ "--i": 22 } as CSSProperties}
       >
+        <Trans>
+          Picked in {share}% of your recorded games ({games}).
+        </Trans>{" "}
         {peak > 0 ? (
           <Trans>
             Picks by month. {secondName} peaked in {peakName} ({peak}%).

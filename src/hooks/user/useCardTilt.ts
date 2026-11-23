@@ -1,15 +1,17 @@
 import { useEffect, type RefObject } from "react";
 
+import {
+  hasMotionAccess,
+  onMotionAccess,
+  requestMotionAccess,
+} from "@/utils/motionAccess";
+
 // How far the card turns at the edge of its range.
 const MAX_ANGLE = 14;
 // Degrees of phone tilt that take the light from the middle to an edge.
 const MOTION_RANGE = 28;
 
 const clamp = (value: number) => Math.min(1, Math.max(0, value));
-
-type PermissionedOrientation = typeof DeviceOrientationEvent & {
-  requestPermission?: () => Promise<"granted" | "denied">;
-};
 
 // Turns the element with the pointer (desktop) or the phone's tilt (mobile)
 // and tells its CSS where the light is: `--px`/`--py` (0–100), `--rx`/`--ry`
@@ -84,24 +86,17 @@ export const useCardTilt = (ref: RefObject<HTMLElement | null>) => {
     };
 
     // iOS hands out motion data only after the user allows it, and only
-    // asks from inside a tap. Everywhere else it just works.
-    const Orientation = window.DeviceOrientationEvent as
-      PermissionedOrientation | undefined;
+    // asks from inside a tap: a tap on the card asks, and so can anything
+    // earlier on the page (see `motionAccess`). Everywhere else it just works.
     let listening = false;
     const listen = () => {
       if (listening) return;
       listening = true;
       window.addEventListener("deviceorientation", onOrientation);
     };
-    const onTap = () => {
-      if (listening || !Orientation?.requestPermission) return;
-      Orientation.requestPermission()
-        .then((state) => {
-          if (state === "granted") listen();
-        })
-        .catch(() => {});
-    };
-    if (Orientation && !Orientation.requestPermission) listen();
+    if (hasMotionAccess()) listen();
+    const stopWaiting = onMotionAccess(listen);
+    const onTap = () => requestMotionAccess();
 
     element.addEventListener("pointerenter", onEnter);
     element.addEventListener("pointerdown", onEnter);
@@ -134,6 +129,7 @@ export const useCardTilt = (ref: RefObject<HTMLElement | null>) => {
 
     return () => {
       cancelAnimationFrame(frame);
+      stopWaiting();
       window.removeEventListener("deviceorientation", onOrientation);
       element.removeEventListener("pointerenter", onEnter);
       element.removeEventListener("pointerdown", onEnter);

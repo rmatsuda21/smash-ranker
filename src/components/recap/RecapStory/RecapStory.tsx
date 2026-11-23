@@ -14,6 +14,7 @@ import { useLingui } from "@lingui/react";
 import { FaXmark } from "react-icons/fa6";
 
 import { useMediaQuery } from "@/hooks/useMediaQuery";
+import { requestMotionAccess } from "@/utils/motionAccess";
 
 import { RecapStoryContext } from "./RecapStoryContext";
 import styles from "../recap.module.scss";
@@ -216,6 +217,9 @@ export const RecapStory = ({ slides, onClose, onSlide, holdOn }: Props) => {
         onPointerUp={handlePointerUp}
         onPointerCancel={release}
         onPointerLeave={release}
+        // The first tap of the story is where iOS gets asked for the phone's
+        // tilt, so the foil card is already live when the story reaches it.
+        onClick={requestMotionAccess}
       >
         <div className={styles.bars} ref={barsRef} aria-hidden="true">
           {slides.map((slide) => (

@@ -95,9 +95,13 @@ msgstr "今年の番狂わせは{upsets}回。シードは関係なし。"
 msgid "{weeks} weeks in a row without missing a tournament."
 msgstr "{weeks}週連続で大会に出場。"
 
+#: src/components/recap/slides/MainSlide.tsx:166
+msgid "{winRate}% of those sets won"
+msgstr "勝率{winRate}%"
+
 #: src/components/recap/slides/MainSlide.tsx:151
-msgid "{winRate}% of those sets won<0/>Picked in {share}% of your recorded games ({games})"
-msgstr "勝率{winRate}%<0/>記録のある全ゲームの{share}%で使用（{games}ゲーム）"
+#~ msgid "{winRate}% of those sets won<0/>Picked in {share}% of your recorded games ({games})"
+#~ msgstr "勝率{winRate}%<0/>記録のある全ゲームの{share}%で使用（{games}ゲーム）"
 
 #. Cover headline: the longest set win streak
 #: src/components/recap/slides/CoverSlide.tsx:95
@@ -140,7 +144,7 @@ msgstr "<0>移動距離 約{distance}km。</0>地球{laps}周分。"
 msgid "<0>At {tournament}.</0> Nobody had that on their bracket."
 msgstr "<0>{tournament}にて。</0>誰も予想していなかった一戦。"
 
-#: src/components/recap/RecapApp/RecapApp.tsx:259
+#: src/components/recap/RecapApp/RecapApp.tsx:260
 msgid "Back"
 msgstr "戻る"
 
@@ -160,7 +164,7 @@ msgstr "青＝あなたの勝ち　黒＝相手の勝ち　数字はゲームカ
 msgid "brackets won"
 msgstr "優勝"
 
-#: src/components/recap/RecapStory/RecapStory.tsx:230
+#: src/components/recap/RecapStory/RecapStory.tsx:234
 msgid "Close"
 msgstr "閉じる"
 
@@ -172,7 +176,7 @@ msgstr "コピー完了"
 msgid "Copy"
 msgstr "コピー"
 
-#: src/components/recap/RecapApp/RecapApp.tsx:236
+#: src/components/recap/RecapApp/RecapApp.tsx:237
 msgid "Counting your sets"
 msgstr "集計中"
 
@@ -208,7 +212,7 @@ msgstr "ジャイアントキラー"
 msgid "Globe with routes from {home} to the cities you played in"
 msgstr "{home}から出場した各都市へのルートを示す地球儀"
 
-#: src/components/recap/RecapApp/RecapApp.tsx:210
+#: src/components/recap/RecapApp/RecapApp.tsx:211
 msgid "Go to the home page"
 msgstr "ホームへ"
 
@@ -228,7 +232,7 @@ msgstr "皆勤賞"
 #. Losses, one letter after a number
 #. Losses, one letter after a number
 #: src/components/recap/slides/BestRunSlide.tsx:24
-#: src/components/recap/slides/MainSlide.tsx:142
+#: src/components/recap/slides/MainSlide.tsx:153
 #: src/components/recap/slides/RecordSlide.tsx:43
 msgctxt "recap"
 msgid "L"
@@ -246,7 +250,7 @@ msgstr "最終ゲーム、ラストストック。フルセット{deciders}回�
 msgid "Local Legend"
 msgstr "地元の主"
 
-#: src/components/recap/RecapApp/RecapApp.tsx:207
+#: src/components/recap/RecapApp/RecapApp.tsx:208
 msgid "Log in with start.gg to see your year in bracket."
 msgstr "start.ggでログインすると、今年の戦績をふり返れます。"
 
@@ -262,11 +266,11 @@ msgstr "ほかの番狂わせ（全{upsetCount}回）"
 msgid "Move your mouse over the card to catch the foil."
 msgstr "カードの上でマウスを動かすとホロが光ります。"
 
-#: src/components/recap/RecapApp/RecapApp.tsx:253
+#: src/components/recap/RecapApp/RecapApp.tsx:254
 msgid "No tournaments on start.gg for {year}. Enter one and your recap starts here."
 msgstr "{year}年のstart.ggの大会記録がありません。大会に出場すると、ここにリキャップが作られます。"
 
-#: src/components/recap/RecapApp/RecapApp.tsx:250
+#: src/components/recap/RecapApp/RecapApp.tsx:251
 msgid "Nothing yet"
 msgstr "記録なし"
 
@@ -282,11 +286,15 @@ msgstr "遠征の記録"
 msgid "online"
 msgstr "オンライン"
 
-#: src/components/recap/slides/MainSlide.tsx:169
+#: src/components/recap/slides/MainSlide.tsx:175
+msgid "Picked in {share}% of your recorded games ({games})."
+msgstr "記録のある全ゲームの{share}%で使用（{games}ゲーム）。"
+
+#: src/components/recap/slides/MainSlide.tsx:183
 msgid "Picks by month."
 msgstr "月ごとの使用キャラ。"
 
-#: src/components/recap/slides/MainSlide.tsx:165
+#: src/components/recap/slides/MainSlide.tsx:179
 msgid "Picks by month. {secondName} peaked in {peakName} ({peak}%)."
 msgstr "月ごとの使用キャラ。{peakName}は{secondName}が{peak}%。"
 
@@ -298,11 +306,11 @@ msgstr "プレイヤータイプ"
 msgid "players in your brackets"
 msgstr "同じ大会の参加者"
 
-#: src/components/recap/RecapApp/RecapApp.tsx:242
+#: src/components/recap/RecapApp/RecapApp.tsx:243
 msgid "Reading every bracket you entered in {year}."
 msgstr "{year}年に出場した大会をすべて読み込んでいます。"
 
-#: src/components/recap/RecapApp/RecapApp.tsx:204
+#: src/components/recap/RecapApp/RecapApp.tsx:205
 msgid "Recap {year}"
 msgstr "リキャップ {year}"
 
@@ -334,7 +342,7 @@ msgstr "シード{seed}がシード{opponentSeed}を倒した日"
 msgid "set wins in a row."
 msgstr "誰にも止められなかった。"
 
-#: src/components/recap/slides/MainSlide.tsx:207
+#: src/components/recap/slides/MainSlide.tsx:221
 msgid "Sets {wins}–{losses}<0/>{won}% won"
 msgstr "セット {wins}勝{losses}敗<0/>勝率{won}%"
 
@@ -362,7 +370,7 @@ msgstr "撃破"
 msgid "Smash Ranker Recap"
 msgstr "Smash Ranker リキャップ"
 
-#: src/components/recap/RecapApp/RecapApp.tsx:221
+#: src/components/recap/RecapApp/RecapApp.tsx:222
 msgid "start.gg did not answer. Try again in a minute."
 msgstr "start.ggから応答がありません。少し待ってからもう一度お試しください。"
 
@@ -374,7 +382,7 @@ msgstr "ピンをタップすると、その都市の記録が見られます。
 msgid "Tap to go on · hold to pause"
 msgstr "タップで次へ · 長押しで一時停止"
 
-#: src/components/recap/RecapApp/RecapApp.tsx:218
+#: src/components/recap/RecapApp/RecapApp.tsx:219
 msgid "That didn't load"
 msgstr "読み込めませんでした"
 
@@ -414,7 +422,7 @@ msgstr "今年の出場大会。"
 msgid "tournaments<0/>entered"
 msgstr "大会に出場"
 
-#: src/components/recap/RecapApp/RecapApp.tsx:228
+#: src/components/recap/RecapApp/RecapApp.tsx:229
 msgid "Try again"
 msgstr "もう一度試す"
 
@@ -426,7 +434,7 @@ msgstr "UF {factor}"
 #. Wins, one letter after a number
 #. Wins, one letter after a number
 #: src/components/recap/slides/BestRunSlide.tsx:20
-#: src/components/recap/slides/MainSlide.tsx:136
+#: src/components/recap/slides/MainSlide.tsx:145
 #: src/components/recap/slides/RecordSlide.tsx:34
 msgctxt "recap"
 msgid "W"

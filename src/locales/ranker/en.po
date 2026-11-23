@@ -375,7 +375,7 @@ msgid "Couldn't log you in"
 msgstr ""
 
 #: src/components/home/RecentTournaments/RecentTournaments.tsx:130
-#: src/components/user/UserPage/UserPage.tsx:285
+#: src/components/user/UserPage/UserPage.tsx:289
 msgid "Couldn't reach start.gg for your tournaments. Try again in a bit."
 msgstr ""
 
@@ -790,7 +790,7 @@ msgstr ""
 msgid "High Score"
 msgstr ""
 
-#: src/components/Layout/NavOverlay/NavOverlay.tsx:27
+#: src/components/Layout/NavOverlay/NavOverlay.tsx:24
 msgid "Home"
 msgstr ""
 
@@ -947,12 +947,12 @@ msgstr ""
 msgid "Log in with start.gg"
 msgstr ""
 
-#: src/components/user/UserPage/UserPage.tsx:142
+#: src/components/user/UserPage/UserPage.tsx:143
 msgid "Log in with start.gg to see every tournament you've entered and make graphics for them in one click."
 msgstr ""
 
-#: src/components/user/UserPage/UserPage.tsx:272
-#: src/components/user/UserPage/UserPage.tsx:277
+#: src/components/user/UserPage/UserPage.tsx:276
+#: src/components/user/UserPage/UserPage.tsx:281
 msgid "Log out"
 msgstr ""
 
@@ -1320,7 +1320,7 @@ msgstr ""
 msgid "Prediction size"
 msgstr ""
 
-#: src/components/Layout/NavOverlay/NavOverlay.tsx:41
+#: src/components/Layout/NavOverlay/NavOverlay.tsx:38
 #: src/components/predict/PredictApp/PredictApp.tsx:87
 #: src/components/predict/PredictionListPanel/PredictionListPanel.tsx:84
 #: src/components/predict/PredictionWorkspace/PredictionWorkspace.tsx:39
@@ -1354,7 +1354,7 @@ msgstr ""
 msgid "Quality"
 msgstr ""
 
-#: src/components/Layout/NavOverlay/NavOverlay.tsx:28
+#: src/components/Layout/NavOverlay/NavOverlay.tsx:25
 msgid "Ranker"
 msgstr ""
 
@@ -1370,13 +1370,13 @@ msgstr ""
 msgid "Reading the tea leaves..."
 msgstr ""
 
-#: src/components/Layout/NavOverlay/NavOverlay.tsx:30
+#: src/components/Layout/NavOverlay/NavOverlay.tsx:27
 msgid "Recap"
 msgstr ""
 
-#: src/components/Layout/NavOverlay/NavOverlay.tsx:34
-#: src/components/user/UserPage/UserPage.tsx:248
-#: src/components/user/UserPage/UserPage.tsx:251
+#: src/components/Layout/NavOverlay/NavOverlay.tsx:31
+#: src/components/user/UserPage/UserPage.tsx:252
+#: src/components/user/UserPage/UserPage.tsx:255
 msgid "Recap {recapYear}"
 msgstr ""
 
@@ -1629,8 +1629,8 @@ msgstr ""
 msgid "start.gg only"
 msgstr ""
 
-#: src/components/user/UserPage/UserPage.tsx:261
-#: src/components/user/UserPage/UserPage.tsx:264
+#: src/components/user/UserPage/UserPage.tsx:265
+#: src/components/user/UserPage/UserPage.tsx:268
 msgid "start.gg profile"
 msgstr ""
 
@@ -1638,7 +1638,7 @@ msgstr ""
 msgid "State"
 msgstr ""
 
-#: src/components/user/UserPage/UserPage.tsx:318
+#: src/components/user/UserPage/UserPage.tsx:322
 msgid "Stats"
 msgstr ""
 
@@ -1750,7 +1750,7 @@ msgstr ""
 msgid "This will reset all player data for this slot."
 msgstr ""
 
-#: src/components/Layout/NavOverlay/NavOverlay.tsx:37
+#: src/components/Layout/NavOverlay/NavOverlay.tsx:34
 msgid "Thumbnail Maker"
 msgstr ""
 
@@ -1758,7 +1758,7 @@ msgstr ""
 msgid "Thumbnails"
 msgstr ""
 
-#: src/components/Layout/NavOverlay/NavOverlay.tsx:35
+#: src/components/Layout/NavOverlay/NavOverlay.tsx:32
 msgid "Tier List"
 msgstr ""
 
@@ -1879,7 +1879,7 @@ msgid "Tournament URL"
 msgstr ""
 
 #: src/components/user/StatsBoard/StatsBoard.tsx:167
-#: src/components/user/UserPage/UserPage.tsx:304
+#: src/components/user/UserPage/UserPage.tsx:308
 msgid "Tournaments"
 msgstr ""
 
@@ -2032,7 +2032,7 @@ msgstr ""
 msgid "Your record, trophies and streaks"
 msgstr ""
 
-#: src/components/user/UserPage/UserPage.tsx:349
+#: src/components/user/UserPage/UserPage.tsx:353
 msgid "Your stats"
 msgstr ""
 
@@ -2041,7 +2041,7 @@ msgstr ""
 msgid "Your tournaments"
 msgstr ""
 
-#: src/components/user/UserPage/UserPage.tsx:139
+#: src/components/user/UserPage/UserPage.tsx:140
 msgid "Your tournaments, in one place"
 msgstr ""
 
