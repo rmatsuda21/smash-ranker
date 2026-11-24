@@ -1,17 +1,41 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
+export const TEMPLATE_FILTERS = [
+  "all",
+  "singles",
+  "doubles",
+  "favorites",
+  "saved",
+] as const;
+export type TemplateFilter = (typeof TEMPLATE_FILTERS)[number];
+
+// What the template picker remembers between visits: favourites, the filter
+// it was left on, and which template was loaded last.
 interface TemplateFavoritesState {
   /** Favorited template ids (built-in and saved), newest first. */
   favoriteIds: string[];
   toggleFavorite: (id: string) => void;
   removeFavorite: (id: string) => void;
+  filter: TemplateFilter;
+  setFilter: (filter: TemplateFilter) => void;
+  /**
+   * The template loaded last. The design may have been replaced since by
+   * something that is not a template (a reset), so the picker checks it
+   * against the current design before marking it.
+   */
+  activeTemplateId: string | null;
+  setActiveTemplateId: (id: string | null) => void;
 }
 
 export const useTemplateFavoritesStore = create<TemplateFavoritesState>()(
   persist(
     (set, get) => ({
       favoriteIds: [],
+      filter: "all",
+      setFilter: (filter) => set({ filter }),
+      activeTemplateId: null,
+      setActiveTemplateId: (activeTemplateId) => set({ activeTemplateId }),
       toggleFavorite: (id) => {
         const { favoriteIds } = get();
         set({
@@ -38,6 +62,10 @@ export const useTemplateFavoritesStore = create<TemplateFavoritesState>()(
         state.favoriteIds = Array.isArray(state.favoriteIds)
           ? state.favoriteIds.filter((id) => typeof id === "string")
           : [];
+        if (!TEMPLATE_FILTERS.includes(state.filter)) state.filter = "all";
+        if (typeof state.activeTemplateId !== "string") {
+          state.activeTemplateId = null;
+        }
       },
     },
   ),

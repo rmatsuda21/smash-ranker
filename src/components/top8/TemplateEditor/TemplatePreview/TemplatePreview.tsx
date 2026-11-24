@@ -5,6 +5,7 @@ import cn from "classnames";
 import { FaRegStar, FaStar, FaTrash } from "react-icons/fa6";
 import { msg } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
+import { Trans } from "@lingui/react/macro";
 
 import { DBTemplate } from "@/types/Repository";
 import { RenderProfileContext } from "@/components/top8/Canvas/RenderProfileContext";
@@ -49,6 +50,12 @@ type Props = {
   onToggleFavorite?: () => void;
   className?: string;
   isLoading?: boolean;
+  /** Caption text, when it is shorter than the template's full name. */
+  displayName?: string;
+  /** The template the current design was loaded from. */
+  isActive?: boolean;
+  /** Shown under the caption: a family's variant controls. */
+  footer?: React.ReactNode;
 };
 
 const samplePlayers = createSamplePlayers(20);
@@ -66,6 +73,9 @@ const PreviewShell = ({
   onToggleFavorite,
   className,
   isLoading,
+  displayName,
+  isActive = false,
+  footer,
   offscreen,
   children,
 }: Props & {
@@ -79,11 +89,17 @@ const PreviewShell = ({
     <div className={cn(styles.preview, className)}>
       <button
         type="button"
-        className={styles.thumb}
+        className={cn(styles.thumb, { [styles.active]: isActive })}
         onClick={onClick}
         aria-label={_(msg`Load template: ${template.name}`)}
       >
         {children}
+
+        {isActive && (
+          <span className={styles.activeBadge}>
+            <Trans>In use</Trans>
+          </span>
+        )}
 
         {isLoading && (
           <span className={styles.loadingOverlay}>
@@ -95,7 +111,7 @@ const PreviewShell = ({
 
       <div className={styles.caption}>
         <span className={styles.name} title={template.name}>
-          {template.name}
+          {displayName ?? template.name}
         </span>
         {onToggleFavorite && (
           <button
@@ -125,6 +141,7 @@ const PreviewShell = ({
           </button>
         )}
       </div>
+      {footer}
     </div>
   );
 };

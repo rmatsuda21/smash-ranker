@@ -1,53 +1,35 @@
 import { useEffect, useMemo, useState } from "react";
 import cn from "classnames";
-import { IoGrid } from "react-icons/io5";
-import { FaList, FaPlus } from "react-icons/fa6";
-import type { MessageDescriptor } from "@lingui/core";
+import { FaPlus, FaStar } from "react-icons/fa6";
 import { msg } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 
 import { useTemplateDB } from "@/hooks/useConfigDb";
 import { Spinner } from "@/components/shared/Spinner/Spinner";
-import { top8erDesign } from "@/designs/top8er";
-import { squaresDesign } from "@/designs/squares";
-import { minimalDarkDesign, minimalLightDesign } from "@/designs/minimal";
-import { standingsLightDesign, standingsDarkDesign } from "@/designs/standings";
-import { comicBookDesign } from "@/designs/comicBook";
-import { neonSignDesign } from "@/designs/neonSign";
-import { highScoreDesign } from "@/designs/highScore";
-import {
-  colourBarsDesign,
-  colourBarsMonoDesign,
-  colourBarsPastelDesign,
-  colourBarsSignalDesign,
-} from "@/designs/colourBars";
-import { sleeveDesign } from "@/designs/sleeve";
-import {
-  tapeDesign,
-  tapeMintDesign,
-  tapeNightDesign,
-  tapePinkDesign,
-  tapeSkyDesign,
-} from "@/designs/tape";
-import { kagaribiDesign } from "@/designs/kagaribi";
-import { kagaribi16Design } from "@/designs/kagaribi16";
-import { kagaribiDoublesDesign } from "@/designs/kagaribiDoubles";
-import { tagTeamDesign } from "@/designs/tagTeam";
-import { duetDesign } from "@/designs/duet";
 import { Button } from "@/components/shared/Button/Button";
 import { DBTemplate } from "@/types/Repository";
+import { TemplateMode } from "@/types/top8/TemplateCatalog";
+import { TEMPLATE_FAMILIES } from "@/consts/top8/templateCatalog";
 import { useCanvasStore } from "@/store/canvasStore";
 import { usePlayerStore } from "@/store/playerStore";
 import { useFontStore } from "@/store/fontStore";
-import { useTemplateFavoritesStore } from "@/store/templateFavoritesStore";
+import {
+  TEMPLATE_FILTERS,
+  TemplateFilter,
+  useTemplateFavoritesStore,
+} from "@/store/templateFavoritesStore";
 import { logEvent } from "@/utils/observability/log";
 import { loadFamily } from "@/utils/fonts/fontLoader";
 import { collectDesignFontWeights } from "@/utils/fonts/designWeights";
 import { resizePlayerSlots } from "@/utils/top8/playerCount";
 import { useConfirmation } from "@/hooks/useConfirmation";
 import { CreateTemplateModal } from "@/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal";
-import { TemplateGroup } from "@/components/top8/TemplateEditor/TemplateGroup";
+import { TemplatePreview } from "@/components/top8/TemplateEditor/TemplatePreview/TemplatePreview";
+import {
+  FamilyVariant,
+  TemplateFamilyCard,
+} from "@/components/top8/TemplateEditor/TemplateFamilyCard";
 import { EditorPanel } from "@/components/top8/EditorForm/EditorForm";
 
 import styles from "./TemplateEditor.module.scss";
@@ -56,233 +38,22 @@ type Props = {
   className?: string;
 };
 
-type DefaultTemplate = Omit<DBTemplate, "name"> & { name: MessageDescriptor };
-
-type DefaultTemplateGroup = {
+type Family = {
   id: string;
-  name: MessageDescriptor;
-  templates: DefaultTemplate[];
+  name: string;
+  variants: (FamilyVariant & { mode: TemplateMode })[];
 };
 
-const DEFAULT_TEMPLATE_GROUPS: DefaultTemplateGroup[] = [
-  {
-    id: "kagaribi",
-    name: msg`Kagaribi`,
-    templates: [
-      {
-        id: "kagaribi",
-        name: msg`Original`,
-        design: kagaribiDesign,
-        font: "Dela Gothic One",
-      },
-      {
-        id: "kagaribi-16",
-        name: msg`16 Player Variant`,
-        design: kagaribi16Design,
-        font: "Dela Gothic One",
-      },
-      {
-        id: "kagaribi-doubles",
-        name: msg`Doubles`,
-        design: kagaribiDoublesDesign,
-        font: "Dela Gothic One",
-      },
-    ],
-  },
-  {
-    id: "top8er",
-    name: msg`Top8er`,
-    templates: [
-      {
-        id: "top8er",
-        name: msg`Original`,
-        design: top8erDesign,
-        font: "Noto Sans JP",
-      },
-      {
-        id: "top8er-squares",
-        name: msg`Square Variant`,
-        design: squaresDesign,
-        font: "Noto Sans JP",
-      },
-    ],
-  },
-  {
-    id: "standings",
-    name: msg`Standings`,
-    templates: [
-      {
-        id: "standings-dark",
-        name: msg`Dark`,
-        design: standingsDarkDesign,
-        font: "Noto Sans JP",
-      },
-      {
-        id: "standings-light",
-        name: msg`Light`,
-        design: standingsLightDesign,
-        font: "Noto Sans JP",
-      },
-    ],
-  },
-  {
-    id: "comic-book",
-    name: msg`Comic Book`,
-    templates: [
-      {
-        id: "comic-book",
-        name: msg`Original`,
-        design: comicBookDesign,
-        font: "Dela Gothic One",
-      },
-    ],
-  },
-  {
-    id: "neon-sign",
-    name: msg`Neon Sign`,
-    templates: [
-      {
-        id: "neon-sign",
-        name: msg`Original`,
-        design: neonSignDesign,
-        font: "M PLUS Rounded 1c",
-      },
-    ],
-  },
-  {
-    id: "high-score",
-    name: msg`High Score`,
-    templates: [
-      {
-        id: "high-score",
-        name: msg`Original`,
-        design: highScoreDesign,
-        font: "DotGothic16",
-      },
-    ],
-  },
-  {
-    id: "tape",
-    name: msg`Tape`,
-    templates: [
-      {
-        id: "tape",
-        name: msg`Original`,
-        design: tapeDesign,
-        font: "Dela Gothic One",
-      },
-      {
-        id: "tape-mint",
-        name: msg`Mint`,
-        design: tapeMintDesign,
-        font: "Dela Gothic One",
-      },
-      {
-        id: "tape-sky",
-        name: msg`Sky`,
-        design: tapeSkyDesign,
-        font: "Dela Gothic One",
-      },
-      {
-        id: "tape-pink",
-        name: msg`Pink`,
-        design: tapePinkDesign,
-        font: "Dela Gothic One",
-      },
-      {
-        id: "tape-night",
-        name: msg`Night`,
-        design: tapeNightDesign,
-        font: "Dela Gothic One",
-      },
-    ],
-  },
-  {
-    id: "colour-bars",
-    name: msg`Colour Bars`,
-    templates: [
-      {
-        id: "colour-bars",
-        name: msg`Original`,
-        design: colourBarsDesign,
-        font: "Noto Sans JP",
-      },
-      {
-        id: "colour-bars-signal",
-        name: msg`Signal`,
-        design: colourBarsSignalDesign,
-        font: "Noto Sans JP",
-      },
-      {
-        id: "colour-bars-pastel",
-        name: msg`Pastel`,
-        design: colourBarsPastelDesign,
-        font: "Noto Sans JP",
-      },
-      {
-        id: "colour-bars-mono",
-        name: msg`Mono`,
-        design: colourBarsMonoDesign,
-        font: "Noto Sans JP",
-      },
-    ],
-  },
-  {
-    id: "sleeve",
-    name: msg`Sleeve`,
-    templates: [
-      {
-        id: "sleeve",
-        name: msg`Original`,
-        design: sleeveDesign,
-        font: "Noto Sans JP",
-      },
-    ],
-  },
-  {
-    id: "minimal",
-    name: msg`Minimal`,
-    templates: [
-      {
-        id: "minimal-dark",
-        name: msg`Dark`,
-        design: minimalDarkDesign,
-        font: "Noto Sans JP",
-      },
-      {
-        id: "minimal-light",
-        name: msg`Light`,
-        design: minimalLightDesign,
-        font: "Noto Sans JP",
-      },
-    ],
-  },
-  // Doubles: every slot is a team of two.
-  {
-    id: "tag-team",
-    name: msg`Tag Team`,
-    templates: [
-      {
-        id: "tag-team",
-        name: msg`Doubles`,
-        design: tagTeamDesign,
-        font: "RocknRoll One",
-      },
-    ],
-  },
-  {
-    id: "duet",
-    name: msg`Duet`,
-    templates: [
-      {
-        id: "duet",
-        name: msg`Doubles`,
-        design: duetDesign,
-        font: "Shippori Mincho",
-      },
-    ],
-  },
-];
+const FILTER_LABELS = {
+  all: msg`All`,
+  singles: msg`Singles`,
+  doubles: msg`Doubles`,
+  favorites: msg`Favorites`,
+  saved: msg`Saved`,
+} satisfies Record<TemplateFilter, unknown>;
+
+const modeOf = (template: DBTemplate): TemplateMode =>
+  template.design.doubles ? "doubles" : "singles";
 
 export const TemplateEditor = ({ className }: Props) => {
   const { _ } = useLingui();
@@ -290,7 +61,6 @@ export const TemplateEditor = ({ className }: Props) => {
     useTemplateDB();
   const [userTemplates, setUserTemplates] = useState<DBTemplate[]>([]);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [loadingTemplateId, setLoadingTemplateId] = useState<string | null>(
     null,
   );
@@ -305,6 +75,15 @@ export const TemplateEditor = ({ className }: Props) => {
   const removeFavorite = useTemplateFavoritesStore(
     (state) => state.removeFavorite,
   );
+  const filter = useTemplateFavoritesStore((state) => state.filter);
+  const setFilter = useTemplateFavoritesStore((state) => state.setFilter);
+  const storedActiveId = useTemplateFavoritesStore(
+    (state) => state.activeTemplateId,
+  );
+  const setActiveTemplateId = useTemplateFavoritesStore(
+    (state) => state.setActiveTemplateId,
+  );
+  const designName = useCanvasStore((state) => state.design.name);
 
   useEffect(() => {
     const fetchTemplates = async () => {
@@ -321,41 +100,71 @@ export const TemplateEditor = ({ className }: Props) => {
     fetchTemplates();
   }, [templates, getTemplateWithId]);
 
-  const templateGroups = useMemo(
+  const families = useMemo<Family[]>(
     () =>
-      DEFAULT_TEMPLATE_GROUPS.map((group) => ({
-        id: group.id,
-        name: _(group.name),
-        templates: group.templates.map<DBTemplate>((template) => ({
-          ...template,
-          name: _(template.name),
-        })),
+      TEMPLATE_FAMILIES.map((family) => ({
+        id: family.id,
+        name: _(family.name),
+        variants: family.variants.map((variant) => {
+          const name = _(variant.name);
+          const short = variant.short;
+          return {
+            id: variant.id,
+            name,
+            label:
+              short === undefined
+                ? name
+                : typeof short === "string"
+                  ? short
+                  : _(short),
+            design: variant.design,
+            font: variant.font,
+            mode: variant.mode,
+            swatch: variant.swatch,
+          };
+        }),
       })),
     [_],
   );
 
-  // Favorited templates, newest first. A built-in variant is named after its
-  // group here ("Tape · Mint"), since "Mint" alone says nothing outside it.
-  // Ids with no template behind them (a deleted one) are skipped.
-  const favoriteTemplates = useMemo(() => {
-    const byId = new Map<string, DBTemplate>();
-    for (const group of templateGroups) {
-      for (const template of group.templates) {
-        byId.set(template.id, {
-          ...template,
-          name:
-            group.templates.length > 1
-              ? `${group.name} · ${template.name}`
-              : group.name,
-        });
-      }
-    }
-    for (const template of userTemplates) byId.set(template.id, template);
+  // The template the design on the canvas came from: the one loaded last,
+  // as long as the design is still that template's. Before anything has
+  // been loaded, the built-in the design can only be (the default design).
+  const activeTemplateId = useMemo(() => {
+    const builtIns = families.flatMap((family) => family.variants);
+    const stored = [...builtIns, ...userTemplates].find(
+      (template) => template.id === storedActiveId,
+    );
+    if (stored?.design.name === designName) return stored.id;
 
-    return favoriteIds
-      .map((id) => byId.get(id))
-      .filter((template) => template !== undefined);
-  }, [favoriteIds, templateGroups, userTemplates]);
+    const sameName = builtIns.filter(
+      (template) => template.design.name === designName,
+    );
+    return sameName.length === 1 ? sameName[0].id : undefined;
+  }, [families, userTemplates, storedActiveId, designName]);
+
+  const isVisible = (template: DBTemplate) => {
+    switch (filter) {
+      case "all":
+        return true;
+      case "favorites":
+        return favoriteIds.includes(template.id);
+      case "saved":
+        return false;
+      default:
+        return modeOf(template) === filter;
+    }
+  };
+
+  const visibleUserTemplates = userTemplates.filter(
+    (template) => filter === "saved" || isVisible(template),
+  );
+  const visibleFamilies = families
+    .map((family) => ({
+      ...family,
+      shown: family.variants.filter(isVisible),
+    }))
+    .filter((family) => family.shown.length > 0);
 
   const handleToggleFavorite = (id: string) => {
     logEvent("template_favorite", {
@@ -374,8 +183,8 @@ export const TemplateEditor = ({ className }: Props) => {
     setLoadingTemplateId(id);
 
     let template: DBTemplate | undefined;
-    const defaultTemplate = templateGroups
-      .flatMap((group) => group.templates)
+    const defaultTemplate = families
+      .flatMap((family) => family.variants)
       .find((t) => t.id === id);
     if (defaultTemplate) {
       template = defaultTemplate;
@@ -407,6 +216,7 @@ export const TemplateEditor = ({ className }: Props) => {
           : template.design;
       dispatch({ type: "SET_DESIGN", payload: design });
       playerDispatch({ type: "CLEAR_SELECTED_PLAYER" });
+      setActiveTemplateId(id);
     }
 
     setLoadingTemplateId(null);
@@ -443,86 +253,115 @@ export const TemplateEditor = ({ className }: Props) => {
       </div>
     );
 
-  const viewModes = [
-    { mode: "list", label: _(msg`List view`), icon: <FaList /> },
-    { mode: "grid", label: _(msg`Grid view`), icon: <IoGrid /> },
-  ] as const;
+  const selectTemplate = (id: string, group: string) => {
+    confirmTemplateClick(id);
+    logEvent("template_select", { template_id: id, template_group: group });
+  };
+
+  const hasBothSections =
+    visibleUserTemplates.length > 0 && visibleFamilies.length > 0;
+  const isEmpty =
+    visibleUserTemplates.length === 0 && visibleFamilies.length === 0;
 
   return (
     <EditorPanel className={className}>
+      <div
+        className={styles.filters}
+        role="radiogroup"
+        aria-label={_(msg`Show`)}
+      >
+        {TEMPLATE_FILTERS.map((value) => (
+          <button
+            key={value}
+            type="button"
+            role="radio"
+            aria-checked={filter === value}
+            className={cn(styles.filter, {
+              [styles.active]: filter === value,
+            })}
+            onClick={() => setFilter(value)}
+          >
+            {value === "favorites" && <FaStar size={10} />}
+            {_(FILTER_LABELS[value])}
+          </button>
+        ))}
+      </div>
+
       <div className={styles.toolbar}>
         <p className={styles.hint}>
           <Trans>Loading a template replaces your current design.</Trans>
         </p>
-        <div
-          className={styles.viewMode}
-          role="group"
-          aria-label={_(msg`Layout`)}
+        <Button
+          size="sm"
+          variant="subtle"
+          onClick={() => setIsCreateModalOpen(true)}
         >
-          {viewModes.map(({ mode, label, icon }) => (
-            <button
-              key={mode}
-              type="button"
-              className={cn({ [styles.active]: viewMode === mode })}
-              aria-label={label}
-              aria-pressed={viewMode === mode}
-              onClick={() => setViewMode(mode)}
-            >
-              {icon}
-            </button>
-          ))}
-        </div>
+          <FaPlus size={10} />
+          <Trans>Save Design</Trans>
+        </Button>
       </div>
 
-      {favoriteTemplates.length > 0 && (
-        <TemplateGroup
-          templates={favoriteTemplates}
-          name={_(msg`Favorites`)}
-          analyticsGroup="favorites"
-          onTemplateClick={confirmTemplateClick}
-          favoriteIds={favoriteIds}
-          onToggleFavorite={handleToggleFavorite}
-          viewMode={viewMode}
-          loadingTemplateId={loadingTemplateId}
-        />
+      {isEmpty && (
+        <p className={styles.emptyHint}>
+          {filter === "favorites" ? (
+            <Trans>Star a template to keep it here.</Trans>
+          ) : (
+            <Trans>
+              Save your current design as a template to reuse it later.
+            </Trans>
+          )}
+        </p>
       )}
-      <TemplateGroup
-        templates={userTemplates}
-        name={_(msg`My Templates`)}
-        onTemplateClick={confirmTemplateClick}
-        onDeleteTemplate={confirmDeleteTemplate}
-        favoriteIds={favoriteIds}
-        onToggleFavorite={handleToggleFavorite}
-        viewMode={viewMode}
-        loadingTemplateId={loadingTemplateId}
-        action={
-          <Button
-            size="sm"
-            variant="subtle"
-            onClick={() => setIsCreateModalOpen(true)}
-          >
-            <FaPlus size={10} />
-            <Trans>Save Design</Trans>
-          </Button>
-        }
-        emptyHint={
-          <Trans>
-            Save your current design as a template to reuse it later.
-          </Trans>
-        }
-      />
-      {templateGroups.map((group) => (
-        <TemplateGroup
-          key={group.id}
-          templates={group.templates}
-          name={group.name}
-          onTemplateClick={confirmTemplateClick}
-          favoriteIds={favoriteIds}
-          onToggleFavorite={handleToggleFavorite}
-          viewMode={viewMode}
-          loadingTemplateId={loadingTemplateId}
-        />
-      ))}
+
+      {visibleUserTemplates.length > 0 && (
+        <section className={styles.section}>
+          {hasBothSections && (
+            <h4 className={styles.sectionTitle}>
+              <Trans>My Templates</Trans>
+            </h4>
+          )}
+          <div className={styles.grid}>
+            {visibleUserTemplates.map((template) => (
+              <TemplatePreview
+                key={template.id}
+                template={template}
+                isActive={template.id === activeTemplateId}
+                onClick={() => selectTemplate(template.id, "saved")}
+                onDelete={() => confirmDeleteTemplate(template.id)}
+                isFavorite={favoriteIds.includes(template.id)}
+                onToggleFavorite={() => handleToggleFavorite(template.id)}
+                isLoading={loadingTemplateId === template.id}
+              />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {visibleFamilies.length > 0 && (
+        <section className={styles.section}>
+          {hasBothSections && (
+            <h4 className={styles.sectionTitle}>
+              <Trans>Built-in</Trans>
+            </h4>
+          )}
+          <div className={styles.grid}>
+            {visibleFamilies.map((family) => (
+              <TemplateFamilyCard
+                key={family.id}
+                name={family.name}
+                variants={family.shown}
+                hasHiddenVariants={family.shown.length < family.variants.length}
+                activeTemplateId={activeTemplateId}
+                favoriteIds={favoriteIds}
+                onLoad={(id) => selectTemplate(id, family.id)}
+                onToggleFavorite={handleToggleFavorite}
+                loadingTemplateId={loadingTemplateId}
+              />
+            ))}
+          </div>
+        </section>
+      )}
+
       {templateClickConfirmation}
       {deleteTemplateConfirmation}
       <CreateTemplateModal
