@@ -134,7 +134,20 @@ const split: ThumbnailTemplate = {
   },
 };
 
-// A steep diagonal, names on dark plates at the bottom corners.
+// The diagonal crosses the exact centre of the graphic, where the VS sits,
+// with the white stripe centred on it. The stripe ends behind the name band,
+// which is split in its own middle by a gap at the same lean, so the two
+// plates are the same size.
+const SLASH_BAND_TOP = 540;
+const SLASH_BAND_BOTTOM = 656;
+const SLASH_BAND_MIDDLE = (SLASH_BAND_TOP + SLASH_BAND_BOTTOM) / 2;
+const SLASH_HALF_STRIPE = 19;
+const SLASH_HALF_GAP = 36;
+const SLASH_LEAN = 1 / 4;
+const slashX = (y: number) => W / 2 + (H / 2 - y) * SLASH_LEAN;
+// The middle of the gap between the name plates at a height.
+const slashGapX = (y: number) => W / 2 + (SLASH_BAND_MIDDLE - y) * SLASH_LEAN;
+
 const slash: ThumbnailTemplate = {
   id: "slash",
   label: msg`Slash`,
@@ -145,54 +158,38 @@ const slash: ThumbnailTemplate = {
   draw: (p) => {
     const { ctx, scene } = p;
     const { look, match } = scene;
-    fillPoly(
-      ctx,
-      [
-        [0, 0],
-        [800, 0],
-        [480, H],
-        [0, H],
-      ],
-      look.left,
-    );
-    fillPoly(
-      ctx,
-      [
-        [800, 0],
-        [W, 0],
-        [W, H],
-        [480, H],
-      ],
-      look.right,
-    );
+    // Everything left (or right) of the line, `gap` away from it.
+    const leftOf = (gap: number) => [
+      [0, 0],
+      [slashX(0) - gap, 0],
+      [slashX(H) - gap, H],
+      [0, H],
+    ];
+    const rightOf = (gap: number) => [
+      [slashX(0) + gap, 0],
+      [W, 0],
+      [W, H],
+      [slashX(H) + gap, H],
+    ];
+
+    fillPoly(ctx, leftOf(0), look.left);
+    fillPoly(ctx, rightOf(0), look.right);
 
     drawArt(p, 0, slash.artBoxes[0], {
-      clip: () =>
-        poly(ctx, [
-          [0, 0],
-          [794, 0],
-          [474, H],
-          [0, H],
-        ]),
+      clip: () => poly(ctx, leftOf(SLASH_HALF_STRIPE)),
       shadow: "rgba(0, 0, 0, 0.35)",
     });
     drawArt(p, 1, slash.artBoxes[1], {
-      clip: () =>
-        poly(ctx, [
-          [832, 0],
-          [W, 0],
-          [W, H],
-          [512, H],
-        ]),
+      clip: () => poly(ctx, rightOf(SLASH_HALF_STRIPE)),
       shadow: "rgba(0, 0, 0, 0.35)",
     });
     fillPoly(
       ctx,
       [
-        [794, 0],
-        [832, 0],
-        [512, H],
-        [474, H],
+        [slashX(0) - SLASH_HALF_STRIPE, 0],
+        [slashX(0) + SLASH_HALF_STRIPE, 0],
+        [slashX(H) + SLASH_HALF_STRIPE, H],
+        [slashX(H) - SLASH_HALF_STRIPE, H],
       ],
       PAPER,
     );
@@ -200,26 +197,26 @@ const slash: ThumbnailTemplate = {
     fillPoly(
       ctx,
       [
-        [0, 540],
-        [604, 540],
-        [552, 656],
-        [0, 656],
+        [0, SLASH_BAND_TOP],
+        [slashGapX(SLASH_BAND_TOP) - SLASH_HALF_GAP, SLASH_BAND_TOP],
+        [slashGapX(SLASH_BAND_BOTTOM) - SLASH_HALF_GAP, SLASH_BAND_BOTTOM],
+        [0, SLASH_BAND_BOTTOM],
       ],
       NIGHT,
     );
     fillPoly(
       ctx,
       [
-        [728, 540],
-        [W, 540],
-        [W, 656],
-        [676, 656],
+        [slashGapX(SLASH_BAND_TOP) + SLASH_HALF_GAP, SLASH_BAND_TOP],
+        [W, SLASH_BAND_TOP],
+        [W, SLASH_BAND_BOTTOM],
+        [slashGapX(SLASH_BAND_BOTTOM) + SLASH_HALF_GAP, SLASH_BAND_BOTTOM],
       ],
       NIGHT,
     );
     const name = {
-      y: 600,
-      maxWidth: 500,
+      y: SLASH_BAND_MIDDLE,
+      maxWidth: 520,
       size: 62,
       fill: PAPER,
       sponsorFill: QUIET,
@@ -228,13 +225,13 @@ const slash: ThumbnailTemplate = {
     drawName(p, match.sides[1], { ...name, x: W - 36, align: "right" });
 
     ctx.fillStyle = PAPER;
-    ctx.fillRect(0, 656, W, 64);
+    ctx.fillRect(0, SLASH_BAND_BOTTOM, W, H - SLASH_BAND_BOTTOM);
     const foot = { y: 690, maxWidth: 560, size: 32, fill: NIGHT };
     drawText(p, look.eventText, { ...foot, x: 36, align: "left" });
     drawText(p, match.round, { ...foot, x: W - 36, align: "right" });
 
     drawLogo(p, 96, 96, 108);
-    drawVs(p, 652, 330, 136);
+    drawVs(p, W / 2, H / 2, 136);
   },
 };
 
