@@ -453,6 +453,7 @@ const tournament: LayerDesign = {
 
 export const tagTeamDesign: Design = {
   name: "Tag Team",
+  doubles: true,
   canvasSize: { width: CANVAS_WIDTH, height: CANVAS_HEIGHT },
   canvasDisplayScale: 0.5,
   colorPalette,

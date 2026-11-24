@@ -449,6 +449,12 @@ export interface Design {
    * on what the players have in them. Elements join a column with `column`.
    */
   playerTable?: PlayerTable;
+  /**
+   * The design shows two players in each slot (`member: "teammate"`
+   * elements, teammate placeholders). The Players tab then always offers
+   * the second player, even on a slot that has none yet.
+   */
+  doubles?: boolean;
 }
 
 export interface CollapsibleBand {

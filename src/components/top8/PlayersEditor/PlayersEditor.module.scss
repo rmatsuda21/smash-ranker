@@ -188,6 +188,23 @@
   font-variant-numeric: tabular-nums;
 }
 
+// Doubles: which of the slot's two players the fields below edit.
+.memberSwitch {
+  width: 100%;
+
+  > button {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+}
+
+.memberLabel {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 // The player as they appear on the graphic: main character, then the name.
 .nameplate {
   display: flex;

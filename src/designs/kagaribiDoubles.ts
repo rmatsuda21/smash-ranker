@@ -242,6 +242,7 @@ const players: Partial<PlayerDesign>[] = [
 export const kagaribiDoublesDesign: Design = {
   ...kagaribiDesign,
   name: "Kagaribi Doubles",
+  doubles: true,
   colorPalette: kagaribiColorPalette,
   textPalette: {
     ...kagaribiDesign.textPalette,

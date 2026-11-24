@@ -35,7 +35,6 @@ import { kagaribi16Design } from "@/designs/kagaribi16";
 import { kagaribiDoublesDesign } from "@/designs/kagaribiDoubles";
 import { tagTeamDesign } from "@/designs/tagTeam";
 import { duetDesign } from "@/designs/duet";
-import { photoBoothDesign } from "@/designs/photoBooth";
 import { Button } from "@/components/shared/Button/Button";
 import { DBTemplate } from "@/types/Repository";
 import { useCanvasStore } from "@/store/canvasStore";
@@ -280,18 +279,6 @@ const DEFAULT_TEMPLATE_GROUPS: DefaultTemplateGroup[] = [
         name: msg`Doubles`,
         design: duetDesign,
         font: "Shippori Mincho",
-      },
-    ],
-  },
-  {
-    id: "photo-booth",
-    name: msg`Photo Booth`,
-    templates: [
-      {
-        id: "photo-booth",
-        name: msg`Doubles`,
-        design: photoBoothDesign,
-        font: "Yomogi",
       },
     ],
   },

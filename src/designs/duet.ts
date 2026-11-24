@@ -208,9 +208,6 @@ const portrait = (
   return {
     type: "group",
     id: `${member}Portrait`,
-    ...(member === "teammate" && {
-      conditions: [DesignPlaceholder.TEAMMATE_TAG],
-    }),
     position: p(x, (ROW_HEIGHT - PORTRAIT) / 2),
     size,
     elements: [
@@ -417,6 +414,7 @@ const tournament: LayerDesign = {
 
 export const duetDesign: Design = {
   name: "Duet",
+  doubles: true,
   canvasSize: { width: CANVAS_WIDTH, height: CANVAS_HEIGHT },
   canvasDisplayScale: 0.5,
   colorPalette,

@@ -51,7 +51,6 @@ import {
 } from "@/utils/top8/sampleTournament";
 import { tagTeamDesign } from "@/designs/tagTeam";
 import { duetDesign } from "@/designs/duet";
-import { photoBoothDesign } from "@/designs/photoBooth";
 
 declare global {
   interface Window {
@@ -227,13 +226,6 @@ const BUILT_IN_TEMPLATES: PreviewTemplate[] = [
     font: "Shippori Mincho",
     ...doubles,
   },
-  {
-    id: "photo-booth",
-    name: "Doubles",
-    design: photoBoothDesign,
-    font: "Yomogi",
-    ...doubles,
-  },
 ];
 
 const sampleTournament = SAMPLE_TOURNAMENT;
@@ -388,13 +380,6 @@ const GOLDEN_ONLY_TEMPLATES: PreviewTemplate[] = [
     name: "Duet, long names",
     design: duetDesign,
     font: "Shippori Mincho",
-    ...crowdedDoubles,
-  },
-  {
-    id: "photo-booth-crowded",
-    name: "Photo Booth, long names",
-    design: photoBoothDesign,
-    font: "Yomogi",
     ...crowdedDoubles,
   },
   {

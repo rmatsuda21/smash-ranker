@@ -36,10 +36,16 @@ export const createCharacterImageElement: ElementCreator<
   const { design } = context;
   const player = getTeamMember(context.player, element.member);
 
-  // A team with no second player has nothing to draw there.
-  if (!player && element.member === "teammate") return null;
+  // A team's second player always has a figure: with no teammate yet, or one
+  // with no character, the slot shows the "no character" art, as a loaded
+  // player with no picks does.
+  const character =
+    player?.characters[0] ??
+    (element.member === "teammate"
+      ? ({ id: EMPTY_CHARACTER_ID, alt: 0 } satisfies CharacerData)
+      : undefined);
 
-  if (!player || player.characters.length === 0) {
+  if (!character) {
     return (
       <Rect
         key={getElementKey(element, index)}
@@ -53,7 +59,6 @@ export const createCharacterImageElement: ElementCreator<
     );
   }
 
-  const character = player.characters[0];
   const characterCrop = getCharacterCrop(
     character.id,
     character.alt,
@@ -74,7 +79,7 @@ export const createCharacterImageElement: ElementCreator<
   let cropScale =
     (uncropped ? 1 : characterCrop.scale) * (element.cropScaleMultiplier ?? 1);
 
-  if (player.avatarImgSrc) {
+  if (player?.avatarImgSrc) {
     // A custom avatar replaces the character art and is shown uncropped.
     imageSrc = player.avatarImgSrc;
     cropOffset = { x: 0, y: 0 };

@@ -65,7 +65,7 @@ const REO: SampleEntry = { tag: "Reo M", country: "JP", characters: ["1293"] };
 
 // Top players and the characters they are known for.
 const PROS = {
-  acola: { tag: "acola", prefix: "ZETA", country: "JP", characters: ["1766"] },
+  acola: { tag: "あcola", prefix: "ZETA", country: "JP", characters: ["1766"] },
   sparg0: {
     tag: "Sparg0",
     prefix: "FaZe",
@@ -80,7 +80,13 @@ const PROS = {
     country: "MX",
     characters: ["1453", "1539"],
   },
-  hurt: { tag: "Hurt", country: "JP", characters: ["1331"], alts: [3] },
+  hurt: {
+    tag: "Hurt",
+    prefix: "E36",
+    country: "JP",
+    characters: ["1331"],
+    alts: [3],
+  },
   light: { tag: "Light", country: "US", characters: ["1286"], alts: [6] },
   zackray: {
     tag: "Zackray",
@@ -97,6 +103,27 @@ const PROS = {
   },
   neo: { tag: "Neo", country: "JP", characters: ["1276"], alts: [3] },
   muteace: { tag: "MuteAce", country: "US", characters: ["1317"] },
+  tea: {
+    tag: "Tea",
+    prefix: "ZETA",
+    country: "JP",
+    characters: ["1846", "1315"],
+    alts: [7, 0],
+  },
+  doramigi: {
+    tag: "Doramigi",
+    prefix: "AREA310",
+    country: "JP",
+    characters: ["1747"],
+  },
+  zomba: { tag: "Zomba", prefix: "CTG", country: "US", characters: ["1323"] },
+  shuton: {
+    tag: "Shuton",
+    prefix: "RC",
+    country: "JP",
+    characters: ["1314", "1795"],
+    alts: [1, 0],
+  },
 } satisfies Record<string, SampleEntry>;
 
 // Made-up players for the slots after the pros, up to the 32 the ranker keeps.
@@ -139,6 +166,10 @@ const LINEUPS: SampleEntry[][] = [
     P.yoshidora,
     P.neo,
     P.muteace,
+    P.tea,
+    P.doramigi,
+    P.zomba,
+    P.shuton,
   ],
   [
     P.zackray,
@@ -152,6 +183,10 @@ const LINEUPS: SampleEntry[][] = [
     P.sparg0,
     P.miya,
     P.light,
+    P.shuton,
+    P.zomba,
+    P.tea,
+    P.doramigi,
   ],
   [
     P.sparg0,
@@ -165,6 +200,10 @@ const LINEUPS: SampleEntry[][] = [
     P.mkleo,
     P.zackray,
     P.muteace,
+    P.doramigi,
+    P.shuton,
+    P.zomba,
+    P.tea,
   ],
 ].map((pros) => [REO, ...pros, ...FILLERS]);
 

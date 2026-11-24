@@ -5,7 +5,7 @@ import * as countryList from "country-list";
 import { t } from "@lingui/core/macro";
 import { graphql } from "@/gql";
 import type { EventStandingsQuery, PlayerSetsQuery } from "@/gql/graphql";
-import { CharacerData, PlayerInfo } from "@/types/top8/Player";
+import { CharacerData, PlayerInfo, TeammateInfo } from "@/types/top8/Player";
 import { TournamentInfo } from "@/types/top8/Tournament";
 import { usePlayerStore } from "@/store/playerStore";
 import { useTournamentStore } from "@/store/tournamentStore";
@@ -35,6 +35,9 @@ type StoredImagesMap = Map<string, string>;
 type Sets = NonNullable<
   NonNullable<NonNullable<PlayerSetsQuery["entrant"]>["paginatedSets"]>["nodes"]
 >;
+type Participant = NonNullable<
+  NonNullable<NonNullable<StandingNode>["entrant"]>["participants"]
+>[number];
 type TournamentImages = NonNullable<NonNullable<Event["tournament"]>["images"]>;
 
 const EventStandingsQueryDoc = graphql(`
@@ -77,6 +80,23 @@ const EventStandingsQueryDoc = graphql(`
           entrant {
             id
             name
+            participants {
+              id
+              gamerTag
+              prefix
+              user {
+                id
+                authorizations(types: [TWITTER]) {
+                  id
+                  externalId
+                  externalUsername
+                }
+                location {
+                  country
+                  countryId
+                }
+              }
+            }
           }
           player {
             gamerTag
@@ -113,6 +133,9 @@ const PlayerSetsQueryDoc = graphql(`
               selectionType
               selectionValue
               entrant {
+                id
+              }
+              participant {
                 id
               }
             }
@@ -190,9 +213,72 @@ const isValidStanding = (standing: StandingNode): boolean => {
   return Boolean(standing?.entrant?.id);
 };
 
-const extractPlayerFromStanding = (standing: StandingNode): PlayerInfo => {
-  const player = standing?.player;
+// A team's entrant is named "A / B", and start.gg lists a game's picks in
+// that order, which is not always the order of `participants`. Members are
+// put in name order so the first one is the first name and the first pick.
+const inNameOrder = (
+  participants: NonNullable<Participant>[],
+  entrantName: string,
+): NonNullable<Participant>[] => {
+  const position = (participant: NonNullable<Participant>) => {
+    const index = participant.gamerTag
+      ? entrantName.indexOf(participant.gamerTag)
+      : -1;
+    return index === -1 ? Number.MAX_SAFE_INTEGER : index;
+  };
+  return [...participants].sort((a, b) => position(a) - position(b));
+};
+
+const toTeammate = (participant: NonNullable<Participant>): TeammateInfo => {
+  const gamerTag = participant.gamerTag || "";
+  const countryCode = countryList.getCode(
+    participant.user?.location?.country ?? "",
+  );
+
+  return {
+    name: gamerTag,
+    gamerTag,
+    prefix: participant.prefix || undefined,
+    twitter:
+      participant.user?.authorizations?.[0]?.externalUsername || undefined,
+    characters: [],
+    country: countryCode || undefined,
+  };
+};
+
+// A standing's player, and for a team the participant ids of its two
+// members (first player, then teammate), which picks are matched against.
+type ParsedStanding = { player: PlayerInfo; memberIds: string[] };
+
+const extractPlayerFromStanding = (standing: StandingNode): ParsedStanding => {
   const entrant = standing!.entrant!;
+  const placement = standing!.placement || 0;
+  const members = inNameOrder(
+    (entrant.participants ?? []).filter((p) => p !== null),
+    entrant.name ?? "",
+  );
+
+  // Doubles: a team's standing has no player of its own, only the
+  // entrant's participants. Teams bigger than two keep their first two.
+  if (members.length > 1) {
+    const [first, second] = members.map(toTeammate);
+    const userId = members[0].user?.id;
+
+    return {
+      player: {
+        ...first,
+        id: userId ? String(userId) : `entrant-${entrant.id}`,
+        entrantId: entrant.id as string,
+        name: entrant.name || first.gamerTag || "Unknown",
+        gamerTag: first.gamerTag || entrant.name || "Unknown",
+        placement,
+        teammate: second,
+      },
+      memberIds: members.slice(0, 2).map((member) => String(member.id)),
+    };
+  }
+
+  const player = standing?.player;
   const twitterHandle = player?.user?.authorizations?.[0]?.externalUsername;
 
   const countryName = player?.user?.location?.country;
@@ -204,41 +290,60 @@ const extractPlayerFromStanding = (standing: StandingNode): PlayerInfo => {
   const gamerTag = player?.gamerTag || entrant.name || "Unknown";
 
   return {
-    id,
-    entrantId: entrant.id as string,
-    name: gamerTag,
-    gamerTag,
-    prefix: player?.prefix || undefined,
-    twitter: twitterHandle || undefined,
-    characters: [],
-    placement: standing!.placement || 0,
-    country: countryCode || undefined,
+    player: {
+      id,
+      entrantId: entrant.id as string,
+      name: gamerTag,
+      gamerTag,
+      prefix: player?.prefix || undefined,
+      twitter: twitterHandle || undefined,
+      characters: [],
+      placement,
+      country: countryCode || undefined,
+    },
+    memberIds: [],
   };
 };
 
-const parseStandingsToPlayers = (standings: Standings | null): PlayerInfo[] => {
-  if (!standings) return [];
+type ParsedStandings = {
+  players: PlayerInfo[];
+  // Participant ids of each team's members, by entrant id.
+  memberIds: Map<string, string[]>;
+};
+
+const parseStandingsToPlayers = (
+  standings: Standings | null,
+): ParsedStandings => {
+  const memberIds = new Map<string, string[]>();
+  if (!standings) return { players: [], memberIds };
 
   const playersById = new Map<string, PlayerInfo>();
 
   for (const standing of standings) {
     if (!isValidStanding(standing)) continue;
 
-    const player = extractPlayerFromStanding(standing);
-    playersById.set(player.entrantId, player);
+    const parsed = extractPlayerFromStanding(standing);
+    playersById.set(parsed.player.entrantId, parsed.player);
+    if (parsed.memberIds.length > 0) {
+      memberIds.set(parsed.player.entrantId, parsed.memberIds);
+    }
   }
 
   const sorted = Array.from(playersById.values()).sort(
     (a, b) => a.placement - b.placement,
   );
-  return assignPlacementsToPlayers(sorted);
+  return { players: assignPlacementsToPlayers(sorted), memberIds };
 };
 
-const fetchPlayerCharacters = async (
+// The characters an entrant used, most used first: one list for a single
+// player, one per member (in the order of `memberIds`) for a team.
+const fetchEntrantCharacters = async (
   client: Client,
   slug: string,
   entrantId: string,
-): Promise<string[]> => {
+  memberIds: string[] = [],
+): Promise<string[][]> => {
+  const memberCount = Math.max(memberIds.length, 1);
   const result = await client
     .query(PlayerSetsQueryDoc, { entrantId })
     .toPromise();
@@ -259,41 +364,62 @@ const fetchPlayerCharacters = async (
         error: result.error.message,
       });
     }
-    return [];
+    return Array.from({ length: memberCount }, () => []);
   }
 
-  const characterUsageCount = countCharacterUsage(nodes, entrantId);
-
-  return sortCharactersByUsage(characterUsageCount);
+  return countCharacterUsage(nodes, entrantId, memberIds).map(
+    sortCharactersByUsage,
+  );
 };
 
+// One count per member. A team's picks rarely name their player (start.gg
+// fills `participant` in only sometimes): a game then lists one pick per
+// member in the order of the entrant's name, so they are matched by
+// position, and a game with any other number of picks for the team cannot
+// be attributed and is left out.
 const countCharacterUsage = (
   sets: Sets,
   entrantId: string,
-): Map<string, number> => {
-  const usageCount = new Map<string, number>();
+  memberIds: string[],
+): Map<string, number>[] => {
+  const memberCount = Math.max(memberIds.length, 1);
+  const usageCounts = Array.from(
+    { length: memberCount },
+    () => new Map<string, number>(),
+  );
+  const count = (member: number, value: number) => {
+    const characterId = String(value);
+    const usage = usageCounts[member];
+    usage.set(characterId, (usage.get(characterId) || 0) + 1);
+  };
 
   for (const set of sets) {
     if (!set?.games) continue;
 
     for (const game of set.games) {
-      if (!game?.selections) continue;
+      const picks = (game?.selections ?? []).filter(
+        (selection) =>
+          selection?.selectionType === "CHARACTER" &&
+          selection.selectionValue != null &&
+          String(selection.entrant?.id) === String(entrantId),
+      );
 
-      for (const selection of game.selections) {
-        if (
-          selection?.selectionType !== "CHARACTER" ||
-          selection.selectionValue == null ||
-          String(selection.entrant?.id) !== String(entrantId)
-        ) {
-          continue;
-        }
-        const characterId = String(selection.selectionValue);
-        usageCount.set(characterId, (usageCount.get(characterId) || 0) + 1);
-      }
+      picks.forEach((pick, position) => {
+        const named = memberIds.indexOf(String(pick?.participant?.id));
+        const member =
+          memberCount === 1
+            ? 0
+            : named !== -1
+              ? named
+              : picks.length === memberCount
+                ? position
+                : -1;
+        if (member !== -1) count(member, pick!.selectionValue!);
+      });
     }
   }
 
-  return usageCount;
+  return usageCounts;
 };
 
 const sortCharactersByUsage = (usageCount: Map<string, number>): string[] => {
@@ -312,16 +438,44 @@ const toCharacters = (characterIds: string[]): CharacerData[] =>
     ? characterIds.map((id) => ({ id, alt: 0 }))
     : [{ id: EMPTY_CHARACTER_ID, alt: 0 }];
 
+type MemberCharacters = { player: CharacerData[]; teammate?: CharacerData[] };
+
+const fetchMemberCharacters = async (
+  client: Client,
+  slug: string,
+  player: PlayerInfo,
+  memberIds: Map<string, string[]>,
+): Promise<MemberCharacters> => {
+  const [first, second] = await fetchEntrantCharacters(
+    client,
+    slug,
+    player.entrantId,
+    memberIds.get(player.entrantId),
+  );
+  return {
+    player: toCharacters(first),
+    teammate: player.teammate && toCharacters(second ?? []),
+  };
+};
+
 const addCharactersToPlayers = async (
   client: Client,
   slug: string,
   players: PlayerInfo[],
+  memberIds: Map<string, string[]>,
 ): Promise<void> => {
   await Promise.all(
     players.map(async (player) => {
-      player.characters = toCharacters(
-        await fetchPlayerCharacters(client, slug, player.entrantId),
+      const characters = await fetchMemberCharacters(
+        client,
+        slug,
+        player,
+        memberIds,
       );
+      player.characters = characters.player;
+      if (player.teammate && characters.teammate) {
+        player.teammate.characters = characters.teammate;
+      }
     }),
   );
 };
@@ -339,6 +493,7 @@ const addCharactersInBackground = async (
   client: Client,
   slug: string,
   players: PlayerInfo[],
+  memberIds: Map<string, string[]>,
 ): Promise<void> => {
   let cancelled = false;
   const unsubscribe = usePlayerStore.subscribe((state) => {
@@ -350,7 +505,7 @@ const addCharactersInBackground = async (
       const chunk = players.slice(i, i + BACKGROUND_CHUNK_SIZE);
       const characters = await Promise.all(
         chunk.map((player) =>
-          fetchPlayerCharacters(client, slug, player.entrantId),
+          fetchMemberCharacters(client, slug, player, memberIds),
         ),
       );
       if (cancelled) return;
@@ -358,10 +513,7 @@ const addCharactersInBackground = async (
       usePlayerStore.getState().dispatch({
         type: "FILL_PLAYER_CHARACTERS",
         payload: Object.fromEntries(
-          chunk.map((player, index) => [
-            player.entrantId,
-            toCharacters(characters[index]),
-          ]),
+          chunk.map((player, index) => [player.entrantId, characters[index]]),
         ),
       });
     }
@@ -467,15 +619,20 @@ export const useFetchResult = () => {
     }
 
     const validImages = filterValidImages(event.tournament?.images ?? null);
-    const players = parseStandingsToPlayers(event.standings?.nodes ?? null);
+    const { players, memberIds } = parseStandingsToPlayers(
+      event.standings?.nodes ?? null,
+    );
     const visiblePlayers = players.slice(0, visibleCount);
     const laterPlayers = players.slice(visibleCount);
-    for (const player of laterPlayers) player.characters = toCharacters([]);
+    for (const player of laterPlayers) {
+      player.characters = toCharacters([]);
+      if (player.teammate) player.teammate.characters = toCharacters([]);
+    }
 
     try {
       const [storedImages] = await Promise.all([
         validImages.length > 0 ? storeTournamentImages(validImages) : undefined,
-        addCharactersToPlayers(client, slug, visiblePlayers),
+        addCharactersToPlayers(client, slug, visiblePlayers, memberIds),
       ]);
 
       const tournamentInfo = buildTournamentInfo(event, storedImages);
@@ -495,7 +652,7 @@ export const useFetchResult = () => {
 
       if (laterPlayers.length > 0) {
         // fetchPlayerCharacters reports its own failures and never throws.
-        void addCharactersInBackground(client, slug, laterPlayers);
+        void addCharactersInBackground(client, slug, laterPlayers, memberIds);
       }
     } catch (error) {
       // Post-process failure: image storage, character fetch, IndexedDB write.

@@ -8,7 +8,14 @@ import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 
 import { usePlayerStore } from "@/store/playerStore";
-import { CharacerData, PlayerInfo } from "@/types/top8/Player";
+import { useCanvasStore } from "@/store/canvasStore";
+import {
+  CharacerData,
+  PlayerInfo,
+  TeamMember,
+  TeammateInfo,
+} from "@/types/top8/Player";
+import { RadioGroup } from "@/components/shared/RadioGroup/RadioGroup";
 import { CharacterEditor } from "@/components/top8/CharacterEditor/CharacterEditor";
 import { Button } from "@/components/shared/Button/Button";
 import { PlayerSelector } from "@/components/top8/PlayersEditor/PlayerSelector";
@@ -22,6 +29,7 @@ import {
   FieldRow,
   FieldStack,
 } from "@/components/top8/EditorForm/EditorForm";
+import { EMPTY_CHARACTER_ID } from "@/consts/top8/characters";
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
 import { createBlankPlayer } from "@/utils/top8/samplePlayers";
 import { useConfirmation } from "@/hooks/useConfirmation";
@@ -34,6 +42,16 @@ type Props = {
   className?: string;
 };
 
+// What the second player's fields show until something is typed into them.
+const BLANK_TEAMMATE: TeammateInfo = {
+  name: "",
+  gamerTag: "",
+  prefix: "",
+  characters: [{ id: EMPTY_CHARACTER_ID, alt: 0 }],
+  twitter: "",
+  country: "",
+};
+
 export const PlayersEditor = ({ className }: Props) => {
   const { _ } = useLingui();
   const players = usePlayerStore((state) => state.players);
@@ -42,6 +60,7 @@ export const PlayersEditor = ({ className }: Props) => {
   );
   const dispatch = usePlayerStore((state) => state.dispatch);
   const playerCount = usePlayerCount();
+  const isDoublesDesign = useCanvasStore((state) => state.design.doubles);
 
   const [tempPlayer, setTempPlayer] = useState<PlayerInfo | undefined>(
     players[selectedPlayerIndex],
@@ -51,6 +70,10 @@ export const PlayersEditor = ({ className }: Props) => {
     () => players[selectedPlayerIndex],
     [players, selectedPlayerIndex],
   );
+
+  // Which player of the slot's team the fields edit. It is kept from slot to
+  // slot, so every team's second player can be filled in one after another.
+  const [member, setMember] = useState<TeamMember>("player");
 
   // null = follow the player: open only when a custom image is already set.
   const [isCustomOpen, setIsCustomOpen] = useState<boolean | null>(null);
@@ -88,48 +111,50 @@ export const PlayersEditor = ({ className }: Props) => {
     };
   }, [selectedPlayer, selectedPlayerIndex, dispatch, debouncedUpdatePlayer]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // The second player is offered on a doubles design, and on any design for
+  // a slot that already has one (a team loaded from start.gg).
+  const showMembers = Boolean(isDoublesDesign || tempPlayer?.teammate);
+  const activeMember: TeamMember = showMembers ? member : "player";
+  const edited: TeammateInfo | undefined =
+    activeMember === "teammate"
+      ? (tempPlayer?.teammate ?? BLANK_TEAMMATE)
+      : tempPlayer;
+
+  // Writes to whichever player of the team is being edited. A slot gets its
+  // teammate the first time one of the second player's fields changes.
+  const patch = (fields: Partial<TeammateInfo>) => {
     if (!tempPlayer) return;
-    const newPlayer: PlayerInfo = {
-      ...tempPlayer,
-      [e.target.name]: e.target.value,
-    };
+
+    let newPlayer: PlayerInfo;
+    if (activeMember === "teammate") {
+      const teammate = {
+        ...(tempPlayer.teammate ?? BLANK_TEAMMATE),
+        ...fields,
+      };
+      newPlayer = {
+        ...tempPlayer,
+        teammate: { ...teammate, name: teammate.gamerTag },
+      };
+    } else {
+      newPlayer = { ...tempPlayer, ...fields };
+    }
+
     setTempPlayer(newPlayer);
     debouncedUpdatePlayer(newPlayer, selectedPlayerIndex);
   };
 
-  const handleAssetSelect = (src: string) => {
-    if (!tempPlayer) return;
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    patch({ [e.target.name]: e.target.value } as Partial<TeammateInfo>);
 
-    const newPlayer: PlayerInfo = {
-      ...tempPlayer,
-      avatarImgSrc: src,
-    };
-    setTempPlayer(newPlayer);
-    debouncedUpdatePlayer(newPlayer, selectedPlayerIndex);
-  };
+  const handleAssetSelect = (src: string) => patch({ avatarImgSrc: src });
+  const handleClear = () => patch({ avatarImgSrc: undefined });
+  const handleCharactersChange = (characters: CharacerData[]) =>
+    patch({ characters });
+  const handleCountryChange = (country: string) => patch({ country });
+  const handleCustomFlagSelect = (src: string) => patch({ customFlagSrc: src });
+  const handleCustomFlagClear = () => patch({ customFlagSrc: undefined });
 
-  const handleClear = () => {
-    if (!tempPlayer) return;
-
-    const newPlayer: PlayerInfo = {
-      ...tempPlayer,
-      avatarImgSrc: undefined,
-    };
-    setTempPlayer(newPlayer);
-    debouncedUpdatePlayer(newPlayer, selectedPlayerIndex);
-  };
-
-  const handleCharactersChange = (characters: CharacerData[]) => {
-    if (!tempPlayer) return;
-    const newPlayer: PlayerInfo = {
-      ...tempPlayer,
-      characters,
-    };
-    setTempPlayer(newPlayer);
-    debouncedUpdatePlayer(newPlayer, selectedPlayerIndex);
-  };
-
+  // The placement is the team's, whichever player is being edited.
   const handlePlacementChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!tempPlayer) return;
     const newPlayer: PlayerInfo = {
@@ -140,36 +165,16 @@ export const PlayersEditor = ({ className }: Props) => {
     debouncedUpdatePlayer(newPlayer, selectedPlayerIndex);
   };
 
-  const handleCountryChange = (country: string) => {
+  const handleRemoveTeammate = () => {
     if (!tempPlayer) return;
-    const newPlayer: PlayerInfo = {
-      ...tempPlayer,
-      country,
-    };
+    debouncedUpdatePlayer.cancel();
+    const newPlayer: PlayerInfo = { ...tempPlayer, teammate: undefined };
     setTempPlayer(newPlayer);
-    debouncedUpdatePlayer(newPlayer, selectedPlayerIndex);
-  };
-
-  const handleCustomFlagSelect = (src: string) => {
-    if (!tempPlayer) return;
-
-    const newPlayer: PlayerInfo = {
-      ...tempPlayer,
-      customFlagSrc: src,
-    };
-    setTempPlayer(newPlayer);
-    debouncedUpdatePlayer(newPlayer, selectedPlayerIndex);
-  };
-
-  const handleCustomFlagClear = () => {
-    if (!tempPlayer) return;
-
-    const newPlayer: PlayerInfo = {
-      ...tempPlayer,
-      customFlagSrc: undefined,
-    };
-    setTempPlayer(newPlayer);
-    debouncedUpdatePlayer(newPlayer, selectedPlayerIndex);
+    setMember("player");
+    dispatch({
+      type: "UPDATE_PLAYER",
+      payload: { index: selectedPlayerIndex, player: newPlayer },
+    });
   };
 
   const handleClearPlayer = () => {
@@ -190,10 +195,21 @@ export const PlayersEditor = ({ className }: Props) => {
     description: _(msg`This will reset all player data for this slot.`),
   });
 
+  const {
+    confirm: confirmRemoveTeammate,
+    confirmationDialog: removeTeammateConfirmation,
+  } = useConfirmation(handleRemoveTeammate, {
+    title: _(msg`Remove Teammate?`),
+    description: _(msg`This will remove the second player from this slot.`),
+  });
+
   const disabled = !selectedPlayer;
-  const mainCharacter = tempPlayer?.characters[0];
+  const mainCharacter = edited?.characters[0];
   const hasCustomImages = Boolean(
-    tempPlayer?.avatarImgSrc || tempPlayer?.customFlagSrc,
+    edited?.avatarImgSrc || edited?.customFlagSrc,
+  );
+  const memberLabel = (tag: string | undefined, slot: number) => (
+    <span className={styles.memberLabel}>{tag || _(msg`Player ${slot}`)}</span>
   );
   // Rarely used, so tucked away unless this player already has one set.
   const showCustomImages = isCustomOpen ?? hasCustomImages;
@@ -224,6 +240,20 @@ export const PlayersEditor = ({ className }: Props) => {
       </div>
 
       <EditorCard disabled={disabled}>
+        {showMembers && (
+          <RadioGroup<TeamMember>
+            className={styles.memberSwitch}
+            value={activeMember}
+            onChange={setMember}
+            options={[
+              { value: "player", label: memberLabel(tempPlayer?.gamerTag, 1) },
+              {
+                value: "teammate",
+                label: memberLabel(tempPlayer?.teammate?.gamerTag, 2),
+              },
+            ]}
+          />
+        )}
         <div className={styles.nameplate}>
           <div className={styles.portrait} aria-hidden="true">
             {mainCharacter ? (
@@ -241,10 +271,10 @@ export const PlayersEditor = ({ className }: Props) => {
             ) : (
               <FaUser size={24} />
             )}
-            {tempPlayer?.country && (
+            {edited?.country && (
               <img
                 className={styles.portraitFlag}
-                src={`/assets/flags/${tempPlayer.country.toLowerCase()}.svg`}
+                src={`/assets/flags/${edited.country.toLowerCase()}.svg`}
                 alt=""
               />
             )}
@@ -258,7 +288,7 @@ export const PlayersEditor = ({ className }: Props) => {
               autoComplete="off"
               aria-label={_(msg`Gamer Tag`)}
               placeholder={_(msg`Gamer Tag`)}
-              value={tempPlayer?.gamerTag ?? ""}
+              value={edited?.gamerTag ?? ""}
               onChange={handleChange}
               disabled={disabled}
             />
@@ -270,7 +300,7 @@ export const PlayersEditor = ({ className }: Props) => {
                 autoComplete="off"
                 aria-label={_(msg`Prefix`)}
                 placeholder={_(msg`Prefix`)}
-                value={tempPlayer?.prefix ?? ""}
+                value={edited?.prefix ?? ""}
                 onChange={handleChange}
                 disabled={disabled}
               />
@@ -292,7 +322,8 @@ export const PlayersEditor = ({ className }: Props) => {
           </FieldStack>
         </div>
         <CharacterEditor
-          characters={tempPlayer?.characters ?? []}
+          key={activeMember}
+          characters={edited?.characters ?? []}
           onCharactersChange={handleCharactersChange}
           disabled={disabled}
         />
@@ -308,13 +339,13 @@ export const PlayersEditor = ({ className }: Props) => {
           spellCheck={false}
           label={_(msg`X Handle`)}
           prefix="@"
-          value={tempPlayer?.twitter ?? ""}
+          value={edited?.twitter ?? ""}
           onChange={handleChange}
           disabled={disabled}
         />
         <FieldGroup label={<Trans>Country</Trans>}>
           <CountryDropDown
-            selectedCountry={tempPlayer?.country ?? ""}
+            selectedCountry={edited?.country ?? ""}
             onCountryChange={handleCountryChange}
             disabled={disabled}
           />
@@ -340,7 +371,7 @@ export const PlayersEditor = ({ className }: Props) => {
             <FieldRow id="player-custom-images">
               <FieldGroup label={<Trans>Avatar</Trans>}>
                 <AssetSelector
-                  selectedSrc={tempPlayer?.avatarImgSrc}
+                  selectedSrc={edited?.avatarImgSrc}
                   onSelect={handleAssetSelect}
                   onClear={handleClear}
                   disabled={disabled}
@@ -348,7 +379,7 @@ export const PlayersEditor = ({ className }: Props) => {
               </FieldGroup>
               <FieldGroup label={<Trans>Custom Flag</Trans>}>
                 <AssetSelector
-                  selectedSrc={tempPlayer?.customFlagSrc}
+                  selectedSrc={edited?.customFlagSrc}
                   onSelect={handleCustomFlagSelect}
                   onClear={handleCustomFlagClear}
                   disabled={disabled}
@@ -359,15 +390,27 @@ export const PlayersEditor = ({ className }: Props) => {
         </div>
       </EditorCard>
 
-      <Button
-        variant="subtle"
-        className={styles.clearPlayer}
-        onClick={confirmClearPlayer}
-        disabled={disabled}
-      >
-        <HiOutlineUserRemove /> <Trans>Clear Player</Trans>
-      </Button>
+      {activeMember === "teammate" ? (
+        <Button
+          variant="subtle"
+          className={styles.clearPlayer}
+          onClick={confirmRemoveTeammate}
+          disabled={disabled || !tempPlayer?.teammate}
+        >
+          <HiOutlineUserRemove /> <Trans>Remove Teammate</Trans>
+        </Button>
+      ) : (
+        <Button
+          variant="subtle"
+          className={styles.clearPlayer}
+          onClick={confirmClearPlayer}
+          disabled={disabled}
+        >
+          <HiOutlineUserRemove /> <Trans>Clear Player</Trans>
+        </Button>
+      )}
       {clearPlayerConfirmation}
+      {removeTeammateConfirmation}
     </EditorPanel>
   );
 };

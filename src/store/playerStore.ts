@@ -29,13 +29,22 @@ type PlayerAction =
   | { type: "FETCH_PLAYERS_SUCCESS"; payload: PlayerInfo[] }
   | { type: "FETCH_PLAYERS_FAIL"; payload: string }
   // Characters that arrived after the players did, by entrant id.
-  | { type: "FILL_PLAYER_CHARACTERS"; payload: Record<string, CharacerData[]> }
+  | {
+      type: "FILL_PLAYER_CHARACTERS";
+      payload: Record<
+        string,
+        { player: CharacerData[]; teammate?: CharacerData[] }
+      >;
+    }
   | { type: "RESET" };
 
-const hasNoCharacter = (player: PlayerInfo): boolean =>
-  player.characters.length === 0 ||
-  (player.characters.length === 1 &&
-    player.characters[0].id === EMPTY_CHARACTER_ID);
+const hasNoCharacter = ({
+  characters,
+}: {
+  characters: CharacerData[];
+}): boolean =>
+  characters.length === 0 ||
+  (characters.length === 1 && characters[0].id === EMPTY_CHARACTER_ID);
 
 const playerReducer = (
   state: PlayerState,
@@ -74,12 +83,24 @@ const playerReducer = (
       return {
         players: applyRenderStyle(
           state.players.map((player) => {
-            const characters = action.payload[player.entrantId];
+            const found = action.payload[player.entrantId];
+            if (!found) return player;
             // Only a player still waiting for characters: one the user has
             // given a character in the meantime keeps it.
-            return characters && hasNoCharacter(player)
-              ? { ...player, characters }
-              : player;
+            const fillPlayer = hasNoCharacter(player);
+            const fillTeammate =
+              player.teammate &&
+              found.teammate &&
+              hasNoCharacter(player.teammate);
+            if (!fillPlayer && !fillTeammate) return player;
+
+            return {
+              ...player,
+              ...(fillPlayer && { characters: found.player }),
+              ...(fillTeammate && {
+                teammate: { ...player.teammate!, characters: found.teammate! },
+              }),
+            };
           }),
           state.renderStyle,
         ),

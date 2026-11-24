@@ -22,7 +22,6 @@ import colour_bars_mono from "./colour-bars-mono.webp";
 import sleeve from "./sleeve.webp";
 import tag_team from "./tag-team.webp";
 import duet from "./duet.webp";
-import photo_booth from "./photo-booth.webp";
 
 export const defaultPreviews: Record<string, string> = {
   "top8er": top8er,
@@ -49,5 +48,4 @@ export const defaultPreviews: Record<string, string> = {
   "sleeve": sleeve,
   "tag-team": tag_team,
   "duet": duet,
-  "photo-booth": photo_booth,
 };
