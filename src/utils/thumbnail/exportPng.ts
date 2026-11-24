@@ -1,20 +1,22 @@
 import { Stage as KonvaStage } from "konva/lib/Stage";
 import { EXPORT_PIXEL_RATIO } from "@/consts/thumbnail/defaults";
+import { downloadBlob, type SaveOutcome } from "@/utils/top8/downloadBlob";
 
-export const downloadStageAsPng = (
+/**
+ * Saves the stage as a PNG through the shared save path. Resolves to null
+ * when the stage could not be encoded.
+ */
+export const downloadStageAsPng = async (
   stage: KonvaStage,
   fileName: string,
-): void => {
-  const url = stage.toDataURL({
-    pixelRatio: EXPORT_PIXEL_RATIO,
+): Promise<SaveOutcome | null> => {
+  const blob = await stageToBlob(stage, EXPORT_PIXEL_RATIO);
+  if (!blob) return null;
+  return downloadBlob({
+    blob,
+    filename: fileName.endsWith(".png") ? fileName : `${fileName}.png`,
     mimeType: "image/png",
   });
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = fileName.endsWith(".png") ? fileName : `${fileName}.png`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
 };
 
 export const stageToBlob = (

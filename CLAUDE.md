@@ -288,6 +288,13 @@ A design whose players are the rows of a table opts in with `Design.playerTable`
 - **Code** — `src/utils/top8/playerTable.ts` (`layoutPlayerTable`, `placeInColumns`, pure). `getPlayerConfigs` applies it to the players and `getTournamentElements` (both in `scene.ts`) to the tournament layer; **render tournament elements through `getTournamentElements` / `useTournamentElements`, not straight from the design.**
 - **Ellipsis** — `smartText` takes `overflow: "ellipsis"` to keep its font size and cut text wider than its box, for a column that has reached its maximum.
 
+### Saving, sharing and copying images
+
+Every tool hands its finished image to the same two helpers, from a tap, with the blob already made (render first, in a preview modal, then offer the buttons): iOS opens the share sheet and the clipboard only while the tap's handler has not yielded.
+
+- **Save** — `downloadBlob` (`src/utils/top8/downloadBlob.ts`). On iOS and Android it opens the system share sheet when `navigator.canShare` accepts the file (the route to the photo library); elsewhere, and when sharing is missing or refused, it is a download link whose blob URL is revoked after a delay. It returns `"shared"`, `"downloaded"` or `"cancelled"`: log `graphic_export_complete` only for the first two, with `share_method: shareMethodFor(outcome)`. **Do not write another download (`a.download`, `window.open`, a data URL) anywhere else.**
+- **Copy** — `copyImageToClipboard` (`src/utils/social/clipboardImage.ts`). The clipboard takes only PNG, so other formats are converted, as a promise inside the `ClipboardItem`. It returns `{ ok }`; pass that on to `ConfirmableButton` with a `failLabel`. **Do not call `navigator.clipboard.write` directly.**
+
 ### Persistence (IndexedDB)
 
 `src/db/indexDB.ts` initializes the DB. Separate modules handle:

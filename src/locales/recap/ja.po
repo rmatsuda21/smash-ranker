@@ -168,11 +168,11 @@ msgstr "優勝"
 msgid "Close"
 msgstr "閉じる"
 
-#: src/components/recap/slides/CoverSlide.tsx:257
+#: src/components/recap/slides/CoverSlide.tsx:261
 msgid "Copied!"
 msgstr "コピー完了"
 
-#: src/components/recap/slides/CoverSlide.tsx:257
+#: src/components/recap/slides/CoverSlide.tsx:261
 msgid "Copy"
 msgstr "コピー"
 
@@ -318,7 +318,7 @@ msgstr "{year}年に出場した大会をすべて読み込んでいます。"
 msgid "Recap {year}"
 msgstr "リキャップ {year}"
 
-#: src/components/recap/slides/CoverSlide.tsx:260
+#: src/components/recap/slides/CoverSlide.tsx:264
 msgid "Replay"
 msgstr "もう一度"
 
@@ -330,7 +330,7 @@ msgstr "遠征勢"
 msgid "Rookie"
 msgstr "新星"
 
-#: src/components/recap/slides/CoverSlide.tsx:254
+#: src/components/recap/slides/CoverSlide.tsx:258
 msgid "Save"
 msgstr "保存"
 
@@ -362,7 +362,7 @@ msgstr "連勝。今年の最長記録"
 msgid "sets. {winPercent}% of them won."
 msgstr "セット戦績。勝率{winPercent}%。"
 
-#: src/components/recap/slides/CoverSlide.tsx:245
+#: src/components/recap/slides/CoverSlide.tsx:249
 msgid "Share"
 msgstr "シェア"
 
@@ -486,7 +486,7 @@ msgstr "大会デビューの一年。まずは出場したことが大きい。
 msgid "Your most played"
 msgstr "いちばん使ったキャラ"
 
-#: src/components/recap/slides/CoverSlide.tsx:232
+#: src/components/recap/slides/CoverSlide.tsx:236
 msgid "Your recap as a magazine cover"
 msgstr "雑誌の表紙風のリキャップ"
 

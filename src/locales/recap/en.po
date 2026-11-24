@@ -168,11 +168,11 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#: src/components/recap/slides/CoverSlide.tsx:257
+#: src/components/recap/slides/CoverSlide.tsx:261
 msgid "Copied!"
 msgstr ""
 
-#: src/components/recap/slides/CoverSlide.tsx:257
+#: src/components/recap/slides/CoverSlide.tsx:261
 msgid "Copy"
 msgstr ""
 
@@ -318,7 +318,7 @@ msgstr ""
 msgid "Recap {year}"
 msgstr ""
 
-#: src/components/recap/slides/CoverSlide.tsx:260
+#: src/components/recap/slides/CoverSlide.tsx:264
 msgid "Replay"
 msgstr ""
 
@@ -330,7 +330,7 @@ msgstr ""
 msgid "Rookie"
 msgstr ""
 
-#: src/components/recap/slides/CoverSlide.tsx:254
+#: src/components/recap/slides/CoverSlide.tsx:258
 msgid "Save"
 msgstr ""
 
@@ -362,7 +362,7 @@ msgstr ""
 msgid "sets. {winPercent}% of them won."
 msgstr ""
 
-#: src/components/recap/slides/CoverSlide.tsx:245
+#: src/components/recap/slides/CoverSlide.tsx:249
 msgid "Share"
 msgstr ""
 
@@ -486,7 +486,7 @@ msgstr ""
 msgid "Your most played"
 msgstr ""
 
-#: src/components/recap/slides/CoverSlide.tsx:232
+#: src/components/recap/slides/CoverSlide.tsx:236
 msgid "Your recap as a magazine cover"
 msgstr ""
 

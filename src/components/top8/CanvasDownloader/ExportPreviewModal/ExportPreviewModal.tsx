@@ -10,7 +10,7 @@ import { useCanvasStore } from "@/store/canvasStore";
 import { useTournamentStore } from "@/store/tournamentStore";
 import { exportCanvas } from "@/utils/top8/exportCanvas";
 import { getDeviceRenderProfile } from "@/utils/top8/renderProfile";
-import { downloadBlob } from "@/utils/top8/downloadBlob";
+import { downloadBlob, shareMethodFor } from "@/utils/top8/downloadBlob";
 import { copyImageToClipboard } from "@/utils/social/clipboardImage";
 import { logEvent, setPerson, setPersonOnce } from "@/utils/observability/log";
 import {
@@ -156,12 +156,18 @@ export const ExportPreviewModal = ({
   const handleDownload = async () => {
     if (!blob) return;
     const finalFilename = `${filename || "ranker"}.${imgType}`;
-    await downloadBlob({ blob, filename: finalFilename, mimeType });
+    const outcome = await downloadBlob({
+      blob,
+      filename: finalFilename,
+      mimeType,
+    });
+    if (outcome === "cancelled") return;
     logEvent("graphic_export_complete", {
       export_surface: "ranker",
       export_format: imgType,
       pixel_ratio: pixelRatio,
       tournament_url: tournamentUrl,
+      share_method: shareMethodFor(outcome),
     });
     const now = new Date().toISOString();
     setPersonOnce({ first_export_at: now });

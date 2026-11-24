@@ -18,7 +18,7 @@ import {
   canShareImage,
   copyImageToClipboard,
 } from "@/utils/social/clipboardImage";
-import { downloadBlob } from "@/utils/top8/downloadBlob";
+import { downloadBlob, shareMethodFor } from "@/utils/top8/downloadBlob";
 import {
   renderPlayerCardImage,
   type PlayerCardAssets,
@@ -97,8 +97,12 @@ export const PlayerCardModal = ({ data, assets, onClose }: Props) => {
 
   const handleDownload = async () => {
     if (!blob || !file) return;
-    await downloadBlob({ blob, filename: file.name, mimeType: "image/png" });
-    logExport("download");
+    const outcome = await downloadBlob({
+      blob,
+      filename: file.name,
+      mimeType: "image/png",
+    });
+    if (outcome !== "cancelled") logExport(shareMethodFor(outcome));
   };
 
   const handleCopy = async () => {

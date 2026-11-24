@@ -17,6 +17,7 @@ import {
   MIN_ZOOM,
 } from "@/consts/thumbnail/defaults";
 import { downloadStageAsPng } from "@/utils/thumbnail/exportPng";
+import { shareMethodFor } from "@/utils/top8/downloadBlob";
 import { logEvent, setPerson, setPersonOnce } from "@/utils/observability/log";
 import { TooltipButton } from "@/components/shared/Tooltip/TooltipButton";
 
@@ -53,20 +54,35 @@ export const Toolbar = () => {
     const wasShowingGrid = showGrid;
     if (wasShowingGrid) setShowGrid(false);
     requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        const fileName = (design.name || "thumbnail")
-          .replace(/[^\w\s-]/g, "")
-          .replace(/\s+/g, "_");
-        downloadStageAsPng(stage, fileName);
-        logEvent("graphic_export_complete", {
-          export_surface: "thumbnail",
-          export_format: "png",
-          pixel_ratio: EXPORT_PIXEL_RATIO,
-        });
-        const now = new Date().toISOString();
-        setPersonOnce({ first_export_at: now });
-        setPerson({ has_exported: true, last_export_at: now });
-        if (wasShowingGrid) setShowGrid(true);
+      requestAnimationFrame(async () => {
+        // Letters and digits of any script, so a Japanese name survives.
+        const fileName =
+          design.name
+            .replace(/[^\p{L}\p{N}\s_-]/gu, "")
+            .trim()
+            .replace(/\s+/g, "_") || "thumbnail";
+        try {
+          const outcome = await downloadStageAsPng(stage, fileName);
+          if (outcome === null) {
+            logEvent("graphic_export_fail", {
+              export_surface: "thumbnail",
+              export_format: "png",
+              failure_kind: "blob_null",
+            });
+          } else if (outcome !== "cancelled") {
+            logEvent("graphic_export_complete", {
+              export_surface: "thumbnail",
+              export_format: "png",
+              pixel_ratio: EXPORT_PIXEL_RATIO,
+              share_method: shareMethodFor(outcome),
+            });
+            const now = new Date().toISOString();
+            setPersonOnce({ first_export_at: now });
+            setPerson({ has_exported: true, last_export_at: now });
+          }
+        } finally {
+          if (wasShowingGrid) setShowGrid(true);
+        }
       });
     });
   }, [clearSelection, design.name, setShowGrid, showGrid, stage]);

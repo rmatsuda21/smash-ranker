@@ -3,8 +3,9 @@ import { FaCopy, FaDownload } from "react-icons/fa6";
 
 import { Button } from "@/components/shared/Button/Button";
 import { ConfirmableButton } from "@/components/shared/ConfirmableButton/ConfirmableButton";
+import { copyImageToClipboard } from "@/utils/social/clipboardImage";
 import { useResultsStore } from "@/store/resultsStore";
-import { downloadBlob } from "@/utils/top8/downloadBlob";
+import { downloadBlob, shareMethodFor } from "@/utils/top8/downloadBlob";
 import {
   logEvent,
   logWarning,
@@ -52,10 +53,15 @@ export const ResultsExportBar = ({ blob }: Props) => {
     const player = normalizeFilename(playerName) || "player";
     const filename = `${tournament}-${player}-results.png`;
     try {
-      await downloadBlob({ blob, filename, mimeType: "image/png" });
+      const outcome = await downloadBlob({
+        blob,
+        filename,
+        mimeType: "image/png",
+      });
+      if (outcome === "cancelled") return;
       logEvent("graphic_export_complete", {
         ...exportContext,
-        share_method: "download",
+        share_method: shareMethodFor(outcome),
         size_kb: Math.round(blob.size / 1024),
       });
       const now = new Date().toISOString();
@@ -80,21 +86,11 @@ export const ResultsExportBar = ({ blob }: Props) => {
   };
 
   const handleCopy = async () => {
-    if (!blob) return;
-    try {
-      await navigator.clipboard.write([
-        new ClipboardItem({ "image/png": blob }),
-      ]);
-      logEvent("graphic_share", {
-        export_surface: "results",
-        share_method: "clipboard",
-        tournament_url: tournamentUrl,
-        entrant_id: entrantId,
-        player_id: playerId,
-      });
-    } catch (err) {
+    if (!blob) return false;
+    const result = await copyImageToClipboard(blob);
+    if (!result.ok) {
       // Clipboard write commonly fails: permission denied, insecure
-      // context (HTTP), or the user navigated away mid-promise.
+      // context (HTTP), or a browser with no image clipboard.
       logEvent("graphic_export_fail", {
         ...exportContext,
         failure_kind: "post_process",
@@ -105,9 +101,18 @@ export const ResultsExportBar = ({ blob }: Props) => {
         tournament_url: tournamentUrl,
         entrant_id: entrantId,
         player_id: playerId,
-        error: err instanceof Error ? err.message : String(err),
+        error: result.reason,
       });
+      return false;
     }
+    logEvent("graphic_share", {
+      export_surface: "results",
+      share_method: "clipboard",
+      tournament_url: tournamentUrl,
+      entrant_id: entrantId,
+      player_id: playerId,
+    });
+    return true;
   };
 
   return (
@@ -120,6 +125,7 @@ export const ResultsExportBar = ({ blob }: Props) => {
         icon={<FaCopy />}
         label={<Trans>Copy</Trans>}
         confirmLabel={<Trans>Copied!</Trans>}
+        failLabel={<Trans>Copy failed</Trans>}
         onAction={handleCopy}
       />
     </div>

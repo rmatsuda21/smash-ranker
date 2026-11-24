@@ -9,7 +9,7 @@ import { Spinner } from "@/components/shared/Spinner/Spinner";
 import { useTierListStore } from "@/store/tierListStore";
 import { copyImageToClipboard } from "@/utils/social/clipboardImage";
 import { renderTierListImage } from "@/utils/tierlist/renderTierListImage";
-import { downloadBlob } from "@/utils/top8/downloadBlob";
+import { downloadBlob, shareMethodFor } from "@/utils/top8/downloadBlob";
 import {
   logError,
   logEvent,
@@ -107,10 +107,15 @@ export const TierExportModal = ({ isOpen, onClose, exportRef }: Props) => {
     if (!blob) return;
     const filename = `${normalizeFilename(title) || "tier-list"}.png`;
     try {
-      await downloadBlob({ blob, filename, mimeType: "image/png" });
+      const outcome = await downloadBlob({
+        blob,
+        filename,
+        mimeType: "image/png",
+      });
+      if (outcome === "cancelled") return;
       logEvent("graphic_export_complete", {
         ...exportContext,
-        share_method: "download",
+        share_method: shareMethodFor(outcome),
         size_kb: Math.round(blob.size / 1024),
       });
       const now = new Date().toISOString();

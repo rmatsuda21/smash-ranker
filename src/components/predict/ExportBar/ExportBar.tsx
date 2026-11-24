@@ -3,8 +3,9 @@ import { FaCopy, FaDownload } from "react-icons/fa6";
 
 import { Button } from "@/components/shared/Button/Button";
 import { ConfirmableButton } from "@/components/shared/ConfirmableButton/ConfirmableButton";
+import { copyImageToClipboard } from "@/utils/social/clipboardImage";
 import { usePredictionStore } from "@/store/predictionStore";
-import { downloadBlob } from "@/utils/top8/downloadBlob";
+import { downloadBlob, shareMethodFor } from "@/utils/top8/downloadBlob";
 import {
   logEvent,
   logWarning,
@@ -40,10 +41,15 @@ export const ExportBar = ({ blob }: Props) => {
       normalizeFilename(tournamentName) || "predictions"
     }-predictions.png`;
     try {
-      await downloadBlob({ blob, filename, mimeType: "image/png" });
+      const outcome = await downloadBlob({
+        blob,
+        filename,
+        mimeType: "image/png",
+      });
+      if (outcome === "cancelled") return;
       logEvent("graphic_export_complete", {
         ...exportContext,
-        share_method: "download",
+        share_method: shareMethodFor(outcome),
         size_kb: Math.round(blob.size / 1024),
       });
       const now = new Date().toISOString();
@@ -65,16 +71,10 @@ export const ExportBar = ({ blob }: Props) => {
 
   const handleCopy = async () => {
     if (!blob) return false;
-    try {
-      await navigator.clipboard.write([
-        new ClipboardItem({ "image/png": blob }),
-      ]);
-      logEvent("graphic_share", {
-        export_surface: "predict",
-        share_method: "clipboard",
-        tournament_url: tournamentUrl,
-      });
-    } catch (err) {
+    const result = await copyImageToClipboard(blob);
+    if (!result.ok) {
+      // Clipboard write commonly fails: permission denied, insecure
+      // context (HTTP), or a browser with no image clipboard.
       logEvent("graphic_export_fail", {
         ...exportContext,
         failure_kind: "post_process",
@@ -83,9 +83,16 @@ export const ExportBar = ({ blob }: Props) => {
       logWarning("predict clipboard write failed", {
         area: "predict-export",
         tournament_url: tournamentUrl,
-        error: err instanceof Error ? err.message : String(err),
+        error: result.reason,
       });
+      return false;
     }
+    logEvent("graphic_share", {
+      export_surface: "predict",
+      share_method: "clipboard",
+      tournament_url: tournamentUrl,
+    });
+    return true;
   };
 
   return (
@@ -98,6 +105,7 @@ export const ExportBar = ({ blob }: Props) => {
         icon={<FaCopy />}
         label={<Trans>Copy</Trans>}
         confirmLabel={<Trans>Copied!</Trans>}
+        failLabel={<Trans>Copy failed</Trans>}
         onAction={handleCopy}
       />
     </div>

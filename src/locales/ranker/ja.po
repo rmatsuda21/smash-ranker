@@ -301,7 +301,7 @@ msgstr "予想をクリアしますか？"
 #: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:208
 #: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:287
 #: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:310
-#: src/components/user/PlayerCardModal/PlayerCardModal.tsx:121
+#: src/components/user/PlayerCardModal/PlayerCardModal.tsx:125
 msgid "Close"
 msgstr "閉じる"
 
@@ -346,25 +346,27 @@ msgstr "確認"
 msgid "Consulting Master Hand..."
 msgstr ""
 
-#: src/components/predict/ExportBar/ExportBar.tsx:100
+#: src/components/predict/ExportBar/ExportBar.tsx:107
 #: src/components/predict/InviteShareButton/InviteShareButton.tsx:26
-#: src/components/results/ResultsExportBar/ResultsExportBar.tsx:122
-#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:227
+#: src/components/results/ResultsExportBar/ResultsExportBar.tsx:127
+#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:233
 #: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:422
-#: src/components/user/PlayerCardModal/PlayerCardModal.tsx:163
+#: src/components/user/PlayerCardModal/PlayerCardModal.tsx:167
 msgid "Copied!"
 msgstr "コピー完了"
 
-#: src/components/predict/ExportBar/ExportBar.tsx:99
-#: src/components/results/ResultsExportBar/ResultsExportBar.tsx:121
-#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:226
-#: src/components/user/PlayerCardModal/PlayerCardModal.tsx:162
+#: src/components/predict/ExportBar/ExportBar.tsx:106
+#: src/components/results/ResultsExportBar/ResultsExportBar.tsx:126
+#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:232
+#: src/components/user/PlayerCardModal/PlayerCardModal.tsx:166
 msgid "Copy"
 msgstr "コピー"
 
-#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:228
+#: src/components/predict/ExportBar/ExportBar.tsx:108
+#: src/components/results/ResultsExportBar/ResultsExportBar.tsx:128
+#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:234
 msgid "Copy failed"
-msgstr ""
+msgstr "コピーに失敗しました"
 
 #: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:421
 msgid "Copy image"
@@ -561,11 +563,11 @@ msgstr "完了"
 msgid "Dotted"
 msgstr "ドット"
 
-#: src/components/predict/ExportBar/ExportBar.tsx:95
-#: src/components/results/ResultsExportBar/ResultsExportBar.tsx:117
+#: src/components/predict/ExportBar/ExportBar.tsx:102
+#: src/components/results/ResultsExportBar/ResultsExportBar.tsx:122
 #: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:213
-#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:222
-#: src/components/user/PlayerCardModal/PlayerCardModal.tsx:157
+#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:228
+#: src/components/user/PlayerCardModal/PlayerCardModal.tsx:161
 msgid "Download"
 msgstr "ダウンロード"
 
@@ -682,7 +684,7 @@ msgstr "大会データの取得に失敗しました"
 
 #: src/components/predict/PredictionPreview/PredictionPreview.tsx:200
 #: src/components/results/ResultsPreview/ResultsPreview.tsx:354
-#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:203
+#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:209
 msgid "Failed to generate image"
 msgstr "画像の生成に失敗しました"
 
@@ -758,7 +760,7 @@ msgstr "画像を生成"
 msgid "Generating prediction"
 msgstr "予測作成中"
 
-#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:196
+#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:202
 msgid "Generating preview..."
 msgstr "プレビュー作成中..."
 
@@ -1037,7 +1039,7 @@ msgstr ""
 msgid "Mono"
 msgstr "モノクロ"
 
-#: src/components/user/PlayerCardModal/PlayerCardModal.tsx:140
+#: src/components/user/PlayerCardModal/PlayerCardModal.tsx:144
 msgid "Move your mouse over the card"
 msgstr "カードの上でマウスを動かしてみよう"
 
@@ -1268,7 +1270,7 @@ msgid "Player card"
 msgstr "プレイヤーカード"
 
 #. placeholder {0}: data.tag
-#: src/components/user/PlayerCardModal/PlayerCardModal.tsx:132
+#: src/components/user/PlayerCardModal/PlayerCardModal.tsx:136
 msgid "Player card for {0}"
 msgstr "{0}のプレイヤーカード"
 
@@ -1342,7 +1344,7 @@ msgstr "所属"
 
 #: src/components/predict/PredictApp/PredictApp.tsx:167
 #: src/components/results/ResultsApp/ResultsApp.tsx:314
-#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:189
+#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:195
 msgid "Preview"
 msgstr "プレビュー"
 
@@ -1569,9 +1571,9 @@ msgstr "試合"
 msgid "Settings"
 msgstr ""
 
-#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:238
+#: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:244
 #: src/components/top8/SocialShareButton/SocialShareButton.tsx:50
-#: src/components/user/PlayerCardModal/PlayerCardModal.tsx:148
+#: src/components/user/PlayerCardModal/PlayerCardModal.tsx:152
 msgid "Share"
 msgstr "シェア"
 
@@ -1683,7 +1685,7 @@ msgstr "ブラケットの神に祈り中..."
 msgid "Tap entrants to add predictions"
 msgstr "参加者をタップして予想に追加"
 
-#: src/components/user/PlayerCardModal/PlayerCardModal.tsx:138
+#: src/components/user/PlayerCardModal/PlayerCardModal.tsx:142
 msgid "Tap the card, then tilt your phone"
 msgstr "カードをタップして、スマホを傾けてみよう"
 
@@ -2044,7 +2046,7 @@ msgstr "現在のデザインは上書きされます！"
 msgid "Your first bracket is still ahead of you"
 msgstr "最初の大会はこれから"
 
-#: src/components/user/PlayerCardModal/PlayerCardModal.tsx:116
+#: src/components/user/PlayerCardModal/PlayerCardModal.tsx:120
 msgid "Your player card"
 msgstr "あなたのプレイヤーカード"
 

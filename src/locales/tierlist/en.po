@@ -94,15 +94,15 @@ msgstr ""
 msgid "Cool"
 msgstr ""
 
-#: src/components/tierlist/TierExportModal/TierExportModal.tsx:189
+#: src/components/tierlist/TierExportModal/TierExportModal.tsx:194
 msgid "Copied!"
 msgstr ""
 
-#: src/components/tierlist/TierExportModal/TierExportModal.tsx:188
+#: src/components/tierlist/TierExportModal/TierExportModal.tsx:193
 msgid "Copy"
 msgstr ""
 
-#: src/components/tierlist/TierExportModal/TierExportModal.tsx:190
+#: src/components/tierlist/TierExportModal/TierExportModal.tsx:195
 msgid "Copy failed"
 msgstr ""
 
@@ -122,7 +122,7 @@ msgstr ""
 #~ msgid "Design"
 #~ msgstr ""
 
-#: src/components/tierlist/TierExportModal/TierExportModal.tsx:184
+#: src/components/tierlist/TierExportModal/TierExportModal.tsx:189
 msgid "Download"
 msgstr ""
 
@@ -162,7 +162,7 @@ msgstr ""
 msgid "Extra Light"
 msgstr ""
 
-#: src/components/tierlist/TierExportModal/TierExportModal.tsx:165
+#: src/components/tierlist/TierExportModal/TierExportModal.tsx:170
 msgid "Failed to generate image"
 msgstr ""
 
@@ -186,7 +186,7 @@ msgstr ""
 msgid "Game"
 msgstr ""
 
-#: src/components/tierlist/TierExportModal/TierExportModal.tsx:158
+#: src/components/tierlist/TierExportModal/TierExportModal.tsx:163
 msgid "Generating preview..."
 msgstr ""
 
@@ -258,7 +258,7 @@ msgstr ""
 msgid "Pastel"
 msgstr ""
 
-#: src/components/tierlist/TierExportModal/TierExportModal.tsx:151
+#: src/components/tierlist/TierExportModal/TierExportModal.tsx:156
 msgid "Preview"
 msgstr ""
 
@@ -318,7 +318,7 @@ msgstr ""
 #~ msgid "This will reset everything to the default state, including tiers and all character placements."
 #~ msgstr ""
 
-#: src/components/tierlist/TierExportModal/TierExportModal.tsx:173
+#: src/components/tierlist/TierExportModal/TierExportModal.tsx:178
 msgid "Tier list preview"
 msgstr ""
 

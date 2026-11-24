@@ -94,15 +94,15 @@ msgstr "カラーパレット"
 msgid "Cool"
 msgstr "クール"
 
-#: src/components/tierlist/TierExportModal/TierExportModal.tsx:189
+#: src/components/tierlist/TierExportModal/TierExportModal.tsx:194
 msgid "Copied!"
 msgstr "コピー完了"
 
-#: src/components/tierlist/TierExportModal/TierExportModal.tsx:188
+#: src/components/tierlist/TierExportModal/TierExportModal.tsx:193
 msgid "Copy"
 msgstr "コピー"
 
-#: src/components/tierlist/TierExportModal/TierExportModal.tsx:190
+#: src/components/tierlist/TierExportModal/TierExportModal.tsx:195
 msgid "Copy failed"
 msgstr "コピーに失敗しました"
 
@@ -122,7 +122,7 @@ msgstr "削除"
 #~ msgid "Design"
 #~ msgstr "デザイン"
 
-#: src/components/tierlist/TierExportModal/TierExportModal.tsx:184
+#: src/components/tierlist/TierExportModal/TierExportModal.tsx:189
 msgid "Download"
 msgstr "ダウンロード"
 
@@ -162,7 +162,7 @@ msgstr "エキストラボールド"
 msgid "Extra Light"
 msgstr "エクストラライト"
 
-#: src/components/tierlist/TierExportModal/TierExportModal.tsx:165
+#: src/components/tierlist/TierExportModal/TierExportModal.tsx:170
 msgid "Failed to generate image"
 msgstr "画像の生成に失敗しました"
 
@@ -186,7 +186,7 @@ msgstr "フォントウェイト"
 msgid "Game"
 msgstr "ゲーム"
 
-#: src/components/tierlist/TierExportModal/TierExportModal.tsx:158
+#: src/components/tierlist/TierExportModal/TierExportModal.tsx:163
 msgid "Generating preview..."
 msgstr "プレビュー作成中..."
 
@@ -258,7 +258,7 @@ msgstr "オーシャン"
 msgid "Pastel"
 msgstr "パステル"
 
-#: src/components/tierlist/TierExportModal/TierExportModal.tsx:151
+#: src/components/tierlist/TierExportModal/TierExportModal.tsx:156
 msgid "Preview"
 msgstr "プレビュー"
 
@@ -318,7 +318,7 @@ msgstr "シン"
 #~ msgid "This will reset everything to the default state, including tiers and all character placements."
 #~ msgstr "ティアやキャラクターの配置を含め、すべてが初期状態にリセットされます。"
 
-#: src/components/tierlist/TierExportModal/TierExportModal.tsx:173
+#: src/components/tierlist/TierExportModal/TierExportModal.tsx:178
 msgid "Tier list preview"
 msgstr "ティアリストのプレビュー"
 
