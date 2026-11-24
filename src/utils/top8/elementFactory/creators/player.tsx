@@ -20,6 +20,7 @@ import {
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
 import { getCharacterCrop } from "@/utils/top8/getCharacterCrop";
 import { resolveColor } from "@/utils/top8/resolveColor";
+import { getTeamMember } from "@/utils/top8/teamMember";
 import { createFlexGridElement } from "./layout";
 import {
   calculateGridAlignOffset,
@@ -32,7 +33,11 @@ import { getElementKey } from "../elementKey";
 export const createCharacterImageElement: ElementCreator<
   CharacterImageElementConfig
 > = ({ element, index, context }) => {
-  const { player, design } = context;
+  const { design } = context;
+  const player = getTeamMember(context.player, element.member);
+
+  // A team with no second player has nothing to draw there.
+  if (!player && element.member === "teammate") return null;
 
   if (!player || player.characters.length === 0) {
     return (
@@ -106,7 +111,7 @@ export const createCharacterImageElement: ElementCreator<
 export const createAltCharacterImageElement: ElementCreator<
   AltCharacterImageElementConfig
 > = ({ element, index, context }) => {
-  const { player } = context;
+  const player = getTeamMember(context.player, element.member);
 
   if (!player || player.characters.length <= 1) {
     return null;
@@ -169,7 +174,7 @@ export const createAltCharacterImageElement: ElementCreator<
 export const createCustomAltCharacterImageElement: ElementCreator<
   CustomAltCharacterImageElementConfig
 > = ({ element, index, context }) => {
-  const { player } = context;
+  const player = getTeamMember(context.player, element.member);
 
   if (!player) return null;
 
@@ -566,7 +571,7 @@ function renderTemplateForCharacter(
 export const createPlayerFlagElement: ElementCreator<
   PlayerFlagElementConfig
 > = ({ element, index, context }) => {
-  const { player } = context;
+  const player = getTeamMember(context.player, element.member);
 
   const flagSrc =
     player?.customFlagSrc ??

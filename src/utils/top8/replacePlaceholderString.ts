@@ -54,6 +54,16 @@ const resolvePlaceholder = (
       return player?.prefix;
     case DesignPlaceholder.PLAYER_TWITTER:
       return player?.twitter;
+    case DesignPlaceholder.TEAMMATE_COUNTRY:
+      return player?.teammate?.country;
+    case DesignPlaceholder.TEAMMATE_NAME:
+      return player?.teammate?.name;
+    case DesignPlaceholder.TEAMMATE_TAG:
+      return player?.teammate?.gamerTag;
+    case DesignPlaceholder.TEAMMATE_PREFIX:
+      return player?.teammate?.prefix;
+    case DesignPlaceholder.TEAMMATE_TWITTER:
+      return player?.teammate?.twitter;
     case DesignPlaceholder.TOURNAMENT_NAME:
       return tournament?.tournamentName;
     case DesignPlaceholder.EVENT_NAME:

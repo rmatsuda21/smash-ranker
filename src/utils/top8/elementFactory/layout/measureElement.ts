@@ -13,6 +13,7 @@ import type { ElementFactoryContext } from "@/types/top8/ElementFactory";
 import { composeFontStyle } from "@/utils/fonts/fontLoader";
 import { evaluateElementCondition } from "@/utils/top8/evaluateElementCondition";
 import { resolveElementText } from "@/utils/top8/resolveElementText";
+import { getTeamMember } from "@/utils/top8/teamMember";
 import {
   fitText,
   fitWrappedFontSize,
@@ -82,7 +83,7 @@ export const getElementMainSize = (
 
     if (element.type === "customAltCharacterImage") {
       const altEl = element as CustomAltCharacterImageElementConfig;
-      const player = context.player;
+      const player = getTeamMember(context.player, altEl.member);
 
       if (!player) return 0;
 

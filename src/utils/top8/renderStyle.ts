@@ -23,6 +23,17 @@ export const withRenderStyle = (
   return next;
 };
 
+// The same array when no character in it changed.
+const styleCharacters = (
+  characters: CharacerData[],
+  style: RenderStyleId,
+): CharacerData[] => {
+  const styled = characters.map((character) =>
+    withRenderStyle(character, style),
+  );
+  return styled.every((c, i) => c === characters[i]) ? characters : styled;
+};
+
 // Players whose characters did not change keep their identity, so nothing
 // that depends on them re-renders.
 export const applyRenderStyle = (
@@ -30,10 +41,18 @@ export const applyRenderStyle = (
   style: RenderStyleId,
 ): PlayerInfo[] =>
   players.map((player) => {
-    const characters = player.characters.map((character) =>
-      withRenderStyle(character, style),
-    );
-    return characters.every((c, i) => c === player.characters[i])
-      ? player
-      : { ...player, characters };
+    const characters = styleCharacters(player.characters, style);
+    const teammate = player.teammate && {
+      ...player.teammate,
+      characters: styleCharacters(player.teammate.characters, style),
+    };
+    const teammateChanged =
+      teammate && teammate.characters !== player.teammate?.characters;
+
+    if (characters === player.characters && !teammateChanged) return player;
+    return {
+      ...player,
+      characters,
+      ...(teammateChanged && { teammate }),
+    };
   });

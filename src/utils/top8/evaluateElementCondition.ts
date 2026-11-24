@@ -21,6 +21,18 @@ const isConditionMet = (
       return Boolean(player?.gamerTag);
     case DesignPlaceholder.PLAYER_PREFIX:
       return Boolean(player?.prefix);
+    case DesignPlaceholder.TEAMMATE_TWITTER:
+      return Boolean(player?.teammate?.twitter);
+    case DesignPlaceholder.TEAMMATE_COUNTRY:
+      return Boolean(
+        player?.teammate?.customFlagSrc || player?.teammate?.country,
+      );
+    case DesignPlaceholder.TEAMMATE_NAME:
+      return Boolean(player?.teammate?.name);
+    case DesignPlaceholder.TEAMMATE_TAG:
+      return Boolean(player?.teammate?.gamerTag);
+    case DesignPlaceholder.TEAMMATE_PREFIX:
+      return Boolean(player?.teammate?.prefix);
     case DesignPlaceholder.TOURNAMENT_NAME:
       return Boolean(tournament?.tournamentName);
     case DesignPlaceholder.EVENT_NAME:

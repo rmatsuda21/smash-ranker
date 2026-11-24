@@ -10,6 +10,7 @@ import { OFFSCREEN_PROFILE } from "@/utils/top8/renderProfile";
 import { getEffectiveCanvasSize, getUnusedIconSpace } from "@/utils/top8/scene";
 import {
   createSamplePlayers,
+  createSampleTeams,
   SAMPLE_LINEUP_COUNT,
 } from "@/utils/top8/samplePlayers";
 import { loadFamily } from "@/utils/fonts/fontLoader";
@@ -22,6 +23,7 @@ import { squaresDesign } from "@/designs/squares";
 import { minimalDarkDesign, minimalLightDesign } from "@/designs/minimal";
 import { kagaribiDesign } from "@/designs/kagaribi";
 import { kagaribi16Design } from "@/designs/kagaribi16";
+import { kagaribiDoublesDesign } from "@/designs/kagaribiDoubles";
 import { standingsLightDesign, standingsDarkDesign } from "@/designs/standings";
 import { comicBookDesign } from "@/designs/comicBook";
 import { neonSignDesign } from "@/designs/neonSign";
@@ -43,7 +45,13 @@ import {
 import { resizePlayerSlots } from "@/utils/top8/playerCount";
 import { applyRenderStyle } from "@/utils/top8/renderStyle";
 import { RenderStyleId } from "@/types/Game";
-import { SAMPLE_TOURNAMENT } from "@/utils/top8/sampleTournament";
+import {
+  SAMPLE_DOUBLES_TOURNAMENT,
+  SAMPLE_TOURNAMENT,
+} from "@/utils/top8/sampleTournament";
+import { tagTeamDesign } from "@/designs/tagTeam";
+import { duetDesign } from "@/designs/duet";
+import { photoBoothDesign } from "@/designs/photoBooth";
 
 declare global {
   interface Window {
@@ -58,6 +66,14 @@ type PreviewTemplate = DBTemplate & {
   tournament?: TournamentInfo;
   // Draws the characters in this render style where they have art in it.
   renderStyle?: RenderStyleId;
+};
+
+// Doubles templates are shown with teams: every sample player has a
+// teammate.
+const sampleTeams = createSampleTeams(16);
+const doubles = {
+  players: sampleTeams,
+  tournament: SAMPLE_DOUBLES_TOURNAMENT,
 };
 
 const BUILT_IN_TEMPLATES: PreviewTemplate[] = [
@@ -96,6 +112,13 @@ const BUILT_IN_TEMPLATES: PreviewTemplate[] = [
     name: "16 Player Variant",
     design: kagaribi16Design,
     font: "Dela Gothic One",
+  },
+  {
+    id: "kagaribi-doubles",
+    name: "Doubles",
+    design: kagaribiDoublesDesign,
+    font: "Dela Gothic One",
+    ...doubles,
   },
   {
     id: "standings-dark",
@@ -189,6 +212,27 @@ const BUILT_IN_TEMPLATES: PreviewTemplate[] = [
     name: "Original",
     design: sleeveDesign,
     font: "Noto Sans JP",
+  },
+  {
+    id: "tag-team",
+    name: "Doubles",
+    design: tagTeamDesign,
+    font: "RocknRoll One",
+    ...doubles,
+  },
+  {
+    id: "duet",
+    name: "Doubles",
+    design: duetDesign,
+    font: "Shippori Mincho",
+    ...doubles,
+  },
+  {
+    id: "photo-booth",
+    name: "Doubles",
+    design: photoBoothDesign,
+    font: "Yomogi",
+    ...doubles,
   },
 ];
 
@@ -291,9 +335,68 @@ const longNamePlayers = castPlayers.map((player, index) =>
     : player,
 );
 
+// Teams whose names have to shrink, with extra characters on both players
+// and one team that has lost its second player.
+const crowdedTeams = sampleTeams.map((team, index) => {
+  if (index === 7) return { ...team, teammate: undefined };
+  if (index >= LONG_TAGS.length - 1 || !team.teammate) return team;
+
+  const extras = (count: number) =>
+    Array.from({ length: count }, (_, alt) => ({
+      id: CAST_IDS[(index + alt) % CAST_IDS.length],
+      alt: 0 as CharacerData["alt"],
+    }));
+
+  return {
+    ...team,
+    gamerTag: LONG_TAGS[index + 1],
+    prefix: LONG_PREFIXES[index + 1],
+    characters: [...team.characters, ...extras(index % 3)],
+    teammate: {
+      ...team.teammate,
+      gamerTag: LONG_TAGS[LONG_TAGS.length - 1 - index],
+      prefix: LONG_PREFIXES[LONG_PREFIXES.length - 1 - index],
+      characters: [...team.teammate.characters, ...extras((index + 1) % 4)],
+    },
+  };
+});
+const crowdedDoubles = {
+  players: crowdedTeams,
+  tournament: { ...longNameTournament, eventName: "Ultimate Doubles" },
+};
+
 // Golden-only cases: variations of built-in templates that exercise code the
 // plain templates don't. They never become picker thumbnails.
 const GOLDEN_ONLY_TEMPLATES: PreviewTemplate[] = [
+  // Doubles: long names, extra characters, a team of one.
+  {
+    id: "kagaribi-doubles-crowded",
+    name: "Kagaribi Doubles, long names",
+    design: kagaribiDoublesDesign,
+    font: "Dela Gothic One",
+    ...crowdedDoubles,
+  },
+  {
+    id: "tag-team-crowded",
+    name: "Tag Team, long names",
+    design: tagTeamDesign,
+    font: "RocknRoll One",
+    ...crowdedDoubles,
+  },
+  {
+    id: "duet-crowded",
+    name: "Duet, long names",
+    design: duetDesign,
+    font: "Shippori Mincho",
+    ...crowdedDoubles,
+  },
+  {
+    id: "photo-booth-crowded",
+    name: "Photo Booth, long names",
+    design: photoBoothDesign,
+    font: "Yomogi",
+    ...crowdedDoubles,
+  },
   {
     id: "minimal-dark-dynamic-height",
     name: "8 Players (Dark), multi-character",
@@ -478,11 +581,16 @@ const GOLDEN_ONLY_TEMPLATES: PreviewTemplate[] = [
 
 // `?mode=golden` captures lossless half-resolution PNGs for the regression
 // check (scripts/check-goldens.ts) instead of lossy WebP thumbnails.
-const GOLDEN_MODE =
-  new URLSearchParams(window.location.search).get("mode") === "golden";
-const TEMPLATES = GOLDEN_MODE
-  ? [...BUILT_IN_TEMPLATES, ...GOLDEN_ONLY_TEMPLATES]
-  : BUILT_IN_TEMPLATES;
+const PARAMS = new URLSearchParams(window.location.search);
+const GOLDEN_MODE = PARAMS.get("mode") === "golden";
+// `&only=<id>,<id>` renders just those templates, for looking at one design
+// while working on it.
+const ONLY = PARAMS.get("only")?.split(",");
+const TEMPLATES = (
+  GOLDEN_MODE
+    ? [...BUILT_IN_TEMPLATES, ...GOLDEN_ONLY_TEMPLATES]
+    : BUILT_IN_TEMPLATES
+).filter((template) => !ONLY || ONLY.includes(template.id));
 const CAPTURE_OPTIONS = GOLDEN_MODE
   ? { mimeType: "image/png", pixelRatio: 0.5 }
   : { mimeType: "image/webp", quality: 0.5 };

@@ -14,3 +14,10 @@ export const SAMPLE_TOURNAMENT: TournamentInfo = {
   entrants: 128,
   url: "https://start.gg/harbor-clash-12",
 };
+
+/** The same tournament's doubles event, for doubles templates. */
+export const SAMPLE_DOUBLES_TOURNAMENT: TournamentInfo = {
+  ...SAMPLE_TOURNAMENT,
+  eventName: "Ultimate Doubles",
+  entrants: 64,
+};

@@ -214,3 +214,23 @@ export const createSamplePlayers = (
 
   return players;
 };
+
+/** `count` sample doubles teams in finishing order: the sample players taken
+ *  two at a time, the second of each pair as the first one's teammate. */
+export const createSampleTeams = (count: number, lineup = 0): PlayerInfo[] => {
+  const placements = getPlacements(count);
+  const players = createSamplePlayers(count * 2, lineup);
+
+  return Array.from({ length: count }, (_, index) => {
+    const player = players[index * 2];
+    const { name, gamerTag, prefix, characters, country } =
+      players[index * 2 + 1];
+
+    return {
+      ...player,
+      name: `${player.gamerTag} / ${gamerTag}`,
+      placement: placements[index],
+      teammate: { name, gamerTag, prefix, characters, country },
+    };
+  });
+};

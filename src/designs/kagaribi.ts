@@ -10,6 +10,14 @@ import { RenderCondition } from "@/consts/top8/renderConditions";
 const CANVAS_WIDTH = 1920;
 const CANVAS_HEIGHT = 1080;
 
+/** Where each card sits, shared with the doubles variant. */
+export type KagaribiCard = {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+};
+
 const PADDING = 30;
 const VERT_PADDING = 32;
 const CARD_GAP = 20;
@@ -235,7 +243,7 @@ const players: Partial<PlayerDesign>[] = [
   },
 ];
 
-const colorPalette: Design["colorPalette"] = {
+export const kagaribiColorPalette: Design["colorPalette"] = {
   bgGradient1: {
     color: "#000000",
     name: "Color 1",
@@ -276,7 +284,7 @@ const colorPalette: Design["colorPalette"] = {
   topBar: { color: "#FFFFFF", name: "Top Bar", group: "Background" },
 };
 
-const background: LayerDesign = {
+export const kagaribiBackground: LayerDesign = {
   elements: [
     {
       type: "rect",
@@ -311,7 +319,7 @@ const background: LayerDesign = {
   ],
 };
 
-const tournament: LayerDesign = {
+export const kagaribiTournament: LayerDesign = {
   elements: [
     {
       type: "smartText",
@@ -396,6 +404,40 @@ const tournament: LayerDesign = {
   ],
 };
 
+const square = (x: number, y: number, size: number): KagaribiCard => ({
+  x,
+  y,
+  width: size,
+  height: size,
+});
+
+/** The eight cards in placement order: 1st tall on the left, 2nd to 4th in
+ *  the top row, 5th to 8th in the bottom row. */
+export const KAGARIBI_CARDS: KagaribiCard[] = [
+  {
+    x: PADDING,
+    y: PLAYER_AREA_Y,
+    width: FIRST_PL_WIDTH,
+    height: FIRST_PL_HEIGHT,
+  },
+  ...[0, 1, 2].map((i) =>
+    square(
+      RIGHT_X + (TOP_ROW_SIZE + CARD_GAP) * i,
+      PLAYER_AREA_Y,
+      TOP_ROW_SIZE,
+    ),
+  ),
+  ...[0, 1, 2, 3].map((i) =>
+    square(
+      RIGHT_X + (BOTTOM_ROW_SIZE + CARD_GAP) * i,
+      BOTTOM_ROW_Y,
+      BOTTOM_ROW_SIZE,
+    ),
+  ),
+];
+
+export const KAGARIBI_CARD_GAP = CARD_GAP;
+
 export const kagaribiDesign: Design = {
   name: "Kagaribi",
   canvasSize: {
@@ -403,7 +445,7 @@ export const kagaribiDesign: Design = {
     height: CANVAS_HEIGHT,
   },
   canvasDisplayScale: 0.5,
-  colorPalette,
+  colorPalette: kagaribiColorPalette,
   textPalette: {
     titleText: {
       text: DesignPlaceholder.TOURNAMENT_NAME,
@@ -426,8 +468,8 @@ export const kagaribiDesign: Design = {
       name: "URL",
     },
   },
-  background,
-  tournament,
+  background: kagaribiBackground,
+  tournament: kagaribiTournament,
   basePlayer,
   players,
   reversePlayerZOrder: true,

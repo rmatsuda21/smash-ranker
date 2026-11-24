@@ -24,6 +24,12 @@ export enum DesignPlaceholder {
   PLAYER_TAG = "<🏷️>",
   PLAYER_PREFIX = "<🎭>",
   PLAYER_TWITTER = "<🐦>",
+  // Doubles: the player's teammate
+  TEAMMATE_COUNTRY = "<🎌2>",
+  TEAMMATE_NAME = "<👤2>",
+  TEAMMATE_TAG = "<🏷️2>",
+  TEAMMATE_PREFIX = "<🎭2>",
+  TEAMMATE_TWITTER = "<🐦2>",
 }
 
 const TournamentPlaceholderMessages: Partial<
@@ -51,6 +57,11 @@ const PlayerPlaceholderMessages: Partial<
   [DesignPlaceholder.PLAYER_TAG]: msg`Player Tag`,
   [DesignPlaceholder.PLAYER_PREFIX]: msg`Player Prefix`,
   [DesignPlaceholder.PLAYER_TWITTER]: msg`Twitter Handle`,
+  [DesignPlaceholder.TEAMMATE_COUNTRY]: msg`Teammate Country`,
+  [DesignPlaceholder.TEAMMATE_NAME]: msg`Teammate Name (w/ Prefix)`,
+  [DesignPlaceholder.TEAMMATE_TAG]: msg`Teammate Tag`,
+  [DesignPlaceholder.TEAMMATE_PREFIX]: msg`Teammate Prefix`,
+  [DesignPlaceholder.TEAMMATE_TWITTER]: msg`Teammate Twitter Handle`,
 };
 
 const AllPlaceholderMessages: Record<DesignPlaceholder, MessageDescriptor> = {

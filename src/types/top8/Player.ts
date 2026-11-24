@@ -9,6 +9,22 @@ export type CharacerData = {
   style?: RenderStyleId;
 };
 
+// The second player of a doubles team. The team's entrant, placement and
+// slot belong to the `PlayerInfo` that holds it.
+export type TeammateInfo = {
+  name: string;
+  gamerTag: string;
+  prefix?: string;
+  characters: CharacerData[];
+  country?: string;
+  customFlagSrc?: string;
+  twitter?: string;
+  avatarImgSrc?: string;
+};
+
+// Which player of a team an element draws; the first one when unset.
+export type TeamMember = "player" | "teammate";
+
 export type PlayerInfo = {
   id: string;
   entrantId: string;
@@ -21,4 +37,6 @@ export type PlayerInfo = {
   gamerTag: string;
   prefix?: string;
   avatarImgSrc?: string;
+  // Doubles: the other player of the team.
+  teammate?: TeammateInfo;
 };

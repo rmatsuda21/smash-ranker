@@ -32,6 +32,10 @@ import {
 } from "@/designs/tape";
 import { kagaribiDesign } from "@/designs/kagaribi";
 import { kagaribi16Design } from "@/designs/kagaribi16";
+import { kagaribiDoublesDesign } from "@/designs/kagaribiDoubles";
+import { tagTeamDesign } from "@/designs/tagTeam";
+import { duetDesign } from "@/designs/duet";
+import { photoBoothDesign } from "@/designs/photoBooth";
 import { Button } from "@/components/shared/Button/Button";
 import { DBTemplate } from "@/types/Repository";
 import { useCanvasStore } from "@/store/canvasStore";
@@ -76,6 +80,12 @@ const DEFAULT_TEMPLATE_GROUPS: DefaultTemplateGroup[] = [
         id: "kagaribi-16",
         name: msg`16 Player Variant`,
         design: kagaribi16Design,
+        font: "Dela Gothic One",
+      },
+      {
+        id: "kagaribi-doubles",
+        name: msg`Doubles`,
+        design: kagaribiDoublesDesign,
         font: "Dela Gothic One",
       },
     ],
@@ -245,6 +255,43 @@ const DEFAULT_TEMPLATE_GROUPS: DefaultTemplateGroup[] = [
         name: msg`Light`,
         design: minimalLightDesign,
         font: "Noto Sans JP",
+      },
+    ],
+  },
+  // Doubles: every slot is a team of two.
+  {
+    id: "tag-team",
+    name: msg`Tag Team`,
+    templates: [
+      {
+        id: "tag-team",
+        name: msg`Doubles`,
+        design: tagTeamDesign,
+        font: "RocknRoll One",
+      },
+    ],
+  },
+  {
+    id: "duet",
+    name: msg`Duet`,
+    templates: [
+      {
+        id: "duet",
+        name: msg`Doubles`,
+        design: duetDesign,
+        font: "Shippori Mincho",
+      },
+    ],
+  },
+  {
+    id: "photo-booth",
+    name: msg`Photo Booth`,
+    templates: [
+      {
+        id: "photo-booth",
+        name: msg`Doubles`,
+        design: photoBoothDesign,
+        font: "Yomogi",
       },
     ],
   },

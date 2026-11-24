@@ -4,6 +4,7 @@ import { Group, Image, Rect, Text } from "react-konva";
 import { DesignPlaceholder } from "@/consts/top8/placeholders";
 import { RenderCondition } from "@/consts/top8/renderConditions";
 import { type GradientConfig } from "@/types/top8/Gradient";
+import { type TeamMember } from "@/types/top8/Player";
 
 export type ImageFillMode = "contain" | "cover";
 type ImageAlign = "center" | "left" | "right" | "top" | "bottom";
@@ -270,6 +271,9 @@ export interface CustomImageElementConfig
 export interface CharacterImageElementConfig
   extends BaseElementConfig, Partial<ComponentProps<typeof Image>> {
   type: "characterImage";
+  /** Doubles: whose it is, the player's (the default) or their teammate's.
+   *  A teammate element draws nothing for a player without one. */
+  member?: TeamMember;
   usePlayerAvatar?: boolean;
   shadowEnabled?: boolean;
   fillMode?: ImageFillMode;
@@ -288,6 +292,9 @@ export interface CharacterImageElementConfig
 
 export interface AltCharacterImageElementConfig extends BaseElementConfig {
   type: "altCharacterImage";
+  /** Doubles: whose it is, the player's (the default) or their teammate's.
+   *  A teammate element draws nothing for a player without one. */
+  member?: TeamMember;
   gap?: number;
   rowGap?: number;
   columnGap?: number;
@@ -303,6 +310,9 @@ export type CharacterImageType = "stock" | "render";
 
 export interface CustomAltCharacterImageElementConfig extends BaseElementConfig {
   type: "customAltCharacterImage";
+  /** Doubles: whose it is, the player's (the default) or their teammate's.
+   *  A teammate element draws nothing for a player without one. */
+  member?: TeamMember;
   imageType?: CharacterImageType;
   /** When true, include the main character as the first grid item. */
   includeMainCharacter?: boolean;
@@ -356,6 +366,9 @@ export interface BackgroundImageElementConfig
 export interface PlayerFlagElementConfig
   extends BaseElementConfig, Partial<ComponentProps<typeof Image>> {
   type: "playerFlag";
+  /** Doubles: whose it is, the player's (the default) or their teammate's.
+   *  A teammate element draws nothing for a player without one. */
+  member?: TeamMember;
   fillMode?: ImageFillMode;
   align?: ImageAlign;
 }

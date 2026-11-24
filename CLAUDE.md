@@ -203,7 +203,7 @@ Fonts are sourced from **Fontsource** (https://fontsource.org) — no Google Fon
 
 The Top 8 graphic is rendered via **Konva** (2D canvas) through React-Konva. The canvas tree is driven entirely by the `canvasStore` design state. Key concepts:
 
-- **Designs** (`src/designs/`) — predefined layout templates (`top8er`, `minimal`, `squares`, `kagaribi`, `standings`, `comicBook`, `neonSign`, `highScore`, `tape`, `colourBars`, `sleeve`). Each design is a typed object describing all canvas elements. The kagaribi template uses `altCharacterImage` with `flow: "column"` and `rows: 6` to display alt character icons in a top-right vertical grid that grows leftward.
+- **Designs** (`src/designs/`) — predefined layout templates (`top8er`, `minimal`, `squares`, `kagaribi`, `standings`, `comicBook`, `neonSign`, `highScore`, `tape`, `colourBars`, `sleeve`, and the doubles designs `kagaribiDoubles`, `tagTeam`, `duet`, `photoBooth`). Each design is a typed object describing all canvas elements. The kagaribi template uses `altCharacterImage` with `flow: "column"` and `rows: 6` to display alt character icons in a top-right vertical grid that grows leftward.
 - **Element types** — `text`, `smartText`, `image`, `group`, `flexGroup`, `flexGrid`, `rect`, `polygon`, `pattern`, `svg`, `customImage`, `characterImage`, `altCharacterImage`, `customAltCharacterImage`, `tournamentIcon`, `playerFlag`
 - **Element factory** (`src/utils/top8/elementFactory/`) — turns element configs into Konva nodes:
   - `ElementList.tsx` — the `<ElementList elements context />` component is the only way configs become nodes. Per element it checks `hidden`/`conditions`, calls the type's creator, then wraps the result from the outside in: `SelectableElement` (when `selectable`), `FilteredElement` (when `filterEffects`), a clipping `Group` (when `clip`).
@@ -275,6 +275,15 @@ A design opts in with `Design.dynamicPlayerCount` (`{ slotPitch, min, max, slotO
 - **Player data is never resized with it** — `playerStore` already holds 32 players (tournament loads overfetch, see `MIN_FETCH_COUNT`), so a new slot shows the next player in the standings and a removed one keeps its data. `usePlayerCount` (`src/hooks/top8/usePlayerCount.ts`) pads with blank players if the data is short and keeps the selection inside the slots. Keep `max` at or under 32 unless the fetch count grows too.
 - **UI** — `PlayerCountControl` in the Players tab (stepper, typed number, 4/8/16/32 presets) plus a "+" chip at the end of the roster strip; both render only when the design has the flag.
 - **Template loads** — loading a built-in template with the flag while the current design also has it keeps the current count (`loadTemplate`); saved templates keep the count they were saved with.
+
+### Doubles
+
+A slot can hold a team: `PlayerInfo.teammate` (`TeammateInfo`: name, tag, prefix, characters, country, flag, avatar) is the second player, while the entrant, placement and slot stay on the `PlayerInfo`. Nothing in the app fills it in yet (no editor fields, no team loading from start.gg); only the sample teams do (`createSampleTeams`, used by the preview generator with `SAMPLE_DOUBLES_TOURNAMENT`).
+
+- **Text** — the teammate has its own placeholders (`DesignPlaceholder.TEAMMATE_TAG`, `TEAMMATE_PREFIX`, `TEAMMATE_NAME`, `TEAMMATE_COUNTRY`, `TEAMMATE_TWITTER`), which also work as `conditions`, so one text can name both players.
+- **Images** — `characterImage`, `altCharacterImage`, `customAltCharacterImage` and `playerFlag` take `member: "teammate"`. They read their player through `getTeamMember` (`src/utils/top8/teamMember.ts`) and draw nothing for a player without a teammate. **A new element that reads `context.player` for something a teammate also has should do the same.**
+- **Designs** — Kagaribi Doubles (the Kagaribi cards, from `KAGARIBI_CARDS`, with the teammate a step behind), Tag Team (cards cut by a leaning seam, `clipPoints` per half), Duet (the winning pair full length on a panel, the rest as a list) and Photo Booth (a strip of two frames per team, tilted with the slot's `rotation`). A name line that holds sponsor and tag in a row `flexGroup` gives both `flex.shrink`, or a long sponsor pushes the tag out.
+- `applyRenderStyle` styles the teammate's characters too.
 
 ### Collapsible Band
 
