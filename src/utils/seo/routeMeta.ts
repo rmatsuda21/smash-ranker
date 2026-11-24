@@ -45,7 +45,8 @@ const STATIC_ROUTES: Record<string, RouteMeta> = {
   },
   "/thumbnail": {
     title: "Thumbnail | Smash Ranker",
-    description: "Design custom thumbnails for Super Smash Bros. content.",
+    description:
+      "Make video thumbnails for Super Smash Bros. sets, filled in from start.gg.",
     image: DEFAULT_IMAGE,
     url: `${SITE}/thumbnail`,
     type: "website",

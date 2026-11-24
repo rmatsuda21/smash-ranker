@@ -16,6 +16,7 @@ const ZUSTAND_STORAGE_KEYS = [
   "results-store",
   "social-post-store",
   "thumbnail-store",
+  "thumbnail-maker",
   "tier-list-store",
   "tournament-store",
   "export-settings",

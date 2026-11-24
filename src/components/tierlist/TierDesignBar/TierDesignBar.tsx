@@ -24,7 +24,7 @@ import { GameSwitch } from "@/components/shared/GameSwitch/GameSwitch";
 import { Slider } from "@/components/shared/Slider/Slider";
 import { Popover } from "@/components/shared/Popover/Popover";
 import { FieldGroup } from "@/components/top8/EditorForm/EditorForm";
-import { TextFontSelect } from "@/components/thumbnail/Pickers/TextFontSelect";
+import { TextFontSelect } from "@/components/shared/TextFontSelect/TextFontSelect";
 import { useFontStore } from "@/store/fontStore";
 import { pickClosestWeight } from "@/utils/fonts/weightFallback";
 import {

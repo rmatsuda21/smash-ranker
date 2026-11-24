@@ -1,5 +1,4 @@
 import { Design } from "./top8/Design";
-import { ThumbnailDesign } from "./thumbnail/ThumbnailDesign";
 
 export interface Store<T> {
   get(id: string): Promise<T | undefined>;
@@ -33,10 +32,13 @@ export type DBCustomFont = {
   date: Date;
 };
 
+// Templates saved by the first thumbnail editor. Nothing reads them any more;
+// the store stays so existing data is left alone and a factory reset still
+// clears it.
 export type DBThumbnailTemplate = {
   id: string;
   name: string;
-  design: ThumbnailDesign;
+  design: unknown;
   font?: string;
   date: Date;
   previewImage?: Blob;

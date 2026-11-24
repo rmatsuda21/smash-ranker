@@ -25,6 +25,16 @@ msgstr ""
 msgid "(https://tonamel.com/competition/[slug])"
 msgstr ""
 
+#. placeholder {0}: scenes.length
+#: src/components/thumbnail/ThumbnailExportModal/ThumbnailExportModal.tsx:216
+msgid "{0, plural, one {# image ready, in one zip file.} other {# images ready, in one zip file.}}"
+msgstr ""
+
+#. placeholder {0}: included.length
+#: src/components/thumbnail/SetList/SetList.tsx:192
+msgid "{0, plural, one {Save # image} other {Save # images}}"
+msgstr ""
+
 #. placeholder {0}: visibleAssets.length
 #: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:299
 msgid "{0} assets"
@@ -38,6 +48,12 @@ msgstr ""
 #. placeholder {0}: file.name
 #: src/hooks/useAssetUpload.ts:25
 msgid "{0} is too large! (Max 2MB)"
+msgstr ""
+
+#. placeholder {0}: included.length
+#. placeholder {1}: visible.length
+#: src/components/thumbnail/SetList/SetList.tsx:99
+msgid "{0} of {1} selected"
 msgstr ""
 
 #. placeholder {0}: markedIds.size
@@ -158,6 +174,10 @@ msgstr ""
 msgid "All current predictions will be removed."
 msgstr ""
 
+#: src/components/thumbnail/SetList/SetList.tsx:75
+msgid "All sets"
+msgstr ""
+
 #: src/components/home/RecentTournaments/RecentTournaments.tsx:114
 msgid "All tournaments & stats"
 msgstr ""
@@ -184,6 +204,7 @@ msgid "Are you sure you want to delete this asset?"
 msgstr ""
 
 #: src/components/results/ResultsApp/ResultsApp.tsx:34
+#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:251
 msgid "Asking start.gg very nicely..."
 msgstr ""
 
@@ -218,6 +239,10 @@ msgstr ""
 
 #: src/consts/top8/textLabels.ts:9
 msgid "Badge"
+msgstr ""
+
+#: src/utils/thumbnail/templates.ts:244
+msgid "Banner"
 msgstr ""
 
 #: src/consts/top8/colorLabels.ts:18
@@ -298,6 +323,7 @@ msgid "Cancel"
 msgstr ""
 
 #: src/consts/top8/colorLabels.ts:20
+#: src/utils/thumbnail/templates.ts:370
 msgid "Card"
 msgstr ""
 
@@ -394,6 +420,10 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
+#: src/components/thumbnail/SetList/SetList.tsx:105
+msgid "Close event"
+msgstr ""
+
 #: src/consts/top8/colorLabels.ts:27
 msgid "Color 1"
 msgstr ""
@@ -412,6 +442,10 @@ msgstr ""
 
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:203
 msgid "Colour Bars"
+msgstr ""
+
+#: src/components/thumbnail/LookPanel/LookPanel.tsx:49
+msgid "Colours"
 msgstr ""
 
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:131
@@ -450,6 +484,8 @@ msgstr ""
 #: src/components/predict/ExportBar/ExportBar.tsx:107
 #: src/components/predict/InviteShareButton/InviteShareButton.tsx:42
 #: src/components/results/ResultsExportBar/ResultsExportBar.tsx:127
+#: src/components/thumbnail/MatchForm/MatchForm.tsx:209
+#: src/components/thumbnail/ThumbnailExportModal/ThumbnailExportModal.tsx:238
 #: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:233
 #: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:422
 #: src/components/user/PlayerCardModal/PlayerCardModal.tsx:167
@@ -458,6 +494,8 @@ msgstr ""
 
 #: src/components/predict/ExportBar/ExportBar.tsx:106
 #: src/components/results/ResultsExportBar/ResultsExportBar.tsx:126
+#: src/components/thumbnail/MatchForm/MatchForm.tsx:208
+#: src/components/thumbnail/ThumbnailExportModal/ThumbnailExportModal.tsx:237
 #: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:232
 #: src/components/user/PlayerCardModal/PlayerCardModal.tsx:166
 msgid "Copy"
@@ -465,6 +503,8 @@ msgstr ""
 
 #: src/components/predict/ExportBar/ExportBar.tsx:108
 #: src/components/results/ResultsExportBar/ResultsExportBar.tsx:128
+#: src/components/thumbnail/MatchForm/MatchForm.tsx:210
+#: src/components/thumbnail/ThumbnailExportModal/ThumbnailExportModal.tsx:239
 #: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:234
 msgid "Copy failed"
 msgstr ""
@@ -695,10 +735,15 @@ msgstr ""
 
 #: src/components/predict/ExportBar/ExportBar.tsx:102
 #: src/components/results/ResultsExportBar/ResultsExportBar.tsx:122
+#: src/components/thumbnail/ThumbnailExportModal/ThumbnailExportModal.tsx:232
 #: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:213
 #: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:228
 #: src/components/user/PlayerCardModal/PlayerCardModal.tsx:161
 msgid "Download"
+msgstr ""
+
+#: src/components/thumbnail/ThumbnailExportModal/ThumbnailExportModal.tsx:232
+msgid "Download all"
 msgstr ""
 
 #: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:414
@@ -716,6 +761,16 @@ msgstr ""
 #: src/components/results/SetList/SetRow.tsx:247
 #: src/components/results/SetList/SetRow.tsx:293
 msgid "DQ"
+msgstr ""
+
+#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:220
+msgid "Drag a character to move it. Scroll over it to resize it."
+msgstr ""
+
+#. placeholder {0}: images.length + 1
+#. placeholder {1}: scenes.length
+#: src/components/thumbnail/ThumbnailExportModal/ThumbnailExportModal.tsx:222
+msgid "Drawing {0} of {1}..."
 msgstr ""
 
 #: src/components/results/ResultsPreview/ResultsPreview.tsx:61
@@ -779,6 +834,10 @@ msgstr ""
 msgid "Event"
 msgstr ""
 
+#: src/components/thumbnail/LookPanel/LookPanel.tsx:86
+msgid "Event name"
+msgstr ""
+
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:130
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:131
 #: src/consts/top8/placeholders.ts:39
@@ -813,6 +872,7 @@ msgstr ""
 
 #: src/hooks/predict/useFetchPredictionEntrants.ts:238
 #: src/hooks/results/useFetchResultsEntrantPool.ts:197
+#: src/hooks/thumbnail/useLoadThumbnailEvent.ts:76
 msgid "Failed to fetch tournament"
 msgstr ""
 
@@ -823,8 +883,13 @@ msgstr ""
 
 #: src/components/predict/PredictionPreview/PredictionPreview.tsx:200
 #: src/components/results/ResultsPreview/ResultsPreview.tsx:354
+#: src/components/thumbnail/ThumbnailExportModal/ThumbnailExportModal.tsx:183
 #: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:209
 msgid "Failed to generate image"
+msgstr ""
+
+#: src/hooks/thumbnail/useLoadThumbnailEvent.ts:108
+msgid "Failed to load more sets"
 msgstr ""
 
 #: src/components/user/StatsBoard/StatsBoard.tsx:432
@@ -881,6 +946,11 @@ msgstr ""
 msgid "Fit to window"
 msgstr ""
 
+#: src/components/thumbnail/MatchForm/MatchForm.tsx:108
+msgid "Flip"
+msgstr ""
+
+#: src/components/thumbnail/LookPanel/LookPanel.tsx:141
 #: src/components/top8/DesignEditor/DesignEditor.tsx:31
 msgid "Font"
 msgstr ""
@@ -911,6 +981,7 @@ msgstr ""
 msgid "Generating prediction"
 msgstr ""
 
+#: src/components/thumbnail/ThumbnailExportModal/ThumbnailExportModal.tsx:207
 #: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:202
 msgid "Generating preview..."
 msgstr ""
@@ -937,6 +1008,10 @@ msgstr ""
 
 #: src/consts/top8/colorLabels.ts:35
 msgid "Gradient Start"
+msgstr ""
+
+#: src/components/thumbnail/MatchForm/MatchForm.tsx:33
+msgid "Grand Final"
 msgstr ""
 
 #: src/components/top8/SettingsPanel/AccentColorPicker.tsx:28
@@ -993,6 +1068,12 @@ msgstr ""
 
 #: src/components/top8/AssetManager/AssetsModal/AssetGrid/AssetGrid.tsx:127
 msgid "In use"
+msgstr ""
+
+#. placeholder {0}: left.name
+#. placeholder {1}: right.name
+#: src/components/thumbnail/SetList/SetList.tsx:129
+msgid "Include {0} vs {1}"
 msgstr ""
 
 #: src/consts/top8/colorLabels.ts:38
@@ -1060,6 +1141,10 @@ msgstr ""
 msgid "Layout"
 msgstr ""
 
+#: src/components/thumbnail/LookPanel/LookPanel.tsx:58
+msgid "Left"
+msgstr ""
+
 #: src/consts/top8/colorLabels.ts:40
 msgid "Left Border"
 msgstr ""
@@ -1090,6 +1175,10 @@ msgstr ""
 
 #: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:319
 msgid "Load a tournament to compose a post."
+msgstr ""
+
+#: src/components/thumbnail/SetList/SetList.tsx:179
+msgid "Load older sets"
 msgstr ""
 
 #. placeholder {0}: template.name
@@ -1123,6 +1212,10 @@ msgstr ""
 
 #: src/components/results/ResultsWorkspace/ResultsWorkspace.tsx:82
 msgid "Loading results"
+msgstr ""
+
+#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:250
+msgid "Loading sets"
 msgstr ""
 
 #: src/components/predict/PredictApp/PredictApp.tsx:113
@@ -1162,12 +1255,28 @@ msgstr ""
 msgid "Logging you in with start.gg..."
 msgstr ""
 
+#: src/components/thumbnail/LookPanel/LookPanel.tsx:97
+msgid "Logo"
+msgstr ""
+
+#: src/components/thumbnail/LookPanel/LookPanel.tsx:128
+msgid "Logo image"
+msgstr ""
+
+#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:109
+msgid "Look"
+msgstr ""
+
 #: src/components/results/ResultsApp/ResultsApp.tsx:48
 msgid "Looking for the game 5 last stock..."
 msgstr ""
 
 #: src/components/results/ResultsApp/ResultsApp.tsx:39
 msgid "Looking for the guy who entered as \"test\"..."
+msgstr ""
+
+#: src/components/thumbnail/MatchForm/MatchForm.tsx:32
+msgid "Losers Final"
 msgstr ""
 
 #: src/components/top8/InfoPanel/InfoPanel.tsx:59
@@ -1197,6 +1306,10 @@ msgstr ""
 
 #: src/components/top8/InfoPanel/InfoPanel.tsx:62
 msgid "Many cups of coffee were consumed during development 👀"
+msgstr ""
+
+#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:105
+msgid "Match"
 msgstr ""
 
 #: src/consts/games.ts:37
@@ -1271,6 +1384,7 @@ msgstr ""
 #~ msgid "My Tournaments"
 #~ msgstr ""
 
+#: src/components/thumbnail/MatchForm/MatchForm.tsx:68
 #: src/consts/top8/colorLabels.ts:45
 msgid "Name"
 msgstr ""
@@ -1296,6 +1410,7 @@ msgid "Never lost to"
 msgstr ""
 
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:195
+#: src/utils/thumbnail/templates.ts:293
 msgid "Night"
 msgstr ""
 
@@ -1339,6 +1454,10 @@ msgstr ""
 msgid "No results found"
 msgstr ""
 
+#: src/components/thumbnail/SetList/SetList.tsx:168
+msgid "No sets here. Try another filter."
+msgstr ""
+
 #: src/components/top8/TextEditor/TextEditor.tsx:49
 msgid "No text content defined in this design."
 msgstr ""
@@ -1370,6 +1489,10 @@ msgstr ""
 
 #: src/components/user/StatsBoard/StatsBoard.tsx:278
 msgid "of the bracket finishes behind you, on average"
+msgstr ""
+
+#: src/components/thumbnail/SetList/SetList.tsx:73
+msgid "On stream"
 msgstr ""
 
 #: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:43
@@ -1441,6 +1564,10 @@ msgstr ""
 msgid "Paper"
 msgstr ""
 
+#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:173
+msgid "Paste a start.gg event link to fill in its matches"
+msgstr ""
+
 #: src/components/results/ResultsApp/ResultsApp.tsx:191
 msgid "Paste a start.gg event URL, pick a player, and generate a shareable recap of their run."
 msgstr ""
@@ -1455,6 +1582,7 @@ msgstr ""
 
 #: src/components/predict/PredictApp/PredictApp.tsx:146
 #: src/components/results/ResultsApp/ResultsApp.tsx:241
+#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:172
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:103
 msgid "Paste URL"
 msgstr ""
@@ -1473,6 +1601,10 @@ msgstr ""
 
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:288
 msgid "Photo Booth"
+msgstr ""
+
+#: src/components/thumbnail/SetList/SetList.tsx:157
+msgid "Pick a character"
 msgstr ""
 
 #: src/components/results/EntrantPicker/EntrantPicker.tsx:38
@@ -1512,6 +1644,14 @@ msgstr ""
 
 #: src/components/top8/PlayersEditor/PlayerSelector.tsx:40
 msgid "Player {slot}"
+msgstr ""
+
+#: src/components/thumbnail/MatchForm/MatchForm.tsx:26
+msgid "Player 1 (left)"
+msgstr ""
+
+#: src/components/thumbnail/MatchForm/MatchForm.tsx:27
+msgid "Player 2 (right)"
 msgstr ""
 
 #: src/components/user/PlayerCardLauncher/PlayerCardLauncher.tsx:99
@@ -1567,6 +1707,10 @@ msgstr ""
 msgid "Polishing trophies..."
 msgstr ""
 
+#: src/components/thumbnail/MatchForm/MatchForm.tsx:35
+msgid "Pools"
+msgstr ""
+
 #: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:433
 msgid "Post"
 msgstr ""
@@ -1598,6 +1742,7 @@ msgstr ""
 
 #: src/components/predict/PredictApp/PredictApp.tsx:171
 #: src/components/results/ResultsApp/ResultsApp.tsx:275
+#: src/components/thumbnail/ThumbnailExportModal/ThumbnailExportModal.tsx:253
 #: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:195
 msgid "Preview"
 msgstr ""
@@ -1664,6 +1809,7 @@ msgstr ""
 msgid "Red"
 msgstr ""
 
+#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:191
 #: src/components/top8/Ranker/Header/Header.tsx:44
 msgid "Redo"
 msgstr ""
@@ -1682,6 +1828,10 @@ msgstr ""
 msgid "Regular at <0>{0}</0> ({1} times)"
 msgstr ""
 
+#: src/components/thumbnail/LookPanel/LookPanel.tsx:119
+msgid "Remove"
+msgstr ""
+
 #. placeholder {0}: font.fontFamily
 #: src/components/top8/DesignEditor/CustomFontManager/CustomFontManager.tsx:57
 #: src/components/top8/DesignEditor/CustomFontManager/CustomFontManager.tsx:58
@@ -1698,10 +1848,18 @@ msgstr ""
 msgid "Remove last player"
 msgstr ""
 
+#: src/components/thumbnail/LookPanel/LookPanel.tsx:108
+msgid "Replace"
+msgstr ""
+
 #: src/components/results/ResultsApp/ResultsApp.tsx:39
 #: src/components/results/ResultsPreview/ResultsPreview.tsx:58
 #~ msgid "Replaying the bracket..."
 #~ msgstr ""
+
+#: src/components/thumbnail/MatchForm/MatchForm.tsx:120
+msgid "Reset"
+msgstr ""
 
 #: src/components/top8/SettingsPanel/DeveloperSettings.tsx:47
 #: src/components/top8/SettingsPanel/DeveloperSettings.tsx:75
@@ -1716,12 +1874,20 @@ msgstr ""
 msgid "Rewatching every set at 2x speed..."
 msgstr ""
 
+#: src/components/thumbnail/LookPanel/LookPanel.tsx:77
+msgid "Right"
+msgstr ""
+
 #: src/components/user/StatsBoard/StatsBoard.tsx:437
 msgid "Rival"
 msgstr ""
 
 #: src/components/user/EmptyProfile/EmptyProfile.tsx:38
 msgid "Rivals and the characters you play most"
+msgstr ""
+
+#: src/components/thumbnail/MatchForm/MatchForm.tsx:180
+msgid "Round"
 msgstr ""
 
 #: src/components/predict/PredictApp/PredictApp.tsx:31
@@ -1746,6 +1912,10 @@ msgstr ""
 
 #: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:140
 msgid "Save Design as Template"
+msgstr ""
+
+#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:200
+msgid "Save image"
 msgstr ""
 
 #: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:183
@@ -1845,6 +2015,7 @@ msgid "Selected"
 msgstr ""
 
 #: src/components/results/SetList/SetList.tsx:72
+#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:103
 #: src/components/user/PlayerCardLauncher/PlayerCardLauncher.tsx:55
 msgid "Sets"
 msgstr ""
@@ -1906,6 +2077,10 @@ msgstr ""
 msgid "Sky"
 msgstr ""
 
+#: src/utils/thumbnail/templates.ts:140
+msgid "Slash"
+msgstr ""
+
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:233
 #: src/consts/top8/colorLabels.ts:62
 msgid "Sleeve"
@@ -1917,6 +2092,14 @@ msgstr ""
 
 #: src/consts/top8/textLabels.ts:28
 msgid "Sound Effect"
+msgstr ""
+
+#: src/utils/thumbnail/templates.ts:47
+msgid "Split"
+msgstr ""
+
+#: src/components/thumbnail/MatchForm/MatchForm.tsx:59
+msgid "Sponsor"
 msgstr ""
 
 #: src/consts/top8/colorLabels.ts:64
@@ -1966,6 +2149,14 @@ msgstr ""
 
 #: src/components/top8/InfoPanel/InfoPanel.tsx:56
 msgid "Support"
+msgstr ""
+
+#: src/components/thumbnail/LookPanel/LookPanel.tsx:64
+msgid "Swap colours"
+msgstr ""
+
+#: src/components/thumbnail/MatchForm/MatchForm.tsx:173
+msgid "Swap sides"
 msgstr ""
 
 #: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:443
@@ -2026,6 +2217,8 @@ msgstr ""
 msgid "Teammate Twitter Handle"
 msgstr ""
 
+#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:108
+#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:225
 #: src/components/top8/SocialPostComposer/TemplateSelector.tsx:51
 msgid "Template"
 msgstr ""
@@ -2080,6 +2273,10 @@ msgstr ""
 msgid "Texts"
 msgstr ""
 
+#: src/components/thumbnail/LookPanel/LookPanel.tsx:40
+msgid "That file could not be read as an image."
+msgstr ""
+
 #: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:33
 msgid "The image draws your run as a line through the bracket"
 msgstr ""
@@ -2101,6 +2298,10 @@ msgstr ""
 msgid "There are no tournaments on your start.gg account yet. Enter one and it shows up here, ready to turn into a graphic."
 msgstr ""
 
+#: src/hooks/thumbnail/useLoadThumbnailEvent.ts:51
+msgid "This event has no sets with players yet."
+msgstr ""
+
 #: src/components/top8/SocialPostComposer/TemplateSelector.tsx:35
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:449
 msgid "This template will be permanently deleted."
@@ -2118,12 +2319,30 @@ msgstr ""
 msgid "This will reset all player data for this slot."
 msgstr ""
 
+#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:161
+msgid "Thumbnail"
+msgstr ""
+
 #: src/components/Layout/NavOverlay/NavOverlay.tsx:34
 msgid "Thumbnail Maker"
 msgstr ""
 
+#: src/components/thumbnail/ThumbnailExportModal/ThumbnailExportModal.tsx:201
+msgid "Thumbnail preview"
+msgstr ""
+
+#. placeholder {0}: scene.match.sides[0].name
+#. placeholder {1}: scene.match.sides[1].name
+#: src/components/thumbnail/ThumbnailPreview/ThumbnailPreview.tsx:141
+msgid "Thumbnail preview: {0} vs {1}"
+msgstr ""
+
 #: src/components/top8/SettingsPanel/ThumbnailRegenButton.tsx:31
 msgid "Thumbnails"
+msgstr ""
+
+#: src/hooks/thumbnail/useLoadThumbnailEvent.ts:30
+msgid "Thumbnails load matches from start.gg only for now. You can still fill in the match by hand."
 msgstr ""
 
 #: src/components/Layout/NavOverlay/NavOverlay.tsx:32
@@ -2160,6 +2379,8 @@ msgid "Top 3"
 msgstr ""
 
 #: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:26
+#: src/components/thumbnail/MatchForm/MatchForm.tsx:34
+#: src/components/thumbnail/SetList/SetList.tsx:74
 #: src/components/user/PlayerCardLauncher/PlayerCardLauncher.tsx:54
 #: src/components/user/StatsBoard/StatsBoard.tsx:250
 #: src/utils/social/builtInTemplates.ts:32
@@ -2262,6 +2483,7 @@ msgstr ""
 
 #: src/hooks/predict/useFetchPredictionEntrants.ts:96
 #: src/hooks/results/useFetchResultsEntrantPool.ts:67
+#: src/hooks/thumbnail/useLoadThumbnailEvent.ts:49
 #: src/hooks/top8/useFetchResult.ts:429
 msgid "Tournament not found"
 msgstr ""
@@ -2325,6 +2547,7 @@ msgstr ""
 msgid "Ultimate"
 msgstr ""
 
+#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:181
 #: src/components/top8/Ranker/Header/Header.tsx:35
 msgid "Undo"
 msgstr ""
@@ -2342,6 +2565,10 @@ msgstr ""
 #: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:281
 msgid "Upload"
 msgstr "Upload"
+
+#: src/components/thumbnail/LookPanel/LookPanel.tsx:110
+msgid "Upload a logo"
+msgstr ""
 
 #: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:249
 #~ msgid "Upload Assets"
@@ -2373,12 +2600,20 @@ msgstr ""
 msgid "Use this image"
 msgstr ""
 
+#: src/components/thumbnail/LookPanel/LookPanel.tsx:134
+msgid "Using the tournament's icon from start.gg."
+msgstr ""
+
 #: src/components/top8/SettingsPanel/DeveloperSettings.tsx:66
 msgid "Version"
 msgstr ""
 
 #: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:37
 msgid "Versus"
+msgstr ""
+
+#: src/components/thumbnail/MatchForm/MatchForm.tsx:201
+msgid "Video title"
 msgstr ""
 
 #: src/components/results/SetList/SetRow.tsx:258
@@ -2429,6 +2664,10 @@ msgstr ""
 msgid "Winners"
 msgstr ""
 
+#: src/components/thumbnail/MatchForm/MatchForm.tsx:31
+msgid "Winners Final"
+msgstr ""
+
 #: src/components/user/PlayerCardLauncher/PlayerCardLauncher.tsx:53
 #: src/components/user/StatsBoard/StatsBoard.tsx:236
 msgid "Wins"
@@ -2469,6 +2708,10 @@ msgstr ""
 
 #: src/components/user/UserPage/UserPage.tsx:139
 msgid "Your tournaments, in one place"
+msgstr ""
+
+#: src/components/thumbnail/MatchForm/MatchForm.tsx:96
+msgid "Zoom"
 msgstr ""
 
 #: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:154

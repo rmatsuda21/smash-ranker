@@ -13,9 +13,13 @@ type Props = {
   selectedCharacter?: CharacerData;
   onAltChange: (alt: CharacerData["alt"]) => void;
   disabled?: boolean;
+  // Name of the radio group. Two pickers on one page need different names,
+  // or the browser treats their costumes as one group.
+  name?: string;
 };
 
 type AltOptionProps = {
+  name: string;
   alt: CharacerData["alt"];
   icon: string | null;
   altName: string | null;
@@ -25,6 +29,7 @@ type AltOptionProps = {
 };
 
 const AltOption = ({
+  name,
   alt,
   icon,
   altName,
@@ -41,7 +46,7 @@ const AltOption = ({
       <input
         type="radio"
         aria-describedby={describedBy}
-        name="character-alt"
+        name={name}
         value={alt}
         checked={isSelected}
         onChange={() => !disabled && onAltChange(alt)}
@@ -88,6 +93,7 @@ export const CharacterAltPicker = ({
   selectedCharacter,
   onAltChange,
   disabled = false,
+  name = "character-alt",
 }: Props) => {
   const altsAndIcons = useMemo(
     () => getAltsAndIcons(selectedCharacter?.id, selectedCharacter?.style),
@@ -119,6 +125,7 @@ export const CharacterAltPicker = ({
       {altsAndIcons.map(({ alt, icon, id, altName }) => (
         <AltOption
           key={id}
+          name={name}
           alt={alt}
           icon={icon}
           altName={altName}

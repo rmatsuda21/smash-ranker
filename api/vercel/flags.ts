@@ -34,7 +34,7 @@ const ON_OFF = [
 
 const DESCRIPTIONS = {
   "thumbnail-enabled": {
-    description: "Enables the YouTube thumbnail editor at /thumbnail",
+    description: "Enables the video thumbnail maker at /thumbnail",
   },
   "results-enabled": {
     description: "Enables the per-player tournament recap at /results",

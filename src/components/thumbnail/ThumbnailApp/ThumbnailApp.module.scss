@@ -1,0 +1,206 @@
+@use "@/_theme" as *;
+
+// Same shell as /results and /predict: a toolbar across the top, the
+// workspace under it edge to edge.
+.root {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-surface);
+}
+
+.header {
+  // Shared height for every control in the bar; child components read it.
+  --toolbar-h: 34px;
+
+  flex-shrink: 0;
+  display: grid;
+  grid-template-columns: fit-content(32%) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-2) var(--space-3);
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border);
+
+  @include mobile {
+    // Touch-sized controls.
+    --toolbar-h: 40px;
+
+    gap: var(--space-2);
+    padding: var(--space-2);
+
+    // At rest the field is just the icon and a short prompt; Load appears
+    // once it is focused.
+    .urlInput:not(:focus-within) {
+      padding-right: var(--space-3);
+
+      button {
+        display: none;
+      }
+    }
+
+    // While the URL field is in use it gets the whole row.
+    &:has(.urlInput:focus-within) {
+      grid-template-columns: minmax(0, 1fr);
+
+      .identity,
+      .title,
+      .actions {
+        display: none;
+      }
+    }
+
+    // Next to a tournament's name there is no room for more than the icon.
+    &.hasEvent {
+      grid-template-columns: minmax(0, 1fr) 128px auto;
+    }
+  }
+}
+
+.title {
+  margin: 0;
+  color: var(--fg-1);
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+
+  button {
+    height: var(--toolbar-h);
+  }
+
+  @include mobile {
+    // Undo and redo are keyboard-first; a phone's bar has no room for them.
+    .history {
+      display: none;
+    }
+
+    .hasEvent & .saveLabel {
+      display: none;
+    }
+  }
+}
+
+.error {
+  flex-shrink: 0;
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--border);
+  color: var(--status-danger);
+  font-size: var(--font-size-sm);
+}
+
+.workspace {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+
+  @include wide {
+    flex-direction: row;
+  }
+}
+
+// Wide screens: sets, the preview, the fields.
+.sets {
+  flex-shrink: 0;
+  width: 320px;
+  min-height: 0;
+  border-right: 1px solid var(--border);
+}
+
+.stage {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  overflow-y: auto;
+  background: var(--bg-app);
+}
+
+.stageInner {
+  // As wide as the room allows while the preview and the templates under it
+  // still fit the height.
+  width: min(100%, 960px, (100dvh - 330px) * 16 / 9);
+  min-width: 420px;
+  margin: 0 auto;
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+}
+
+.preview {
+  flex-shrink: 0;
+
+  @include wide {
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-md);
+  }
+}
+
+.hint {
+  margin: var(--space-2) 0 0;
+  color: var(--fg-3);
+  font-size: var(--font-size-sm);
+  text-align: center;
+}
+
+.stripTitle {
+  @include label;
+
+  margin: var(--space-5) 0 var(--space-2);
+}
+
+.panel {
+  flex-shrink: 0;
+  width: 380px;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid var(--border);
+}
+
+.tabBar {
+  flex-shrink: 0;
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--border);
+}
+
+.tabs {
+  width: 100%;
+
+  button {
+    flex: 1;
+    min-height: 30px;
+
+    @include mobile {
+      min-height: 40px;
+    }
+  }
+}
+
+.tabBody {
+  padding: var(--space-3);
+
+  @include wide {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+  }
+}
+
+// Below the wide layout the preview stays put and the open tab scrolls
+// under it.
+.tabScroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
