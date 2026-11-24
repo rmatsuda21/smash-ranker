@@ -1,0 +1,8 @@
+@use "@/_theme" as *;
+
+// On a phone the button is its icon alone (the check, once copied).
+.text {
+  @include mobile {
+    display: none;
+  }
+}

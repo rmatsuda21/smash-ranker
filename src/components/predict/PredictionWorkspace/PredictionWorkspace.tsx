@@ -5,12 +5,17 @@ import { Trans } from "@lingui/react/macro";
 import { usePredictionStore } from "@/store/predictionStore";
 import { EntrantPoolPanel } from "@/components/predict/EntrantPoolPanel/EntrantPoolPanel";
 import { PredictionListPanel } from "@/components/predict/PredictionListPanel/PredictionListPanel";
+import { ActionBar } from "@/components/predict/ActionBar/ActionBar";
 
 import styles from "./PredictionWorkspace.module.scss";
 
 type MobileTab = "entrants" | "predictions";
 
-export const PredictionWorkspace = () => {
+type Props = {
+  onGenerate: () => void;
+};
+
+export const PredictionWorkspace = ({ onGenerate }: Props) => {
   const [activeTab, setActiveTab] = useState<MobileTab>("entrants");
   const predictions = usePredictionStore((s) => s.predictions);
   const predictionCount = usePredictionStore((s) => s.predictionCount);
@@ -20,7 +25,6 @@ export const PredictionWorkspace = () => {
 
   return (
     <div className={styles.root}>
-      {/* Mobile tabs */}
       <div className={styles.tabs}>
         <button
           className={cn(styles.tab, {
@@ -43,20 +47,22 @@ export const PredictionWorkspace = () => {
         </button>
       </div>
 
-      {/* Desktop: side by side. Mobile: only active tab shown */}
       <div
-        className={cn(styles.panel, {
+        className={cn(styles.panel, styles.poolPanel, {
           [styles.hiddenMobile]: activeTab !== "entrants",
         })}
       >
         <EntrantPoolPanel />
       </div>
       <div
-        className={cn(styles.panel, {
+        className={cn(styles.panel, styles.listPanel, {
           [styles.hiddenMobile]: activeTab !== "predictions",
         })}
       >
-        <PredictionListPanel />
+        <div className={styles.listContent}>
+          <PredictionListPanel />
+          <ActionBar onGenerate={onGenerate} />
+        </div>
       </div>
     </div>
   );

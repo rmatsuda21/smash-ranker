@@ -154,7 +154,7 @@ msgstr ""
 msgid "Ahead of the field"
 msgstr ""
 
-#: src/components/predict/PredictApp/PredictApp.tsx:74
+#: src/components/predict/PredictionListPanel/PredictionListPanel.tsx:78
 msgid "All current predictions will be removed."
 msgstr ""
 
@@ -183,7 +183,7 @@ msgstr ""
 msgid "Are you sure you want to delete this asset?"
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:33
+#: src/components/results/ResultsApp/ResultsApp.tsx:34
 msgid "Asking start.gg very nicely..."
 msgstr ""
 
@@ -351,11 +351,11 @@ msgstr ""
 #~ msgid "Characters"
 #~ msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:45
+#: src/components/results/ResultsApp/ResultsApp.tsx:46
 msgid "Checking if the seed was fair..."
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:35
+#: src/components/results/ResultsApp/ResultsApp.tsx:36
 msgid "Checking who actually made it past pools..."
 msgstr ""
 
@@ -368,7 +368,7 @@ msgstr ""
 msgid "City"
 msgstr ""
 
-#: src/components/predict/PredictApp/PredictApp.tsx:145
+#: src/components/predict/PredictionListPanel/PredictionListPanel.tsx:110
 #: src/components/top8/AssetSelector/AssetSelector.tsx:125
 #: src/components/top8/AssetSelector/AssetSelector.tsx:126
 msgid "Clear"
@@ -382,7 +382,7 @@ msgstr ""
 msgid "Clear Player?"
 msgstr ""
 
-#: src/components/predict/PredictApp/PredictApp.tsx:73
+#: src/components/predict/PredictionListPanel/PredictionListPanel.tsx:77
 msgid "Clear Predictions?"
 msgstr ""
 
@@ -448,7 +448,7 @@ msgid "Consulting Master Hand..."
 msgstr ""
 
 #: src/components/predict/ExportBar/ExportBar.tsx:107
-#: src/components/predict/InviteShareButton/InviteShareButton.tsx:26
+#: src/components/predict/InviteShareButton/InviteShareButton.tsx:42
 #: src/components/results/ResultsExportBar/ResultsExportBar.tsx:127
 #: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:233
 #: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:422
@@ -482,7 +482,7 @@ msgstr ""
 msgid "Couldn't reach start.gg for your tournaments. Try again in a bit."
 msgstr ""
 
-#: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:54
+#: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:52
 msgid "Count"
 msgstr ""
 
@@ -491,15 +491,15 @@ msgstr ""
 #~ msgid "Counting stocks..."
 #~ msgstr ""
 
-#: src/components/predict/PredictApp/PredictApp.tsx:35
+#: src/components/predict/PredictApp/PredictApp.tsx:32
 msgid "Counting the contenders..."
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:37
+#: src/components/results/ResultsApp/ResultsApp.tsx:38
 msgid "Counting the DQs so you don't have to..."
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:43
+#: src/components/results/ResultsApp/ResultsApp.tsx:44
 msgid "Counting the stocks. All of them..."
 msgstr ""
 
@@ -541,11 +541,11 @@ msgstr ""
 msgid "Credits & Inspiration"
 msgstr ""
 
-#: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:22
+#: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:28
 #: src/components/top8/SettingsPanel/AccentColorPicker.tsx:41
 #: src/components/top8/SettingsPanel/AccentColorPicker.tsx:97
 msgid "Custom"
-msgstr "カスタム"
+msgstr "Custom"
 
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:349
 msgid "Custom Flag"
@@ -586,7 +586,7 @@ msgstr ""
 msgid "Date"
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:46
+#: src/components/results/ResultsApp/ResultsApp.tsx:47
 msgid "Deciding which loss was \"actually close\"..."
 msgstr ""
 
@@ -753,7 +753,7 @@ msgid "Enter a start.gg, Challonge, or Tonamel event URL"
 msgstr ""
 
 #: src/components/predict/EntrantPoolPanel/EntrantPoolPanel.tsx:44
-#: src/components/predict/PredictionWorkspace/PredictionWorkspace.tsx:31
+#: src/components/predict/PredictionWorkspace/PredictionWorkspace.tsx:35
 #: src/components/results/ResultsWorkspace/ResultsWorkspace.tsx:53
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:156
 #: src/consts/top8/textLabels.ts:19
@@ -832,7 +832,7 @@ msgstr ""
 msgid "Fighters Header"
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:44
+#: src/components/results/ResultsApp/ResultsApp.tsx:45
 msgid "Figuring out who got sent to losers..."
 msgstr ""
 
@@ -848,7 +848,7 @@ msgstr ""
 #~ msgid "Finding a font that says \"I'm cracked\"..."
 #~ msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:34
+#: src/components/results/ResultsApp/ResultsApp.tsx:35
 msgid "Finding everyone who showed up..."
 msgstr ""
 
@@ -891,7 +891,7 @@ msgstr ""
 msgid "Gamer Tag"
 msgstr ""
 
-#: src/components/predict/ActionBar/ActionBar.tsx:34
+#: src/components/predict/ActionBar/ActionBar.tsx:38
 #: src/components/results/ResultsWorkspace/ResultsWorkspace.tsx:96
 msgid "Generate Graphic"
 msgstr ""
@@ -964,11 +964,11 @@ msgstr ""
 msgid "Home turf"
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:242
+#: src/components/results/ResultsApp/ResultsApp.tsx:202
 msgid "https://start.gg/tournament/.../event/..."
 msgstr ""
 
-#: src/components/predict/PredictApp/PredictApp.tsx:33
+#: src/components/predict/PredictApp/PredictApp.tsx:30
 msgid "Hyping up the bracket..."
 msgstr ""
 
@@ -1114,10 +1114,10 @@ msgstr ""
 msgid "Loading results"
 msgstr ""
 
-#: src/components/predict/PredictApp/PredictApp.tsx:106
-#: src/components/predict/PredictApp/PredictApp.tsx:158
-#: src/components/results/ResultsApp/ResultsApp.tsx:250
-#: src/components/results/ResultsApp/ResultsApp.tsx:305
+#: src/components/predict/PredictApp/PredictApp.tsx:113
+#: src/components/predict/PredictApp/PredictApp.tsx:162
+#: src/components/results/ResultsApp/ResultsApp.tsx:210
+#: src/components/results/ResultsApp/ResultsApp.tsx:266
 msgid "Loading tournament"
 msgstr ""
 
@@ -1151,11 +1151,11 @@ msgstr ""
 msgid "Logging you in with start.gg..."
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:47
+#: src/components/results/ResultsApp/ResultsApp.tsx:48
 msgid "Looking for the game 5 last stock..."
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:38
+#: src/components/results/ResultsApp/ResultsApp.tsx:39
 msgid "Looking for the guy who entered as \"test\"..."
 msgstr ""
 
@@ -1430,7 +1430,7 @@ msgstr ""
 msgid "Paper"
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:231
+#: src/components/results/ResultsApp/ResultsApp.tsx:191
 msgid "Paste a start.gg event URL, pick a player, and generate a shareable recap of their run."
 msgstr ""
 
@@ -1438,11 +1438,12 @@ msgstr ""
 msgid "Paste a tournament URL"
 msgstr ""
 
-#: src/components/predict/PredictApp/PredictApp.tsx:90
+#: src/components/predict/PredictApp/PredictApp.tsx:96
 msgid "Paste a tournament URL to predict placements and share your picks."
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:280
+#: src/components/predict/PredictApp/PredictApp.tsx:146
+#: src/components/results/ResultsApp/ResultsApp.tsx:241
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:103
 msgid "Paste URL"
 msgstr ""
@@ -1563,14 +1564,14 @@ msgstr ""
 msgid "Predict"
 msgstr ""
 
-#: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:28
+#: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:35
 msgid "Prediction size"
 msgstr ""
 
 #: src/components/Layout/NavOverlay/NavOverlay.tsx:38
-#: src/components/predict/PredictApp/PredictApp.tsx:87
-#: src/components/predict/PredictionListPanel/PredictionListPanel.tsx:84
-#: src/components/predict/PredictionWorkspace/PredictionWorkspace.tsx:39
+#: src/components/predict/PredictApp/PredictApp.tsx:93
+#: src/components/predict/PredictionListPanel/PredictionListPanel.tsx:97
+#: src/components/predict/PredictionWorkspace/PredictionWorkspace.tsx:43
 msgid "Predictions"
 msgstr ""
 
@@ -1580,8 +1581,8 @@ msgstr ""
 msgid "Prefix"
 msgstr ""
 
-#: src/components/predict/PredictApp/PredictApp.tsx:167
-#: src/components/results/ResultsApp/ResultsApp.tsx:314
+#: src/components/predict/PredictApp/PredictApp.tsx:171
+#: src/components/results/ResultsApp/ResultsApp.tsx:275
 #: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:195
 msgid "Preview"
 msgstr ""
@@ -1594,7 +1595,7 @@ msgstr ""
 msgid "Primary"
 msgstr ""
 
-#: src/components/predict/PredictApp/PredictApp.tsx:31
+#: src/components/predict/PredictApp/PredictApp.tsx:28
 msgid "Pulling entrants..."
 msgstr ""
 
@@ -1614,7 +1615,7 @@ msgstr ""
 msgid "Ranker"
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:36
+#: src/components/results/ResultsApp/ResultsApp.tsx:37
 msgid "Reading the bracket upside down..."
 msgstr ""
 
@@ -1696,7 +1697,7 @@ msgstr ""
 msgid "Results"
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:42
+#: src/components/results/ResultsApp/ResultsApp.tsx:43
 msgid "Rewatching every set at 2x speed..."
 msgstr ""
 
@@ -1708,7 +1709,7 @@ msgstr ""
 msgid "Rivals and the characters you play most"
 msgstr ""
 
-#: src/components/predict/PredictApp/PredictApp.tsx:34
+#: src/components/predict/PredictApp/PredictApp.tsx:31
 msgid "Rounding up the squad..."
 msgstr ""
 
@@ -1847,7 +1848,8 @@ msgstr ""
 msgid "Share"
 msgstr ""
 
-#: src/components/predict/InviteShareButton/InviteShareButton.tsx:25
+#: src/components/predict/InviteShareButton/InviteShareButton.tsx:37
+#: src/components/predict/InviteShareButton/InviteShareButton.tsx:45
 msgid "Share invite"
 msgstr ""
 
@@ -1857,7 +1859,7 @@ msgstr ""
 msgid "Share to social"
 msgstr ""
 
-#: src/components/predict/PredictApp/PredictApp.tsx:32
+#: src/components/predict/PredictApp/PredictApp.tsx:29
 msgid "Sharpening the seeds..."
 msgstr ""
 
@@ -1918,7 +1920,7 @@ msgstr ""
 msgid "Standings"
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:257
+#: src/components/results/ResultsApp/ResultsApp.tsx:217
 msgid "start.gg only"
 msgstr ""
 
@@ -1959,7 +1961,7 @@ msgstr ""
 msgid "Switching templates will replace what you've typed. Continue?"
 msgstr ""
 
-#: src/components/predict/PredictApp/PredictApp.tsx:30
+#: src/components/predict/PredictApp/PredictApp.tsx:27
 msgid "Talking to the bracket gods..."
 msgstr ""
 
@@ -1968,7 +1970,7 @@ msgstr ""
 #~ msgid "Tallying the damage..."
 #~ msgstr ""
 
-#: src/components/predict/PredictionListPanel/PredictionListPanel.tsx:111
+#: src/components/predict/PredictionListPanel/PredictionListPanel.tsx:126
 msgid "Tap entrants to add predictions"
 msgstr ""
 
@@ -2108,7 +2110,7 @@ msgstr ""
 msgid "Top {topPercent}%"
 msgstr ""
 
-#: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:21
+#: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:27
 msgid "Top 16"
 msgstr ""
 
@@ -2118,7 +2120,7 @@ msgstr ""
 msgid "Top 3"
 msgstr ""
 
-#: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:20
+#: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:26
 #: src/components/user/PlayerCardLauncher/PlayerCardLauncher.tsx:54
 #: src/components/user/StatsBoard/StatsBoard.tsx:250
 #: src/utils/social/builtInTemplates.ts:32
@@ -2225,7 +2227,7 @@ msgstr ""
 msgid "Tournament not found"
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:228
+#: src/components/results/ResultsApp/ResultsApp.tsx:188
 msgid "Tournament Recap"
 msgstr ""
 

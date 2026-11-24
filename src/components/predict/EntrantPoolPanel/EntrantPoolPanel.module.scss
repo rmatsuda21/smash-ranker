@@ -5,11 +5,8 @@
   flex-direction: column;
   gap: var(--space-2);
   min-width: 0;
-
-  @include mobile {
-    flex: 1;
-    min-height: 0;
-  }
+  flex: 1;
+  min-height: 0;
 }
 
 .header {
@@ -17,24 +14,28 @@
   align-items: center;
   justify-content: space-between;
 
+  // The tab above already says it.
   @include mobile {
     display: none;
   }
 }
 
 .title {
-  font-size: var(--font-size-sm);
-  font-weight: 700;
-  color: var(--fg-1);
+  margin: 0;
   display: flex;
-  align-items: center;
+  align-items: baseline;
   gap: var(--space-2);
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--fg-1);
 }
 
 .count {
-  font-weight: 400;
-  color: var(--fg-4);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent-9);
 }
 
 .search {
@@ -46,25 +47,21 @@
 }
 
 .list {
+  flex: 1;
+  min-height: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
-  max-height: 400px;
+  gap: 2px;
+  // Room for the focus ring on the rows.
+  margin-inline: -2px;
+  padding: 2px 2px var(--space-3);
   overflow-y: auto;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
-
-  @include mobile {
-    flex: 1;
-    min-height: 0;
-    max-height: none;
-    // Extra space so last items scroll past the gradient + action bar
-    padding-bottom: 100px;
-  }
 }
 
 .empty {
-  color: var(--fg-4);
+  color: var(--fg-3);
   font-size: var(--font-size-sm);
   text-align: center;
   padding: var(--space-5) 0;

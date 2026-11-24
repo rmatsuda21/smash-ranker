@@ -9,6 +9,7 @@ import { FaChartLine } from "react-icons/fa6";
 import { Modal } from "@/components/shared/Modal/Modal";
 import { TournamentUrlInput } from "@/components/shared/TournamentUrlInput/TournamentUrlInput";
 import { FetchingState } from "@/components/shared/FetchingState/FetchingState";
+import { TournamentIdentity } from "@/components/shared/TournamentIdentity/TournamentIdentity";
 import { useResultsStore } from "@/store/resultsStore";
 import { useFetchResultsEntrantPool } from "@/hooks/results/useFetchResultsEntrantPool";
 import { useFetchPlayerResults } from "@/hooks/results/useFetchPlayerResults";
@@ -46,47 +47,6 @@ const PLAYER_TAGLINES: MessageDescriptor[] = [
   msg`Deciding which loss was "actually close"...`,
   msg`Looking for the game 5 last stock...`,
 ];
-
-type TournamentIdentityProps = {
-  href: string;
-  iconUrl: string;
-  name: string;
-  meta: string;
-};
-
-// Which tournament is loaded: icon, name, then event and date. Links to the
-// tournament page when its URL is known.
-const TournamentIdentity = ({
-  href,
-  iconUrl,
-  name,
-  meta,
-}: TournamentIdentityProps) => {
-  const content = (
-    <>
-      {iconUrl && (
-        <img className={styles.tournamentIcon} src={iconUrl} alt="" />
-      )}
-      <div className={styles.tournamentText}>
-        <h2 className={styles.tournamentName}>{name}</h2>
-        {meta && <p className={styles.tournamentMeta}>{meta}</p>}
-      </div>
-    </>
-  );
-
-  return href ? (
-    <a
-      className={styles.tournamentInfo}
-      href={href}
-      target="_blank"
-      rel="noreferrer"
-    >
-      {content}
-    </a>
-  ) : (
-    <div className={styles.tournamentInfo}>{content}</div>
-  );
-};
 
 export const ResultsApp = () => {
   const tournamentName = useResultsStore((s) => s.tournamentName);
@@ -266,6 +226,7 @@ export const ResultsApp = () => {
     <div className={styles.root}>
       <header className={styles.header}>
         <TournamentIdentity
+          className={styles.tournamentInfo}
           href={tournamentUrl}
           iconUrl={tournamentIconUrl}
           name={tournamentName}

@@ -1,32 +1,23 @@
-@use "@/_theme" as *;
-
+// Pinned to the bottom of the scrolling predictions column, so the actions
+// stay in reach under a long list. The gradient fades rows scrolling behind
+// it into the page background.
 .root {
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
   display: flex;
-  align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
   gap: var(--space-2);
-  padding: var(--space-3) 0;
+  margin-top: auto;
+  padding: var(--space-4) 0 var(--space-3);
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    var(--bg-surface) 45%,
+    var(--bg-surface) 100%
+  );
+}
 
-  @include mobile {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: var(--bg-surface);
-    padding: var(--space-3) var(--space-4);
-    z-index: var(--z-raised);
-    justify-content: center;
-
-    // Gradient fade above the bar — hints at more content
-    &::before {
-      content: "";
-      position: absolute;
-      bottom: 100%;
-      left: 0;
-      right: 0;
-      height: 60px;
-      background: linear-gradient(to bottom, transparent, var(--gray-1));
-      pointer-events: none;
-    }
-  }
+.generate {
+  min-width: 200px;
 }

@@ -1,43 +1,16 @@
-@use "@/_theme" as *;
-
 .root {
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  flex-wrap: wrap;
-  flex-shrink: 0;
-
-  @include mobile {
-    gap: var(--space-2);
-  }
-}
-
-.label {
-  @include label;
-  flex-shrink: 0;
-}
-
-.options {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-}
-
-.optionButton {
-  min-width: 60px;
-  height: 34px;
+  min-width: 0;
 }
 
 .customInput {
   width: 64px;
 
   input {
+    width: 100%;
     text-align: center;
     padding: var(--space-1) var(--space-2);
-  }
-
-  &.customHidden {
-    visibility: hidden;
-    pointer-events: none;
   }
 }

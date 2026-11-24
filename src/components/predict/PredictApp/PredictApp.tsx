@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import cn from "classnames";
 import { Trans } from "@lingui/react/macro";
 import { msg } from "@lingui/core/macro";
@@ -6,19 +6,16 @@ import { useLingui } from "@lingui/react";
 import { type MessageDescriptor } from "@lingui/core";
 import { FaListOl } from "react-icons/fa6";
 
-import { Button } from "@/components/shared/Button/Button";
 import { Modal } from "@/components/shared/Modal/Modal";
 import { TournamentUrlInput } from "@/components/shared/TournamentUrlInput/TournamentUrlInput";
+import { TournamentIdentity } from "@/components/shared/TournamentIdentity/TournamentIdentity";
 import { FetchingState } from "@/components/shared/FetchingState/FetchingState";
-import { useConfirmation } from "@/hooks/useConfirmation";
 import { usePredictionStore } from "@/store/predictionStore";
 import { useFetchPredictionEntrants } from "@/hooks/predict/useFetchPredictionEntrants";
 import { detectPlatformAndSlug, slugToUrl } from "@/consts/platforms";
 import { decodeInvite } from "@/utils/predict/inviteCode";
 import { InviteShareButton } from "@/components/predict/InviteShareButton/InviteShareButton";
-import { PredictionCountSelector } from "@/components/predict/PredictionCountSelector/PredictionCountSelector";
 import { PredictionWorkspace } from "@/components/predict/PredictionWorkspace/PredictionWorkspace";
-import { ActionBar } from "@/components/predict/ActionBar/ActionBar";
 import {
   PredictionPreview,
   type PredictionPreviewCache,
@@ -36,15 +33,16 @@ const PREDICT_TAGLINES: MessageDescriptor[] = [
 ];
 
 export const PredictApp = () => {
-  const { _ } = useLingui();
+  const { _, i18n } = useLingui();
   const entrantPool = usePredictionStore((s) => s.entrantPool);
   const predictions = usePredictionStore((s) => s.predictions);
   const tournamentName = usePredictionStore((s) => s.tournamentName);
   const tournamentUrl = usePredictionStore((s) => s.tournamentUrl);
+  const tournamentIconUrl = usePredictionStore((s) => s.tournamentIconUrl);
+  const tournamentDate = usePredictionStore((s) => s.tournamentDate);
   const eventName = usePredictionStore((s) => s.eventName);
   const error = usePredictionStore((s) => s.error);
   const fetching = usePredictionStore((s) => s.fetching);
-  const dispatch = usePredictionStore((s) => s.dispatch);
   const { fetchEntrants } = useFetchPredictionEntrants();
 
   const [previewOpen, setPreviewOpen] = useState(false);
@@ -68,17 +66,25 @@ export const PredictApp = () => {
     fetchEntrants(slugToUrl(decoded.platform, decoded.slug));
   }, [fetchEntrants, tournamentUrl]);
 
-  const { confirm: confirmClear, confirmationDialog: clearConfirmation } =
-    useConfirmation(() => dispatch({ type: "CLEAR_PREDICTIONS" }), {
-      title: _(msg`Clear Predictions?`),
-      description: _(msg`All current predictions will be removed.`),
-    });
+  const formattedDate = useMemo(() => {
+    if (!tournamentDate) return "";
+    const date = new Date(tournamentDate);
+    if (Number.isNaN(date.getTime())) return "";
+    return new Intl.DateTimeFormat(i18n.locale, { dateStyle: "medium" }).format(
+      date,
+    );
+  }, [tournamentDate, i18n.locale]);
+  const tournamentMeta = [eventName, formattedDate].filter(Boolean).join(" · ");
+
+  // On a phone the field shares the toolbar row with the tournament until it
+  // is focused, and only has room for a couple of words.
+  const isNarrow = window.matchMedia("(max-width: 768px)").matches;
 
   const hasData = entrantPool.length > 0 || predictions.length > 0;
 
   if (!hasData) {
     return (
-      <div className={styles.root}>
+      <div className={cn(styles.root, styles.landing)}>
         <div className={styles.emptyState}>
           <div className={styles.emptyIcon}>
             <FaListOl />
@@ -96,6 +102,7 @@ export const PredictApp = () => {
               onLoad={fetchEntrants}
               isFetching={fetching}
               inputId="predict-tournament-url"
+              variant="pill"
             />
           </div>
           {error && <p className={styles.error}>{error}</p>}
@@ -122,11 +129,24 @@ export const PredictApp = () => {
 
   return (
     <div className={styles.root}>
-      <TournamentUrlInput
-        onLoad={fetchEntrants}
-        isFetching={fetching}
-        inputId="predict-tournament-url"
-      />
+      <header className={styles.header}>
+        <TournamentIdentity
+          className={styles.tournamentInfo}
+          href={tournamentUrl}
+          iconUrl={tournamentIconUrl}
+          name={tournamentName}
+          meta={tournamentMeta}
+        />
+        <TournamentUrlInput
+          className={styles.urlInput}
+          onLoad={fetchEntrants}
+          isFetching={fetching}
+          inputId="predict-tournament-url"
+          variant="pill"
+          placeholder={isNarrow ? _(msg`Paste URL`) : undefined}
+        />
+        <InviteShareButton className={styles.invite} />
+      </header>
 
       {error && <p className={styles.error}>{error}</p>}
 
@@ -134,23 +154,7 @@ export const PredictApp = () => {
         className={cn(styles.workspace, fetching && styles.workspaceFetching)}
         aria-busy={fetching}
       >
-        <div className={styles.tournamentHeader}>
-          <div className={styles.tournamentInfo}>
-            <h2 className={styles.tournamentName}>{tournamentName}</h2>
-            {eventName && <p className={styles.eventName}>{eventName}</p>}
-          </div>
-          <div className={styles.headerActions}>
-            <InviteShareButton />
-            <Button variant="ghost" size="sm" onClick={confirmClear}>
-              <Trans>Clear</Trans>
-            </Button>
-          </div>
-        </div>
-        {clearConfirmation}
-
-        <PredictionCountSelector />
-        <PredictionWorkspace />
-        <ActionBar onGenerate={() => setPreviewOpen(true)} />
+        <PredictionWorkspace onGenerate={() => setPreviewOpen(true)} />
 
         {fetching && (
           <FetchingState

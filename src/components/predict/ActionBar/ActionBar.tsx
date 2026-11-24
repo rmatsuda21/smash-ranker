@@ -30,7 +30,11 @@ export const ActionBar = ({ onGenerate }: Props) => {
       >
         <Trans>Auto-fill by seed</Trans>
       </Button>
-      <Button disabled={!isFull} onClick={onGenerate}>
+      <Button
+        className={styles.generate}
+        disabled={!isFull}
+        onClick={onGenerate}
+      >
         <Trans>Generate Graphic</Trans>
       </Button>
     </div>

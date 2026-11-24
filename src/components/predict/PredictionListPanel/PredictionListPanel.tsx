@@ -17,6 +17,12 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { Trans } from "@lingui/react/macro";
+import { msg } from "@lingui/core/macro";
+import { useLingui } from "@lingui/react";
+
+import { Button } from "@/components/shared/Button/Button";
+import { useConfirmation } from "@/hooks/useConfirmation";
+import { PredictionCountSelector } from "@/components/predict/PredictionCountSelector/PredictionCountSelector";
 
 import { usePredictionStore } from "@/store/predictionStore";
 import { getPlacements } from "@/utils/placements";
@@ -28,6 +34,7 @@ import {
 import styles from "./PredictionListPanel.module.scss";
 
 export const PredictionListPanel = () => {
+  const { _ } = useLingui();
   const predictions = usePredictionStore((s) => s.predictions);
   const predictionCount = usePredictionStore((s) => s.predictionCount);
   const customCount = usePredictionStore((s) => s.customCount);
@@ -65,6 +72,12 @@ export const PredictionListPanel = () => {
     dispatch({ type: "REORDER_PREDICTIONS", fromIndex, toIndex });
   };
 
+  const { confirm: confirmClear, confirmationDialog: clearConfirmation } =
+    useConfirmation(() => dispatch({ type: "CLEAR_PREDICTIONS" }), {
+      title: _(msg`Clear Predictions?`),
+      description: _(msg`All current predictions will be removed.`),
+    });
+
   const handleRemove = (id: string) => {
     dispatch({ type: "REMOVE_PREDICTION", payload: id });
   };
@@ -83,10 +96,21 @@ export const PredictionListPanel = () => {
         <h3 className={styles.title}>
           <Trans>Predictions</Trans>
           <span className={styles.count}>
-            ({predictions.length}/{effectiveCount})
+            {predictions.length}/{effectiveCount}
           </span>
         </h3>
+        <PredictionCountSelector />
+        <Button
+          className={styles.clear}
+          variant="ghost"
+          size="sm"
+          disabled={predictions.length === 0}
+          onClick={confirmClear}
+        >
+          <Trans>Clear</Trans>
+        </Button>
       </div>
+      {clearConfirmation}
       <DndContext
         sensors={sensors}
         collisionDetection={closestCenter}
@@ -97,6 +121,11 @@ export const PredictionListPanel = () => {
           items={predictions.map((p) => p.id)}
           strategy={verticalListSortingStrategy}
         >
+          {predictions.length === 0 && (
+            <p className={styles.empty}>
+              <Trans>Tap entrants to add predictions</Trans>
+            </p>
+          )}
           <div className={styles.list}>
             {predictions.map((player, index) => (
               <SortablePredictionItem
@@ -106,11 +135,6 @@ export const PredictionListPanel = () => {
                 onRemove={handleRemove}
               />
             ))}
-            {predictions.length === 0 && (
-              <p className={styles.empty}>
-                <Trans>Tap entrants to add predictions</Trans>
-              </p>
-            )}
           </div>
         </SortableContext>
         <DragOverlay>

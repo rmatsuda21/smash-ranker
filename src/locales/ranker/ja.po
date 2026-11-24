@@ -154,7 +154,7 @@ msgstr "お気に入りに追加: {0}"
 msgid "Ahead of the field"
 msgstr "全体での立ち位置"
 
-#: src/components/predict/PredictApp/PredictApp.tsx:74
+#: src/components/predict/PredictionListPanel/PredictionListPanel.tsx:78
 msgid "All current predictions will be removed."
 msgstr "今の予想はすべて消えます。"
 
@@ -183,7 +183,7 @@ msgstr "{0}件の素材を削除しますか？"
 msgid "Are you sure you want to delete this asset?"
 msgstr "この素材を削除しますか？"
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:33
+#: src/components/results/ResultsApp/ResultsApp.tsx:34
 msgid "Asking start.gg very nicely..."
 msgstr "start.ggに丁寧にお願いしています..."
 
@@ -351,11 +351,11 @@ msgstr "キャラの影"
 #~ msgid "Characters"
 #~ msgstr "使用キャラ"
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:45
+#: src/components/results/ResultsApp/ResultsApp.tsx:46
 msgid "Checking if the seed was fair..."
 msgstr "シードが妥当だったか確認中..."
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:35
+#: src/components/results/ResultsApp/ResultsApp.tsx:36
 msgid "Checking who actually made it past pools..."
 msgstr "予選を本当に抜けた人を確認中..."
 
@@ -368,7 +368,7 @@ msgstr "画像を選択"
 msgid "City"
 msgstr "市区町村"
 
-#: src/components/predict/PredictApp/PredictApp.tsx:145
+#: src/components/predict/PredictionListPanel/PredictionListPanel.tsx:110
 #: src/components/top8/AssetSelector/AssetSelector.tsx:125
 #: src/components/top8/AssetSelector/AssetSelector.tsx:126
 msgid "Clear"
@@ -382,7 +382,7 @@ msgstr "選手をリセット"
 msgid "Clear Player?"
 msgstr "選手をリセットしますか？"
 
-#: src/components/predict/PredictApp/PredictApp.tsx:73
+#: src/components/predict/PredictionListPanel/PredictionListPanel.tsx:77
 msgid "Clear Predictions?"
 msgstr "予想をクリアしますか？"
 
@@ -448,7 +448,7 @@ msgid "Consulting Master Hand..."
 msgstr "マスターハンドに相談中..."
 
 #: src/components/predict/ExportBar/ExportBar.tsx:107
-#: src/components/predict/InviteShareButton/InviteShareButton.tsx:26
+#: src/components/predict/InviteShareButton/InviteShareButton.tsx:42
 #: src/components/results/ResultsExportBar/ResultsExportBar.tsx:127
 #: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:233
 #: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:422
@@ -482,7 +482,7 @@ msgstr "ログインできませんでした"
 msgid "Couldn't reach start.gg for your tournaments. Try again in a bit."
 msgstr "start.ggから大会を取得できませんでした。少し待ってからもう一度お試しください。"
 
-#: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:54
+#: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:52
 msgid "Count"
 msgstr "人数"
 
@@ -491,15 +491,15 @@ msgstr "人数"
 #~ msgid "Counting stocks..."
 #~ msgstr "ストックを数えています..."
 
-#: src/components/predict/PredictApp/PredictApp.tsx:35
+#: src/components/predict/PredictApp/PredictApp.tsx:32
 msgid "Counting the contenders..."
 msgstr "優勝候補を数えています..."
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:37
+#: src/components/results/ResultsApp/ResultsApp.tsx:38
 msgid "Counting the DQs so you don't have to..."
 msgstr "代わりにDQの数を数えています..."
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:43
+#: src/components/results/ResultsApp/ResultsApp.tsx:44
 msgid "Counting the stocks. All of them..."
 msgstr "ストックを数えています。全部です..."
 
@@ -541,7 +541,7 @@ msgstr "制作者"
 msgid "Credits & Inspiration"
 msgstr "クレジット・参考元"
 
-#: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:22
+#: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:28
 #: src/components/top8/SettingsPanel/AccentColorPicker.tsx:41
 #: src/components/top8/SettingsPanel/AccentColorPicker.tsx:97
 msgid "Custom"
@@ -586,7 +586,7 @@ msgstr "ダーク"
 msgid "Date"
 msgstr "開催日"
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:46
+#: src/components/results/ResultsApp/ResultsApp.tsx:47
 msgid "Deciding which loss was \"actually close\"..."
 msgstr "どの負けが「実は惜しかった」か判定中..."
 
@@ -753,7 +753,7 @@ msgid "Enter a start.gg, Challonge, or Tonamel event URL"
 msgstr "start.gg、Challonge、Tonamelの大会URLを入力してください"
 
 #: src/components/predict/EntrantPoolPanel/EntrantPoolPanel.tsx:44
-#: src/components/predict/PredictionWorkspace/PredictionWorkspace.tsx:31
+#: src/components/predict/PredictionWorkspace/PredictionWorkspace.tsx:35
 #: src/components/results/ResultsWorkspace/ResultsWorkspace.tsx:53
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:156
 #: src/consts/top8/textLabels.ts:19
@@ -832,7 +832,7 @@ msgstr "対戦相手のデータを取得中..."
 msgid "Fighters Header"
 msgstr "キャラの見出し"
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:44
+#: src/components/results/ResultsApp/ResultsApp.tsx:45
 msgid "Figuring out who got sent to losers..."
 msgstr "誰が敗者側に落とされたか調べています..."
 
@@ -848,7 +848,7 @@ msgstr "start.ggで大会を探す"
 #~ msgid "Finding a font that says \"I'm cracked\"..."
 #~ msgstr "「俺つよい」感のあるフォントを探しています..."
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:34
+#: src/components/results/ResultsApp/ResultsApp.tsx:35
 msgid "Finding everyone who showed up..."
 msgstr "会場に来た人を全員探しています..."
 
@@ -891,7 +891,7 @@ msgstr "フォーマット"
 msgid "Gamer Tag"
 msgstr "選手名"
 
-#: src/components/predict/ActionBar/ActionBar.tsx:34
+#: src/components/predict/ActionBar/ActionBar.tsx:38
 #: src/components/results/ResultsWorkspace/ResultsWorkspace.tsx:96
 msgid "Generate Graphic"
 msgstr "画像を作成"
@@ -964,11 +964,11 @@ msgstr "ホーム"
 msgid "Home turf"
 msgstr "ホーム"
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:242
+#: src/components/results/ResultsApp/ResultsApp.tsx:202
 msgid "https://start.gg/tournament/.../event/..."
 msgstr "https://start.gg/tournament/.../event/..."
 
-#: src/components/predict/PredictApp/PredictApp.tsx:33
+#: src/components/predict/PredictApp/PredictApp.tsx:30
 msgid "Hyping up the bracket..."
 msgstr "トナメを盛り上げ中..."
 
@@ -1114,10 +1114,10 @@ msgstr "start.ggから続きを読み込み中..."
 msgid "Loading results"
 msgstr "リザルト読み込み中"
 
-#: src/components/predict/PredictApp/PredictApp.tsx:106
-#: src/components/predict/PredictApp/PredictApp.tsx:158
-#: src/components/results/ResultsApp/ResultsApp.tsx:250
-#: src/components/results/ResultsApp/ResultsApp.tsx:305
+#: src/components/predict/PredictApp/PredictApp.tsx:113
+#: src/components/predict/PredictApp/PredictApp.tsx:162
+#: src/components/results/ResultsApp/ResultsApp.tsx:210
+#: src/components/results/ResultsApp/ResultsApp.tsx:266
 msgid "Loading tournament"
 msgstr "大会読み込み中"
 
@@ -1151,11 +1151,11 @@ msgstr "ログアウト"
 msgid "Logging you in with start.gg..."
 msgstr "start.ggでログイン中..."
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:47
+#: src/components/results/ResultsApp/ResultsApp.tsx:48
 msgid "Looking for the game 5 last stock..."
 msgstr "5戦目ラストストックの名場面を探しています..."
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:38
+#: src/components/results/ResultsApp/ResultsApp.tsx:39
 msgid "Looking for the guy who entered as \"test\"..."
 msgstr "「test」で登録した人を探しています..."
 
@@ -1430,7 +1430,7 @@ msgstr "パネル"
 msgid "Paper"
 msgstr "紙"
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:231
+#: src/components/results/ResultsApp/ResultsApp.tsx:191
 msgid "Paste a start.gg event URL, pick a player, and generate a shareable recap of their run."
 msgstr "start.ggのイベントURLを貼って選手を選ぶだけ。シェアできるリザルト画像が作れます。"
 
@@ -1438,11 +1438,12 @@ msgstr "start.ggのイベントURLを貼って選手を選ぶだけ。シェア�
 msgid "Paste a tournament URL"
 msgstr "大会URLを貼り付け"
 
-#: src/components/predict/PredictApp/PredictApp.tsx:90
+#: src/components/predict/PredictApp/PredictApp.tsx:96
 msgid "Paste a tournament URL to predict placements and share your picks."
 msgstr "大会URLを貼って順位を予想、そのままシェアしよう。"
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:280
+#: src/components/predict/PredictApp/PredictApp.tsx:146
+#: src/components/results/ResultsApp/ResultsApp.tsx:241
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:103
 msgid "Paste URL"
 msgstr "大会URL"
@@ -1563,14 +1564,14 @@ msgstr "ポスター"
 msgid "Predict"
 msgstr "予想する"
 
-#: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:28
+#: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:35
 msgid "Prediction size"
 msgstr "予想人数"
 
 #: src/components/Layout/NavOverlay/NavOverlay.tsx:38
-#: src/components/predict/PredictApp/PredictApp.tsx:87
-#: src/components/predict/PredictionListPanel/PredictionListPanel.tsx:84
-#: src/components/predict/PredictionWorkspace/PredictionWorkspace.tsx:39
+#: src/components/predict/PredictApp/PredictApp.tsx:93
+#: src/components/predict/PredictionListPanel/PredictionListPanel.tsx:97
+#: src/components/predict/PredictionWorkspace/PredictionWorkspace.tsx:43
 msgid "Predictions"
 msgstr "順位予想"
 
@@ -1580,8 +1581,8 @@ msgstr "順位予想"
 msgid "Prefix"
 msgstr "所属"
 
-#: src/components/predict/PredictApp/PredictApp.tsx:167
-#: src/components/results/ResultsApp/ResultsApp.tsx:314
+#: src/components/predict/PredictApp/PredictApp.tsx:171
+#: src/components/results/ResultsApp/ResultsApp.tsx:275
 #: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:195
 msgid "Preview"
 msgstr "プレビュー"
@@ -1594,7 +1595,7 @@ msgstr "プレビュー"
 msgid "Primary"
 msgstr "メイン"
 
-#: src/components/predict/PredictApp/PredictApp.tsx:31
+#: src/components/predict/PredictApp/PredictApp.tsx:28
 msgid "Pulling entrants..."
 msgstr "参加者を取得中..."
 
@@ -1614,7 +1615,7 @@ msgstr "順位の見出し"
 msgid "Ranker"
 msgstr "リザルト作成"
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:36
+#: src/components/results/ResultsApp/ResultsApp.tsx:37
 msgid "Reading the bracket upside down..."
 msgstr "トーナメント表を逆さまに読んでいます..."
 
@@ -1696,7 +1697,7 @@ msgstr "アプリ初期化"
 msgid "Results"
 msgstr "リザルト"
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:42
+#: src/components/results/ResultsApp/ResultsApp.tsx:43
 msgid "Rewatching every set at 2x speed..."
 msgstr "全セットを2倍速で見返しています..."
 
@@ -1708,7 +1709,7 @@ msgstr "ライバル"
 msgid "Rivals and the characters you play most"
 msgstr "ライバルとよく使うキャラ"
 
-#: src/components/predict/PredictApp/PredictApp.tsx:34
+#: src/components/predict/PredictApp/PredictApp.tsx:31
 msgid "Rounding up the squad..."
 msgstr "メンバー集合中..."
 
@@ -1847,7 +1848,8 @@ msgstr "影"
 msgid "Share"
 msgstr "シェア"
 
-#: src/components/predict/InviteShareButton/InviteShareButton.tsx:25
+#: src/components/predict/InviteShareButton/InviteShareButton.tsx:37
+#: src/components/predict/InviteShareButton/InviteShareButton.tsx:45
 msgid "Share invite"
 msgstr "招待リンクをコピー"
 
@@ -1857,7 +1859,7 @@ msgstr "招待リンクをコピー"
 msgid "Share to social"
 msgstr "SNSでシェア"
 
-#: src/components/predict/PredictApp/PredictApp.tsx:32
+#: src/components/predict/PredictApp/PredictApp.tsx:29
 msgid "Sharpening the seeds..."
 msgstr "シードを調整中..."
 
@@ -1918,7 +1920,7 @@ msgstr "標準"
 msgid "Standings"
 msgstr "順位表"
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:257
+#: src/components/results/ResultsApp/ResultsApp.tsx:217
 msgid "start.gg only"
 msgstr "start.gg のみ対応"
 
@@ -1959,7 +1961,7 @@ msgstr "テンプレを切り替えますか？"
 msgid "Switching templates will replace what you've typed. Continue?"
 msgstr "テンプレを切り替えると、入力した内容は上書きされます。切り替えますか？"
 
-#: src/components/predict/PredictApp/PredictApp.tsx:30
+#: src/components/predict/PredictApp/PredictApp.tsx:27
 msgid "Talking to the bracket gods..."
 msgstr "トナメの神に祈り中..."
 
@@ -1968,7 +1970,7 @@ msgstr "トナメの神に祈り中..."
 #~ msgid "Tallying the damage..."
 #~ msgstr "ダメージを集計中..."
 
-#: src/components/predict/PredictionListPanel/PredictionListPanel.tsx:111
+#: src/components/predict/PredictionListPanel/PredictionListPanel.tsx:126
 msgid "Tap entrants to add predictions"
 msgstr "参加者をタップして予想に追加"
 
@@ -2108,7 +2110,7 @@ msgstr "Tonamel APIエラー: {0}"
 msgid "Top {topPercent}%"
 msgstr "上位{topPercent}%"
 
-#: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:21
+#: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:27
 msgid "Top 16"
 msgstr "TOP16"
 
@@ -2118,7 +2120,7 @@ msgstr "TOP16"
 msgid "Top 3"
 msgstr "TOP3"
 
-#: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:20
+#: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:26
 #: src/components/user/PlayerCardLauncher/PlayerCardLauncher.tsx:54
 #: src/components/user/StatsBoard/StatsBoard.tsx:250
 #: src/utils/social/builtInTemplates.ts:32
@@ -2225,7 +2227,7 @@ msgstr "大会名"
 msgid "Tournament not found"
 msgstr "大会が見つかりませんでした"
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:228
+#: src/components/results/ResultsApp/ResultsApp.tsx:188
 msgid "Tournament Recap"
 msgstr "大会振り返り"
 

@@ -5,9 +5,9 @@
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  padding: var(--space-2) var(--space-2);
+  padding: var(--space-1) var(--space-2);
   border-radius: var(--radius);
-  background: var(--gray-2);
+  background: var(--bg-raised);
   border: 1px solid var(--border);
   font-size: var(--font-size-sm);
   min-height: 44px;
@@ -31,9 +31,15 @@
   border: none;
   background: none;
   touch-action: none;
+  border-radius: var(--radius-sm);
 
   &:active {
     cursor: grabbing;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent-9);
+    outline-offset: 2px;
   }
 }
 
@@ -43,6 +49,7 @@
   text-align: center;
   flex-shrink: 0;
   font-size: var(--font-size-sm);
+  font-variant-numeric: tabular-nums;
   color: var(--fg-2);
 
   &[data-rank="1"] {
@@ -61,20 +68,20 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--fg-1);
 }
 
 .prefix {
-  color: var(--fg-4);
-  font-weight: 400;
+  color: var(--fg-3);
+  font-weight: 500;
 }
 
 .seed {
   font-size: var(--font-size-xs);
-  color: var(--fg-muted);
+  color: var(--fg-3);
   flex-shrink: 0;
-  font-weight: 400;
+  font-variant-numeric: tabular-nums;
 }
 
 .removeButton {
@@ -97,6 +104,11 @@
 
   &:hover {
     color: var(--red-9, red);
-    background: var(--bg-raised);
+    background: var(--gray-4);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent-9);
+    outline-offset: -2px;
   }
 }

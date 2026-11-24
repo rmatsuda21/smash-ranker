@@ -42,7 +42,7 @@ export const EntrantPoolPanel = () => {
       <div className={styles.header}>
         <h3 className={styles.title}>
           <Trans>Entrants</Trans>
-          <span className={styles.count}>({entrantPool.length})</span>
+          <span className={styles.count}>{entrantPool.length}</span>
         </h3>
       </div>
       <Input

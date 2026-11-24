@@ -1,17 +1,16 @@
 @use "@/_theme" as *;
 
+// Entrants in a panel on the left, the predictions beside it. Phone: one of
+// the two at a time, switched by the tabs.
 .root {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-4);
+  grid-template-columns: 320px minmax(0, 1fr);
+  flex: 1;
   min-height: 0;
 
   @include mobile {
     display: flex;
     flex-direction: column;
-    flex: 1;
-    min-height: 0;
-    gap: 0;
   }
 }
 
@@ -21,9 +20,8 @@
 
   @include mobile {
     display: flex;
-    gap: 0;
-    border-bottom: 2px solid var(--border);
     flex-shrink: 0;
+    border-bottom: 1px solid var(--border);
   }
 }
 
@@ -33,12 +31,14 @@
   align-items: center;
   justify-content: center;
   gap: var(--space-2);
-  padding: var(--space-2) var(--space-2);
+  min-height: 40px;
+  padding: 0 var(--space-2);
   border: none;
   background: none;
-  color: var(--fg-4);
+  color: var(--fg-3);
+  font-family: inherit;
   font-size: var(--font-size-sm);
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   position: relative;
   transition: color var(--duration-base) var(--ease-standard);
@@ -46,7 +46,7 @@
   &::after {
     content: "";
     position: absolute;
-    bottom: -2px;
+    bottom: -1px;
     left: 0;
     right: 0;
     height: 2px;
@@ -55,39 +55,70 @@
   }
 
   &.active {
-    color: var(--accent-9);
+    color: var(--fg-1);
 
     &::after {
       background: var(--accent-9);
     }
   }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent-9);
+    outline-offset: -2px;
+  }
 }
 
 .tabBadge {
-  font-size: var(--font-size-xs);
-  font-weight: 500;
-  color: var(--fg-muted);
-  background: var(--bg-raised);
-  padding: 1px var(--space-2);
-  border-radius: var(--radius-md);
-
-  .active & {
-    background: var(--accent-3);
-    color: var(--accent-9);
-  }
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent-9);
 }
 
 .panel {
   min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
 
   @include mobile {
     flex: 1;
-    min-height: 0;
-    display: flex;
-    flex-direction: column;
-    padding-top: var(--space-3);
     position: relative;
   }
+}
+
+.poolPanel {
+  padding: var(--space-3) var(--space-3) 0;
+  background: var(--bg-raised);
+  border-right: 1px solid var(--border-strong);
+
+  // Alone on screen, so it needs no panel of its own.
+  @include mobile {
+    padding: var(--space-3) var(--space-2) 0;
+    background: none;
+    border-right: none;
+  }
+}
+
+.listPanel {
+  overflow-y: auto;
+  scrollbar-gutter: stable both-edges;
+  padding: var(--space-5) var(--space-8) 0;
+
+  @include mobile {
+    scrollbar-gutter: auto;
+    overscroll-behavior: contain;
+    padding: var(--space-3) var(--space-2) 0;
+  }
+}
+
+.listContent {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  width: 100%;
+  max-width: 640px;
+  margin-inline: auto;
 }
 
 .hiddenMobile {
