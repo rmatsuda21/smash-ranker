@@ -94,6 +94,18 @@ msgstr ""
 msgid "Cool"
 msgstr ""
 
+#: src/components/tierlist/TierExportModal/TierExportModal.tsx:189
+msgid "Copied!"
+msgstr ""
+
+#: src/components/tierlist/TierExportModal/TierExportModal.tsx:188
+msgid "Copy"
+msgstr ""
+
+#: src/components/tierlist/TierExportModal/TierExportModal.tsx:190
+msgid "Copy failed"
+msgstr ""
+
 #: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:50
 #~ msgid "Courier"
 #~ msgstr ""
@@ -109,6 +121,10 @@ msgstr ""
 #: src/components/tierlist/TierSidePanel/TierSidePanel.tsx:20
 #~ msgid "Design"
 #~ msgstr ""
+
+#: src/components/tierlist/TierExportModal/TierExportModal.tsx:184
+msgid "Download"
+msgstr ""
 
 #: src/components/tierlist/CharacterPool/CharacterPool.tsx:36
 msgid "Drag into a tier · Right-click to change costume"
@@ -126,7 +142,7 @@ msgstr ""
 msgid "Enter title"
 msgstr ""
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:216
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:73
 msgid "Every character goes back to the unranked roster. Your tiers stay as they are."
 msgstr ""
 
@@ -144,6 +160,10 @@ msgstr ""
 
 #: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:53
 msgid "Extra Light"
+msgstr ""
+
+#: src/components/tierlist/TierExportModal/TierExportModal.tsx:165
+msgid "Failed to generate image"
 msgstr ""
 
 #: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:172
@@ -164,6 +184,10 @@ msgstr ""
 
 #: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:135
 msgid "Game"
+msgstr ""
+
+#: src/components/tierlist/TierExportModal/TierExportModal.tsx:158
+msgid "Generating preview..."
 msgstr ""
 
 #: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:49
@@ -234,6 +258,10 @@ msgstr ""
 msgid "Pastel"
 msgstr ""
 
+#: src/components/tierlist/TierExportModal/TierExportModal.tsx:151
+msgid "Preview"
+msgstr ""
+
 #: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:190
 #~ msgid "Reset"
 #~ msgstr ""
@@ -250,7 +278,7 @@ msgstr ""
 msgid "Right"
 msgstr ""
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:207
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:64
 msgid "Save Image"
 msgstr ""
 
@@ -266,11 +294,11 @@ msgstr ""
 msgid "Side"
 msgstr ""
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:197
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:58
 msgid "Start over"
 msgstr ""
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:224
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:81
 msgid "Start over?"
 msgstr ""
 
@@ -290,6 +318,10 @@ msgstr ""
 #~ msgid "This will reset everything to the default state, including tiers and all character placements."
 #~ msgstr ""
 
+#: src/components/tierlist/TierExportModal/TierExportModal.tsx:173
+msgid "Tier list preview"
+msgstr ""
+
 #: src/components/tierlist/TierListApp/TierListApp.tsx:437
 msgid "Tier list width"
 msgstr ""
@@ -302,7 +334,7 @@ msgstr ""
 #~ msgid "Tiers, names, colors and every character placement go back to the defaults."
 #~ msgstr ""
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:226
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:83
 msgid "Tiers, the title, the palette and every character placement go back to the defaults."
 msgstr ""
 
@@ -322,11 +354,11 @@ msgstr ""
 #~ msgid "Trebuchet"
 #~ msgstr ""
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:190
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:51
 msgid "Unrank all"
 msgstr ""
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:214
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:71
 msgid "Unrank all characters?"
 msgstr ""
 

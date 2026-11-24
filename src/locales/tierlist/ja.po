@@ -94,6 +94,18 @@ msgstr "カラーパレット"
 msgid "Cool"
 msgstr "クール"
 
+#: src/components/tierlist/TierExportModal/TierExportModal.tsx:189
+msgid "Copied!"
+msgstr "コピー完了"
+
+#: src/components/tierlist/TierExportModal/TierExportModal.tsx:188
+msgid "Copy"
+msgstr "コピー"
+
+#: src/components/tierlist/TierExportModal/TierExportModal.tsx:190
+msgid "Copy failed"
+msgstr "コピーに失敗しました"
+
 #: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:50
 #~ msgid "Courier"
 #~ msgstr "Courier"
@@ -109,6 +121,10 @@ msgstr "削除"
 #: src/components/tierlist/TierSidePanel/TierSidePanel.tsx:20
 #~ msgid "Design"
 #~ msgstr "デザイン"
+
+#: src/components/tierlist/TierExportModal/TierExportModal.tsx:184
+msgid "Download"
+msgstr "ダウンロード"
 
 #: src/components/tierlist/CharacterPool/CharacterPool.tsx:36
 msgid "Drag into a tier · Right-click to change costume"
@@ -126,7 +142,7 @@ msgstr "アース"
 msgid "Enter title"
 msgstr "タイトルを入力"
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:216
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:73
 msgid "Every character goes back to the unranked roster. Your tiers stay as they are."
 msgstr "全キャラが未ランクに戻ります。ティアは残ります。"
 
@@ -145,6 +161,10 @@ msgstr "エキストラボールド"
 #: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:53
 msgid "Extra Light"
 msgstr "エクストラライト"
+
+#: src/components/tierlist/TierExportModal/TierExportModal.tsx:165
+msgid "Failed to generate image"
+msgstr "画像の生成に失敗しました"
 
 #: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:172
 msgid "Fancy"
@@ -165,6 +185,10 @@ msgstr "フォントウェイト"
 #: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:135
 msgid "Game"
 msgstr "ゲーム"
+
+#: src/components/tierlist/TierExportModal/TierExportModal.tsx:158
+msgid "Generating preview..."
+msgstr "プレビュー作成中..."
 
 #: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:49
 #~ msgid "Georgia"
@@ -234,6 +258,10 @@ msgstr "オーシャン"
 msgid "Pastel"
 msgstr "パステル"
 
+#: src/components/tierlist/TierExportModal/TierExportModal.tsx:151
+msgid "Preview"
+msgstr "プレビュー"
+
 #: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:190
 #~ msgid "Reset"
 #~ msgstr "リセット"
@@ -250,7 +278,7 @@ msgstr "パステル"
 msgid "Right"
 msgstr "右"
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:207
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:64
 msgid "Save Image"
 msgstr "保存"
 
@@ -266,11 +294,11 @@ msgstr "セミボールド"
 msgid "Side"
 msgstr "サイド"
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:197
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:58
 msgid "Start over"
 msgstr "初期化"
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:224
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:81
 msgid "Start over?"
 msgstr "初期化しますか?"
 
@@ -290,6 +318,10 @@ msgstr "シン"
 #~ msgid "This will reset everything to the default state, including tiers and all character placements."
 #~ msgstr "ティアやキャラクターの配置を含め、すべてが初期状態にリセットされます。"
 
+#: src/components/tierlist/TierExportModal/TierExportModal.tsx:173
+msgid "Tier list preview"
+msgstr "ティアリストのプレビュー"
+
 #: src/components/tierlist/TierListApp/TierListApp.tsx:437
 msgid "Tier list width"
 msgstr "ティアリストの幅"
@@ -302,7 +334,7 @@ msgstr "ティア設定"
 #~ msgid "Tiers, names, colors and every character placement go back to the defaults."
 #~ msgstr "ティア、名前、色、キャラクターの配置がすべて初期状態に戻ります。"
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:226
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:83
 msgid "Tiers, the title, the palette and every character placement go back to the defaults."
 msgstr "ティア・タイトル・パレット・配置が初期状態に戻ります。"
 
@@ -322,11 +354,11 @@ msgstr "トップ"
 #~ msgid "Trebuchet"
 #~ msgstr "Trebuchet"
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:190
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:51
 msgid "Unrank all"
 msgstr "ランク解除"
 
-#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:214
+#: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:71
 msgid "Unrank all characters?"
 msgstr "ランクを解除しますか?"
 
