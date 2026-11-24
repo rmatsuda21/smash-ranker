@@ -48,6 +48,10 @@
 }
 
 .row {
+  // Holds the row's hidden checkbox label. Without it that label is placed
+  // against the page, outside the list's own scrolling, and every row below
+  // the fold makes the whole page scroll into empty space.
+  position: relative;
   display: flex;
   align-items: center;
   border-radius: var(--radius-md);

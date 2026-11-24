@@ -127,12 +127,27 @@
 .stageInner {
   // As wide as the room allows while the preview and the templates under it
   // still fit the height.
-  width: min(100%, 960px, (100dvh - 330px) * 16 / 9);
+  width: min(100%, 1200px, (100dvh - 330px) * 16 / 9);
   min-width: 420px;
+  // At least as tall as the stage, so the templates sit at its bottom and
+  // the preview is centred in what is left: no dead band under the page.
+  min-height: 100%;
+  box-sizing: border-box;
   margin: 0 auto;
   padding: var(--space-6);
   display: flex;
   flex-direction: column;
+}
+
+.previewArea {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.strip {
+  flex-shrink: 0;
 }
 
 .preview {

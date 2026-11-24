@@ -211,20 +211,24 @@ export const ThumbnailApp = () => {
             {event && <aside className={styles.sets}>{setList}</aside>}
             <main className={styles.stage}>
               <div className={styles.stageInner}>
-                <ThumbnailPreview
-                  className={styles.preview}
-                  scene={scene}
-                  assets={assets}
-                />
-                <p className={styles.hint}>
-                  <Trans>
-                    Drag a character to move it. Scroll over it to resize it.
-                  </Trans>
-                </p>
-                <h2 className={styles.stripTitle}>
-                  <Trans>Template</Trans>
-                </h2>
-                <TemplatePicker scene={scene} assets={assets} layout="row" />
+                <div className={styles.previewArea}>
+                  <ThumbnailPreview
+                    className={styles.preview}
+                    scene={scene}
+                    assets={assets}
+                  />
+                  <p className={styles.hint}>
+                    <Trans>
+                      Drag a character to move it. Scroll over it to resize it.
+                    </Trans>
+                  </p>
+                </div>
+                <div className={styles.strip}>
+                  <h2 className={styles.stripTitle}>
+                    <Trans>Template</Trans>
+                  </h2>
+                  <TemplatePicker scene={scene} assets={assets} layout="row" />
+                </div>
               </div>
             </main>
             <aside className={styles.panel}>
