@@ -184,9 +184,63 @@ type ArtOptions = {
   glow?: string;
 };
 
-// A player's character in its box: as tall as the box and a little more, so
-// the head has room and the legs run off the bottom, then moved and resized
-// as the player's settings say.
+// The part of a render that has something drawn in it, in the image's own
+// pixels. Renders come on canvases of very different sizes with the figure
+// anywhere inside, so fitting the whole file leaves some characters small.
+const artBounds = new WeakMap<HTMLImageElement, Rect>();
+const BOUNDS_SAMPLE = 192;
+// Faint pixels (soft edges, stray specks) do not count as the figure.
+const BOUNDS_ALPHA = 24;
+
+const getArtBounds = (image: HTMLImageElement): Rect => {
+  const known = artBounds.get(image);
+  if (known) return known;
+  const whole = { x: 0, y: 0, w: image.width, h: image.height };
+  let bounds = whole;
+  try {
+    const step = Math.max(image.width, image.height) / BOUNDS_SAMPLE;
+    const w = Math.max(1, Math.round(image.width / step));
+    const h = Math.max(1, Math.round(image.height / step));
+    const canvas = document.createElement("canvas");
+    canvas.width = w;
+    canvas.height = h;
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    if (ctx) {
+      ctx.drawImage(image, 0, 0, w, h);
+      const { data } = ctx.getImageData(0, 0, w, h);
+      let left = w;
+      let top = h;
+      let right = -1;
+      let bottom = -1;
+      for (let y = 0; y < h; y++) {
+        for (let x = 0; x < w; x++) {
+          if (data[(y * w + x) * 4 + 3] < BOUNDS_ALPHA) continue;
+          if (x < left) left = x;
+          if (x > right) right = x;
+          if (y < top) top = y;
+          if (y > bottom) bottom = y;
+        }
+      }
+      if (right >= left && bottom >= top) {
+        bounds = {
+          x: left * step,
+          y: top * step,
+          w: Math.min(image.width, (right + 1) * step) - left * step,
+          h: Math.min(image.height, (bottom + 1) * step) - top * step,
+        };
+      }
+    }
+  } catch {
+    // An image that cannot be read back is fitted whole.
+    bounds = whole;
+  }
+  artBounds.set(image, bounds);
+  return bounds;
+};
+
+// A player's character in its box: the figure itself (not the file it comes
+// in) about as tall as the box, or wider than it by a quarter when the pose
+// is a broad one, then moved and resized as the player's settings say.
 export const drawArt = (
   p: Painter,
   index: 0 | 1,
@@ -207,7 +261,7 @@ export const drawArt = (
   ctx.clip();
 
   const cx = box.x + box.w * (0.5 + side.offset.x);
-  const cy = box.y + box.h * (0.56 + side.offset.y);
+  const cy = box.y + box.h * (0.54 + side.offset.y);
 
   if (!image) {
     // No art to draw: an unknown character, or art that failed to load.
@@ -223,13 +277,14 @@ export const drawArt = (
     return;
   }
 
+  const figure = getArtBounds(image);
   const scale =
-    Math.min((box.h * 1.12) / image.height, (box.w * 1.35) / image.width) *
-    side.zoom;
-  const w = image.width * scale;
-  const h = image.height * scale;
-  // The right side faces the left one unless flipped.
-  const mirrored = (index === 1) !== side.flip;
+    Math.min((box.h * 1.04) / figure.h, (box.w * 1.25) / figure.w) * side.zoom;
+  // The figure's middle goes on the point, not the file's.
+  const dx = -(figure.x + figure.w / 2) * scale;
+  const dy = -(figure.y + figure.h / 2) * scale;
+  // Both sides are drawn as the art comes; a side is mirrored only when asked.
+  const mirrored = side.flip;
 
   ctx.translate(cx, cy);
   if (mirrored) ctx.scale(-1, 1);
@@ -241,7 +296,7 @@ export const drawArt = (
     ctx.shadowColor = options.glow;
     ctx.shadowBlur = 48 * p.scale;
   }
-  ctx.drawImage(image, -w / 2, -h / 2, w, h);
+  ctx.drawImage(image, dx, dy, image.width * scale, image.height * scale);
   ctx.restore();
 };
 

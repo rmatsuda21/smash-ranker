@@ -128,7 +128,7 @@ const split: ThumbnailTemplate = {
     };
     drawText(p, look.eventText, { ...foot, x: 40, align: "left" });
     drawText(p, match.round, { ...foot, x: W - 40, align: "right" });
-    drawLogo(p, 640, 640, 112);
+    drawLogo(p, 640, 638, 136);
 
     drawVs(p, 640, 360, 150);
   },
@@ -230,18 +230,23 @@ const slash: ThumbnailTemplate = {
     drawText(p, look.eventText, { ...foot, x: 36, align: "left" });
     drawText(p, match.round, { ...foot, x: W - 36, align: "right" });
 
-    drawLogo(p, 96, 96, 108);
+    drawLogo(p, 104, 104, 132);
     drawVs(p, W / 2, H / 2, 136);
   },
 };
 
-// Full-height art with two dark bands laid slightly askew over it.
+// Full-height art with a dark block for each player near the top and one each
+// for the event and the round near the bottom. A block is as tall as its text
+// plus padding, runs from its edge of the graphic to the centre, and is
+// turned about its own middle, all four the same way (rising to the right),
+// which leaves a step where a pair meets.
+const BANNER_TILT = (2 * Math.PI) / 180;
 const banner: ThumbnailTemplate = {
   id: "banner",
   label: msg`Banner`,
   artBoxes: [
-    { x: 0, y: 60, w: 640, h: 660 },
-    { x: 640, y: 60, w: 640, h: 660 },
+    { x: 0, y: 124, w: 640, h: 596 },
+    { x: 640, y: 124, w: 640, h: 596 },
   ],
   draw: (p) => {
     const { ctx, scene } = p;
@@ -250,35 +255,66 @@ const banner: ThumbnailTemplate = {
     ctx.fillRect(0, 0, 640, H);
     ctx.fillStyle = look.right;
     ctx.fillRect(640, 0, 640, H);
-    drawArt(p, 0, banner.artBoxes[0], { shadow: "rgba(0, 0, 0, 0.35)" });
-    drawArt(p, 1, banner.artBoxes[1], { shadow: "rgba(0, 0, 0, 0.35)" });
+    // The boxes start under the name blocks so heads clear them, but art
+    // that is moved or enlarged may use its whole half.
+    const half = (x: number) => () => {
+      ctx.beginPath();
+      ctx.rect(x, 0, W / 2, H);
+    };
+    drawArt(p, 0, banner.artBoxes[0], {
+      clip: half(0),
+      shadow: "rgba(0, 0, 0, 0.35)",
+    });
+    drawArt(p, 1, banner.artBoxes[1], {
+      clip: half(W / 2),
+      shadow: "rgba(0, 0, 0, 0.35)",
+    });
 
-    ctx.save();
-    ctx.translate(W / 2, H / 2);
-    ctx.rotate((-2 * Math.PI) / 180);
-    ctx.fillStyle = NIGHT;
-    ctx.fillRect(-760, -420, 1520, 170);
-    ctx.fillRect(-760, 250, 1520, 170);
+    // A block on one half, turned about its own centre. `draw` works in the
+    // block's coordinates: 0 is its middle, the centre of the graphic is
+    // 320 towards `inward`.
+    const block = (
+      index: 0 | 1,
+      y: number,
+      height: number,
+      draw: (inward: 1 | -1) => void,
+    ) => {
+      const inward = index === 0 ? 1 : -1;
+      ctx.save();
+      ctx.translate(W / 2 - inward * 320, y);
+      ctx.rotate(-BANNER_TILT);
+      ctx.fillStyle = NIGHT;
+      // Past the outer edge, so the tilt never uncovers the corner.
+      ctx.fillRect(inward === 1 ? -400 : -320, -height / 2, 720, height);
+      draw(inward);
+      ctx.restore();
+    };
+
     const name = {
-      y: -304,
-      maxWidth: 540,
+      x: 0,
+      y: 0,
+      maxWidth: 560,
       size: 60,
       fill: PAPER,
       sponsorFill: QUIET,
     };
-    drawName(p, match.sides[0], { ...name, x: -320 });
-    drawName(p, match.sides[1], { ...name, x: 320 });
+    block(0, 82, 88, () => drawName(p, match.sides[0], name));
+    block(1, 82, 88, () => drawName(p, match.sides[1], name));
+
     const hasLogo = !!p.assets.logo;
     const foot = {
-      y: 304,
-      maxWidth: hasLogo ? 480 : 540,
+      y: 0,
+      maxWidth: hasLogo ? 500 : 560,
       size: 38,
       fill: PAPER,
     };
-    drawText(p, look.eventText, { ...foot, x: -596, align: "left" });
-    drawText(p, match.round, { ...foot, x: 596, align: "right" });
-    drawLogo(p, 0, 292, 116);
-    ctx.restore();
+    block(0, H - 66, 62, () =>
+      drawText(p, look.eventText, { ...foot, x: -284, align: "left" }),
+    );
+    block(1, H - 66, 62, () =>
+      drawText(p, match.round, { ...foot, x: 284, align: "right" }),
+    );
+    drawLogo(p, W / 2, H - 84, 140);
 
     drawVs(p, 640, 372, 168);
   },
@@ -344,8 +380,8 @@ const night: ThumbnailTemplate = {
     ctx.fillRect(W - 256, 674, 200, 10);
 
     const hasLogo = !!p.assets.logo;
-    drawLogo(p, 640, 70, 84);
-    const top = hasLogo ? 148 : 56;
+    drawLogo(p, 640, 76, 104);
+    const top = hasLogo ? 162 : 56;
     drawText(p, match.round, {
       x: 640,
       y: top,
@@ -361,11 +397,17 @@ const night: ThumbnailTemplate = {
       fill: QUIET,
     });
 
+    // An outline in white alone disappears over light art, so it sits on a
+    // dark copy of itself: a thick dark edge and a dark, see-through fill.
+    const vs = { x: 640, y: 400, maxWidth: 260, size: 120 };
     drawText(p, "VS", {
-      x: 640,
-      y: 400,
-      maxWidth: 260,
-      size: 120,
+      ...vs,
+      fill: withAlpha(NIGHT, 0.6),
+      stroke: NIGHT,
+      strokeWidth: 18,
+    });
+    drawText(p, "VS", {
+      ...vs,
       fill: PAPER,
       stroke: PAPER,
       strokeWidth: 5,
@@ -422,7 +464,7 @@ const card: ThumbnailTemplate = {
     };
     drawText(p, look.eventText, { ...head, x: 56, align: "left" });
     drawText(p, match.round, { ...head, x: W - 56, align: "right" });
-    drawLogo(p, 640, 62, 96);
+    drawLogo(p, 640, 62, 110);
 
     ctx.beginPath();
     ctx.arc(640, 344, 70, 0, Math.PI * 2);
