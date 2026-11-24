@@ -190,7 +190,7 @@
         "y": 0.02
       },
       "cropScale": 1.05,
-      "nameJa": "Mr.ゲーム＆ウォッチ"
+      "nameJa": "Mr.ゲーム&ウォッチ"
     },
     {
       "name": "Ness",
@@ -334,7 +334,7 @@
         "y": -0.05
       },
       "cropScale": 0.8,
-      "nameJa": "ランダム"
+      "nameJa": "おまかせ"
     }
   ]
 }

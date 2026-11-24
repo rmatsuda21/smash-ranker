@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Stage } from "react-konva";
+import { Trans } from "@lingui/react/macro";
 import { Stage as KonvaStage } from "konva/lib/Stage";
 import cn from "classnames";
 
@@ -224,7 +225,7 @@ export const Canvas = ({ className }: Props) => {
           step={0.1}
         />
         <Button variant="outline" size="sm" onClick={handleFitToWindow}>
-          Fit to window
+          <Trans>Fit to window</Trans>
         </Button>
       </div>
     </div>

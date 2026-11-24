@@ -138,7 +138,7 @@ const JA: Strings = {
   place: (n) => [String(n), "位"],
   of: (n) => `${n}人中`,
   atSeed: "シード通り",
-  legend: "W ウィナーズ · L ルーザーズ · UF アップセットファクター",
+  legend: "W 勝者側 · L 敗者側 · UF アップセットファクター",
   noSets: "完了した試合がありません。",
 };
 

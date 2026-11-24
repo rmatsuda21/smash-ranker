@@ -1,8 +1,9 @@
 import { useMemo } from "react";
 import cn from "classnames";
-import { Trans } from "@lingui/react";
+import { useLingui } from "@lingui/react";
 
 import { useCanvasStore } from "@/store/canvasStore";
+import { COLOR_LABELS } from "@/consts/top8/colorLabels";
 import { rgbStringToAlphaHex } from "@/utils/top8/rgbStringToHex";
 import { ColorInput } from "@/components/shared/ColorInput/ColorInput";
 
@@ -13,8 +14,12 @@ type Props = {
 };
 
 export const ColorPaletteEditor = ({ className }: Props) => {
+  const { _ } = useLingui();
   const palette = useCanvasStore((state) => state.design.colorPalette);
   const dispatch = useCanvasStore((state) => state.dispatch);
+
+  const label = (name: string) =>
+    COLOR_LABELS[name] ? _(COLOR_LABELS[name]) : name;
 
   const handleColorChange = (id: string, color: string, name: string) => {
     dispatch({
@@ -43,11 +48,7 @@ export const ColorPaletteEditor = ({ className }: Props) => {
     <div className={cn(className, styles.colorPaletteEditor)}>
       {groups.map(([groupName, entries]) => (
         <div key={groupName} className={styles.group}>
-          {groupName && (
-            <p className={styles.groupLabel}>
-              <Trans id={groupName} message={groupName} />
-            </p>
-          )}
+          {groupName && <p className={styles.groupLabel}>{label(groupName)}</p>}
           <div className={styles.groupColors}>
             {entries.map(([id, { color, name }]) => (
               <div key={id} className={styles.row}>
@@ -55,9 +56,7 @@ export const ColorPaletteEditor = ({ className }: Props) => {
                   color={rgbStringToAlphaHex(color)}
                   onChange={(color) => handleColorChange(id, color, name)}
                 />
-                <span className={styles.name}>
-                  <Trans id={name} message={name} />
-                </span>
+                <span className={styles.name}>{label(name)}</span>
               </div>
             ))}
           </div>

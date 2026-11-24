@@ -63,7 +63,7 @@ msgstr "{name}<0/>{entrants}人中 · シード{seed}"
 
 #: src/components/recap/slides/RoadSlide.tsx:99
 msgid "{offline}% offline"
-msgstr "オフライン {offline}%"
+msgstr "オフ大会 {offline}%"
 
 #: src/components/recap/slides/UpsetSlide.tsx:30
 msgid "{opponent} · seed"
@@ -89,7 +89,7 @@ msgstr "{tournaments}大会"
 
 #: src/components/recap/slides/TypeSlide.tsx:83
 msgid "{upsets} upsets this year. Seeds mean nothing to you."
-msgstr "今年の番狂わせは{upsets}回。シードは関係なし。"
+msgstr "今年のアップセットは{upsets}回。シードは関係なし。"
 
 #: src/components/recap/slides/TypeSlide.tsx:79
 msgid "{weeks} weeks in a row without missing a tournament."
@@ -114,7 +114,7 @@ msgstr "{year}年のタイプ"
 
 #: src/components/recap/slides/UpsetSlide.tsx:124
 msgid "<0>{beaten} of {seeded}</0> brackets finished above your seed."
-msgstr "{seeded}大会中<0>{beaten}大会</0>でシードより上の順位。"
+msgstr "{seeded}大会中<0>{beaten}大会</0>でシード超え。"
 
 #: src/components/recap/slides/RecordSlide.tsx:91
 msgid "<0>{bestName} was your month:</0> {bestWins}–{bestLosses}."
@@ -154,11 +154,11 @@ msgstr "ベストラン"
 
 #: src/components/recap/slides/UpsetSlide.tsx:42
 msgid "Biggest upset"
-msgstr "最大の番狂わせ"
+msgstr "最大のアップセット"
 
 #: src/components/recap/slides/RivalSlide.tsx:111
 msgid "Blue: you won. Black: they won. Numbers are the game count."
-msgstr "青＝あなたの勝ち　黒＝相手の勝ち　数字はゲームカウント"
+msgstr "青＝自分の勝ち　黒＝相手の勝ち　数字はゲームカウント"
 
 #: src/components/recap/slides/BestRunSlide.tsx:130
 msgid "brackets won"
@@ -248,7 +248,7 @@ msgstr "研究家"
 
 #: src/components/recap/slides/TypeSlide.tsx:59
 msgid "Last game, last stock. You won {deciderWins} of the {deciders} sets that went the distance."
-msgstr "最終ゲーム、ラストストック。フルセット{deciders}回のうち{deciderWins}回を勝ち切りました。"
+msgstr "最終ゲーム、ラストストック。フルセット{deciders}回のうち{deciderWins}回を勝ち切った。"
 
 #: src/consts/recap/playerTypes.ts:40
 msgid "Local Legend"
@@ -264,7 +264,7 @@ msgstr "一途"
 
 #: src/components/recap/slides/UpsetSlide.tsx:92
 msgid "More upsets ({upsetCount} in all)"
-msgstr "ほかの番狂わせ（全{upsetCount}回）"
+msgstr "ほかのアップセット（全{upsetCount}回）"
 
 #: src/components/recap/slides/TypeSlide.tsx:165
 #~ msgid "Move your mouse over the card to catch the foil."
@@ -272,7 +272,7 @@ msgstr "ほかの番狂わせ（全{upsetCount}回）"
 
 #: src/components/recap/RecapApp/RecapApp.tsx:254
 msgid "No tournaments on start.gg for {year}. Enter one and your recap starts here."
-msgstr "{year}年のstart.ggの大会記録がありません。大会に出場すると、ここにリキャップが作られます。"
+msgstr "{year}年の大会記録がstart.ggにまだありません。大会に出たら、ここに振り返りができます。"
 
 #: src/components/recap/RecapApp/RecapApp.tsx:251
 msgid "Nothing yet"
@@ -312,11 +312,11 @@ msgstr "同じ大会の参加者"
 
 #: src/components/recap/RecapApp/RecapApp.tsx:243
 msgid "Reading every bracket you entered in {year}."
-msgstr "{year}年に出場した大会をすべて読み込んでいます。"
+msgstr "{year}年に出た大会をぜんぶ読み込み中。"
 
 #: src/components/recap/RecapApp/RecapApp.tsx:205
 msgid "Recap {year}"
-msgstr "リキャップ {year}"
+msgstr "{year}年の振り返り"
 
 #: src/components/recap/slides/CoverSlide.tsx:264
 msgid "Replay"
@@ -372,11 +372,11 @@ msgstr "撃破"
 
 #: src/components/recap/slides/IntroSlide.tsx:33
 msgid "Smash Ranker Recap"
-msgstr "Smash Ranker リキャップ"
+msgstr "Smash Ranker 年間振り返り"
 
 #: src/components/recap/RecapApp/RecapApp.tsx:222
 msgid "start.gg did not answer. Try again in a minute."
-msgstr "start.ggから応答がありません。少し待ってからもう一度お試しください。"
+msgstr "start.ggにつながりませんでした。少し待ってからもう一度どうぞ。"
 
 #: src/components/recap/slides/RoadSlide.tsx:145
 msgid "Tap a pin to see what you did in that city."
@@ -404,15 +404,15 @@ msgstr "年間総集編 · {year}"
 
 #: src/components/recap/slides/BestRunSlide.tsx:136
 msgid "top 3"
-msgstr "トップ3"
+msgstr "TOP3"
 
 #: src/components/recap/slides/BestRunSlide.tsx:142
 msgid "top 8"
-msgstr "ベスト8"
+msgstr "TOP8"
 
 #: src/components/recap/slides/CoverSlide.tsx:91
 msgid "top 8 finishes."
-msgstr "ベスト8入り。"
+msgstr "TOP8入り。"
 
 #: src/components/recap/slides/CoverSlide.tsx:80
 msgid "tournaments, {cities} cities."
@@ -464,7 +464,7 @@ msgstr "黄色は最長記録。<0>{streakWeeks}週連続</0>で出場しまし�
 
 #: src/components/recap/slides/UpsetSlide.tsx:56
 msgid "You · seed"
-msgstr "あなた · シード"
+msgstr "自分 · シード"
 
 #: src/components/recap/slides/TypeSlide.tsx:89
 msgid "You beat the players you are meant to beat, and very few get past you."
@@ -488,7 +488,7 @@ msgstr "いちばん使ったキャラ"
 
 #: src/components/recap/slides/CoverSlide.tsx:236
 msgid "Your recap as a magazine cover"
-msgstr "雑誌の表紙風のリキャップ"
+msgstr "雑誌の表紙風の振り返り"
 
 #: src/components/recap/slides/RivalSlide.tsx:66
 msgid "Your rival · the player you faced most"

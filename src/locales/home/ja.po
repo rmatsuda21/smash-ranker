@@ -67,7 +67,7 @@ msgstr "サムネ作成"
 
 #: src/pages/home.tsx:46
 msgid "Tier List Maker"
-msgstr "ティア表作成"
+msgstr "キャラランク作成"
 
 #: src/pages/home.tsx:141
 msgid "Tools"
@@ -75,7 +75,7 @@ msgstr "ツール一覧"
 
 #: src/pages/home.tsx:41
 msgid "Top 8 graphics"
-msgstr "トップ8画像"
+msgstr "TOP8画像"
 
 #: src/pages/home.tsx:40
 msgid "Tournament Ranker"
@@ -87,7 +87,7 @@ msgstr "大会振り返り"
 
 #: src/pages/home.tsx:60
 msgid "Video thumbnails"
-msgstr "動画サムネイル"
+msgstr "動画サムネ"
 
 #: src/pages/home.tsx:118
 msgid "Welcome back, <0>{gamerTag}</0>"
@@ -99,4 +99,4 @@ msgstr "スマブラの画像作成ならスマラン！"
 
 #: src/pages/home.tsx:53
 msgid "Your run, set by set"
-msgstr "あなたの全試合まとめ"
+msgstr "全試合をまとめて振り返り"

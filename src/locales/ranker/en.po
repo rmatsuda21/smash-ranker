@@ -86,6 +86,18 @@ msgstr ""
 msgid "1s"
 msgstr ""
 
+#: src/consts/top8/colorLabels.ts:10
+msgid "1st"
+msgstr ""
+
+#: src/consts/top8/colorLabels.ts:11
+msgid "2nd"
+msgstr ""
+
+#: src/consts/top8/colorLabels.ts:12
+msgid "3rd"
+msgstr ""
+
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:133
 #~ msgid "4 Players (Dark)"
 #~ msgstr ""
@@ -94,6 +106,18 @@ msgstr ""
 #~ msgid "4 Players (Light)"
 #~ msgstr ""
 
+#: src/consts/top8/colorLabels.ts:13
+msgid "4th"
+msgstr ""
+
+#: src/consts/top8/colorLabels.ts:14
+msgid "5th"
+msgstr ""
+
+#: src/consts/top8/colorLabels.ts:15
+msgid "7th"
+msgstr ""
+
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:127
 #~ msgid "8 Players (Dark)"
 #~ msgstr ""
@@ -101,6 +125,10 @@ msgstr ""
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:139
 #~ msgid "8 Players (Light)"
 #~ msgstr ""
+
+#: src/consts/top8/colorLabels.ts:16
+msgid "Accent"
+msgstr ""
 
 #: src/components/top8/SettingsPanel/AccentColorPicker.tsx:70
 msgid "Accent Color"
@@ -180,8 +208,20 @@ msgstr ""
 msgid "Back to plain text"
 msgstr ""
 
+#: src/consts/top8/colorLabels.ts:17
+msgid "Background"
+msgstr ""
+
 #: src/components/top8/DesignEditor/DesignEditor.tsx:38
 msgid "Background Image"
+msgstr ""
+
+#: src/consts/top8/textLabels.ts:9
+msgid "Badge"
+msgstr ""
+
+#: src/consts/top8/colorLabels.ts:18
+msgid "Bars"
 msgstr ""
 
 #: src/components/home/RecentTournaments/RecentTournaments.tsx:60
@@ -217,12 +257,20 @@ msgstr ""
 msgid "Both players side by side, score in the middle"
 msgstr ""
 
+#: src/consts/top8/textLabels.ts:10
+msgid "Bottom Text"
+msgstr ""
+
 #: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:42
 msgid "Bracket"
 msgstr ""
 
 #: src/components/user/StatsBoard/StatsBoard.tsx:178
 msgid "Bracket company"
+msgstr ""
+
+#: src/consts/top8/colorLabels.ts:19
+msgid "Bricks"
 msgstr ""
 
 #. placeholder {0}: monthLabel(career.busiestMonth.month, "long")
@@ -249,14 +297,54 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
+#: src/consts/top8/colorLabels.ts:20
+msgid "Card"
+msgstr ""
+
+#: src/consts/top8/colorLabels.ts:21
+msgid "Card Background"
+msgstr ""
+
+#: src/consts/top8/colorLabels.ts:22
+msgid "Card Frame"
+msgstr ""
+
+#: src/consts/top8/textLabels.ts:11
+msgid "Card Heading"
+msgstr ""
+
 #: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:139
 msgid "Card style"
+msgstr ""
+
+#: src/consts/top8/colorLabels.ts:23
+msgid "Cards"
 msgstr ""
 
 #. placeholder {0}: res.status
 #: src/hooks/predict/useFetchPredictionEntrants.ts:136
 #: src/hooks/top8/useFetchChallonge.ts:43
 msgid "Challonge API error: {0}"
+msgstr ""
+
+#: src/consts/top8/textLabels.ts:12
+msgid "Champion Label"
+msgstr ""
+
+#: src/consts/top8/textLabels.ts:13
+msgid "Champion Note"
+msgstr ""
+
+#: src/consts/top8/colorLabels.ts:24
+msgid "Character BG"
+msgstr ""
+
+#: src/consts/top8/colorLabels.ts:25
+msgid "Character Border"
+msgstr ""
+
+#: src/consts/top8/colorLabels.ts:26
+msgid "Character Shadow"
 msgstr ""
 
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:244
@@ -276,6 +364,7 @@ msgid "Choose image"
 msgstr ""
 
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:202
+#: src/consts/top8/textLabels.ts:14
 msgid "City"
 msgstr ""
 
@@ -303,6 +392,18 @@ msgstr ""
 #: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:310
 #: src/components/user/PlayerCardModal/PlayerCardModal.tsx:125
 msgid "Close"
+msgstr ""
+
+#: src/consts/top8/colorLabels.ts:27
+msgid "Color 1"
+msgstr ""
+
+#: src/consts/top8/colorLabels.ts:28
+msgid "Color 2"
+msgstr ""
+
+#: src/consts/top8/colorLabels.ts:29
+msgid "Color 3"
 msgstr ""
 
 #: src/components/top8/DesignEditor/DesignEditor.tsx:76
@@ -407,6 +508,10 @@ msgstr ""
 msgid "Country"
 msgstr ""
 
+#: src/consts/top8/textLabels.ts:15
+msgid "Country Header"
+msgstr ""
+
 #: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:120
 #: src/components/top8/TemplateEditor/CreateTemplateModal/CreateTemplateModal.tsx:157
 #~ msgid "Create"
@@ -477,6 +582,7 @@ msgid "Dark"
 msgstr ""
 
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:141
+#: src/consts/top8/textLabels.ts:16
 msgid "Date"
 msgstr ""
 
@@ -531,7 +637,16 @@ msgid "Design"
 msgstr ""
 
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:138
+#: src/consts/top8/colorLabels.ts:30
 msgid "Details"
+msgstr ""
+
+#: src/consts/top8/textLabels.ts:17
+msgid "Details (Bottom)"
+msgstr ""
+
+#: src/consts/top8/textLabels.ts:18
+msgid "Details (Top)"
 msgstr ""
 
 #: src/components/top8/SettingsPanel/DeveloperSettings.tsx:37
@@ -551,12 +666,20 @@ msgstr ""
 msgid "Display options"
 msgstr ""
 
+#: src/consts/top8/colorLabels.ts:31
+msgid "Divider"
+msgstr ""
+
 #: src/components/shared/ConfirmationModal/ConfirmationModal.tsx:70
 msgid "Don't show again"
 msgstr ""
 
 #: src/components/top8/Ranker/Ranker.tsx:103
 msgid "Done"
+msgstr ""
+
+#: src/consts/top8/colorLabels.ts:32
+msgid "Dots"
 msgstr ""
 
 #: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:55
@@ -617,7 +740,7 @@ msgid "Enlarge preview"
 msgstr ""
 
 #. placeholder {0}: translatedName.toLowerCase()
-#: src/components/top8/TextEditor/TextEditor.tsx:85
+#: src/components/top8/TextEditor/TextEditor.tsx:83
 msgid "Enter {0}..."
 msgstr ""
 
@@ -633,11 +756,16 @@ msgstr ""
 #: src/components/predict/PredictionWorkspace/PredictionWorkspace.tsx:31
 #: src/components/results/ResultsWorkspace/ResultsWorkspace.tsx:53
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:156
+#: src/consts/top8/textLabels.ts:19
 msgid "Entrants"
 msgstr ""
 
 #: src/components/user/StatsBoard/StatsBoard.tsx:183
 msgid "entrants across every bracket you've been in"
+msgstr ""
+
+#: src/consts/top8/textLabels.ts:20
+msgid "Event"
 msgstr ""
 
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:130
@@ -700,6 +828,10 @@ msgstr ""
 msgid "Fetching opponent data..."
 msgstr ""
 
+#: src/consts/top8/textLabels.ts:21
+msgid "Fighters Header"
+msgstr ""
+
 #: src/components/results/ResultsApp/ResultsApp.tsx:44
 msgid "Figuring out who got sent to losers..."
 msgstr ""
@@ -734,12 +866,20 @@ msgstr ""
 msgid "Finished on seed"
 msgstr ""
 
+#: src/components/top8/Canvas/Canvas.tsx:228
+msgid "Fit to window"
+msgstr ""
+
 #: src/components/top8/DesignEditor/DesignEditor.tsx:31
 msgid "Font"
 msgstr ""
 
 #: src/hooks/useCustomFonts.ts:42
 msgid "Font \"{fontFamily}\" is already added."
+msgstr ""
+
+#: src/consts/top8/textLabels.ts:22
+msgid "Footer"
 msgstr ""
 
 #: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:124
@@ -768,12 +908,24 @@ msgstr ""
 #~ msgid "Generating recap"
 #~ msgstr ""
 
+#: src/consts/top8/colorLabels.ts:33
+msgid "Glow"
+msgstr ""
+
 #: src/components/user/StatsBoard/StatsBoard.tsx:383
 msgid "Going through your recent sets..."
 msgstr ""
 
 #: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:57
 msgid "Gradient edge"
+msgstr ""
+
+#: src/consts/top8/colorLabels.ts:34
+msgid "Gradient End"
+msgstr ""
+
+#: src/consts/top8/colorLabels.ts:35
+msgid "Gradient Start"
 msgstr ""
 
 #: src/components/top8/SettingsPanel/AccentColorPicker.tsx:28
@@ -784,8 +936,20 @@ msgstr ""
 msgid "Grid view"
 msgstr ""
 
+#: src/consts/top8/colorLabels.ts:36
+msgid "Ground"
+msgstr ""
+
 #: src/components/user/StatsBoard/StatsBoard.tsx:346
 msgid "Habits"
+msgstr ""
+
+#: src/consts/top8/textLabels.ts:23
+msgid "Header Info"
+msgstr ""
+
+#: src/consts/top8/colorLabels.ts:37
+msgid "Headers"
 msgstr ""
 
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:145
@@ -820,6 +984,10 @@ msgstr ""
 msgid "In use"
 msgstr ""
 
+#: src/consts/top8/colorLabels.ts:38
+msgid "Ink"
+msgstr ""
+
 #: src/components/top8/SocialPostComposer/TemplatePicker.tsx:46
 msgid "Insert variable…"
 msgstr ""
@@ -852,6 +1020,14 @@ msgstr ""
 msgid "L"
 msgstr ""
 
+#: src/consts/top8/textLabels.ts:24
+msgid "Label"
+msgstr ""
+
+#: src/consts/top8/colorLabels.ts:39
+msgid "Labels"
+msgstr ""
+
 #: src/components/top8/SettingsPanel/LanguagePicker.tsx:41
 msgid "Language"
 msgstr ""
@@ -873,6 +1049,14 @@ msgstr ""
 msgid "Layout"
 msgstr ""
 
+#: src/consts/top8/colorLabels.ts:40
+msgid "Left Border"
+msgstr ""
+
+#: src/consts/top8/colorLabels.ts:41
+msgid "Lettering"
+msgstr ""
+
 #: src/components/top8/SettingsPanel/ThemePicker.tsx:21
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:113
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:245
@@ -881,6 +1065,10 @@ msgstr ""
 
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:413
 msgid "List view"
+msgstr ""
+
+#: src/consts/top8/colorLabels.ts:42
+msgid "Lit Tube"
 msgstr ""
 
 #: src/components/shared/TournamentUrlInput/TournamentUrlInput.tsx:87
@@ -934,6 +1122,7 @@ msgid "Loading tournament"
 msgstr ""
 
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:200
+#: src/consts/top8/textLabels.ts:25
 msgid "Location"
 msgstr ""
 
@@ -1039,6 +1228,10 @@ msgstr ""
 msgid "Mono"
 msgstr ""
 
+#: src/consts/top8/colorLabels.ts:43
+msgid "Mortar"
+msgstr ""
+
 #: src/components/user/PlayerCardModal/PlayerCardModal.tsx:144
 msgid "Move your mouse over the card"
 msgstr ""
@@ -1049,6 +1242,10 @@ msgstr ""
 
 #: src/components/top8/InfoPanel/InfoPanel.tsx:179
 msgid "Mural alternate costume renders"
+msgstr ""
+
+#: src/consts/top8/colorLabels.ts:44
+msgid "Muted"
 msgstr ""
 
 #: src/components/user/EventRow/EventRow.tsx:50
@@ -1063,8 +1260,20 @@ msgstr ""
 #~ msgid "My Tournaments"
 #~ msgstr ""
 
+#: src/consts/top8/colorLabels.ts:45
+msgid "Name"
+msgstr ""
+
+#: src/consts/top8/textLabels.ts:26
+msgid "Name Header"
+msgstr ""
+
 #: src/components/user/StatsBoard/StatsBoard.tsx:443
 msgid "Nemesis"
+msgstr ""
+
+#: src/consts/top8/colorLabels.ts:46
+msgid "Neon"
 msgstr ""
 
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:133
@@ -1209,6 +1418,18 @@ msgstr ""
 msgid "Output: {outputWidth} × {outputHeight} px"
 msgstr ""
 
+#: src/consts/top8/colorLabels.ts:47
+msgid "Page"
+msgstr ""
+
+#: src/consts/top8/colorLabels.ts:48
+msgid "Panel"
+msgstr ""
+
+#: src/consts/top8/colorLabels.ts:49
+msgid "Paper"
+msgstr ""
+
 #: src/components/results/ResultsApp/ResultsApp.tsx:231
 msgid "Paste a start.gg event URL, pick a player, and generate a shareable recap of their run."
 msgstr ""
@@ -1259,6 +1480,18 @@ msgstr ""
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:284
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:285
 msgid "Placement"
+msgstr ""
+
+#: src/consts/top8/colorLabels.ts:50
+msgid "Placement Shadow"
+msgstr ""
+
+#: src/consts/top8/colorLabels.ts:51
+msgid "Placement Stroke"
+msgstr ""
+
+#: src/consts/top8/colorLabels.ts:52
+msgid "Player"
 msgstr ""
 
 #: src/components/top8/PlayersEditor/PlayerSelector.tsx:40
@@ -1322,6 +1555,10 @@ msgstr ""
 msgid "Post"
 msgstr ""
 
+#: src/consts/top8/colorLabels.ts:53
+msgid "Poster"
+msgstr ""
+
 #: src/components/user/EventRow/EventRow.tsx:33
 msgid "Predict"
 msgstr ""
@@ -1339,6 +1576,7 @@ msgstr ""
 
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:271
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:272
+#: src/consts/top8/colorLabels.ts:54
 msgid "Prefix"
 msgstr ""
 
@@ -1352,6 +1590,10 @@ msgstr ""
 #~ msgid "Preview of your saved template"
 #~ msgstr ""
 
+#: src/consts/top8/colorLabels.ts:55
+msgid "Primary"
+msgstr ""
+
 #: src/components/predict/PredictApp/PredictApp.tsx:31
 msgid "Pulling entrants..."
 msgstr ""
@@ -1362,6 +1604,10 @@ msgstr ""
 
 #: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:178
 msgid "Quality"
+msgstr ""
+
+#: src/consts/top8/textLabels.ts:27
+msgid "Rank Header"
 msgstr ""
 
 #: src/components/Layout/NavOverlay/NavOverlay.tsx:25
@@ -1466,6 +1712,14 @@ msgstr ""
 msgid "Rounding up the squad..."
 msgstr ""
 
+#: src/consts/top8/colorLabels.ts:56
+msgid "Rows"
+msgstr ""
+
+#: src/consts/top8/colorLabels.ts:57
+msgid "Rules"
+msgstr ""
+
 #: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:407
 msgid "Save"
 msgstr ""
@@ -1488,6 +1742,10 @@ msgstr ""
 
 #: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:56
 msgid "Scoreline"
+msgstr ""
+
+#: src/consts/top8/colorLabels.ts:58
+msgid "Screen"
 msgstr ""
 
 #: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:266
@@ -1514,6 +1772,14 @@ msgstr ""
 #: src/components/shared/DropDownSelect/DropDownSelect.tsx:296
 #: src/components/shared/DropDownSelect/DropDownSelect.tsx:297
 msgid "Search..."
+msgstr ""
+
+#: src/consts/top8/colorLabels.ts:59
+msgid "Secondary"
+msgstr ""
+
+#: src/consts/top8/colorLabels.ts:60
+msgid "Secondary Text"
 msgstr ""
 
 #: src/components/results/PlayerSummary/PlayerSummary.tsx:127
@@ -1571,6 +1837,10 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
+#: src/consts/top8/colorLabels.ts:61
+msgid "Shadow"
+msgstr ""
+
 #: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:244
 #: src/components/top8/SocialShareButton/SocialShareButton.tsx:50
 #: src/components/user/PlayerCardModal/PlayerCardModal.tsx:152
@@ -1620,7 +1890,20 @@ msgid "Sky"
 msgstr ""
 
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:223
+#: src/consts/top8/colorLabels.ts:62
 msgid "Sleeve"
+msgstr ""
+
+#: src/consts/top8/colorLabels.ts:63
+msgid "Smash Ball"
+msgstr ""
+
+#: src/consts/top8/textLabels.ts:28
+msgid "Sound Effect"
+msgstr ""
+
+#: src/consts/top8/colorLabels.ts:64
+msgid "Spot Colour"
 msgstr ""
 
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:95
@@ -1660,6 +1943,10 @@ msgstr ""
 msgid "Streak"
 msgstr ""
 
+#: src/consts/top8/colorLabels.ts:65
+msgid "Strip"
+msgstr ""
+
 #: src/components/top8/InfoPanel/InfoPanel.tsx:56
 msgid "Support"
 msgstr ""
@@ -1690,7 +1977,12 @@ msgid "Tap the card, then tilt your phone"
 msgstr ""
 
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:157
+#: src/consts/top8/colorLabels.ts:66
 msgid "Tape"
+msgstr ""
+
+#: src/consts/top8/textLabels.ts:29
+msgid "Team Header"
 msgstr ""
 
 #: src/components/top8/SocialPostComposer/TemplateSelector.tsx:51
@@ -1723,8 +2015,24 @@ msgstr ""
 msgid "Terms of Service"
 msgstr ""
 
+#: src/consts/top8/colorLabels.ts:67
+msgid "Text"
+msgstr ""
+
 #: src/components/top8/TextEditor/TextEditor.tsx:52
 msgid "Text content is configured in the design layout."
+msgstr ""
+
+#: src/consts/top8/colorLabels.ts:70
+msgid "Text on Accent"
+msgstr ""
+
+#: src/consts/top8/colorLabels.ts:68
+msgid "Text Shadow"
+msgstr ""
+
+#: src/consts/top8/colorLabels.ts:69
+msgid "Text Stroke"
 msgstr ""
 
 #: src/components/top8/SidePanel/SidePanelNav.tsx:32
@@ -1744,6 +2052,7 @@ msgid "The start.gg login didn't go through. Nothing was changed."
 msgstr ""
 
 #: src/components/top8/SettingsPanel/ThemePicker.tsx:44
+#: src/consts/top8/colorLabels.ts:71
 msgid "Theme"
 msgstr ""
 
@@ -1780,6 +2089,11 @@ msgstr ""
 msgid "Tier List"
 msgstr ""
 
+#: src/consts/top8/colorLabels.ts:72
+#: src/consts/top8/textLabels.ts:30
+msgid "Title"
+msgstr ""
+
 #: src/components/Layout/SettingsModal/SettingsModal.tsx:47
 msgid "Toggle developer settings"
 msgstr ""
@@ -1813,6 +2127,42 @@ msgstr ""
 
 #: src/components/user/EventRow/EventRow.tsx:42
 msgid "Top 8 graphic"
+msgstr ""
+
+#: src/consts/top8/colorLabels.ts:73
+msgid "Top Bar"
+msgstr ""
+
+#: src/consts/top8/textLabels.ts:31
+msgid "Top Center"
+msgstr ""
+
+#: src/consts/top8/textLabels.ts:32
+msgid "Top Center Label"
+msgstr ""
+
+#: src/consts/top8/textLabels.ts:33
+msgid "Top Left"
+msgstr ""
+
+#: src/consts/top8/textLabels.ts:34
+msgid "Top Left Label"
+msgstr ""
+
+#: src/consts/top8/textLabels.ts:35
+msgid "Top Left Text"
+msgstr ""
+
+#: src/consts/top8/textLabels.ts:36
+msgid "Top Right"
+msgstr ""
+
+#: src/consts/top8/textLabels.ts:37
+msgid "Top Right Label"
+msgstr ""
+
+#: src/consts/top8/textLabels.ts:38
+msgid "Top Right Text"
 msgstr ""
 
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:85
@@ -1853,6 +2203,10 @@ msgstr ""
 msgid "Tournament Full Address"
 msgstr ""
 
+#: src/consts/top8/textLabels.ts:39
+msgid "Tournament Info"
+msgstr ""
+
 #: src/utils/social/templateTokens.ts:14
 #: src/utils/social/templateTokens.ts:46
 msgid "Tournament name"
@@ -1861,6 +2215,7 @@ msgstr ""
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:120
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:121
 #: src/consts/top8/placeholders.ts:32
+#: src/consts/top8/textLabels.ts:40
 msgid "Tournament Name"
 msgstr ""
 
@@ -1969,6 +2324,10 @@ msgstr ""
 msgid "Upset Factor {upsetFactor}"
 msgstr ""
 
+#: src/consts/top8/textLabels.ts:41
+msgid "URL"
+msgstr ""
+
 #: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:226
 msgid "Use this image"
 msgstr ""
@@ -1987,6 +2346,10 @@ msgstr ""
 
 #: src/components/results/SetList/SetRow.tsx:237
 msgid "W"
+msgstr ""
+
+#: src/consts/top8/colorLabels.ts:74
+msgid "Wall"
 msgstr ""
 
 #: src/components/user/StatsBoard/StatsBoard.tsx:194

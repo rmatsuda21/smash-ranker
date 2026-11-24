@@ -2,10 +2,10 @@ import { useMemo } from "react";
 import debounce from "lodash/debounce";
 import { msg } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { Trans as TransRuntime } from "@lingui/react";
 import { useLingui } from "@lingui/react";
 
 import { useCanvasStore } from "@/store/canvasStore";
+import { TEXT_LABELS } from "@/consts/top8/textLabels";
 import {
   EditorCard,
   EditorPanel,
@@ -22,7 +22,7 @@ type Props = {
 };
 
 export const TextEditor = ({ className }: Props) => {
-  const { i18n, _ } = useLingui();
+  const { _ } = useLingui();
   const textPalette = useCanvasStore((state) => state.design.textPalette);
   const dispatch = useCanvasStore((state) => state.dispatch);
 
@@ -72,12 +72,10 @@ export const TextEditor = ({ className }: Props) => {
         </div>
 
         {Object.entries(textPalette).map(([id, { text, name }]) => {
-          const translatedName = i18n._(name);
+          const label = TEXT_LABELS[name];
+          const translatedName = label ? _(label) : name;
           return (
-            <FieldGroup
-              key={id}
-              label={<TransRuntime id={name} message={name} />}
-            >
+            <FieldGroup key={id} label={translatedName}>
               <RichTextInput
                 aria-label={translatedName}
                 value={text}

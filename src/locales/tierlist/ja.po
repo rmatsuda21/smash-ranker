@@ -19,7 +19,7 @@ msgstr "← スワイプでスクロール →"
 
 #: src/components/tierlist/TierListApp/TierListApp.tsx:428
 msgid "Add Tier"
-msgstr "ティア追加"
+msgstr "ランク追加"
 
 #: src/components/tierlist/AltPicker/AltPicker.tsx:98
 #: src/components/tierlist/AltPicker/AltPicker.tsx:107
@@ -64,15 +64,15 @@ msgstr "クラシック"
 
 #: src/components/tierlist/TierListTitle/TierListTitle.tsx:90
 msgid "Click to add title"
-msgstr "クリックしてタイトルを追加"
+msgstr "クリックでタイトル追加"
 
 #: src/components/tierlist/TierListTitle/TierListTitle.tsx:101
 msgid "Click to edit title"
-msgstr "クリックしてタイトルを編集"
+msgstr "クリックでタイトル編集"
 
 #: src/components/tierlist/TierLabel/TierLabel.tsx:83
 msgid "Click to rename"
-msgstr "クリックして名前を変更"
+msgstr "クリックで名前変更"
 
 #: src/components/tierlist/TierSidePanel/TierSidePanel.tsx:89
 #~ msgid "Close panel"
@@ -104,7 +104,7 @@ msgstr "コピー"
 
 #: src/components/tierlist/TierExportModal/TierExportModal.tsx:195
 msgid "Copy failed"
-msgstr "コピーに失敗しました"
+msgstr "コピー失敗"
 
 #: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:50
 #~ msgid "Courier"
@@ -128,7 +128,7 @@ msgstr "ダウンロード"
 
 #: src/components/tierlist/CharacterPool/CharacterPool.tsx:36
 msgid "Drag into a tier · Right-click to change costume"
-msgstr "ティアにドラッグ · 右クリックでカラー変更"
+msgstr "ランクにドラッグ · 右クリックでカラー変更"
 
 #: src/components/tierlist/TierListApp/TierListApp.tsx:441
 msgid "Drag to resize · Double-click to reset"
@@ -144,7 +144,7 @@ msgstr "タイトルを入力"
 
 #: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:73
 msgid "Every character goes back to the unranked roster. Your tiers stay as they are."
-msgstr "全キャラが未ランクに戻ります。ティアは残ります。"
+msgstr "全キャラが未ランクに戻ります。ランクの枠はそのまま残ります。"
 
 #: src/components/tierlist/CharacterPool/CharacterPool.tsx:56
 #~ msgid "Every character is ranked. Drag one back here to unrank it."
@@ -152,11 +152,11 @@ msgstr "全キャラが未ランクに戻ります。ティアは残ります。
 
 #: src/components/tierlist/CharacterPool/CharacterPool.tsx:59
 msgid "Every character is ranked. Drag one back here."
-msgstr "すべてのキャラクターをランク付けしました。ここにドラッグで戻せます。"
+msgstr "全キャラ配置済み。ここにドラッグで戻せます。"
 
 #: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:59
 msgid "Extra Bold"
-msgstr "エキストラボールド"
+msgstr "エクストラボールド"
 
 #: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:53
 msgid "Extra Light"
@@ -164,7 +164,7 @@ msgstr "エクストラライト"
 
 #: src/components/tierlist/TierExportModal/TierExportModal.tsx:170
 msgid "Failed to generate image"
-msgstr "画像の生成に失敗しました"
+msgstr "画像を作れませんでした"
 
 #: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:172
 msgid "Fancy"
@@ -224,7 +224,7 @@ msgstr "ライト"
 
 #: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:191
 msgid "Main Art"
-msgstr "メインアート"
+msgstr "立ち絵"
 
 #: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:56
 msgid "Medium"
@@ -320,15 +320,15 @@ msgstr "シン"
 
 #: src/components/tierlist/TierExportModal/TierExportModal.tsx:178
 msgid "Tier list preview"
-msgstr "ティアリストのプレビュー"
+msgstr "キャラランクのプレビュー"
 
 #: src/components/tierlist/TierListApp/TierListApp.tsx:437
 msgid "Tier list width"
-msgstr "ティアリストの幅"
+msgstr "キャラランクの幅"
 
 #: src/components/tierlist/TierSettings/TierSettings.tsx:68
 msgid "Tier settings"
-msgstr "ティア設定"
+msgstr "ランク設定"
 
 #: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:223
 #~ msgid "Tiers, names, colors and every character placement go back to the defaults."
@@ -336,7 +336,7 @@ msgstr "ティア設定"
 
 #: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:83
 msgid "Tiers, the title, the palette and every character placement go back to the defaults."
-msgstr "ティア・タイトル・パレット・配置が初期状態に戻ります。"
+msgstr "ランク・タイトル・パレット・キャラの配置が初期状態に戻ります。"
 
 #: src/components/tierlist/TierDesignBar/TierDesignBar.tsx:56
 #~ msgid "Times"
@@ -356,11 +356,11 @@ msgstr "トップ"
 
 #: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:51
 msgid "Unrank all"
-msgstr "ランク解除"
+msgstr "全キャラを戻す"
 
 #: src/components/tierlist/TierListToolbar/TierListToolbar.tsx:71
 msgid "Unrank all characters?"
-msgstr "ランクを解除しますか?"
+msgstr "全キャラを未ランクに戻しますか?"
 
 #: src/components/tierlist/CharacterPool/CharacterPool.tsx:32
 msgid "Unranked"
