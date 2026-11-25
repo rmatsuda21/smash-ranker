@@ -23,6 +23,7 @@ import {
   fetchHiveeEvent,
   resolveHiveeSlug,
 } from "@/utils/hivee/api";
+import { MISSING_SEED_FALLBACK } from "@/consts/seeds";
 import { pickFinalProgram, pickFirstProgram } from "@/utils/hivee/programs";
 
 // Event metadata, plus what fetchEventEntrants needs to plan its pages.
@@ -67,6 +68,8 @@ interface ChallongeResponse {
     name: string;
     game_name: string | null;
     started_at: string | null;
+    // When it is planned to start; `started_at` is null until it does.
+    start_at?: string | null;
     participants_count: number;
     full_challonge_url: string | null;
     participants: ChallongeParticipantWrapper[];
@@ -136,7 +139,7 @@ const fetchStartgg = async (
   });
   const allEntrants: PredictionPlayer[] = entrants.map((entrant) => ({
     ...entrant,
-    seed: entrant.seed ?? 9999,
+    seed: entrant.seed ?? MISSING_SEED_FALLBACK,
   }));
 
   return {
@@ -164,21 +167,20 @@ const fetchChallongeEntrants = async (slug: string): Promise<FetchResult> => {
 
   const data: ChallongeResponse = await res.json();
   const tournament = data.tournament;
+  const startDate = tournament.started_at ?? tournament.start_at;
 
   const entrants: PredictionPlayer[] = (tournament.participants ?? [])
     .map(({ participant: p }) => ({
       id: String(p.id),
       name: p.name,
-      seed: p.seed ?? 9999,
+      seed: p.seed ?? MISSING_SEED_FALLBACK,
     }))
     .sort((a, b) => a.seed - b.seed);
 
   return {
     tournamentName: tournament.name,
     eventName: tournament.game_name || "",
-    tournamentDate: tournament.started_at
-      ? new Date(tournament.started_at).toISOString()
-      : "",
+    tournamentDate: startDate ? new Date(startDate).toISOString() : "",
     tournamentUrl: tournament.full_challonge_url || "",
     tournamentIconUrl: "",
     tournamentId: "",
@@ -252,7 +254,7 @@ const fetchHiveePrediction = async (slug: string): Promise<FetchResult> => {
         {
           id: entrant.id,
           name: entrant.display_name,
-          seed: entry.seed ?? 9999,
+          seed: entry.seed ?? MISSING_SEED_FALLBACK,
         },
       ];
     })

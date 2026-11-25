@@ -24,6 +24,7 @@ import {
   findUpsets,
   toEventSet,
 } from "@/utils/tournament/sets";
+import { finalPlacement } from "@/utils/startgg/placement";
 import { startggLoadError } from "@/utils/startgg/describeError";
 
 // The newest sets of an event are its top 8 (ten or eleven sets). A set with
@@ -41,6 +42,7 @@ const EventOverviewQueryDoc = graphql(`
   ) {
     event(id: $id) {
       id
+      state
       phases {
         id
         phaseOrder
@@ -49,6 +51,7 @@ const EventOverviewQueryDoc = graphql(`
       standings(query: { page: 1, perPage: 8 }) {
         nodes {
           placement
+          isFinal
           entrant {
             id
             name
@@ -106,6 +109,7 @@ const EventOverviewQueryDoc = graphql(`
         initialSeedNum
         standing {
           placement
+          isFinal
         }
         paginatedSets(page: 1, perPage: 40) {
           nodes {
@@ -120,6 +124,7 @@ const EventOverviewQueryDoc = graphql(`
 
 type RawStanding = {
   placement?: number | null;
+  isFinal?: boolean | null;
   entrant?: {
     id?: string | number | null;
     name?: string | null;
@@ -138,13 +143,17 @@ type RawStanding = {
   } | null;
 } | null;
 
-const toStanding = (raw: RawStanding): StandingEntry | null => {
+const toStanding = (
+  raw: RawStanding,
+  eventState: unknown,
+): StandingEntry | null => {
   if (!raw?.placement || !raw.entrant?.id) return null;
   const members = raw.entrant.participants ?? [];
   // Only a single player has a sponsor to set apart from the tag.
   const solo = members.length === 1 ? members[0] : null;
   return {
     placement: raw.placement,
+    isFinal: finalPlacement(raw, eventState) !== null,
     entrantId: String(raw.entrant.id),
     name: raw.entrant.name || "",
     prefix: solo?.prefix || null,
@@ -205,7 +214,7 @@ export const fetchEventOverview = async (
     }
     userRun = {
       entrantId: String(entrant.id),
-      placement: entrant.standing?.placement ?? null,
+      placement: finalPlacement(entrant.standing, event.state),
       seed: entrant.initialSeedNum ?? null,
       wins,
       losses,
@@ -220,7 +229,9 @@ export const fetchEventOverview = async (
     .sort((a, b) => (b.numSeeds ?? 0) - (a.numSeeds ?? 0))[0];
 
   return {
-    standings: (event.standings?.nodes ?? []).map(toStanding).filter(present),
+    standings: (event.standings?.nodes ?? [])
+      .map((node) => toStanding(node, event.state))
+      .filter(present),
     topSets,
     characters: countCharacters(rawSets.flatMap((set) => set.games ?? [])),
     userRun,
@@ -237,6 +248,7 @@ const EventStandingsQueryDoc = graphql(`
   query TournamentEventStandings($id: ID!, $page: Int!, $perPage: Int!) {
     event(id: $id) {
       id
+      state
       standings(query: { page: $page, perPage: $perPage }) {
         pageInfo {
           total
@@ -244,6 +256,7 @@ const EventStandingsQueryDoc = graphql(`
         }
         nodes {
           placement
+          isFinal
           entrant {
             id
             name
@@ -276,8 +289,11 @@ export const fetchEventStandings = async (
   if (result.error || !connection) {
     throw startggLoadError(result.error, "Could not load the standings");
   }
+  const eventState = result.data?.event?.state;
   return {
-    standings: (connection.nodes ?? []).map(toStanding).filter(present),
+    standings: (connection.nodes ?? [])
+      .map((node) => toStanding(node, eventState))
+      .filter(present),
     total: connection.pageInfo?.total ?? 0,
     totalPages: connection.pageInfo?.totalPages ?? 1,
   };

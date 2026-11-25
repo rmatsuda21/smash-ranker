@@ -8,22 +8,19 @@ import { useTournamentStore } from "@/store/tournamentStore";
 import type {
   HiveeEvent,
   HiveeProgram,
-  HiveeStandings,
+  HiveeStandingRow,
 } from "@/types/hivee/Hivee";
 import type { CharacerData, PlayerInfo } from "@/types/top8/Player";
 import type { TournamentInfo } from "@/types/top8/Tournament";
 import { getGameForHiveeContent } from "@/utils/games";
 import {
   fetchHiveeCompletedMatches,
+  fetchHiveeEntrants,
   fetchHiveeEvent,
   fetchHiveeStandings,
   resolveHiveeSlug,
 } from "@/utils/hivee/api";
-import {
-  countHiveeCharacters,
-  orderStandings,
-  pickFinalProgram,
-} from "@/utils/hivee/programs";
+import { countHiveeCharacters, pickFinalProgram } from "@/utils/hivee/programs";
 import {
   failureDetail,
   failureKindOf,
@@ -43,6 +40,8 @@ import {
   getPlacements,
   padPlayersWithBlanks,
 } from "@/utils/top8/samplePlayers";
+import { buildHiveeLineup } from "@/utils/hivee/lineup";
+import { getLineupNotice } from "@/utils/top8/lineupNotice";
 import { noCharacters } from "@/utils/top8/playerCharacters";
 
 // Hivee's images allow any origin, so the icon is fetched as it is and kept
@@ -76,11 +75,9 @@ const storeIcon = async (
 };
 
 const toPlayers = (
-  standings: HiveeStandings,
+  rows: HiveeStandingRow[],
   characters: Map<string, CharacerData[]>,
-  playerCount: number,
 ): PlayerInfo[] => {
-  const rows = orderStandings(standings.rows).slice(0, playerCount);
   const slotPlacements = getPlacements(rows.length);
 
   return rows.map((row, index) => {
@@ -103,7 +100,7 @@ const toPlayers = (
 const toTournamentInfo = (
   event: HiveeEvent,
   program: HiveeProgram,
-  standings: HiveeStandings,
+  entrantCount: number,
   slug: string,
   iconSrc: string | undefined,
 ): TournamentInfo => ({
@@ -114,7 +111,7 @@ const toTournamentInfo = (
     state: event.prefecture_name ?? "",
     country: event.country?.toUpperCase() ?? "",
   },
-  entrants: standings.rows.length,
+  entrants: entrantCount,
   url: slugToUrl("hivee", slug),
   iconSrc,
   startggId: event.id,
@@ -166,10 +163,17 @@ export const useFetchHivee = () => {
         iconUrl ? storeIcon(iconUrl, iconName) : undefined,
       ]);
 
-      if (standings.rows.length === 0) {
-        throw new LoadError(t`This event has no standings yet.`, "unsupported");
-      }
+      // Seeds are what order there is before the bracket starts, and decide
+      // between players still in it while it is played.
+      const entrants =
+        program.state === "ended" ? [] : await fetchHiveeEntrants(eventId);
       if (!isCurrentTournamentLoad(loadId)) return;
+
+      const { rows, lineup, entrantCount } = buildHiveeLineup(
+        program,
+        standings.rows,
+        entrants,
+      );
 
       // The placements cover every phase listed, so the characters do too.
       const phaseIds = new Set(
@@ -184,19 +188,22 @@ export const useFetchHivee = () => {
 
       tournamentDispatch({
         type: "SET_TOURNAMENT_INFO",
-        payload: toTournamentInfo(event, program, standings, slug, iconSrc),
+        payload: toTournamentInfo(event, program, entrantCount, slug, iconSrc),
       });
       const game = getGameForHiveeContent(program.content);
       if (game) tournamentDispatch({ type: "SET_GAME", payload: game.id });
 
-      const players = toPlayers(standings, characters, playerCount);
+      const players = toPlayers(rows.slice(0, playerCount), characters);
       playerDispatch({
         type: "FETCH_PLAYERS_SUCCESS",
         payload: padPlayersWithBlanks(players, playerCount),
       });
+      const notice = getLineupNotice(lineup);
+      if (notice) showToast(notice, { variant: "info" });
       logEvent("tournament_load", {
         tournament_platform: "hivee",
         player_count: playerCount,
+        lineup_source: lineup,
       });
     } catch (error) {
       if (!isCurrentTournamentLoad(loadId)) return;

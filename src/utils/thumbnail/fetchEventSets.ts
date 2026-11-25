@@ -49,6 +49,7 @@ const ThumbnailEventSetsQueryDoc = graphql(`
         }
         nodes {
           id
+          state
           fullRoundText
           lPlacement
           stream {
@@ -78,6 +79,9 @@ const ThumbnailEventSetsQueryDoc = graphql(`
     }
   }
 `);
+
+// start.gg's number for a finished set.
+const COMPLETED_SET = 3;
 
 type SetNode = NonNullable<
   NonNullable<
@@ -135,7 +139,9 @@ const toSet = (node: SetNode): ThumbnailSet | null => {
     round: node.fullRoundText ?? "",
     onStream,
     top8,
-    included: onStream || top8,
+    // A set still to be played can be made by hand, but is not saved with
+    // the rest.
+    included: node.state === COMPLETED_SET && (onStream || top8),
   };
 };
 

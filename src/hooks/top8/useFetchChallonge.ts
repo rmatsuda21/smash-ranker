@@ -1,5 +1,5 @@
 import { t } from "@lingui/core/macro";
-import { PlayerInfo } from "@/types/top8/Player";
+import { LineupSource, PlayerInfo } from "@/types/top8/Player";
 import { TournamentInfo } from "@/types/top8/Tournament";
 import { usePlayerStore } from "@/store/playerStore";
 import { useTournamentStore } from "@/store/tournamentStore";
@@ -7,6 +7,7 @@ import {
   assignPlacementsToPlayers,
   padPlayersWithBlanks,
 } from "@/utils/top8/samplePlayers";
+import { getLineupNotice } from "@/utils/top8/lineupNotice";
 import { noCharacters } from "@/utils/top8/playerCharacters";
 import { getGameForName } from "@/utils/games";
 import { useToast } from "@/components/Toast";
@@ -37,6 +38,10 @@ interface ChallongeResponse {
     name: string;
     game_name: string | null;
     started_at: string | null;
+    // When it is planned to start; `started_at` is null until it does.
+    start_at?: string | null;
+    // "complete" once the results are in.
+    state?: string;
     participants_count: number;
     full_challonge_url: string | null;
     participants: ChallongeParticipantWrapper[];
@@ -61,22 +66,41 @@ const fetchChallongeTournament = async (
   return res.json();
 };
 
+const getLineup = ({
+  state,
+  participants,
+}: ChallongeResponse["tournament"]): LineupSource => {
+  if (!participants?.length) return "none";
+  const ranked = participants.filter((p) => p.participant.final_rank !== null);
+  if (ranked.length === 0) return "seeds";
+  return state === undefined || state === "complete" ? "final" : "live";
+};
+
+// Placed players first, then the rest by seed.
+const byRankThenSeed = (
+  { participant: a }: ChallongeParticipantWrapper,
+  { participant: b }: ChallongeParticipantWrapper,
+) =>
+  (a.final_rank ?? Infinity) === (b.final_rank ?? Infinity)
+    ? (a.seed ?? Infinity) - (b.seed ?? Infinity) || 0
+    : (a.final_rank ?? Infinity) - (b.final_rank ?? Infinity);
+
 const parseParticipants = (
   participants: ChallongeParticipantWrapper[],
 ): PlayerInfo[] => {
-  const players: PlayerInfo[] = participants
+  const players: PlayerInfo[] = [...participants]
+    .sort(byRankThenSeed)
     .map(({ participant: p }) => ({
       id: String(p.id),
       entrantId: String(p.id),
       name: p.name,
       gamerTag: p.name,
       characters: noCharacters(),
-      placement: p.final_rank ?? p.seed ?? 0,
+      placement: 0,
       prefix: undefined,
       twitter: undefined,
       country: undefined,
-    }))
-    .sort((a, b) => a.placement - b.placement);
+    }));
 
   return assignPlacementsToPlayers(players);
 };
@@ -84,11 +108,12 @@ const parseParticipants = (
 const parseTournamentInfo = (
   tournament: ChallongeResponse["tournament"],
 ): TournamentInfo => {
+  const startDate = tournament.started_at ?? tournament.start_at;
   return {
     tournamentName: tournament.name,
     eventName: tournament.game_name || "",
-    date: tournament.started_at
-      ? new Date(tournament.started_at).toISOString()
+    date: startDate
+      ? new Date(startDate).toISOString()
       : new Date().toISOString(),
     location: {},
     entrants: tournament.participants_count,
@@ -120,10 +145,17 @@ export const useFetchChallonge = () => {
 
       const players = parseParticipants(data.tournament.participants ?? []);
       const paddedPlayers = padPlayersWithBlanks(players, playerCount);
-      playerDispatch({ type: "FETCH_PLAYERS_SUCCESS", payload: paddedPlayers });
+      const lineup = getLineup(data.tournament);
+      playerDispatch({
+        type: "FETCH_PLAYERS_SUCCESS",
+        payload: paddedPlayers,
+      });
+      const notice = getLineupNotice(lineup);
+      if (notice) showToast(notice, { variant: "info" });
       logEvent("tournament_load", {
         tournament_platform: "challonge",
         player_count: playerCount,
+        lineup_source: lineup,
       });
     } catch (error) {
       if (!isCurrentTournamentLoad(loadId)) return;

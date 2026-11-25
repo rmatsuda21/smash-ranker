@@ -255,7 +255,7 @@ const PHASE_BUTTONS = 6;
 // final was played; the other phases and their pools can be picked.
 export const BracketTab = ({ event, overview, overviewSettled }: Props) => {
   const { _ } = useLingui();
-  const phases = useEventPhases(event.id);
+  const phases = useEventPhases(event);
   // What the user picked on this visit.
   const [picked, setPicked] = useState<{
     phaseId: string | null;
@@ -295,7 +295,7 @@ export const BracketTab = ({ event, overview, overviewSettled }: Props) => {
           : [],
     [phase, group],
   );
-  const pools = usePools(groupIds);
+  const pools = usePools(event, groupIds);
   const isElimination = ELIMINATION.includes(phase?.bracketType ?? "");
   const lanes = useMemo(
     () => (isElimination ? layoutBracket(pools.data?.[0]?.sets ?? []) : []),

@@ -4,6 +4,7 @@ import type { UserEventsQuery } from "@/gql/graphql";
 import type { GameId } from "@/types/Game";
 import type { UserEvent } from "@/types/user/UserEvent";
 import { startggClient } from "@/utils/startgg/client";
+import { finalPlacement } from "@/utils/startgg/placement";
 import { startggLoadError } from "@/utils/startgg/describeError";
 
 // Looked up by slug rather than `currentUser` so the result is the same
@@ -46,6 +47,7 @@ const UserEventsQueryDoc = graphql(`
             initialSeedNum
             standing {
               placement
+              isFinal
             }
           }
           tournament {
@@ -83,7 +85,7 @@ const toUserEvent = (node: EventNode): UserEvent | null => {
     videogameName: node.videogame?.name || null,
     entrantId: node.userEntrant?.id ? String(node.userEntrant.id) : null,
     seed: node.userEntrant?.initialSeedNum ?? null,
-    placement: node.userEntrant?.standing?.placement ?? null,
+    placement: finalPlacement(node.userEntrant?.standing, node.state),
     tournament: {
       id: String(node.tournament.id),
       name: node.tournament.name || "",

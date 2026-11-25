@@ -4,6 +4,7 @@ import type { RecapEventsQuery } from "@/gql/graphql";
 import type { GameId } from "@/types/Game";
 import type { RecapEvent, RecapPlayer } from "@/types/recap/Recap";
 import { startggClient } from "@/utils/startgg/client";
+import { finalPlacement } from "@/utils/startgg/placement";
 import { startggLoadError } from "@/utils/startgg/describeError";
 
 const RecapEventsQueryDoc = graphql(`
@@ -33,11 +34,13 @@ const RecapEventsQueryDoc = graphql(`
           startAt
           numEntrants
           isOnline
+          state
           userEntrant(userId: $userId) {
             id
             initialSeedNum
             standing {
               placement
+              isFinal
             }
           }
           tournament {
@@ -77,7 +80,7 @@ const toRecapEvent = (node: EventNode): RecapEvent | null => {
     numEntrants: node.numEntrants ?? 0,
     isOnline: Boolean(node.isOnline),
     isSide: SIDE_EVENT.test(node.name || "") || node.type === TEAM_EVENT_TYPE,
-    placement: node.userEntrant?.standing?.placement ?? null,
+    placement: finalPlacement(node.userEntrant?.standing, node.state),
     seed: node.userEntrant?.initialSeedNum ?? null,
     tournament: {
       id: String(node.tournament.id),

@@ -55,6 +55,9 @@ export type TournamentDetails = {
 
 export type StandingEntry = {
   placement: number;
+  // False for someone still playing: the placement is the worst they can
+  // finish.
+  isFinal: boolean;
   entrantId: string;
   // The entrant's name as start.gg shows it ("Team | Tag", "A / B").
   name: string;

@@ -1,4 +1,4 @@
-import { MISSING_SEED_FALLBACK } from "@/utils/results/parseStartggResults";
+import { MISSING_SEED_FALLBACK } from "@/consts/seeds";
 import { useMemo, useState } from "react";
 import { Trans } from "@lingui/react/macro";
 import { msg } from "@lingui/core/macro";

@@ -115,7 +115,7 @@ msgstr ""
 #~ msgid "{playerCount} Players (Light)"
 #~ msgstr ""
 
-#: src/components/tournament/OverviewTab/OverviewTab.tsx:340
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:362
 #: src/components/tournament/RoundRobin/RoundRobin.tsx:42
 msgid "{wins}–{losses}"
 msgstr ""
@@ -201,8 +201,8 @@ msgstr "アクセントカラー"
 
 #: src/components/top8/PlayersEditor/PlayerCountControl.tsx:98
 #: src/components/top8/PlayersEditor/PlayerCountControl.tsx:99
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:234
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:235
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:242
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:243
 msgid "Add player"
 msgstr ""
 
@@ -228,7 +228,7 @@ msgid "All"
 msgstr ""
 
 #. placeholder {0}: event.numEntrants
-#: src/components/tournament/OverviewTab/OverviewTab.tsx:270
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:284
 msgid "All {0} placements"
 msgstr ""
 
@@ -256,7 +256,7 @@ msgstr "アンバー"
 msgid "Any current player and tournament data will be overwritten."
 msgstr ""
 
-#: src/components/tournament/OverviewTab/OverviewTab.tsx:440
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:462
 msgid "Any entrant's run as an image"
 msgstr ""
 
@@ -292,11 +292,11 @@ msgstr ""
 msgid "Attendees"
 msgstr ""
 
-#: src/components/predict/ActionBar/ActionBar.tsx:31
+#: src/components/predict/ActionBar/ActionBar.tsx:33
 msgid "Auto-fill by seed"
 msgstr ""
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:372
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:380
 msgid "Avatar"
 msgstr ""
 
@@ -440,8 +440,8 @@ msgid "Cards"
 msgstr ""
 
 #. placeholder {0}: res.status
-#: src/hooks/predict/useFetchPredictionEntrants.ts:158
-#: src/hooks/top8/useFetchChallonge.ts:54
+#: src/hooks/predict/useFetchPredictionEntrants.ts:161
+#: src/hooks/top8/useFetchChallonge.ts:59
 msgid "Challonge API error: {0}"
 msgstr ""
 
@@ -512,11 +512,11 @@ msgstr ""
 msgid "Clear"
 msgstr ""
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:409
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:417
 msgid "Clear Player"
 msgstr ""
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:194
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:195
 msgid "Clear Player?"
 msgstr ""
 
@@ -580,8 +580,8 @@ msgstr ""
 msgid "Competing since {sinceYear}"
 msgstr ""
 
-#: src/hooks/predict/useFetchPredictionEntrants.ts:203
-#: src/hooks/top8/useFetchTonamel.ts:203
+#: src/hooks/predict/useFetchPredictionEntrants.ts:205
+#: src/hooks/top8/useFetchTonamel.ts:213
 msgid "Competition not found"
 msgstr ""
 
@@ -645,7 +645,7 @@ msgstr ""
 msgid "Couldn't load the tournament"
 msgstr ""
 
-#: src/components/tournament/OverviewTab/OverviewTab.tsx:233
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:239
 msgid "Couldn't load this event"
 msgstr ""
 
@@ -720,7 +720,7 @@ msgstr ""
 msgid "Counting the stocks. All of them..."
 msgstr ""
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:346
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:354
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:228
 msgid "Country"
 msgstr ""
@@ -768,7 +768,7 @@ msgstr ""
 msgid "Custom"
 msgstr "Custom"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:380
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:388
 msgid "Custom Flag"
 msgstr ""
 
@@ -776,7 +776,7 @@ msgstr ""
 msgid "Custom Fonts"
 msgstr ""
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:362
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:370
 msgid "Custom images"
 msgstr ""
 
@@ -1020,7 +1020,7 @@ msgstr ""
 msgid "Enter a start.gg, Challonge, Tonamel, or Hivee event URL"
 msgstr ""
 
-#: src/components/tournament/StandingsTab/StandingsTab.tsx:43
+#: src/components/tournament/StandingsTab/StandingsTab.tsx:42
 msgid "Entrant"
 msgstr ""
 
@@ -1072,36 +1072,38 @@ msgstr ""
 msgid "Export"
 msgstr ""
 
-#: src/hooks/top8/useFetchChallonge.ts:133
+#: src/hooks/top8/useFetchChallonge.ts:166
 msgid "Failed to fetch Challonge tournament"
 msgstr ""
 
-#: src/hooks/top8/useFetchHivee.ts:201
+#: src/hooks/top8/useFetchHivee.ts:214
 msgid "Failed to fetch Hivee tournament"
 msgstr ""
 
-#: src/hooks/results/useFetchPlayerResults.ts:288
-#: src/hooks/results/useFetchPlayerResults.ts:432
+#: src/hooks/results/useFetchPlayerResults.ts:298
+#: src/hooks/results/useFetchPlayerResults.ts:445
 msgid "Failed to fetch player results"
 msgstr ""
 
 #: src/utils/startgg/fetchEventEntrants.ts:215
 #: src/utils/startgg/fetchEventEntrants.ts:231
+#: src/utils/startgg/fetchTopSeeds.ts:89
 msgid "Failed to fetch seeds"
 msgstr ""
 
-#: src/hooks/top8/useFetchTonamel.ts:240
+#: src/hooks/top8/useFetchTonamel.ts:258
 msgid "Failed to fetch Tonamel tournament"
 msgstr ""
 
-#: src/hooks/predict/useFetchPredictionEntrants.ts:325
+#: src/hooks/predict/useFetchPredictionEntrants.ts:327
 #: src/hooks/results/useFetchResultsEntrantPool.ts:235
 #: src/hooks/thumbnail/useLoadThumbnailEvent.ts:97
 msgid "Failed to fetch tournament"
 msgstr ""
 
-#: src/hooks/top8/useFetchResult.ts:700
-#: src/hooks/top8/useFetchResult.ts:702
+#: src/hooks/top8/useFetchResult.ts:740
+#: src/hooks/top8/useFetchResult.ts:807
+#: src/hooks/top8/useFetchResult.ts:809
 msgid "Failed to fetch tournament data"
 msgstr ""
 
@@ -1199,12 +1201,12 @@ msgstr ""
 msgid "Game"
 msgstr ""
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:289
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:290
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:297
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:298
 msgid "Gamer Tag"
 msgstr ""
 
-#: src/components/predict/ActionBar/ActionBar.tsx:38
+#: src/components/predict/ActionBar/ActionBar.tsx:40
 #: src/components/results/ResultsWorkspace/ResultsWorkspace.tsx:96
 msgid "Generate Graphic"
 msgstr ""
@@ -1482,7 +1484,7 @@ msgstr ""
 msgid "Loading tournament"
 msgstr ""
 
-#: src/components/tournament/StandingsTab/StandingsTab.tsx:85
+#: src/components/tournament/StandingsTab/StandingsTab.tsx:86
 msgid "Loading…"
 msgstr ""
 
@@ -1560,11 +1562,11 @@ msgstr ""
 msgid "Make a Top 8 from any link"
 msgstr ""
 
-#: src/components/tournament/OverviewTab/OverviewTab.tsx:366
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:388
 msgid "Make my recap"
 msgstr ""
 
-#: src/components/tournament/OverviewTab/OverviewTab.tsx:375
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:397
 msgid "Make something"
 msgstr ""
 
@@ -1718,7 +1720,7 @@ msgstr ""
 #~ msgid "No phases found for this event"
 #~ msgstr ""
 
-#: src/components/tournament/StandingsTab/StandingsTab.tsx:33
+#: src/components/tournament/StandingsTab/StandingsTab.tsx:32
 msgid "No placements yet."
 msgstr ""
 
@@ -1735,7 +1737,7 @@ msgstr ""
 msgid "No results found"
 msgstr ""
 
-#: src/components/tournament/OverviewTab/OverviewTab.tsx:237
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:243
 msgid "No results yet"
 msgstr ""
 
@@ -1772,12 +1774,12 @@ msgstr ""
 msgid "None"
 msgstr ""
 
-#: src/components/tournament/OverviewTab/OverviewTab.tsx:235
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:241
 msgid "Not started yet"
 msgstr ""
 
 #. placeholder {0}: event.numEntrants
-#: src/components/tournament/OverviewTab/OverviewTab.tsx:333
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:355
 msgid "of {0}"
 msgstr ""
 
@@ -1817,7 +1819,7 @@ msgid "Online"
 msgstr ""
 
 #: src/components/tournament/InfoTab/InfoTab.tsx:56
-#: src/components/tournament/OverviewTab/OverviewTab.tsx:490
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:512
 msgid "Open in Maps"
 msgstr ""
 
@@ -1959,8 +1961,8 @@ msgid "Pixel Ratio"
 msgstr ""
 
 #: src/components/home/RecentTournaments/RecentTournaments.tsx:44
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:314
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:315
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:322
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:323
 msgid "Placement"
 msgstr ""
 
@@ -1976,7 +1978,7 @@ msgstr ""
 #~ msgid "Placements, the top 8 bracket and upsets show up here once sets are reported on start.gg."
 #~ msgstr ""
 
-#: src/components/tournament/OverviewTab/OverviewTab.tsx:244
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:250
 msgid "Placements, the top 8 bracket and upsets show up here once sets are reported."
 msgstr ""
 
@@ -1984,8 +1986,8 @@ msgstr ""
 msgid "Player"
 msgstr ""
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:212
-#: src/components/top8/PlayersEditor/PlayerSelector.tsx:40
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:215
+#: src/components/top8/PlayersEditor/PlayerSelector.tsx:41
 msgid "Player {slot}"
 msgstr ""
 
@@ -2030,12 +2032,12 @@ msgstr ""
 msgid "Player Prefix"
 msgstr ""
 
-#: src/components/tournament/OverviewTab/OverviewTab.tsx:437
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:459
 msgid "Player recap"
 msgstr ""
 
-#: src/hooks/results/useFetchPlayerResults.ts:263
-#: src/hooks/results/useFetchPlayerResults.ts:344
+#: src/hooks/results/useFetchPlayerResults.ts:273
+#: src/hooks/results/useFetchPlayerResults.ts:354
 msgid "Player results not available."
 msgstr ""
 
@@ -2075,7 +2077,7 @@ msgstr ""
 msgid "Predict"
 msgstr ""
 
-#: src/components/tournament/OverviewTab/OverviewTab.tsx:398
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:420
 msgid "Prediction"
 msgstr ""
 
@@ -2090,8 +2092,8 @@ msgstr ""
 msgid "Predictions"
 msgstr ""
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:301
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:302
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:309
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:310
 #: src/consts/top8/colorLabels.ts:54
 msgid "Prefix"
 msgstr ""
@@ -2131,7 +2133,7 @@ msgstr ""
 msgid "Rank Header"
 msgstr ""
 
-#: src/components/tournament/OverviewTab/OverviewTab.tsx:401
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:423
 msgid "Rank the entrants before it starts"
 msgstr ""
 
@@ -2224,11 +2226,11 @@ msgstr ""
 msgid "Remove last player"
 msgstr ""
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:400
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:408
 msgid "Remove Teammate"
 msgstr ""
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:202
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:203
 msgid "Remove Teammate?"
 msgstr ""
 
@@ -2372,7 +2374,7 @@ msgstr ""
 msgid "Secondary Text"
 msgstr ""
 
-#: src/components/tournament/OverviewTab/OverviewTab.tsx:304
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:326
 msgid "See the bracket"
 msgstr ""
 
@@ -2385,14 +2387,14 @@ msgid "seed"
 msgstr ""
 
 #: src/components/home/RecentTournaments/RecentTournaments.tsx:56
-#: src/components/tournament/OverviewTab/OverviewTab.tsx:353
-#: src/components/tournament/StandingsTab/StandingsTab.tsx:46
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:375
+#: src/components/tournament/StandingsTab/StandingsTab.tsx:45
 msgid "Seed"
 msgstr ""
 
 #. placeholder {0}: entry.seed
 #: src/components/tournament/OverviewTab/OverviewTab.tsx:108
-#: src/components/tournament/OverviewTab/OverviewTab.tsx:291
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:308
 msgid "Seed {0}"
 msgstr ""
 
@@ -2436,7 +2438,7 @@ msgstr ""
 
 #: src/components/results/SetList/SetList.tsx:72
 #: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:103
-#: src/components/tournament/OverviewTab/OverviewTab.tsx:345
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:367
 #: src/components/user/PlayerCardLauncher/PlayerCardLauncher.tsx:55
 msgid "Sets"
 msgstr ""
@@ -2483,7 +2485,7 @@ msgid "Show more"
 msgstr ""
 
 #. placeholder {0}: standings.length
-#: src/components/tournament/StandingsTab/StandingsTab.tsx:89
+#: src/components/tournament/StandingsTab/StandingsTab.tsx:90
 msgid "Show more ({0} of {total})"
 msgstr ""
 
@@ -2782,11 +2784,11 @@ msgstr ""
 msgid "That file could not be read as an image."
 msgstr ""
 
-#: src/components/tournament/OverviewTab/OverviewTab.tsx:381
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:403
 msgid "The graphic tools don't cover {gameName} yet."
 msgstr ""
 
-#: src/components/tournament/OverviewTab/OverviewTab.tsx:383
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:405
 msgid "The graphic tools don't cover this game yet."
 msgstr ""
 
@@ -2794,11 +2796,11 @@ msgstr ""
 msgid "The image draws your run as a line through the bracket"
 msgstr ""
 
-#: src/components/tournament/StandingsTab/StandingsTab.tsx:74
+#: src/components/tournament/StandingsTab/StandingsTab.tsx:75
 msgid "The next placements didn't load."
 msgstr ""
 
-#: src/components/tournament/OverviewTab/OverviewTab.tsx:421
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:443
 msgid "The standings in a template"
 msgstr ""
 
@@ -2841,8 +2843,8 @@ msgstr ""
 #~ msgid "This didn't load. Reload to try again."
 #~ msgstr ""
 
-#: src/hooks/predict/useFetchPredictionEntrants.ts:241
-#: src/hooks/top8/useFetchHivee.ts:143
+#: src/hooks/predict/useFetchPredictionEntrants.ts:243
+#: src/hooks/top8/useFetchHivee.ts:140
 #: src/utils/hivee/eventData.ts:38
 #: src/utils/thumbnail/fetchHiveeSets.ts:57
 msgid "This event has no bracket to load."
@@ -2852,13 +2854,28 @@ msgstr ""
 msgid "This event has no bracket yet."
 msgstr ""
 
+#: src/utils/top8/lineupNotice.ts:16
+msgid "This event has no results or seeding yet. Its details are loaded and the players are blank."
+msgstr ""
+
+#: src/utils/top8/lineupNotice.ts:14
+msgid "This event has no results yet. Players are in entry order: load it again once it's played."
+msgstr ""
+
+#: src/utils/top8/lineupNotice.ts:12
+msgid "This event has no results yet. Players are in seed order: load it again once it's played."
+msgstr ""
+
 #: src/hooks/thumbnail/useLoadThumbnailEvent.ts:65
 msgid "This event has no sets with players yet."
 msgstr ""
 
 #: src/hooks/results/useFetchResultsEntrantPool.ts:131
-#: src/hooks/top8/useFetchHivee.ts:165
 msgid "This event has no standings yet."
+msgstr ""
+
+#: src/utils/top8/lineupNotice.ts:10
+msgid "This event isn't finished. Placements can still change: load it again to update them."
 msgstr ""
 
 #: src/components/top8/SocialPostComposer/TemplateSelector.tsx:35
@@ -2874,11 +2891,11 @@ msgstr ""
 msgid "This will permanently delete all saved templates, custom fonts, uploaded assets, and design settings. The page will reload."
 msgstr ""
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:203
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:204
 msgid "This will remove the second player from this slot."
 msgstr ""
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:195
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:196
 msgid "This will reset all player data for this slot."
 msgstr ""
 
@@ -2926,8 +2943,8 @@ msgid "Toggle developer settings"
 msgstr ""
 
 #. placeholder {0}: res.status
-#: src/hooks/predict/useFetchPredictionEntrants.ts:194
-#: src/hooks/top8/useFetchTonamel.ts:68
+#: src/hooks/predict/useFetchPredictionEntrants.ts:196
+#: src/hooks/top8/useFetchTonamel.ts:71
 msgid "Tonamel API error: {0}"
 msgstr ""
 
@@ -2948,17 +2965,21 @@ msgstr ""
 #: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:26
 #: src/components/thumbnail/MatchForm/MatchForm.tsx:34
 #: src/components/thumbnail/SetList/SetList.tsx:74
-#: src/components/tournament/OverviewTab/OverviewTab.tsx:226
-#: src/components/tournament/OverviewTab/OverviewTab.tsx:266
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:232
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:276
 #: src/components/user/PlayerCardLauncher/PlayerCardLauncher.tsx:54
 #: src/components/user/StatsBoard/StatsBoard.tsx:250
 #: src/utils/social/builtInTemplates.ts:32
 msgid "Top 8"
 msgstr ""
 
-#: src/components/tournament/OverviewTab/OverviewTab.tsx:418
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:440
 #: src/components/user/EventRow/EventRow.tsx:57
 msgid "Top 8 graphic"
+msgstr ""
+
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:278
+msgid "Top 8 so far"
 msgstr ""
 
 #: src/consts/top8/colorLabels.ts:73
@@ -3051,10 +3072,10 @@ msgstr ""
 msgid "Tournament Name"
 msgstr ""
 
-#: src/hooks/predict/useFetchPredictionEntrants.ts:115
+#: src/hooks/predict/useFetchPredictionEntrants.ts:118
 #: src/hooks/results/useFetchResultsEntrantPool.ts:74
 #: src/hooks/thumbnail/useLoadThumbnailEvent.ts:62
-#: src/hooks/top8/useFetchResult.ts:606
+#: src/hooks/top8/useFetchResult.ts:700
 #: src/utils/hivee/api.ts:40
 #: src/utils/hivee/api.ts:84
 msgid "Tournament not found"
@@ -3108,7 +3129,7 @@ msgstr ""
 msgid "Trophy spotlight"
 msgstr ""
 
-#: src/components/tournament/StandingsTab/StandingsTab.tsx:87
+#: src/components/tournament/StandingsTab/StandingsTab.tsx:88
 #: src/components/tournament/TournamentPage/TournamentPage.tsx:327
 #: src/components/tournament/TournamentParts/TournamentParts.tsx:27
 #: src/components/user/EventList/EventList.tsx:131
@@ -3197,7 +3218,7 @@ msgstr ""
 msgid "Using the tournament's icon."
 msgstr ""
 
-#: src/components/tournament/OverviewTab/OverviewTab.tsx:486
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:508
 msgid "Venue"
 msgstr ""
 
@@ -3229,7 +3250,7 @@ msgstr ""
 msgid "Wall"
 msgstr ""
 
-#: src/components/tournament/OverviewTab/OverviewTab.tsx:454
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:476
 msgid "Watch"
 msgstr ""
 
@@ -3290,7 +3311,7 @@ msgstr ""
 msgid "X"
 msgstr ""
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:340
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:348
 msgid "X Handle"
 msgstr ""
 
@@ -3310,7 +3331,7 @@ msgstr ""
 msgid "Your record, trophies and streaks"
 msgstr ""
 
-#: src/components/tournament/OverviewTab/OverviewTab.tsx:323
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:345
 msgid "Your run"
 msgstr ""
 

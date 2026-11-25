@@ -20,7 +20,6 @@ import {
   hiveeFallbackCharacters,
 } from "@/utils/hivee/results";
 import {
-  MISSING_SEED_FALLBACK,
   parseCharacterSelections,
   parseDisplayScore,
   parseRankings,
@@ -29,8 +28,11 @@ import {
   sortSetsByPhase,
 } from "@/utils/results/parseStartggResults";
 import { reportLoadFailure } from "@/utils/loadError";
+import { finalPlacement } from "@/utils/startgg/placement";
 import { startggLoadError } from "@/utils/startgg/describeError";
 
+// Finished sets only (state 3): `hideEmpty` keeps sets still to be played once
+// both players are known, and those would read as 0-0 losses.
 // One request usually covers a full bracket run (15-ish sets max). >64 is
 // rare and silently truncating would lose data, so the hook logs a
 // warning instead of paginating; revisit the cap if it starts firing.
@@ -47,8 +49,12 @@ const PlayerTournamentResultsQueryDoc = graphql(`
       id
       name
       initialSeedNum
+      event {
+        state
+      }
       standing {
         placement
+        isFinal
         setRecordWithoutByes
       }
       participants {
@@ -75,7 +81,7 @@ const PlayerTournamentResultsQueryDoc = graphql(`
         page: $page
         perPage: $perPage
         sortType: RECENT
-        filters: { hideEmpty: true }
+        filters: { hideEmpty: true, state: [3] }
       ) {
         pageInfo {
           totalPages
@@ -103,6 +109,7 @@ const PlayerTournamentResultsQueryDoc = graphql(`
               initialSeedNum
               standing {
                 placement
+                isFinal
               }
               participants {
                 gamerTag
@@ -152,6 +159,7 @@ type SlotEntrant = NonNullable<
 const parseOpponent = (
   oppEntrant: SlotEntrant,
   characters: PlayerSet["opponent"]["characters"],
+  eventState: unknown,
 ): PlayerSetOpponent => {
   const participant = oppEntrant.participants?.[0];
   const playerId =
@@ -165,8 +173,9 @@ const parseOpponent = (
     prefix: participant?.prefix || undefined,
     country: resolveCountry(participant?.user?.location?.country),
     topRanking,
-    seed: oppEntrant.initialSeedNum || MISSING_SEED_FALLBACK,
-    placement: oppEntrant.standing?.placement ?? 0,
+    // 0 is "no seed" to the set list and the graphic, which leave it out.
+    seed: oppEntrant.initialSeedNum ?? 0,
+    placement: finalPlacement(oppEntrant.standing, eventState) ?? 0,
     characters,
   };
 };
@@ -177,6 +186,7 @@ const parseSet = (
   node: NonNullable<SetNode>,
   entrantId: string,
   selfSeed: number,
+  eventState: unknown,
 ): ParsedSet | null => {
   const slots = (node.slots ?? []).filter((s): s is { entrant: SlotEntrant } =>
     Boolean(s?.entrant?.id),
@@ -204,7 +214,7 @@ const parseSet = (
   const phaseOrder = phase?.phaseOrder ?? Number.MAX_SAFE_INTEGER;
 
   // DQs aren't competitive upsets — skip the calc. Use raw nullable seeds
-  // so a missing seed registers 0 (no badge) rather than the 9999 sentinel.
+  // so a missing seed registers 0 (no badge).
   const rawOppSeed = oppEntrant.initialSeedNum ?? 0;
   const upsetFactor =
     isDQ || !selfSeed || !rawOppSeed
@@ -233,7 +243,7 @@ const parseSet = (
       phaseName,
       phaseOrder,
       selfCharacters,
-      opponent: parseOpponent(oppEntrant, oppCharacters),
+      opponent: parseOpponent(oppEntrant, oppCharacters, eventState),
     },
     phaseTs,
   };
@@ -358,8 +368,11 @@ export const useFetchPlayerResults = () => {
         participant?.user?.images
           ?.find((img) => img?.type === "profile")
           ?.url?.replace("http://", "https://") || undefined;
-      const seed = entrant.initialSeedNum ?? MISSING_SEED_FALLBACK;
-      const placement = entrant.standing?.placement ?? 0;
+      const seed = entrant.initialSeedNum ?? 0;
+      // 0 until it is final: someone still in an event being played has no
+      // placement to show yet.
+      const eventState = entrant.event?.state;
+      const placement = finalPlacement(entrant.standing, eventState) ?? 0;
       const record = parseSetRecord(entrant.standing?.setRecordWithoutByes);
 
       const pageInfo = entrant.paginatedSets?.pageInfo;
@@ -387,7 +400,7 @@ export const useFetchPlayerResults = () => {
 
       for (const node of setNodes) {
         if (!node) continue;
-        const parsed = parseSet(node, stringEntrantId, selfSeed);
+        const parsed = parseSet(node, stringEntrantId, selfSeed, eventState);
         if (!parsed) continue;
         sets.push(parsed.set);
         if (parsed.phaseTs != null) {

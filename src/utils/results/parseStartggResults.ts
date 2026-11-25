@@ -17,10 +17,6 @@ import {
   mergePlayerRankings,
 } from "@/utils/results/playerRankings";
 
-// Sentinel used when an entrant has no recorded seed. Sorts to the very
-// bottom of any "lowest-seed-first" view without poisoning numeric stats.
-export const MISSING_SEED_FALLBACK = 9999;
-
 type SetRecord = { wins?: number; losses?: number } | null | undefined;
 
 export const parseSetRecord = (

@@ -5,7 +5,12 @@ import * as countryList from "country-list";
 import { t } from "@lingui/core/macro";
 import { graphql } from "@/gql";
 import type { EventStandingsQuery, PlayerSetsQuery } from "@/gql/graphql";
-import { CharacerData, PlayerInfo, TeammateInfo } from "@/types/top8/Player";
+import {
+  CharacerData,
+  LineupSource,
+  PlayerInfo,
+  TeammateInfo,
+} from "@/types/top8/Player";
 import { TournamentInfo } from "@/types/top8/Tournament";
 import { usePlayerStore } from "@/store/playerStore";
 import { useTournamentStore } from "@/store/tournamentStore";
@@ -23,7 +28,15 @@ import {
 import { getGameForStartggVideogame } from "@/utils/games";
 import { useToast } from "@/components/Toast";
 import { logError, logEvent, logWarning } from "@/utils/observability/log";
-import { reportLoadFailure } from "@/utils/loadError";
+import {
+  failureDetail,
+  failureKindOf,
+  LoadError,
+  reportLoadFailure,
+} from "@/utils/loadError";
+import { fetchTopSeeds, type TopSeed } from "@/utils/startgg/fetchTopSeeds";
+import { isEventCompleted } from "@/utils/startgg/placement";
+import { getLineupNotice } from "@/utils/top8/lineupNotice";
 import {
   describeStartggError,
   startggLoadError,
@@ -38,6 +51,8 @@ interface TournamentImage {
   type: string;
   id: string;
 }
+
+type Lineup = { ranked: Ranked[]; lineup: LineupSource };
 
 type Event = NonNullable<EventStandingsQuery["event"]>;
 type Standings = NonNullable<Event["standings"]>["nodes"];
@@ -56,6 +71,7 @@ const EventStandingsQueryDoc = graphql(`
     event(slug: $slug) {
       id
       name
+      state
       startAt
       videogame {
         id
@@ -83,15 +99,22 @@ const EventStandingsQueryDoc = graphql(`
         }
       }
       phases {
+        id
+        numSeeds
         bracketType
         groupCount
       }
       standings(query: { perPage: $playerCount, page: 1 }) {
+        pageInfo {
+          total
+        }
         nodes {
           placement
+          isFinal
           entrant {
             id
             name
+            initialSeedNum
             participants {
               id
               gamerTag
@@ -250,9 +273,17 @@ const toTeammate = (participant: NonNullable<Participant>): TeammateInfo => {
 // members (first player, then teammate), which picks are matched against.
 type ParsedStanding = { player: PlayerInfo; memberIds: string[] };
 
-const extractPlayerFromStanding = (standing: StandingNode): ParsedStanding => {
-  const entrant = standing!.entrant!;
-  const placement = standing!.placement || 0;
+// A standing, or a seed standing in for one: a seed has no `player`, only the
+// entrant's participants.
+type Ranked = {
+  placement: number;
+  seed: number;
+  entrant: NonNullable<NonNullable<StandingNode>["entrant"]>;
+  player?: NonNullable<StandingNode>["player"];
+};
+
+const extractPlayer = (ranked: Ranked): ParsedStanding => {
+  const { entrant, placement } = ranked;
   const members = inNameOrder(
     (entrant.participants ?? []).filter((p) => p !== null),
     entrant.name ?? "",
@@ -278,7 +309,7 @@ const extractPlayerFromStanding = (standing: StandingNode): ParsedStanding => {
     };
   }
 
-  const player = standing?.player;
+  const player = ranked.player ?? members[0];
   const twitterHandle = player?.user?.authorizations?.[0]?.externalUsername;
 
   const countryName = player?.user?.location?.country;
@@ -311,28 +342,93 @@ type ParsedStandings = {
   memberIds: Map<string, string[]>;
 };
 
-const parseStandingsToPlayers = (
-  standings: Standings | null,
-): ParsedStandings => {
+const toPlayers = (ranked: Ranked[]): ParsedStandings => {
   const memberIds = new Map<string, string[]>();
-  if (!standings) return { players: [], memberIds };
-
-  const playersById = new Map<string, PlayerInfo>();
-
-  for (const standing of standings) {
-    if (!isValidStanding(standing)) continue;
-
-    const parsed = extractPlayerFromStanding(standing);
-    playersById.set(parsed.player.entrantId, parsed.player);
+  const players = ranked.map((entry) => {
+    const parsed = extractPlayer(entry);
     if (parsed.memberIds.length > 0) {
       memberIds.set(parsed.player.entrantId, parsed.memberIds);
     }
+    return parsed.player;
+  });
+  return { players: assignPlacementsToPlayers(players), memberIds };
+};
+
+const fromSeed = (seed: TopSeed, placement: number): Ranked => ({
+  placement,
+  seed: seed.seedNum ?? Number.MAX_SAFE_INTEGER,
+  entrant: seed.entrant,
+});
+
+// The event's first `count` players and what their order is worth.
+const getLineup = async (
+  client: Client,
+  event: Event,
+  count: number,
+): Promise<Lineup> => {
+  // By entrant: start.gg can list one twice in a round robin.
+  const byEntrant = new Map<string, Ranked>();
+  let hasOpenPlacement = false;
+  for (const standing of event.standings?.nodes ?? []) {
+    if (!standing || !isValidStanding(standing)) continue;
+    if (!standing.isFinal) hasOpenPlacement = true;
+    byEntrant.set(String(standing.entrant!.id), {
+      placement: standing.placement || 0,
+      seed: standing.entrant!.initialSeedNum ?? Number.MAX_SAFE_INTEGER,
+      entrant: standing.entrant!,
+      player: standing.player,
+    });
   }
 
-  const sorted = Array.from(playersById.values()).sort(
-    (a, b) => a.placement - b.placement,
-  );
-  return { players: assignPlacementsToPlayers(sorted), memberIds };
+  // Not started: the seeding, if there is one yet.
+  if (byEntrant.size === 0) {
+    const seeds = await fetchTopSeeds(client, event.phases ?? [], count);
+    return {
+      ranked: seeds.map((seed, index) => fromSeed(seed, index + 1)),
+      lineup: seeds.length > 0 ? "seeds" : "none",
+    };
+  }
+
+  const isLive = hasOpenPlacement && !isEventCompleted(event.state);
+  if (!isLive) {
+    return {
+      ranked: [...byEntrant.values()].sort((a, b) => a.placement - b.placement),
+      lineup: "final",
+    };
+  }
+
+  // Being played: everyone who can still finish equally low is tied, in no
+  // useful order, and a tie can go on past the page (all 1500 entrants of a
+  // major before round 1). The best seeds among them are the ones to show.
+  const total = event.standings?.pageInfo?.total ?? 0;
+  if (total > (event.standings?.nodes?.length ?? 0)) {
+    const tied = Math.max(
+      ...[...byEntrant.values()].map(({ placement }) => placement),
+    );
+    try {
+      const seeds = await fetchTopSeeds(client, event.phases ?? [], count * 2);
+      for (const seed of seeds) {
+        const id = String(seed.entrant.id);
+        if (byEntrant.has(id)) continue;
+        if (seed.entrant.standing?.placement !== tied) continue;
+        byEntrant.set(id, fromSeed(seed, tied));
+      }
+    } catch (error) {
+      // The order among the tied is a bonus: the standings load without it.
+      logWarning("live standings seeds fetch failed", {
+        area: "tournament-fetch",
+        tournament_platform: "startgg",
+        failure_kind: failureKindOf(error),
+        error: failureDetail(error),
+      });
+    }
+  }
+  return {
+    ranked: [...byEntrant.values()]
+      .sort((a, b) => a.placement - b.placement || a.seed - b.seed)
+      .slice(0, count),
+    lineup: "live",
+  };
 };
 
 // The characters an entrant used, most used first: one list for a single
@@ -576,14 +672,7 @@ export const useFetchResult = () => {
     const loadId = beginTournamentLoad();
     playerDispatch({ type: "FETCH_PLAYERS" });
 
-    const result = await client
-      .query(EventStandingsQueryDoc, { slug, playerCount })
-      .toPromise();
-    // A newer load has taken over: its answer is the one to show.
-    if (!isCurrentTournamentLoad(loadId)) return;
-
-    if (result.error || !result.data?.event) {
-      const failure = startggLoadError(result.error, t`Tournament not found`);
+    const failLoad = (failure: LoadError) => {
       playerDispatch({ type: "FETCH_PLAYERS_FAIL", payload: failure.message });
       showToast(failure.message, { variant: "error" });
       // A bad slug or a deleted event is the user's input and stays out of
@@ -599,6 +688,16 @@ export const useFetchResult = () => {
         failure_kind: failureKind,
         tournament_slug: slug,
       });
+    };
+
+    const result = await client
+      .query(EventStandingsQueryDoc, { slug, playerCount })
+      .toPromise();
+    // A newer load has taken over: its answer is the one to show.
+    if (!isCurrentTournamentLoad(loadId)) return;
+
+    if (result.error || !result.data?.event) {
+      failLoad(startggLoadError(result.error, t`Tournament not found`));
       return;
     }
 
@@ -629,11 +728,30 @@ export const useFetchResult = () => {
     }
 
     const validImages = filterValidImages(event.tournament?.images ?? null);
-    const { players, memberIds } = parseStandingsToPlayers(
-      event.standings?.nodes ?? null,
-    );
-    const visiblePlayers = players.slice(0, visibleCount);
-    const laterPlayers = players.slice(visibleCount);
+    let resolved: Lineup;
+    try {
+      resolved = await getLineup(client, event, playerCount);
+    } catch (error) {
+      if (!isCurrentTournamentLoad(loadId)) return;
+      failLoad(
+        error instanceof LoadError
+          ? error
+          : new LoadError(
+              t`Failed to fetch tournament data`,
+              failureKindOf(error),
+              failureDetail(error),
+            ),
+      );
+      return;
+    }
+    if (!isCurrentTournamentLoad(loadId)) return;
+
+    const { lineup } = resolved;
+    const { players, memberIds } = toPlayers(resolved.ranked);
+    // Nobody has picked a character before the event has results.
+    const hasCharacters = lineup === "final" || lineup === "live";
+    const visiblePlayers = hasCharacters ? players.slice(0, visibleCount) : [];
+    const laterPlayers = hasCharacters ? players.slice(visibleCount) : [];
     for (const player of laterPlayers) {
       player.characters = toCharacters([]);
       if (player.teammate) player.teammate.characters = toCharacters([]);
@@ -657,10 +775,16 @@ export const useFetchResult = () => {
       });
 
       const paddedPlayers = padPlayersWithBlanks(players, playerCount);
-      playerDispatch({ type: "FETCH_PLAYERS_SUCCESS", payload: paddedPlayers });
+      playerDispatch({
+        type: "FETCH_PLAYERS_SUCCESS",
+        payload: paddedPlayers,
+      });
+      const notice = getLineupNotice(lineup);
+      if (notice) showToast(notice, { variant: "info" });
       logEvent("tournament_load", {
         tournament_platform: "startgg",
         player_count: playerCount,
+        lineup_source: lineup,
       });
 
       if (laterPlayers.length > 0) {

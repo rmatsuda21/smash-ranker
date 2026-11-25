@@ -121,7 +121,7 @@ const Upsets = ({
   event: TournamentEvent;
   seedPhaseId: string | null;
 }) => {
-  const { data: upsets, status, retry } = useEventUpsets(event.id, seedPhaseId);
+  const { data: upsets, status, retry } = useEventUpsets(event, seedPhaseId);
   const [expanded, setExpanded] = useState(false);
 
   // No upsets is nothing to show; a failed load is not the same thing.
@@ -209,7 +209,13 @@ export const OverviewTab = ({
   const resultsEnabled = useFeatureFlag("results-enabled");
 
   const standings = overview?.standings ?? [];
-  const podium = standings.slice(0, 3);
+  // A podium is for a decided top three: while the event is played the first
+  // placements are still open (two entrants in 2nd, nobody in 1st).
+  const topThree = standings.slice(0, 3);
+  const podium =
+    topThree[0]?.placement === 1 && topThree.every((entry) => entry.isFinal)
+      ? topThree
+      : [];
   const run = overview?.userRun ?? null;
   const upcoming = event.status === "upcoming";
   const canRecap = resultsEnabled && event.game !== null && !event.isTeams;
@@ -250,20 +256,28 @@ export const OverviewTab = ({
           </div>
         ) : (
           <>
-            <div className={styles.podium}>
-              {podium.map((entry) => (
-                <PodiumCard
-                  key={entry.entrantId}
-                  entry={entry}
-                  event={event}
-                  characters={overview?.characters[entry.entrantId]}
-                />
-              ))}
-            </div>
+            {podium.length > 0 && (
+              <div className={styles.podium}>
+                {podium.map((entry) => (
+                  <PodiumCard
+                    key={entry.entrantId}
+                    entry={entry}
+                    event={event}
+                    characters={overview?.characters[entry.entrantId]}
+                  />
+                ))}
+              </div>
+            )}
 
             <Panel
               className={styles.top8}
-              title={<Trans>Top 8</Trans>}
+              title={
+                standings.every((entry) => entry.isFinal) ? (
+                  <Trans>Top 8</Trans>
+                ) : (
+                  <Trans>Top 8 so far</Trans>
+                )
+              }
               aside={
                 event.numEntrants > standings.length ? (
                   <button type="button" onClick={onShowStandings}>
@@ -276,7 +290,10 @@ export const OverviewTab = ({
                 {standings.map((entry, index) => (
                   <li
                     key={entry.entrantId}
-                    className={cn(styles.row, index < 3 && styles.onPodium)}
+                    className={cn(
+                      styles.row,
+                      index < podium.length && styles.onPodium,
+                    )}
                   >
                     <span className={styles.place}>{entry.placement}</span>
                     <CharacterIcons
@@ -291,7 +308,12 @@ export const OverviewTab = ({
                         <Trans>Seed {entry.seed}</Trans>
                       </span>
                     )}
-                    <SeedDelta seed={entry.seed} placement={entry.placement} />
+                    {entry.isFinal && (
+                      <SeedDelta
+                        seed={entry.seed}
+                        placement={entry.placement}
+                      />
+                    )}
                   </li>
                 ))}
               </ol>

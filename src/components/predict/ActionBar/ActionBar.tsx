@@ -1,6 +1,7 @@
 import { Trans } from "@lingui/react/macro";
 
 import { Button } from "@/components/shared/Button/Button";
+import { hasSeed } from "@/consts/seeds";
 import { usePredictionStore } from "@/store/predictionStore";
 
 import styles from "./ActionBar.module.scss";
@@ -19,7 +20,8 @@ export const ActionBar = ({ onGenerate }: Props) => {
   const effectiveCount =
     predictionCount === "custom" ? customCount : predictionCount;
   const isFull = predictions.length >= effectiveCount;
-  const canAutoFill = entrantPool.length > 0 && !isFull;
+  // Without seeding there is no order to fill in.
+  const canAutoFill = !isFull && entrantPool.some((p) => hasSeed(p.seed));
 
   return (
     <div className={styles.root}>

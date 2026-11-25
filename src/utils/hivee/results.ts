@@ -14,10 +14,8 @@ import {
   orderStandings,
   pickFirstProgram,
 } from "@/utils/hivee/programs";
-import {
-  MISSING_SEED_FALLBACK,
-  sortSetsByPhase,
-} from "@/utils/results/parseStartggResults";
+import { sortSetsByPhase } from "@/utils/results/parseStartggResults";
+import { MISSING_SEED_FALLBACK } from "@/consts/seeds";
 import { computeUpsetFactor } from "@/utils/results/upsetFactor";
 import { getCharacter } from "@/utils/top8/characterCatalog";
 

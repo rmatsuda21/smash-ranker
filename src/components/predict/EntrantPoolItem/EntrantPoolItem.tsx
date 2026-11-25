@@ -1,6 +1,7 @@
 import { FaPlus } from "react-icons/fa6";
 
 import type { PredictionPlayer } from "@/types/predict/Prediction";
+import { hasSeed } from "@/consts/seeds";
 import { CountryFlag } from "@/components/predict/CountryFlag/CountryFlag";
 
 import styles from "./EntrantPoolItem.module.scss";
@@ -18,7 +19,9 @@ export const EntrantPoolItem = ({ player, disabled, onAdd }: Props) => {
       disabled={disabled}
       onClick={() => onAdd(player)}
     >
-      <span className={styles.seed}>#{player.seed}</span>
+      <span className={styles.seed}>
+        {hasSeed(player.seed) && `#${player.seed}`}
+      </span>
       <CountryFlag country={player.country} />
       <span className={styles.name}>
         {player.prefix && (

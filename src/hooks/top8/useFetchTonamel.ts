@@ -1,5 +1,5 @@
 import { t } from "@lingui/core/macro";
-import { PlayerInfo } from "@/types/top8/Player";
+import { LineupSource, PlayerInfo } from "@/types/top8/Player";
 import { TournamentInfo } from "@/types/top8/Tournament";
 import { usePlayerStore } from "@/store/playerStore";
 import { useTournamentStore } from "@/store/tournamentStore";
@@ -8,6 +8,7 @@ import {
   padPlayersWithBlanks,
 } from "@/utils/top8/samplePlayers";
 import { getMultiGroupError } from "@/consts/errors";
+import { getLineupNotice } from "@/utils/top8/lineupNotice";
 import { noCharacters } from "@/utils/top8/playerCharacters";
 import { getGameForName } from "@/utils/games";
 import { useToast } from "@/components/Toast";
@@ -95,7 +96,17 @@ const toPlayerInfo = (
   country,
 });
 
-const parseParticipants = (competition: TonamelCompetition): PlayerInfo[] => {
+// Tonamel has no seeds: before there is a podium its players come in the
+// order they entered.
+const getLineup = (competition: TonamelCompetition): LineupSource => {
+  if (competition.placements.length > 0) return "final";
+  return competition.participants.length > 0 ? "entrants" : "none";
+};
+
+const parseParticipants = (
+  competition: TonamelCompetition,
+  playerCount: number,
+): PlayerInfo[] => {
   const players: PlayerInfo[] = [];
   let index = 0;
 
@@ -108,7 +119,7 @@ const parseParticipants = (competition: TonamelCompetition): PlayerInfo[] => {
   if (competition.placements.length > 0) {
     // Use placements from podium (already sorted by place)
     for (const placement of competition.placements) {
-      if (players.length >= 8) break;
+      if (players.length >= playerCount) break;
       const country = countryByPlayerId.get(placement.playerId);
       players.push(
         toPlayerInfo(
@@ -121,9 +132,9 @@ const parseParticipants = (competition: TonamelCompetition): PlayerInfo[] => {
       );
     }
   } else {
-    // Fall back to participants list (e.g., tournament still in progress)
+    // No podium yet: not started, or still being played.
     for (const p of competition.participants) {
-      if (players.length >= 8) break;
+      if (players.length >= playerCount) break;
       const displayName = p.gameCode || p.name;
       players.push(
         toPlayerInfo(displayName, p.playerId, p.countryCode, 0, index++),
@@ -224,12 +235,19 @@ export const useFetchTonamel = () => {
       const game = getGameForName(data.competition.game?.name);
       if (game) tournamentDispatch({ type: "SET_GAME", payload: game.id });
 
-      const players = parseParticipants(data.competition);
+      const players = parseParticipants(data.competition, playerCount);
       const paddedPlayers = padPlayersWithBlanks(players, playerCount);
-      playerDispatch({ type: "FETCH_PLAYERS_SUCCESS", payload: paddedPlayers });
+      const lineup = getLineup(data.competition);
+      playerDispatch({
+        type: "FETCH_PLAYERS_SUCCESS",
+        payload: paddedPlayers,
+      });
+      const notice = getLineupNotice(lineup);
+      if (notice) showToast(notice, { variant: "info" });
       logEvent("tournament_load", {
         tournament_platform: "tonamel",
         player_count: playerCount,
+        lineup_source: lineup,
       });
     } catch (error) {
       if (!isCurrentTournamentLoad(loadId)) return;

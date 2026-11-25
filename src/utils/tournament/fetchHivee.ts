@@ -1,3 +1,4 @@
+import { LIVE_MAX_AGE_MS } from "@/consts/live";
 import { hiveeTimezone } from "@/utils/hivee/date";
 import type {
   HiveeEntrant,
@@ -63,35 +64,45 @@ type Loaded = {
 
 // Hivee answers per event, not per program, so an event is read once (three
 // requests) and every tab is cut out of it. Kept for the page's lifetime,
-// like the page's other loads.
-const events = new Map<string, Promise<Loaded>>();
+// like the page's other loads; an event that has not ended, only for as long
+// as theirs are (see `useCachedLoad`).
+type Kept<T> = { load: Promise<T>; at: number };
+const events = new Map<string, Kept<Loaded>>();
+const endedEvents = new Set<string>();
 // Which event each program belongs to, filled in as events load.
 const eventOfProgram = new Map<string, string>();
-const standings = new Map<string, Promise<HiveeStandings>>();
+const standings = new Map<string, Kept<HiveeStandings>>();
+
+const isUsable = (kept: Kept<unknown>, eventId: string | undefined) =>
+  (eventId !== undefined && endedEvents.has(eventId)) ||
+  Date.now() - kept.at <= LIVE_MAX_AGE_MS;
 
 const loadEvent = (eventId: string): Promise<Loaded> => {
   const cached = events.get(eventId);
-  if (cached) return cached;
+  if (cached && isUsable(cached, eventId)) return cached.load;
   const load = Promise.all([
     fetchHiveeEvent(eventId),
     fetchHiveeEntrants(eventId),
     fetchHiveeCompletedMatches(eventId),
   ]).then(([event, entrants, matches]) => {
+    if (event.progress === "ended") endedEvents.add(eventId);
     for (const program of event.programs) {
       eventOfProgram.set(program.id, eventId);
     }
     return { event, entrants, matches };
   });
-  events.set(eventId, load);
+  events.set(eventId, { load, at: Date.now() });
   load.catch(() => events.delete(eventId));
   return load;
 };
 
 const loadStandings = (programId: string): Promise<HiveeStandings> => {
   const cached = standings.get(programId);
-  if (cached) return cached;
+  if (cached && isUsable(cached, eventOfProgram.get(programId))) {
+    return cached.load;
+  }
   const load = fetchHiveeStandings(programId);
-  standings.set(programId, load);
+  standings.set(programId, { load, at: Date.now() });
   load.catch(() => standings.delete(programId));
   return load;
 };
@@ -318,6 +329,8 @@ const toStandings = (
     return [
       {
         placement: row.placement,
+        // Hivee places a player only once they are out.
+        isFinal: true,
         entrantId: row.participant_id,
         name: row.display_name,
         prefix: null,

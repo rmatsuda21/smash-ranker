@@ -1,12 +1,15 @@
 import { useCachedLoad } from "@/hooks/useCachedLoad";
+import type { TournamentEvent } from "@/types/tournament/Tournament";
 import { fetchEventUpsets } from "@/utils/tournament/fetchEvent";
 
 // The event's upsets against its top seeds, biggest first. Waits for the
 // overview, which says where the seeding is.
 export const useEventUpsets = (
-  eventId: string | null,
+  event: TournamentEvent,
   seedPhaseId: string | null,
 ) =>
-  useCachedLoad(eventId && seedPhaseId ? `event-upsets:${eventId}` : null, () =>
-    fetchEventUpsets(eventId!, seedPhaseId!),
+  useCachedLoad(
+    seedPhaseId ? `event-upsets:${event.id}` : null,
+    () => fetchEventUpsets(event.id, seedPhaseId!),
+    { mayChange: () => event.status !== "finished" },
   );

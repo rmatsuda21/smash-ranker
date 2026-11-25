@@ -46,9 +46,13 @@ const startggFetch = async (
   return fetch(input, withToken(init, retryToken));
 };
 
-// One client for every page: the cache is shared, and so is the auth logic.
+// One client for every page: the auth logic is shared. Every request goes to
+// start.gg: an event being played changes by the minute, and a cached answer
+// would make loading it again show the old one. What should be kept (the
+// profile, a tournament page's tabs) is kept by its own hook.
 export const startggClient = new Client({
   url: STARTGG_GQL,
+  requestPolicy: "network-only",
   exchanges: [cacheExchange, fetchExchange],
   fetch: startggFetch as typeof fetch,
 });

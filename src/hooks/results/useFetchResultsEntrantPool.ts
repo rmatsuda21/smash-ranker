@@ -9,7 +9,7 @@ import { detectPlatformAndSlug, slugToUrl } from "@/consts/platforms";
 import type { ResultsEntrantSummary } from "@/types/results/ResultsEntrantSummary";
 import { extractTournamentPalette } from "@/utils/predict/extractTournamentPalette";
 import { logEvent, logWarning } from "@/utils/observability/log";
-import { MISSING_SEED_FALLBACK } from "@/utils/results/parseStartggResults";
+import { MISSING_SEED_FALLBACK } from "@/consts/seeds";
 import { fetchEventEntrants } from "@/utils/startgg/fetchEventEntrants";
 import { loadHiveeEventData } from "@/utils/hivee/eventData";
 import { buildHiveeEntrantPool } from "@/utils/hivee/results";

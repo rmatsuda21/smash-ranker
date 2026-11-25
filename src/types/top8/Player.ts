@@ -1,5 +1,10 @@
 import { RenderStyleId } from "@/types/Game";
 
+// What the players' order comes from: an event's final placements, its
+// placements so far, its seeding, the order they entered in, or nothing (an
+// event with neither results nor seeding, whose players are blank).
+export type LineupSource = "final" | "live" | "seeds" | "entrants" | "none";
+
 export type CharacerData = {
   id: string;
   alt: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7;

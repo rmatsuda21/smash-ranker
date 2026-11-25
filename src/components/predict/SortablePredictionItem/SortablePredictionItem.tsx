@@ -3,6 +3,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { MdDragIndicator, MdClose } from "react-icons/md";
 
 import type { PredictionPlayer } from "@/types/predict/Prediction";
+import { hasSeed } from "@/consts/seeds";
 import { CountryFlag } from "@/components/predict/CountryFlag/CountryFlag";
 
 import styles from "./SortablePredictionItem.module.scss";
@@ -44,7 +45,9 @@ export const SortablePredictionItem = ({ player, rank, onRemove }: Props) => {
         )}
         {player.name}
       </span>
-      <span className={styles.seed}>Seed {player.seed}</span>
+      {hasSeed(player.seed) && (
+        <span className={styles.seed}>Seed {player.seed}</span>
+      )}
       <button
         className={styles.removeButton}
         onClick={() => onRemove(player.id)}
@@ -77,7 +80,9 @@ export const PredictionItemOverlay = ({
         )}
         {player.name}
       </span>
-      <span className={styles.seed}>Seed {player.seed}</span>
+      {hasSeed(player.seed) && (
+        <span className={styles.seed}>Seed {player.seed}</span>
+      )}
     </div>
   );
 };

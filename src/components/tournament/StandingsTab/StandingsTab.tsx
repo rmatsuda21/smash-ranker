@@ -20,9 +20,8 @@ type Props = {
 
 // Every placement of the event, a page at a time.
 export const StandingsTab = ({ event, characters }: Props) => {
-  const { standings, total, status, hasMore, loadMore } = useEventStandings(
-    event.id,
-  );
+  const { standings, total, status, hasMore, loadMore } =
+    useEventStandings(event);
 
   if (status === "error" && standings.length === 0) {
     return <LoadFailed className={styles.message} onRetry={loadMore} />;
@@ -62,7 +61,9 @@ export const StandingsTab = ({ event, characters }: Props) => {
               </span>
             </span>
             <span className={styles.seed}>{entry.seed ?? "–"}</span>
-            <SeedDelta seed={entry.seed} placement={entry.placement} />
+            {entry.isFinal && (
+              <SeedDelta seed={entry.seed} placement={entry.placement} />
+            )}
           </li>
         ))}
       </ol>

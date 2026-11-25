@@ -10,5 +10,6 @@ export const useEventOverview = (event: TournamentEvent | null) => {
   return useCachedLoad(
     event ? `event-overview:${event.id}:${userId ?? "anon"}` : null,
     () => fetchEventOverview(event!.id, { isTeams: event!.isTeams, userId }),
+    { mayChange: () => event!.status !== "finished" },
   );
 };

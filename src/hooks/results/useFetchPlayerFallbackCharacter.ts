@@ -131,12 +131,20 @@ export const useFetchPlayerFallbackCharacter = () => {
     try {
       const query = (limit: number) =>
         client
-          .query(PlayerFallbackCharacterQueryDoc, {
-            entrantId,
-            videogameId,
-            limit,
-            perPage: SETS_PER_STANDING,
-          })
+          .query(
+            PlayerFallbackCharacterQueryDoc,
+            {
+              entrantId,
+              videogameId,
+              limit,
+              perPage: SETS_PER_STANDING,
+            },
+            {
+              // Who someone usually plays does not change while the page is
+              // open, and is asked for again with every player picked.
+              requestPolicy: "cache-first",
+            },
+          )
           .toPromise();
 
       let result = await query(RECENT_STANDINGS_LIMIT);
