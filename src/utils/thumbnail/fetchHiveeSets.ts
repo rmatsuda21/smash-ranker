@@ -1,7 +1,7 @@
 import { t } from "@lingui/core/macro";
 
 import { HIVEE_CHARACTER_IDS } from "@/consts/hivee/characters";
-import type { HiveeMatch, HiveeMatchSlot } from "@/types/hivee/Hivee";
+import type { HiveeMatchSlot } from "@/types/hivee/Hivee";
 import type { ThumbnailSet } from "@/types/thumbnail/Thumbnail";
 import { getGameForHiveeContent } from "@/utils/games";
 import {
@@ -13,6 +13,7 @@ import {
 import {
   hiveeMatchTime,
   hiveeRoundText,
+  makeTop8Test,
   pickFinalProgram,
 } from "@/utils/hivee/programs";
 import type { ThumbnailEventMeta } from "@/utils/thumbnail/fetchEventSets";
@@ -37,29 +38,6 @@ const mostPlayed = (
   return top
     ? { characterId: top[0], alt: top[1].alt }
     : { characterId: "", alt: 0 };
-};
-
-// Whether a match of the final bracket belongs to its top 8. Hivee has no
-// "placement the loser gets" on a match, so it is read from the final
-// placements: a match that knocks its loser out counts when the loser
-// placed 8th or better; a winners bracket match counts from the semifinals.
-const isTop8 = (
-  match: HiveeMatch,
-  placements: Map<string, number>,
-  lastWinnersRound: number,
-): boolean => {
-  const placed = (id: string | null) =>
-    (id && placements.get(id)) || Number.MAX_SAFE_INTEGER;
-  if (match.bracket === "winners") {
-    return (
-      match.round >= lastWinnersRound - 1 &&
-      match.slots.every((slot) => placed(slot.participant_id) <= 8)
-    );
-  }
-  const loser = match.slots.find(
-    (slot) => slot.participant_id !== match.winner_id,
-  );
-  return placed(loser?.participant_id ?? null) <= 8;
 };
 
 // A Hivee event's finished matches as thumbnail sets, newest first. Hivee
@@ -87,23 +65,7 @@ export const fetchHiveeThumbnailEvent = async (
   );
   covered.add(program.id);
   const programs = new Map(event.programs.map((entry) => [entry.id, entry]));
-  const placements = new Map<string, number>();
-  for (const row of standings?.rows ?? []) {
-    if (row.placement !== null) {
-      placements.set(row.participant_id, row.placement);
-    }
-  }
-  const finalMatches = matches.filter(
-    (match) => match.program_id === program.id,
-  );
-  const lastWinnersRound = Math.max(
-    0,
-    ...finalMatches
-      .filter((match) => match.bracket === "winners")
-      .map((match) => match.round),
-  );
-  const bracketed =
-    program.format === "single_elim" || program.format === "double_elim";
+  const isTop8 = makeTop8Test(program, matches, standings?.rows ?? []);
 
   const sets = matches
     .filter(
@@ -119,10 +81,7 @@ export const fetchHiveeThumbnailEvent = async (
         makeSide({ name: slot.display_name ?? "", ...mostPlayed(slot) }),
       );
       const onStream = !!match.stream_url;
-      const top8 =
-        bracketed &&
-        match.program_id === program.id &&
-        isTop8(match, placements, lastWinnersRound);
+      const top8 = isTop8(match);
       return {
         id: match.id,
         sides: [first, second],
@@ -135,7 +94,7 @@ export const fetchHiveeThumbnailEvent = async (
 
   return {
     meta: {
-      tournamentId: "",
+      tournamentId: event.id,
       tournamentName: event.title,
       eventName: program.title,
       date: event.starts_at ? new Date(event.starts_at).toISOString() : "",

@@ -15,10 +15,11 @@ import { usePlayerStore } from "@/store/playerStore";
 import { useTournamentStore } from "@/store/tournamentStore";
 import { PREF_KEYS } from "@/consts/prefKeys";
 import { useConfirmation } from "@/hooks/useConfirmation";
-import { detectPlatformAndSlug, slugToUrl } from "@/consts/platforms";
+import { detectPlatformAndSlug } from "@/consts/platforms";
 import {
   clearToolLink,
   readToolLink,
+  toolLinkUrl,
   tournamentLink,
 } from "@/utils/user/toolLinks";
 import { logEvent } from "@/utils/observability/log";
@@ -40,7 +41,7 @@ export const TournamentLoader = ({ className }: Props) => {
   // that event's URL filled in and asks to load it.
   const [url, setUrl] = useState(() => {
     const link = readToolLink();
-    return link ? slugToUrl("startgg", link.slug) : "";
+    return link ? toolLinkUrl(link.slug) : "";
   });
   const inputRef = useRef<HTMLInputElement>(null);
   const [isFocused, setIsFocused] = useState(false);

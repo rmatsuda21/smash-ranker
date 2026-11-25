@@ -1,13 +1,16 @@
 import cn from "classnames";
 import { Link } from "wouter";
 
+import { detectPlatformAndSlug } from "@/consts/platforms";
+import { HIVEE_UUID } from "@/utils/hivee/api";
 import { tournamentLink } from "@/utils/user/toolLinks";
 
 import styles from "./TournamentIdentity.module.scss";
 
 type Props = {
   href: string;
-  // start.gg's tournament id, when the tournament came from there.
+  // start.gg's tournament id or a Hivee event's id, when the tournament came
+  // from one of them.
   tournamentId?: string;
   iconUrl: string;
   name: string;
@@ -15,8 +18,18 @@ type Props = {
   className?: string;
 };
 
+// A Hivee event's id is in its link, so a tournament a tool loaded before
+// it kept the id (the tools persist what they loaded) still gets the site's
+// page. A short Hivee link has a name where the id would be, and does not.
+const hiveeEventId = (href: string): string | undefined => {
+  const detected = detectPlatformAndSlug(href);
+  if (detected?.platform !== "hivee") return undefined;
+  const [event] = detected.slug.split("/");
+  return HIVEE_UUID.test(event) ? event : undefined;
+};
+
 // Which tournament is loaded, for a toolbar: icon, name, then event and date.
-// Links to the site's own page for the tournament when it is a start.gg one,
+// Links to the site's own page for the tournament when it has one (start.gg, Hivee),
 // and to the tournament's page on its platform otherwise. The icon is as tall as
 // the toolbar's controls (`--toolbar-h`).
 export const TournamentIdentity = ({
@@ -37,11 +50,12 @@ export const TournamentIdentity = ({
     </>
   );
 
-  if (tournamentId) {
+  const pageId = tournamentId || hiveeEventId(href);
+  if (pageId) {
     return (
       <Link
         className={cn(styles.root, className)}
-        href={tournamentLink(tournamentId)}
+        href={tournamentLink(pageId)}
       >
         {content}
       </Link>

@@ -25,8 +25,11 @@ import {
   hasFallbackEntry,
 } from "@/utils/results/fallbackCharacters";
 import { logEvent } from "@/utils/observability/log";
-import { slugToUrl } from "@/consts/platforms";
-import { clearToolLink, readToolLink } from "@/utils/user/toolLinks";
+import {
+  clearToolLink,
+  readToolLink,
+  toolLinkUrl,
+} from "@/utils/user/toolLinks";
 
 import styles from "./ResultsApp.module.scss";
 
@@ -103,7 +106,7 @@ export const ResultsApp = () => {
     if (!link) return;
     clearToolLink();
 
-    void fetchEntrants(slugToUrl("startgg", link.slug), {
+    void fetchEntrants(toolLinkUrl(link.slug), {
       selectEntrantId: link.entrantId ?? undefined,
     });
   }, [fetchEntrants]);

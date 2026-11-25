@@ -1,3 +1,4 @@
+import { PLATFORM_LABELS } from "@/consts/platforms";
 import cn from "classnames";
 import { Plural, Trans } from "@lingui/react/macro";
 import { msg } from "@lingui/core/macro";
@@ -86,8 +87,8 @@ export const InfoTab = ({
               <Trans>Links</Trans>
             </dt>
             <dd>
-              <a href={tournament.startggUrl} target="_blank" rel="noreferrer">
-                start.gg
+              <a href={tournament.url} target="_blank" rel="noreferrer">
+                {PLATFORM_LABELS[tournament.platform]}
                 <FaArrowUpRightFromSquare aria-hidden="true" />
               </a>
               {tournament.discordUrl && (

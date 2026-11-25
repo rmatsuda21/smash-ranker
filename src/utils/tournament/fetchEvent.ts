@@ -1,3 +1,11 @@
+import {
+  fetchHiveeEventOverview,
+  fetchHiveeEventPhases,
+  fetchHiveeEventStandings,
+  fetchHiveeEventUpsets,
+  fetchHiveePool,
+  isHiveeId,
+} from "@/utils/tournament/fetchHivee";
 import { graphql } from "@/gql";
 import type {
   EventOverview,
@@ -162,6 +170,7 @@ export const fetchEventOverview = async (
   eventId: string,
   { isTeams, userId }: { isTeams: boolean; userId: string | null },
 ): Promise<EventOverview> => {
+  if (isHiveeId(eventId)) return fetchHiveeEventOverview(eventId);
   const result = await startggClient
     .query(EventOverviewQueryDoc, {
       id: eventId,
@@ -253,6 +262,7 @@ export const fetchEventStandings = async (
   eventId: string,
   page: number,
 ): Promise<StandingsPage> => {
+  if (isHiveeId(eventId)) return fetchHiveeEventStandings(eventId);
   const result = await startggClient
     .query(EventStandingsQueryDoc, {
       id: eventId,
@@ -346,6 +356,7 @@ export const fetchEventUpsets = async (
   eventId: string,
   seedPhaseId: string,
 ): Promise<Upset[]> => {
+  if (isHiveeId(eventId)) return fetchHiveeEventUpsets(eventId);
   const seeds = await startggClient
     .query(TopSeedsQueryDoc, {
       phaseId: seedPhaseId,
@@ -468,6 +479,7 @@ const EventPhasesQueryDoc = graphql(`
 export const fetchEventPhases = async (
   eventId: string,
 ): Promise<EventPhase[]> => {
+  if (isHiveeId(eventId)) return fetchHiveeEventPhases(eventId);
   const result = await startggClient
     .query(EventPhasesQueryDoc, { id: eventId, maxPools: MAX_POOLS })
     .toPromise();
@@ -554,6 +566,7 @@ const PoolSetsQueryDoc = graphql(`
 // One bracket (pool): every finished set of it, and its placements. Sets
 // still to be played and byes are left out.
 export const fetchPool = async (groupId: string): Promise<Pool> => {
+  if (isHiveeId(groupId)) return fetchHiveePool(groupId);
   const loadPage = async (page: number) => {
     const result = await startggClient
       .query(PoolSetsQueryDoc, {

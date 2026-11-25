@@ -1,3 +1,4 @@
+import { PLATFORM_LABELS } from "@/consts/platforms";
 import { useState } from "react";
 import cn from "classnames";
 import { Link, useLocation, useSearch } from "wouter";
@@ -178,11 +179,11 @@ const Loaded = ({ tournament }: { tournament: TournamentDetails }) => {
             <CopyLinkButton />
             <a
               className={styles.action}
-              href={tournament.startggUrl}
+              href={tournament.url}
               target="_blank"
               rel="noreferrer"
             >
-              start.gg
+              {PLATFORM_LABELS[tournament.platform]}
               <FaArrowUpRightFromSquare aria-hidden="true" />
             </a>
           </div>
@@ -292,7 +293,7 @@ export const TournamentPage = ({ id }: { id: string }) => {
         <div className={styles.state}>
           <h1 className={styles.stateTitle}>
             {status === "error" ? (
-              <Trans>Couldn't reach start.gg</Trans>
+              <Trans>Couldn't load the tournament</Trans>
             ) : (
               <Trans>No tournament here</Trans>
             )}
@@ -302,8 +303,8 @@ export const TournamentPage = ({ id }: { id: string }) => {
               <Trans>Check your connection and reload the page.</Trans>
             ) : (
               <Trans>
-                start.gg has no tournament with this id. It may have been
-                deleted or made private.
+                There is no tournament with this id. It may have been deleted or
+                made private.
               </Trans>
             )}
           </p>

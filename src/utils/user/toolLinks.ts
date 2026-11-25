@@ -1,7 +1,17 @@
+import { type Platform, slugToUrl } from "@/consts/platforms";
 import { encodeInvite } from "@/utils/predict/inviteCode";
 
-// Links that open a tool with a start.gg event already loading.
+// Links that open a tool with a start.gg or Hivee event already loading.
 // `s` is the event slug; PostHog strips it from captured URLs.
+
+// The tournament page hands out slugs of two platforms: a start.gg one
+// starts with "tournament/", a Hivee one is ids.
+const platformOfSlug = (slug: string): Platform =>
+  slug.startsWith("tournament/") ? "startgg" : "hivee";
+
+// The URL a tool loads for a tool link's slug.
+export const toolLinkUrl = (slug: string): string =>
+  slugToUrl(platformOfSlug(slug), slug);
 
 export const TOOL_LINK_PARAMS = { slug: "s", entrant: "e" } as const;
 
@@ -18,9 +28,10 @@ export const recapLink = (
 };
 
 export const predictLink = (eventSlug: string): string =>
-  `/predict?d=${encodeInvite({ platform: "startgg", slug: eventSlug })}`;
+  `/predict?d=${encodeInvite({ platform: platformOfSlug(eventSlug), slug: eventSlug })}`;
 
-// The site's own page for a start.gg tournament, opened on one of its events
+// The site's own page for a tournament (start.gg's tournament id, or a Hivee
+// event's id), opened on one of its events
 // when the caller knows which.
 export const tournamentLink = (
   tournamentId: string,

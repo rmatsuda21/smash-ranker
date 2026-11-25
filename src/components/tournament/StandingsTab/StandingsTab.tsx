@@ -26,7 +26,7 @@ export const StandingsTab = ({ event, characters }: Props) => {
   if (status === "error" && standings.length === 0) {
     return (
       <p className={styles.message}>
-        <Trans>start.gg didn't answer. Reload to try again.</Trans>
+        <Trans>This didn't load. Reload to try again.</Trans>
       </p>
     );
   }

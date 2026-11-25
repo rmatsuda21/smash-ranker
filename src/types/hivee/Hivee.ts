@@ -15,13 +15,23 @@ export type HiveeProgram = {
     rank_from: number;
     rank_to: number | null;
   } | null;
+  // How many pools its matches are split into (1 for a bracket).
+  pool_count: number;
   state: "before" | "running" | "ended" | "canceled";
 };
 
 export type HiveeEvent = {
   id: string;
+  // The event's page on Hivee.
+  url: string;
   title: string;
+  progress: "before" | "live" | "ended";
   starts_at: string | null;
+  ends_at: string | null;
+  // offline / online / hybrid
+  venue_type: string;
+  venue: string | null;
+  venue_address: string | null;
   country: string | null;
   prefecture_name: string | null;
   cover_image_url: string | null;
@@ -43,6 +53,11 @@ export type HiveeStandingRow = {
   // Null without an API key for someone whose name is not public.
   display_name: string | null;
   disqualified: boolean;
+  // The pool the row's player was in, for a program split into pools.
+  pool: number | null;
+  // The program the row's placement was earned in: in a final bracket's
+  // combined standings, the qualifier for those who did not move on.
+  source_program_id: string;
 };
 
 export type HiveeStandings = {
@@ -72,6 +87,8 @@ export type HiveeMatch = {
   // The round's name as Hivee shows it ("Winners Final", "準決勝"); every
   // round of a round robin has the same one.
   round_label: string;
+  // Which of the program's pools the match belongs to, from 1.
+  pool: number;
   slots: HiveeMatchSlot[];
   winner_id: string | null;
   dq: { participant_id: string | null; both: boolean };

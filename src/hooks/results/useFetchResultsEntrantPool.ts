@@ -136,7 +136,7 @@ const fetchHivee = async (slug: string): Promise<FetchResult> => {
       : "",
     tournamentUrl: "",
     tournamentIconUrl: event.community.icon_url ?? event.cover_image_url ?? "",
-    tournamentId: "",
+    tournamentId: event.id,
     tournamentCountry: event.country?.toLowerCase() || undefined,
     numEntrants: entrants.length,
     videogameId: null,

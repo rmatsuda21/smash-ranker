@@ -14,7 +14,8 @@ import type {
 // Without a key the limit is 60 requests a minute per IP address.
 const HIVEE_API = "https://hivee.jp/api/v1";
 
-const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+export const HIVEE_UUID =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 type Page<T> = { data: T; next_cursor?: string | null };
 
@@ -53,7 +54,7 @@ export type HiveeIds = { eventId: string; programId?: string };
 // A short URL name is turned into the event's id by Hivee.
 export const resolveHiveeSlug = async (slug: string): Promise<HiveeIds> => {
   const [eventKey, programId] = slug.split("/");
-  if (UUID.test(eventKey)) return { eventId: eventKey, programId };
+  if (HIVEE_UUID.test(eventKey)) return { eventId: eventKey, programId };
 
   const url = slugToUrl("hivee", slug);
   const { data } = await get<HiveeResolvedUrl>(

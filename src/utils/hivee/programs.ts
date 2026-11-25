@@ -7,7 +7,7 @@ import type {
 import type { CharacerData } from "@/types/top8/Player";
 import { isKnownCharacter } from "@/utils/top8/characterCatalog";
 
-const hasBracket = (program: HiveeProgram) =>
+export const hasBracket = (program: HiveeProgram) =>
   program.format !== null && program.state !== "canceled";
 
 const hasStarted = (program: HiveeProgram) =>
@@ -97,6 +97,73 @@ export const hiveeRoundText = (
   program?.format === "round_robin" || program?.format === "swiss"
     ? `Round ${match.round}`
     : match.round_label;
+
+// The programs whose results `program`'s standings cover, first to last: the
+// qualifiers its top finishers came through, then itself. A side bracket
+// (fed from a lower rank) is only itself.
+export const programChain = (
+  programs: HiveeProgram[],
+  program: HiveeProgram,
+): HiveeProgram[] => {
+  const chain = [program];
+  const seen = new Set([program.id]);
+  let current = program;
+  while (current.feeder?.rank_from === 1) {
+    const feederId = current.feeder.program_id;
+    const feeder = programs.find((candidate) => candidate.id === feederId);
+    if (!feeder || seen.has(feeder.id)) break;
+    seen.add(feeder.id);
+    chain.unshift(feeder);
+    current = feeder;
+  }
+  return chain;
+};
+
+// A test for whether a match of `program` belongs to its top 8. Hivee has
+// no "placement the loser gets" on a match, so it is read from the final
+// placements: a match that knocks its loser out counts when the loser
+// placed 8th or better; a winners bracket match counts from the semifinals.
+// Nothing counts in a program that is not an elimination bracket.
+export const makeTop8Test = (
+  program: HiveeProgram,
+  matches: HiveeMatch[],
+  rows: HiveeStandingRow[],
+): ((match: HiveeMatch) => boolean) => {
+  if (program.format !== "single_elim" && program.format !== "double_elim") {
+    return () => false;
+  }
+  const placements = new Map<string, number>();
+  for (const row of rows) {
+    if (row.placement !== null) {
+      placements.set(row.participant_id, row.placement);
+    }
+  }
+  const placed = (id: string | null | undefined) =>
+    (id && placements.get(id)) || Number.MAX_SAFE_INTEGER;
+  const lastWinnersRound = Math.max(
+    0,
+    ...matches
+      .filter(
+        (match) =>
+          match.program_id === program.id && match.bracket === "winners",
+      )
+      .map((match) => match.round),
+  );
+
+  return (match) => {
+    if (match.program_id !== program.id) return false;
+    if (match.bracket === "winners") {
+      return (
+        match.round >= lastWinnersRound - 1 &&
+        match.slots.every((slot) => placed(slot.participant_id) <= 8)
+      );
+    }
+    const loser = match.slots.find(
+      (slot) => slot.participant_id !== match.winner_id,
+    );
+    return placed(loser?.participant_id) <= 8;
+  };
+};
 
 // When a match was played, for ordering. 0 when Hivee has no time for it.
 export const hiveeMatchTime = (match: HiveeMatch): number => {

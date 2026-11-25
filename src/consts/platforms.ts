@@ -1,5 +1,13 @@
 export type Platform = "startgg" | "challonge" | "tonamel" | "hivee";
 
+// Each platform's name as it is written. Not translated.
+export const PLATFORM_LABELS: Record<Platform, string> = {
+  startgg: "start.gg",
+  challonge: "Challonge",
+  tonamel: "Tonamel",
+  hivee: "Hivee",
+};
+
 export const startggUrlToSlug = (url: string): string | null => {
   const match = url.trim().match(/tournament\/([^/]+)\/event\/([^/]+)/);
   return match ? `tournament/${match[1]}/event/${match[2]}` : null;

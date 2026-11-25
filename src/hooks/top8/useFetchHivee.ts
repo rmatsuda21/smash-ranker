@@ -108,6 +108,7 @@ const toTournamentInfo = (
   entrants: standings.rows.length,
   url: slugToUrl("hivee", slug),
   iconSrc,
+  startggId: event.id,
 });
 
 export const useFetchHivee = () => {

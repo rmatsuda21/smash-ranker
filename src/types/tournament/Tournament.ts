@@ -29,7 +29,9 @@ export type TournamentDetails = {
   name: string;
   // `tournament/<name>`.
   slug: string;
-  startggUrl: string;
+  // Where the tournament's data comes from, and its page there.
+  platform: "startgg" | "hivee";
+  url: string;
   startAt: number | null;
   endAt: number | null;
   timezone: string | null;

@@ -1,3 +1,4 @@
+import { fetchHiveeTournament, isHiveeId } from "@/utils/tournament/fetchHivee";
 import { graphql } from "@/gql";
 import type {
   TournamentDetails,
@@ -89,6 +90,7 @@ const byRelevance = (a: TournamentEvent, b: TournamentEvent) =>
 export const fetchTournament = async (
   id: string,
 ): Promise<TournamentDetails | null> => {
+  if (isHiveeId(id)) return fetchHiveeTournament(id);
   const result = await startggClient
     .query(TournamentPageQueryDoc, { id })
     .toPromise();
@@ -146,7 +148,8 @@ export const fetchTournament = async (
     id: String(tournament.id),
     name: tournament.name || "",
     slug: tournament.slug,
-    startggUrl: `https://start.gg/${tournament.slug}`,
+    platform: "startgg",
+    url: `https://start.gg/${tournament.slug}`,
     startAt,
     endAt,
     timezone: tournament.timezone || null,

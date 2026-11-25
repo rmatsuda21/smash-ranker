@@ -356,7 +356,7 @@ export const BracketTab = ({ event, overview, overviewSettled }: Props) => {
   if (phases.status === "error" || pools.status === "error") {
     return (
       <p className={styles.message}>
-        <Trans>start.gg didn't answer. Reload to try again.</Trans>
+        <Trans>This didn't load. Reload to try again.</Trans>
       </p>
     );
   }

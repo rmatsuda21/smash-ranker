@@ -242,7 +242,7 @@ const fetchHiveePrediction = async (slug: string): Promise<FetchResult> => {
       : "",
     tournamentUrl: "",
     tournamentIconUrl: event.community.icon_url ?? "",
-    tournamentId: "",
+    tournamentId: event.id,
     entrants,
   };
 };

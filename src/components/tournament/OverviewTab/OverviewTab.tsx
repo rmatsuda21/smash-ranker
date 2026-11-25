@@ -222,11 +222,11 @@ export const OverviewTab = ({
             </h2>
             <p>
               {status === "error" ? (
-                <Trans>start.gg didn't answer. Reload to try again.</Trans>
+                <Trans>This didn't load. Reload to try again.</Trans>
               ) : (
                 <Trans>
                   Placements, the top 8 bracket and upsets show up here once
-                  sets are reported on start.gg.
+                  sets are reported.
                 </Trans>
               )}
             </p>

@@ -12,7 +12,8 @@ export type TournamentInfo = {
   entrants: number;
   iconSrc?: string;
   url?: string;
-  // start.gg's tournament id, when the tournament was loaded from there.
+  // The id the site's tournament page goes by: start.gg's tournament id, or
+  // a Hivee event's id. Missing for a platform with no page.
   startggId?: string;
 };
 
