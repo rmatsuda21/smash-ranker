@@ -3,6 +3,10 @@ import { Trans } from "@lingui/react/macro";
 import { FontSelect } from "@/components/top8/DesignEditor/FontSelect/FontSelect";
 import { CustomFontManager } from "@/components/top8/DesignEditor/CustomFontManager/CustomFontManager";
 import { useCanvasStore } from "@/store/canvasStore";
+import { usePlayerStore } from "@/store/playerStore";
+import { useTournamentStore } from "@/store/tournamentStore";
+import { GAMES } from "@/consts/games";
+import { RenderStyleSwitch } from "@/components/shared/RenderStyleSwitch/RenderStyleSwitch";
 import { ColorPaletteEditor } from "@/components/top8/DesignEditor/ColorPaletteEditor/ColorPaletteEditor";
 import { AssetSelector } from "@/components/top8/AssetSelector/AssetSelector";
 import { Slider } from "@/components/shared/Slider/Slider";
@@ -24,10 +28,27 @@ export const DesignEditor = ({ className }: Props) => {
   const bgImageDarkness = useCanvasStore(
     (state) => state.design.bgImageDarkness ?? 0,
   );
+  const game = useTournamentStore((state) => state.game);
+  const renderStyle = usePlayerStore((state) => state.renderStyle);
+  const playerDispatch = usePlayerStore((state) => state.dispatch);
   const darknessPercent = Math.round(bgImageDarkness * 100);
 
   return (
     <EditorPanel className={className}>
+      {/* One style for every player; only for a game with more than one. */}
+      {GAMES[game].renderStyles.length > 1 && (
+        <EditorCard title={<Trans>Character Art</Trans>}>
+          <RenderStyleSwitch
+            className={styles.renderStyle}
+            game={game}
+            value={renderStyle}
+            onChange={(value) =>
+              playerDispatch({ type: "SET_RENDER_STYLE", payload: value })
+            }
+          />
+        </EditorCard>
+      )}
+
       <EditorCard title={<Trans>Font</Trans>}>
         <FontSelect />
         <FieldGroup label={<Trans>Custom Fonts</Trans>}>

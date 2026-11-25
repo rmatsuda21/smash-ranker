@@ -19,3 +19,8 @@ div.darkness label {
   font-variant-numeric: tabular-nums;
   color: var(--fg-1);
 }
+
+// As wide as its options, not the card.
+.renderStyle {
+  align-self: flex-start;
+}

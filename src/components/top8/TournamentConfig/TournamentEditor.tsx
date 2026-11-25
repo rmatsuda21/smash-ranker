@@ -7,12 +7,14 @@ import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 
 import { useTournamentStore } from "@/store/tournamentStore";
+import { GameSwitch } from "@/components/shared/GameSwitch/GameSwitch";
 import { TournamentInfo } from "@/types/top8/Tournament";
 import { AssetSelector } from "@/components/top8/AssetSelector/AssetSelector";
 import {
   EditorCard,
   EditorPanel,
   Field,
+  FieldGroup,
   FieldRow,
   FieldStack,
 } from "@/components/top8/EditorForm/EditorForm";
@@ -43,6 +45,7 @@ export const TournamentEditor = ({ className }: Props) => {
   const { _ } = useLingui();
   const tournament = useTournamentStore((state) => state.info);
   const dispatch = useTournamentStore((state) => state.dispatch);
+  const game = useTournamentStore((state) => state.game);
 
   const [tempTournament, setTempTournament] =
     useState<TournamentInfo>(tournament);
@@ -136,6 +139,12 @@ export const TournamentEditor = ({ className }: Props) => {
       </EditorCard>
 
       <EditorCard title={<Trans>Details</Trans>}>
+        <FieldGroup label={<Trans>Game</Trans>} className={styles.game}>
+          <GameSwitch
+            value={game}
+            onChange={(value) => dispatch({ type: "SET_GAME", payload: value })}
+          />
+        </FieldGroup>
         <FieldRow>
           <Field
             label={_(msg`Date`)}

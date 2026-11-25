@@ -260,13 +260,17 @@ msgstr ""
 msgid "Are you sure you want to delete this asset?"
 msgstr ""
 
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:158
+#~ msgid "Art style"
+#~ msgstr ""
+
 #: src/components/results/ResultsApp/ResultsApp.tsx:34
 #: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:256
 #~ msgid "Asking start.gg very nicely..."
 #~ msgstr ""
 
 #: src/components/results/ResultsApp/ResultsApp.tsx:34
-#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:256
+#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:258
 msgid "Asking very nicely..."
 msgstr ""
 
@@ -300,7 +304,7 @@ msgstr ""
 msgid "Background"
 msgstr ""
 
-#: src/components/top8/DesignEditor/DesignEditor.tsx:38
+#: src/components/top8/DesignEditor/DesignEditor.tsx:59
 msgid "Background Image"
 msgstr ""
 
@@ -442,6 +446,10 @@ msgstr ""
 msgid "Champion: {champion}"
 msgstr ""
 
+#: src/components/top8/DesignEditor/DesignEditor.tsx:40
+msgid "Character Art"
+msgstr ""
+
 #: src/consts/top8/colorLabels.ts:24
 msgid "Character BG"
 msgstr ""
@@ -454,7 +462,7 @@ msgstr ""
 msgid "Character Shadow"
 msgstr ""
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:244
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:147
 #~ msgid "Characters"
 #~ msgstr ""
 
@@ -474,7 +482,7 @@ msgstr ""
 msgid "Choose image"
 msgstr ""
 
-#: src/components/top8/TournamentConfig/TournamentEditor.tsx:202
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:211
 #: src/consts/top8/textLabels.ts:14
 msgid "City"
 msgstr ""
@@ -521,7 +529,7 @@ msgstr ""
 msgid "Color 3"
 msgstr ""
 
-#: src/components/top8/DesignEditor/DesignEditor.tsx:76
+#: src/components/top8/DesignEditor/DesignEditor.tsx:97
 msgid "Color Palette"
 msgstr ""
 
@@ -645,7 +653,7 @@ msgid "Counting the stocks. All of them..."
 msgstr ""
 
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:346
-#: src/components/top8/TournamentConfig/TournamentEditor.tsx:219
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:228
 msgid "Country"
 msgstr ""
 
@@ -696,7 +704,7 @@ msgstr "Custom"
 msgid "Custom Flag"
 msgstr ""
 
-#: src/components/top8/DesignEditor/DesignEditor.tsx:33
+#: src/components/top8/DesignEditor/DesignEditor.tsx:54
 msgid "Custom Fonts"
 msgstr ""
 
@@ -726,7 +734,7 @@ msgstr ""
 msgid "Dark"
 msgstr ""
 
-#: src/components/top8/TournamentConfig/TournamentEditor.tsx:141
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:150
 #: src/consts/top8/textLabels.ts:16
 msgid "Date"
 msgstr ""
@@ -785,7 +793,7 @@ msgstr ""
 msgid "Design"
 msgstr ""
 
-#: src/components/top8/TournamentConfig/TournamentEditor.tsx:138
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:141
 #: src/components/tournament/InfoTab/InfoTab.tsx:36
 #: src/consts/top8/colorLabels.ts:30
 msgid "Details"
@@ -877,7 +885,7 @@ msgstr ""
 msgid "DQ"
 msgstr ""
 
-#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:222
+#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:224
 msgid "Drag a character to move it. Scroll over it to resize it."
 msgstr ""
 
@@ -951,7 +959,7 @@ msgstr ""
 #: src/components/predict/EntrantPoolPanel/EntrantPoolPanel.tsx:44
 #: src/components/predict/PredictionWorkspace/PredictionWorkspace.tsx:35
 #: src/components/results/ResultsWorkspace/ResultsWorkspace.tsx:53
-#: src/components/top8/TournamentConfig/TournamentEditor.tsx:156
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:165
 #: src/consts/top8/textLabels.ts:19
 msgid "Entrants"
 msgstr ""
@@ -968,8 +976,8 @@ msgstr ""
 msgid "Event name"
 msgstr ""
 
-#: src/components/top8/TournamentConfig/TournamentEditor.tsx:130
-#: src/components/top8/TournamentConfig/TournamentEditor.tsx:131
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:133
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:134
 #: src/consts/top8/placeholders.ts:39
 msgid "Event Name"
 msgstr ""
@@ -1095,7 +1103,7 @@ msgid "Flip"
 msgstr ""
 
 #: src/components/thumbnail/LookPanel/LookPanel.tsx:141
-#: src/components/top8/DesignEditor/DesignEditor.tsx:31
+#: src/components/top8/DesignEditor/DesignEditor.tsx:52
 msgid "Font"
 msgstr ""
 
@@ -1109,6 +1117,10 @@ msgstr ""
 
 #: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:124
 msgid "Format"
+msgstr ""
+
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:142
+msgid "Game"
 msgstr ""
 
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:289
@@ -1215,11 +1227,11 @@ msgstr ""
 msgid "Hyping up the bracket..."
 msgstr ""
 
-#: src/components/top8/TournamentConfig/TournamentEditor.tsx:100
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:103
 msgid "Icon"
 msgstr ""
 
-#: src/components/top8/DesignEditor/DesignEditor.tsx:58
+#: src/components/top8/DesignEditor/DesignEditor.tsx:79
 msgid "Image darkness"
 msgstr ""
 
@@ -1383,7 +1395,7 @@ msgstr ""
 msgid "Loading results"
 msgstr ""
 
-#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:255
+#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:257
 msgid "Loading sets"
 msgstr ""
 
@@ -1398,7 +1410,7 @@ msgstr ""
 msgid "Loading…"
 msgstr ""
 
-#: src/components/top8/TournamentConfig/TournamentEditor.tsx:200
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:209
 #: src/consts/top8/textLabels.ts:25
 msgid "Location"
 msgstr ""
@@ -1635,7 +1647,7 @@ msgid "No placements yet."
 msgstr ""
 
 #: src/components/predict/EntrantPoolPanel/EntrantPoolPanel.tsx:66
-#: src/components/results/EntrantPicker/EntrantPicker.tsx:86
+#: src/components/results/EntrantPicker/EntrantPicker.tsx:89
 msgid "No players found"
 msgstr ""
 
@@ -1733,8 +1745,8 @@ msgstr ""
 msgid "Open in Maps"
 msgstr ""
 
-#: src/components/top8/TournamentConfig/TournamentEditor.tsx:190
-#: src/components/top8/TournamentConfig/TournamentEditor.tsx:191
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:199
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:200
 msgid "Open link"
 msgstr ""
 
@@ -1801,7 +1813,7 @@ msgstr ""
 #~ msgid "Paste a start.gg event URL, pick a player, and generate a shareable recap of their run."
 #~ msgstr ""
 
-#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:174
+#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:175
 msgid "Paste a start.gg or Hivee event link to fill in its matches"
 msgstr ""
 
@@ -1849,7 +1861,7 @@ msgstr ""
 msgid "Pick a character"
 msgstr ""
 
-#: src/components/results/EntrantPicker/EntrantPicker.tsx:38
+#: src/components/results/EntrantPicker/EntrantPicker.tsx:39
 msgid "Pick a player"
 msgstr ""
 
@@ -2081,7 +2093,7 @@ msgstr ""
 msgid "Red"
 msgstr ""
 
-#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:192
+#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:194
 #: src/components/top8/Ranker/Header/Header.tsx:44
 msgid "Redo"
 msgstr ""
@@ -2202,7 +2214,7 @@ msgstr ""
 msgid "Save Design as Template"
 msgstr ""
 
-#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:201
+#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:203
 msgid "Save image"
 msgstr ""
 
@@ -2234,7 +2246,7 @@ msgid "Search assets"
 msgstr ""
 
 #: src/components/predict/EntrantPoolPanel/EntrantPoolPanel.tsx:51
-#: src/components/results/EntrantPicker/EntrantPicker.tsx:45
+#: src/components/results/EntrantPicker/EntrantPicker.tsx:46
 msgid "Search players..."
 msgstr ""
 
@@ -2480,7 +2492,7 @@ msgstr ""
 msgid "start.gg profile"
 msgstr ""
 
-#: src/components/top8/TournamentConfig/TournamentEditor.tsx:211
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:220
 msgid "State"
 msgstr ""
 
@@ -2579,7 +2591,7 @@ msgid "Teammate Twitter Handle"
 msgstr ""
 
 #: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:108
-#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:229
+#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:231
 #: src/components/top8/SocialPostComposer/TemplateSelector.tsx:51
 msgid "Template"
 msgstr ""
@@ -2878,8 +2890,8 @@ msgstr ""
 msgid "Tournament name"
 msgstr ""
 
-#: src/components/top8/TournamentConfig/TournamentEditor.tsx:120
-#: src/components/top8/TournamentConfig/TournamentEditor.tsx:121
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:123
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:124
 #: src/consts/top8/placeholders.ts:38
 #: src/consts/top8/textLabels.ts:40
 msgid "Tournament Name"
@@ -2921,7 +2933,7 @@ msgstr ""
 
 #: src/components/shared/TournamentUrlInput/TournamentUrlInput.tsx:70
 #: src/components/shared/TournamentUrlInput/TournamentUrlInput.tsx:101
-#: src/components/top8/TournamentConfig/TournamentEditor.tsx:171
+#: src/components/top8/TournamentConfig/TournamentEditor.tsx:180
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:139
 #: src/consts/top8/placeholders.ts:46
 #: src/utils/social/templateTokens.ts:15
@@ -2962,7 +2974,7 @@ msgstr ""
 msgid "Ultimate"
 msgstr ""
 
-#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:182
+#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:184
 #: src/components/top8/Ranker/Header/Header.tsx:35
 msgid "Undo"
 msgstr ""

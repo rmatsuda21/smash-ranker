@@ -6,6 +6,11 @@
   --asset-tile-size: calc(var(--field-h) * 2 + var(--space-1));
 }
 
+// The switch is as wide as its options, not the card.
+.game {
+  align-items: flex-start;
+}
+
 .openLink {
   flex-shrink: 0;
   display: flex;
