@@ -1,3 +1,4 @@
+import { hiveeEventDate } from "@/utils/hivee/date";
 import { useRef } from "react";
 import { useClient } from "urql";
 import { t } from "@lingui/core/macro";
@@ -131,9 +132,7 @@ const fetchHivee = async (slug: string): Promise<FetchResult> => {
   return {
     tournamentName: event.title,
     eventName: program.title,
-    tournamentDate: event.starts_at
-      ? new Date(event.starts_at).toISOString()
-      : "",
+    tournamentDate: hiveeEventDate(event),
     tournamentUrl: "",
     tournamentIconUrl: event.community.icon_url ?? event.cover_image_url ?? "",
     tournamentId: event.id,

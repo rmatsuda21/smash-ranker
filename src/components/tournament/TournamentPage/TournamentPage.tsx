@@ -155,13 +155,13 @@ const Loaded = ({ tournament }: { tournament: TournamentDetails }) => {
         <header className={styles.identity}>
           <Icon url={tournament.iconUrl} />
           <div className={styles.titleBlock}>
-            <div className={styles.titleRow}>
-              <h1 className={styles.name}>{tournament.name}</h1>
+            <h1 className={styles.name}>{tournament.name}</h1>
+            {/* The status leads the line under the name, so a name of any
+                length leaves it in the same place. */}
+            <p className={styles.meta}>
               <span className={cn(styles.status, styles[tournament.status])}>
                 {_(STATUS_LABELS[tournament.status])}
               </span>
-            </div>
-            <p className={styles.meta}>
               {dates && <span>{dates}</span>}
               <span>{place}</span>
               {tournament.numAttendees > 0 && (

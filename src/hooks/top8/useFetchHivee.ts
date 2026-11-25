@@ -1,3 +1,4 @@
+import { hiveeEventDate } from "@/utils/hivee/date";
 import { t } from "@lingui/core/macro";
 
 import { useToast } from "@/components/Toast";
@@ -98,9 +99,7 @@ const toTournamentInfo = (
 ): TournamentInfo => ({
   tournamentName: event.title,
   eventName: program.title,
-  date: event.starts_at
-    ? new Date(event.starts_at).toISOString()
-    : new Date().toISOString(),
+  date: hiveeEventDate(event) || new Date().toISOString(),
   location: {
     state: event.prefecture_name ?? "",
     country: event.country?.toUpperCase() ?? "",

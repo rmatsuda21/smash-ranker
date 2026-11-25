@@ -1,3 +1,4 @@
+import { hiveeEventDate } from "@/utils/hivee/date";
 import { t } from "@lingui/core/macro";
 
 import { HIVEE_CHARACTER_IDS } from "@/consts/hivee/characters";
@@ -97,7 +98,7 @@ export const fetchHiveeThumbnailEvent = async (
       tournamentId: event.id,
       tournamentName: event.title,
       eventName: program.title,
-      date: event.starts_at ? new Date(event.starts_at).toISOString() : "",
+      date: hiveeEventDate(event),
       iconUrl: event.community.icon_url ?? event.cover_image_url ?? "",
       game: getGameForHiveeContent(program.content)?.id ?? null,
     },

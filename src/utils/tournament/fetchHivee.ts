@@ -1,3 +1,4 @@
+import { hiveeTimezone } from "@/utils/hivee/date";
 import type {
   HiveeEntrant,
   HiveeEvent,
@@ -189,7 +190,7 @@ export const fetchHiveeTournament = async (
     url: event.url,
     startAt: time(event.starts_at),
     endAt: time(event.ends_at),
-    timezone: null,
+    timezone: hiveeTimezone(event),
     status: EVENT_STATUS[event.progress] ?? "finished",
     isOnline: event.venue_type === "online",
     city: null,
