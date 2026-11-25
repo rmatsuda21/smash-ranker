@@ -55,6 +55,7 @@ export const useLoadThumbnailEvent = () => {
         event: {
           slug: detected.slug,
           url: slugToUrl(detected.platform, detected.slug),
+          tournamentId: meta.tournamentId,
           tournamentName: meta.tournamentName,
           eventName: meta.eventName,
           date: meta.date,

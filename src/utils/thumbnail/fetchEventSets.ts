@@ -18,6 +18,7 @@ const ThumbnailEventMetaQueryDoc = graphql(`
         id
       }
       tournament {
+        id
         name
         images {
           url
@@ -138,6 +139,7 @@ const toSet = (node: SetNode): ThumbnailSet | null => {
 };
 
 export type ThumbnailEventMeta = {
+  tournamentId: string;
   tournamentName: string;
   eventName: string;
   date: string;
@@ -155,6 +157,7 @@ export const fetchThumbnailEventMeta = async (
   const event = result.data?.event;
   if (!event) return null;
   return {
+    tournamentId: event.tournament?.id ? String(event.tournament.id) : "",
     tournamentName: event.tournament?.name ?? "",
     eventName: event.name ?? "",
     date: event.startAt ? new Date(event.startAt * 1000).toISOString() : "",

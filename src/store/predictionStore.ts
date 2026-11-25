@@ -17,6 +17,7 @@ interface PredictionState {
   tournamentDate: string;
   tournamentUrl: string;
   tournamentIconUrl: string;
+  tournamentId: string;
   colorPalette: PredictionPalette;
 
   entrantPool: PredictionPlayer[];
@@ -38,6 +39,7 @@ type PredictionAction =
         tournamentDate: string;
         tournamentUrl: string;
         tournamentIconUrl: string;
+        tournamentId: string;
         entrants: PredictionPlayer[];
       };
     }
@@ -58,6 +60,7 @@ const initialState: PredictionState = {
   tournamentDate: "",
   tournamentUrl: "",
   tournamentIconUrl: "",
+  tournamentId: "",
   colorPalette: DEFAULT_PREDICTION_PALETTE,
   entrantPool: [],
   predictions: [],
@@ -104,6 +107,7 @@ const predictionReducer = (
         tournamentDate: action.payload.tournamentDate,
         tournamentUrl: action.payload.tournamentUrl,
         tournamentIconUrl: action.payload.tournamentIconUrl,
+        tournamentId: action.payload.tournamentId,
         colorPalette: DEFAULT_PREDICTION_PALETTE,
         entrantPool: action.payload.entrants,
         predictions: [],
@@ -232,6 +236,7 @@ export const usePredictionStore = create<PredictionStore>()(
           tournamentDate: state.tournamentDate,
           tournamentUrl: state.tournamentUrl,
           tournamentIconUrl: state.tournamentIconUrl,
+          tournamentId: state.tournamentId,
           colorPalette: state.colorPalette,
           entrantPool: state.entrantPool,
           predictions: state.predictions,

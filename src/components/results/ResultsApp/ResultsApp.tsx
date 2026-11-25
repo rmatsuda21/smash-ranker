@@ -54,6 +54,7 @@ export const ResultsApp = () => {
   const tournamentDate = useResultsStore((s) => s.tournamentDate);
   const tournamentUrl = useResultsStore((s) => s.tournamentUrl);
   const tournamentIconUrl = useResultsStore((s) => s.tournamentIconUrl);
+  const tournamentId = useResultsStore((s) => s.tournamentId);
   const entrantPool = useResultsStore((s) => s.entrantPool);
   const error = useResultsStore((s) => s.error);
   const fetchingPool = useResultsStore((s) => s.fetchingPool);
@@ -228,6 +229,7 @@ export const ResultsApp = () => {
         <TournamentIdentity
           className={styles.tournamentInfo}
           href={tournamentUrl}
+          tournamentId={tournamentId}
           iconUrl={tournamentIconUrl}
           name={tournamentName}
           meta={tournamentMeta}

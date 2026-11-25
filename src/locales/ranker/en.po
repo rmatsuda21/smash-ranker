@@ -13,16 +13,26 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:155
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:161
 msgid "(https://challonge.com/[tournament])"
 msgstr ""
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:153
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:159
 msgid "(https://start.gg/tournament/[name]/event/[event])"
 msgstr ""
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:157
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:163
 msgid "(https://tonamel.com/competition/[slug])"
+msgstr ""
+
+#. placeholder {0}: tournament.numAttendees
+#: src/components/tournament/TournamentPage/TournamentPage.tsx:168
+msgid "{0, plural, one {# attendee} other {# attendees}}"
+msgstr ""
+
+#. placeholder {0}: event.numEntrants
+#: src/components/tournament/InfoTab/InfoTab.tsx:139
+msgid "{0, plural, one {# entrant} other {# entrants}}"
 msgstr ""
 
 #. placeholder {0}: scenes.length
@@ -30,9 +40,22 @@ msgstr ""
 msgid "{0, plural, one {# image ready, in one zip file.} other {# images ready, in one zip file.}}"
 msgstr ""
 
+#. placeholder {0}: event.numEntrants
+#: src/components/tournament/InfoTab/InfoTab.tsx:133
+msgid "{0, plural, one {# team} other {# teams}}"
+msgstr ""
+
 #. placeholder {0}: included.length
 #: src/components/thumbnail/SetList/SetList.tsx:192
 msgid "{0, plural, one {Save # image} other {Save # images}}"
+msgstr ""
+
+#. placeholder {0}: upset.winner.name
+#. placeholder {1}: upset.winner.seed
+#. placeholder {2}: upset.loser.name
+#. placeholder {3}: upset.loser.seed
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:147
+msgid "{0} <0>({1})</0> beat {2} <1>({3})</1>"
 msgstr ""
 
 #. placeholder {0}: visibleAssets.length
@@ -67,7 +90,11 @@ msgstr ""
 msgid "{0} tournaments here, {1} cities in all"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateFamilyCard.tsx:72
+#: src/components/tournament/TournamentPage/TournamentPage.tsx:213
+msgid "{hiddenCount} more"
+msgstr ""
+
+#: src/components/top8/TemplateEditor/TemplateFamilyCard.tsx:73
 msgid "{name} variants"
 msgstr ""
 
@@ -78,6 +105,11 @@ msgstr ""
 #: src/components/top8/TemplateEditor/CreateMinimalTemplateModal/CreateMinimalTemplateModal.tsx:80
 #~ msgid "{playerCount} Players (Light)"
 #~ msgstr ""
+
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:321
+#: src/components/tournament/RoundRobin/RoundRobin.tsx:42
+msgid "{wins}–{losses}"
+msgstr ""
 
 #: src/consts/top8/placeholders.ts:47
 msgid "# of Entrants"
@@ -170,12 +202,21 @@ msgstr ""
 #~ msgid "Adding a little sparkle to the win column..."
 #~ msgstr ""
 
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:134
+msgid "Against the top {UPSET_SEED_COUNT} seeds"
+msgstr ""
+
 #: src/components/user/StatsBoard/StatsBoard.tsx:272
 msgid "Ahead of the field"
 msgstr ""
 
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:48
 msgid "All"
+msgstr ""
+
+#. placeholder {0}: event.numEntrants
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:253
+msgid "All {0} placements"
 msgstr ""
 
 #: src/components/predict/PredictionListPanel/PredictionListPanel.tsx:78
@@ -186,7 +227,7 @@ msgstr ""
 msgid "All sets"
 msgstr ""
 
-#: src/components/home/RecentTournaments/RecentTournaments.tsx:114
+#: src/components/home/RecentTournaments/RecentTournaments.tsx:115
 msgid "All tournaments & stats"
 msgstr ""
 
@@ -198,8 +239,12 @@ msgstr ""
 msgid "Amber"
 msgstr "アンバー"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:83
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:89
 msgid "Any current player and tournament data will be overwritten."
+msgstr ""
+
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:411
+msgid "Any entrant's run as an image"
 msgstr ""
 
 #. placeholder {0}: markedIds.size
@@ -212,13 +257,17 @@ msgid "Are you sure you want to delete this asset?"
 msgstr ""
 
 #: src/components/results/ResultsApp/ResultsApp.tsx:34
-#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:255
+#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:256
 msgid "Asking start.gg very nicely..."
 msgstr ""
 
 #: src/components/top8/AssetManager/AssetManager.tsx:36
 #: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:258
 msgid "Assets"
+msgstr ""
+
+#: src/components/tournament/InfoTab/InfoTab.tsx:63
+msgid "Attendees"
 msgstr ""
 
 #: src/components/predict/ActionBar/ActionBar.tsx:31
@@ -229,6 +278,7 @@ msgstr ""
 msgid "Avatar"
 msgstr ""
 
+#: src/components/tournament/TournamentPage/TournamentPage.tsx:311
 #: src/pages/oauthCallback.tsx:87
 msgid "Back to home"
 msgstr ""
@@ -257,11 +307,11 @@ msgstr ""
 msgid "Bars"
 msgstr ""
 
-#: src/components/home/RecentTournaments/RecentTournaments.tsx:60
+#: src/components/home/RecentTournaments/RecentTournaments.tsx:61
 msgid "Beat your seed"
 msgstr ""
 
-#: src/components/home/RecentTournaments/RecentTournaments.tsx:64
+#: src/components/home/RecentTournaments/RecentTournaments.tsx:65
 msgid "Below your seed"
 msgstr ""
 
@@ -276,6 +326,10 @@ msgstr ""
 #. placeholder {1}: career.biggestBracket.tournament.name
 #: src/components/user/StatsBoard/StatsBoard.tsx:367
 msgid "Biggest bracket: <0>{0} entrants</0> at {1}"
+msgstr ""
+
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:131
+msgid "Biggest upsets"
 msgstr ""
 
 #: src/components/top8/SettingsPanel/AccentColorPicker.tsx:27
@@ -295,6 +349,8 @@ msgid "Bottom Text"
 msgstr ""
 
 #: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:42
+#: src/components/tournament/BracketTab/BracketTab.tsx:331
+#: src/components/tournament/TournamentPage/TournamentPage.tsx:40
 msgid "Bracket"
 msgstr ""
 
@@ -360,7 +416,7 @@ msgid "Cards"
 msgstr ""
 
 #. placeholder {0}: res.status
-#: src/hooks/predict/useFetchPredictionEntrants.ts:136
+#: src/hooks/predict/useFetchPredictionEntrants.ts:143
 #: src/hooks/top8/useFetchChallonge.ts:43
 msgid "Challonge API error: {0}"
 msgstr ""
@@ -371,6 +427,10 @@ msgstr ""
 
 #: src/consts/top8/textLabels.ts:13
 msgid "Champion Note"
+msgstr ""
+
+#: src/components/tournament/BracketTab/BracketTab.tsx:448
+msgid "Champion: {champion}"
 msgstr ""
 
 #: src/consts/top8/colorLabels.ts:24
@@ -388,6 +448,10 @@ msgstr ""
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:244
 #~ msgid "Characters"
 #~ msgstr ""
+
+#: src/components/tournament/TournamentPage/TournamentPage.tsx:302
+msgid "Check your connection and reload the page."
+msgstr ""
 
 #: src/components/results/ResultsApp/ResultsApp.tsx:46
 msgid "Checking if the seed was fair..."
@@ -480,7 +544,7 @@ msgstr ""
 msgid "Competing since {sinceYear}"
 msgstr ""
 
-#: src/hooks/predict/useFetchPredictionEntrants.ts:170
+#: src/hooks/predict/useFetchPredictionEntrants.ts:178
 #: src/hooks/top8/useFetchTonamel.ts:186
 msgid "Competition not found"
 msgstr ""
@@ -491,6 +555,10 @@ msgstr ""
 
 #: src/components/predict/PredictionPreview/PredictionPreview.tsx:56
 msgid "Consulting Master Hand..."
+msgstr ""
+
+#: src/components/tournament/TournamentPage/TournamentPage.tsx:92
+msgid "Copied"
 msgstr ""
 
 #: src/components/predict/ExportBar/ExportBar.tsx:107
@@ -525,11 +593,23 @@ msgstr ""
 msgid "Copy image"
 msgstr ""
 
+#: src/components/tournament/TournamentPage/TournamentPage.tsx:92
+msgid "Copy link"
+msgstr ""
+
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:216
+msgid "Couldn't load this event"
+msgstr ""
+
 #: src/pages/oauthCallback.tsx:70
 msgid "Couldn't log you in"
 msgstr ""
 
-#: src/components/home/RecentTournaments/RecentTournaments.tsx:130
+#: src/components/tournament/TournamentPage/TournamentPage.tsx:295
+msgid "Couldn't reach start.gg"
+msgstr ""
+
+#: src/components/home/RecentTournaments/RecentTournaments.tsx:131
 #: src/components/user/UserPage/UserPage.tsx:285
 msgid "Couldn't reach start.gg for your tournaments. Try again in a bit."
 msgstr ""
@@ -593,6 +673,10 @@ msgstr ""
 msgid "Credits & Inspiration"
 msgstr ""
 
+#: src/components/tournament/RoundRobin/RoundRobin.tsx:173
+msgid "Cross table"
+msgstr ""
+
 #: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:28
 #: src/components/top8/SettingsPanel/AccentColorPicker.tsx:41
 #: src/components/top8/SettingsPanel/AccentColorPicker.tsx:97
@@ -636,6 +720,10 @@ msgstr ""
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:141
 #: src/consts/top8/textLabels.ts:16
 msgid "Date"
+msgstr ""
+
+#: src/components/tournament/InfoTab/InfoTab.tsx:40
+msgid "Dates"
 msgstr ""
 
 #: src/components/results/ResultsApp/ResultsApp.tsx:47
@@ -689,6 +777,7 @@ msgid "Design"
 msgstr ""
 
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:138
+#: src/components/tournament/InfoTab/InfoTab.tsx:36
 #: src/consts/top8/colorLabels.ts:30
 msgid "Details"
 msgstr ""
@@ -738,6 +827,10 @@ msgstr ""
 msgid "Dotted"
 msgstr ""
 
+#: src/components/tournament/BracketTab/BracketTab.tsx:236
+msgid "Double elimination"
+msgstr ""
+
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:50
 #: src/consts/top8/templateCatalog.ts:69
 #: src/consts/top8/templateCatalog.ts:283
@@ -775,7 +868,7 @@ msgstr ""
 msgid "DQ"
 msgstr ""
 
-#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:221
+#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:222
 msgid "Drag a character to move it. Scroll over it to resize it."
 msgstr ""
 
@@ -805,6 +898,14 @@ msgstr ""
 msgid "Duet"
 msgstr ""
 
+#: src/components/tournament/RoundRobin/RoundRobin.tsx:205
+msgid "Each cell is the player's score that round, over the opponent they played."
+msgstr ""
+
+#: src/components/tournament/RoundRobin/RoundRobin.tsx:201
+msgid "Each cell is the row player's score against the column player."
+msgstr ""
+
 #: src/components/top8/TextEditor/TextEditor.tsx:64
 msgid "Edit the text content displayed in your graphic."
 msgstr ""
@@ -826,8 +927,12 @@ msgstr ""
 #~ msgid "Enter a number from {MIN_PLAYERS} to {MAX_PLAYERS}."
 #~ msgstr ""
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:151
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:157
 msgid "Enter a start.gg, Challonge, or Tonamel event URL"
+msgstr ""
+
+#: src/components/tournament/StandingsTab/StandingsTab.tsx:46
+msgid "Entrant"
 msgstr ""
 
 #: src/components/predict/EntrantPoolPanel/EntrantPoolPanel.tsx:44
@@ -860,6 +965,11 @@ msgstr ""
 msgid "Events"
 msgstr ""
 
+#: src/components/tournament/InfoTab/InfoTab.tsx:111
+msgctxt "tournament page"
+msgid "Events"
+msgstr ""
+
 #: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:85
 #: src/components/top8/CanvasDownloader/CanvasDownloader.tsx:88
 msgid "Export"
@@ -882,14 +992,14 @@ msgstr ""
 msgid "Failed to fetch Tonamel tournament"
 msgstr ""
 
-#: src/hooks/predict/useFetchPredictionEntrants.ts:238
-#: src/hooks/results/useFetchResultsEntrantPool.ts:197
-#: src/hooks/thumbnail/useLoadThumbnailEvent.ts:76
+#: src/hooks/predict/useFetchPredictionEntrants.ts:247
+#: src/hooks/results/useFetchResultsEntrantPool.ts:201
+#: src/hooks/thumbnail/useLoadThumbnailEvent.ts:77
 msgid "Failed to fetch tournament"
 msgstr ""
 
-#: src/hooks/top8/useFetchResult.ts:668
 #: src/hooks/top8/useFetchResult.ts:670
+#: src/hooks/top8/useFetchResult.ts:672
 msgid "Failed to fetch tournament data"
 msgstr ""
 
@@ -900,7 +1010,7 @@ msgstr ""
 msgid "Failed to generate image"
 msgstr ""
 
-#: src/hooks/thumbnail/useLoadThumbnailEvent.ts:108
+#: src/hooks/thumbnail/useLoadThumbnailEvent.ts:109
 msgid "Failed to load more sets"
 msgstr ""
 
@@ -940,8 +1050,12 @@ msgstr ""
 msgid "Finding everyone who showed up..."
 msgstr ""
 
-#: src/components/home/RecentTournaments/RecentTournaments.tsx:72
+#: src/components/home/RecentTournaments/RecentTournaments.tsx:73
 msgid "Finish"
+msgstr ""
+
+#: src/components/tournament/TournamentPage/TournamentPage.tsx:47
+msgid "Finished"
 msgstr ""
 
 #. placeholder {0}: career.seedBeaten.beaten
@@ -950,7 +1064,7 @@ msgstr ""
 msgid "Finished above your seed in <0>{0}</0> of {1} brackets"
 msgstr ""
 
-#: src/components/home/RecentTournaments/RecentTournaments.tsx:62
+#: src/components/home/RecentTournaments/RecentTournaments.tsx:63
 msgid "Finished on seed"
 msgstr ""
 
@@ -1042,6 +1156,10 @@ msgstr ""
 msgid "Habits"
 msgstr ""
 
+#: src/components/tournament/InfoTab/InfoTab.tsx:79
+msgid "Hashtag"
+msgstr ""
+
 #: src/consts/top8/textLabels.ts:23
 msgid "Header Info"
 msgstr ""
@@ -1062,7 +1180,7 @@ msgstr ""
 msgid "Home turf"
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:202
+#: src/components/results/ResultsApp/ResultsApp.tsx:203
 msgid "https://start.gg/tournament/.../event/..."
 msgstr ""
 
@@ -1087,6 +1205,10 @@ msgstr ""
 #. placeholder {1}: right.name
 #: src/components/thumbnail/SetList/SetList.tsx:129
 msgid "Include {0} vs {1}"
+msgstr ""
+
+#: src/components/tournament/TournamentPage/TournamentPage.tsx:41
+msgid "Info"
 msgstr ""
 
 #: src/consts/top8/colorLabels.ts:38
@@ -1145,7 +1267,7 @@ msgstr ""
 msgid "Last-game sets"
 msgstr ""
 
-#: src/components/home/RecentTournaments/RecentTournaments.tsx:154
+#: src/components/home/RecentTournaments/RecentTournaments.tsx:155
 msgid "Latest"
 msgstr ""
 
@@ -1171,6 +1293,10 @@ msgstr ""
 msgid "Light"
 msgstr ""
 
+#: src/components/tournament/InfoTab/InfoTab.tsx:86
+msgid "Links"
+msgstr ""
+
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:447
 #~ msgid "List view"
 #~ msgstr ""
@@ -1179,9 +1305,13 @@ msgstr ""
 msgid "Lit Tube"
 msgstr ""
 
+#: src/components/tournament/TournamentPage/TournamentPage.tsx:46
+msgid "Live"
+msgstr ""
+
 #: src/components/shared/TournamentUrlInput/TournamentUrlInput.tsx:87
 #: src/components/shared/TournamentUrlInput/TournamentUrlInput.tsx:111
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:174
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:180
 msgid "Load"
 msgstr ""
 
@@ -1202,7 +1332,7 @@ msgstr ""
 msgid "Load Template?"
 msgstr ""
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:81
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:87
 msgid "Load Tournament?"
 msgstr ""
 
@@ -1226,15 +1356,19 @@ msgstr ""
 msgid "Loading results"
 msgstr ""
 
-#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:254
+#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:255
 msgid "Loading sets"
 msgstr ""
 
-#: src/components/predict/PredictApp/PredictApp.tsx:113
-#: src/components/predict/PredictApp/PredictApp.tsx:162
-#: src/components/results/ResultsApp/ResultsApp.tsx:210
-#: src/components/results/ResultsApp/ResultsApp.tsx:266
+#: src/components/predict/PredictApp/PredictApp.tsx:114
+#: src/components/predict/PredictApp/PredictApp.tsx:164
+#: src/components/results/ResultsApp/ResultsApp.tsx:211
+#: src/components/results/ResultsApp/ResultsApp.tsx:268
 msgid "Loading tournament"
+msgstr ""
+
+#: src/components/tournament/StandingsTab/StandingsTab.tsx:81
+msgid "Loading…"
 msgstr ""
 
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:200
@@ -1287,6 +1421,10 @@ msgstr ""
 msgid "Looking for the guy who entered as \"test\"..."
 msgstr ""
 
+#: src/components/tournament/BracketTab/BracketTab.tsx:45
+msgid "Losers bracket"
+msgstr ""
+
 #: src/components/thumbnail/MatchForm/MatchForm.tsx:32
 msgid "Losers Final"
 msgstr ""
@@ -1307,6 +1445,14 @@ msgstr ""
 msgid "Make a Top 8 from any link"
 msgstr ""
 
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:346
+msgid "Make my recap"
+msgstr ""
+
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:355
+msgid "Make something"
+msgstr ""
+
 #: src/components/results/ResultsPreview/ResultsPreview.tsx:63
 #~ msgid "Making the upsets look extra dramatic..."
 #~ msgstr ""
@@ -1322,6 +1468,10 @@ msgstr ""
 
 #: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:105
 msgid "Match"
+msgstr ""
+
+#: src/components/tournament/RoundRobin/RoundRobin.tsx:178
+msgid "Matches"
 msgstr ""
 
 #: src/consts/games.ts:37
@@ -1384,7 +1534,7 @@ msgstr ""
 msgid "Muted"
 msgstr ""
 
-#: src/components/user/EventRow/EventRow.tsx:50
+#: src/components/user/EventRow/EventRow.tsx:55
 msgid "My recap"
 msgstr ""
 
@@ -1453,6 +1603,10 @@ msgstr ""
 #~ msgid "No phases found for this event"
 #~ msgstr ""
 
+#: src/components/tournament/StandingsTab/StandingsTab.tsx:36
+msgid "No placements yet."
+msgstr ""
+
 #: src/components/predict/EntrantPoolPanel/EntrantPoolPanel.tsx:66
 #: src/components/results/EntrantPicker/EntrantPicker.tsx:86
 msgid "No players found"
@@ -1466,12 +1620,24 @@ msgstr ""
 msgid "No results found"
 msgstr ""
 
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:220
+msgid "No results yet"
+msgstr ""
+
+#: src/components/tournament/BracketTab/BracketTab.tsx:472
+msgid "No sets have been played in this bracket yet."
+msgstr ""
+
 #: src/components/thumbnail/SetList/SetList.tsx:168
 msgid "No sets here. Try another filter."
 msgstr ""
 
 #: src/components/top8/TextEditor/TextEditor.tsx:49
 msgid "No text content defined in this design."
+msgstr ""
+
+#: src/components/tournament/TournamentPage/TournamentPage.tsx:297
+msgid "No tournament here"
 msgstr ""
 
 #: src/components/user/EventList/EventList.tsx:94
@@ -1482,7 +1648,7 @@ msgstr ""
 #~ msgid "No tournaments on your start.gg account yet."
 #~ msgstr ""
 
-#: src/components/home/RecentTournaments/RecentTournaments.tsx:138
+#: src/components/home/RecentTournaments/RecentTournaments.tsx:139
 msgid "No tournaments on your start.gg account yet. Once you enter one it shows up here."
 msgstr ""
 
@@ -1491,11 +1657,20 @@ msgstr ""
 msgid "None"
 msgstr ""
 
-#: src/components/home/RecentTournaments/RecentTournaments.tsx:48
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:218
+msgid "Not started yet"
+msgstr ""
+
+#. placeholder {0}: event.numEntrants
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:314
+msgid "of {0}"
+msgstr ""
+
+#: src/components/home/RecentTournaments/RecentTournaments.tsx:49
 msgid "of {numEntrants} entrants"
 msgstr ""
 
-#: src/components/home/RecentTournaments/RecentTournaments.tsx:78
+#: src/components/home/RecentTournaments/RecentTournaments.tsx:79
 msgid "of the bracket"
 msgstr ""
 
@@ -1519,9 +1694,16 @@ msgstr ""
 msgid "One-click graphics for every tournament"
 msgstr ""
 
+#: src/components/tournament/InfoTab/InfoTab.tsx:49
+#: src/components/tournament/TournamentPage/TournamentPage.tsx:141
 #: src/components/user/StatsBoard/StatsBoard.tsx:216
 #: src/hooks/user/useEventMeta.ts:19
 msgid "Online"
+msgstr ""
+
+#: src/components/tournament/InfoTab/InfoTab.tsx:55
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:461
+msgid "Open in Maps"
 msgstr ""
 
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:190
@@ -1540,6 +1722,10 @@ msgstr ""
 #: src/components/shared/FileUploader/FileUploader.tsx:156
 #~ msgid "Or drag and drop"
 #~ msgstr "Or drag and drop"
+
+#: src/components/tournament/InfoTab/InfoTab.tsx:71
+msgid "Organizer"
+msgstr ""
 
 #: src/consts/top8/templateCatalog.ts:53
 #: src/consts/top8/templateCatalog.ts:82
@@ -1564,6 +1750,10 @@ msgstr ""
 msgid "Output: {outputWidth} × {outputHeight} px"
 msgstr ""
 
+#: src/components/tournament/TournamentPage/TournamentPage.tsx:38
+msgid "Overview"
+msgstr ""
+
 #: src/consts/top8/colorLabels.ts:47
 msgid "Page"
 msgstr ""
@@ -1576,26 +1766,26 @@ msgstr ""
 msgid "Paper"
 msgstr ""
 
-#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:173
+#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:174
 msgid "Paste a start.gg event link to fill in its matches"
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:191
+#: src/components/results/ResultsApp/ResultsApp.tsx:192
 msgid "Paste a start.gg event URL, pick a player, and generate a shareable recap of their run."
 msgstr ""
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:103
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:109
 msgid "Paste a tournament URL"
 msgstr ""
 
-#: src/components/predict/PredictApp/PredictApp.tsx:96
+#: src/components/predict/PredictApp/PredictApp.tsx:97
 msgid "Paste a tournament URL to predict placements and share your picks."
 msgstr ""
 
-#: src/components/predict/PredictApp/PredictApp.tsx:146
-#: src/components/results/ResultsApp/ResultsApp.tsx:241
-#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:172
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:103
+#: src/components/predict/PredictApp/PredictApp.tsx:148
+#: src/components/results/ResultsApp/ResultsApp.tsx:243
+#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:173
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:109
 msgid "Paste URL"
 msgstr ""
 
@@ -1609,6 +1799,11 @@ msgstr ""
 
 #: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:143
 msgid "Path has its own look, so card styles are off."
+msgstr ""
+
+#: src/components/tournament/BracketTab/BracketTab.tsx:388
+#: src/components/tournament/BracketTab/BracketTab.tsx:404
+msgid "Phase"
 msgstr ""
 
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:288
@@ -1636,7 +1831,7 @@ msgstr ""
 msgid "Pixel Ratio"
 msgstr ""
 
-#: src/components/home/RecentTournaments/RecentTournaments.tsx:43
+#: src/components/home/RecentTournaments/RecentTournaments.tsx:44
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:314
 #: src/components/top8/PlayersEditor/PlayersEditor.tsx:315
 msgid "Placement"
@@ -1648,6 +1843,10 @@ msgstr ""
 
 #: src/consts/top8/colorLabels.ts:51
 msgid "Placement Stroke"
+msgstr ""
+
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:227
+msgid "Placements, the top 8 bracket and upsets show up here once sets are reported on start.gg."
 msgstr ""
 
 #: src/consts/top8/colorLabels.ts:52
@@ -1700,6 +1899,10 @@ msgstr ""
 msgid "Player Prefix"
 msgstr ""
 
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:408
+msgid "Player recap"
+msgstr ""
+
 #: src/hooks/results/useFetchPlayerResults.ts:268
 msgid "Player results not available."
 msgstr ""
@@ -1720,6 +1923,10 @@ msgstr ""
 msgid "Polishing trophies..."
 msgstr ""
 
+#: src/components/tournament/BracketTab/BracketTab.tsx:429
+msgid "Pool"
+msgstr ""
+
 #: src/components/thumbnail/MatchForm/MatchForm.tsx:35
 msgid "Pools"
 msgstr ""
@@ -1732,8 +1939,12 @@ msgstr ""
 msgid "Poster"
 msgstr ""
 
-#: src/components/user/EventRow/EventRow.tsx:33
+#: src/components/user/EventRow/EventRow.tsx:38
 msgid "Predict"
+msgstr ""
+
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:374
+msgid "Prediction"
 msgstr ""
 
 #: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:35
@@ -1741,7 +1952,7 @@ msgid "Prediction size"
 msgstr ""
 
 #: src/components/Layout/NavOverlay/NavOverlay.tsx:38
-#: src/components/predict/PredictApp/PredictApp.tsx:93
+#: src/components/predict/PredictApp/PredictApp.tsx:94
 #: src/components/predict/PredictionListPanel/PredictionListPanel.tsx:97
 #: src/components/predict/PredictionWorkspace/PredictionWorkspace.tsx:43
 msgid "Predictions"
@@ -1753,8 +1964,8 @@ msgstr ""
 msgid "Prefix"
 msgstr ""
 
-#: src/components/predict/PredictApp/PredictApp.tsx:171
-#: src/components/results/ResultsApp/ResultsApp.tsx:275
+#: src/components/predict/PredictApp/PredictApp.tsx:173
+#: src/components/results/ResultsApp/ResultsApp.tsx:277
 #: src/components/thumbnail/ThumbnailExportModal/ThumbnailExportModal.tsx:253
 #: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:195
 msgid "Preview"
@@ -1780,8 +1991,16 @@ msgstr ""
 msgid "Quality"
 msgstr ""
 
+#: src/components/tournament/RoundRobin/RoundRobin.tsx:59
+msgid "Rank"
+msgstr ""
+
 #: src/consts/top8/textLabels.ts:27
 msgid "Rank Header"
+msgstr ""
+
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:377
+msgid "Rank the entrants before it starts"
 msgstr ""
 
 #: src/components/Layout/NavOverlay/NavOverlay.tsx:25
@@ -1818,11 +2037,15 @@ msgstr ""
 msgid "Recent sets"
 msgstr ""
 
+#: src/components/tournament/RoundRobin/RoundRobin.tsx:56
+msgid "Record"
+msgstr ""
+
 #: src/components/top8/SettingsPanel/AccentColorPicker.tsx:25
 msgid "Red"
 msgstr ""
 
-#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:191
+#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:192
 #: src/components/top8/Ranker/Header/Header.tsx:44
 msgid "Redo"
 msgstr ""
@@ -1891,6 +2114,10 @@ msgstr ""
 msgid "Results"
 msgstr ""
 
+#: src/components/tournament/RoundRobin/RoundRobin.tsx:175
+msgid "Results by round"
+msgstr ""
+
 #: src/components/results/ResultsApp/ResultsApp.tsx:43
 msgid "Rewatching every set at 2x speed..."
 msgstr ""
@@ -1909,6 +2136,10 @@ msgstr ""
 
 #: src/components/thumbnail/MatchForm/MatchForm.tsx:180
 msgid "Round"
+msgstr ""
+
+#: src/components/tournament/BracketTab/BracketTab.tsx:237
+msgid "Round robin"
 msgstr ""
 
 #: src/components/predict/PredictApp/PredictApp.tsx:31
@@ -1935,7 +2166,7 @@ msgstr ""
 msgid "Save Design as Template"
 msgstr ""
 
-#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:200
+#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:201
 msgid "Save image"
 msgstr ""
 
@@ -1993,12 +2224,24 @@ msgstr ""
 msgid "Secondary Text"
 msgstr ""
 
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:287
+msgid "See the bracket"
+msgstr ""
+
 #: src/components/results/PlayerSummary/PlayerSummary.tsx:127
 msgid "seed"
 msgstr ""
 
-#: src/components/home/RecentTournaments/RecentTournaments.tsx:55
+#: src/components/home/RecentTournaments/RecentTournaments.tsx:56
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:334
+#: src/components/tournament/StandingsTab/StandingsTab.tsx:49
 msgid "Seed"
+msgstr ""
+
+#. placeholder {0}: entry.seed
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:100
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:274
+msgid "Seed {0}"
 msgstr ""
 
 #: src/components/top8/AssetManager/AssetsModal/AssetPreview/AssetPreview.tsx:207
@@ -2041,6 +2284,7 @@ msgstr ""
 
 #: src/components/results/SetList/SetList.tsx:72
 #: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:103
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:326
 #: src/components/user/PlayerCardLauncher/PlayerCardLauncher.tsx:55
 msgid "Sets"
 msgstr ""
@@ -2078,12 +2322,21 @@ msgstr ""
 msgid "Show"
 msgstr ""
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:147
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:153
 msgid "Show help"
 msgstr ""
 
 #: src/components/user/EventList/EventList.tsx:106
 msgid "Show more"
+msgstr ""
+
+#. placeholder {0}: standings.length
+#: src/components/tournament/StandingsTab/StandingsTab.tsx:83
+msgid "Show more ({0} of {total})"
+msgstr ""
+
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:176
+msgid "Show more upsets"
 msgstr ""
 
 #: src/components/top8/Ranker/Ranker.tsx:113
@@ -2096,6 +2349,10 @@ msgstr ""
 
 #: src/consts/top8/templateCatalog.ts:201
 msgid "Signal"
+msgstr ""
+
+#: src/components/tournament/BracketTab/BracketTab.tsx:235
+msgid "Single elimination"
 msgstr ""
 
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:49
@@ -2151,6 +2408,7 @@ msgstr ""
 msgid "Standard"
 msgstr ""
 
+#: src/components/tournament/TournamentPage/TournamentPage.tsx:39
 #: src/consts/top8/templateCatalog.ts:99
 msgid "Standings"
 msgstr ""
@@ -2159,7 +2417,17 @@ msgstr ""
 msgid "Star a template to keep it here."
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:217
+#: src/components/tournament/BracketTab/BracketTab.tsx:359
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:225
+#: src/components/tournament/StandingsTab/StandingsTab.tsx:29
+msgid "start.gg didn't answer. Reload to try again."
+msgstr ""
+
+#: src/components/tournament/TournamentPage/TournamentPage.tsx:304
+msgid "start.gg has no tournament with this id. It may have been deleted or made private."
+msgstr ""
+
+#: src/components/results/ResultsApp/ResultsApp.tsx:218
 msgid "start.gg only"
 msgstr ""
 
@@ -2184,6 +2452,10 @@ msgstr ""
 msgid "Streak"
 msgstr ""
 
+#: src/components/tournament/InfoTab/InfoTab.tsx:156
+msgid "Streams"
+msgstr ""
+
 #: src/consts/top8/colorLabels.ts:65
 msgid "Strip"
 msgstr ""
@@ -2198,6 +2470,10 @@ msgstr ""
 
 #: src/components/thumbnail/MatchForm/MatchForm.tsx:173
 msgid "Swap sides"
+msgstr ""
+
+#: src/components/tournament/BracketTab/BracketTab.tsx:238
+msgid "Swiss"
 msgstr ""
 
 #: src/components/top8/SocialPostComposer/SocialPostComposer.tsx:443
@@ -2259,7 +2535,7 @@ msgid "Teammate Twitter Handle"
 msgstr ""
 
 #: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:108
-#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:228
+#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:229
 #: src/components/top8/SocialPostComposer/TemplateSelector.tsx:51
 msgid "Template"
 msgstr ""
@@ -2318,8 +2594,20 @@ msgstr ""
 msgid "That file could not be read as an image."
 msgstr ""
 
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:361
+msgid "The graphic tools don't cover {gameName} yet."
+msgstr ""
+
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:363
+msgid "The graphic tools don't cover this game yet."
+msgstr ""
+
 #: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:33
 msgid "The image draws your run as a line through the bracket"
+msgstr ""
+
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:393
+msgid "The standings in a template"
 msgstr ""
 
 #: src/pages/oauthCallback.tsx:62
@@ -2337,6 +2625,10 @@ msgstr ""
 
 #: src/components/user/EmptyProfile/EmptyProfile.tsx:25
 msgid "There are no tournaments on your start.gg account yet. Enter one and it shows up here, ready to turn into a graphic."
+msgstr ""
+
+#: src/components/tournament/BracketTab/BracketTab.tsx:366
+msgid "This event has no bracket yet."
 msgstr ""
 
 #: src/hooks/thumbnail/useLoadThumbnailEvent.ts:51
@@ -2364,7 +2656,7 @@ msgstr ""
 msgid "This will reset all player data for this slot."
 msgstr ""
 
-#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:161
+#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:162
 msgid "Thumbnail"
 msgstr ""
 
@@ -2404,12 +2696,12 @@ msgid "Toggle developer settings"
 msgstr ""
 
 #. placeholder {0}: res.status
-#: src/hooks/predict/useFetchPredictionEntrants.ts:166
+#: src/hooks/predict/useFetchPredictionEntrants.ts:174
 #: src/hooks/top8/useFetchTonamel.ts:57
 msgid "Tonamel API error: {0}"
 msgstr ""
 
-#: src/components/home/RecentTournaments/RecentTournaments.tsx:75
+#: src/components/home/RecentTournaments/RecentTournaments.tsx:76
 msgid "Top {topPercent}%"
 msgstr ""
 
@@ -2426,13 +2718,16 @@ msgstr ""
 #: src/components/predict/PredictionCountSelector/PredictionCountSelector.tsx:26
 #: src/components/thumbnail/MatchForm/MatchForm.tsx:34
 #: src/components/thumbnail/SetList/SetList.tsx:74
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:209
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:249
 #: src/components/user/PlayerCardLauncher/PlayerCardLauncher.tsx:54
 #: src/components/user/StatsBoard/StatsBoard.tsx:250
 #: src/utils/social/builtInTemplates.ts:32
 msgid "Top 8"
 msgstr ""
 
-#: src/components/user/EventRow/EventRow.tsx:42
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:390
+#: src/components/user/EventRow/EventRow.tsx:47
 msgid "Top 8 graphic"
 msgstr ""
 
@@ -2526,18 +2821,23 @@ msgstr ""
 msgid "Tournament Name"
 msgstr ""
 
-#: src/hooks/predict/useFetchPredictionEntrants.ts:96
-#: src/hooks/results/useFetchResultsEntrantPool.ts:67
+#: src/hooks/predict/useFetchPredictionEntrants.ts:99
+#: src/hooks/results/useFetchResultsEntrantPool.ts:69
 #: src/hooks/thumbnail/useLoadThumbnailEvent.ts:49
-#: src/hooks/top8/useFetchResult.ts:581
+#: src/hooks/top8/useFetchResult.ts:583
 msgid "Tournament not found"
 msgstr ""
 
-#: src/components/results/ResultsApp/ResultsApp.tsx:188
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:187
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:188
+msgid "Tournament page"
+msgstr ""
+
+#: src/components/results/ResultsApp/ResultsApp.tsx:189
 msgid "Tournament Recap"
 msgstr ""
 
-#: src/hooks/results/useFetchResultsEntrantPool.ts:135
+#: src/hooks/results/useFetchResultsEntrantPool.ts:139
 msgid "Tournament results are start.gg-only for now. Paste a start.gg event URL to continue."
 msgstr ""
 
@@ -2552,7 +2852,7 @@ msgstr ""
 #: src/components/shared/TournamentUrlInput/TournamentUrlInput.tsx:70
 #: src/components/shared/TournamentUrlInput/TournamentUrlInput.tsx:101
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:171
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:129
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:135
 #: src/consts/top8/placeholders.ts:46
 #: src/utils/social/templateTokens.ts:15
 #: src/utils/social/templateTokens.ts:47
@@ -2592,12 +2892,13 @@ msgstr ""
 msgid "Ultimate"
 msgstr ""
 
-#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:181
+#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:182
 #: src/components/top8/Ranker/Header/Header.tsx:35
 msgid "Undo"
 msgstr ""
 
-#: src/components/user/EventRow/EventRow.tsx:70
+#: src/components/tournament/TournamentPage/TournamentPage.tsx:45
+#: src/components/user/EventRow/EventRow.tsx:75
 msgid "Upcoming"
 msgstr ""
 
@@ -2649,6 +2950,10 @@ msgstr ""
 msgid "Using the tournament's icon from start.gg."
 msgstr ""
 
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:457
+msgid "Venue"
+msgstr ""
+
 #: src/components/top8/SettingsPanel/DeveloperSettings.tsx:66
 msgid "Version"
 msgstr ""
@@ -2659,6 +2964,10 @@ msgstr ""
 
 #: src/components/thumbnail/MatchForm/MatchForm.tsx:201
 msgid "Video title"
+msgstr ""
+
+#: src/components/tournament/MatchBox/MatchBox.tsx:65
+msgid "VOD"
 msgstr ""
 
 #: src/components/results/SetList/SetRow.tsx:258
@@ -2673,6 +2982,10 @@ msgstr ""
 msgid "Wall"
 msgstr ""
 
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:425
+msgid "Watch"
+msgstr ""
+
 #: src/components/user/StatsBoard/StatsBoard.tsx:194
 msgid "weeks in a row with a tournament, at your longest"
 msgstr ""
@@ -2680,6 +2993,10 @@ msgstr ""
 #. placeholder {0}: setStats.longestWinStreak
 #: src/components/user/StatsBoard/StatsBoard.tsx:419
 msgid "when it goes the distance. Best win streak: {0}"
+msgstr ""
+
+#: src/components/tournament/InfoTab/InfoTab.tsx:46
+msgid "Where"
 msgstr ""
 
 #. placeholder {0}: winnerHandle[1]
@@ -2707,6 +3024,10 @@ msgstr ""
 
 #: src/utils/social/templateTokens.ts:57
 msgid "Winners"
+msgstr ""
+
+#: src/components/tournament/BracketTab/BracketTab.tsx:44
+msgid "Winners bracket"
 msgstr ""
 
 #: src/components/thumbnail/MatchForm/MatchForm.tsx:31
@@ -2742,11 +3063,15 @@ msgstr ""
 msgid "Your record, trophies and streaks"
 msgstr ""
 
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:304
+msgid "Your run"
+msgstr ""
+
 #: src/components/user/UserPage/UserPage.tsx:349
 msgid "Your stats"
 msgstr ""
 
-#: src/components/home/RecentTournaments/RecentTournaments.tsx:110
+#: src/components/home/RecentTournaments/RecentTournaments.tsx:111
 #: src/components/user/EventList/EventList.tsx:61
 msgid "Your tournaments"
 msgstr ""

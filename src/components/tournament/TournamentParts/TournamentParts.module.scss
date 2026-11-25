@@ -1,0 +1,109 @@
+@use "@/_theme" as *;
+
+@keyframes shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -100% 0;
+  }
+}
+
+.panel {
+  min-width: 0;
+  overflow: hidden;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+
+  &.accent {
+    border-color: var(--brand-outline);
+  }
+}
+
+.panelHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-4) var(--space-3);
+
+  h2 {
+    margin: 0;
+    font-size: var(--font-size-lg);
+    font-weight: 800;
+    color: var(--fg-1);
+  }
+}
+
+.aside {
+  flex-shrink: 0;
+  font-size: var(--font-size-sm);
+  color: var(--fg-3);
+
+  a,
+  button {
+    color: var(--brand-hover);
+    font-size: var(--font-size-md);
+    font-weight: 600;
+  }
+}
+
+.prefix {
+  margin-right: var(--space-2);
+  color: var(--fg-3);
+  font-weight: 500;
+}
+
+.characters {
+  display: inline-flex;
+  flex-shrink: 0;
+  gap: var(--space-1);
+
+  img {
+    object-fit: contain;
+  }
+}
+
+.delta {
+  min-width: 32px;
+  text-align: right;
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--fg-4);
+
+  &.up {
+    color: #6fd3a0;
+  }
+
+  &.down {
+    color: var(--fg-3);
+  }
+}
+
+:global([data-theme="light"]) .delta.up {
+  color: #14804a;
+}
+
+.skeleton {
+  display: flex;
+  flex-direction: column;
+
+  span {
+    height: 45px;
+    border-top: 1px solid var(--border);
+    background: linear-gradient(
+      90deg,
+      var(--bg-surface) 30%,
+      var(--bg-raised) 50%,
+      var(--bg-surface) 70%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.4s linear infinite;
+
+    @media (prefers-reduced-motion: reduce) {
+      animation: none;
+    }
+  }
+}

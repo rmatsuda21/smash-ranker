@@ -39,6 +39,7 @@ export const PredictApp = () => {
   const tournamentName = usePredictionStore((s) => s.tournamentName);
   const tournamentUrl = usePredictionStore((s) => s.tournamentUrl);
   const tournamentIconUrl = usePredictionStore((s) => s.tournamentIconUrl);
+  const tournamentId = usePredictionStore((s) => s.tournamentId);
   const tournamentDate = usePredictionStore((s) => s.tournamentDate);
   const eventName = usePredictionStore((s) => s.eventName);
   const error = usePredictionStore((s) => s.error);
@@ -133,6 +134,7 @@ export const PredictApp = () => {
         <TournamentIdentity
           className={styles.tournamentInfo}
           href={tournamentUrl}
+          tournamentId={tournamentId}
           iconUrl={tournamentIconUrl}
           name={tournamentName}
           meta={tournamentMeta}

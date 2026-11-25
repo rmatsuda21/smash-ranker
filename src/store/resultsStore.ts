@@ -20,6 +20,7 @@ interface ResultsState {
   tournamentDate: string;
   tournamentUrl: string;
   tournamentIconUrl: string;
+  tournamentId: string;
   tournamentCountry: string | null;
   numEntrants: number;
   videogameId: string | null;
@@ -54,6 +55,7 @@ type ResultsAction =
         tournamentDate: string;
         tournamentUrl: string;
         tournamentIconUrl: string;
+        tournamentId: string;
         tournamentCountry: string | undefined;
         numEntrants: number;
         videogameId: string | null;
@@ -87,6 +89,7 @@ const initialState: ResultsState = {
   tournamentDate: "",
   tournamentUrl: "",
   tournamentIconUrl: "",
+  tournamentId: "",
   tournamentCountry: null,
   numEntrants: 0,
   videogameId: null,
@@ -125,6 +128,7 @@ const resultsReducer = (
         tournamentDate: action.payload.tournamentDate,
         tournamentUrl: action.payload.tournamentUrl,
         tournamentIconUrl: action.payload.tournamentIconUrl,
+        tournamentId: action.payload.tournamentId,
         tournamentCountry: action.payload.tournamentCountry ?? null,
         numEntrants: action.payload.numEntrants,
         videogameId: action.payload.videogameId,
@@ -268,6 +272,7 @@ export const useResultsStore = create<ResultsStore>()(
           tournamentDate: state.tournamentDate,
           tournamentUrl: state.tournamentUrl,
           tournamentIconUrl: state.tournamentIconUrl,
+          tournamentId: state.tournamentId,
           tournamentCountry: state.tournamentCountry,
           numEntrants: state.numEntrants,
           videogameId: state.videogameId,

@@ -1,0 +1,119 @@
+@use "@/_theme" as *;
+
+$display: "Big Shoulders Display", var(--font-sans);
+
+.root {
+  max-width: 760px;
+  overflow: hidden;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+
+.rows {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.head,
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--font-size-md);
+}
+
+.head {
+  padding-top: var(--space-3);
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--fg-3);
+
+  .place {
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+  }
+}
+
+.row {
+  min-height: 40px;
+  border-top: 1px solid var(--border);
+}
+
+.place {
+  flex: 0 0 44px;
+  font-family: $display;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--fg-1);
+}
+
+.name {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: 700;
+  color: var(--fg-1);
+  overflow-wrap: anywhere;
+
+  .head & {
+    color: inherit;
+  }
+}
+
+.seed {
+  flex: 0 0 48px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--fg-3);
+}
+
+.delta {
+  flex: 0 0 32px;
+  text-align: right;
+}
+
+.more {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  border: 0;
+  border-top: 1px solid var(--border);
+  background: none;
+  color: var(--brand-hover);
+  font-family: inherit;
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    background: var(--bg-raised);
+  }
+
+  &:disabled {
+    color: var(--fg-3);
+    cursor: default;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--brand);
+    outline-offset: -2px;
+  }
+}
+
+.message {
+  margin: 0;
+  padding: var(--space-8) var(--space-5);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-lg);
+  color: var(--fg-3);
+  font-size: var(--font-size-md);
+  text-align: center;
+}

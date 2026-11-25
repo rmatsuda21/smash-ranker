@@ -17,6 +17,7 @@ const EventMetaQueryDoc = graphql(`
       startAt
       numEntrants
       tournament {
+        id
         name
         url(tab: "", relative: false)
         images {
@@ -81,6 +82,8 @@ type FetchResult = {
   tournamentDate: string;
   tournamentUrl: string;
   tournamentIconUrl: string;
+  // start.gg's tournament id, "" on other platforms.
+  tournamentId: string;
   entrants: PredictionPlayer[];
 };
 
@@ -103,6 +106,9 @@ const fetchStartgg = async (
     ? new Date(event.startAt * 1000).toISOString()
     : "";
   const tournamentUrl = event.tournament?.url || "";
+  const tournamentId = event.tournament?.id
+    ? String(event.tournament.id)
+    : "";
   const tournamentIconUrl =
     event.tournament?.images
       ?.find((img) => img?.type === "profile")
@@ -125,6 +131,7 @@ const fetchStartgg = async (
     tournamentDate,
     tournamentUrl,
     tournamentIconUrl,
+    tournamentId,
     entrants: allEntrants,
   };
 };
@@ -155,6 +162,7 @@ const fetchChallongeEntrants = async (slug: string): Promise<FetchResult> => {
       : "",
     tournamentUrl: tournament.full_challonge_url || "",
     tournamentIconUrl: "",
+    tournamentId: "",
     entrants,
   };
 };
@@ -188,6 +196,7 @@ const fetchTonamelEntrants = async (slug: string): Promise<FetchResult> => {
       : "",
     tournamentUrl: `https://tonamel.com/competition/${slug}`,
     tournamentIconUrl: "",
+    tournamentId: "",
     entrants,
   };
 };

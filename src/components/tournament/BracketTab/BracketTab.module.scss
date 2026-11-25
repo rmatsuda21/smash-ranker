@@ -1,0 +1,258 @@
+@use "@/_theme" as *;
+
+// The grid the bracket is drawn on. Keep these in step with the constants of
+// the same names in BracketTab.tsx, which places the matches and the lines.
+$match-w: 224px;
+$match-h: 64px;
+$column-gap: 40px;
+
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.pickers {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.phases {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.phase {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  min-height: 44px;
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--fg-2);
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color var(--duration-base) var(--ease-standard);
+
+  strong {
+    font-size: var(--font-size-md);
+    font-weight: 700;
+  }
+
+  small {
+    font-size: var(--font-size-sm);
+    color: var(--fg-3);
+  }
+
+  &:hover {
+    border-color: var(--border-strong);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--brand);
+    outline-offset: 2px;
+  }
+
+  &.selected {
+    border-color: var(--brand);
+    background: var(--brand-softer);
+    color: var(--fg-1);
+  }
+}
+
+.pick {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  color: var(--fg-3);
+}
+
+.phaseSelect {
+  min-width: 240px;
+}
+
+.phaseMeta {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+}
+
+.poolSelect {
+  min-width: 120px;
+}
+
+.champion {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--brand-outline);
+  border-radius: var(--radius-lg);
+  background: var(--brand-softer);
+  color: var(--fg-1);
+  font-size: var(--font-size-lg);
+  font-weight: 800;
+  text-align: center;
+  overflow-wrap: anywhere;
+
+  svg {
+    flex-shrink: 0;
+    color: var(--brand-hover);
+  }
+}
+
+// A bracket is as wide as its rounds: it scrolls sideways inside this box
+// and the page does not.
+.scroller {
+  display: flex;
+  flex-direction: column;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--bg-surface);
+  scrollbar-width: thin;
+}
+
+.lane {
+  // As wide as its rounds, so the rule between the lanes runs the whole
+  // scrolled width.
+  min-width: max-content;
+  padding: var(--space-4) var(--space-5) var(--space-6);
+
+  & + & {
+    border-top: 1px solid var(--border);
+  }
+}
+
+.rounds {
+  display: flex;
+  gap: $column-gap;
+  margin-bottom: var(--space-4);
+}
+
+.round {
+  flex: 0 0 $match-w;
+  margin: 0;
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--fg-3);
+  text-align: center;
+}
+
+.field {
+  position: relative;
+}
+
+.lines {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+
+  path {
+    fill: none;
+    stroke: var(--border-strong);
+    stroke-width: 1.5;
+  }
+}
+
+// A match placed on the grid.
+.field .placed {
+  position: absolute;
+}
+
+// ------------------------------------------
+// Loading
+// ------------------------------------------
+
+@keyframes shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -100% 0;
+  }
+}
+
+@mixin bone {
+  background: linear-gradient(
+    90deg,
+    var(--bg-raised) 30%,
+    var(--gray-4) 50%,
+    var(--bg-raised) 70%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+.matchBone {
+  width: $match-w;
+  height: $match-h;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  @include bone;
+}
+
+.headBone {
+  display: block;
+  width: 96px;
+  height: 12px;
+  margin: 3px auto;
+  border-radius: var(--radius-sm);
+  @include bone;
+}
+
+.pickerBones {
+  display: flex;
+  gap: var(--space-2);
+
+  span {
+    width: 132px;
+    height: 44px;
+    border-radius: var(--radius-md);
+    @include bone;
+  }
+}
+
+.tableSkeleton {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--bg-surface);
+
+  span {
+    height: 40px;
+    @include bone;
+
+    & + span {
+      border-top: 1px solid var(--border);
+    }
+  }
+}
+
+.message {
+  margin: 0;
+  padding: var(--space-8) var(--space-5);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-lg);
+  color: var(--fg-3);
+  font-size: var(--font-size-md);
+  text-align: center;
+}

@@ -1,0 +1,99 @@
+@use "@/_theme" as *;
+
+$display: "Big Shoulders Display", var(--font-sans);
+
+// 224 by 64: the bracket's grid (BracketTab) is built on this size.
+.match {
+  position: relative;
+  flex-shrink: 0;
+  width: 224px;
+  height: 64px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  background: var(--bg-raised);
+}
+
+.side {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding-left: var(--space-2);
+  color: var(--fg-3);
+  font-size: var(--font-size-md);
+
+  & + & {
+    border-top: 1px solid var(--border);
+  }
+
+  &.won {
+    color: var(--fg-1);
+    font-weight: 700;
+  }
+}
+
+.seed {
+  flex: 0 0 18px;
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  color: var(--fg-3);
+}
+
+.name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// The score fills the row's right end; the winner's is the accent.
+.score {
+  align-self: stretch;
+  flex: 0 0 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-surface);
+  font-family: $display;
+  font-size: 20px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+
+  .side:first-child & {
+    border-top-right-radius: calc(var(--radius-md) - 1px);
+  }
+
+  .side:nth-child(2) & {
+    border-bottom-right-radius: calc(var(--radius-md) - 1px);
+  }
+
+  .won & {
+    background: var(--brand);
+    // Dark on the accent: white on the pink is under 4.5:1.
+    color: #16040b;
+  }
+}
+
+.vod {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding-top: 2px;
+  color: var(--brand-hover);
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  text-decoration: none;
+
+  svg {
+    font-size: 0.8em;
+  }
+}

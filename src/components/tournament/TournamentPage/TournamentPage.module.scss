@@ -1,0 +1,347 @@
+@use "@/_theme" as *;
+
+// The page is its own scroll container: on a phone the layout's `main` does
+// not scroll.
+.root {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden auto;
+}
+
+.banner {
+  height: 200px;
+  background-color: var(--brand-softer);
+  background-position: center;
+  background-size: cover;
+  position: relative;
+
+  // Darkens the banner's lower edge, where the icon and name sit over it.
+  &::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 0;
+    height: 60%;
+    background: linear-gradient(to top, rgb(0 0 0 / 0.65), transparent);
+    pointer-events: none;
+  }
+
+  @include mobile {
+    height: 112px;
+  }
+}
+
+.content {
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 var(--space-6) var(--space-10);
+
+  @include mobile {
+    padding: 0 var(--space-4) var(--space-8);
+  }
+}
+
+// ------------------------------------------
+// Identity
+// ------------------------------------------
+
+.identity {
+  // Above the banner it overlaps: the banner is positioned (for its
+  // gradient), so it would otherwise paint over the icon and name.
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-4) var(--space-5);
+  margin-top: -44px;
+
+  @include mobile {
+    margin-top: -32px;
+    gap: var(--space-3);
+  }
+}
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+  width: 104px;
+  height: 104px;
+  border: 4px solid var(--bg-app);
+  border-radius: 20px;
+  background: var(--brand-soft);
+  color: var(--brand);
+  font-size: 40px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  @include mobile {
+    width: 72px;
+    height: 72px;
+    border-radius: 16px;
+    font-size: 28px;
+  }
+}
+
+.titleBlock {
+  flex: 1;
+  min-width: 260px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding-bottom: var(--space-1);
+
+  @include mobile {
+    flex-basis: 100%;
+    order: 1;
+  }
+}
+
+.titleRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+}
+
+.name {
+  margin: 0;
+  font-size: var(--display-md);
+  font-weight: 800;
+  line-height: 1.15;
+  color: var(--fg-1);
+  overflow-wrap: anywhere;
+
+  @include mobile {
+    font-size: 24px;
+  }
+}
+
+.status {
+  padding: 2px var(--space-3);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  background: var(--bg-raised);
+  color: var(--fg-2);
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  white-space: nowrap;
+
+  &.live {
+    border-color: var(--brand);
+    background: var(--brand-softer);
+    color: var(--brand-hover);
+  }
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--space-2);
+  margin: 0;
+  font-size: var(--font-size-md);
+  color: var(--fg-3);
+
+  span + span::before {
+    content: "·";
+    margin-right: var(--space-2);
+  }
+}
+
+.actions {
+  display: flex;
+  gap: var(--space-2);
+  padding-bottom: var(--space-1);
+
+  @include mobile {
+    margin-left: auto;
+  }
+}
+
+.action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 40px;
+  padding: 0 var(--space-4);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  background: var(--bg-raised);
+  color: var(--fg-1);
+  font-family: inherit;
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    border-color var(--duration-base) var(--ease-standard),
+    background-color var(--duration-base) var(--ease-standard);
+
+  svg {
+    font-size: 0.85em;
+    color: var(--fg-3);
+  }
+
+  &:hover {
+    border-color: var(--brand-outline);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--brand);
+    outline-offset: 2px;
+  }
+}
+
+// ------------------------------------------
+// Events and tabs
+// ------------------------------------------
+
+.events {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-6);
+
+  // One row that scrolls sideways: wrapped, six events would push the
+  // results off a phone's first screen.
+  @include mobile {
+    flex-wrap: nowrap;
+    margin: var(--space-4) calc(var(--space-4) * -1) 0;
+    padding: 0 var(--space-4);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+}
+
+.event {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: var(--space-2);
+  min-height: 40px;
+  padding: 0 var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--fg-2);
+  font-family: inherit;
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    border-color var(--duration-base) var(--ease-standard),
+    background-color var(--duration-base) var(--ease-standard);
+
+  &:hover {
+    border-color: var(--border-strong);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--brand);
+    outline-offset: 2px;
+  }
+
+  &.selected {
+    border-color: var(--fg-1);
+    background: var(--fg-1);
+    color: var(--bg-app);
+  }
+}
+
+.eventCount {
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.75;
+}
+
+.tabs {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-raised);
+  display: flex;
+  gap: var(--space-6);
+  margin-top: var(--space-3);
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-app);
+
+  @include mobile {
+    margin: var(--space-2) calc(var(--space-4) * -1) 0;
+    padding: 0 var(--space-4);
+    gap: var(--space-5);
+  }
+}
+
+.tab {
+  padding: var(--space-3) 2px;
+  margin-bottom: -1px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: none;
+  color: var(--fg-3);
+  font-family: inherit;
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--fg-1);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--brand);
+    outline-offset: -2px;
+  }
+
+  &.active {
+    border-bottom-color: var(--brand);
+    color: var(--fg-1);
+  }
+}
+
+.body {
+  margin-top: var(--space-6);
+
+  @include mobile {
+    margin-top: var(--space-4);
+  }
+}
+
+// ------------------------------------------
+// Loading, missing, failed
+// ------------------------------------------
+
+.state {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  padding: var(--space-10) var(--space-5);
+  color: var(--fg-3);
+  font-size: var(--font-size-md);
+  text-align: center;
+
+  p {
+    max-width: 420px;
+    margin: 0 0 var(--space-3);
+  }
+}
+
+.stateTitle {
+  margin: 0;
+  font-size: var(--title-size);
+  font-weight: 800;
+  color: var(--fg-1);
+}

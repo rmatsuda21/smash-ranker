@@ -14,6 +14,7 @@ const ThumbnailPage = lazy(() => import("@/pages/thumbnail"));
 const RecapPage = lazy(() => import("@/pages/recap"));
 const TosPage = lazy(() => import("@/pages/tos"));
 const MePage = lazy(() => import("@/pages/me"));
+const TournamentPage = lazy(() => import("@/pages/tournament"));
 const OAuthCallbackPage = lazy(() => import("@/pages/oauthCallback"));
 
 export const PageRouter = () => {
@@ -64,6 +65,13 @@ export const PageRouter = () => {
         <Suspense>
           <MePage />
         </Suspense>
+      </Route>
+      <Route path="/tournament/:id">
+        {(params) => (
+          <Suspense>
+            <TournamentPage id={params.id} />
+          </Suspense>
+        )}
       </Route>
       <Route path="/oauth/callback">
         <Suspense>

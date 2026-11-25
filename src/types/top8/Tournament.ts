@@ -12,6 +12,8 @@ export type TournamentInfo = {
   entrants: number;
   iconSrc?: string;
   url?: string;
+  // start.gg's tournament id, when the tournament was loaded from there.
+  startggId?: string;
 };
 
 export type Tournament = {

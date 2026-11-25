@@ -152,6 +152,7 @@ export const ThumbnailApp = () => {
           <TournamentIdentity
             className={styles.identity}
             href={event.url}
+            tournamentId={event.tournamentId}
             iconUrl={event.iconUrl}
             name={event.tournamentName}
             meta={[event.eventName, formattedDate].filter(Boolean).join(" · ")}

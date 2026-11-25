@@ -9,7 +9,12 @@ import { useFeatureFlag } from "@/hooks/useFeatureFlags";
 import { useEventMeta } from "@/hooks/user/useEventMeta";
 import type { UserEvent } from "@/types/user/UserEvent";
 import { formatOrdinal } from "@/utils/user/ordinal";
-import { predictLink, rankerLink, recapLink } from "@/utils/user/toolLinks";
+import {
+  predictLink,
+  rankerLink,
+  recapLink,
+  tournamentLink,
+} from "@/utils/user/toolLinks";
 
 import styles from "./EventRow.module.scss";
 
@@ -124,6 +129,16 @@ export const TournamentIcon = ({
   );
 };
 
+// The tournament's name, leading to its page opened on this event.
+export const TournamentLink = ({ event }: { event: UserEvent }) => (
+  <Link
+    className={styles.nameLink}
+    href={tournamentLink(event.tournament.id, event.id)}
+  >
+    {event.tournament.name}
+  </Link>
+);
+
 type Props = {
   event: UserEvent;
   // Buttons under the text at every width, for a list in a narrow column.
@@ -142,7 +157,9 @@ export const EventRow = ({ event, stacked, className, style }: Props) => {
     >
       <TournamentIcon event={event} />
       <div className={styles.text}>
-        <p className={styles.name}>{event.tournament.name}</p>
+        <p className={styles.name}>
+          <TournamentLink event={event} />
+        </p>
         <p className={styles.meta}>{eventMeta(event)}</p>
       </div>
       <PlacementChip event={event} className={styles.rowPlacement} />

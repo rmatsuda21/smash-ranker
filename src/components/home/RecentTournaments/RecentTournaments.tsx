@@ -9,6 +9,7 @@ import {
   EventRow,
   PlacementChip,
   TournamentIcon,
+  TournamentLink,
 } from "@/components/user/EventRow/EventRow";
 import { useEventMeta } from "@/hooks/user/useEventMeta";
 import { useUserEvents } from "@/hooks/user/useUserEvents";
@@ -157,7 +158,7 @@ export const RecentTournaments = () => {
               <TournamentIcon event={featured} size={56} />
               <div className={styles.featuredText}>
                 <h3 className={styles.featuredName}>
-                  {featured.tournament.name}
+                  <TournamentLink event={featured} />
                 </h3>
                 <p className={styles.featuredMeta}>{eventMeta(featured)}</p>
               </div>

@@ -21,6 +21,7 @@ const ResultsEventMetaQueryDoc = graphql(`
         id
       }
       tournament {
+        id
         name
         countryCode
         url(tab: "", relative: false)
@@ -47,6 +48,7 @@ type FetchResult = {
   tournamentDate: string;
   tournamentUrl: string;
   tournamentIconUrl: string;
+  tournamentId: string;
   tournamentCountry: string | undefined;
   numEntrants: number;
   videogameId: string | null;
@@ -74,6 +76,7 @@ const fetchStartgg = async (
     ? new Date(event.startAt * 1000).toISOString()
     : "";
   const tournamentUrl = event.tournament?.url || "";
+  const tournamentId = event.tournament?.id ? String(event.tournament.id) : "";
   const tournamentIconUrl =
     event.tournament?.images
       ?.find((img) => img?.type === "profile")
@@ -105,6 +108,7 @@ const fetchStartgg = async (
     tournamentDate,
     tournamentUrl,
     tournamentIconUrl,
+    tournamentId,
     tournamentCountry,
     numEntrants,
     videogameId,

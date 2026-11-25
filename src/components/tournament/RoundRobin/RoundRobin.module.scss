@@ -1,0 +1,183 @@
+@use "@/_theme" as *;
+
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.section {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.views {
+  align-self: flex-start;
+}
+
+// The table is as wide as the pool has players and as long as it has rows:
+// it scrolls both ways inside this box, with the names column and the header
+// row held in place. Sticky cells stick to their nearest scrolling box, so
+// the header can only stay put if this box, not the page, is what scrolls
+// down; it is capped a little under the screen's height for that.
+.tableScroll {
+  max-height: calc(100dvh - var(--nav-height) - 96px);
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--bg-surface);
+  scrollbar-width: thin;
+}
+
+.table {
+  width: 100%;
+  // Separate, not collapsed: a collapsed table's borders stay behind when a
+  // sticky cell moves.
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: var(--font-size-md);
+  font-variant-numeric: tabular-nums;
+
+  th,
+  td {
+    height: 40px;
+    padding: 0 var(--space-3);
+    border-bottom: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  tr > :last-child {
+    border-right: 0;
+  }
+
+  tbody tr:last-child > * {
+    border-bottom: 0;
+  }
+
+  th {
+    background: var(--bg-raised);
+    color: var(--fg-1);
+    font-weight: 700;
+
+    // Long names are cut; the full name is the cell's title.
+    span {
+      display: block;
+      max-width: 96px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  thead th {
+    font-size: var(--font-size-sm);
+    color: var(--fg-2);
+  }
+
+  thead td {
+    background: var(--bg-raised);
+  }
+
+  thead th,
+  thead td {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+  }
+
+  // The corner stays through both scrolls, over the header and the names.
+  thead td {
+    left: 0;
+    z-index: 3;
+  }
+
+  tbody th {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    text-align: left;
+
+    span {
+      max-width: 140px;
+    }
+  }
+
+  td {
+    color: var(--fg-3);
+  }
+}
+
+// Players against rounds: each cell has the opponent under the score.
+.byRound {
+  td {
+    height: 48px;
+    line-height: 1.25;
+  }
+
+  small {
+    display: block;
+    max-width: 120px;
+    margin: 0 auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    color: var(--fg-3);
+  }
+}
+
+.table .self {
+  background: var(--bg-raised);
+  color: var(--fg-4);
+}
+
+.table .win {
+  color: #6fd3a0;
+  font-weight: 800;
+}
+
+:global([data-theme="light"]) .table .win {
+  color: #14804a;
+}
+
+.table .total {
+  background: var(--bg-raised);
+  color: var(--fg-1);
+  font-weight: 700;
+}
+
+.table .rank {
+  font-weight: 800;
+}
+
+.note {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--fg-3);
+}
+
+.rounds {
+  display: flex;
+  gap: var(--space-5);
+  padding-bottom: var(--space-2);
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.round {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  // Room under each box for its VOD link.
+  gap: var(--space-5);
+}
+
+.roundName {
+  margin: 0 0 calc(var(--space-2) * -1);
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--fg-3);
+}

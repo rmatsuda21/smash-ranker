@@ -50,6 +50,7 @@ const EventStandingsQueryDoc = graphql(`
         id
       }
       tournament {
+        id
         name
         addrState
         city
@@ -554,6 +555,7 @@ const buildTournamentInfo = (
     date: eventDate,
     entrants: entrantCount,
     url: tournament?.url || "",
+    startggId: tournament?.id ? String(tournament.id) : undefined,
     iconSrc: storedImages?.get("profile"),
   };
 };

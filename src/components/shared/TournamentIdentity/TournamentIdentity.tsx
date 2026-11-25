@@ -1,9 +1,14 @@
 import cn from "classnames";
+import { Link } from "wouter";
+
+import { tournamentLink } from "@/utils/user/toolLinks";
 
 import styles from "./TournamentIdentity.module.scss";
 
 type Props = {
   href: string;
+  // start.gg's tournament id, when the tournament came from there.
+  tournamentId?: string;
   iconUrl: string;
   name: string;
   meta: string;
@@ -11,10 +16,12 @@ type Props = {
 };
 
 // Which tournament is loaded, for a toolbar: icon, name, then event and date.
-// Links to the tournament page when its URL is known. The icon is as tall as
+// Links to the site's own page for the tournament when it is a start.gg one,
+// and to the tournament's page on its platform otherwise. The icon is as tall as
 // the toolbar's controls (`--toolbar-h`).
 export const TournamentIdentity = ({
   href,
+  tournamentId,
   iconUrl,
   name,
   meta,
@@ -29,6 +36,17 @@ export const TournamentIdentity = ({
       </div>
     </>
   );
+
+  if (tournamentId) {
+    return (
+      <Link
+        className={cn(styles.root, className)}
+        href={tournamentLink(tournamentId)}
+      >
+        {content}
+      </Link>
+    );
+  }
 
   return href ? (
     <a

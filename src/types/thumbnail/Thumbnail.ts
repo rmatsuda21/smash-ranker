@@ -46,6 +46,8 @@ export type ThumbnailLook = {
 export type ThumbnailEvent = {
   slug: string;
   url: string;
+  // start.gg's tournament id; missing on events saved before it was kept.
+  tournamentId?: string;
   tournamentName: string;
   eventName: string;
   // ISO date, or "" when start.gg has none.

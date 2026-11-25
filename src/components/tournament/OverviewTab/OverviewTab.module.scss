@@ -1,0 +1,475 @@
+@use "@/_theme" as *;
+
+$display: "Big Shoulders Display", var(--font-sans);
+
+// Two columns from the `wide` breakpoint. Below it the two columns dissolve
+// into one list, so the cards can be put in the order a phone wants: the
+// player's own run first, then the results, then the tools.
+.grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+
+  @include wide {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: var(--space-6);
+  }
+}
+
+.main,
+.rail {
+  display: contents;
+
+  @include wide {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    min-width: 0;
+  }
+}
+
+.main {
+  @include wide {
+    flex: 1;
+  }
+}
+
+.rail {
+  @include wide {
+    flex: 0 0 340px;
+  }
+}
+
+.run {
+  order: 1;
+}
+.podium {
+  order: 2;
+}
+.top8 {
+  order: 3;
+}
+.tools {
+  order: 4;
+}
+.upsets {
+  order: 5;
+}
+.watch {
+  order: 6;
+}
+.venue {
+  order: 7;
+}
+
+// ------------------------------------------
+// Podium
+// ------------------------------------------
+
+.podium {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: end;
+  gap: var(--space-3);
+
+  // A phone shows the winner alone; second and third are rows of the list.
+  @media (max-width: 640px) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.pod {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+
+  // Second, first, third: the winner in the middle.
+  &:nth-child(1) {
+    order: 2;
+  }
+  &:nth-child(2) {
+    order: 1;
+  }
+  &:nth-child(3) {
+    order: 3;
+  }
+
+  &.first {
+    border-color: var(--brand);
+  }
+
+  @media (max-width: 640px) {
+    &:not(.first) {
+      display: none;
+    }
+
+    &.first {
+      flex-direction: row-reverse;
+      align-items: flex-end;
+      background: var(--brand-softer);
+    }
+  }
+}
+
+.art {
+  height: 200px;
+  background: var(--bg-raised);
+
+  .first & {
+    height: 260px;
+    background: var(--brand-softer);
+  }
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center bottom;
+  }
+
+  @media (max-width: 640px) {
+    .first & {
+      flex: 0 0 45%;
+      height: 190px;
+      background: none;
+    }
+  }
+}
+
+.podText {
+  flex: 1;
+  min-width: 0;
+  padding: var(--space-3) var(--space-4) var(--space-4);
+}
+
+.podHead {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+// A team's two pictures overlap, the first on top.
+.podAvatars {
+  display: flex;
+  flex-direction: row-reverse;
+
+  > * {
+    border: 2px solid var(--bg-surface);
+  }
+
+  > * + * {
+    margin-right: -12px;
+  }
+}
+
+.podPlace {
+  display: block;
+  font-family: $display;
+  font-size: 36px;
+  font-weight: 900;
+  line-height: 0.9;
+  color: var(--fg-2);
+
+  .first & {
+    font-size: 48px;
+    color: var(--brand-hover);
+  }
+}
+
+.podName {
+  margin: var(--space-2) 0 0;
+  font-size: var(--font-size-xl);
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--fg-1);
+  overflow-wrap: anywhere;
+
+  .first & {
+    font-size: 22px;
+  }
+}
+
+.podMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--space-2);
+  margin: var(--space-1) 0 0;
+  font-size: var(--font-size-sm);
+  color: var(--fg-3);
+
+  span + span::before {
+    content: "·";
+    margin-right: var(--space-2);
+  }
+}
+
+// ------------------------------------------
+// Rows
+// ------------------------------------------
+
+.rows,
+.toolList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 45px;
+  padding: var(--space-2) var(--space-4);
+  border-top: 1px solid var(--border);
+  font-size: var(--font-size-md);
+
+  // On the podium above at every width but a phone's.
+  &.onPodium {
+    @media (min-width: 641px) {
+      display: none;
+    }
+  }
+}
+
+.place {
+  flex: 0 0 28px;
+  font-family: $display;
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--fg-1);
+}
+
+.tag {
+  flex: 1;
+  min-width: 0;
+  font-weight: 700;
+  color: var(--fg-1);
+  overflow-wrap: anywhere;
+}
+
+.seed {
+  flex-shrink: 0;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: var(--fg-3);
+}
+
+.more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 44px;
+  border: 0;
+  border-top: 1px solid var(--border);
+  background: none;
+  color: var(--brand-hover);
+  font-family: inherit;
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--bg-raised);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--brand);
+    outline-offset: -2px;
+  }
+}
+
+.factor {
+  flex: 0 0 44px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: var(--status-warning);
+}
+
+.upsetText {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.upsetNames {
+  font-weight: 700;
+  color: var(--fg-1);
+  overflow-wrap: anywhere;
+}
+
+.upsetMeta {
+  font-size: var(--font-size-sm);
+  color: var(--fg-3);
+}
+
+.empty {
+  padding: var(--space-8) var(--space-5);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-lg);
+  color: var(--fg-3);
+  font-size: var(--font-size-md);
+  text-align: center;
+
+  h2 {
+    margin: 0 0 var(--space-2);
+    font-size: var(--font-size-lg);
+    font-weight: 800;
+    color: var(--fg-1);
+  }
+
+  p {
+    max-width: 420px;
+    margin: 0 auto;
+  }
+}
+
+// ------------------------------------------
+// Side column
+// ------------------------------------------
+
+.runStats {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-5);
+  margin: 0;
+  padding: 0 var(--space-4) var(--space-4);
+
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  dd {
+    margin: 0;
+    font-size: var(--title-size);
+    font-weight: 800;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    color: var(--fg-1);
+  }
+
+  dt {
+    order: 1;
+    font-size: var(--font-size-sm);
+    color: var(--fg-3);
+  }
+
+  .runPlace {
+    font-family: $display;
+    font-size: 52px;
+    font-weight: 900;
+    line-height: 0.85;
+  }
+}
+
+.runAction {
+  padding: 0 var(--space-4) var(--space-4);
+}
+
+.primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  border-radius: var(--radius-md);
+  background: var(--brand);
+  // Dark on the accent: white on the pink is under 4.5:1.
+  color: #16040b;
+  font-size: var(--font-size-md);
+  font-weight: 800;
+  text-decoration: none;
+  transition: background-color var(--duration-base) var(--ease-standard);
+
+  &:hover {
+    background: var(--brand-hover);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--fg-1);
+    outline-offset: 2px;
+  }
+}
+
+.tool {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 52px;
+  padding: var(--space-2) var(--space-4);
+  border-top: 1px solid var(--border);
+  color: var(--fg-1);
+  font-size: var(--font-size-md);
+  text-decoration: none;
+
+  > span {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    overflow-wrap: anywhere;
+  }
+
+  strong {
+    font-weight: 700;
+  }
+
+  small {
+    font-size: var(--font-size-sm);
+    color: var(--fg-3);
+  }
+
+  svg {
+    flex-shrink: 0;
+    color: var(--fg-3);
+  }
+
+  > svg:first-child {
+    color: var(--brand);
+  }
+}
+
+a.tool {
+  transition: background-color var(--duration-base) var(--ease-standard);
+
+  &:hover {
+    background: var(--bg-raised);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--brand);
+    outline-offset: -2px;
+  }
+}
+
+.note {
+  margin: 0;
+  padding: 0 var(--space-4) var(--space-4);
+  font-size: var(--font-size-md);
+  color: var(--fg-3);
+}
+
+.venueText {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: 0 var(--space-4) var(--space-4);
+  font-size: var(--font-size-md);
+  color: var(--fg-3);
+
+  strong {
+    color: var(--fg-1);
+  }
+}

@@ -20,6 +20,13 @@ export const recapLink = (
 export const predictLink = (eventSlug: string): string =>
   `/predict?d=${encodeInvite({ platform: "startgg", slug: eventSlug })}`;
 
+// The site's own page for a start.gg tournament, opened on one of its events
+// when the caller knows which.
+export const tournamentLink = (
+  tournamentId: string,
+  eventId?: string | null,
+): string => `/tournament/${tournamentId}${eventId ? `?event=${eventId}` : ""}`;
+
 export type ToolLink = { slug: string; entrantId: string | null };
 
 export const readToolLink = (): ToolLink | null => {

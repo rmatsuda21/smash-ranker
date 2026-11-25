@@ -2,7 +2,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import cn from "classnames";
 import { msg } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
-import { FaCircleInfo, FaLink } from "react-icons/fa6";
+import { Link } from "wouter";
+import { FaCircleInfo, FaLink, FaTrophy } from "react-icons/fa6";
 
 import { Button } from "@/components/shared/Button/Button";
 import { useFetchResult } from "@/hooks/top8/useFetchResult";
@@ -14,7 +15,11 @@ import { useTournamentStore } from "@/store/tournamentStore";
 import { PREF_KEYS } from "@/consts/prefKeys";
 import { useConfirmation } from "@/hooks/useConfirmation";
 import { detectPlatformAndSlug, slugToUrl } from "@/consts/platforms";
-import { clearToolLink, readToolLink } from "@/utils/user/toolLinks";
+import {
+  clearToolLink,
+  readToolLink,
+  tournamentLink,
+} from "@/utils/user/toolLinks";
 import { logEvent } from "@/utils/observability/log";
 
 import styles from "./TournamentLoader.module.scss";
@@ -42,6 +47,7 @@ export const TournamentLoader = ({ className }: Props) => {
   const isFetching = usePlayerStore((state) => state.fetching);
   const playerDispatch = usePlayerStore((state) => state.dispatch);
   const tournamentDispatch = useTournamentStore((state) => state.dispatch);
+  const startggId = useTournamentStore((state) => state.info.startggId);
   const designPlayerCount = useCanvasStore(
     (state) => state.design.players.length,
   );
@@ -174,6 +180,16 @@ export const TournamentLoader = ({ className }: Props) => {
           {_(msg`Load`)}
         </Button>
       </div>
+      {startggId && (
+        <Link
+          className={styles.pageLink}
+          href={tournamentLink(startggId)}
+          aria-label={_(msg`Tournament page`)}
+          title={_(msg`Tournament page`)}
+        >
+          <FaTrophy aria-hidden="true" />
+        </Link>
+      )}
 
       {loadConfirmation}
     </div>
