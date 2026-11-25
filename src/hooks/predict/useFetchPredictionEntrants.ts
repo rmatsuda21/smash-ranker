@@ -14,6 +14,7 @@ import {
   LoadError,
   reportLoadFailure,
 } from "@/utils/loadError";
+import { requestIdOf } from "@/utils/observability/requestId";
 import { logEvent } from "@/utils/observability/log";
 import { startggLoadError } from "@/utils/startgg/describeError";
 import { fetchEventEntrants } from "@/utils/startgg/fetchEventEntrants";
@@ -157,6 +158,7 @@ const fetchChallongeEntrants = async (slug: string): Promise<FetchResult> => {
       body.error || t`Challonge API error: ${res.status}`,
       failureKindForStatus(res.status),
       `challonge ${res.status}`,
+      requestIdOf(res),
     );
   }
 
@@ -192,6 +194,7 @@ const fetchTonamelEntrants = async (slug: string): Promise<FetchResult> => {
       body.error || t`Tonamel API error: ${res.status}`,
       failureKindForStatus(res.status),
       `tonamel ${res.status}`,
+      requestIdOf(res),
     );
   }
 

@@ -14,7 +14,7 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. placeholder {0}: file.name
-#: src/hooks/useCustomFonts.ts:65
+#: src/hooks/useCustomFonts.ts:66
 msgid "\"{0}\" isn't a font file this browser can read."
 msgstr "「{0}」はこのブラウザで読み込めるフォントファイルではありません。"
 
@@ -302,7 +302,7 @@ msgstr "アイコン"
 
 #: src/components/tournament/TournamentPage/TournamentPage.tsx:331
 #: src/pages/notFound.tsx:18
-#: src/pages/oauthCallback.tsx:99
+#: src/pages/oauthCallback.tsx:100
 msgid "Back to home"
 msgstr "ホームに戻る"
 
@@ -386,7 +386,7 @@ msgstr "同じ大会の参加者"
 msgid "Bricks"
 msgstr "レンガ"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:388
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:392
 msgid "Built-in"
 msgstr "標準テンプレ"
 
@@ -401,11 +401,11 @@ msgstr "いちばん大会に出た月：<0>{0}</0>（{1}大会）"
 msgid "Buy me a coffee"
 msgstr "一杯だけよ"
 
-#: src/components/predict/PredictionPreview/PredictionPreview.tsx:59
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:60
 msgid "Calculating upset odds..."
 msgstr "アップセットの確率を計算中..."
 
-#: src/components/predict/PredictionPreview/PredictionPreview.tsx:61
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:62
 msgid "Calling it for the record..."
 msgstr "予想を記録に残しています..."
 
@@ -440,8 +440,8 @@ msgid "Cards"
 msgstr "カード"
 
 #. placeholder {0}: res.status
-#: src/hooks/predict/useFetchPredictionEntrants.ts:157
-#: src/hooks/top8/useFetchChallonge.ts:53
+#: src/hooks/predict/useFetchPredictionEntrants.ts:158
+#: src/hooks/top8/useFetchChallonge.ts:54
 msgid "Challonge API error: {0}"
 msgstr "Challonge APIエラー: {0}"
 
@@ -485,7 +485,7 @@ msgstr "キャラの影"
 msgid "Check your connection and try again."
 msgstr "接続を確認して、もう一度お試しください。"
 
-#: src/components/ErrorBoundary.tsx:108
+#: src/components/ErrorBoundary.tsx:113
 msgid "Check your connection, then reload the page."
 msgstr "接続を確認して、ページを再読み込みしてください。"
 
@@ -580,8 +580,8 @@ msgstr "コンパクト"
 msgid "Competing since {sinceYear}"
 msgstr "{sinceYear}年から参戦"
 
-#: src/hooks/predict/useFetchPredictionEntrants.ts:200
-#: src/hooks/top8/useFetchTonamel.ts:201
+#: src/hooks/predict/useFetchPredictionEntrants.ts:203
+#: src/hooks/top8/useFetchTonamel.ts:203
 msgid "Competition not found"
 msgstr "大会が見つかりませんでした"
 
@@ -589,7 +589,7 @@ msgstr "大会が見つかりませんでした"
 msgid "Confirm"
 msgstr "確認"
 
-#: src/components/predict/PredictionPreview/PredictionPreview.tsx:56
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:57
 msgid "Consulting Master Hand..."
 msgstr "マスターハンドに相談中..."
 
@@ -633,11 +633,11 @@ msgstr "画像をコピー"
 msgid "Copy link"
 msgstr "リンクをコピー"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:190
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:192
 msgid "Couldn't delete the template. Try again."
 msgstr "テンプレートを削除できませんでした。もう一度お試しください。"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:213
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:216
 msgid "Couldn't load the template. Try again."
 msgstr "テンプレートを読み込めませんでした。もう一度お試しください。"
 
@@ -649,11 +649,11 @@ msgstr "大会を取得できませんでした"
 msgid "Couldn't load this event"
 msgstr "イベントを取得できませんでした"
 
-#: src/components/ErrorBoundary.tsx:101
+#: src/components/ErrorBoundary.tsx:106
 msgid "Couldn't load this page"
 msgstr "このページを読み込めませんでした"
 
-#: src/pages/oauthCallback.tsx:79
+#: src/pages/oauthCallback.tsx:80
 msgid "Couldn't log you in"
 msgstr "ログインできませんでした"
 
@@ -682,20 +682,20 @@ msgstr "start.ggから大会を取得できませんでした。少し待って�
 msgid "Couldn't reach start.gg. Check your connection and try again."
 msgstr "start.ggに接続できませんでした。接続を確認して、もう一度お試しください。"
 
-#: src/hooks/useCustomFonts.ts:132
+#: src/hooks/useCustomFonts.ts:135
 msgid "Couldn't remove the font. Try again."
 msgstr "フォントを削除できませんでした。もう一度お試しください。"
 
-#: src/hooks/useCustomFonts.ts:97
+#: src/hooks/useCustomFonts.ts:99
 msgid "Couldn't save \"{fontFamily}\". Try again."
 msgstr "「{fontFamily}」を保存できませんでした。もう一度お試しください。"
 
 #. placeholder {0}: file.name
-#: src/hooks/useAssetUpload.ts:43
+#: src/hooks/useAssetUpload.ts:44
 msgid "Couldn't save {0}. Try again."
 msgstr "{0}を保存できませんでした。もう一度お試しください。"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:261
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:265
 msgid "Couldn't save the template. Try again."
 msgstr "テンプレートを保存できませんでした。もう一度お試しください。"
 
@@ -845,7 +845,7 @@ msgstr "テンプレを削除"
 msgid "Delete template: {0}"
 msgstr "テンプレを削除: {0}"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:285
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:289
 msgid "Delete Template?"
 msgstr "テンプレを削除しますか？"
 
@@ -1036,9 +1036,13 @@ msgstr "参加者"
 msgid "entrants across every bracket you've been in"
 msgstr "これまで出た大会の参加者の合計"
 
-#: src/components/ErrorBoundary.tsx:133
+#: src/components/ErrorBoundary.tsx:138
 msgid "Erase saved designs and settings?"
 msgstr "保存したデザインと設定を消去しますか？"
+
+#: src/components/ErrorBoundary.tsx:146
+msgid "Error code"
+msgstr "エラーコード"
 
 #: src/consts/top8/textLabels.ts:20
 msgid "Event"
@@ -1068,7 +1072,7 @@ msgstr "イベント"
 msgid "Export"
 msgstr "エクスポート"
 
-#: src/hooks/top8/useFetchChallonge.ts:131
+#: src/hooks/top8/useFetchChallonge.ts:133
 msgid "Failed to fetch Challonge tournament"
 msgstr "Challongeの大会を取得できませんでした"
 
@@ -1086,11 +1090,11 @@ msgstr "選手のリザルトを取得できませんでした"
 msgid "Failed to fetch seeds"
 msgstr "シード情報を取得できませんでした"
 
-#: src/hooks/top8/useFetchTonamel.ts:238
+#: src/hooks/top8/useFetchTonamel.ts:240
 msgid "Failed to fetch Tonamel tournament"
 msgstr "Tonamelの大会を取得できませんでした"
 
-#: src/hooks/predict/useFetchPredictionEntrants.ts:322
+#: src/hooks/predict/useFetchPredictionEntrants.ts:325
 #: src/hooks/results/useFetchResultsEntrantPool.ts:235
 #: src/hooks/thumbnail/useLoadThumbnailEvent.ts:97
 msgid "Failed to fetch tournament"
@@ -1101,8 +1105,8 @@ msgstr "大会情報を取得できませんでした"
 msgid "Failed to fetch tournament data"
 msgstr "大会データを取得できませんでした"
 
-#: src/components/predict/PredictionPreview/PredictionPreview.tsx:220
-#: src/components/results/ResultsPreview/ResultsPreview.tsx:354
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:221
+#: src/components/results/ResultsPreview/ResultsPreview.tsx:355
 #: src/components/thumbnail/ThumbnailExportModal/ThumbnailExportModal.tsx:183
 #: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:226
 msgid "Failed to generate image"
@@ -1179,7 +1183,7 @@ msgstr "反転"
 msgid "Font"
 msgstr "フォント"
 
-#: src/hooks/useCustomFonts.ts:47
+#: src/hooks/useCustomFonts.ts:48
 msgid "Font \"{fontFamily}\" is already added."
 msgstr "フォント「{fontFamily}」は追加済みです。"
 
@@ -1205,7 +1209,7 @@ msgstr "選手名"
 msgid "Generate Graphic"
 msgstr "画像を作成"
 
-#: src/components/predict/PredictionPreview/PredictionPreview.tsx:260
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:261
 msgid "Generating prediction"
 msgstr "予想作成中"
 
@@ -1439,7 +1443,7 @@ msgstr "前の試合を読み込む"
 msgid "Load template: {0}"
 msgstr "テンプレを読み込む: {0}"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:277
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:281
 msgid "Load Template?"
 msgstr "テンプレを読み込みますか？"
 
@@ -1447,7 +1451,7 @@ msgstr "テンプレを読み込みますか？"
 msgid "Load Tournament?"
 msgstr "大会を読み込みますか？"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:336
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:340
 msgid "Loading a template replaces your current design."
 msgstr "テンプレを読み込むと、今のデザインは上書きされます。"
 
@@ -1487,7 +1491,7 @@ msgstr "読み込み中..."
 msgid "Location"
 msgstr "開催地"
 
-#: src/components/predict/PredictionPreview/PredictionPreview.tsx:60
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:61
 msgid "Locking in picks..."
 msgstr "予想を確定中..."
 
@@ -1508,7 +1512,7 @@ msgstr "start.ggでログインすると、これまで出た大会が一覧で�
 msgid "Log out"
 msgstr "ログアウト"
 
-#: src/pages/oauthCallback.tsx:106
+#: src/pages/oauthCallback.tsx:107
 msgid "Logging you in with start.gg..."
 msgstr "start.ggでログイン中..."
 
@@ -1649,7 +1653,7 @@ msgstr "淡色"
 msgid "My recap"
 msgstr "自分の戦績"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:364
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:368
 msgid "My Templates"
 msgstr "マイテンプレ"
 
@@ -2047,7 +2051,7 @@ msgstr "選手情報"
 msgid "PNG is lossless, quality only applies to JPEG and WebP."
 msgstr "品質が効くのはJPEGとWebPだけ。PNGは劣化しません。"
 
-#: src/components/predict/PredictionPreview/PredictionPreview.tsx:58
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:59
 msgid "Polishing trophies..."
 msgstr "トロフィーを磨いています..."
 
@@ -2143,7 +2147,7 @@ msgstr "トーナメント表を逆さまに読んでいます..."
 #~ msgid "Reading the bracket..."
 #~ msgstr "ブラケットを確認中..."
 
-#: src/components/predict/PredictionPreview/PredictionPreview.tsx:57
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:58
 msgid "Reading the tea leaves..."
 msgstr "占い中..."
 
@@ -2192,11 +2196,11 @@ msgstr "サムネを再生成"
 msgid "Regular at <0>{0}</0> ({1} times)"
 msgstr "<0>{0}</0>の常連（{1}回）"
 
-#: src/components/ErrorBoundary.tsx:122
+#: src/components/ErrorBoundary.tsx:127
 msgid "Reload page"
 msgstr "ページを再読み込み"
 
-#: src/components/ErrorBoundary.tsx:110
+#: src/components/ErrorBoundary.tsx:115
 msgid "Reload the page to try again. If it keeps happening, resetting the app's data on this device usually fixes it."
 msgstr "ページを再読み込みしてもう一度お試しください。繰り返し起こる場合は、この端末のアプリデータをリセットすると直ることがあります。"
 
@@ -2241,7 +2245,7 @@ msgstr "変更"
 msgid "Reset"
 msgstr "リセット"
 
-#: src/components/ErrorBoundary.tsx:131
+#: src/components/ErrorBoundary.tsx:136
 msgid "Reset app data"
 msgstr "アプリデータをリセット"
 
@@ -2250,7 +2254,7 @@ msgstr "アプリデータをリセット"
 msgid "Reset application state"
 msgstr "アプリ初期化"
 
-#: src/components/ErrorBoundary.tsx:135
+#: src/components/ErrorBoundary.tsx:140
 msgid "Resetting…"
 msgstr "リセット中…"
 
@@ -2302,7 +2306,7 @@ msgstr "罫線"
 msgid "Save"
 msgstr "保存"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:344
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:348
 msgid "Save Design"
 msgstr "デザインを保存"
 
@@ -2318,7 +2322,7 @@ msgstr "画像を保存"
 msgid "Save Template"
 msgstr "テンプレを保存"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:353
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:357
 msgid "Save your current design as a template to reuse it later."
 msgstr "今のデザインをテンプレにしておけば、あとで使い回せます。"
 
@@ -2406,7 +2410,7 @@ msgstr "{0}を選択"
 msgid "Select a field to insert live tournament details, such as its name or date."
 msgstr "項目を選ぶと、大会名や開催日などを自動で入れられます。"
 
-#: src/components/results/ResultsPreview/ResultsPreview.tsx:342
+#: src/components/results/ResultsPreview/ResultsPreview.tsx:343
 msgid "Select a player first."
 msgstr "まずは選手を選んでください。"
 
@@ -2466,7 +2470,7 @@ msgstr "SNSでシェア"
 msgid "Sharpening the seeds..."
 msgstr "シードを調整中..."
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:315
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:319
 msgid "Show"
 msgstr "表示"
 
@@ -2540,7 +2544,7 @@ msgstr "一部の結果を読み込めなかったため、この統計は不完
 msgid "Some tournaments didn't load."
 msgstr "一部の大会を読み込めませんでした。"
 
-#: src/components/ErrorBoundary.tsx:103
+#: src/components/ErrorBoundary.tsx:108
 msgid "Something went wrong"
 msgstr "問題が発生しました"
 
@@ -2577,7 +2581,7 @@ msgstr "標準"
 msgid "Standings"
 msgstr "順位表"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:351
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:355
 msgid "Star a template to keep it here."
 msgstr "テンプレに星を付けるとここに表示されます。"
 
@@ -2802,7 +2806,7 @@ msgstr "リザルトをテンプレに"
 #~ msgid "The start.gg login didn't go through. Nothing was changed — you can try again from the home page."
 #~ msgstr "start.ggでのログインが完了しませんでした。何も変更されていません。ホームからもう一度お試しください。"
 
-#: src/pages/oauthCallback.tsx:82
+#: src/pages/oauthCallback.tsx:83
 msgid "The start.gg login didn't go through. Nothing was changed."
 msgstr "start.ggのログインがうまくいきませんでした。何も変わっていません。"
 
@@ -2837,7 +2841,7 @@ msgstr "読み込めませんでした。"
 #~ msgid "This didn't load. Reload to try again."
 #~ msgstr "取得できませんでした。ページを再読み込みしてください。"
 
-#: src/hooks/predict/useFetchPredictionEntrants.ts:238
+#: src/hooks/predict/useFetchPredictionEntrants.ts:241
 #: src/hooks/top8/useFetchHivee.ts:143
 #: src/utils/hivee/eventData.ts:38
 #: src/utils/thumbnail/fetchHiveeSets.ts:57
@@ -2858,7 +2862,7 @@ msgid "This event has no standings yet."
 msgstr "このイベントにはまだ順位がありません。"
 
 #: src/components/top8/SocialPostComposer/TemplateSelector.tsx:35
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:286
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:290
 msgid "This template will be permanently deleted."
 msgstr "このテンプレは完全に削除されます。"
 
@@ -2922,8 +2926,8 @@ msgid "Toggle developer settings"
 msgstr "開発者設定を切り替え"
 
 #. placeholder {0}: res.status
-#: src/hooks/predict/useFetchPredictionEntrants.ts:192
-#: src/hooks/top8/useFetchTonamel.ts:67
+#: src/hooks/predict/useFetchPredictionEntrants.ts:194
+#: src/hooks/top8/useFetchTonamel.ts:68
 msgid "Tonamel API error: {0}"
 msgstr "Tonamel APIエラー: {0}"
 
@@ -3047,7 +3051,7 @@ msgstr "大会名"
 msgid "Tournament Name"
 msgstr "大会名"
 
-#: src/hooks/predict/useFetchPredictionEntrants.ts:114
+#: src/hooks/predict/useFetchPredictionEntrants.ts:115
 #: src/hooks/results/useFetchResultsEntrantPool.ts:74
 #: src/hooks/thumbnail/useLoadThumbnailEvent.ts:62
 #: src/hooks/top8/useFetchResult.ts:606
@@ -3069,7 +3073,7 @@ msgstr "大会振り返り"
 #~ msgid "Tournament results are start.gg-only for now. Paste a start.gg event URL to continue."
 #~ msgstr "リザルトは今のところstart.ggのみ対応です。start.ggのイベントURLを貼ってください。"
 
-#: src/components/results/ResultsPreview/ResultsPreview.tsx:369
+#: src/components/results/ResultsPreview/ResultsPreview.tsx:370
 msgid "Tournament results graphic"
 msgstr "大会リザルト画像"
 
@@ -3111,7 +3115,7 @@ msgstr "優勝者スポットライト"
 #: src/components/user/PlayerCardModal/PlayerCardModal.tsx:192
 #: src/components/user/UserPage/UserPage.tsx:316
 #: src/components/user/UserPage/UserPage.tsx:396
-#: src/pages/oauthCallback.tsx:95
+#: src/pages/oauthCallback.tsx:96
 msgid "Try again"
 msgstr "もう一度試す"
 
@@ -3290,7 +3294,7 @@ msgstr "X"
 msgid "X Handle"
 msgstr "X ID"
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:278
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:282
 msgid "Your current design will be overwritten!"
 msgstr "今のデザインは上書きされます！"
 

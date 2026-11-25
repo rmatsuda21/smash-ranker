@@ -26,6 +26,7 @@ export const useTemplateDB = () => {
     refresh()
       .catch((error) =>
         logWarning("saved templates failed to load", {
+          area: "storage",
           error: error instanceof Error ? error.message : String(error),
         }),
       )

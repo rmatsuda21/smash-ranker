@@ -186,6 +186,7 @@ export const reportFontFailure = (
   reportedFontFailures.add(key);
   if (typeof navigator !== "undefined" && navigator.onLine === false) return;
   logWarning("font load failed", {
+    area: "fonts",
     family,
     stage,
     error: error instanceof Error ? error.message : String(error),

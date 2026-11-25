@@ -23,6 +23,8 @@ interface State {
   // A page chunk failed to load: a stale tab or a dropped connection.
   chunkError: boolean;
   reloading: boolean;
+  // Sentry's id for the report, shown so a user can quote it.
+  eventId: string | null;
   resetStep: "idle" | "confirm" | "working";
 }
 
@@ -30,6 +32,7 @@ const INITIAL_STATE: State = {
   error: null,
   chunkError: false,
   reloading: false,
+  eventId: null,
   resetStep: "idle",
 };
 
@@ -64,10 +67,12 @@ export class ErrorBoundary extends Component<Props, State> {
       return;
     }
     console.error("[ErrorBoundary]", error, errorInfo);
-    captureException(error, {
+    const eventId = captureException(error, {
+      area: "render",
       componentStack: errorInfo.componentStack,
       boundary: this.props.variant ?? "app",
     });
+    if (eventId) this.setState({ eventId });
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -86,7 +91,7 @@ export class ErrorBoundary extends Component<Props, State> {
   };
 
   render() {
-    const { error, chunkError, reloading, resetStep } = this.state;
+    const { error, chunkError, reloading, eventId, resetStep } = this.state;
     if (!error) return this.props.children;
     if (reloading) return null;
     if (this.props.fallback) return this.props.fallback;
@@ -136,6 +141,11 @@ export class ErrorBoundary extends Component<Props, State> {
             </button>
           )}
         </div>
+        {eventId && (
+          <p className={styles.reference}>
+            <Trans>Error code</Trans>: <code>{eventId}</code>
+          </p>
+        )}
         {import.meta.env.DEV && (
           <details className={styles.details}>
             <summary>{error.message}</summary>

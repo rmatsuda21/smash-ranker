@@ -6,12 +6,20 @@ import { logWarning } from "@/utils/observability/log";
 export class LoadError extends Error {
   kind: FetchFailureKind;
   detail?: string;
+  // Set when one of our own functions answered (see requestIdOf).
+  requestId?: string;
 
-  constructor(message: string, kind: FetchFailureKind, detail?: string) {
+  constructor(
+    message: string,
+    kind: FetchFailureKind,
+    detail?: string,
+    requestId?: string,
+  ) {
     super(message);
     this.name = "LoadError";
     this.kind = kind;
     this.detail = detail;
+    this.requestId = requestId;
   }
 }
 
@@ -61,6 +69,9 @@ export const reportLoadFailure = (
       ...context,
       failure_kind: kind,
       error: failureDetail(error),
+      ...(error instanceof LoadError && error.requestId
+        ? { request_id: error.requestId }
+        : {}),
     });
   }
   return kind;

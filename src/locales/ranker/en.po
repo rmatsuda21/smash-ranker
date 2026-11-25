@@ -14,7 +14,7 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. placeholder {0}: file.name
-#: src/hooks/useCustomFonts.ts:65
+#: src/hooks/useCustomFonts.ts:66
 msgid "\"{0}\" isn't a font file this browser can read."
 msgstr ""
 
@@ -302,7 +302,7 @@ msgstr ""
 
 #: src/components/tournament/TournamentPage/TournamentPage.tsx:331
 #: src/pages/notFound.tsx:18
-#: src/pages/oauthCallback.tsx:99
+#: src/pages/oauthCallback.tsx:100
 msgid "Back to home"
 msgstr ""
 
@@ -386,7 +386,7 @@ msgstr ""
 msgid "Bricks"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:388
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:392
 msgid "Built-in"
 msgstr ""
 
@@ -401,11 +401,11 @@ msgstr ""
 msgid "Buy me a coffee"
 msgstr ""
 
-#: src/components/predict/PredictionPreview/PredictionPreview.tsx:59
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:60
 msgid "Calculating upset odds..."
 msgstr ""
 
-#: src/components/predict/PredictionPreview/PredictionPreview.tsx:61
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:62
 msgid "Calling it for the record..."
 msgstr ""
 
@@ -440,8 +440,8 @@ msgid "Cards"
 msgstr ""
 
 #. placeholder {0}: res.status
-#: src/hooks/predict/useFetchPredictionEntrants.ts:157
-#: src/hooks/top8/useFetchChallonge.ts:53
+#: src/hooks/predict/useFetchPredictionEntrants.ts:158
+#: src/hooks/top8/useFetchChallonge.ts:54
 msgid "Challonge API error: {0}"
 msgstr ""
 
@@ -485,7 +485,7 @@ msgstr ""
 msgid "Check your connection and try again."
 msgstr ""
 
-#: src/components/ErrorBoundary.tsx:108
+#: src/components/ErrorBoundary.tsx:113
 msgid "Check your connection, then reload the page."
 msgstr ""
 
@@ -580,8 +580,8 @@ msgstr ""
 msgid "Competing since {sinceYear}"
 msgstr ""
 
-#: src/hooks/predict/useFetchPredictionEntrants.ts:200
-#: src/hooks/top8/useFetchTonamel.ts:201
+#: src/hooks/predict/useFetchPredictionEntrants.ts:203
+#: src/hooks/top8/useFetchTonamel.ts:203
 msgid "Competition not found"
 msgstr ""
 
@@ -589,7 +589,7 @@ msgstr ""
 msgid "Confirm"
 msgstr ""
 
-#: src/components/predict/PredictionPreview/PredictionPreview.tsx:56
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:57
 msgid "Consulting Master Hand..."
 msgstr ""
 
@@ -633,11 +633,11 @@ msgstr ""
 msgid "Copy link"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:190
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:192
 msgid "Couldn't delete the template. Try again."
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:213
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:216
 msgid "Couldn't load the template. Try again."
 msgstr ""
 
@@ -649,11 +649,11 @@ msgstr ""
 msgid "Couldn't load this event"
 msgstr ""
 
-#: src/components/ErrorBoundary.tsx:101
+#: src/components/ErrorBoundary.tsx:106
 msgid "Couldn't load this page"
 msgstr ""
 
-#: src/pages/oauthCallback.tsx:79
+#: src/pages/oauthCallback.tsx:80
 msgid "Couldn't log you in"
 msgstr ""
 
@@ -682,20 +682,20 @@ msgstr ""
 msgid "Couldn't reach start.gg. Check your connection and try again."
 msgstr ""
 
-#: src/hooks/useCustomFonts.ts:132
+#: src/hooks/useCustomFonts.ts:135
 msgid "Couldn't remove the font. Try again."
 msgstr ""
 
-#: src/hooks/useCustomFonts.ts:97
+#: src/hooks/useCustomFonts.ts:99
 msgid "Couldn't save \"{fontFamily}\". Try again."
 msgstr ""
 
 #. placeholder {0}: file.name
-#: src/hooks/useAssetUpload.ts:43
+#: src/hooks/useAssetUpload.ts:44
 msgid "Couldn't save {0}. Try again."
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:261
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:265
 msgid "Couldn't save the template. Try again."
 msgstr ""
 
@@ -845,7 +845,7 @@ msgstr ""
 msgid "Delete template: {0}"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:285
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:289
 msgid "Delete Template?"
 msgstr ""
 
@@ -1036,8 +1036,12 @@ msgstr ""
 msgid "entrants across every bracket you've been in"
 msgstr ""
 
-#: src/components/ErrorBoundary.tsx:133
+#: src/components/ErrorBoundary.tsx:138
 msgid "Erase saved designs and settings?"
+msgstr ""
+
+#: src/components/ErrorBoundary.tsx:146
+msgid "Error code"
 msgstr ""
 
 #: src/consts/top8/textLabels.ts:20
@@ -1068,7 +1072,7 @@ msgstr ""
 msgid "Export"
 msgstr ""
 
-#: src/hooks/top8/useFetchChallonge.ts:131
+#: src/hooks/top8/useFetchChallonge.ts:133
 msgid "Failed to fetch Challonge tournament"
 msgstr ""
 
@@ -1086,11 +1090,11 @@ msgstr ""
 msgid "Failed to fetch seeds"
 msgstr ""
 
-#: src/hooks/top8/useFetchTonamel.ts:238
+#: src/hooks/top8/useFetchTonamel.ts:240
 msgid "Failed to fetch Tonamel tournament"
 msgstr ""
 
-#: src/hooks/predict/useFetchPredictionEntrants.ts:322
+#: src/hooks/predict/useFetchPredictionEntrants.ts:325
 #: src/hooks/results/useFetchResultsEntrantPool.ts:235
 #: src/hooks/thumbnail/useLoadThumbnailEvent.ts:97
 msgid "Failed to fetch tournament"
@@ -1101,8 +1105,8 @@ msgstr ""
 msgid "Failed to fetch tournament data"
 msgstr ""
 
-#: src/components/predict/PredictionPreview/PredictionPreview.tsx:220
-#: src/components/results/ResultsPreview/ResultsPreview.tsx:354
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:221
+#: src/components/results/ResultsPreview/ResultsPreview.tsx:355
 #: src/components/thumbnail/ThumbnailExportModal/ThumbnailExportModal.tsx:183
 #: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:226
 msgid "Failed to generate image"
@@ -1179,7 +1183,7 @@ msgstr ""
 msgid "Font"
 msgstr ""
 
-#: src/hooks/useCustomFonts.ts:47
+#: src/hooks/useCustomFonts.ts:48
 msgid "Font \"{fontFamily}\" is already added."
 msgstr ""
 
@@ -1205,7 +1209,7 @@ msgstr ""
 msgid "Generate Graphic"
 msgstr ""
 
-#: src/components/predict/PredictionPreview/PredictionPreview.tsx:260
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:261
 msgid "Generating prediction"
 msgstr ""
 
@@ -1439,7 +1443,7 @@ msgstr ""
 msgid "Load template: {0}"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:277
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:281
 msgid "Load Template?"
 msgstr ""
 
@@ -1447,7 +1451,7 @@ msgstr ""
 msgid "Load Tournament?"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:336
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:340
 msgid "Loading a template replaces your current design."
 msgstr ""
 
@@ -1487,7 +1491,7 @@ msgstr ""
 msgid "Location"
 msgstr ""
 
-#: src/components/predict/PredictionPreview/PredictionPreview.tsx:60
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:61
 msgid "Locking in picks..."
 msgstr ""
 
@@ -1508,7 +1512,7 @@ msgstr ""
 msgid "Log out"
 msgstr ""
 
-#: src/pages/oauthCallback.tsx:106
+#: src/pages/oauthCallback.tsx:107
 msgid "Logging you in with start.gg..."
 msgstr ""
 
@@ -1649,7 +1653,7 @@ msgstr ""
 msgid "My recap"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:364
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:368
 msgid "My Templates"
 msgstr ""
 
@@ -2047,7 +2051,7 @@ msgstr ""
 msgid "PNG is lossless, quality only applies to JPEG and WebP."
 msgstr ""
 
-#: src/components/predict/PredictionPreview/PredictionPreview.tsx:58
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:59
 msgid "Polishing trophies..."
 msgstr ""
 
@@ -2143,7 +2147,7 @@ msgstr ""
 #~ msgid "Reading the bracket..."
 #~ msgstr ""
 
-#: src/components/predict/PredictionPreview/PredictionPreview.tsx:57
+#: src/components/predict/PredictionPreview/PredictionPreview.tsx:58
 msgid "Reading the tea leaves..."
 msgstr ""
 
@@ -2192,11 +2196,11 @@ msgstr ""
 msgid "Regular at <0>{0}</0> ({1} times)"
 msgstr ""
 
-#: src/components/ErrorBoundary.tsx:122
+#: src/components/ErrorBoundary.tsx:127
 msgid "Reload page"
 msgstr ""
 
-#: src/components/ErrorBoundary.tsx:110
+#: src/components/ErrorBoundary.tsx:115
 msgid "Reload the page to try again. If it keeps happening, resetting the app's data on this device usually fixes it."
 msgstr ""
 
@@ -2241,7 +2245,7 @@ msgstr ""
 msgid "Reset"
 msgstr ""
 
-#: src/components/ErrorBoundary.tsx:131
+#: src/components/ErrorBoundary.tsx:136
 msgid "Reset app data"
 msgstr ""
 
@@ -2250,7 +2254,7 @@ msgstr ""
 msgid "Reset application state"
 msgstr ""
 
-#: src/components/ErrorBoundary.tsx:135
+#: src/components/ErrorBoundary.tsx:140
 msgid "Resetting…"
 msgstr ""
 
@@ -2302,7 +2306,7 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:344
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:348
 msgid "Save Design"
 msgstr ""
 
@@ -2318,7 +2322,7 @@ msgstr ""
 msgid "Save Template"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:353
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:357
 msgid "Save your current design as a template to reuse it later."
 msgstr ""
 
@@ -2406,7 +2410,7 @@ msgstr ""
 msgid "Select a field to insert live tournament details, such as its name or date."
 msgstr ""
 
-#: src/components/results/ResultsPreview/ResultsPreview.tsx:342
+#: src/components/results/ResultsPreview/ResultsPreview.tsx:343
 msgid "Select a player first."
 msgstr ""
 
@@ -2466,7 +2470,7 @@ msgstr ""
 msgid "Sharpening the seeds..."
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:315
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:319
 msgid "Show"
 msgstr ""
 
@@ -2540,7 +2544,7 @@ msgstr ""
 msgid "Some tournaments didn't load."
 msgstr ""
 
-#: src/components/ErrorBoundary.tsx:103
+#: src/components/ErrorBoundary.tsx:108
 msgid "Something went wrong"
 msgstr ""
 
@@ -2577,7 +2581,7 @@ msgstr ""
 msgid "Standings"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:351
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:355
 msgid "Star a template to keep it here."
 msgstr ""
 
@@ -2802,7 +2806,7 @@ msgstr ""
 #~ msgid "The start.gg login didn't go through. Nothing was changed — you can try again from the home page."
 #~ msgstr ""
 
-#: src/pages/oauthCallback.tsx:82
+#: src/pages/oauthCallback.tsx:83
 msgid "The start.gg login didn't go through. Nothing was changed."
 msgstr ""
 
@@ -2837,7 +2841,7 @@ msgstr ""
 #~ msgid "This didn't load. Reload to try again."
 #~ msgstr ""
 
-#: src/hooks/predict/useFetchPredictionEntrants.ts:238
+#: src/hooks/predict/useFetchPredictionEntrants.ts:241
 #: src/hooks/top8/useFetchHivee.ts:143
 #: src/utils/hivee/eventData.ts:38
 #: src/utils/thumbnail/fetchHiveeSets.ts:57
@@ -2858,7 +2862,7 @@ msgid "This event has no standings yet."
 msgstr ""
 
 #: src/components/top8/SocialPostComposer/TemplateSelector.tsx:35
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:286
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:290
 msgid "This template will be permanently deleted."
 msgstr ""
 
@@ -2922,8 +2926,8 @@ msgid "Toggle developer settings"
 msgstr ""
 
 #. placeholder {0}: res.status
-#: src/hooks/predict/useFetchPredictionEntrants.ts:192
-#: src/hooks/top8/useFetchTonamel.ts:67
+#: src/hooks/predict/useFetchPredictionEntrants.ts:194
+#: src/hooks/top8/useFetchTonamel.ts:68
 msgid "Tonamel API error: {0}"
 msgstr ""
 
@@ -3047,7 +3051,7 @@ msgstr ""
 msgid "Tournament Name"
 msgstr ""
 
-#: src/hooks/predict/useFetchPredictionEntrants.ts:114
+#: src/hooks/predict/useFetchPredictionEntrants.ts:115
 #: src/hooks/results/useFetchResultsEntrantPool.ts:74
 #: src/hooks/thumbnail/useLoadThumbnailEvent.ts:62
 #: src/hooks/top8/useFetchResult.ts:606
@@ -3069,7 +3073,7 @@ msgstr ""
 #~ msgid "Tournament results are start.gg-only for now. Paste a start.gg event URL to continue."
 #~ msgstr ""
 
-#: src/components/results/ResultsPreview/ResultsPreview.tsx:369
+#: src/components/results/ResultsPreview/ResultsPreview.tsx:370
 msgid "Tournament results graphic"
 msgstr ""
 
@@ -3111,7 +3115,7 @@ msgstr ""
 #: src/components/user/PlayerCardModal/PlayerCardModal.tsx:192
 #: src/components/user/UserPage/UserPage.tsx:316
 #: src/components/user/UserPage/UserPage.tsx:396
-#: src/pages/oauthCallback.tsx:95
+#: src/pages/oauthCallback.tsx:96
 msgid "Try again"
 msgstr ""
 
@@ -3290,7 +3294,7 @@ msgstr ""
 msgid "X Handle"
 msgstr ""
 
-#: src/components/top8/TemplateEditor/TemplateEditor.tsx:278
+#: src/components/top8/TemplateEditor/TemplateEditor.tsx:282
 msgid "Your current design will be overwritten!"
 msgstr ""
 

@@ -21,6 +21,7 @@ import type {
   SetListStyle,
 } from "@/types/results/SetListDisplay";
 import { logError, logEvent, logWarning } from "@/utils/observability/log";
+import { requestIdOf } from "@/utils/observability/requestId";
 
 import styles from "./ResultsPreview.module.scss";
 
@@ -261,7 +262,7 @@ export const ResultsPreview = ({ cacheRef }: Props) => {
             {
               area: "results-render",
               status: res.status,
-              request_id: res.headers.get("x-vercel-id"),
+              request_id: requestIdOf(res),
               vercel_error: res.headers.get("x-vercel-error"),
               tournament_url: tournamentUrl,
               videogame_id: videogameId,

@@ -26,6 +26,7 @@ const preloadBatch = async (urls: string[]): Promise<void> => {
       return;
     } catch (error) {
       logWarning("Error caching character stock images", {
+        area: "assets",
         error: error instanceof Error ? error.message : String(error),
       });
     }

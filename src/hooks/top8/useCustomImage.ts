@@ -96,7 +96,7 @@ const reportLoadFailure = (imageSrc: string) => {
   if (reportedFailures.has(source)) return;
   if (reportedFailures.size >= MAX_FAILURE_REPORTS) return;
   reportedFailures.add(source);
-  logWarning("canvas image failed to load", { source });
+  logWarning("canvas image failed to load", { area: "assets", source });
 };
 
 const fetchSource = (imageSrc: string): Promise<HTMLImageElement> =>

@@ -43,6 +43,7 @@ const writeLastFiredYear = (id: string, year: string) => {
     window.localStorage.setItem(`${STORAGE_KEY_PREFIX}${id}`, year);
   } catch (err) {
     logWarning("date-egg: localStorage write failed", {
+      area: "storage",
       id,
       error: err instanceof Error ? err.message : String(err),
     });

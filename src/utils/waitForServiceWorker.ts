@@ -70,6 +70,7 @@ export const registerServiceWorker = async (): Promise<void> => {
   } catch (error) {
     // Uploaded images (/idb-images/…) will not load without the worker.
     logWarning("service worker registration failed", {
+      area: "startup",
       error: error instanceof Error ? error.message : String(error),
     });
   }

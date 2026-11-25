@@ -1,6 +1,7 @@
 import * as Sentry from "@sentry/react";
 
 import { isChunkLoadError } from "@/utils/staleChunk";
+import { getClientId } from "./clientId";
 import { getAppEnvironment, scrubUrl } from "./scrubUrl";
 
 let initialized = false;
@@ -58,15 +59,56 @@ export const initSentry = () => {
     // GlobalHandlers (window.onerror / unhandledrejection), Breadcrumbs,
     // LinkedErrors, BrowserApiErrors, etc. Keep Sentry's defaults.
   });
+  // The same anonymous id PostHog knows this browser by: Sentry can count
+  // the people an issue affects, and an event leads to that person's
+  // PostHog history.
+  Sentry.setUser({ id: getClientId() });
   initialized = true;
 };
 
+// Context keys sent as tags, which Sentry can search, filter and alert on
+// ("area:export", "failure_kind:rate_limited"). Everything else stays extra
+// data, readable on the event only. Keep to keys with few distinct values,
+// plus `request_id`, which ties a failed API call to the function's log line.
+const TAG_KEYS = new Set([
+  "area",
+  "surface",
+  "export_surface",
+  "stage",
+  "failure_kind",
+  "platform",
+  "tournament_platform",
+  "boundary",
+  "status",
+  "request_id",
+]);
+
+const splitContext = (context: Record<string, unknown>) => {
+  const tags: Record<string, string> = {};
+  const extra: Record<string, unknown> = {};
+  for (const [key, value] of Object.entries(context)) {
+    const isTag =
+      TAG_KEYS.has(key) &&
+      (typeof value === "string" ||
+        typeof value === "number" ||
+        typeof value === "boolean");
+    if (isTag) tags[key] = String(value).slice(0, 200);
+    else extra[key] = value;
+  }
+  return { tags, extra };
+};
+
+// Returns Sentry's id for the event (undefined when Sentry is off), which
+// the error screen shows so a user's report can be matched to it.
 export const captureException = (
   error: unknown,
   context?: Record<string, unknown>,
-) => {
-  if (!initialized) return;
-  Sentry.captureException(error, context ? { extra: context } : undefined);
+): string | undefined => {
+  if (!initialized) return undefined;
+  return Sentry.captureException(
+    error,
+    context ? splitContext(context) : undefined,
+  );
 };
 
 export const captureMessage = (
@@ -77,7 +119,7 @@ export const captureMessage = (
   if (!initialized) return;
   Sentry.captureMessage(
     message,
-    context ? { level, extra: context } : { level },
+    context ? { level, ...splitContext(context) } : { level },
   );
 };
 

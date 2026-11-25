@@ -16,6 +16,7 @@ import {
   failureKindOf,
   LoadError,
 } from "@/utils/loadError";
+import { requestIdOf } from "@/utils/observability/requestId";
 import {
   beginTournamentLoad,
   isCurrentTournamentLoad,
@@ -53,6 +54,7 @@ const fetchChallongeTournament = async (
       body.error || t`Challonge API error: ${res.status}`,
       failureKindForStatus(res.status),
       `challonge ${res.status}`,
+      requestIdOf(res),
     );
   }
 

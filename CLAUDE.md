@@ -465,6 +465,11 @@ PostHog is initialized in `src/utils/observability/analytics.ts`:
 - **Startup** — if the app cannot start (`main.tsx`), `showStartupFailure` writes a plain HTML message into `#root`; the page is never left blank. The service worker is waited on for a few seconds at most.
 - **URLs are scrubbed** — `scrubUrl` (`src/utils/observability/scrubUrl.ts`) removes `s`, `slug`, `d`, `code` and `state` from every URL sent to PostHog and to Sentry (the event's URL and its breadcrumbs). **A new query parameter that carries a slug, a payload or a secret goes in that list.**
 - **Environment** — both tools report `getAppEnvironment()`: `VITE_VERCEL_ENV` (production / preview) on Vercel, Vite's mode elsewhere, so preview deploys do not mix with production.
+- **Tracing an error** — four links, all in `src/utils/observability/`:
+  - Every Sentry event carries the browser's anonymous id (`getClientId`, the same one PostHog uses) as its user.
+  - `logError` / `logWarning` context keys listed in `TAG_KEYS` (`sentry.ts`: `area`, `surface`, `export_surface`, `stage`, `failure_kind`, `platform`, `tournament_platform`, `boundary`, `status`, `request_id`) become searchable tags; the rest is extra data. **Give every log call an `area`**, and add a key to `TAG_KEYS` only if it has few distinct values.
+  - A failed call to one of our `api/*` functions is logged with `request_id: requestIdOf(response)` (`requestId.ts`), the id `withLogging` puts on the function's log line and Sentry event. `LoadError` and `LoginError` carry it for their callers.
+  - The error screen shows Sentry's event id as an error code a user can quote.
 - **Sentry noise** — `IGNORED_ERRORS` and `DENIED_URLS` in `sentry.ts` drop ResizeObserver chatter, cancelled shares and browser-extension scripts.
 
 The boundary aside, React 19's root-level `onUncaughtError` / `onCaughtError` / `onRecoverableError` handlers are wired via `Sentry.reactErrorHandler()` in `src/main.tsx` to catch errors that escape the boundary. `<ToastProvider>` (`src/components/Toast/`) exposes `useToast().showToast(message, { variant })` for non-modal user-visible errors — prefer it over `alert()`. `@vercel/speed-insights/react` is mounted in `src/App.tsx` for Web Vitals.

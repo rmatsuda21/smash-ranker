@@ -37,6 +37,7 @@ export const useAssetUpload = (uploadAsset: UploadAsset) => {
         });
       } catch (error) {
         logWarning("image upload failed", {
+          area: "storage",
           error: error instanceof Error ? error.message : String(error),
           size_kb: Math.round(file.size / 1024),
         });

@@ -29,6 +29,7 @@ export const useCustomFonts = () => {
       .then(setCustomFonts)
       .catch((error) =>
         logWarning("custom fonts failed to load", {
+          area: "fonts",
           error: error instanceof Error ? error.message : String(error),
         }),
       )
@@ -91,6 +92,7 @@ export const useCustomFonts = () => {
           .forEach((face) => document.fonts.delete(face));
         unregisterCustomFamily(fontFamily);
         logWarning("custom font save failed", {
+          area: "fonts",
           error: error instanceof Error ? error.message : String(error),
           size_kb: sizeKb,
         });
@@ -127,6 +129,7 @@ export const useCustomFonts = () => {
         await customFontRepository.delete(id);
       } catch (error) {
         logWarning("custom font delete failed", {
+          area: "fonts",
           error: error instanceof Error ? error.message : String(error),
         });
         showToast(t`Couldn't remove the font. Try again.`, {

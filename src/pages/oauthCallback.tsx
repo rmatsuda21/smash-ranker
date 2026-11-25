@@ -61,6 +61,7 @@ const OAuthCallbackPage = () => {
             area: "auth",
             reason,
             error: err instanceof Error ? err.message : String(err),
+            request_id: err instanceof LoginError ? err.requestId : undefined,
           });
         }
         logEvent("user_login_fail", { reason });

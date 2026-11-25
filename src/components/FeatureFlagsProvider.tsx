@@ -8,6 +8,7 @@ import {
 } from "@/hooks/useFeatureFlags";
 import { PREF_KEYS } from "@/consts/prefKeys";
 import { logWarning } from "@/utils/observability/log";
+import { requestIdOf } from "@/utils/observability/requestId";
 import { getPref, setPref } from "@/utils/prefs";
 
 const FLAGS_ENDPOINT = "/api/flags";
@@ -64,6 +65,7 @@ export const FeatureFlagsProvider = ({ children }: { children: ReactNode }) => {
     const timeoutId = window.setTimeout(() => {
       if (settled) return;
       logWarning("feature flags fetch timed out", {
+        area: "flags",
         timeoutMs: FLAGS_FETCH_TIMEOUT_MS,
       });
       finalize();
@@ -76,7 +78,9 @@ export const FeatureFlagsProvider = ({ children }: { children: ReactNode }) => {
       .then(async (r) => {
         if (!r.ok) {
           logWarning("feature flags endpoint returned non-OK", {
+            area: "flags",
             status: r.status,
+            request_id: requestIdOf(r),
           });
           return null;
         }
@@ -98,6 +102,7 @@ export const FeatureFlagsProvider = ({ children }: { children: ReactNode }) => {
       .catch((error) => {
         if (unmounted || settled) return;
         logWarning("feature flags endpoint unreachable", {
+          area: "flags",
           error: error instanceof Error ? error.message : String(error),
         });
         finalize();

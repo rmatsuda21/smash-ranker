@@ -1,5 +1,5 @@
 import { useAuthStore } from "@/store/authStore";
-import { requestLogout, requestRefresh } from "@/utils/auth/oauth";
+import { LoginError, requestLogout, requestRefresh } from "@/utils/auth/oauth";
 import { logWarning } from "@/utils/observability/log";
 
 // Refresh this long before the access token runs out (it lasts 7 days).
@@ -43,6 +43,7 @@ export const refreshSession = ({
         logWarning("session refresh failed", {
           area: "auth",
           error: err instanceof Error ? err.message : String(err),
+          request_id: err instanceof LoginError ? err.requestId : undefined,
         });
       }
       if (force) {

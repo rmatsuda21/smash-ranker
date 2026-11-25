@@ -155,7 +155,7 @@ const performUpgrade = (
 const validateDatabase = (db: IDBPDatabase<Top8DB>): boolean => {
   for (const storeName of EXPECTED_STORES) {
     if (!db.objectStoreNames.contains(storeName)) {
-      logWarning(`Missing object store: ${storeName}`, { storeName });
+      logWarning("Missing object store", { area: "storage", storeName });
       return false;
     }
   }
@@ -163,12 +163,15 @@ const validateDatabase = (db: IDBPDatabase<Top8DB>): boolean => {
 };
 
 const deleteAndRecreateDatabase = async (): Promise<IDBPDatabase<Top8DB>> => {
-  logWarning("Database is corrupted. Deleting and recreating...");
+  logWarning("Database is corrupted. Deleting and recreating...", {
+    area: "storage",
+  });
 
   await deleteDB(DB_NAME, {
     blocked() {
       logWarning(
         "Database deletion blocked. Please close other tabs using this app.",
+        { area: "storage" },
       );
     },
   });
@@ -189,13 +192,16 @@ const openDatabase = async (): Promise<IDBPDatabase<Top8DB>> => {
       blocked() {
         logWarning(
           "Database upgrade blocked. Please close other tabs using this app.",
+          { area: "storage" },
         );
         raiseDbNotice("blocked");
       },
       blocking(_currentVersion, _blockedVersion, event) {
         // A newer tab is waiting to upgrade. Let go, or it waits for as
         // long as this tab stays open; this tab works again after a reload.
-        logWarning("This connection is blocking a database upgrade.");
+        logWarning("This connection is blocking a database upgrade.", {
+          area: "storage",
+        });
         (event.target as IDBDatabase | null)?.close();
         raiseDbNotice("outdated");
       },

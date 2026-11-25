@@ -27,6 +27,7 @@ const report = (
   if (reported.has(kind)) return;
   reported.add(kind);
   logWarning(`localStorage ${kind}`, {
+    area: "storage",
     op,
     key,
     ...(size !== undefined && { sizeKb: Math.round(size / 1024) }),

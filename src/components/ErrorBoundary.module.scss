@@ -61,6 +61,17 @@
   }
 }
 
+// Selectable, so it can be copied into a bug report.
+.reference {
+  color: var(--fg-4);
+  font-size: var(--font-size-sm);
+  user-select: all;
+
+  code {
+    font-family: ui-monospace, Menlo, monospace;
+  }
+}
+
 .details {
   max-width: min(720px, 100%);
   color: var(--fg-3);

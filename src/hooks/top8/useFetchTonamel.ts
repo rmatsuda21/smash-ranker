@@ -18,6 +18,7 @@ import {
   failureKindOf,
   LoadError,
 } from "@/utils/loadError";
+import { requestIdOf } from "@/utils/observability/requestId";
 import {
   beginTournamentLoad,
   isCurrentTournamentLoad,
@@ -67,6 +68,7 @@ const fetchTonamelCompetition = async (
       body.error || t`Tonamel API error: ${res.status}`,
       failureKindForStatus(res.status),
       `tonamel ${res.status}`,
+      requestIdOf(res),
     );
   }
 

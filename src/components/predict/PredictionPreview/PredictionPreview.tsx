@@ -16,6 +16,7 @@ import { usePredictionStore } from "@/store/predictionStore";
 import { ExportBar } from "@/components/predict/ExportBar/ExportBar";
 import type { PredictionPalette } from "@/types/predict/PredictionPalette";
 import { logError, logEvent, logWarning } from "@/utils/observability/log";
+import { requestIdOf } from "@/utils/observability/requestId";
 
 import styles from "./PredictionPreview.module.scss";
 
@@ -144,7 +145,7 @@ export const PredictionPreview = ({ cacheRef }: Props) => {
             {
               area: "predict-render",
               status: res.status,
-              request_id: res.headers.get("x-vercel-id"),
+              request_id: requestIdOf(res),
               vercel_error: res.headers.get("x-vercel-error"),
             },
           );

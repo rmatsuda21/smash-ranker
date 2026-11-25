@@ -257,6 +257,7 @@ const RenderedPreview = (props: Props) => {
     } catch (error) {
       // Where a canvas tainted by an image without CORS headers shows up.
       logWarning("template preview capture failed", {
+        area: "export",
         template_id: template.id,
         error: error instanceof Error ? error.message : String(error),
       });

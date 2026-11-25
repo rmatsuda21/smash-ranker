@@ -1,3 +1,5 @@
+import { requestIdOf } from "@/utils/observability/requestId";
+
 // start.gg OAuth, browser side.
 // Docs: https://developer.start.gg/docs/oauth/oauth-overview
 //
@@ -43,11 +45,18 @@ export type LoginFailureReason =
 
 export class LoginError extends Error {
   reason: LoginFailureReason;
+  // Set when /api/auth answered (see requestIdOf).
+  requestId?: string;
 
-  constructor(message: string, reason: LoginFailureReason = "unknown") {
+  constructor(
+    message: string,
+    reason: LoginFailureReason = "unknown",
+    requestId?: string,
+  ) {
     super(message);
     this.name = "LoginError";
     this.reason = reason;
+    this.requestId = requestId;
   }
 }
 
@@ -147,6 +156,7 @@ export const completeLogin = async (
     throw new LoginError(
       `Could not complete login (${response.status})`,
       "exchange_failed",
+      requestIdOf(response),
     );
   }
   return { tokens: await readTokens(response), returnTo: pending.returnTo };
@@ -162,6 +172,7 @@ export const requestRefresh = async (): Promise<SessionTokens | null> => {
     throw new LoginError(
       `Could not refresh session (${response.status})`,
       "refresh_failed",
+      requestIdOf(response),
     );
   }
   return readTokens(response);

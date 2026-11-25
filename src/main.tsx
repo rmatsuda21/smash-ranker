@@ -116,7 +116,7 @@ const showStartupFailure = () => {
     );
   } catch (error) {
     if (isChunkLoadError(error) && reloadForStaleChunk()) return;
-    logError(error, { stage: "bootstrap" });
+    logError(error, { area: "startup", stage: "bootstrap" });
     showStartupFailure();
   }
 })();

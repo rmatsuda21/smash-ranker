@@ -18,6 +18,7 @@ export const useAssetDB = (repository: Store<DBAsset> = assetRepository) => {
     refresh()
       .catch((error) =>
         logWarning("image library failed to load", {
+          area: "storage",
           error: error instanceof Error ? error.message : String(error),
         }),
       )

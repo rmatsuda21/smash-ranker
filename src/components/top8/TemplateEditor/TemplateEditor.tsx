@@ -101,6 +101,7 @@ export const TemplateEditor = ({ className }: Props) => {
 
     fetchTemplates().catch((error) =>
       logWarning("saved templates failed to load", {
+        area: "storage",
         error: error instanceof Error ? error.message : String(error),
       }),
     );
@@ -185,6 +186,7 @@ export const TemplateEditor = ({ className }: Props) => {
       await deleteTemplate(id);
     } catch (error) {
       logWarning("template delete failed", {
+        area: "storage",
         error: error instanceof Error ? error.message : String(error),
       });
       showToast(_(msg`Couldn't delete the template. Try again.`), {
@@ -208,6 +210,7 @@ export const TemplateEditor = ({ className }: Props) => {
     } else {
       template = await getTemplateWithId(id).catch((error) => {
         logWarning("saved template failed to load", {
+          area: "storage",
           error: error instanceof Error ? error.message : String(error),
         });
         showToast(_(msg`Couldn't load the template. Try again.`), {
@@ -256,6 +259,7 @@ export const TemplateEditor = ({ className }: Props) => {
     } catch (error) {
       // The modal stays open with what was typed, to try again.
       logWarning("template save failed", {
+        area: "storage",
         error: error instanceof Error ? error.message : String(error),
       });
       showToast(_(msg`Couldn't save the template. Try again.`), {
