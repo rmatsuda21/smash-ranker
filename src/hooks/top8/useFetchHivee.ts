@@ -3,7 +3,6 @@ import { t } from "@lingui/core/macro";
 
 import { useToast } from "@/components/Toast";
 import { slugToUrl } from "@/consts/platforms";
-import { assetRepository } from "@/db/repository";
 import { usePlayerStore } from "@/store/playerStore";
 import { useTournamentStore } from "@/store/tournamentStore";
 import type {
@@ -37,31 +36,34 @@ import {
   isCurrentTournamentLoad,
 } from "@/utils/top8/loadGuard";
 import {
+  saveTournamentImage,
+  tournamentImageName,
+} from "@/utils/top8/tournamentImages";
+import {
   getPlacements,
   padPlayersWithBlanks,
 } from "@/utils/top8/samplePlayers";
 import { EMPTY_CHARACTER_ID } from "@/consts/top8/characters";
 
-const IDB_IMAGES_BASE_URL = "/idb-images/";
-
 // Hivee's images allow any origin, so the icon is fetched as it is and kept
 // in IndexedDB like the other platforms' icons.
-const storeIcon = async (imageUrl: string): Promise<string | undefined> => {
+const storeIcon = async (
+  imageUrl: string,
+  name: string,
+): Promise<string | undefined> => {
   try {
-    const response = await fetch(imageUrl);
-    if (!response.ok) return undefined;
-
-    const data = await response.blob();
-    const id = crypto.randomUUID();
-    const src = `${IDB_IMAGES_BASE_URL}${id}`;
-    await assetRepository.put({
-      id,
-      src,
-      fileName: `hivee-icon-${id}`,
-      data,
-      date: new Date(),
+    return await saveTournamentImage({
+      platform: "hivee",
+      key: imageUrl,
+      name,
+      load: async () => {
+        const response = await fetch(imageUrl);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch image: ${response.status}`);
+        }
+        return response.blob();
+      },
     });
-    return src;
   } catch (error) {
     logWarning("hivee image fetch failed", {
       area: "hivee-image-store",
@@ -145,7 +147,12 @@ export const useFetchHivee = () => {
         );
       }
 
+      // A community's icon is shared by all of its events, so it is saved
+      // once under the community's name; a cover belongs to the event.
       const iconUrl = event.community.icon_url ?? event.cover_image_url;
+      const iconName = event.community.icon_url
+        ? tournamentImageName(event.community.name, "profile")
+        : tournamentImageName(event.title, "banner");
       const [standings, matches, iconSrc] = await Promise.all([
         fetchHiveeStandings(program.id),
         // Characters are a bonus: the graphic loads without them.
@@ -158,7 +165,7 @@ export const useFetchHivee = () => {
           });
           return [];
         }),
-        iconUrl ? storeIcon(iconUrl) : undefined,
+        iconUrl ? storeIcon(iconUrl, iconName) : undefined,
       ]);
 
       if (standings.rows.length === 0) {

@@ -3,7 +3,6 @@ import { PlayerInfo } from "@/types/top8/Player";
 import { TournamentInfo } from "@/types/top8/Tournament";
 import { usePlayerStore } from "@/store/playerStore";
 import { useTournamentStore } from "@/store/tournamentStore";
-import { assetRepository } from "@/db/repository";
 import {
   assignPlacementsToPlayers,
   padPlayersWithBlanks,
@@ -23,7 +22,10 @@ import {
   beginTournamentLoad,
   isCurrentTournamentLoad,
 } from "@/utils/top8/loadGuard";
-const IDB_IMAGES_BASE_URL = "/idb-images/";
+import {
+  saveTournamentImage,
+  tournamentImageName,
+} from "@/utils/top8/tournamentImages";
 
 interface TonamelPlacement {
   place: number;
@@ -135,25 +137,22 @@ const parseParticipants = (competition: TonamelCompetition): PlayerInfo[] => {
 /** Fetch a Tonamel image via our proxy and store in IndexedDB to avoid CORS issues. */
 const storeTonamelImage = async (
   imageUrl: string,
+  competitionName: string,
 ): Promise<string | undefined> => {
   try {
-    const proxyUrl = `/api/tonamel-image?url=${encodeURIComponent(imageUrl)}`;
-    const response = await fetch(proxyUrl);
-    if (!response.ok) return undefined;
-
-    const data = await response.blob();
-    const id = crypto.randomUUID();
-    const src = `${IDB_IMAGES_BASE_URL}${id}`;
-
-    await assetRepository.put({
-      id,
-      src,
-      fileName: `tonamel-icon-${id}`,
-      data,
-      date: new Date(),
+    return await saveTournamentImage({
+      platform: "tonamel",
+      key: imageUrl,
+      name: tournamentImageName(competitionName, "profile"),
+      load: async () => {
+        const proxyUrl = `/api/tonamel-image?url=${encodeURIComponent(imageUrl)}`;
+        const response = await fetch(proxyUrl);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch image: ${response.status}`);
+        }
+        return response.blob();
+      },
     });
-
-    return src;
   } catch (error) {
     logWarning("tonamel image fetch failed", {
       area: "tonamel-image-store",
@@ -170,7 +169,7 @@ const parseTournamentInfo = async (
   slug: string,
 ): Promise<TournamentInfo> => {
   const iconSrc = competition.imageUrl
-    ? await storeTonamelImage(competition.imageUrl)
+    ? await storeTonamelImage(competition.imageUrl, competition.name)
     : undefined;
 
   return {

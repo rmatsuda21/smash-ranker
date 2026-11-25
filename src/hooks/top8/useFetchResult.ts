@@ -9,7 +9,6 @@ import { CharacerData, PlayerInfo, TeammateInfo } from "@/types/top8/Player";
 import { TournamentInfo } from "@/types/top8/Tournament";
 import { usePlayerStore } from "@/store/playerStore";
 import { useTournamentStore } from "@/store/tournamentStore";
-import { assetRepository } from "@/db/repository";
 import {
   assignPlacementsToPlayers,
   padPlayersWithBlanks,
@@ -17,6 +16,10 @@ import {
 import { getMultiGroupError } from "@/consts/errors";
 import { EMPTY_CHARACTER_ID } from "@/consts/top8/characters";
 import { isKnownCharacter } from "@/utils/top8/characterCatalog";
+import {
+  saveTournamentImage,
+  tournamentImageName,
+} from "@/utils/top8/tournamentImages";
 import { getGameForStartggVideogame } from "@/utils/games";
 import { useToast } from "@/components/Toast";
 import { logError, logEvent, logWarning } from "@/utils/observability/log";
@@ -29,7 +32,6 @@ import {
   beginTournamentLoad,
   isCurrentTournamentLoad,
 } from "@/utils/top8/loadGuard";
-const IDB_IMAGES_BASE_URL = "/idb-images/";
 
 interface TournamentImage {
   url: string;
@@ -156,12 +158,6 @@ const PlayerSetsQueryDoc = graphql(`
   }
 `);
 
-interface FetchedImage {
-  type: string;
-  id: string;
-  data: Blob;
-}
-
 const upgradeToHttps = (url: string): string => {
   if (url.startsWith("http://")) {
     return url.replace("http://", "https://");
@@ -169,62 +165,46 @@ const upgradeToHttps = (url: string): string => {
   return url;
 };
 
-const fetchImage = async (image: TournamentImage): Promise<FetchedImage> => {
-  const secureUrl = upgradeToHttps(image.url);
-  const response = await fetch(secureUrl);
+const fetchImage = async (image: TournamentImage): Promise<Blob> => {
+  const response = await fetch(upgradeToHttps(image.url));
 
   if (!response.ok) {
     throw new Error(`Failed to fetch image: ${response.statusText}`);
   }
 
-  const data = await response.blob();
-  return { type: image.type, id: image.id, data };
-};
-
-const storeImage = async (fetchedImage: FetchedImage): Promise<string> => {
-  const id = crypto.randomUUID();
-  const src = `${IDB_IMAGES_BASE_URL}${id}`;
-  const fileName = `tournament-${fetchedImage.type}-${fetchedImage.id}`;
-
-  await assetRepository.put({
-    id,
-    src,
-    fileName,
-    data: fetchedImage.data,
-    date: new Date(),
-  });
-
-  return src;
+  return response.blob();
 };
 
 const storeTournamentImages = async (
   images: TournamentImage[],
+  tournamentName: string,
 ): Promise<StoredImagesMap> => {
-  const fetchResults = await Promise.allSettled(images.map(fetchImage));
+  const results = await Promise.allSettled(
+    images.map((image) =>
+      saveTournamentImage({
+        platform: "startgg",
+        key: image.id,
+        name: tournamentImageName(tournamentName, image.type),
+        load: () => fetchImage(image),
+      }),
+    ),
+  );
 
   const storedImages: StoredImagesMap = new Map();
-  for (const result of fetchResults) {
+  results.forEach((result, index) => {
     if (result.status === "fulfilled") {
-      try {
-        const src = await storeImage(result.value);
-        storedImages.set(result.value.type, src);
-      } catch (error) {
-        logWarning("tournament image store failed", {
-          area: "tournament-image-store",
-          error: error instanceof Error ? error.message : String(error),
-        });
-      }
+      storedImages.set(images[index].type, result.value);
     } else {
       // The icon is a bonus: the graphic loads without it.
-      logWarning("tournament image fetch failed", {
-        area: "tournament-image-fetch",
+      logWarning("tournament image save failed", {
+        area: "tournament-image-store",
         error:
           result.reason instanceof Error
             ? result.reason.message
             : String(result.reason),
       });
     }
-  }
+  });
 
   return storedImages;
 };
@@ -661,7 +641,9 @@ export const useFetchResult = () => {
 
     try {
       const [storedImages] = await Promise.all([
-        validImages.length > 0 ? storeTournamentImages(validImages) : undefined,
+        validImages.length > 0
+          ? storeTournamentImages(validImages, event.tournament?.name ?? "")
+          : undefined,
         addCharactersToPlayers(client, slug, visiblePlayers, memberIds),
       ]);
       if (!isCurrentTournamentLoad(loadId)) return;
