@@ -8,13 +8,16 @@ import {
 } from "@/consts/thumbnail/thumbnail";
 import { useThumbnailStore } from "@/store/thumbnailStore";
 import { logEvent, logWarning } from "@/utils/observability/log";
+import type { ThumbnailSet } from "@/types/thumbnail/Thumbnail";
 import {
   fetchThumbnailEventMeta,
   fetchThumbnailSetPages,
+  type ThumbnailEventMeta,
 } from "@/utils/thumbnail/fetchEventSets";
+import { fetchHiveeThumbnailEvent } from "@/utils/thumbnail/fetchHiveeSets";
 
-// Loads a start.gg event's sets into the thumbnail maker: the newest pages
-// first, more on request.
+// Loads an event's sets into the thumbnail maker. start.gg: the newest pages
+// first, more on request. Hivee: every finished match at once.
 export const useLoadThumbnailEvent = () => {
   const [fetching, setFetching] = useState(false);
   const [fetchingMore, setFetchingMore] = useState(false);
@@ -25,9 +28,9 @@ export const useLoadThumbnailEvent = () => {
   const loadEvent = async (url: string) => {
     const detected = detectPlatformAndSlug(url);
     if (!detected) return;
-    if (detected.platform !== "startgg") {
+    if (detected.platform !== "startgg" && detected.platform !== "hivee") {
       setError(
-        t`Thumbnails load matches from start.gg only for now. You can still fill in the match by hand.`,
+        t`Thumbnails load matches from start.gg and Hivee only for now. You can still fill in the match by hand.`,
       );
       return;
     }
@@ -41,15 +44,28 @@ export const useLoadThumbnailEvent = () => {
     });
 
     try {
-      const [meta, firstPages] = await Promise.all([
-        fetchThumbnailEventMeta(detected.slug),
-        fetchThumbnailSetPages(detected.slug, 1, SET_PAGES_PER_LOAD),
-      ]);
+      const isHivee = detected.platform === "hivee";
+      let meta: ThumbnailEventMeta | null;
+      let firstPages: { sets: ThumbnailSet[]; total: number };
+      if (isHivee) {
+        const loaded = await fetchHiveeThumbnailEvent(detected.slug);
+        meta = loaded.meta;
+        firstPages = { sets: loaded.sets, total: loaded.sets.length };
+      } else {
+        [meta, firstPages] = await Promise.all([
+          fetchThumbnailEventMeta(detected.slug),
+          fetchThumbnailSetPages(detected.slug, 1, SET_PAGES_PER_LOAD),
+        ]);
+      }
       if (request !== requestRef.current) return;
       if (!meta) throw new Error(t`Tournament not found`);
       if (firstPages.sets.length === 0) {
         throw new Error(t`This event has no sets with players yet.`);
       }
+      // Hivee's matches all came in one go: count them as read.
+      const loadedPages = isHivee
+        ? Math.ceil(firstPages.total / SETS_PER_PAGE)
+        : SET_PAGES_PER_LOAD;
 
       useThumbnailStore.getState().loadEvent({
         event: {
@@ -61,7 +77,7 @@ export const useLoadThumbnailEvent = () => {
           date: meta.date,
           iconUrl: meta.iconUrl,
           totalSets: firstPages.total,
-          loadedPages: SET_PAGES_PER_LOAD,
+          loadedPages,
         },
         sets: firstPages.sets,
         game: meta.game,

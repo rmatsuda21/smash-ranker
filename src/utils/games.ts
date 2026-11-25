@@ -15,6 +15,16 @@ export const getGameForStartggVideogame = (
   );
 };
 
+// The game of a Hivee program, from its `content` code.
+export const getGameForHiveeContent = (
+  content: string | null | undefined,
+): GameDefinition | undefined => {
+  if (!content) return undefined;
+  return GAME_IDS.map((game) => GAMES[game]).find(
+    (game) => game.hiveeContent === content,
+  );
+};
+
 // The game behind a free-text name ("Super Smash Bros. Melee",
 // "大乱闘スマッシュブラザーズ SPECIAL"), for platforms without game ids.
 export const getGameForName = (

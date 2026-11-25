@@ -1,3 +1,4 @@
+import { MISSING_SEED_FALLBACK } from "@/utils/results/parseStartggResults";
 import { useMemo, useState } from "react";
 import { Trans } from "@lingui/react/macro";
 import { msg } from "@lingui/core/macro";
@@ -58,7 +59,9 @@ export const EntrantPicker = ({ onSelect }: Props) => {
               disabled={fetchingResults}
               onClick={() => onSelect(entrant)}
             >
-              <span className={styles.seed}>#{entrant.seed}</span>
+              <span className={styles.seed}>
+                {entrant.seed < MISSING_SEED_FALLBACK && `#${entrant.seed}`}
+              </span>
               {entrant.country && (
                 <img
                   className={styles.flag}

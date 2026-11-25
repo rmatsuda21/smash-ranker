@@ -2,7 +2,7 @@
 // Returns a normalized minimum-viable record so the OG renderer and middleware
 // don't need to know each platform's wire format.
 
-export type Platform = "startgg" | "challonge" | "tonamel";
+export type Platform = "startgg" | "challonge" | "tonamel" | "hivee";
 
 export type TournamentMeta = {
   name: string;
@@ -193,6 +193,53 @@ const fetchTonamel = async (slug: string): Promise<TournamentMeta | null> => {
   };
 };
 
+// --- Hivee ---
+
+const HIVEE_API = "https://hivee.jp/api/v1";
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+// The slug is "<event id or short URL name>[/<program id>]"; a short URL
+// name has to be turned into the event's id first.
+const resolveHiveeEventId = async (slug: string): Promise<string | null> => {
+  const eventKey = slug.split("/")[0];
+  if (UUID.test(eventKey)) return eventKey;
+
+  const pageUrl = `https://hivee.jp/events/${eventKey}`;
+  const res = await fetchWithTimeout(
+    `${HIVEE_API}/resolve?url=${encodeURIComponent(pageUrl)}`,
+  );
+  if (!res.ok) return null;
+  const json = (await res.json()) as {
+    data?: { type?: string; event_id?: string };
+  };
+  return json.data?.type === "event" ? (json.data.event_id ?? null) : null;
+};
+
+const fetchHivee = async (slug: string): Promise<TournamentMeta | null> => {
+  const eventId = await resolveHiveeEventId(slug);
+  if (!eventId) return null;
+
+  const res = await fetchWithTimeout(`${HIVEE_API}/events/${eventId}`);
+  if (!res.ok) return null;
+
+  const json = (await res.json()) as {
+    data?: {
+      title?: string;
+      starts_at?: string | null;
+      cover_image_url?: string | null;
+      community?: { icon_url?: string | null } | null;
+    };
+  };
+  const event = json.data;
+  if (!event) return null;
+
+  return {
+    name: event.title ?? "",
+    iconUrl: event.community?.icon_url ?? event.cover_image_url ?? null,
+    startAt: event.starts_at ?? null,
+  };
+};
+
 // --- Dispatch ---
 
 export const fetchTournamentMeta = async (
@@ -207,6 +254,8 @@ export const fetchTournamentMeta = async (
         return await fetchChallonge(slug);
       case "tonamel":
         return await fetchTonamel(slug);
+      case "hivee":
+        return await fetchHivee(slug);
     }
   } catch {
     return null;
@@ -220,6 +269,7 @@ const PLATFORM_FROM_CHAR: Record<string, Platform> = {
   s: "startgg",
   c: "challonge",
   t: "tonamel",
+  h: "hivee",
 };
 
 const base64urlDecode = (code: string): string | null => {

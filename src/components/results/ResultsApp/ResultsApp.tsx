@@ -31,7 +31,7 @@ import { clearToolLink, readToolLink } from "@/utils/user/toolLinks";
 import styles from "./ResultsApp.module.scss";
 
 const POOL_TAGLINES: MessageDescriptor[] = [
-  msg`Asking start.gg very nicely...`,
+  msg`Asking very nicely...`,
   msg`Finding everyone who showed up...`,
   msg`Checking who actually made it past pools...`,
   msg`Reading the bracket upside down...`,
@@ -190,7 +190,7 @@ export const ResultsApp = () => {
           </h2>
           <p className={styles.emptyDescription}>
             <Trans>
-              Paste a start.gg event URL, pick a player, and generate a
+              Paste a start.gg or Hivee event URL, pick a player, and generate a
               shareable recap of their run.
             </Trans>
           </p>
@@ -215,7 +215,7 @@ export const ResultsApp = () => {
           )}
           <div className={styles.supportedPlatforms}>
             <span>
-              <Trans>start.gg only</Trans>
+              <Trans>start.gg and Hivee</Trans>
             </span>
           </div>
         </div>

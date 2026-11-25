@@ -64,9 +64,15 @@ type ResultsAction =
     }
   | {
       // A player picked before the pool is in (a recap link): their results
-      // need only the event's game, so they load alongside the entrants.
+      // need only the event's game, so they load alongside the entrants. The
+      // URL comes with it because it tells the results fetch which platform
+      // the player is on.
       type: "PRESELECT_ENTRANT";
-      payload: { entrantId: string; videogameId: string | null };
+      payload: {
+        entrantId: string;
+        videogameId: string | null;
+        tournamentUrl: string;
+      };
     }
   | { type: "FETCH_POOL_FAIL"; payload: string }
   | { type: "SET_COLOR_PALETTE"; payload: PredictionPalette }
@@ -151,6 +157,7 @@ const resultsReducer = (
     case "PRESELECT_ENTRANT":
       return {
         videogameId: action.payload.videogameId,
+        tournamentUrl: action.payload.tournamentUrl,
         selectedEntrantId: action.payload.entrantId,
         playerResults: null,
         fallbackCharacters: {},

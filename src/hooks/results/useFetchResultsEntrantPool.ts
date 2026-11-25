@@ -10,6 +10,8 @@ import { extractTournamentPalette } from "@/utils/predict/extractTournamentPalet
 import { logEvent, logWarning } from "@/utils/observability/log";
 import { MISSING_SEED_FALLBACK } from "@/utils/results/parseStartggResults";
 import { fetchEventEntrants } from "@/utils/startgg/fetchEventEntrants";
+import { loadHiveeEventData } from "@/utils/hivee/eventData";
+import { buildHiveeEntrantPool } from "@/utils/hivee/results";
 
 const ResultsEventMetaQueryDoc = graphql(`
   query ResultsEventMeta($slug: String!) {
@@ -116,6 +118,32 @@ const fetchStartgg = async (
   };
 };
 
+// A Hivee event: everyone in the standings of the bracket the link leads to.
+// There is no start.gg game id, which also keeps start.gg's character
+// lookups off: Hivee's fallbacks come from the event's own matches.
+const fetchHivee = async (slug: string): Promise<FetchResult> => {
+  const data = await loadHiveeEventData(slug, { fresh: true });
+  const entrants = buildHiveeEntrantPool(data);
+  if (entrants.length === 0) {
+    throw new Error(t`This event has no standings yet.`);
+  }
+  const { event, program } = data;
+  return {
+    tournamentName: event.title,
+    eventName: program.title,
+    tournamentDate: event.starts_at
+      ? new Date(event.starts_at).toISOString()
+      : "",
+    tournamentUrl: "",
+    tournamentIconUrl: event.community.icon_url ?? event.cover_image_url ?? "",
+    tournamentId: "",
+    tournamentCountry: event.country?.toLowerCase() || undefined,
+    numEntrants: entrants.length,
+    videogameId: null,
+    entrants,
+  };
+};
+
 export const useFetchResultsEntrantPool = () => {
   const client = useClient();
   const dispatch = useResultsStore((state) => state.dispatch);
@@ -133,10 +161,10 @@ export const useFetchResultsEntrantPool = () => {
     const detected = detectPlatformAndSlug(url);
     if (!detected) return;
 
-    if (detected.platform !== "startgg") {
+    if (detected.platform !== "startgg" && detected.platform !== "hivee") {
       dispatch({
         type: "FETCH_POOL_FAIL",
-        payload: t`Tournament results are start.gg-only for now. Paste a start.gg event URL to continue.`,
+        payload: t`Tournament results work with start.gg and Hivee for now. Paste a start.gg or Hivee event URL to continue.`,
       });
       logEvent("results_fetch_fail", {
         tournament_platform: detected.platform,
@@ -155,19 +183,24 @@ export const useFetchResultsEntrantPool = () => {
     });
 
     try {
-      const result = await fetchStartgg(
-        client,
-        detected.slug,
-        ({ videogameId }) => {
-          if (!selectEntrantId || myRequest !== requestIdRef.current) return;
-          dispatch({
-            type: "PRESELECT_ENTRANT",
-            payload: { entrantId: selectEntrantId, videogameId },
-          });
-        },
-      );
+      const tournamentUrl = slugToUrl(detected.platform, detected.slug);
+      const result =
+        detected.platform === "hivee"
+          ? await fetchHivee(detected.slug)
+          : await fetchStartgg(client, detected.slug, ({ videogameId }) => {
+              if (!selectEntrantId || myRequest !== requestIdRef.current)
+                return;
+              dispatch({
+                type: "PRESELECT_ENTRANT",
+                payload: {
+                  entrantId: selectEntrantId,
+                  videogameId,
+                  tournamentUrl,
+                },
+              });
+            });
       if (myRequest !== requestIdRef.current) return;
-      result.tournamentUrl = slugToUrl(detected.platform, detected.slug);
+      result.tournamentUrl = tournamentUrl;
 
       dispatch({ type: "FETCH_POOL_SUCCESS", payload: result });
       logEvent("results_load", {

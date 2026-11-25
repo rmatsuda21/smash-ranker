@@ -13,15 +13,19 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:161
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:167
 msgid "(https://challonge.com/[tournament])"
 msgstr "(https://challonge.com/[大会名])"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:159
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:171
+msgid "(https://hivee.jp/events/[event])"
+msgstr "(https://hivee.jp/events/[イベント])"
+
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:165
 msgid "(https://start.gg/tournament/[name]/event/[event])"
 msgstr "(https://start.gg/tournament/[大会名]/event/[イベント名])"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:163
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:169
 msgid "(https://tonamel.com/competition/[slug])"
 msgstr "(https://tonamel.com/competition/[スラッグ])"
 
@@ -239,7 +243,7 @@ msgstr "すべての大会と戦績"
 msgid "Amber"
 msgstr "アンバー"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:89
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:93
 msgid "Any current player and tournament data will be overwritten."
 msgstr "今の選手と大会のデータは上書きされます。"
 
@@ -258,8 +262,13 @@ msgstr "この素材を削除しますか？"
 
 #: src/components/results/ResultsApp/ResultsApp.tsx:34
 #: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:256
-msgid "Asking start.gg very nicely..."
-msgstr "start.ggに丁寧にお願いしています..."
+#~ msgid "Asking start.gg very nicely..."
+#~ msgstr "start.ggに丁寧にお願いしています..."
+
+#: src/components/results/ResultsApp/ResultsApp.tsx:34
+#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:256
+msgid "Asking very nicely..."
+msgstr "丁寧にお願いしています..."
 
 #: src/components/top8/AssetManager/AssetManager.tsx:36
 #: src/components/top8/AssetManager/AssetsModal/AssetsModal.tsx:258
@@ -416,7 +425,7 @@ msgid "Cards"
 msgstr "カード"
 
 #. placeholder {0}: res.status
-#: src/hooks/predict/useFetchPredictionEntrants.ts:143
+#: src/hooks/predict/useFetchPredictionEntrants.ts:147
 #: src/hooks/top8/useFetchChallonge.ts:43
 msgid "Challonge API error: {0}"
 msgstr "Challonge APIエラー: {0}"
@@ -544,7 +553,7 @@ msgstr "コンパクト"
 msgid "Competing since {sinceYear}"
 msgstr "{sinceYear}年から参戦"
 
-#: src/hooks/predict/useFetchPredictionEntrants.ts:178
+#: src/hooks/predict/useFetchPredictionEntrants.ts:182
 #: src/hooks/top8/useFetchTonamel.ts:186
 msgid "Competition not found"
 msgstr "大会が見つかりませんでした"
@@ -928,8 +937,12 @@ msgstr "{0}を入力..."
 #~ msgstr "{MIN_PLAYERS}〜{MAX_PLAYERS}の数字を入力してください。"
 
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:157
-msgid "Enter a start.gg, Challonge, or Tonamel event URL"
-msgstr "start.gg、Challonge、Tonamelの大会URLを入力してください"
+#~ msgid "Enter a start.gg, Challonge, or Tonamel event URL"
+#~ msgstr "start.gg、Challonge、Tonamelの大会URLを入力してください"
+
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:161
+msgid "Enter a start.gg, Challonge, Tonamel, or Hivee event URL"
+msgstr "start.gg、Challonge、Tonamel、Hiveeの大会URLを入力してください"
 
 #: src/components/tournament/StandingsTab/StandingsTab.tsx:46
 msgid "Entrant"
@@ -979,7 +992,12 @@ msgstr "エクスポート"
 msgid "Failed to fetch Challonge tournament"
 msgstr "Challongeの大会を取得できませんでした"
 
-#: src/hooks/results/useFetchPlayerResults.ts:357
+#: src/hooks/top8/useFetchHivee.ts:175
+msgid "Failed to fetch Hivee tournament"
+msgstr "Hiveeの大会を取得できませんでした"
+
+#: src/hooks/results/useFetchPlayerResults.ts:286
+#: src/hooks/results/useFetchPlayerResults.ts:429
 msgid "Failed to fetch player results"
 msgstr "選手のリザルトを取得できませんでした"
 
@@ -992,9 +1010,9 @@ msgstr "シード情報を取得できませんでした"
 msgid "Failed to fetch Tonamel tournament"
 msgstr "Tonamelの大会を取得できませんでした"
 
-#: src/hooks/predict/useFetchPredictionEntrants.ts:247
-#: src/hooks/results/useFetchResultsEntrantPool.ts:201
-#: src/hooks/thumbnail/useLoadThumbnailEvent.ts:77
+#: src/hooks/predict/useFetchPredictionEntrants.ts:295
+#: src/hooks/results/useFetchResultsEntrantPool.ts:234
+#: src/hooks/thumbnail/useLoadThumbnailEvent.ts:93
 msgid "Failed to fetch tournament"
 msgstr "大会情報を取得できませんでした"
 
@@ -1010,7 +1028,7 @@ msgstr "大会データを取得できませんでした"
 msgid "Failed to generate image"
 msgstr "画像を作れませんでした"
 
-#: src/hooks/thumbnail/useLoadThumbnailEvent.ts:109
+#: src/hooks/thumbnail/useLoadThumbnailEvent.ts:125
 msgid "Failed to load more sets"
 msgstr "試合の追加読み込みに失敗しました"
 
@@ -1172,6 +1190,15 @@ msgstr "見出し"
 msgid "High Score"
 msgstr "ハイスコア"
 
+#. placeholder {0}: res.status
+#: src/utils/hivee/api.ts:32
+msgid "Hivee API error: {0}"
+msgstr "Hivee APIエラー: {0}"
+
+#: src/utils/hivee/api.ts:30
+msgid "Hivee is receiving too many requests. Try again soon."
+msgstr "Hiveeへのリクエストが多すぎます。しばらくしてからもう一度お試しください。"
+
 #: src/components/Layout/NavOverlay/NavOverlay.tsx:24
 msgid "Home"
 msgstr "ホーム"
@@ -1311,7 +1338,7 @@ msgstr "開催中"
 
 #: src/components/shared/TournamentUrlInput/TournamentUrlInput.tsx:87
 #: src/components/shared/TournamentUrlInput/TournamentUrlInput.tsx:111
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:180
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:188
 msgid "Load"
 msgstr "取得"
 
@@ -1332,7 +1359,7 @@ msgstr "テンプレを読み込む: {0}"
 msgid "Load Template?"
 msgstr "テンプレを読み込みますか？"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:87
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:91
 msgid "Load Tournament?"
 msgstr "大会を読み込みますか？"
 
@@ -1361,7 +1388,7 @@ msgid "Loading sets"
 msgstr "試合を読み込み中"
 
 #: src/components/predict/PredictApp/PredictApp.tsx:114
-#: src/components/predict/PredictApp/PredictApp.tsx:164
+#: src/components/predict/PredictApp/PredictApp.tsx:166
 #: src/components/results/ResultsApp/ResultsApp.tsx:211
 #: src/components/results/ResultsApp/ResultsApp.tsx:268
 msgid "Loading tournament"
@@ -1474,7 +1501,7 @@ msgstr "対戦情報"
 msgid "Matches"
 msgstr "対戦カード"
 
-#: src/consts/games.ts:37
+#: src/consts/games.ts:38
 msgid "Melee"
 msgstr "DX"
 
@@ -1767,14 +1794,22 @@ msgid "Paper"
 msgstr "紙"
 
 #: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:174
-msgid "Paste a start.gg event link to fill in its matches"
-msgstr "start.ggのイベントURLを貼ると試合を読み込めます"
+#~ msgid "Paste a start.gg event link to fill in its matches"
+#~ msgstr "start.ggのイベントURLを貼ると試合を読み込めます"
 
 #: src/components/results/ResultsApp/ResultsApp.tsx:192
-msgid "Paste a start.gg event URL, pick a player, and generate a shareable recap of their run."
-msgstr "start.ggのイベントURLを貼って選手を選ぶだけ。シェアできるリザルト画像が作れます。"
+#~ msgid "Paste a start.gg event URL, pick a player, and generate a shareable recap of their run."
+#~ msgstr "start.ggのイベントURLを貼って選手を選ぶだけ。シェアできるリザルト画像が作れます。"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:109
+#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:174
+msgid "Paste a start.gg or Hivee event link to fill in its matches"
+msgstr "start.ggかHiveeのイベントURLを貼ると試合を読み込めます"
+
+#: src/components/results/ResultsApp/ResultsApp.tsx:192
+msgid "Paste a start.gg or Hivee event URL, pick a player, and generate a shareable recap of their run."
+msgstr "start.ggかHiveeのイベントURLを貼って選手を選ぶだけ。シェアできるリザルト画像が作れます。"
+
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:113
 msgid "Paste a tournament URL"
 msgstr "大会URLを貼り付け"
 
@@ -1782,10 +1817,10 @@ msgstr "大会URLを貼り付け"
 msgid "Paste a tournament URL to predict placements and share your picks."
 msgstr "大会URLを貼って順位を予想、そのままシェアしよう。"
 
-#: src/components/predict/PredictApp/PredictApp.tsx:148
+#: src/components/predict/PredictApp/PredictApp.tsx:150
 #: src/components/results/ResultsApp/ResultsApp.tsx:243
 #: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:173
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:109
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:113
 msgid "Paste URL"
 msgstr "大会URL"
 
@@ -1903,7 +1938,8 @@ msgstr "選手所属"
 msgid "Player recap"
 msgstr "選手の戦績"
 
-#: src/hooks/results/useFetchPlayerResults.ts:268
+#: src/hooks/results/useFetchPlayerResults.ts:261
+#: src/hooks/results/useFetchPlayerResults.ts:340
 msgid "Player results not available."
 msgstr "選手のリザルトを取得できません。"
 
@@ -1964,7 +2000,7 @@ msgstr "順位予想"
 msgid "Prefix"
 msgstr "所属"
 
-#: src/components/predict/PredictApp/PredictApp.tsx:173
+#: src/components/predict/PredictApp/PredictApp.tsx:175
 #: src/components/results/ResultsApp/ResultsApp.tsx:277
 #: src/components/thumbnail/ThumbnailExportModal/ThumbnailExportModal.tsx:253
 #: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:195
@@ -2228,6 +2264,10 @@ msgstr "サブテキスト"
 msgid "See the bracket"
 msgstr "トーナメント表を見る"
 
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:269
+#~ msgid "See the top 8 bracket"
+#~ msgstr "TOP8のトーナメント表を見る"
+
 #: src/components/results/PlayerSummary/PlayerSummary.tsx:127
 msgid "seed"
 msgstr "シード"
@@ -2322,7 +2362,7 @@ msgstr "シードを調整中..."
 msgid "Show"
 msgstr "表示"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:153
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:157
 msgid "Show help"
 msgstr "ヘルプを表示"
 
@@ -2417,6 +2457,10 @@ msgstr "順位表"
 msgid "Star a template to keep it here."
 msgstr "テンプレに星を付けるとここに表示されます。"
 
+#: src/components/results/ResultsApp/ResultsApp.tsx:218
+msgid "start.gg and Hivee"
+msgstr "start.gg・Hivee に対応"
+
 #: src/components/tournament/BracketTab/BracketTab.tsx:359
 #: src/components/tournament/OverviewTab/OverviewTab.tsx:225
 #: src/components/tournament/StandingsTab/StandingsTab.tsx:29
@@ -2428,8 +2472,8 @@ msgid "start.gg has no tournament with this id. It may have been deleted or made
 msgstr "このIDの大会はstart.ggにありません。削除されたか、非公開になっているかもしれません。"
 
 #: src/components/results/ResultsApp/ResultsApp.tsx:218
-msgid "start.gg only"
-msgstr "start.gg のみ対応"
+#~ msgid "start.gg only"
+#~ msgstr "start.gg のみ対応"
 
 #: src/components/user/UserPage/UserPage.tsx:261
 #: src/components/user/UserPage/UserPage.tsx:264
@@ -2618,6 +2662,10 @@ msgstr "リザルトをテンプレに"
 msgid "The start.gg login didn't go through. Nothing was changed."
 msgstr "start.ggのログインがうまくいきませんでした。何も変わっていません。"
 
+#: src/components/tournament/BracketTab/BracketTab.tsx:170
+#~ msgid "The top 8 hasn't been played yet."
+#~ msgstr "TOP8はまだ始まっていません。"
+
 #: src/components/top8/SettingsPanel/ThemePicker.tsx:44
 #: src/consts/top8/colorLabels.ts:71
 msgid "Theme"
@@ -2627,13 +2675,25 @@ msgstr "テーマ"
 msgid "There are no tournaments on your start.gg account yet. Enter one and it shows up here, ready to turn into a graphic."
 msgstr "start.ggにまだ大会の記録がありません。出場するとここに出てきて、すぐ画像にできます。"
 
+#: src/hooks/predict/useFetchPredictionEntrants.ts:218
+#: src/hooks/top8/useFetchHivee.ts:130
+#: src/utils/hivee/eventData.ts:36
+#: src/utils/thumbnail/fetchHiveeSets.ts:75
+msgid "This event has no bracket to load."
+msgstr "このイベントには読み込めるトーナメントがありません。"
+
 #: src/components/tournament/BracketTab/BracketTab.tsx:366
 msgid "This event has no bracket yet."
 msgstr "このイベントのトーナメント表はまだありません。"
 
-#: src/hooks/thumbnail/useLoadThumbnailEvent.ts:51
+#: src/hooks/thumbnail/useLoadThumbnailEvent.ts:63
 msgid "This event has no sets with players yet."
 msgstr "このイベントにはまだ対戦カードの決まった試合がありません。"
+
+#: src/hooks/results/useFetchResultsEntrantPool.ts:128
+#: src/hooks/top8/useFetchHivee.ts:141
+msgid "This event has no standings yet."
+msgstr "このイベントにはまだ順位がありません。"
 
 #: src/components/top8/SocialPostComposer/TemplateSelector.tsx:35
 #: src/components/top8/TemplateEditor/TemplateEditor.tsx:246
@@ -2678,9 +2738,13 @@ msgstr "サムネイルのプレビュー：{0} vs {1}"
 msgid "Thumbnails"
 msgstr "サムネ"
 
+#: src/hooks/thumbnail/useLoadThumbnailEvent.ts:33
+msgid "Thumbnails load matches from start.gg and Hivee only for now. You can still fill in the match by hand."
+msgstr "試合の読み込みは現在start.ggとHiveeのみ対応しています。手入力でも作成できます。"
+
 #: src/hooks/thumbnail/useLoadThumbnailEvent.ts:30
-msgid "Thumbnails load matches from start.gg only for now. You can still fill in the match by hand."
-msgstr "試合の読み込みは現在start.ggのみ対応しています。手入力でも作成できます。"
+#~ msgid "Thumbnails load matches from start.gg only for now. You can still fill in the match by hand."
+#~ msgstr "試合の読み込みは現在start.ggのみ対応しています。手入力でも作成できます。"
 
 #: src/components/Layout/NavOverlay/NavOverlay.tsx:32
 msgid "Tier List"
@@ -2696,7 +2760,7 @@ msgid "Toggle developer settings"
 msgstr "開発者設定を切り替え"
 
 #. placeholder {0}: res.status
-#: src/hooks/predict/useFetchPredictionEntrants.ts:174
+#: src/hooks/predict/useFetchPredictionEntrants.ts:178
 #: src/hooks/top8/useFetchTonamel.ts:57
 msgid "Tonamel API error: {0}"
 msgstr "Tonamel APIエラー: {0}"
@@ -2821,15 +2885,17 @@ msgstr "大会名"
 msgid "Tournament Name"
 msgstr "大会名"
 
-#: src/hooks/predict/useFetchPredictionEntrants.ts:99
-#: src/hooks/results/useFetchResultsEntrantPool.ts:69
-#: src/hooks/thumbnail/useLoadThumbnailEvent.ts:49
+#: src/hooks/predict/useFetchPredictionEntrants.ts:105
+#: src/hooks/results/useFetchResultsEntrantPool.ts:71
+#: src/hooks/thumbnail/useLoadThumbnailEvent.ts:61
 #: src/hooks/top8/useFetchResult.ts:583
+#: src/utils/hivee/api.ts:28
+#: src/utils/hivee/api.ts:62
 msgid "Tournament not found"
 msgstr "大会が見つかりませんでした"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:187
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:188
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:195
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:196
 msgid "Tournament page"
 msgstr "大会ページ"
 
@@ -2838,12 +2904,16 @@ msgid "Tournament Recap"
 msgstr "大会振り返り"
 
 #: src/hooks/results/useFetchResultsEntrantPool.ts:139
-msgid "Tournament results are start.gg-only for now. Paste a start.gg event URL to continue."
-msgstr "リザルトは今のところstart.ggのみ対応です。start.ggのイベントURLを貼ってください。"
+#~ msgid "Tournament results are start.gg-only for now. Paste a start.gg event URL to continue."
+#~ msgstr "リザルトは今のところstart.ggのみ対応です。start.ggのイベントURLを貼ってください。"
 
 #: src/components/results/ResultsPreview/ResultsPreview.tsx:369
 msgid "Tournament results graphic"
 msgstr "大会リザルト画像"
+
+#: src/hooks/results/useFetchResultsEntrantPool.ts:167
+msgid "Tournament results work with start.gg and Hivee for now. Paste a start.gg or Hivee event URL to continue."
+msgstr "リザルトは今のところstart.ggとHiveeのみ対応です。start.ggかHiveeのイベントURLを貼ってください。"
 
 #: src/consts/top8/placeholders.ts:44
 msgid "Tournament State"
@@ -2852,7 +2922,7 @@ msgstr "開催地（都道府県）"
 #: src/components/shared/TournamentUrlInput/TournamentUrlInput.tsx:70
 #: src/components/shared/TournamentUrlInput/TournamentUrlInput.tsx:101
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:171
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:135
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:139
 #: src/consts/top8/placeholders.ts:46
 #: src/utils/social/templateTokens.ts:15
 #: src/utils/social/templateTokens.ts:47
@@ -2947,8 +3017,12 @@ msgid "Use this image"
 msgstr "この画像を使う"
 
 #: src/components/thumbnail/LookPanel/LookPanel.tsx:134
-msgid "Using the tournament's icon from start.gg."
-msgstr "start.ggの大会アイコンを使用中です。"
+#~ msgid "Using the tournament's icon from start.gg."
+#~ msgstr "start.ggの大会アイコンを使用中です。"
+
+#: src/components/thumbnail/LookPanel/LookPanel.tsx:134
+msgid "Using the tournament's icon."
+msgstr "大会アイコンを使用中です。"
 
 #: src/components/tournament/OverviewTab/OverviewTab.tsx:457
 msgid "Venue"

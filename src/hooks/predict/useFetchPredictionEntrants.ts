@@ -8,6 +8,12 @@ import type { PredictionPlayer } from "@/types/predict/Prediction";
 import { extractTournamentPalette } from "@/utils/predict/extractTournamentPalette";
 import { logEvent } from "@/utils/observability/log";
 import { fetchEventEntrants } from "@/utils/startgg/fetchEventEntrants";
+import {
+  fetchHiveeEntrants,
+  fetchHiveeEvent,
+  resolveHiveeSlug,
+} from "@/utils/hivee/api";
+import { pickFinalProgram, pickFirstProgram } from "@/utils/hivee/programs";
 
 // Event metadata, plus what fetchEventEntrants needs to plan its pages.
 const EventMetaQueryDoc = graphql(`
@@ -106,9 +112,7 @@ const fetchStartgg = async (
     ? new Date(event.startAt * 1000).toISOString()
     : "";
   const tournamentUrl = event.tournament?.url || "";
-  const tournamentId = event.tournament?.id
-    ? String(event.tournament.id)
-    : "";
+  const tournamentId = event.tournament?.id ? String(event.tournament.id) : "";
   const tournamentIconUrl =
     event.tournament?.images
       ?.find((img) => img?.type === "profile")
@@ -201,6 +205,48 @@ const fetchTonamelEntrants = async (slug: string): Promise<FetchResult> => {
   };
 };
 
+const fetchHiveePrediction = async (slug: string): Promise<FetchResult> => {
+  const { eventId, programId } = await resolveHiveeSlug(slug);
+  const [event, allEntrants] = await Promise.all([
+    fetchHiveeEvent(eventId),
+    fetchHiveeEntrants(eventId),
+  ]);
+
+  // The prediction is of the final bracket, which has no entrants of its own
+  // until its qualifier ends: the field is whoever starts in the qualifier.
+  const finalProgram = pickFinalProgram(event.programs, programId);
+  if (!finalProgram) throw new Error(t`This event has no bracket to load.`);
+  const firstProgram = pickFirstProgram(event.programs, finalProgram);
+
+  const entrants: PredictionPlayer[] = allEntrants
+    .flatMap((entrant) => {
+      const entry = entrant.programs.find(
+        (program) => program.program_id === firstProgram.id,
+      );
+      if (!entry) return [];
+      return [
+        {
+          id: entrant.id,
+          name: entrant.display_name,
+          seed: entry.seed ?? 9999,
+        },
+      ];
+    })
+    .sort((a, b) => a.seed - b.seed);
+
+  return {
+    tournamentName: event.title,
+    eventName: finalProgram.title,
+    tournamentDate: event.starts_at
+      ? new Date(event.starts_at).toISOString()
+      : "",
+    tournamentUrl: "",
+    tournamentIconUrl: event.community.icon_url ?? "",
+    tournamentId: "",
+    entrants,
+  };
+};
+
 export const useFetchPredictionEntrants = () => {
   const client = useClient();
   const dispatch = usePredictionStore((state) => state.dispatch);
@@ -222,8 +268,10 @@ export const useFetchPredictionEntrants = () => {
         result = await fetchStartgg(client, detected.slug);
       } else if (detected.platform === "challonge") {
         result = await fetchChallongeEntrants(detected.slug);
-      } else {
+      } else if (detected.platform === "tonamel") {
         result = await fetchTonamelEntrants(detected.slug);
+      } else {
+        result = await fetchHiveePrediction(detected.slug);
       }
 
       // Overwrite with the canonical platform+slug URL so it always

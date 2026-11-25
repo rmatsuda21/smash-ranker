@@ -13,6 +13,7 @@ import { BadRequestError, respondClientError } from "./_lib/errors.js";
 import { parseBase64UrlPayload, parseImageUrl } from "./_lib/validate.js";
 import { addBreadcrumb, withLogging } from "./_lib/withLogging.js";
 import { getPathFonts, getSatoriFonts } from "./_lib/fonts.js";
+import { toSatoriImage } from "./_lib/satoriImage.js";
 import {
   DEFAULT_DISPLAY,
   SET_LIST_LAYOUTS,
@@ -136,7 +137,9 @@ async function fetchTournamentIcon(
   if (!tournamentIconUrl) return null;
   const cached = lruGet(tournamentIconCache, tournamentIconUrl);
   if (cached) return cached;
-  const fetched = await fetchImageAsDataUrl(tournamentIconUrl);
+  const fetched = await toSatoriImage(
+    await fetchImageAsDataUrl(tournamentIconUrl),
+  );
   if (fetched) {
     lruSet(
       tournamentIconCache,

@@ -13,15 +13,19 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:161
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:167
 msgid "(https://challonge.com/[tournament])"
 msgstr ""
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:159
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:171
+msgid "(https://hivee.jp/events/[event])"
+msgstr ""
+
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:165
 msgid "(https://start.gg/tournament/[name]/event/[event])"
 msgstr ""
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:163
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:169
 msgid "(https://tonamel.com/competition/[slug])"
 msgstr ""
 
@@ -239,7 +243,7 @@ msgstr ""
 msgid "Amber"
 msgstr "アンバー"
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:89
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:93
 msgid "Any current player and tournament data will be overwritten."
 msgstr ""
 
@@ -258,7 +262,12 @@ msgstr ""
 
 #: src/components/results/ResultsApp/ResultsApp.tsx:34
 #: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:256
-msgid "Asking start.gg very nicely..."
+#~ msgid "Asking start.gg very nicely..."
+#~ msgstr ""
+
+#: src/components/results/ResultsApp/ResultsApp.tsx:34
+#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:256
+msgid "Asking very nicely..."
 msgstr ""
 
 #: src/components/top8/AssetManager/AssetManager.tsx:36
@@ -416,7 +425,7 @@ msgid "Cards"
 msgstr ""
 
 #. placeholder {0}: res.status
-#: src/hooks/predict/useFetchPredictionEntrants.ts:143
+#: src/hooks/predict/useFetchPredictionEntrants.ts:147
 #: src/hooks/top8/useFetchChallonge.ts:43
 msgid "Challonge API error: {0}"
 msgstr ""
@@ -544,7 +553,7 @@ msgstr ""
 msgid "Competing since {sinceYear}"
 msgstr ""
 
-#: src/hooks/predict/useFetchPredictionEntrants.ts:178
+#: src/hooks/predict/useFetchPredictionEntrants.ts:182
 #: src/hooks/top8/useFetchTonamel.ts:186
 msgid "Competition not found"
 msgstr ""
@@ -928,7 +937,11 @@ msgstr ""
 #~ msgstr ""
 
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:157
-msgid "Enter a start.gg, Challonge, or Tonamel event URL"
+#~ msgid "Enter a start.gg, Challonge, or Tonamel event URL"
+#~ msgstr ""
+
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:161
+msgid "Enter a start.gg, Challonge, Tonamel, or Hivee event URL"
 msgstr ""
 
 #: src/components/tournament/StandingsTab/StandingsTab.tsx:46
@@ -979,7 +992,12 @@ msgstr ""
 msgid "Failed to fetch Challonge tournament"
 msgstr ""
 
-#: src/hooks/results/useFetchPlayerResults.ts:357
+#: src/hooks/top8/useFetchHivee.ts:175
+msgid "Failed to fetch Hivee tournament"
+msgstr ""
+
+#: src/hooks/results/useFetchPlayerResults.ts:286
+#: src/hooks/results/useFetchPlayerResults.ts:429
 msgid "Failed to fetch player results"
 msgstr ""
 
@@ -992,9 +1010,9 @@ msgstr ""
 msgid "Failed to fetch Tonamel tournament"
 msgstr ""
 
-#: src/hooks/predict/useFetchPredictionEntrants.ts:247
-#: src/hooks/results/useFetchResultsEntrantPool.ts:201
-#: src/hooks/thumbnail/useLoadThumbnailEvent.ts:77
+#: src/hooks/predict/useFetchPredictionEntrants.ts:295
+#: src/hooks/results/useFetchResultsEntrantPool.ts:234
+#: src/hooks/thumbnail/useLoadThumbnailEvent.ts:93
 msgid "Failed to fetch tournament"
 msgstr ""
 
@@ -1010,7 +1028,7 @@ msgstr ""
 msgid "Failed to generate image"
 msgstr ""
 
-#: src/hooks/thumbnail/useLoadThumbnailEvent.ts:109
+#: src/hooks/thumbnail/useLoadThumbnailEvent.ts:125
 msgid "Failed to load more sets"
 msgstr ""
 
@@ -1172,6 +1190,15 @@ msgstr ""
 msgid "High Score"
 msgstr ""
 
+#. placeholder {0}: res.status
+#: src/utils/hivee/api.ts:32
+msgid "Hivee API error: {0}"
+msgstr ""
+
+#: src/utils/hivee/api.ts:30
+msgid "Hivee is receiving too many requests. Try again soon."
+msgstr ""
+
 #: src/components/Layout/NavOverlay/NavOverlay.tsx:24
 msgid "Home"
 msgstr ""
@@ -1311,7 +1338,7 @@ msgstr ""
 
 #: src/components/shared/TournamentUrlInput/TournamentUrlInput.tsx:87
 #: src/components/shared/TournamentUrlInput/TournamentUrlInput.tsx:111
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:180
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:188
 msgid "Load"
 msgstr ""
 
@@ -1332,7 +1359,7 @@ msgstr ""
 msgid "Load Template?"
 msgstr ""
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:87
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:91
 msgid "Load Tournament?"
 msgstr ""
 
@@ -1361,7 +1388,7 @@ msgid "Loading sets"
 msgstr ""
 
 #: src/components/predict/PredictApp/PredictApp.tsx:114
-#: src/components/predict/PredictApp/PredictApp.tsx:164
+#: src/components/predict/PredictApp/PredictApp.tsx:166
 #: src/components/results/ResultsApp/ResultsApp.tsx:211
 #: src/components/results/ResultsApp/ResultsApp.tsx:268
 msgid "Loading tournament"
@@ -1474,7 +1501,7 @@ msgstr ""
 msgid "Matches"
 msgstr ""
 
-#: src/consts/games.ts:37
+#: src/consts/games.ts:38
 msgid "Melee"
 msgstr ""
 
@@ -1767,14 +1794,22 @@ msgid "Paper"
 msgstr ""
 
 #: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:174
-msgid "Paste a start.gg event link to fill in its matches"
+#~ msgid "Paste a start.gg event link to fill in its matches"
+#~ msgstr ""
+
+#: src/components/results/ResultsApp/ResultsApp.tsx:192
+#~ msgid "Paste a start.gg event URL, pick a player, and generate a shareable recap of their run."
+#~ msgstr ""
+
+#: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:174
+msgid "Paste a start.gg or Hivee event link to fill in its matches"
 msgstr ""
 
 #: src/components/results/ResultsApp/ResultsApp.tsx:192
-msgid "Paste a start.gg event URL, pick a player, and generate a shareable recap of their run."
+msgid "Paste a start.gg or Hivee event URL, pick a player, and generate a shareable recap of their run."
 msgstr ""
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:109
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:113
 msgid "Paste a tournament URL"
 msgstr ""
 
@@ -1782,10 +1817,10 @@ msgstr ""
 msgid "Paste a tournament URL to predict placements and share your picks."
 msgstr ""
 
-#: src/components/predict/PredictApp/PredictApp.tsx:148
+#: src/components/predict/PredictApp/PredictApp.tsx:150
 #: src/components/results/ResultsApp/ResultsApp.tsx:243
 #: src/components/thumbnail/ThumbnailApp/ThumbnailApp.tsx:173
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:109
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:113
 msgid "Paste URL"
 msgstr ""
 
@@ -1903,7 +1938,8 @@ msgstr ""
 msgid "Player recap"
 msgstr ""
 
-#: src/hooks/results/useFetchPlayerResults.ts:268
+#: src/hooks/results/useFetchPlayerResults.ts:261
+#: src/hooks/results/useFetchPlayerResults.ts:340
 msgid "Player results not available."
 msgstr ""
 
@@ -1964,7 +2000,7 @@ msgstr ""
 msgid "Prefix"
 msgstr ""
 
-#: src/components/predict/PredictApp/PredictApp.tsx:173
+#: src/components/predict/PredictApp/PredictApp.tsx:175
 #: src/components/results/ResultsApp/ResultsApp.tsx:277
 #: src/components/thumbnail/ThumbnailExportModal/ThumbnailExportModal.tsx:253
 #: src/components/top8/CanvasDownloader/ExportPreviewModal/ExportPreviewModal.tsx:195
@@ -2228,6 +2264,10 @@ msgstr ""
 msgid "See the bracket"
 msgstr ""
 
+#: src/components/tournament/OverviewTab/OverviewTab.tsx:269
+#~ msgid "See the top 8 bracket"
+#~ msgstr ""
+
 #: src/components/results/PlayerSummary/PlayerSummary.tsx:127
 msgid "seed"
 msgstr ""
@@ -2322,7 +2362,7 @@ msgstr ""
 msgid "Show"
 msgstr ""
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:153
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:157
 msgid "Show help"
 msgstr ""
 
@@ -2417,6 +2457,10 @@ msgstr ""
 msgid "Star a template to keep it here."
 msgstr ""
 
+#: src/components/results/ResultsApp/ResultsApp.tsx:218
+msgid "start.gg and Hivee"
+msgstr ""
+
 #: src/components/tournament/BracketTab/BracketTab.tsx:359
 #: src/components/tournament/OverviewTab/OverviewTab.tsx:225
 #: src/components/tournament/StandingsTab/StandingsTab.tsx:29
@@ -2428,8 +2472,8 @@ msgid "start.gg has no tournament with this id. It may have been deleted or made
 msgstr ""
 
 #: src/components/results/ResultsApp/ResultsApp.tsx:218
-msgid "start.gg only"
-msgstr ""
+#~ msgid "start.gg only"
+#~ msgstr ""
 
 #: src/components/user/UserPage/UserPage.tsx:261
 #: src/components/user/UserPage/UserPage.tsx:264
@@ -2618,6 +2662,10 @@ msgstr ""
 msgid "The start.gg login didn't go through. Nothing was changed."
 msgstr ""
 
+#: src/components/tournament/BracketTab/BracketTab.tsx:170
+#~ msgid "The top 8 hasn't been played yet."
+#~ msgstr ""
+
 #: src/components/top8/SettingsPanel/ThemePicker.tsx:44
 #: src/consts/top8/colorLabels.ts:71
 msgid "Theme"
@@ -2627,12 +2675,24 @@ msgstr ""
 msgid "There are no tournaments on your start.gg account yet. Enter one and it shows up here, ready to turn into a graphic."
 msgstr ""
 
+#: src/hooks/predict/useFetchPredictionEntrants.ts:218
+#: src/hooks/top8/useFetchHivee.ts:130
+#: src/utils/hivee/eventData.ts:36
+#: src/utils/thumbnail/fetchHiveeSets.ts:75
+msgid "This event has no bracket to load."
+msgstr ""
+
 #: src/components/tournament/BracketTab/BracketTab.tsx:366
 msgid "This event has no bracket yet."
 msgstr ""
 
-#: src/hooks/thumbnail/useLoadThumbnailEvent.ts:51
+#: src/hooks/thumbnail/useLoadThumbnailEvent.ts:63
 msgid "This event has no sets with players yet."
+msgstr ""
+
+#: src/hooks/results/useFetchResultsEntrantPool.ts:128
+#: src/hooks/top8/useFetchHivee.ts:141
+msgid "This event has no standings yet."
 msgstr ""
 
 #: src/components/top8/SocialPostComposer/TemplateSelector.tsx:35
@@ -2678,9 +2738,13 @@ msgstr ""
 msgid "Thumbnails"
 msgstr ""
 
-#: src/hooks/thumbnail/useLoadThumbnailEvent.ts:30
-msgid "Thumbnails load matches from start.gg only for now. You can still fill in the match by hand."
+#: src/hooks/thumbnail/useLoadThumbnailEvent.ts:33
+msgid "Thumbnails load matches from start.gg and Hivee only for now. You can still fill in the match by hand."
 msgstr ""
+
+#: src/hooks/thumbnail/useLoadThumbnailEvent.ts:30
+#~ msgid "Thumbnails load matches from start.gg only for now. You can still fill in the match by hand."
+#~ msgstr ""
 
 #: src/components/Layout/NavOverlay/NavOverlay.tsx:32
 msgid "Tier List"
@@ -2696,7 +2760,7 @@ msgid "Toggle developer settings"
 msgstr ""
 
 #. placeholder {0}: res.status
-#: src/hooks/predict/useFetchPredictionEntrants.ts:174
+#: src/hooks/predict/useFetchPredictionEntrants.ts:178
 #: src/hooks/top8/useFetchTonamel.ts:57
 msgid "Tonamel API error: {0}"
 msgstr ""
@@ -2821,15 +2885,17 @@ msgstr ""
 msgid "Tournament Name"
 msgstr ""
 
-#: src/hooks/predict/useFetchPredictionEntrants.ts:99
-#: src/hooks/results/useFetchResultsEntrantPool.ts:69
-#: src/hooks/thumbnail/useLoadThumbnailEvent.ts:49
+#: src/hooks/predict/useFetchPredictionEntrants.ts:105
+#: src/hooks/results/useFetchResultsEntrantPool.ts:71
+#: src/hooks/thumbnail/useLoadThumbnailEvent.ts:61
 #: src/hooks/top8/useFetchResult.ts:583
+#: src/utils/hivee/api.ts:28
+#: src/utils/hivee/api.ts:62
 msgid "Tournament not found"
 msgstr ""
 
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:187
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:188
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:195
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:196
 msgid "Tournament page"
 msgstr ""
 
@@ -2838,11 +2904,15 @@ msgid "Tournament Recap"
 msgstr ""
 
 #: src/hooks/results/useFetchResultsEntrantPool.ts:139
-msgid "Tournament results are start.gg-only for now. Paste a start.gg event URL to continue."
-msgstr ""
+#~ msgid "Tournament results are start.gg-only for now. Paste a start.gg event URL to continue."
+#~ msgstr ""
 
 #: src/components/results/ResultsPreview/ResultsPreview.tsx:369
 msgid "Tournament results graphic"
+msgstr ""
+
+#: src/hooks/results/useFetchResultsEntrantPool.ts:167
+msgid "Tournament results work with start.gg and Hivee for now. Paste a start.gg or Hivee event URL to continue."
 msgstr ""
 
 #: src/consts/top8/placeholders.ts:44
@@ -2852,7 +2922,7 @@ msgstr ""
 #: src/components/shared/TournamentUrlInput/TournamentUrlInput.tsx:70
 #: src/components/shared/TournamentUrlInput/TournamentUrlInput.tsx:101
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:171
-#: src/components/top8/TournamentLoader/TournamentLoader.tsx:135
+#: src/components/top8/TournamentLoader/TournamentLoader.tsx:139
 #: src/consts/top8/placeholders.ts:46
 #: src/utils/social/templateTokens.ts:15
 #: src/utils/social/templateTokens.ts:47
@@ -2947,7 +3017,11 @@ msgid "Use this image"
 msgstr ""
 
 #: src/components/thumbnail/LookPanel/LookPanel.tsx:134
-msgid "Using the tournament's icon from start.gg."
+#~ msgid "Using the tournament's icon from start.gg."
+#~ msgstr ""
+
+#: src/components/thumbnail/LookPanel/LookPanel.tsx:134
+msgid "Using the tournament's icon."
 msgstr ""
 
 #: src/components/tournament/OverviewTab/OverviewTab.tsx:457

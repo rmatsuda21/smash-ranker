@@ -122,6 +122,8 @@ export const PredictApp = () => {
             <span>Challonge</span>
             <span className={styles.dot} />
             <span>Tonamel</span>
+            <span className={styles.dot} />
+            <span>Hivee</span>
           </div>
         </div>
       </div>

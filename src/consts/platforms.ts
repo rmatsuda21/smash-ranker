@@ -1,4 +1,4 @@
-export type Platform = "startgg" | "challonge" | "tonamel";
+export type Platform = "startgg" | "challonge" | "tonamel" | "hivee";
 
 export const startggUrlToSlug = (url: string): string | null => {
   const match = url.trim().match(/tournament\/([^/]+)\/event\/([^/]+)/);
@@ -15,6 +15,16 @@ export const tonamelUrlToSlug = (url: string): string | null => {
   return match ? match[1] : null;
 };
 
+// "<event>" or "<event>/<program id>": the event is its id or the name in a
+// short URL, the program is the `?p=` of a program link.
+export const hiveeUrlToSlug = (url: string): string | null => {
+  const trimmed = url.trim();
+  const event = trimmed.match(/hivee\.jp\/events\/([A-Za-z0-9-]+)/);
+  if (!event) return null;
+  const program = trimmed.match(/[?&]p=([0-9a-fA-F-]{36})(?:[&#]|$)/);
+  return program ? `${event[1]}/${program[1]}` : event[1];
+};
+
 export const detectPlatformAndSlug = (
   url: string,
 ): { platform: Platform; slug: string } | null => {
@@ -27,6 +37,9 @@ export const detectPlatformAndSlug = (
   const tonamelSlug = tonamelUrlToSlug(url);
   if (tonamelSlug) return { platform: "tonamel", slug: tonamelSlug };
 
+  const hiveeSlug = hiveeUrlToSlug(url);
+  if (hiveeSlug) return { platform: "hivee", slug: hiveeSlug };
+
   return null;
 };
 
@@ -38,5 +51,11 @@ export const slugToUrl = (platform: Platform, slug: string): string => {
       return `https://challonge.com/${slug}`;
     case "tonamel":
       return `https://tonamel.com/competition/${slug}`;
+    case "hivee": {
+      const [event, program] = slug.split("/");
+      return program
+        ? `https://hivee.jp/events/${event}/program?p=${program}`
+        : `https://hivee.jp/events/${event}`;
+    }
   }
 };

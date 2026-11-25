@@ -171,7 +171,9 @@ export const ThumbnailApp = () => {
           placeholder={
             isNarrow
               ? _(msg`Paste URL`)
-              : _(msg`Paste a start.gg event link to fill in its matches`)
+              : _(
+                  msg`Paste a start.gg or Hivee event link to fill in its matches`,
+                )
           }
         />
         <div className={styles.actions}>
@@ -253,7 +255,7 @@ export const ThumbnailApp = () => {
           <FetchingState
             mode="overlay"
             heading={<Trans>Loading sets</Trans>}
-            taglines={[msg`Asking start.gg very nicely...`]}
+            taglines={[msg`Asking very nicely...`]}
           />
         )}
       </div>

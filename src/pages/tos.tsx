@@ -40,8 +40,8 @@ const TosPage = () => {
             Smash Ranker is not affiliated with or endorsed by Nintendo Co.,
             Ltd., HAL Laboratory, Sora Ltd., Bandai Namco, or any other rights
             holder of the Super Smash Bros. series. It is also not affiliated
-            with start.gg, Challonge, Tonamel, or any tournament organizer whose
-            data appears on the site.
+            with start.gg, Challonge, Tonamel, Hivee, or any tournament
+            organizer whose data appears on the site.
           </p>
         </section>
 
@@ -129,7 +129,7 @@ const TosPage = () => {
           <p>
             You also may not attempt to overload, scrape, or otherwise disrupt
             the site or the services it relies on, such as start.gg, Challonge,
-            and Tonamel.
+            Tonamel, and Hivee.
           </p>
           <p>
             Users who violate these terms may be blocked, and related cached
@@ -157,10 +157,10 @@ const TosPage = () => {
           <h2>7. Third-party data</h2>
           <p>
             Tournament information such as entrants, brackets, placements, and
-            icons is retrieved from start.gg, Challonge, and Tonamel through
-            their public APIs. Smash Ranker does not guarantee that this data is
-            accurate, complete, or available. Your use of it is also subject to
-            each platform&rsquo;s own terms.
+            icons is retrieved from start.gg, Challonge, Tonamel, and Hivee
+            through their public APIs. Smash Ranker does not guarantee that this
+            data is accurate, complete, or available. Your use of it is also
+            subject to each platform&rsquo;s own terms.
           </p>
         </section>
 

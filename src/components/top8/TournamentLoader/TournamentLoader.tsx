@@ -9,6 +9,7 @@ import { Button } from "@/components/shared/Button/Button";
 import { useFetchResult } from "@/hooks/top8/useFetchResult";
 import { useFetchChallonge } from "@/hooks/top8/useFetchChallonge";
 import { useFetchTonamel } from "@/hooks/top8/useFetchTonamel";
+import { useFetchHivee } from "@/hooks/top8/useFetchHivee";
 import { useCanvasStore } from "@/store/canvasStore";
 import { usePlayerStore } from "@/store/playerStore";
 import { useTournamentStore } from "@/store/tournamentStore";
@@ -55,6 +56,7 @@ export const TournamentLoader = ({ className }: Props) => {
   const { fetchResult } = useFetchResult();
   const { fetchChallonge } = useFetchChallonge();
   const { fetchTonamel } = useFetchTonamel();
+  const { fetchHivee } = useFetchHivee();
 
   const detected = useMemo(() => detectPlatformAndSlug(url), [url]);
   const isValid = detected !== null;
@@ -79,6 +81,8 @@ export const TournamentLoader = ({ className }: Props) => {
       fetchChallonge(detected.slug, fetchCount);
     } else if (detected.platform === "tonamel") {
       fetchTonamel(detected.slug, fetchCount);
+    } else if (detected.platform === "hivee") {
+      fetchHivee(detected.slug, fetchCount);
     }
   };
 
@@ -154,13 +158,17 @@ export const TournamentLoader = ({ className }: Props) => {
         >
           <FaCircleInfo />
           <pre className={styles.tooltip}>
-            <Trans>Enter a start.gg, Challonge, or Tonamel event URL</Trans>
+            <Trans>
+              Enter a start.gg, Challonge, Tonamel, or Hivee event URL
+            </Trans>
             <br />
             <Trans>(https://start.gg/tournament/[name]/event/[event])</Trans>
             <br />
             <Trans>(https://challonge.com/[tournament])</Trans>
             <br />
             <Trans>(https://tonamel.com/competition/[slug])</Trans>
+            <br />
+            <Trans>(https://hivee.jp/events/[event])</Trans>
           </pre>
         </span>
         <Button

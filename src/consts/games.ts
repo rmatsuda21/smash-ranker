@@ -29,6 +29,7 @@ export const GAMES: Record<GameId, GameDefinition> = {
       "ブラザーズspecial",
       "スマブラsp",
     ],
+    hiveeContent: "smash_sp",
     defaultCharacterId: "1293",
     hasPlayerDataset: true,
   },

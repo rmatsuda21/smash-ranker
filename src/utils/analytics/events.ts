@@ -8,7 +8,7 @@
 //   - Booleans prefixed with `is_` / `has_`
 //   - Time fields suffixed with `_ms` (relative) or `_at` (absolute ISO)
 
-export type TournamentPlatform = "startgg" | "challonge" | "tonamel";
+export type TournamentPlatform = "startgg" | "challonge" | "tonamel" | "hivee";
 
 export type FetchFailureKind =
   "query_error" | "not_found" | "multi_group" | "post_process";

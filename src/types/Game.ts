@@ -25,6 +25,8 @@ export type GameDefinition = {
   // Lowercase fragments of the game's name as Challonge and Tonamel write
   // it; those platforms have no game id.
   nameFragments: string[];
+  // Hivee's code for the game (a program's `content`), when Hivee has it.
+  hiveeContent?: string;
   // The render styles this game has art for, default first.
   renderStyles: RenderStyleId[];
   // Character a newly added slot starts with.

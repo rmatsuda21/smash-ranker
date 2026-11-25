@@ -4,6 +4,7 @@ import { t } from "@lingui/core/macro";
 
 import { graphql } from "@/gql";
 import type { PlayerTournamentResultsQuery } from "@/gql/graphql";
+import { detectPlatformAndSlug } from "@/consts/platforms";
 import { useResultsStore } from "@/store/resultsStore";
 import type {
   PlayerSet,
@@ -11,7 +12,13 @@ import type {
   PlayerTournamentResults,
 } from "@/types/results/PlayerTournamentResults";
 import { logEvent, logWarning } from "@/utils/observability/log";
+import { getEntrantsNeedingFallback } from "@/utils/results/fallbackCharacters";
 import { computeUpsetFactor } from "@/utils/results/upsetFactor";
+import { loadHiveeEventData } from "@/utils/hivee/eventData";
+import {
+  buildHiveePlayerResults,
+  hiveeFallbackCharacters,
+} from "@/utils/hivee/results";
 import {
   MISSING_SEED_FALLBACK,
   parseCharacterSelections,
@@ -238,9 +245,74 @@ export const useFetchPlayerResults = () => {
   // newer selection (user clicks A, then B before A resolves).
   const requestIdRef = useRef(0);
 
+  // A Hivee player's run is cut out of the event's matches, which the pool
+  // load already fetched and kept.
+  const fetchHiveeResults = async (
+    slug: string,
+    entrantId: string,
+    myRequest: number,
+  ) => {
+    const { tournamentUrl } = useResultsStore.getState();
+    try {
+      const data = await loadHiveeEventData(slug);
+      if (myRequest !== requestIdRef.current) return;
+
+      const payload = buildHiveePlayerResults(data, entrantId);
+      if (!payload) throw new Error(t`Player results not available.`);
+
+      dispatch({ type: "FETCH_RESULTS_SUCCESS", payload });
+      // Sets with no character entered show the one the player used most
+      // in the rest of the event.
+      const fallbacks = hiveeFallbackCharacters(
+        data,
+        getEntrantsNeedingFallback(payload),
+      );
+      for (const [id, characterId] of Object.entries(fallbacks)) {
+        dispatch({
+          type: "FETCH_FALLBACK_SUCCESS",
+          payload: { entrantId: id, characterId },
+        });
+      }
+      logEvent("results_entrant_select", {
+        seed: payload.seed,
+        set_count: payload.sets.length,
+        placement: payload.placement,
+      });
+    } catch (error) {
+      if (myRequest !== requestIdRef.current) return;
+      const message =
+        error instanceof Error
+          ? error.message
+          : t`Failed to fetch player results`;
+      logWarning("results player-fetch failed", {
+        area: "results-fetch",
+        tournament_platform: "hivee",
+        tournament_url: tournamentUrl,
+        entrant_id: entrantId,
+        error: message,
+      });
+      dispatch({ type: "FETCH_RESULTS_FAIL", payload: message });
+      logEvent("results_fetch_fail", {
+        tournament_platform: "hivee",
+        stage: "player",
+        reason: "query_error",
+        tournament_url: tournamentUrl,
+        entrant_id: entrantId,
+      });
+    }
+  };
+
   const fetchPlayerResults = async (entrantId: string) => {
     const myRequest = ++requestIdRef.current;
     dispatch({ type: "FETCH_RESULTS_START" });
+
+    const detected = detectPlatformAndSlug(
+      useResultsStore.getState().tournamentUrl,
+    );
+    if (detected?.platform === "hivee") {
+      await fetchHiveeResults(detected.slug, entrantId, myRequest);
+      return;
+    }
 
     // Snapshot tournament context at call time so a slow fetch doesn't
     // pin stale values and so the catch block below has them available

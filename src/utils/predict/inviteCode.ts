@@ -6,12 +6,14 @@ const PLATFORM_TO_CHAR: Record<Platform, string> = {
   startgg: "s",
   challonge: "c",
   tonamel: "t",
+  hivee: "h",
 };
 
 const CHAR_TO_PLATFORM: Record<string, Platform> = {
   s: "startgg",
   c: "challonge",
   t: "tonamel",
+  h: "hivee",
 };
 
 const MAX_DECODED_LENGTH = 512;

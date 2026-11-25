@@ -131,7 +131,7 @@ export const LookPanel = () => {
         </div>
         {!look.logo && eventIcon && (
           <p className={styles.note}>
-            <Trans>Using the tournament's icon from start.gg.</Trans>
+            <Trans>Using the tournament's icon.</Trans>
           </p>
         )}
       </section>
