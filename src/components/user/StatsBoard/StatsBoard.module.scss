@@ -77,14 +77,6 @@
   border-radius: var(--radius-lg);
   background: var(--bg-surface);
   animation: tileIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) var(--delay) backwards;
-  transition:
-    border-color var(--duration-slow) var(--ease-in-out),
-    transform var(--duration-slow) var(--ease-in-out);
-
-  &:hover {
-    border-color: var(--brand-outline);
-    transform: translateY(-2px);
-  }
 }
 
 .wide {
@@ -486,9 +478,5 @@
   .ringValue,
   .characterBar span {
     animation: none;
-  }
-
-  .tile:hover {
-    transform: none;
   }
 }
