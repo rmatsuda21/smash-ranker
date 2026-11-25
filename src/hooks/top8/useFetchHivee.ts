@@ -43,7 +43,7 @@ import {
   getPlacements,
   padPlayersWithBlanks,
 } from "@/utils/top8/samplePlayers";
-import { EMPTY_CHARACTER_ID } from "@/consts/top8/characters";
+import { noCharacters } from "@/utils/top8/playerCharacters";
 
 // Hivee's images allow any origin, so the icon is fetched as it is and kept
 // in IndexedDB like the other platforms' icons.
@@ -90,9 +90,7 @@ const toPlayers = (
       entrantId: row.participant_id,
       name,
       gamerTag: name,
-      characters: characters.get(row.participant_id) ?? [
-        { id: EMPTY_CHARACTER_ID, alt: 0 as const },
-      ],
+      characters: characters.get(row.participant_id) ?? noCharacters(),
       // Someone still in the bracket has no placement yet.
       placement: row.placement ?? slotPlacements[index],
       prefix: undefined,

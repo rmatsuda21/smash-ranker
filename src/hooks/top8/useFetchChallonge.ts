@@ -7,7 +7,7 @@ import {
   assignPlacementsToPlayers,
   padPlayersWithBlanks,
 } from "@/utils/top8/samplePlayers";
-import { EMPTY_CHARACTER_ID } from "@/consts/top8/characters";
+import { noCharacters } from "@/utils/top8/playerCharacters";
 import { getGameForName } from "@/utils/games";
 import { useToast } from "@/components/Toast";
 import { logEvent } from "@/utils/observability/log";
@@ -70,7 +70,7 @@ const parseParticipants = (
       entrantId: String(p.id),
       name: p.name,
       gamerTag: p.name,
-      characters: [{ id: EMPTY_CHARACTER_ID, alt: 0 as const }],
+      characters: noCharacters(),
       placement: p.final_rank ?? p.seed ?? 0,
       prefix: undefined,
       twitter: undefined,

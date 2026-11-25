@@ -14,6 +14,7 @@ import { composeFontStyle } from "@/utils/fonts/fontLoader";
 import { evaluateElementCondition } from "@/utils/top8/evaluateElementCondition";
 import { resolveElementText } from "@/utils/top8/resolveElementText";
 import { getTeamMember } from "@/utils/top8/teamMember";
+import { getCharacters } from "@/utils/top8/playerCharacters";
 import {
   fitText,
   fitWrappedFontSize,
@@ -88,8 +89,8 @@ export const getElementMainSize = (
       if (!player) return 0;
 
       const totalItems = altEl.includeMainCharacter
-        ? player.characters.length
-        : player.characters.length - 1;
+        ? getCharacters(player).length
+        : getCharacters(player).length - 1;
       const numItems =
         altEl.characterIndex === undefined
           ? totalItems

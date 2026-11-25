@@ -14,10 +14,9 @@ import type { CharacerData } from "@/types/top8/Player";
 import type { ElementCreator } from "@/types/top8/ElementFactory";
 import { CustomImage } from "@/components/top8/Canvas/CustomImage";
 import {
-  EMPTY_CHARACTER_ID,
-  EMPTY_CHARACTER_DARK_IMG,
-} from "@/consts/top8/characters";
-import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
+  getCanvasCharacterSrc,
+  getCharacters,
+} from "@/utils/top8/playerCharacters";
 import { getCharacterCrop } from "@/utils/top8/getCharacterCrop";
 import { resolveColor } from "@/utils/top8/resolveColor";
 import { getTeamMember } from "@/utils/top8/teamMember";
@@ -36,28 +35,10 @@ export const createCharacterImageElement: ElementCreator<
   const { design } = context;
   const player = getTeamMember(context.player, element.member);
 
-  // A team's second player always has a figure: with no teammate yet, or one
-  // with no character, the slot shows the "no character" art, as a loaded
-  // player with no picks does.
-  const character =
-    player?.characters[0] ??
-    (element.member === "teammate"
-      ? ({ id: EMPTY_CHARACTER_ID, alt: 0 } satisfies CharacerData)
-      : undefined);
-
-  if (!character) {
-    return (
-      <Rect
-        key={getElementKey(element, index)}
-        x={element.position.x}
-        y={element.position.y}
-        width={element.size?.width ?? 100}
-        height={element.size?.height ?? 100}
-        fill="#000000"
-        perfectDrawEnabled={context.perfectDraw}
-      />
-    );
-  }
+  // Every slot has a figure. A player with no character, and a team's
+  // second player who is not there yet, get the "no character" art.
+  if (!player && element.member !== "teammate") return null;
+  const character = getCharacters(player)[0];
 
   const characterCrop = getCharacterCrop(
     character.id,
@@ -69,12 +50,7 @@ export const createCharacterImageElement: ElementCreator<
   // A stock icon is already just the head, so it has no crop to apply.
   const uncropped = element.uncropped || isStock;
 
-  let imageSrc = getCharImgUrl({
-    characterId: character.id,
-    alt: character.alt,
-    type: isStock ? "stock" : "main",
-    style: character.style,
-  });
+  let imageSrc = getCanvasCharacterSrc(character, isStock ? "stock" : "main");
   let cropOffset = uncropped ? { x: 0, y: 0 } : characterCrop.offset;
   let cropScale =
     (uncropped ? 1 : characterCrop.scale) * (element.cropScaleMultiplier ?? 1);
@@ -84,8 +60,6 @@ export const createCharacterImageElement: ElementCreator<
     imageSrc = player.avatarImgSrc;
     cropOffset = { x: 0, y: 0 };
     cropScale = 1;
-  } else if (character.id === EMPTY_CHARACTER_ID) {
-    imageSrc = EMPTY_CHARACTER_DARK_IMG;
   }
 
   return (
@@ -118,19 +92,15 @@ export const createAltCharacterImageElement: ElementCreator<
 > = ({ element, index, context }) => {
   const player = getTeamMember(context.player, element.member);
 
-  if (!player || player.characters.length <= 1) {
+  const altCharacters = player ? getCharacters(player).slice(1) : [];
+
+  if (altCharacters.length === 0) {
     return null;
   }
 
-  const altCharacters = player.characters.slice(1);
-
   const characterImageElements: ImageElementConfig[] = altCharacters.map(
     (character, altIndex) => {
-      const imageSrc = getCharImgUrl({
-        characterId: character.id,
-        alt: character.alt,
-        type: "stock",
-      });
+      const imageSrc = getCanvasCharacterSrc(character, "stock");
 
       return {
         type: "image",
@@ -184,8 +154,8 @@ export const createCustomAltCharacterImageElement: ElementCreator<
   if (!player) return null;
 
   const allCharacters = element.includeMainCharacter
-    ? player.characters
-    : player.characters.slice(1);
+    ? getCharacters(player)
+    : getCharacters(player).slice(1);
   const characters =
     element.characterIndex === undefined
       ? allCharacters
@@ -209,12 +179,10 @@ export const createCustomAltCharacterImageElement: ElementCreator<
 
   const characterImageElements: ImageElementConfig[] = characters.map(
     (character, altIndex) => {
-      const imageSrc = getCharImgUrl({
-        characterId: character.id,
-        alt: character.alt,
-        type: imageType === "render" ? "main" : "stock",
-        style: character.style,
-      });
+      const imageSrc = getCanvasCharacterSrc(
+        character,
+        imageType === "render" ? "main" : "stock",
+      );
 
       return {
         type: "image",
@@ -498,12 +466,10 @@ function renderTemplateForCharacter(
 
   if (template.type === "characterImage") {
     const charEl = template as CharacterImageElementConfig;
-    const imageSrc = getCharImgUrl({
-      characterId: character.id,
-      alt: character.alt,
-      type: imageType === "render" ? "main" : "stock",
-      style: character.style,
-    });
+    const imageSrc = getCanvasCharacterSrc(
+      character,
+      imageType === "render" ? "main" : "stock",
+    );
 
     if (imageType === "render") {
       const characterCrop = getCharacterCrop(

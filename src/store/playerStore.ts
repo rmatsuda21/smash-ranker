@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { createJSONStorage, devtools, persist } from "zustand/middleware";
 
 import { CharacerData, PlayerInfo } from "@/types/top8/Player";
-import { EMPTY_CHARACTER_ID } from "@/consts/top8/characters";
+import { hasNoCharacter } from "@/utils/top8/playerCharacters";
 import { createSamplePlayers } from "@/utils/top8/samplePlayers";
 import { applyRenderStyle } from "@/utils/top8/renderStyle";
 import { DEFAULT_RENDER_STYLE } from "@/consts/games";
@@ -42,14 +42,6 @@ type PlayerAction =
       >;
     }
   | { type: "RESET" };
-
-const hasNoCharacter = ({
-  characters,
-}: {
-  characters: CharacerData[];
-}): boolean =>
-  characters.length === 0 ||
-  (characters.length === 1 && characters[0].id === EMPTY_CHARACTER_ID);
 
 const playerReducer = (
   state: PlayerState,

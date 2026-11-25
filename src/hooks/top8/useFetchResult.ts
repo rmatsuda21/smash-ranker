@@ -14,7 +14,7 @@ import {
   padPlayersWithBlanks,
 } from "@/utils/top8/samplePlayers";
 import { getMultiGroupError } from "@/consts/errors";
-import { EMPTY_CHARACTER_ID } from "@/consts/top8/characters";
+import { noCharacters } from "@/utils/top8/playerCharacters";
 import { isKnownCharacter } from "@/utils/top8/characterCatalog";
 import {
   saveTournamentImage,
@@ -241,7 +241,7 @@ const toTeammate = (participant: NonNullable<Participant>): TeammateInfo => {
     prefix: participant.prefix || undefined,
     twitter:
       participant.user?.authorizations?.[0]?.externalUsername || undefined,
-    characters: [],
+    characters: noCharacters(),
     country: countryCode || undefined,
   };
 };
@@ -297,7 +297,7 @@ const extractPlayerFromStanding = (standing: StandingNode): ParsedStanding => {
       gamerTag,
       prefix: player?.prefix || undefined,
       twitter: twitterHandle || undefined,
-      characters: [],
+      characters: noCharacters(),
       placement,
       country: countryCode || undefined,
     },
@@ -437,7 +437,7 @@ const sortCharactersByUsage = (usageCount: Map<string, number>): string[] => {
 const toCharacters = (characterIds: string[]): CharacerData[] =>
   characterIds.length > 0
     ? characterIds.map((id) => ({ id, alt: 0 }))
-    : [{ id: EMPTY_CHARACTER_ID, alt: 0 }];
+    : noCharacters();
 
 type MemberCharacters = { player: CharacerData[]; teammate?: CharacerData[] };
 

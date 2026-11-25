@@ -4,6 +4,7 @@ import { useLingui } from "@lingui/react";
 
 import { usePlayerStore } from "@/store/playerStore";
 import { useCanvasStore } from "@/store/canvasStore";
+import { getCharacters } from "@/utils/top8/playerCharacters";
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
 
 import styles from "./PlayersEditor.module.scss";
@@ -22,7 +23,7 @@ export const PlayerSelector = () => {
   return Array.from({ length: playerCount }).map((_unused, index) => {
     const isSelected = selectedPlayerIndex === index;
     const player = players[index];
-    const main = player?.characters[0];
+    const main = player && getCharacters(player)[0];
     const slot = index + 1;
 
     return (

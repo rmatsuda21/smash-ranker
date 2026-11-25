@@ -1,6 +1,8 @@
 import { CharacerData, PlayerInfo } from "@/types/top8/Player";
 import { getPlacements } from "@/utils/placements";
 
+import { noCharacters } from "@/utils/top8/playerCharacters";
+
 export { getPlacements };
 
 const DEFAULT_PLAYER: PlayerInfo = {
@@ -17,7 +19,7 @@ export const createBlankPlayer = (placement: number): PlayerInfo => ({
   id: `blank-${crypto.randomUUID()}`,
   entrantId: "",
   name: "",
-  characters: [],
+  characters: noCharacters(),
   placement,
   gamerTag: "",
   prefix: "",

@@ -8,7 +8,7 @@ import {
   padPlayersWithBlanks,
 } from "@/utils/top8/samplePlayers";
 import { getMultiGroupError } from "@/consts/errors";
-import { EMPTY_CHARACTER_ID } from "@/consts/top8/characters";
+import { noCharacters } from "@/utils/top8/playerCharacters";
 import { getGameForName } from "@/utils/games";
 import { useToast } from "@/components/Toast";
 import { logEvent, logWarning } from "@/utils/observability/log";
@@ -88,7 +88,7 @@ const toPlayerInfo = (
   entrantId: playerId || `tonamel-${index}`,
   name: displayName,
   gamerTag: displayName,
-  characters: [{ id: EMPTY_CHARACTER_ID, alt: 0 as const }],
+  characters: noCharacters(),
   placement,
   prefix: undefined,
   twitter: undefined,

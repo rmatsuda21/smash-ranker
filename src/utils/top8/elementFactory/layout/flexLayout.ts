@@ -2,6 +2,7 @@
  * Flexbox-style layout for `flexGroup` elements. Pure functions: element
  * configs in, positioned element configs out.
  */
+import { getCharacters } from "@/utils/top8/playerCharacters";
 import type {
   ElementConfig,
   FlexAlign,
@@ -42,7 +43,7 @@ const expandInlineCharacters = (
   return elements.flatMap<ElementConfig>((el) => {
     if (el.type !== "customAltCharacterImage" || !el.inline) return [el];
 
-    const characters = context.player?.characters ?? [];
+    const characters = context.player ? getCharacters(context.player) : [];
     const count = el.includeMainCharacter
       ? characters.length
       : characters.length - 1;

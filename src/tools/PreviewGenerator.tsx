@@ -13,6 +13,7 @@ import {
   createSampleTeams,
   SAMPLE_LINEUP_COUNT,
 } from "@/utils/top8/samplePlayers";
+import { noCharacters } from "@/utils/top8/playerCharacters";
 import { loadFamily } from "@/utils/fonts/fontLoader";
 import { TournamentInfo } from "@/types/top8/Tournament";
 import { DBTemplate } from "@/types/Repository";
@@ -357,6 +358,25 @@ const crowdedDoubles = {
   tournament: { ...longNameTournament, eventName: "Ultimate Doubles" },
 };
 
+// A tournament that has not started: named players with no characters. Every
+// other one holds an empty list, as data saved by older versions does, and
+// must draw the same as the "no character" entry beside it.
+const noCharacterPlayers = samplePlayers.map((player, index) => ({
+  ...player,
+  characters: index % 2 === 0 ? [] : noCharacters(),
+}));
+const noCharacterTeams = sampleTeams.map((team, index) => ({
+  ...team,
+  characters: index % 2 === 0 ? [] : noCharacters(),
+  teammate:
+    index % 3 === 2
+      ? undefined
+      : team.teammate && {
+          ...team.teammate,
+          characters: index % 2 === 0 ? noCharacters() : [],
+        },
+}));
+
 // Golden-only cases: variations of built-in templates that exercise code the
 // plain templates don't. They never become picker thumbnails.
 const GOLDEN_ONLY_TEMPLATES: PreviewTemplate[] = [
@@ -561,6 +581,50 @@ const GOLDEN_ONLY_TEMPLATES: PreviewTemplate[] = [
     design: kagaribiDesign,
     font: "Dela Gothic One",
     players: multiCharacterPlayers,
+  },
+  // Players with no character: the "no character" art, never a hole.
+  {
+    id: "tape-no-characters",
+    name: "Tape, no characters",
+    design: tapeDesign,
+    font: "Dela Gothic One",
+    players: noCharacterPlayers,
+  },
+  {
+    id: "minimal-dark-no-characters",
+    name: "8 Players (Dark), no characters",
+    design: minimalDarkDesign,
+    font: "Noto Sans JP",
+    players: noCharacterPlayers,
+  },
+  {
+    id: "high-score-no-characters",
+    name: "High Score, no characters",
+    design: highScoreDesign,
+    font: "DotGothic16",
+    players: noCharacterPlayers,
+  },
+  {
+    id: "neon-sign-no-characters",
+    name: "Neon Sign, no characters",
+    design: neonSignDesign,
+    font: "M PLUS Rounded 1c",
+    players: noCharacterPlayers,
+  },
+  {
+    id: "top8er-no-characters",
+    name: "Original, no characters",
+    design: top8erDesign,
+    font: "Noto Sans JP",
+    players: noCharacterPlayers,
+  },
+  {
+    id: "tag-team-no-characters",
+    name: "Tag Team, no characters",
+    design: tagTeamDesign,
+    font: "RocknRoll One",
+    players: noCharacterTeams,
+    tournament: SAMPLE_DOUBLES_TOURNAMENT,
   },
 ];
 

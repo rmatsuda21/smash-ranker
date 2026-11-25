@@ -29,7 +29,7 @@ import {
   FieldRow,
   FieldStack,
 } from "@/components/top8/EditorForm/EditorForm";
-import { EMPTY_CHARACTER_ID } from "@/consts/top8/characters";
+import { getCharacters, noCharacters } from "@/utils/top8/playerCharacters";
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
 import { createBlankPlayer } from "@/utils/top8/samplePlayers";
 import { useConfirmation } from "@/hooks/useConfirmation";
@@ -47,7 +47,7 @@ const BLANK_TEAMMATE: TeammateInfo = {
   name: "",
   gamerTag: "",
   prefix: "",
-  characters: [{ id: EMPTY_CHARACTER_ID, alt: 0 }],
+  characters: noCharacters(),
   twitter: "",
   country: "",
 };
@@ -204,7 +204,7 @@ export const PlayersEditor = ({ className }: Props) => {
   });
 
   const disabled = !selectedPlayer;
-  const mainCharacter = edited?.characters[0];
+  const mainCharacter = edited && getCharacters(edited)[0];
   const hasCustomImages = Boolean(
     edited?.avatarImgSrc || edited?.customFlagSrc,
   );
@@ -323,7 +323,7 @@ export const PlayersEditor = ({ className }: Props) => {
         </div>
         <CharacterEditor
           key={activeMember}
-          characters={edited?.characters ?? []}
+          characters={edited ? getCharacters(edited) : []}
           onCharactersChange={handleCharactersChange}
           disabled={disabled}
         />
