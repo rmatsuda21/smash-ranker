@@ -15,7 +15,7 @@ import { type MessageDescriptor } from "@lingui/core";
 import { usePredictionStore } from "@/store/predictionStore";
 import { ExportBar } from "@/components/predict/ExportBar/ExportBar";
 import type { PredictionPalette } from "@/types/predict/PredictionPalette";
-import { logError, logWarning } from "@/utils/observability/log";
+import { logError, logEvent, logWarning } from "@/utils/observability/log";
 
 import styles from "./PredictionPreview.module.scss";
 
@@ -88,6 +88,7 @@ export const PredictionPreview = ({ cacheRef }: Props) => {
       country: p.country,
     })),
   };
+  const predictionCount = predictions.length;
   const cacheKey = JSON.stringify(payload);
   const requestUrl = `/api/prediction-image?d=${base64urlEncode(cacheKey)}`;
   const styleVars = paletteToStyleVars(palette);
@@ -115,6 +116,14 @@ export const PredictionPreview = ({ cacheRef }: Props) => {
     setImageUrl(null);
     setBlob(null);
 
+    const startedAt = performance.now();
+    const exportContext = {
+      export_surface: "predict" as const,
+      export_format: "png" as const,
+      prediction_count: predictionCount,
+    };
+    logEvent("graphic_export_start", exportContext);
+
     const generate = async () => {
       try {
         const res = await fetch(requestUrl);
@@ -122,6 +131,12 @@ export const PredictionPreview = ({ cacheRef }: Props) => {
         if (cancelled) return;
         if (!res.ok) {
           setError(true);
+          logEvent("graphic_export_fail", {
+            ...exportContext,
+            failure_kind: "post_process",
+            status: res.status,
+            duration_ms: Math.round(performance.now() - startedAt),
+          });
           // The payload is built by this client, so any non-2xx is a bug on
           // our side (a crashed function or a payload the server rejects).
           logError(
@@ -151,6 +166,11 @@ export const PredictionPreview = ({ cacheRef }: Props) => {
       } catch (err) {
         if (cancelled) return;
         setError(true);
+        logEvent("graphic_export_fail", {
+          ...exportContext,
+          failure_kind: "query_error",
+          duration_ms: Math.round(performance.now() - startedAt),
+        });
         // A thrown fetch is a network condition (offline, blocked request),
         // not a server bug, so it stays a warning.
         logWarning("prediction image fetch threw", {
@@ -165,7 +185,7 @@ export const PredictionPreview = ({ cacheRef }: Props) => {
     return () => {
       cancelled = true;
     };
-  }, [cacheKey, requestUrl, cacheRef]);
+  }, [cacheKey, requestUrl, cacheRef, predictionCount]);
 
   useEffect(() => {
     if (!imageUrl) return;

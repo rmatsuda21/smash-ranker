@@ -13,6 +13,8 @@ import { MISSING_SEED_FALLBACK } from "@/utils/results/parseStartggResults";
 import { fetchEventEntrants } from "@/utils/startgg/fetchEventEntrants";
 import { loadHiveeEventData } from "@/utils/hivee/eventData";
 import { buildHiveeEntrantPool } from "@/utils/hivee/results";
+import { LoadError, reportLoadFailure } from "@/utils/loadError";
+import { startggLoadError } from "@/utils/startgg/describeError";
 
 const ResultsEventMetaQueryDoc = graphql(`
   query ResultsEventMeta($slug: String!) {
@@ -69,7 +71,7 @@ const fetchStartgg = async (
     .toPromise();
 
   if (metaResult.error || !metaResult.data?.event) {
-    throw new Error(metaResult.error?.message || t`Tournament not found`);
+    throw startggLoadError(metaResult.error, t`Tournament not found`);
   }
 
   const event = metaResult.data.event;
@@ -126,7 +128,7 @@ const fetchHivee = async (slug: string): Promise<FetchResult> => {
   const data = await loadHiveeEventData(slug, { fresh: true });
   const entrants = buildHiveeEntrantPool(data);
   if (entrants.length === 0) {
-    throw new Error(t`This event has no standings yet.`);
+    throw new LoadError(t`This event has no standings yet.`, "unsupported");
   }
   const { event, program } = data;
   return {
@@ -168,7 +170,7 @@ export const useFetchResultsEntrantPool = () => {
       logEvent("results_fetch_fail", {
         tournament_platform: detected.platform,
         stage: "pool",
-        reason: "unsupported_platform",
+        failure_kind: "unsupported",
         tournament_slug: detected.slug,
       });
       return;
@@ -231,17 +233,22 @@ export const useFetchResultsEntrantPool = () => {
       if (myRequest !== requestIdRef.current) return;
       const message =
         error instanceof Error ? error.message : t`Failed to fetch tournament`;
-      logWarning("results pool-fetch failed", {
-        area: "results-fetch",
-        tournament_platform: detected.platform,
-        tournament_slug: detected.slug,
-        error: message,
-      });
+      // A mistyped or private event is the user's input: counted below, not
+      // sent to Sentry.
+      const failureKind = reportLoadFailure(
+        "results pool-fetch failed",
+        error,
+        {
+          area: "results-fetch",
+          tournament_platform: detected.platform,
+          tournament_slug: detected.slug,
+        },
+      );
       dispatch({ type: "FETCH_POOL_FAIL", payload: message });
       logEvent("results_fetch_fail", {
         tournament_platform: detected.platform,
         stage: "pool",
-        reason: "query_error",
+        failure_kind: failureKind,
         tournament_slug: detected.slug,
       });
     }

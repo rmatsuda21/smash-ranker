@@ -1,4 +1,5 @@
 import { type Platform, slugToUrl } from "@/consts/platforms";
+import { logEvent } from "@/utils/observability/log";
 import { encodeInvite } from "@/utils/predict/inviteCode";
 
 // Links that open a tool with a start.gg or Hivee event already loading.
@@ -12,6 +13,13 @@ const platformOfSlug = (slug: string): Platform =>
 // The URL a tool loads for a tool link's slug.
 export const toolLinkUrl = (slug: string): string =>
   slugToUrl(platformOfSlug(slug), slug);
+
+export type ToolLinkTool = "ranker" | "recap" | "predict" | "tournament";
+export type ToolLinkSource = "home" | "profile" | "tournament";
+
+// For a tool link's onClick: which tool was opened, and from where.
+export const logToolLinkClick = (tool: ToolLinkTool, source: ToolLinkSource) =>
+  logEvent("tool_link_click", { tool, source });
 
 export const TOOL_LINK_PARAMS = { slug: "s", entrant: "e" } as const;
 

@@ -1,6 +1,7 @@
 import {
   lazy,
   Suspense,
+  useEffect,
   useLayoutEffect,
   useMemo,
   useRef,
@@ -84,7 +85,12 @@ export const UserPage = () => {
   const game = chosen ?? pickProfileGame(gameCounts);
   const playedGames = getPlayedGames(gameCounts);
 
-  const { events, total, status } = useUserEvents({
+  const {
+    events,
+    total,
+    status,
+    retry: retryEvents,
+  } = useUserEvents({
     game,
     perPage: EVENTS_PER_PAGE,
     maxPages: MAX_EVENT_PAGES,
@@ -103,7 +109,16 @@ export const UserPage = () => {
             .join(","),
     [status, events],
   );
-  const { sets, status: setsStatus } = useUserSets(SET_PAGES, setEventIds);
+  const {
+    sets,
+    status: setsStatus,
+    retry: retrySets,
+  } = useUserSets(SET_PAGES, setEventIds);
+
+  const isLoggedIn = user !== null;
+  useEffect(() => {
+    if (isLoggedIn) logEvent("profile_view", {});
+  }, [isLoggedIn]);
 
   // The page is at its final height once the events are in and the set
   // tiles above the list have stopped loading.
@@ -157,6 +172,14 @@ export const UserPage = () => {
   // An account with nothing to show (or nothing loaded) has no panes.
   const isEmpty = status === "done" && events.length === 0;
   const isFailed = status === "error" && events.length === 0;
+  // Some pages of tournaments, or the sets, never arrived: the list and the
+  // stats built on them are short, and say so.
+  const eventsPartial = status === "error" && events.length > 0;
+  const statsIncomplete = eventsPartial || setsStatus === "error";
+  const retryIncomplete = () => {
+    if (eventsPartial) retryEvents();
+    else retrySets();
+  };
   const showList = isWide || tab === "list";
   // Mounted only while visible, so the numbers count up when the user gets
   // to them.
@@ -167,6 +190,7 @@ export const UserPage = () => {
   const selectGame = (next: GameId) => {
     setChosen(next);
     rememberProfileGame(next);
+    logEvent("profile_game_switch", { game: next });
     // A different list: start it from the top.
     if (rootRef.current) rootRef.current.scrollTop = 0;
     if (listPaneRef.current) listPaneRef.current.scrollTop = 0;
@@ -281,11 +305,17 @@ export const UserPage = () => {
         </header>
 
         {isFailed ? (
-          <p className={styles.error}>
-            <Trans>
-              Couldn't reach start.gg for your tournaments. Try again in a bit.
-            </Trans>
-          </p>
+          <div className={styles.error}>
+            <p>
+              <Trans>
+                Couldn't reach start.gg for your tournaments. Try again in a
+                bit.
+              </Trans>
+            </p>
+            <Button variant="outline" size="sm" onClick={retryEvents}>
+              <Trans>Try again</Trans>
+            </Button>
+          </div>
         ) : isEmpty ? (
           <EmptyProfile />
         ) : (
@@ -335,6 +365,8 @@ export const UserPage = () => {
                   events={events}
                   total={total}
                   loading={status === "loading"}
+                  partial={eventsPartial}
+                  onRetry={retryEvents}
                 />
               </div>
 
@@ -348,6 +380,23 @@ export const UserPage = () => {
                   <h2 className={styles.paneTitle}>
                     <Trans>Your stats</Trans>
                   </h2>
+                  {eventsSettled && statsIncomplete && (
+                    <div className={styles.notice} role="status">
+                      <p>
+                        <Trans>
+                          Some of your results didn't load, so these stats are
+                          incomplete.
+                        </Trans>
+                      </p>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={retryIncomplete}
+                      >
+                        <Trans>Try again</Trans>
+                      </Button>
+                    </div>
+                  )}
                   {eventsSettled ? (
                     <StatsBoard
                       key={game}

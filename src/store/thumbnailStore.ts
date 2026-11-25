@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { createJSONStorage, persist } from "zustand/middleware";
 
 import { DEFAULT_GAME, GAMES } from "@/consts/games";
 import { DEFAULT_THUMBNAIL_FONT } from "@/consts/thumbnail/thumbnail";
@@ -18,6 +18,11 @@ import {
   makeSampleMatch,
   pickSetFilter,
 } from "@/utils/thumbnail/match";
+import {
+  safeLocalStorage,
+  mergePersisted,
+  isRecord,
+} from "@/utils/safeStorage";
 
 // What undo and redo restore.
 type Snapshot = {
@@ -90,6 +95,13 @@ const mapCurrentMatch = (
     ),
   };
 };
+
+// A saved match the painter can draw: it reads both sides without checking.
+const isMatch = (value: unknown): boolean =>
+  isRecord(value) &&
+  Array.isArray(value.sides) &&
+  value.sides.length === 2 &&
+  value.sides.every((side) => isRecord(side) && isRecord(side.offset));
 
 export const DEFAULT_LOOK: ThumbnailLook = {
   templateId: "split",
@@ -263,6 +275,15 @@ export const useThumbnailStore = create<State & Actions>()(
       // "thumbnail-store" that this one cannot read.
       name: "thumbnail-maker",
       version: 1,
+      storage: createJSONStorage(() => safeLocalStorage),
+      merge: mergePersisted<State>({
+        guards: {
+          manual: isMatch,
+          sets: (value) => Array.isArray(value) && value.every(isMatch),
+          selectedSetId: (value) => value === null || typeof value === "string",
+          event: (value) => value === null || isRecord(value),
+        },
+      }),
       // Everything but the undo history.
       partialize: (state) => ({
         game: state.game,

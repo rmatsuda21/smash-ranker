@@ -1,5 +1,5 @@
 import { PLATFORM_LABELS } from "@/consts/platforms";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import cn from "classnames";
 import { Link, useLocation, useSearch } from "wouter";
 import { Plural, Trans } from "@lingui/react/macro";
@@ -14,6 +14,7 @@ import {
 import "@fontsource/big-shoulders-display/latin-800";
 import "@fontsource/big-shoulders-display/latin-900";
 
+import { Button } from "@/components/shared/Button/Button";
 import { Spinner } from "@/components/shared/Spinner/Spinner";
 import { BracketTab } from "@/components/tournament/BracketTab/BracketTab";
 import { InfoTab } from "@/components/tournament/InfoTab/InfoTab";
@@ -25,6 +26,7 @@ import type {
   TournamentDetails,
   TournamentStatus,
 } from "@/types/tournament/Tournament";
+import { logEvent } from "@/utils/observability/log";
 import {
   formatTournamentDates,
   formatTournamentPlace,
@@ -129,6 +131,15 @@ const Loaded = ({ tournament }: { tournament: TournamentDetails }) => {
 
   const overview = useEventOverview(event);
 
+  // Once per tournament: `Loaded` is keyed by its id.
+  useEffect(() => {
+    logEvent("tournament_page_view", {
+      tournament_platform: tournament.platform,
+      has_event_param: new URLSearchParams(window.location.search).has("event"),
+      event_count: tournament.events.length,
+    });
+  }, [tournament.platform, tournament.events.length]);
+
   const selectedIndex = event ? tournament.events.indexOf(event) : -1;
   const shownEvents =
     showAllEvents || tournament.events.length <= EVENTS_SHOWN + 1
@@ -226,9 +237,11 @@ const Loaded = ({ tournament }: { tournament: TournamentDetails }) => {
                 role="tab"
                 aria-selected={tab === id}
                 className={cn(styles.tab, tab === id && styles.active)}
-                onClick={() =>
-                  setParams({ tab: id === "overview" ? null : id })
-                }
+                onClick={() => {
+                  if (id !== tab)
+                    logEvent("tournament_tab_switch", { tab: id });
+                  setParams({ tab: id === "overview" ? null : id });
+                }}
               >
                 {_(TAB_LABELS[id])}
               </button>
@@ -243,6 +256,7 @@ const Loaded = ({ tournament }: { tournament: TournamentDetails }) => {
               event={event}
               overview={overview.data}
               status={overview.status}
+              onRetry={overview.retry}
               onShowStandings={() => setParams({ tab: "standings" })}
               onShowBracket={() => setParams({ tab: "bracket" })}
             />
@@ -278,7 +292,7 @@ const Loaded = ({ tournament }: { tournament: TournamentDetails }) => {
 };
 
 export const TournamentPage = ({ id }: { id: string }) => {
-  const { data: tournament, status } = useTournament(id);
+  const { data: tournament, status, retry } = useTournament(id);
 
   return (
     <div className={styles.root}>
@@ -300,7 +314,7 @@ export const TournamentPage = ({ id }: { id: string }) => {
           </h1>
           <p>
             {status === "error" ? (
-              <Trans>Check your connection and reload the page.</Trans>
+              <Trans>Check your connection and try again.</Trans>
             ) : (
               <Trans>
                 There is no tournament with this id. It may have been deleted or
@@ -308,6 +322,11 @@ export const TournamentPage = ({ id }: { id: string }) => {
               </Trans>
             )}
           </p>
+          {status === "error" && (
+            <Button variant="solid" onClick={retry}>
+              <Trans>Try again</Trans>
+            </Button>
+          )}
           <Link className={styles.action} href="/">
             <Trans>Back to home</Trans>
           </Link>

@@ -10,8 +10,23 @@
 
 export type TournamentPlatform = "startgg" | "challonge" | "tonamel" | "hivee";
 
+// Why a load failed. `not_found` and `unsupported` are the user's input;
+// the rest say something about us or the platform.
 export type FetchFailureKind =
-  "query_error" | "not_found" | "multi_group" | "post_process";
+  | "query_error"
+  | "not_found"
+  | "unsupported"
+  | "multi_group"
+  | "post_process"
+  | "rate_limited"
+  | "upstream"
+  | "network";
+
+// Why an export or upload failed.
+export type ExportFailureKind =
+  "blob_null" | "render_threw" | "duplicate_family" | "invalid_font";
+
+export type FailureKind = FetchFailureKind | ExportFailureKind;
 
 export type ExportSurface =
   | "predict"
@@ -22,7 +37,10 @@ export type ExportSurface =
   | "player_card"
   | "recap";
 
-export type ShareMethod = "clipboard" | "url";
+// How an image left the app. Saving (`share_sheet`, `download`) is logged as
+// `graphic_export_complete`; copying (`clipboard`) and links (`url`) as
+// `graphic_share`.
+export type ShareMethod = "clipboard" | "url" | "share_sheet" | "download";
 
 // Outcome events fire on UI-visible state transitions. Funnel-shaped: pair
 // each `_start` with a `_complete` and a `_fail` so success rate is queryable.
@@ -39,9 +57,21 @@ export type EventName =
   | "results_fetch_fail"
   | "results_entrant_select"
   // start.gg login
+  | "user_login_start"
   | "user_login"
   | "user_login_fail"
   | "user_logout"
+  // Profile (/me)
+  | "profile_view"
+  | "profile_game_switch"
+  // Tournament page
+  | "tournament_page_view"
+  | "tournament_page_fail"
+  | "tournament_tab_switch"
+  // Links from the home page, the profile and the tournament page into a tool
+  | "tool_link_click"
+  // Tier list
+  | "tier_design_change"
   // Yearly recap
   | "recap_open"
   | "recap_finish"
@@ -55,6 +85,8 @@ export type EventName =
   // Customization
   | "template_select"
   | "template_favorite"
+  | "template_save"
+  | "template_delete"
   | "custom_font_upload"
   | "custom_font_upload_fail"
   | "custom_asset_upload";

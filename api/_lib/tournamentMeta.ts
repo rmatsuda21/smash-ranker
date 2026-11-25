@@ -10,6 +10,36 @@ export type TournamentMeta = {
   startAt: string | null;
 };
 
+import { captureFnException } from "./withLogging.js";
+
+// "No such tournament" (`not_found`) is the link's fault; `failed` is ours or
+// the platform's (missing key, 5xx, timeout) and is logged and reported.
+export type TournamentMetaResult =
+  | { status: "ok"; meta: TournamentMeta }
+  | { status: "not_found" }
+  | { status: "failed" };
+
+class MetaConfigError extends Error {
+  constructor(readonly variable: string) {
+    super(`${variable} is not set`);
+    this.name = "MetaConfigError";
+  }
+}
+
+class MetaUpstreamError extends Error {
+  constructor(readonly status: number) {
+    super(`upstream answered ${status}`);
+    this.name = "MetaUpstreamError";
+  }
+}
+
+// A 404 is "not found" (null); any other failure status is the upstream's.
+const okOrNotFound = (res: Response): boolean => {
+  if (res.ok) return true;
+  if (res.status === 404) return false;
+  throw new MetaUpstreamError(res.status);
+};
+
 const FETCH_TIMEOUT_MS = 4000;
 
 const fetchWithTimeout = async (
@@ -44,7 +74,7 @@ const STARTGG_QUERY = `
 
 const fetchStartGG = async (slug: string): Promise<TournamentMeta | null> => {
   const token = process.env.VITE_START_GG_TOKEN;
-  if (!token) return null;
+  if (!token) throw new MetaConfigError("VITE_START_GG_TOKEN");
 
   const res = await fetchWithTimeout(STARTGG_GQL, {
     method: "POST",
@@ -54,7 +84,7 @@ const fetchStartGG = async (slug: string): Promise<TournamentMeta | null> => {
     },
     body: JSON.stringify({ query: STARTGG_QUERY, variables: { slug } }),
   });
-  if (!res.ok) return null;
+  if (!okOrNotFound(res)) return null;
 
   const json = (await res.json()) as {
     data?: {
@@ -90,14 +120,14 @@ const fetchStartGG = async (slug: string): Promise<TournamentMeta | null> => {
 
 const fetchChallonge = async (slug: string): Promise<TournamentMeta | null> => {
   const apiKey = process.env.CHALLONGE_API_KEY;
-  if (!apiKey) return null;
+  if (!apiKey) throw new MetaConfigError("CHALLONGE_API_KEY");
 
   const url = `https://api.challonge.com/v1/tournaments/${encodeURIComponent(
     slug,
   )}.json?api_key=${encodeURIComponent(apiKey)}`;
 
   const res = await fetchWithTimeout(url);
-  if (!res.ok) return null;
+  if (!okOrNotFound(res)) return null;
 
   const json = (await res.json()) as {
     tournament?: {
@@ -138,7 +168,7 @@ const fetchTonamelCsrf = async (): Promise<{
   const res = await fetchWithTimeout(`${TONAMEL_BASE}/api/csrf_token`, {
     headers: { Accept: "application/json" },
   });
-  if (!res.ok) return null;
+  if (!okOrNotFound(res)) return null;
 
   const data = (await res.json()) as {
     token?: string;
@@ -171,7 +201,7 @@ const fetchTonamel = async (slug: string): Promise<TournamentMeta | null> => {
       variables: { id: slug },
     }),
   });
-  if (!res.ok) return null;
+  if (!okOrNotFound(res)) return null;
 
   const json = (await res.json()) as {
     data?: {
@@ -208,7 +238,7 @@ const resolveHiveeEventId = async (slug: string): Promise<string | null> => {
   const res = await fetchWithTimeout(
     `${HIVEE_API}/resolve?url=${encodeURIComponent(pageUrl)}`,
   );
-  if (!res.ok) return null;
+  if (!okOrNotFound(res)) return null;
   const json = (await res.json()) as {
     data?: { type?: string; event_id?: string };
   };
@@ -220,7 +250,7 @@ const fetchHivee = async (slug: string): Promise<TournamentMeta | null> => {
   if (!eventId) return null;
 
   const res = await fetchWithTimeout(`${HIVEE_API}/events/${eventId}`);
-  if (!res.ok) return null;
+  if (!okOrNotFound(res)) return null;
 
   const json = (await res.json()) as {
     data?: {
@@ -242,23 +272,53 @@ const fetchHivee = async (slug: string): Promise<TournamentMeta | null> => {
 
 // --- Dispatch ---
 
+const reportedConfig = new Set<string>();
+
 export const fetchTournamentMeta = async (
   platform: Platform,
   slug: string,
-): Promise<TournamentMeta | null> => {
+): Promise<TournamentMetaResult> => {
   try {
+    let meta: TournamentMeta | null;
     switch (platform) {
       case "startgg":
-        return await fetchStartGG(slug);
+        meta = await fetchStartGG(slug);
+        break;
       case "challonge":
-        return await fetchChallonge(slug);
+        meta = await fetchChallonge(slug);
+        break;
       case "tonamel":
-        return await fetchTonamel(slug);
+        meta = await fetchTonamel(slug);
+        break;
       case "hivee":
-        return await fetchHivee(slug);
+        meta = await fetchHivee(slug);
+        break;
     }
-  } catch {
-    return null;
+    return meta && meta.name ? { status: "ok", meta } : { status: "not_found" };
+  } catch (err) {
+    // Say what kind of failure it was, never the error's own text: a fetch
+    // error can quote the request URL, and Challonge's holds the API key.
+    const cause =
+      err instanceof MetaConfigError
+        ? `missing_${err.variable}`
+        : err instanceof MetaUpstreamError
+          ? `status_${err.status}`
+          : err instanceof Error && err.name === "AbortError"
+            ? "timeout"
+            : "network";
+    console.warn(
+      JSON.stringify({ fn: "tournament-meta", platform, slug, cause }),
+    );
+    // A missing variable fails every request: report it once per instance.
+    const isConfig = err instanceof MetaConfigError;
+    if (!isConfig || !reportedConfig.has(cause)) {
+      if (isConfig) reportedConfig.add(cause);
+      captureFnException(
+        new Error(`tournament meta lookup failed: ${platform} ${cause}`),
+        { fn: "tournament-meta", platform, cause },
+      );
+    }
+    return { status: "failed" };
   }
 };
 

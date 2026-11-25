@@ -1,4 +1,5 @@
 import { useFontStore } from "@/store/fontStore";
+import { logWarning } from "@/utils/observability/log";
 
 import { fontsourceCanvasCssUrl } from "./fontsourceUrls";
 import { pickClosestWeight } from "./weightFallback";
@@ -170,6 +171,27 @@ const markLoaded = (family: string, weights: number[]): void => {
   loadedWeights.set(family, loaded);
 };
 
+// A font that fails to load leaves the canvas on fallback metrics. Each
+// family is reported once per page load, so a Fontsource or jsDelivr outage
+// shows up without one warning per render.
+const reportedFontFailures = new Set<string>();
+
+export const reportFontFailure = (
+  family: string,
+  error: unknown,
+  stage: "load" | "custom" | "catalog",
+) => {
+  const key = `${stage}:${family}`;
+  if (reportedFontFailures.has(key)) return;
+  reportedFontFailures.add(key);
+  if (typeof navigator !== "undefined" && navigator.onLine === false) return;
+  logWarning("font load failed", {
+    family,
+    stage,
+    error: error instanceof Error ? error.message : String(error),
+  });
+};
+
 /**
  * Loads a font family for canvas use.
  *
@@ -224,7 +246,7 @@ export const loadFamily = (
       await loadWeights(family, missing);
       markLoaded(family, missing);
     } catch (error) {
-      console.warn(`Font load failed: "${family}"`, error);
+      reportFontFailure(family, error, "load");
       throw error;
     }
   })();

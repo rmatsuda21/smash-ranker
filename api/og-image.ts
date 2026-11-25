@@ -7,6 +7,11 @@ import { Resvg } from "@resvg/resvg-js";
 import React from "react";
 
 import { addBreadcrumb, withLogging } from "./_lib/withLogging.js";
+import {
+  isTransientStatus,
+  readImageBody,
+  type AssetTracker,
+} from "./_lib/fetchImage.js";
 import { getSatoriFonts } from "./_lib/fonts.js";
 import { parseImageUrl } from "./_lib/validate.js";
 import {
@@ -55,22 +60,36 @@ const lruSet = <V>(
   }
 };
 
-const fetchImageAsDataUrl = async (url: string): Promise<string | null> => {
+const fetchImageAsDataUrl = async (
+  url: string,
+  tracker: AssetTracker,
+): Promise<string | null> => {
   try {
     const ctrl = new AbortController();
     const timer = setTimeout(() => ctrl.abort(), FETCH_TIMEOUT_MS);
-    const res = await fetch(url, { signal: ctrl.signal });
-    clearTimeout(timer);
-    if (!res.ok) return null;
-    const buf = Buffer.from(await res.arrayBuffer());
-    const contentType = res.headers.get("content-type") ?? "image/png";
-    return `data:${contentType};base64,${buf.toString("base64")}`;
+    try {
+      const res = await fetch(url, { signal: ctrl.signal });
+      if (!res.ok) {
+        if (isTransientStatus(res.status)) tracker.degraded = true;
+        return null;
+      }
+      const buf = await readImageBody(res);
+      if (!buf) return null;
+      const contentType = res.headers.get("content-type") ?? "image/png";
+      return `data:${contentType};base64,${buf.toString("base64")}`;
+    } finally {
+      clearTimeout(timer);
+    }
   } catch {
+    tracker.degraded = true;
     return null;
   }
 };
 
-const fetchIcon = async (iconUrl: string | null): Promise<string | null> => {
+const fetchIcon = async (
+  iconUrl: string | null,
+  tracker: AssetTracker,
+): Promise<string | null> => {
   if (!iconUrl) return null;
   // Validate the upstream-supplied URL before fetching. Returns null on any
   // disallowed URL (private IP, non-https, etc.) so a malicious tournament
@@ -83,7 +102,7 @@ const fetchIcon = async (iconUrl: string | null): Promise<string | null> => {
   }
   const cached = lruGet(iconCache, iconUrl);
   if (cached) return cached;
-  const fetched = await fetchImageAsDataUrl(iconUrl);
+  const fetched = await fetchImageAsDataUrl(iconUrl, tracker);
   if (fetched) lruSet(iconCache, iconUrl, fetched, ICON_CACHE_MAX);
   return fetched;
 };
@@ -341,14 +360,21 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
     "public, max-age=3600, s-maxage=604800, stale-while-revalidate=2592000",
   );
 
-  const meta = await fetchTournamentMeta(invite.platform, invite.slug);
-  if (!meta || !meta.name) {
+  const result = await fetchTournamentMeta(invite.platform, invite.slug);
+  if (result.status !== "ok") {
     // Fall back to the static default rather than 404ing — the OG card URL is
     // referenced from share unfurls, and a broken image looks worse than a
-    // generic one.
-    res.setHeader("Cache-Control", "public, max-age=60, s-maxage=300");
+    // generic one. A lookup that failed (rather than found nothing) may work
+    // on the next try, so that redirect is not cached at all.
+    res.setHeader(
+      "Cache-Control",
+      result.status === "failed"
+        ? "no-store"
+        : "public, max-age=60, s-maxage=300",
+    );
     return res.redirect(302, "/og-default.png");
   }
+  const meta = result.meta;
 
   const hash = cacheKey(meta);
   const etag = `"${hash}"`;
@@ -366,14 +392,23 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
   }
 
   addBreadcrumb("og-image", "fetch_icon_start");
-  const iconDataUrl = await fetchIcon(meta.iconUrl);
+  const tracker: AssetTracker = { degraded: false };
+  const iconDataUrl = await fetchIcon(meta.iconUrl, tracker);
   addBreadcrumb("og-image", "fetch_icon_done", {
     hasIcon: iconDataUrl != null,
   });
 
   const png = await renderPng({ title: meta.name, iconDataUrl });
 
-  lruSet(pngCache, hash, png, PNG_CACHE_MAX);
+  if (tracker.degraded) {
+    // The icon did not arrive in time: serve the card, but let the next
+    // request try again instead of keeping this one for a week.
+    res.removeHeader?.("ETag");
+    res.setHeader("Cache-Control", "public, max-age=60");
+    res.setHeader("X-Degraded", "1");
+  } else {
+    lruSet(pngCache, hash, png, PNG_CACHE_MAX);
+  }
   res.setHeader("X-Cache", "MISS");
   return res.status(200).send(png);
 };

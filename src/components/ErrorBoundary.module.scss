@@ -1,0 +1,76 @@
+.root {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  min-height: 60dvh;
+  padding: var(--space-5);
+  text-align: center;
+}
+
+.app {
+  min-height: 100dvh;
+}
+
+.title {
+  font-size: var(--title-size);
+  font-weight: 700;
+  color: var(--fg-1);
+}
+
+.description {
+  max-width: 420px;
+  font-size: var(--font-size-md);
+  color: var(--fg-3);
+  line-height: 1.5;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+}
+
+.primary,
+.secondary {
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-pill);
+  font: inherit;
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.primary {
+  border: none;
+  background: var(--brand);
+  color: #fff;
+}
+
+.secondary {
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--fg-2);
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: default;
+  }
+}
+
+.details {
+  max-width: min(720px, 100%);
+  color: var(--fg-3);
+  font-size: var(--font-size-sm);
+  text-align: left;
+
+  pre {
+    margin-top: var(--space-2);
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-size: 0.75rem;
+  }
+}

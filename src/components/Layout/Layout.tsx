@@ -9,6 +9,7 @@ import { NavOverlay } from "./NavOverlay/NavOverlay";
 import { SettingsModal } from "./SettingsModal/SettingsModal";
 import { StockConfetti } from "./StockConfetti/StockConfetti";
 import { useDateBasedEgg } from "@/hooks/useDateBasedEgg";
+import { useDbNotices } from "@/hooks/useDbNotices";
 import { UserAvatar } from "@/components/user/UserAvatar/UserAvatar";
 import { useAuthUser } from "@/store/authStore";
 
@@ -46,6 +47,8 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   useDateBasedEgg(triggerConfetti);
+  // Every page can reach saved templates, images or fonts.
+  useDbNotices();
 
   const handleLogoHover = useCallback(() => {
     setLogoEffect(LOGO_EFFECTS[logoEffectIndex.current]);

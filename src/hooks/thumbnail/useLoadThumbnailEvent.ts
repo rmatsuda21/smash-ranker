@@ -7,7 +7,7 @@ import {
   SETS_PER_PAGE,
 } from "@/consts/thumbnail/thumbnail";
 import { useThumbnailStore } from "@/store/thumbnailStore";
-import { logEvent, logWarning } from "@/utils/observability/log";
+import { logEvent } from "@/utils/observability/log";
 import type { ThumbnailSet } from "@/types/thumbnail/Thumbnail";
 import {
   fetchThumbnailEventMeta,
@@ -15,6 +15,7 @@ import {
   type ThumbnailEventMeta,
 } from "@/utils/thumbnail/fetchEventSets";
 import { fetchHiveeThumbnailEvent } from "@/utils/thumbnail/fetchHiveeSets";
+import { LoadError, reportLoadFailure } from "@/utils/loadError";
 
 // Loads an event's sets into the thumbnail maker. start.gg: the newest pages
 // first, more on request. Hivee: every finished match at once.
@@ -58,9 +59,12 @@ export const useLoadThumbnailEvent = () => {
         ]);
       }
       if (request !== requestRef.current) return;
-      if (!meta) throw new Error(t`Tournament not found`);
+      if (!meta) throw new LoadError(t`Tournament not found`, "not_found");
       if (firstPages.sets.length === 0) {
-        throw new Error(t`This event has no sets with players yet.`);
+        throw new LoadError(
+          t`This event has no sets with players yet.`,
+          "unsupported",
+        );
       }
       // Hivee's matches all came in one go: count them as read.
       const loadedPages = isHivee
@@ -92,15 +96,21 @@ export const useLoadThumbnailEvent = () => {
       const message =
         err instanceof Error ? err.message : t`Failed to fetch tournament`;
       setError(message);
-      logWarning("thumbnail event load failed", {
-        area: "thumbnail-fetch",
-        tournament_slug: detected.slug,
-        error: message,
-      });
+      // A mistyped or private event is the user's input: counted, not sent
+      // to Sentry.
+      const failureKind = reportLoadFailure(
+        "thumbnail event load failed",
+        err,
+        {
+          area: "thumbnail-fetch",
+          tournament_platform: detected.platform,
+          tournament_slug: detected.slug,
+        },
+      );
       logEvent("tournament_fetch_fail", {
         tournament_platform: detected.platform,
         surface: "thumbnail",
-        failure_kind: "query_error",
+        failure_kind: failureKind,
       });
     } finally {
       if (request === requestRef.current) setFetching(false);
@@ -121,9 +131,14 @@ export const useLoadThumbnailEvent = () => {
       if (request !== requestRef.current) return;
       appendSets(next.sets, event.loadedPages + SET_PAGES_PER_LOAD);
     } catch (err) {
+      if (request !== requestRef.current) return;
       setError(
         err instanceof Error ? err.message : t`Failed to load more sets`,
       );
+      reportLoadFailure("thumbnail older sets load failed", err, {
+        area: "thumbnail-fetch",
+        tournament_slug: event.slug,
+      });
     } finally {
       setFetchingMore(false);
     }

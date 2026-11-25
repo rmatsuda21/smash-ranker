@@ -2,6 +2,7 @@ import { graphql } from "@/gql";
 import type { RecapSetsQuery } from "@/gql/graphql";
 import type { RecapEvent, RecapSet } from "@/types/recap/Recap";
 import { startggClient } from "@/utils/startgg/client";
+import { startggLoadError } from "@/utils/startgg/describeError";
 
 const RecapSetsQueryDoc = graphql(`
   query RecapSets(
@@ -162,7 +163,7 @@ const fetchPage = async (
     const connection = result.data?.player?.sets;
     if (!result.error && connection) return connection;
     if (attempt >= RETRY_DELAYS_MS.length) {
-      throw new Error(result.error?.message || "Could not load sets");
+      throw startggLoadError(result.error, "Could not load sets");
     }
     await wait(RETRY_DELAYS_MS[attempt]);
   }

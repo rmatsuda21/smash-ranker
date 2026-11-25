@@ -53,7 +53,9 @@ export const AssetSelector = ({
       setIsPickerOpen(false);
       return;
     }
-    await refresh();
+    // The picker still opens when the library cannot be read: uploading
+    // from it reports its own failure.
+    await refresh().catch(() => {});
     setIsPickerOpen(true);
   };
 
@@ -65,11 +67,14 @@ export const AssetSelector = ({
     }
 
     let cancelled = false;
-    assetRepository.get(selectedSrc).then((found) => {
-      if (cancelled) return;
-      setAsset(found?.data ? found : null);
-      setNotFound(!found?.data);
-    });
+    assetRepository
+      .get(selectedSrc)
+      .catch(() => undefined)
+      .then((found) => {
+        if (cancelled) return;
+        setAsset(found?.data ? found : null);
+        setNotFound(!found?.data);
+      });
 
     return () => {
       cancelled = true;

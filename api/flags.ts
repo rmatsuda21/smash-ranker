@@ -5,7 +5,7 @@ import { Reason, createClient } from "@vercel/flags-core";
 
 import { respondClientError } from "./_lib/errors.js";
 import { assertSameOrigin } from "./_lib/origin.js";
-import { withLogging } from "./_lib/withLogging.js";
+import { captureFnException, withLogging } from "./_lib/withLogging.js";
 
 // Catalogue of flags exposed to the client. Add new keys here.
 const FLAG_KEYS = [
@@ -60,7 +60,24 @@ const withTimeout = <T>(p: Promise<T>, ms: number): Promise<T> =>
     ),
   ]);
 
+// Evaluation errors name internals (definition ids, upstream hosts): shown in
+// `?debug=1` on previews and locally, not on the production site.
+const exposeErrors = process.env.VERCEL_ENV !== "production";
+
+// A flag that falls back to its default turns a feature off for everyone, so
+// it has to be heard about; once per instance and cause, not once per request.
+const reported = new Set<string>();
+const reportFallback = (cause: string, err: unknown) => {
+  if (reported.has(cause)) return;
+  reported.add(cause);
+  captureFnException(err, { fn: "flags", cause });
+};
+
 const handler = async (req: VercelRequest, res: VercelResponse) => {
+  if (req.method !== "GET" && req.method !== "HEAD") {
+    return res.status(405).json({ error: "Method not allowed" });
+  }
+
   try {
     assertSameOrigin(req);
   } catch (err) {
@@ -79,6 +96,13 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
 
   if (!client) {
     console.warn("[flags] FLAGS env var missing; returning defaults");
+    // Expected locally and on a preview without the variable; in production
+    // it means every flagged feature is off.
+    if (process.env.VERCEL_ENV === "production") {
+      reportFallback("missing_env", new Error("FLAGS env var missing"));
+    }
+    res.setHeader("Cache-Control", "no-store");
+    res.setHeader("X-Flags-Fallback", "1");
     return res.json(
       debug
         ? {
@@ -90,6 +114,7 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
   }
 
   const out: FlagValues = { ...DEFAULTS };
+  let defaulted = false;
   const debugInfo: Record<FlagKey, DebugEntry> = {} as Record<
     FlagKey,
     DebugEntry
@@ -110,7 +135,7 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
         debugInfo[key] = {
           value: out[key],
           reason: String(result.reason ?? "UNKNOWN"),
-          errorMessage: result.errorMessage,
+          errorMessage: exposeErrors ? result.errorMessage : undefined,
         };
         const reason = result.reason ?? "UNKNOWN";
         const isError = reason === Reason.ERROR;
@@ -119,19 +144,41 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
         })`;
         if (isError) {
           console.error(log);
+          defaulted = true;
+          reportFallback(
+            `${key}:error`,
+            new Error(
+              `flag ${key} evaluation error: ${result.errorMessage ?? "unknown"}`,
+            ),
+          );
         } else {
           console.log(log);
         }
       } catch (e) {
         console.error(`[flags] ${key} evaluation threw; using default`, e);
+        defaulted = true;
+        reportFallback(`${key}:exception`, e);
         debugInfo[key] = {
           value: DEFAULTS[key],
           reason: "EXCEPTION",
-          errorMessage: e instanceof Error ? e.message : String(e),
+          errorMessage: exposeErrors
+            ? e instanceof Error
+              ? e.message
+              : String(e)
+            : undefined,
         };
       }
     }),
   );
+
+  // Defaults stand in for values we could not read: don't let the edge or
+  // the browser hold on to them.
+  // The header tells the client these are not the dashboard's values, so it
+  // keeps the ones it remembers.
+  if (defaulted) {
+    res.setHeader("Cache-Control", "no-store");
+    res.setHeader("X-Flags-Fallback", "1");
+  }
 
   if (debug) {
     return res.json({ values: out, debug: debugInfo });

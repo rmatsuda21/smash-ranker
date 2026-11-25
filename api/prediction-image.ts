@@ -13,6 +13,11 @@ import { BadRequestError, respondClientError } from "./_lib/errors.js";
 import { parseBase64UrlPayload, parseImageUrl } from "./_lib/validate.js";
 import { addBreadcrumb, withLogging } from "./_lib/withLogging.js";
 import { getSatoriFonts } from "./_lib/fonts.js";
+import {
+  isTransientStatus,
+  readImageBody,
+  type AssetTracker,
+} from "./_lib/fetchImage.js";
 import { toSatoriImage } from "./_lib/satoriImage.js";
 
 const MAX_PAYLOAD_BYTES = 8 * 1024;
@@ -130,36 +135,49 @@ const FETCH_TIMEOUT_MS = 1500;
 
 async function fetchImageAsDataUrl(
   url: string,
+  tracker: AssetTracker,
   retries = 1,
 ): Promise<string | null> {
+  // Whether trying again later could work: a timeout, a network error or a
+  // 5xx, as opposed to a 404 or a file that is too large.
+  let transient = false;
   for (let i = 0; i <= retries; i++) {
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), FETCH_TIMEOUT_MS);
     try {
-      const ctrl = new AbortController();
-      const t = setTimeout(() => ctrl.abort(), FETCH_TIMEOUT_MS);
       const res = await fetch(url, { signal: ctrl.signal });
-      clearTimeout(t);
-      if (!res.ok) continue;
-      const buf = Buffer.from(await res.arrayBuffer());
+      if (!res.ok) {
+        transient = isTransientStatus(res.status);
+        if (!transient) break;
+        continue;
+      }
+      const buf = await readImageBody(res);
+      if (!buf) {
+        transient = false;
+        break;
+      }
       const contentType = res.headers.get("content-type") || "image/png";
       return `data:${contentType};base64,${buf.toString("base64")}`;
     } catch {
-      // retry
+      transient = true;
+    } finally {
+      clearTimeout(t);
     }
   }
-  console.warn(
-    `[prediction-image] fetch failed after ${retries + 1} attempts: ${url}`,
-  );
+  if (transient) tracker.degraded = true;
+  console.warn(`[prediction-image] fetch failed: ${url}`);
   return null;
 }
 
 async function fetchTournamentIcon(
   tournamentIconUrl: string,
+  tracker: AssetTracker,
 ): Promise<string | null> {
   if (!tournamentIconUrl) return null;
   const cached = lruGet(tournamentIconCache, tournamentIconUrl);
   if (cached) return cached;
   const fetched = await toSatoriImage(
-    await fetchImageAsDataUrl(tournamentIconUrl),
+    await fetchImageAsDataUrl(tournamentIconUrl, tracker),
   );
   if (fetched) {
     lruSet(
@@ -713,8 +731,9 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
   }
 
   addBreadcrumb("prediction-image", "fetch_assets_start");
+  const tracker: AssetTracker = { degraded: false };
   const [tournamentIcon, flags] = await Promise.all([
-    fetchTournamentIcon(body.tournamentIconUrl),
+    fetchTournamentIcon(body.tournamentIconUrl, tracker),
     preloadFlags(body.predictions.map((p) => p.country)),
   ]);
   addBreadcrumb("prediction-image", "fetch_assets_done", {
@@ -751,7 +770,18 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
   const png = Buffer.from(resvg.render().asPng());
   addBreadcrumb("prediction-image", "resvg_done", { bytes: png.length });
 
-  lruSet(pngCache, hash, png, PNG_CACHE_MAX);
+  if (tracker.degraded) {
+    // An icon did not arrive in time. Serve what we have, but this URL must
+    // not be pinned to it: no in-memory copy, no year at the CDN, no ETag
+    // for a browser to revalidate against.
+    res.removeHeader?.("Vercel-CDN-Cache-Control");
+    res.removeHeader?.("CDN-Cache-Control");
+    res.removeHeader?.("ETag");
+    res.setHeader("Cache-Control", "public, max-age=60");
+    res.setHeader("X-Degraded", "1");
+  } else {
+    lruSet(pngCache, hash, png, PNG_CACHE_MAX);
+  }
   res.setHeader("X-Cache", "MISS");
   return res.status(200).send(png);
 };

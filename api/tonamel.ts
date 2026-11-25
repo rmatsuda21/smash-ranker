@@ -4,6 +4,7 @@ import type { VercelRequest, VercelResponse } from "@vercel/node";
 
 import { respondClientError } from "./_lib/errors.js";
 import { assertSameOrigin } from "./_lib/origin.js";
+import { isTimeoutError } from "./_lib/fetchImage.js";
 import { parsePlayerCount, parseSlug } from "./_lib/validate.js";
 import {
   addBreadcrumb,
@@ -84,14 +85,35 @@ const PUBLIC_COMPETITION_QUERY = `
   }
 `;
 
+// Five upstream calls run one after another inside a 15s function limit. Each
+// gets its own timeout and the whole chain a deadline, so a hung Tonamel is
+// answered (and reported) by us instead of ending as a silent function
+// timeout.
+const CALL_TIMEOUT_MS = 5000;
+const TOTAL_TIMEOUT_MS = 12000;
+
+// The competition id does not exist: the user's input, not a failure of ours.
+class TonamelNotFoundError extends Error {
+  constructor() {
+    super("Competition not found");
+    this.name = "TonamelNotFoundError";
+  }
+}
+
+// Tonamel's responses are read loosely, as before. The cast is needed because
+// the dev proxy compiles this file under Node's fetch types, where `json()`
+// is `unknown`.
+type UpstreamJson = any;
+
 async function fetchCsrfToken(): Promise<{ token: string; cookies: string }> {
   const res = await fetch(`${TONAMEL_BASE}/api/csrf_token`, {
     headers: { Accept: "application/json" },
+    signal: AbortSignal.timeout(CALL_TIMEOUT_MS),
   });
 
   if (!res.ok) throw new Error(`Failed to get CSRF token: ${res.status}`);
 
-  const data = await res.json();
+  const data = (await res.json()) as UpstreamJson;
   const token = data.token || data.csrfToken || data.csrf_token;
   if (!token) throw new Error("No CSRF token in response");
 
@@ -108,7 +130,7 @@ async function queryGraphQL(
   token: string,
   cookies: string,
   slug: string,
-) {
+): Promise<UpstreamJson> {
   const res = await fetch(endpoint, {
     method: "POST",
     headers: {
@@ -118,14 +140,17 @@ async function queryGraphQL(
       Referer: `${TONAMEL_BASE}/competition/${slug}`,
     },
     body: JSON.stringify({ query, variables }),
+    signal: AbortSignal.timeout(CALL_TIMEOUT_MS),
   });
 
   if (!res.ok) {
     const text = await res.text();
-    throw new Error(`Tonamel GraphQL error: ${res.status} - ${text}`);
+    throw new Error(
+      `Tonamel GraphQL error: ${res.status} - ${text.slice(0, 500)}`,
+    );
   }
 
-  return res.json();
+  return (await res.json()) as UpstreamJson;
 }
 
 async function fetchCompetition(slug: string, podiumLimit: number) {
@@ -160,7 +185,7 @@ async function fetchCompetition(slug: string, podiumLimit: number) {
   }
 
   const competition = compData.data?.competition;
-  if (!competition) throw new Error("Competition not found");
+  if (!competition) throw new TonamelNotFoundError();
 
   // Step 2: Try to get placements via tournament -> blocks -> podium
   interface Placement {
@@ -322,18 +347,35 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
     throw err;
   }
 
+  let deadline: ReturnType<typeof setTimeout> | undefined;
   try {
-    const data = await fetchCompetition(slug, podiumLimit);
+    const data = await Promise.race([
+      fetchCompetition(slug, podiumLimit),
+      new Promise<never>((_, reject) => {
+        deadline = setTimeout(() => {
+          const err = new Error("Tonamel request timed out");
+          err.name = "TimeoutError";
+          reject(err);
+        }, TOTAL_TIMEOUT_MS);
+      }),
+    ]);
     res.setHeader(
       "Cache-Control",
       "public, s-maxage=60, stale-while-revalidate=300, stale-if-error=86400",
     );
     return res.status(200).json(data);
   } catch (error) {
+    if (error instanceof TonamelNotFoundError) {
+      return res.status(404).json({ error: "Competition not found" });
+    }
+    // The upstream's own text goes to Sentry, not to the browser.
     captureFnException(error, { fn: "tonamel" });
-    const message =
-      error instanceof Error ? error.message : "Failed to fetch from Tonamel";
-    return res.status(500).json({ error: message });
+    if (isTimeoutError(error)) {
+      return res.status(504).json({ error: "Tonamel did not respond" });
+    }
+    return res.status(502).json({ error: "Failed to fetch from Tonamel" });
+  } finally {
+    clearTimeout(deadline);
   }
 };
 

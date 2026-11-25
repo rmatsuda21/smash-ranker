@@ -37,6 +37,17 @@ export const captureFnException = (
   Sentry.captureException(err, { tags });
 };
 
+// The query string can be a whole image payload (player names, up to ~32K
+// characters) or a slug; the log line keeps the route and how much came with
+// it, not the content.
+const describeUrl = (url: string | undefined) => {
+  const raw = url ?? "";
+  const q = raw.indexOf("?");
+  return q === -1
+    ? { path: raw, queryLength: 0 }
+    : { path: raw.slice(0, q), queryLength: raw.length - q - 1 };
+};
+
 export const withLogging = (name: string, handler: Handler): Handler => {
   return async (req, res) => {
     const requestId = getRequestId(req);
@@ -54,7 +65,7 @@ export const withLogging = (name: string, handler: Handler): Handler => {
           requestId,
           status: res.statusCode,
           durationMs: Date.now() - start,
-          path: req.url,
+          ...describeUrl(req.url),
         }),
       );
     } catch (err) {
@@ -64,12 +75,19 @@ export const withLogging = (name: string, handler: Handler): Handler => {
           fn: name,
           requestId,
           durationMs: Date.now() - start,
-          path: req.url,
+          ...describeUrl(req.url),
           error: err instanceof Error ? err.message : String(err),
           stack: err instanceof Error ? err.stack : undefined,
         }),
       );
       if (!res.headersSent) {
+        // Handlers set their success cache headers before the work that can
+        // throw; a failure must not go out as cacheable. (The dev proxies'
+        // stand-in response has no `removeHeader`.)
+        res.removeHeader?.("Vercel-CDN-Cache-Control");
+        res.removeHeader?.("CDN-Cache-Control");
+        res.removeHeader?.("ETag");
+        res.setHeader("Cache-Control", "no-store");
         res.status(500).json({ error: "Internal error", requestId });
       }
     } finally {

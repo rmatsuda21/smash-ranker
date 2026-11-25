@@ -4,6 +4,7 @@ import type { RecapEventsQuery } from "@/gql/graphql";
 import type { GameId } from "@/types/Game";
 import type { RecapEvent, RecapPlayer } from "@/types/recap/Recap";
 import { startggClient } from "@/utils/startgg/client";
+import { startggLoadError } from "@/utils/startgg/describeError";
 
 const RecapEventsQueryDoc = graphql(`
   query RecapEvents(
@@ -122,7 +123,7 @@ export const fetchRecapEvents = async (
       .toPromise();
     const connection = result.data?.user?.events;
     if (result.error || !connection) {
-      throw new Error(result.error?.message || "Could not load tournaments");
+      throw startggLoadError(result.error, "Could not load tournaments");
     }
 
     const all = (connection.nodes ?? [])

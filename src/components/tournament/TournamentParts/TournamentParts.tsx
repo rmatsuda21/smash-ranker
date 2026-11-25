@@ -1,4 +1,7 @@
 import cn from "classnames";
+import { Trans } from "@lingui/react/macro";
+
+import { Button } from "@/components/shared/Button/Button";
 
 import type { TournamentEvent } from "@/types/tournament/Tournament";
 import { computeSeedDelta } from "@/utils/results/upsetFactor";
@@ -6,6 +9,25 @@ import { getCharacter } from "@/utils/top8/characterCatalog";
 import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
 
 import styles from "./TournamentParts.module.scss";
+
+// What takes the place of something that failed to load, with a way to load
+// it again.
+export const LoadFailed = ({
+  onRetry,
+  className,
+}: {
+  onRetry: () => void;
+  className?: string;
+}) => (
+  <div className={cn(styles.loadFailed, className)} role="status">
+    <p>
+      <Trans>This didn't load.</Trans>
+    </p>
+    <Button variant="outline" size="sm" onClick={onRetry}>
+      <Trans>Try again</Trans>
+    </Button>
+  </div>
+);
 
 // A titled card. `aside` sits opposite the title (a count, a link).
 export const Panel = ({

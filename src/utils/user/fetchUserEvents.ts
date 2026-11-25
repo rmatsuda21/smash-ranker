@@ -4,6 +4,7 @@ import type { UserEventsQuery } from "@/gql/graphql";
 import type { GameId } from "@/types/Game";
 import type { UserEvent } from "@/types/user/UserEvent";
 import { startggClient } from "@/utils/startgg/client";
+import { startggLoadError } from "@/utils/startgg/describeError";
 
 // Looked up by slug rather than `currentUser` so the result is the same
 // whichever token the request ends up going out with.
@@ -123,7 +124,7 @@ export const fetchUserEventsPage = async (
 
   const connection = result.data?.user?.events;
   if (result.error || !connection) {
-    throw new Error(result.error?.message || "Could not load tournaments");
+    throw startggLoadError(result.error, "Could not load tournaments");
   }
 
   return {

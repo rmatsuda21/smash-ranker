@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 
 import { DBTemplate } from "@/types/Repository";
 import { templateRepository } from "@/db/repository";
+import { logWarning } from "@/utils/observability/log";
 
 export const useTemplateDB = () => {
   const [templates, setTemplates] = useState<{ id: string; name: string }[]>(
@@ -20,7 +21,15 @@ export const useTemplateDB = () => {
   };
 
   useEffect(() => {
-    refresh().finally(() => setLoading(false));
+    // Saved templates are unavailable (storage blocked or broken): the
+    // built-in ones still show, and a save reports its own failure.
+    refresh()
+      .catch((error) =>
+        logWarning("saved templates failed to load", {
+          error: error instanceof Error ? error.message : String(error),
+        }),
+      )
+      .finally(() => setLoading(false));
   }, []);
 
   const addTemplate = useCallback(async (config: Omit<DBTemplate, "id">) => {

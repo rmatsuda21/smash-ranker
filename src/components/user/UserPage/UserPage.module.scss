@@ -333,13 +333,26 @@
   }
 }
 
-.error {
+.error,
+.notice {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
   padding: var(--space-5);
   border: 1px dashed var(--border-strong);
   border-radius: var(--radius-md);
   color: var(--fg-3);
   font-size: var(--font-size-md);
   text-align: center;
+}
+
+// In the stats pane, over the tiles: a row, not a block.
+.notice {
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: var(--space-3) var(--space-4);
 }
 
 .signedOut {

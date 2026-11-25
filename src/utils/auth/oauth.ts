@@ -28,10 +28,26 @@ type PendingLogin = { state: string; returnTo: string; startedAt: number };
 
 export type SessionTokens = { accessToken: string; expiresIn: number };
 
+// Why a login did not go through, for analytics. `cancelled` and
+// `stale_callback` are the user's doing; the rest point at us or start.gg.
+export type LoginFailureReason =
+  | "cancelled"
+  | "stale_callback"
+  | "state_mismatch"
+  | "exchange_failed"
+  | "profile_failed"
+  | "storage"
+  | "not_configured"
+  | "refresh_failed"
+  | "unknown";
+
 export class LoginError extends Error {
-  constructor(message: string) {
+  reason: LoginFailureReason;
+
+  constructor(message: string, reason: LoginFailureReason = "unknown") {
     super(message);
     this.name = "LoginError";
+    this.reason = reason;
   }
 }
 
@@ -60,7 +76,8 @@ const safeReturnPath = (path: string | undefined): string =>
   path && path.startsWith("/") && !path.startsWith("//") ? path : "/";
 
 export const startLogin = (returnTo: string = window.location.pathname) => {
-  if (!CLIENT_ID) throw new LoginError("start.gg login is not configured");
+  if (!CLIENT_ID)
+    throw new LoginError("start.gg login is not configured", "not_configured");
 
   const pending: PendingLogin = {
     state: crypto.randomUUID(),
@@ -70,7 +87,10 @@ export const startLogin = (returnTo: string = window.location.pathname) => {
   try {
     localStorage.setItem(PENDING_KEY, JSON.stringify(pending));
   } catch {
-    throw new LoginError("Could not start login: storage is unavailable");
+    throw new LoginError(
+      "Could not start login: storage is unavailable",
+      "storage",
+    );
   }
 
   const params = new URLSearchParams({
@@ -94,7 +114,7 @@ const postAuth = async (body: Record<string, string>): Promise<Response> =>
 const readTokens = async (response: Response): Promise<SessionTokens> => {
   const json = (await response.json()) as Partial<SessionTokens>;
   if (typeof json.accessToken !== "string" || !json.accessToken) {
-    throw new LoginError("Malformed token response");
+    throw new LoginError("Malformed token response", "exchange_failed");
   }
   return { accessToken: json.accessToken, expiresIn: json.expiresIn ?? 0 };
 };
@@ -109,26 +129,41 @@ export const completeLogin = async (
   const pending = readPending();
   clearPending();
 
-  if (params.get("error")) throw new LoginError("Login was cancelled");
+  if (params.get("error")) {
+    throw new LoginError("Login was cancelled", "cancelled");
+  }
   const code = params.get("code");
-  if (!code) throw new LoginError("Missing authorization code");
-  if (!pending) throw new LoginError("No login in progress");
+  if (!code) {
+    throw new LoginError("Missing authorization code", "stale_callback");
+  }
+  if (!pending) throw new LoginError("No login in progress", "stale_callback");
   const state = params.get("state");
   if (state !== null && state !== pending.state) {
-    throw new LoginError("Login state mismatch");
+    throw new LoginError("Login state mismatch", "state_mismatch");
   }
 
   const response = await postAuth({ action: "exchange", code });
-  if (!response.ok) throw new LoginError("Could not complete login");
+  if (!response.ok) {
+    throw new LoginError(
+      `Could not complete login (${response.status})`,
+      "exchange_failed",
+    );
+  }
   return { tokens: await readTokens(response), returnTo: pending.returnTo };
 };
 
-// null: the refresh token is gone or no longer accepted — log in again.
-// Throws on network/server trouble, where the session may still be good.
+// null: the refresh token is gone or no longer accepted (/api/auth answers
+// 401) — log in again. Throws on network trouble or when start.gg itself is
+// down (502), where the session may still be good and is kept.
 export const requestRefresh = async (): Promise<SessionTokens | null> => {
   const response = await postAuth({ action: "refresh" });
   if (response.status === 401) return null;
-  if (!response.ok) throw new LoginError("Could not refresh session");
+  if (!response.ok) {
+    throw new LoginError(
+      `Could not refresh session (${response.status})`,
+      "refresh_failed",
+    );
+  }
   return readTokens(response);
 };
 

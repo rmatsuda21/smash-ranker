@@ -7,6 +7,7 @@ import { getGameForStartggVideogame } from "@/utils/games";
 import { startggClient } from "@/utils/startgg/client";
 import { makeSide } from "@/utils/thumbnail/match";
 import { isKnownCharacter } from "@/utils/top8/characterCatalog";
+import { startggLoadError } from "@/utils/startgg/describeError";
 
 const ThumbnailEventMetaQueryDoc = graphql(`
   query ThumbnailEventMeta($slug: String!) {
@@ -153,7 +154,7 @@ export const fetchThumbnailEventMeta = async (
   const result = await startggClient
     .query(ThumbnailEventMetaQueryDoc, { slug })
     .toPromise();
-  if (result.error) throw new Error(result.error.message);
+  if (result.error) throw startggLoadError(result.error, "");
   const event = result.data?.event;
   if (!event) return null;
   return {
@@ -191,7 +192,7 @@ export const fetchThumbnailSetPages = async (
   const sets: ThumbnailSet[] = [];
   let total = 0;
   for (const page of pages) {
-    if (page.error) throw new Error(page.error.message);
+    if (page.error) throw startggLoadError(page.error, "");
     const connection = page.data?.event?.sets;
     total = Math.max(total, connection?.pageInfo?.total ?? 0);
     for (const node of connection?.nodes ?? []) {

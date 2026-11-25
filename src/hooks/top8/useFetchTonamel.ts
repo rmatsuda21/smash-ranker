@@ -13,6 +13,15 @@ import { EMPTY_CHARACTER_ID } from "@/consts/top8/characters";
 import { getGameForName } from "@/utils/games";
 import { useToast } from "@/components/Toast";
 import { logEvent, logWarning } from "@/utils/observability/log";
+import {
+  failureKindForStatus,
+  failureKindOf,
+  LoadError,
+} from "@/utils/loadError";
+import {
+  beginTournamentLoad,
+  isCurrentTournamentLoad,
+} from "@/utils/top8/loadGuard";
 const IDB_IMAGES_BASE_URL = "/idb-images/";
 
 interface TonamelPlacement {
@@ -54,7 +63,11 @@ const fetchTonamelCompetition = async (
 
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
-    throw new Error(body.error || t`Tonamel API error: ${res.status}`);
+    throw new LoadError(
+      body.error || t`Tonamel API error: ${res.status}`,
+      failureKindForStatus(res.status),
+      `tonamel ${res.status}`,
+    );
   }
 
   return res.json();
@@ -177,13 +190,15 @@ export const useFetchTonamel = () => {
   const { showToast } = useToast();
 
   const fetchTonamel = async (slug: string, playerCount: number = 8) => {
+    const loadId = beginTournamentLoad();
     playerDispatch({ type: "FETCH_PLAYERS" });
 
     try {
       const data = await fetchTonamelCompetition(slug, playerCount);
+      if (!isCurrentTournamentLoad(loadId)) return;
 
       if (!data.competition) {
-        throw new Error(t`Competition not found`);
+        throw new LoadError(t`Competition not found`, "not_found");
       }
 
       const blockCount = data.competition.blockCount ?? 0;
@@ -200,6 +215,7 @@ export const useFetchTonamel = () => {
       }
 
       const tournamentInfo = await parseTournamentInfo(data.competition, slug);
+      if (!isCurrentTournamentLoad(loadId)) return;
       tournamentDispatch({
         type: "SET_TOURNAMENT_INFO",
         payload: tournamentInfo,
@@ -215,6 +231,7 @@ export const useFetchTonamel = () => {
         player_count: playerCount,
       });
     } catch (error) {
+      if (!isCurrentTournamentLoad(loadId)) return;
       const message =
         error instanceof Error
           ? error.message
@@ -227,6 +244,7 @@ export const useFetchTonamel = () => {
       logEvent("tournament_fetch_fail", {
         tournament_platform: "tonamel",
         tournament_slug: slug,
+        failure_kind: failureKindOf(error),
       });
     }
   };

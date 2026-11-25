@@ -15,10 +15,33 @@ import { getPref } from "@/utils/prefs";
 import { initSentry, reactErrorHandler } from "@/utils/observability/sentry";
 import { initAnalytics } from "@/utils/observability/analytics";
 import { logError } from "@/utils/observability/log";
+import { isChunkLoadError, reloadForStaleChunk } from "@/utils/staleChunk";
 import App from "@/App";
 
 initSentry();
 initAnalytics();
+
+// A chunk that is gone after a deploy: reload once to get the new build. If
+// that was already tried, the error goes on to the page's error boundary.
+window.addEventListener("vite:preloadError", (event) => {
+  if (reloadForStaleChunk()) event.preventDefault();
+});
+
+// Shown when the app cannot start at all, before React or the translations
+// are in, so it is plain HTML in both languages.
+const showStartupFailure = () => {
+  const root = document.getElementById("root");
+  if (!root) return;
+  root.innerHTML = `
+    <div style="min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:24px;text-align:center;font-family:system-ui,sans-serif;color:#e8e8ea;background:#0e0e10">
+      <h1 style="font-size:20px;margin:0">Smash Ranker couldn't start</h1>
+      <p style="margin:0;max-width:360px;line-height:1.5;color:#a0a0a8">Check your connection and reload the page.<br />接続を確認して、ページを再読み込みしてください。</p>
+      <button id="startup-reload" style="padding:12px 24px;border:none;border-radius:999px;background:#ff3e7f;color:#fff;font:inherit;font-weight:600;cursor:pointer">Reload / 再読み込み</button>
+    </div>`;
+  document
+    .getElementById("startup-reload")
+    ?.addEventListener("click", () => window.location.reload());
+};
 
 {
   const ASCII_LOGO = String.raw`
@@ -58,7 +81,14 @@ initAnalytics();
       ? browserLanguage
       : "en";
     const savedLanguage = getPref(PREF_KEYS.LANGUAGE) || defaultLanguage;
-    await loadCatalog(savedLanguage);
+    try {
+      await loadCatalog(savedLanguage);
+    } catch (error) {
+      // A saved language the app no longer ships, or a catalog that failed
+      // to load: English is better than no app.
+      if (savedLanguage === "en") throw error;
+      await loadCatalog("en");
+    }
 
     const savedTheme = getPref(PREF_KEYS.THEME) || "dark";
     document.documentElement.setAttribute("data-theme", savedTheme);
@@ -85,7 +115,8 @@ initAnalytics();
       </StrictMode>,
     );
   } catch (error) {
+    if (isChunkLoadError(error) && reloadForStaleChunk()) return;
     logError(error, { stage: "bootstrap" });
-    throw error;
+    showStartupFailure();
   }
 })();

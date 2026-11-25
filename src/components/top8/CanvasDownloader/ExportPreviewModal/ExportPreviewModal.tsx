@@ -12,7 +12,12 @@ import { exportCanvas } from "@/utils/top8/exportCanvas";
 import { getDeviceRenderProfile } from "@/utils/top8/renderProfile";
 import { downloadBlob, shareMethodFor } from "@/utils/top8/downloadBlob";
 import { copyImageToClipboard } from "@/utils/social/clipboardImage";
-import { logEvent, setPerson, setPersonOnce } from "@/utils/observability/log";
+import {
+  logError,
+  logEvent,
+  setPerson,
+  setPersonOnce,
+} from "@/utils/observability/log";
 import {
   buildStageBlobKey,
   type StageBlobCache,
@@ -105,6 +110,12 @@ export const ExportPreviewModal = ({
         if (cancelled) return;
 
         if (!result) {
+          logError(new Error("ranker export produced no image"), {
+            area: "export",
+            surface: "ranker",
+            export_format: imgType,
+            pixel_ratio: pixelRatio,
+          });
           logEvent("graphic_export_fail", {
             ...exportContext,
             failure_kind: "blob_null",
@@ -124,8 +135,14 @@ export const ExportPreviewModal = ({
           };
         }
         adoptBlob(result.blob, result.previewBlob);
-      } catch {
+      } catch (error) {
         if (cancelled) return;
+        logError(error, {
+          area: "export",
+          surface: "ranker",
+          export_format: imgType,
+          pixel_ratio: pixelRatio,
+        });
         logEvent("graphic_export_fail", {
           ...exportContext,
           failure_kind: "render_threw",

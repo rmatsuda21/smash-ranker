@@ -11,7 +11,8 @@ import {
   refreshTokens,
   type OAuthTokens,
 } from "./_lib/startggOAuth.js";
-import { withLogging } from "./_lib/withLogging.js";
+import { isTimeoutError } from "./_lib/fetchImage.js";
+import { captureFnException, withLogging } from "./_lib/withLogging.js";
 
 // start.gg login. One function, three actions (POST `{ action }`):
 //   exchange — trade the one-time authorization code for tokens
@@ -117,11 +118,26 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
           status: err.status,
         }),
       );
+      // Only a 400/401 means start.gg turned the code or refresh token down.
+      // Anything else (a 5xx, a body that is not JSON) is start.gg having a
+      // bad moment: the refresh token is still good, so keep the cookie and
+      // let the browser try again later.
+      if (err.status !== 400 && err.status !== 401) {
+        captureFnException(err, { fn: "auth", action: String(action) });
+        return res.status(502).json({ error: "start.gg is unavailable" });
+      }
       // A refresh token start.gg no longer accepts is of no further use.
       if (action === "refresh") {
         res.setHeader("Set-Cookie", refreshCookie("", 0, secure));
       }
       return res.status(401).json({ error: "start.gg rejected the login" });
+    }
+    // The token call timed out or never connected: the same as above.
+    if (isTimeoutError(err) || err instanceof TypeError) {
+      captureFnException(err, { fn: "auth", action: String(action) });
+      return res
+        .status(isTimeoutError(err) ? 504 : 502)
+        .json({ error: "start.gg is unavailable" });
     }
     throw err;
   }

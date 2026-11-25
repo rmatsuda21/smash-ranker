@@ -19,7 +19,8 @@ import {
   TemplateFilter,
   useTemplateFavoritesStore,
 } from "@/store/templateFavoritesStore";
-import { logEvent } from "@/utils/observability/log";
+import { logEvent, logWarning } from "@/utils/observability/log";
+import { useToast } from "@/components/Toast";
 import { loadFamily } from "@/utils/fonts/fontLoader";
 import { collectDesignFontWeights } from "@/utils/fonts/designWeights";
 import { resizePlayerSlots } from "@/utils/top8/playerCount";
@@ -57,6 +58,7 @@ const modeOf = (template: DBTemplate): TemplateMode =>
 
 export const TemplateEditor = ({ className }: Props) => {
   const { _ } = useLingui();
+  const { showToast } = useToast();
   const { templates, loading, getTemplateWithId, addTemplate, deleteTemplate } =
     useTemplateDB();
   const [userTemplates, setUserTemplates] = useState<DBTemplate[]>([]);
@@ -97,7 +99,11 @@ export const TemplateEditor = ({ className }: Props) => {
       );
     };
 
-    fetchTemplates();
+    fetchTemplates().catch((error) =>
+      logWarning("saved templates failed to load", {
+        error: error instanceof Error ? error.message : String(error),
+      }),
+    );
   }, [templates, getTemplateWithId]);
 
   const families = useMemo<Family[]>(
@@ -175,8 +181,19 @@ export const TemplateEditor = ({ className }: Props) => {
   };
 
   const handleDeleteTemplate = async (id: string) => {
-    await deleteTemplate(id);
+    try {
+      await deleteTemplate(id);
+    } catch (error) {
+      logWarning("template delete failed", {
+        error: error instanceof Error ? error.message : String(error),
+      });
+      showToast(_(msg`Couldn't delete the template. Try again.`), {
+        variant: "error",
+      });
+      return;
+    }
     removeFavorite(id);
+    logEvent("template_delete", { surface: "ranker" });
   };
 
   const loadTemplate = async (id: string) => {
@@ -189,7 +206,15 @@ export const TemplateEditor = ({ className }: Props) => {
     if (defaultTemplate) {
       template = defaultTemplate;
     } else {
-      template = await getTemplateWithId(id);
+      template = await getTemplateWithId(id).catch((error) => {
+        logWarning("saved template failed to load", {
+          error: error instanceof Error ? error.message : String(error),
+        });
+        showToast(_(msg`Couldn't load the template. Try again.`), {
+          variant: "error",
+        });
+        return undefined;
+      });
     }
 
     if (template) {
@@ -226,7 +251,22 @@ export const TemplateEditor = ({ className }: Props) => {
     const { design } = useCanvasStore.getState();
     const font = useFontStore.getState().selectedFont;
 
-    await addTemplate({ name, design, font, previewImage });
+    try {
+      await addTemplate({ name, design, font, previewImage });
+    } catch (error) {
+      // The modal stays open with what was typed, to try again.
+      logWarning("template save failed", {
+        error: error instanceof Error ? error.message : String(error),
+      });
+      showToast(_(msg`Couldn't save the template. Try again.`), {
+        variant: "error",
+      });
+      return;
+    }
+    logEvent("template_save", {
+      surface: "ranker",
+      has_preview: previewImage !== undefined,
+    });
     setIsCreateModalOpen(false);
   };
 
@@ -255,7 +295,11 @@ export const TemplateEditor = ({ className }: Props) => {
 
   const selectTemplate = (id: string, group: string) => {
     confirmTemplateClick(id);
-    logEvent("template_select", { template_id: id, template_group: group });
+    logEvent("template_select", {
+      surface: "ranker",
+      template_id: id,
+      template_group: group,
+    });
   };
 
   const hasBothSections =

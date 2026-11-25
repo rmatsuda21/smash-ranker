@@ -2,7 +2,11 @@ import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
 import { fetchCatalog } from "@/utils/fonts/catalog";
-import { loadFamily, registerCustomFamily } from "@/utils/fonts/fontLoader";
+import {
+  loadFamily,
+  registerCustomFamily,
+  reportFontFailure,
+} from "@/utils/fonts/fontLoader";
 import { collectDesignFontWeights } from "@/utils/fonts/designWeights";
 import { registerCustomFontFace } from "@/utils/top8/registerCustomFont";
 import { customFontRepository } from "@/db/repository";
@@ -115,8 +119,9 @@ export const useFontStore = create<FontState>()(
           collectDesignFontWeights(useCanvasStore.getState().design),
         ).catch(() => {
           // Failure surfaces visually via the active Canvas/Preview consumer's
-          // own load gate; swallow here so we don't trigger an unhandled
-          // rejection from a fire-and-forget call.
+          // own load gate, and `loadFamily` has reported it; swallow here so
+          // we don't trigger an unhandled rejection from a fire-and-forget
+          // call.
         });
       },
     }),
@@ -138,7 +143,7 @@ const loadCustomFontsFromDB = async (): Promise<Font[]> => {
         isCustom: true,
       });
     } catch (e) {
-      console.warn(`Failed to load custom font "${dbFont.fontFamily}":`, e);
+      reportFontFailure(dbFont.fontFamily, e, "custom");
     }
   }
 
@@ -161,6 +166,7 @@ Promise.allSettled([fetchCatalog(), loadCustomFontsFromDB()])
       customResult.status === "fulfilled" ? customResult.value : [];
 
     if (catalogResult.status === "rejected") {
+      reportFontFailure("*", catalogResult.reason, "catalog");
       dispatch({
         type: "FETCH_FONTS_FAIL",
         payload: new Error("Failed to fetch fonts, please refresh the page"),
@@ -183,8 +189,8 @@ Promise.allSettled([fetchCatalog(), loadCustomFontsFromDB()])
         activeFontFamily,
         collectDesignFontWeights(useCanvasStore.getState().design),
       );
-    } catch (e) {
-      console.warn(`Failed to preload active font "${activeFontFamily}":`, e);
+    } catch {
+      // `loadFamily` has reported it; the canvas falls back on its own.
     }
   })
   .catch(() => {

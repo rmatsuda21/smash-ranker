@@ -1,4 +1,5 @@
 import { hiveeEventDate } from "@/utils/hivee/date";
+import { useRef } from "react";
 import { useClient } from "urql";
 import { t } from "@lingui/core/macro";
 
@@ -7,7 +8,14 @@ import { usePredictionStore } from "@/store/predictionStore";
 import { detectPlatformAndSlug, slugToUrl } from "@/consts/platforms";
 import type { PredictionPlayer } from "@/types/predict/Prediction";
 import { extractTournamentPalette } from "@/utils/predict/extractTournamentPalette";
+import {
+  failureKindForStatus,
+  failureKindOf,
+  LoadError,
+  reportLoadFailure,
+} from "@/utils/loadError";
 import { logEvent } from "@/utils/observability/log";
+import { startggLoadError } from "@/utils/startgg/describeError";
 import { fetchEventEntrants } from "@/utils/startgg/fetchEventEntrants";
 import {
   fetchHiveeEntrants,
@@ -103,7 +111,7 @@ const fetchStartgg = async (
     .toPromise();
 
   if (metaResult.error || !metaResult.data?.event) {
-    throw new Error(metaResult.error?.message || t`Tournament not found`);
+    throw startggLoadError(metaResult.error, t`Tournament not found`);
   }
 
   const event = metaResult.data.event;
@@ -145,7 +153,11 @@ const fetchChallongeEntrants = async (slug: string): Promise<FetchResult> => {
   const res = await fetch(`/api/challonge?slug=${encodeURIComponent(slug)}`);
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
-    throw new Error(body.error || t`Challonge API error: ${res.status}`);
+    throw new LoadError(
+      body.error || t`Challonge API error: ${res.status}`,
+      failureKindForStatus(res.status),
+      `challonge ${res.status}`,
+    );
   }
 
   const data: ChallongeResponse = await res.json();
@@ -176,11 +188,17 @@ const fetchTonamelEntrants = async (slug: string): Promise<FetchResult> => {
   const res = await fetch(`/api/tonamel?slug=${encodeURIComponent(slug)}`);
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
-    throw new Error(body.error || t`Tonamel API error: ${res.status}`);
+    throw new LoadError(
+      body.error || t`Tonamel API error: ${res.status}`,
+      failureKindForStatus(res.status),
+      `tonamel ${res.status}`,
+    );
   }
 
   const data: TonamelResponse = await res.json();
-  if (!data.competition) throw new Error(t`Competition not found`);
+  if (!data.competition) {
+    throw new LoadError(t`Competition not found`, "not_found");
+  }
 
   const competition = data.competition;
 
@@ -216,7 +234,9 @@ const fetchHiveePrediction = async (slug: string): Promise<FetchResult> => {
   // The prediction is of the final bracket, which has no entrants of its own
   // until its qualifier ends: the field is whoever starts in the qualifier.
   const finalProgram = pickFinalProgram(event.programs, programId);
-  if (!finalProgram) throw new Error(t`This event has no bracket to load.`);
+  if (!finalProgram) {
+    throw new LoadError(t`This event has no bracket to load.`, "unsupported");
+  }
   const firstProgram = pickFirstProgram(event.programs, finalProgram);
 
   const entrants: PredictionPlayer[] = allEntrants
@@ -249,10 +269,15 @@ const fetchHiveePrediction = async (slug: string): Promise<FetchResult> => {
 export const useFetchPredictionEntrants = () => {
   const client = useClient();
   const dispatch = usePredictionStore((state) => state.dispatch);
+  // Bumped per load: a slow answer to an earlier link must not overwrite a
+  // newer one.
+  const requestIdRef = useRef(0);
 
   const fetchEntrants = async (url: string) => {
     const detected = detectPlatformAndSlug(url);
     if (!detected) return;
+
+    const requestId = ++requestIdRef.current;
 
     dispatch({ type: "FETCH_START" });
     logEvent("tournament_url_submit", {
@@ -277,6 +302,7 @@ export const useFetchPredictionEntrants = () => {
       // round-trips through detectPlatformAndSlug (start.gg's API returns
       // tournament URL without the event slug).
       result.tournamentUrl = slugToUrl(detected.platform, detected.slug);
+      if (requestIdRef.current !== requestId) return;
 
       dispatch({ type: "FETCH_SUCCESS", payload: result });
       logEvent("prediction_load", {
@@ -286,18 +312,30 @@ export const useFetchPredictionEntrants = () => {
 
       if (result.tournamentIconUrl) {
         extractTournamentPalette(result.tournamentIconUrl).then((palette) => {
+          if (requestIdRef.current !== requestId) return;
           dispatch({ type: "SET_COLOR_PALETTE", payload: palette });
         });
       }
     } catch (error) {
+      if (requestIdRef.current !== requestId) return;
       const message =
         error instanceof Error ? error.message : t`Failed to fetch tournament`;
-      // Don't Sentry-capture: most failures here are user-input errors. Real
-      // upstream issues land in the api/* function-side Sentry captures.
+      // start.gg and Hivee are called from the browser, so their failures
+      // are reported here (user-input ones left out). Challonge and Tonamel
+      // go through api/* functions, which capture their own.
+      const viaProxy =
+        detected.platform === "challonge" || detected.platform === "tonamel";
+      const failureKind = viaProxy
+        ? failureKindOf(error)
+        : reportLoadFailure("prediction entrants fetch failed", error, {
+            area: "predict",
+            tournament_platform: detected.platform,
+          });
       dispatch({ type: "FETCH_FAIL", payload: message });
       logEvent("prediction_fetch_fail", {
         tournament_platform: detected.platform,
         tournament_slug: detected.slug,
+        failure_kind: failureKind,
       });
     }
   };

@@ -10,9 +10,11 @@ import { useEventMeta } from "@/hooks/user/useEventMeta";
 import type { UserEvent } from "@/types/user/UserEvent";
 import { formatOrdinal } from "@/utils/user/ordinal";
 import {
+  logToolLinkClick,
   predictLink,
   rankerLink,
   recapLink,
+  type ToolLinkSource,
   tournamentLink,
 } from "@/utils/user/toolLinks";
 
@@ -23,9 +25,12 @@ import styles from "./EventRow.module.scss";
 export const EventActions = ({
   event,
   size = "sm",
+  source = "profile",
 }: {
   event: UserEvent;
   size?: "sm" | "lg";
+  // The page the links are on, for analytics.
+  source?: ToolLinkSource;
 }) => {
   const resultsEnabled = useFeatureFlag("results-enabled");
   const isUpcoming = event.startAt !== null && event.startAt > Date.now();
@@ -33,7 +38,11 @@ export const EventActions = ({
   return (
     <div className={cn(styles.actions, styles[size])}>
       {isUpcoming ? (
-        <Link className={styles.action} href={predictLink(event.slug)}>
+        <Link
+          className={styles.action}
+          href={predictLink(event.slug)}
+          onClick={() => logToolLinkClick("predict", source)}
+        >
           <FaListOl aria-hidden="true" />
           <Trans>Predict</Trans>
         </Link>
@@ -42,6 +51,7 @@ export const EventActions = ({
           <Link
             className={cn(styles.action, styles.primary)}
             href={rankerLink(event.slug)}
+            onClick={() => logToolLinkClick("ranker", source)}
           >
             <FaTrophy aria-hidden="true" />
             <Trans>Top 8 graphic</Trans>
@@ -50,6 +60,7 @@ export const EventActions = ({
             <Link
               className={styles.action}
               href={recapLink(event.slug, event.entrantId)}
+              onClick={() => logToolLinkClick("recap", source)}
             >
               <FaClipboardList aria-hidden="true" />
               <Trans>My recap</Trans>
@@ -130,10 +141,17 @@ export const TournamentIcon = ({
 };
 
 // The tournament's name, leading to its page opened on this event.
-export const TournamentLink = ({ event }: { event: UserEvent }) => (
+export const TournamentLink = ({
+  event,
+  source = "profile",
+}: {
+  event: UserEvent;
+  source?: ToolLinkSource;
+}) => (
   <Link
     className={styles.nameLink}
     href={tournamentLink(event.tournament.id, event.id)}
+    onClick={() => logToolLinkClick("tournament", source)}
   >
     {event.tournament.name}
   </Link>
@@ -143,11 +161,18 @@ type Props = {
   event: UserEvent;
   // Buttons under the text at every width, for a list in a narrow column.
   stacked?: boolean;
+  source?: ToolLinkSource;
   className?: string;
   style?: React.CSSProperties;
 };
 
-export const EventRow = ({ event, stacked, className, style }: Props) => {
+export const EventRow = ({
+  event,
+  stacked,
+  source = "profile",
+  className,
+  style,
+}: Props) => {
   const eventMeta = useEventMeta();
 
   return (
@@ -158,12 +183,12 @@ export const EventRow = ({ event, stacked, className, style }: Props) => {
       <TournamentIcon event={event} />
       <div className={styles.text}>
         <p className={styles.name}>
-          <TournamentLink event={event} />
+          <TournamentLink event={event} source={source} />
         </p>
         <p className={styles.meta}>{eventMeta(event)}</p>
       </div>
       <PlacementChip event={event} className={styles.rowPlacement} />
-      <EventActions event={event} />
+      <EventActions event={event} source={source} />
     </li>
   );
 };

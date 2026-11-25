@@ -2,6 +2,8 @@ import { useCallback, useEffect, useReducer, useRef } from "react";
 
 import type { LoadStatus } from "@/hooks/useCachedLoad";
 import type { StandingEntry } from "@/types/tournament/Tournament";
+import { reportLoadFailure } from "@/utils/loadError";
+import { logEvent } from "@/utils/observability/log";
 import { fetchEventStandings } from "@/utils/tournament/fetchEvent";
 
 type Loaded = {
@@ -52,8 +54,19 @@ export const useEventStandings = (eventId: string | null) => {
         pages: current.pages + 1,
         status: "done",
       });
-    } catch {
+    } catch (error) {
+      // What had loaded stays; calling `loadMore` again asks for the same
+      // page.
       loaded.set(eventId, { ...current, status: "error" });
+      const failureKind = reportLoadFailure(
+        "event-standings load failed",
+        error,
+        { area: "cached-load", eventId, page: current.pages + 1 },
+      );
+      logEvent("tournament_page_fail", {
+        stage: "event-standings",
+        failure_kind: failureKind,
+      });
     }
     if (mounted.current) rerender();
   }, [eventId]);

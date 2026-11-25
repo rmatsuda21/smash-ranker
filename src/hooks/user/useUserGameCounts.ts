@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { useAuthUser } from "@/store/authStore";
-import { logWarning } from "@/utils/observability/log";
+import { reportLoadFailure } from "@/utils/loadError";
 import {
   fetchUserGameCounts,
   type UserGameCounts,
@@ -24,9 +24,8 @@ export const useUserGameCounts = (): UserGameCounts | null => {
         if (!cancelled) setState({ slug, counts });
       })
       .catch((err: unknown) => {
-        logWarning("user game counts fetch failed", {
+        reportLoadFailure("user game counts fetch failed", err, {
           area: "user",
-          error: err instanceof Error ? err.message : String(err),
         });
       });
 

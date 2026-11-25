@@ -5,6 +5,7 @@ import { TournamentInfo } from "@/types/top8/Tournament";
 import { GameId } from "@/types/Game";
 import { DEFAULT_GAME } from "@/consts/games";
 import { SAMPLE_TOURNAMENT } from "@/utils/top8/sampleTournament";
+import { safeLocalStorage, mergePersisted } from "@/utils/safeStorage";
 
 interface TournamentState {
   info: TournamentInfo;
@@ -114,7 +115,10 @@ export const useTournamentStore = create<TournamentStore>()(
       }),
       {
         name: "tournament-store",
-        storage: createJSONStorage(() => localStorage),
+        storage: createJSONStorage(() => safeLocalStorage),
+        merge: mergePersisted<TournamentState>({
+          transient: ["fetching", "error", "selectedElementIndex"],
+        }),
       },
     ),
   ),

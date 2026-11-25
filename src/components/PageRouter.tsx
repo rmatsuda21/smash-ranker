@@ -1,7 +1,9 @@
 import { lazy, Suspense } from "react";
-import { Route, Switch } from "wouter";
+import { Route, Switch, useLocation } from "wouter";
 
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { Home } from "@/pages/home";
+import { NotFoundPage } from "@/pages/notFound";
 import { useFeatureFlag } from "@/hooks/useFeatureFlags";
 
 const RankerPage = lazy(() =>
@@ -22,67 +24,75 @@ export const PageRouter = () => {
   const resultsEnabled = useFeatureFlag("results-enabled");
   const recapEnabled = useFeatureFlag("recap-enabled");
 
+  const [location] = useLocation();
+
+  // A page that fails to render or load is contained here, under the header,
+  // and cleared when the user navigates somewhere else.
   return (
-    <Switch>
-      <Route path="/" component={Home} />
-      <Route path="/ranker">
-        <Suspense>
-          <RankerPage />
-        </Suspense>
-      </Route>
-      <Route path="/tier">
-        <Suspense>
-          <TierPage />
-        </Suspense>
-      </Route>
-      <Route path="/predict">
-        <Suspense>
-          <PredictPage />
-        </Suspense>
-      </Route>
-      {resultsEnabled && (
-        <Route path="/results">
+    <ErrorBoundary variant="page" resetKey={location}>
+      <Switch>
+        <Route path="/" component={Home} />
+        <Route path="/ranker">
           <Suspense>
-            <ResultsPage />
+            <RankerPage />
           </Suspense>
         </Route>
-      )}
-      {thumbnailEnabled && (
-        <Route path="/thumbnail">
+        <Route path="/tier">
           <Suspense>
-            <ThumbnailPage />
+            <TierPage />
           </Suspense>
         </Route>
-      )}
-      {recapEnabled && (
-        <Route path="/recap">
+        <Route path="/predict">
           <Suspense>
-            <RecapPage />
+            <PredictPage />
           </Suspense>
         </Route>
-      )}
-      <Route path="/me">
-        <Suspense>
-          <MePage />
-        </Suspense>
-      </Route>
-      <Route path="/tournament/:id">
-        {(params) => (
-          <Suspense>
-            <TournamentPage id={params.id} />
-          </Suspense>
+        {resultsEnabled && (
+          <Route path="/results">
+            <Suspense>
+              <ResultsPage />
+            </Suspense>
+          </Route>
         )}
-      </Route>
-      <Route path="/oauth/callback">
-        <Suspense>
-          <OAuthCallbackPage />
-        </Suspense>
-      </Route>
-      <Route path="/tos">
-        <Suspense>
-          <TosPage />
-        </Suspense>
-      </Route>
-    </Switch>
+        {thumbnailEnabled && (
+          <Route path="/thumbnail">
+            <Suspense>
+              <ThumbnailPage />
+            </Suspense>
+          </Route>
+        )}
+        {recapEnabled && (
+          <Route path="/recap">
+            <Suspense>
+              <RecapPage />
+            </Suspense>
+          </Route>
+        )}
+        <Route path="/me">
+          <Suspense>
+            <MePage />
+          </Suspense>
+        </Route>
+        <Route path="/tournament/:id">
+          {(params) => (
+            <Suspense>
+              <TournamentPage id={params.id} />
+            </Suspense>
+          )}
+        </Route>
+        <Route path="/oauth/callback">
+          <Suspense>
+            <OAuthCallbackPage />
+          </Suspense>
+        </Route>
+        <Route path="/tos">
+          <Suspense>
+            <TosPage />
+          </Suspense>
+        </Route>
+        {/* Anything else, including a tool that is switched off. */}
+        <Route component={NotFoundPage} />
+      </Switch>
+    </ErrorBoundary>
   );
 };

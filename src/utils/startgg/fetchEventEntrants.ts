@@ -3,6 +3,7 @@ import * as countryList from "country-list";
 import { t } from "@lingui/core/macro";
 
 import { graphql } from "@/gql";
+import { startggLoadError } from "@/utils/startgg/describeError";
 
 export type EventEntrant = {
   id: string;
@@ -211,7 +212,7 @@ export const fetchEventEntrants = async (
         .toPromise();
       const seeds = result.data?.phase?.seeds;
       if (result.error || !seeds) {
-        throw new Error(result.error?.message || t`Failed to fetch seeds`);
+        throw startggLoadError(result.error, t`Failed to fetch seeds`);
       }
       return {
         totalPages: seeds.pageInfo?.totalPages ?? 1,
@@ -227,7 +228,7 @@ export const fetchEventEntrants = async (
         .toPromise();
       const list = result.data?.event?.entrants;
       if (result.error || !list) {
-        throw new Error(result.error?.message || t`Failed to fetch seeds`);
+        throw startggLoadError(result.error, t`Failed to fetch seeds`);
       }
       return {
         totalPages: list.pageInfo?.totalPages ?? 1,

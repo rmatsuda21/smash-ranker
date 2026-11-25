@@ -14,7 +14,7 @@ import {
   registerCustomFamily,
   unregisterCustomFamily,
 } from "@/utils/fonts/fontLoader";
-import { logEvent, setPerson } from "@/utils/observability/log";
+import { logEvent, logWarning, setPerson } from "@/utils/observability/log";
 
 export const useCustomFonts = () => {
   const [customFonts, setCustomFonts] = useState<DBCustomFont[]>([]);
@@ -27,6 +27,11 @@ export const useCustomFonts = () => {
     customFontRepository
       .getAll()
       .then(setCustomFonts)
+      .catch((error) =>
+        logWarning("custom fonts failed to load", {
+          error: error instanceof Error ? error.message : String(error),
+        }),
+      )
       .finally(() => setLoading(false));
   }, []);
 
@@ -50,8 +55,22 @@ export const useCustomFonts = () => {
       }
 
       const id = crypto.randomUUID();
+      const sizeKb = Math.round(file.size / 1024);
 
-      await registerCustomFontFace(fontFamily, file);
+      // The browser parses the file here: one that is damaged, or not a
+      // font under a font's extension, is refused.
+      try {
+        await registerCustomFontFace(fontFamily, file);
+      } catch {
+        showToast(t`"${file.name}" isn't a font file this browser can read.`, {
+          variant: "error",
+        });
+        logEvent("custom_font_upload_fail", {
+          failure_kind: "invalid_font",
+          size_kb: sizeKb,
+        });
+        return null;
+      }
       registerCustomFamily(fontFamily);
 
       const dbFont: DBCustomFont = {
@@ -62,7 +81,24 @@ export const useCustomFonts = () => {
         date: new Date(),
       };
 
-      await customFontRepository.put(dbFont);
+      // Without a stored copy the font is gone after a reload, so it is
+      // not added at all.
+      try {
+        await customFontRepository.put(dbFont);
+      } catch (error) {
+        Array.from(document.fonts)
+          .filter((face) => face.family === fontFamily)
+          .forEach((face) => document.fonts.delete(face));
+        unregisterCustomFamily(fontFamily);
+        logWarning("custom font save failed", {
+          error: error instanceof Error ? error.message : String(error),
+          size_kb: sizeKb,
+        });
+        showToast(t`Couldn't save "${fontFamily}". Try again.`, {
+          variant: "error",
+        });
+        return null;
+      }
 
       const font: Font = {
         fontFamily,
@@ -84,21 +120,32 @@ export const useCustomFonts = () => {
 
   const removeFont = useCallback(
     async (id: string) => {
-      const font = await customFontRepository.get(id);
-      if (!font) return;
-
-      await customFontRepository.delete(id);
+      let font: DBCustomFont | undefined;
+      try {
+        font = await customFontRepository.get(id);
+        if (!font) return;
+        await customFontRepository.delete(id);
+      } catch (error) {
+        logWarning("custom font delete failed", {
+          error: error instanceof Error ? error.message : String(error),
+        });
+        showToast(t`Couldn't remove the font. Try again.`, {
+          variant: "error",
+        });
+        return;
+      }
+      const removed = font;
 
       const facesToDelete = Array.from(document.fonts).filter(
-        (ff) => ff.family === font.fontFamily,
+        (ff) => ff.family === removed.fontFamily,
       );
       facesToDelete.forEach((ff) => document.fonts.delete(ff));
 
-      unregisterCustomFamily(font.fontFamily);
-      dispatch({ type: "REMOVE_CUSTOM_FONT", payload: font.fontFamily });
+      unregisterCustomFamily(removed.fontFamily);
+      dispatch({ type: "REMOVE_CUSTOM_FONT", payload: removed.fontFamily });
       setCustomFonts((prev) => prev.filter((f) => f.id !== id));
     },
-    [dispatch],
+    [dispatch, showToast, t],
   );
 
   return { customFonts, loading, uploadFont, removeFont };

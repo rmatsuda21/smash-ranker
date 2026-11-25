@@ -15,6 +15,7 @@ import {
   resolveHiveeSlug,
 } from "@/utils/hivee/api";
 import { pickFinalProgram } from "@/utils/hivee/programs";
+import { LoadError } from "@/utils/loadError";
 
 // Everything the player recap reads from a Hivee event. Hivee has no
 // per-player endpoint: a player's run is cut out of the event's matches.
@@ -33,7 +34,8 @@ const load = async (slug: string): Promise<HiveeEventData> => {
   const program = pickFinalProgram(event.programs, programId, {
     startedOnly: true,
   });
-  if (!program) throw new Error(t`This event has no bracket to load.`);
+  if (!program)
+    throw new LoadError(t`This event has no bracket to load.`, "unsupported");
 
   const [standings, entrants, matches] = await Promise.all([
     fetchHiveeStandings(program.id),

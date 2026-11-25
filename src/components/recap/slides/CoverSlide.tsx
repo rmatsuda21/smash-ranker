@@ -13,6 +13,8 @@ import { useLingui } from "@lingui/react";
 import { useRecapStory } from "@/components/recap/RecapStory/RecapStoryContext";
 import { PLAYER_TYPES } from "@/consts/recap/playerTypes";
 import type { Recap } from "@/types/recap/Recap";
+import type { ShareMethod } from "@/utils/analytics/events";
+import { markExported } from "@/utils/analytics/markExported";
 import { logEvent, logWarning } from "@/utils/observability/log";
 import {
   COVER_HEIGHT,
@@ -49,7 +51,12 @@ export const CoverSlide = ({ recap }: { recap: Recap }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [assets, setAssets] = useState<RecapCoverAssets | null>(null);
   const [blob, setBlob] = useState<Blob | null>(null);
-  const [copied, setCopied] = useState(false);
+  const [copyState, setCopyState] = useState<"idle" | "copied" | "failed">(
+    "idle",
+  );
+  const [failed, setFailed] = useState(false);
+  // Counts the tries, so "Try again" loads and draws once more.
+  const [attempt, setAttempt] = useState(0);
 
   const mainId = recap.characters[0]?.id ?? null;
   const locale = i18n.locale;
@@ -134,13 +141,23 @@ export const CoverSlide = ({ recap }: { recap: Recap }) => {
 
   useEffect(() => {
     let cancelled = false;
-    loadRecapCoverAssets(mainId, text).then((loaded) => {
-      if (!cancelled) setAssets(loaded);
-    });
+    setFailed(false);
+    loadRecapCoverAssets(mainId, text)
+      .then((loaded) => {
+        if (!cancelled) setAssets(loaded);
+      })
+      .catch((err: unknown) => {
+        if (cancelled) return;
+        logWarning("recap cover assets failed", {
+          area: "recap",
+          error: err instanceof Error ? err.message : String(err),
+        });
+        setFailed(true);
+      });
     return () => {
       cancelled = true;
     };
-  }, [mainId, text]);
+  }, [mainId, text, attempt]);
 
   // The layers play in on screen.
   useEffect(() => {
@@ -164,20 +181,34 @@ export const CoverSlide = ({ recap }: { recap: Recap }) => {
   useEffect(() => {
     if (!assets) return;
     let cancelled = false;
+    const startedAt = performance.now();
+    setFailed(false);
+    logEvent("graphic_export_start", {
+      export_surface: "recap",
+      export_format: "png",
+    });
     renderRecapCoverImage(text, assets)
       .then((image) => {
         if (!cancelled) setBlob(image);
       })
       .catch((err: unknown) => {
+        if (cancelled) return;
         logWarning("recap cover render failed", {
           area: "recap",
           error: err instanceof Error ? err.message : String(err),
         });
+        logEvent("graphic_export_fail", {
+          export_surface: "recap",
+          export_format: "png",
+          failure_kind: "render_threw",
+          duration_ms: Math.round(performance.now() - startedAt),
+        });
+        setFailed(true);
       });
     return () => {
       cancelled = true;
     };
-  }, [assets, text]);
+  }, [assets, text, attempt]);
 
   const file = useMemo(
     () =>
@@ -190,20 +221,34 @@ export const CoverSlide = ({ recap }: { recap: Recap }) => {
   );
   const canShare = file !== null && canShareImage(file);
 
-  const logExport = (share_method: string) =>
+  const logExport = (share_method: ShareMethod) => {
     logEvent("graphic_export_complete", {
       export_surface: "recap",
       export_format: "png",
       share_method,
     });
+    markExported();
+  };
 
   const handleShare = async () => {
-    if (!file) return;
+    if (!file || !blob) return;
     try {
       await navigator.share({ files: [file] });
       logExport("share_sheet");
-    } catch {
+    } catch (err) {
       // Closing the share sheet is not an error.
+      if (err instanceof DOMException && err.name === "AbortError") return;
+      logWarning("recap cover share failed", {
+        area: "recap",
+        error: err instanceof Error ? err.message : String(err),
+      });
+      // The sheet did not open: save the image the other way.
+      const outcome = await downloadBlob({
+        blob,
+        filename: file.name,
+        mimeType: "image/png",
+      });
+      if (outcome !== "cancelled") logExport(shareMethodFor(outcome));
     }
   };
   const handleDownload = async () => {
@@ -218,10 +263,14 @@ export const CoverSlide = ({ recap }: { recap: Recap }) => {
   const handleCopy = async () => {
     if (!blob) return;
     const result = await copyImageToClipboard(blob);
-    if (!result.ok) return;
-    logExport("clipboard");
-    setCopied(true);
-    window.setTimeout(() => setCopied(false), 1600);
+    if (result.ok) {
+      logEvent("graphic_share", {
+        export_surface: "recap",
+        share_method: "clipboard",
+      });
+    }
+    setCopyState(result.ok ? "copied" : "failed");
+    window.setTimeout(() => setCopyState("idle"), 1600);
   };
 
   return (
@@ -249,17 +298,36 @@ export const CoverSlide = ({ recap }: { recap: Recap }) => {
             <Trans>Share</Trans>
           </button>
         )}
-        <button
-          type="button"
-          className={cn(!canShare && styles.btnPrimary)}
-          disabled={!blob}
-          onClick={handleDownload}
-        >
-          <Trans>Save</Trans>
-        </button>
-        <button type="button" disabled={!blob} onClick={handleCopy}>
-          {copied ? <Trans>Copied!</Trans> : <Trans>Copy</Trans>}
-        </button>
+        {failed && !blob ? (
+          // The image could not be made: the one thing to do is try again.
+          <button
+            type="button"
+            className={styles.btnPrimary}
+            onClick={() => setAttempt((n) => n + 1)}
+          >
+            <Trans>Couldn't make the image. Try again</Trans>
+          </button>
+        ) : (
+          <>
+            <button
+              type="button"
+              className={cn(!canShare && styles.btnPrimary)}
+              disabled={!blob}
+              onClick={handleDownload}
+            >
+              <Trans>Save</Trans>
+            </button>
+            <button type="button" disabled={!blob} onClick={handleCopy}>
+              {copyState === "copied" ? (
+                <Trans>Copied!</Trans>
+              ) : copyState === "failed" ? (
+                <Trans>Couldn't copy</Trans>
+              ) : (
+                <Trans>Copy</Trans>
+              )}
+            </button>
+          </>
+        )}
         <button type="button" onClick={story.replay}>
           <Trans>Replay</Trans>
         </button>

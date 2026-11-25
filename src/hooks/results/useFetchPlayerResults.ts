@@ -28,6 +28,8 @@ import {
   resolveCountry,
   sortSetsByPhase,
 } from "@/utils/results/parseStartggResults";
+import { reportLoadFailure } from "@/utils/loadError";
+import { startggLoadError } from "@/utils/startgg/describeError";
 
 // One request usually covers a full bracket run (15-ish sets max). >64 is
 // rare and silently truncating would lose data, so the hook logs a
@@ -284,18 +286,21 @@ export const useFetchPlayerResults = () => {
         error instanceof Error
           ? error.message
           : t`Failed to fetch player results`;
-      logWarning("results player-fetch failed", {
-        area: "results-fetch",
-        tournament_platform: "hivee",
-        tournament_url: tournamentUrl,
-        entrant_id: entrantId,
-        error: message,
-      });
+      const failureKind = reportLoadFailure(
+        "results player-fetch failed",
+        error,
+        {
+          area: "results-fetch",
+          tournament_platform: "hivee",
+          tournament_url: tournamentUrl,
+          entrant_id: entrantId,
+        },
+      );
       dispatch({ type: "FETCH_RESULTS_FAIL", payload: message });
       logEvent("results_fetch_fail", {
         tournament_platform: "hivee",
         stage: "player",
-        reason: "query_error",
+        failure_kind: failureKind,
         tournament_url: tournamentUrl,
         entrant_id: entrantId,
       });
@@ -336,9 +341,7 @@ export const useFetchPlayerResults = () => {
       if (myRequest !== requestIdRef.current) return;
 
       if (result.error || !result.data?.entrant) {
-        throw new Error(
-          result.error?.message || t`Player results not available.`,
-        );
+        throw startggLoadError(result.error, t`Player results not available.`);
       }
 
       const entrant = result.data.entrant;
@@ -427,20 +430,23 @@ export const useFetchPlayerResults = () => {
         error instanceof Error
           ? error.message
           : t`Failed to fetch player results`;
-      logWarning("results player-fetch failed", {
-        area: "results-fetch",
-        tournament_platform: "startgg",
-        tournament_url: tournamentUrl,
-        videogame_id: videogameId,
-        entrant_id: entrantId,
-        player_id: playerId,
-        error: message,
-      });
+      const failureKind = reportLoadFailure(
+        "results player-fetch failed",
+        error,
+        {
+          area: "results-fetch",
+          tournament_platform: "startgg",
+          tournament_url: tournamentUrl,
+          videogame_id: videogameId,
+          entrant_id: entrantId,
+          player_id: playerId,
+        },
+      );
       dispatch({ type: "FETCH_RESULTS_FAIL", payload: message });
       logEvent("results_fetch_fail", {
         tournament_platform: "startgg",
         stage: "player",
-        reason: "query_error",
+        failure_kind: failureKind,
         tournament_url: tournamentUrl,
         videogame_id: videogameId,
         entrant_id: entrantId,

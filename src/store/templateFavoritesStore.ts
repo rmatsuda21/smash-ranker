@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
+import { safeLocalStorage } from "@/utils/safeStorage";
 
 export const TEMPLATE_FILTERS = [
   "all",
@@ -55,7 +56,7 @@ export const useTemplateFavoritesStore = create<TemplateFavoritesState>()(
     {
       name: "template-favorites",
       version: 1,
-      storage: createJSONStorage(() => localStorage),
+      storage: createJSONStorage(() => safeLocalStorage),
       // Stored values can be corrupted or hand-edited; keep only id strings.
       onRehydrateStorage: () => (state) => {
         if (!state) return;

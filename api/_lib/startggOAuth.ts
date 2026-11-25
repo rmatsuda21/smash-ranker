@@ -43,6 +43,9 @@ const getCredentials = () => {
 };
 
 const DEFAULT_EXPIRES_IN = 604800; // 7 days, per the docs
+// Well inside the auth function's 10s limit, so a hung start.gg ends as an
+// answer from us rather than as a function timeout nothing reports.
+const TOKEN_TIMEOUT_MS = 7000;
 
 const requestTokens = async (
   url: string,
@@ -59,6 +62,7 @@ const requestTokens = async (
       client_secret: clientSecret,
       scope: OAUTH_SCOPE,
     }),
+    signal: AbortSignal.timeout(TOKEN_TIMEOUT_MS),
   });
 
   let json: unknown = null;

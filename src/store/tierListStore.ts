@@ -15,6 +15,11 @@ import {
   TierListLayout,
   TitleAlign,
 } from "@/types/tierlist/TierList";
+import {
+  safeLocalStorage,
+  mergePersisted,
+  isRecord,
+} from "@/utils/safeStorage";
 
 // Where one game's characters sat when the list was switched to another
 // game: its pool, and the characters of each tier by tier id.
@@ -346,7 +351,16 @@ export const useTierListStore = create<TierListStore>()(
       }),
       {
         name: "tier-list-store",
-        storage: createJSONStorage(() => localStorage),
+        storage: createJSONStorage(() => safeLocalStorage),
+        merge: mergePersisted<TierListState>({
+          guards: {
+            tiers: (value) =>
+              Array.isArray(value) &&
+              value.every(
+                (tier) => isRecord(tier) && Array.isArray(tier.characterIds),
+              ),
+          },
+        }),
         partialize: (state) => ({
           game: state.game,
           parked: state.parked,

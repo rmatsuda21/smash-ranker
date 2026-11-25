@@ -33,6 +33,7 @@ import {
   labelFontFamilyCss,
 } from "@/utils/tierlist/labelFont";
 import { useTierListStore } from "@/store/tierListStore";
+import { logEvent } from "@/utils/observability/log";
 import { GAMES, RENDER_STYLES } from "@/consts/games";
 import {
   TIER_PALETTES,
@@ -68,6 +69,11 @@ type Props = {
 };
 
 type OpenMenu = "palette" | "font" | null;
+
+// One event per choice made in the bar (not for the size slider, which
+// fires on every step of a drag).
+const logDesignChange = (setting: string, value: string | number) =>
+  logEvent("tier_design_change", { setting, value });
 
 // One strip above the list with every look option a click away: the three
 // small choices inline, palette and font behind a popover each.
@@ -118,6 +124,7 @@ export const TierDesignBar = ({ className }: Props) => {
           : labelFont.weight,
       },
     });
+    logDesignChange("font_family", family);
   };
 
   const activePalette =
@@ -136,7 +143,10 @@ export const TierDesignBar = ({ className }: Props) => {
         </span>
         <GameSwitch
           value={game}
-          onChange={(value) => dispatch({ type: "SET_GAME", game: value })}
+          onChange={(value) => {
+            dispatch({ type: "SET_GAME", game: value });
+            logDesignChange("game", value);
+          }}
         />
       </div>
 
@@ -146,7 +156,10 @@ export const TierDesignBar = ({ className }: Props) => {
         </span>
         <RadioGroup<TierListLayout>
           value={layout}
-          onChange={(value) => dispatch({ type: "SET_LAYOUT", layout: value })}
+          onChange={(value) => {
+            dispatch({ type: "SET_LAYOUT", layout: value });
+            logDesignChange("layout", value);
+          }}
           options={[
             {
               value: "side",
@@ -183,9 +196,10 @@ export const TierDesignBar = ({ className }: Props) => {
         </span>
         <RadioGroup<ImageDisplayMode>
           value={imageMode === "mural" && !hasMural ? "main" : imageMode}
-          onChange={(value) =>
-            dispatch({ type: "SET_IMAGE_MODE", mode: value })
-          }
+          onChange={(value) => {
+            dispatch({ type: "SET_IMAGE_MODE", mode: value });
+            logDesignChange("image_style", value);
+          }}
           options={[
             { value: "stock", label: <Trans>Stock</Trans> },
             { value: "main", label: <Trans>Main Art</Trans> },
@@ -207,9 +221,10 @@ export const TierDesignBar = ({ className }: Props) => {
         </span>
         <RadioGroup<TitleAlign>
           value={titleAlign}
-          onChange={(value) =>
-            dispatch({ type: "SET_TITLE_ALIGN", align: value })
-          }
+          onChange={(value) => {
+            dispatch({ type: "SET_TITLE_ALIGN", align: value });
+            logDesignChange("title_align", value);
+          }}
           options={[
             {
               value: "left",
@@ -322,6 +337,7 @@ export const TierDesignBar = ({ className }: Props) => {
                 paletteId: palette.id,
                 colors,
               });
+              logDesignChange("palette", palette.id);
             }}
           >
             <span className={styles.paletteName}>{_(palette.name)}</span>
@@ -360,9 +376,10 @@ export const TierDesignBar = ({ className }: Props) => {
           <DropDownSelect
             options={fontWeightOptions}
             selectedValue={selectedWeight}
-            onChange={(value) =>
-              dispatch({ type: "SET_LABEL_FONT", font: { weight: value } })
-            }
+            onChange={(value) => {
+              dispatch({ type: "SET_LABEL_FONT", font: { weight: value } });
+              logDesignChange("font_weight", value);
+            }}
             className={styles.dropdown}
           />
         </FieldGroup>

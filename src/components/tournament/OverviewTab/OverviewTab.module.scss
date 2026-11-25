@@ -473,3 +473,8 @@ a.tool {
     color: var(--fg-1);
   }
 }
+
+// A panel whose content failed to load.
+.panelFailed {
+  padding: var(--space-5) var(--space-4);
+}

@@ -10,6 +10,11 @@ import {
   DEFAULT_PREDICTION_PALETTE,
   type PredictionPalette,
 } from "@/types/predict/PredictionPalette";
+import {
+  safeLocalStorage,
+  mergePersisted,
+  isRecordArray,
+} from "@/utils/safeStorage";
 
 interface PredictionState {
   tournamentName: string;
@@ -229,7 +234,16 @@ export const usePredictionStore = create<PredictionStore>()(
       }),
       {
         name: "prediction-store",
-        storage: createJSONStorage(() => localStorage),
+        storage: createJSONStorage(() => safeLocalStorage),
+        merge: mergePersisted<PredictionState>({
+          guards: {
+            entrantPool: isRecordArray,
+            predictions: isRecordArray,
+            predictionCount: (value) =>
+              value === "custom" || typeof value === "number",
+          },
+          transient: ["fetching", "error"],
+        }),
         partialize: (state) => ({
           tournamentName: state.tournamentName,
           eventName: state.eventName,

@@ -9,17 +9,24 @@ import {
 import { previewCache } from "@/db/previewCache";
 import { logError } from "@/utils/observability/log";
 
+// Every persisted store's `name` in src/store/, plus the keys of stores
+// that no longer exist. A store added without its key here survives a
+// reset, and a reset is the way out of a crash caused by saved state.
 const ZUSTAND_STORAGE_KEYS = [
+  "auth-store",
   "canvas-store",
+  "export-settings",
   "player-store",
   "prediction-store",
   "results-store",
-  "social-post-store",
-  "thumbnail-store",
+  "social-post-store-v1",
+  "template-favorites",
   "thumbnail-maker",
   "tier-list-store",
   "tournament-store",
-  "export-settings",
+  // Legacy.
+  "social-post-store",
+  "thumbnail-store",
 ];
 
 const safe = async (step: string, fn: () => Promise<unknown> | unknown) => {

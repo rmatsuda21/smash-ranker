@@ -14,6 +14,7 @@ import {
 import {
   CharacterIcons,
   EntrantName,
+  LoadFailed,
   Panel,
   SeedDelta,
   SkeletonRows,
@@ -33,7 +34,12 @@ import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
 import { UPSET_SEED_COUNT } from "@/utils/tournament/fetchEvent";
 import { mapsLink } from "@/utils/tournament/format";
 import { formatOrdinal } from "@/utils/user/ordinal";
-import { predictLink, rankerLink, recapLink } from "@/utils/user/toolLinks";
+import {
+  logToolLinkClick,
+  predictLink,
+  rankerLink,
+  recapLink,
+} from "@/utils/user/toolLinks";
 
 import styles from "./OverviewTab.module.scss";
 
@@ -45,6 +51,8 @@ type Props = {
   event: TournamentEvent;
   overview: EventOverview | null;
   status: LoadStatus;
+  // Loads the overview again after it failed.
+  onRetry: () => void;
   onShowStandings: () => void;
   onShowBracket: () => void;
 };
@@ -113,10 +121,18 @@ const Upsets = ({
   event: TournamentEvent;
   seedPhaseId: string | null;
 }) => {
-  const { data: upsets, status } = useEventUpsets(event.id, seedPhaseId);
+  const { data: upsets, status, retry } = useEventUpsets(event.id, seedPhaseId);
   const [expanded, setExpanded] = useState(false);
 
-  if (status === "error" || (upsets && upsets.length === 0)) return null;
+  // No upsets is nothing to show; a failed load is not the same thing.
+  if (upsets && upsets.length === 0) return null;
+  if (status === "error") {
+    return (
+      <Panel className={styles.upsets} title={<Trans>Biggest upsets</Trans>}>
+        <LoadFailed className={styles.panelFailed} onRetry={retry} />
+      </Panel>
+    );
+  }
   const shown = upsets?.slice(0, expanded ? UPSETS_EXPANDED : UPSETS_SHOWN);
   const canExpand = !expanded && (upsets?.length ?? 0) > UPSETS_SHOWN;
   // Round names repeat from phase to phase ("Winners Round 1" in pools and
@@ -185,6 +201,7 @@ export const OverviewTab = ({
   event,
   overview,
   status,
+  onRetry,
   onShowStandings,
   onShowBracket,
 }: Props) => {
@@ -220,16 +237,16 @@ export const OverviewTab = ({
                 <Trans>No results yet</Trans>
               )}
             </h2>
-            <p>
-              {status === "error" ? (
-                <Trans>This didn't load. Reload to try again.</Trans>
-              ) : (
+            {status === "error" ? (
+              <LoadFailed onRetry={onRetry} />
+            ) : (
+              <p>
                 <Trans>
                   Placements, the top 8 bracket and upsets show up here once
                   sets are reported.
                 </Trans>
-              )}
-            </p>
+              </p>
+            )}
           </div>
         ) : (
           <>
@@ -291,7 +308,9 @@ export const OverviewTab = ({
           </>
         )}
 
-        {!upcoming && (
+        {/* Upsets wait for the overview, which says where the seeding is:
+            without it there is nothing to load them from. */}
+        {!upcoming && status !== "error" && (
           <Upsets event={event} seedPhaseId={overview?.seedPhaseId ?? null} />
         )}
       </div>
@@ -341,6 +360,7 @@ export const OverviewTab = ({
                 <Link
                   className={styles.primary}
                   href={recapLink(event.slug, run.entrantId)}
+                  onClick={() => logToolLinkClick("recap", "tournament")}
                 >
                   <FaClipboardList aria-hidden="true" />
                   <Trans>Make my recap</Trans>
@@ -367,7 +387,11 @@ export const OverviewTab = ({
             <ul className={styles.toolList}>
               {upcoming ? (
                 <li>
-                  <Link className={styles.tool} href={predictLink(event.slug)}>
+                  <Link
+                    className={styles.tool}
+                    href={predictLink(event.slug)}
+                    onClick={() => logToolLinkClick("predict", "tournament")}
+                  >
                     <FaListOl aria-hidden="true" />
                     <span>
                       <strong>
@@ -383,7 +407,11 @@ export const OverviewTab = ({
               ) : (
                 <>
                   <li>
-                    <Link className={styles.tool} href={rankerLink(event.slug)}>
+                    <Link
+                      className={styles.tool}
+                      href={rankerLink(event.slug)}
+                      onClick={() => logToolLinkClick("ranker", "tournament")}
+                    >
                       <FaTrophy aria-hidden="true" />
                       <span>
                         <strong>
@@ -401,6 +429,7 @@ export const OverviewTab = ({
                       <Link
                         className={styles.tool}
                         href={recapLink(event.slug, null)}
+                        onClick={() => logToolLinkClick("recap", "tournament")}
                       >
                         <FaClipboardList aria-hidden="true" />
                         <span>

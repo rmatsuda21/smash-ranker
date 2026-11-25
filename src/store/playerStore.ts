@@ -7,6 +7,11 @@ import { createSamplePlayers } from "@/utils/top8/samplePlayers";
 import { applyRenderStyle } from "@/utils/top8/renderStyle";
 import { DEFAULT_RENDER_STYLE } from "@/consts/games";
 import { RenderStyleId } from "@/types/Game";
+import {
+  safeLocalStorage,
+  mergePersisted,
+  isRecord,
+} from "@/utils/safeStorage";
 
 interface PlayerState {
   players: PlayerInfo[];
@@ -124,6 +129,19 @@ const initialState: PlayerState = {
   error: "",
 };
 
+// A saved player the canvas can draw: it reads `characters` of every player
+// and teammate without checking.
+const isPlayerList = (value: unknown): boolean =>
+  Array.isArray(value) &&
+  value.every(
+    (player) =>
+      isRecord(player) &&
+      Array.isArray(player.characters) &&
+      (player.teammate === undefined ||
+        (isRecord(player.teammate) &&
+          Array.isArray(player.teammate.characters))),
+  );
+
 interface PlayerStore extends PlayerState {
   dispatch: (action: PlayerAction) => void;
 }
@@ -136,7 +154,14 @@ export const usePlayerStore = create<PlayerStore>()(
         dispatch: (action: PlayerAction) =>
           set((state) => playerReducer(state, action), false, action),
       }),
-      { name: "player-store", storage: createJSONStorage(() => localStorage) },
+      {
+        name: "player-store",
+        storage: createJSONStorage(() => safeLocalStorage),
+        merge: mergePersisted<PlayerState>({
+          guards: { players: isPlayerList },
+          transient: ["fetching", "error"],
+        }),
+      },
     ),
   ),
 );

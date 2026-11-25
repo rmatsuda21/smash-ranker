@@ -69,7 +69,7 @@ msgstr ""
 msgid "{opponent} · seed"
 msgstr ""
 
-#: src/components/recap/slides/CoverSlide.tsx:109
+#: src/components/recap/slides/CoverSlide.tsx:116
 msgid "{place} of {entrants} at {name}"
 msgstr ""
 
@@ -78,12 +78,12 @@ msgid "{tag}, your year in bracket is ready."
 msgstr ""
 
 #. Cover headline: the number of top 8 finishes
-#: src/components/recap/slides/CoverSlide.tsx:86
+#: src/components/recap/slides/CoverSlide.tsx:93
 msgid "{top8}"
 msgstr ""
 
 #. Cover headline: the number of tournaments entered
-#: src/components/recap/slides/CoverSlide.tsx:73
+#: src/components/recap/slides/CoverSlide.tsx:80
 msgid "{tournaments}"
 msgstr ""
 
@@ -104,11 +104,11 @@ msgstr ""
 #~ msgstr ""
 
 #. Cover headline: the longest set win streak
-#: src/components/recap/slides/CoverSlide.tsx:95
+#: src/components/recap/slides/CoverSlide.tsx:102
 msgid "{winStreak}"
 msgstr ""
 
-#: src/components/recap/slides/CoverSlide.tsx:127
+#: src/components/recap/slides/CoverSlide.tsx:134
 msgid "{year} type"
 msgstr ""
 
@@ -168,19 +168,27 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#: src/components/recap/slides/CoverSlide.tsx:261
+#: src/components/recap/slides/CoverSlide.tsx:322
 msgid "Copied!"
 msgstr ""
 
-#: src/components/recap/slides/CoverSlide.tsx:261
+#: src/components/recap/slides/CoverSlide.tsx:326
 msgid "Copy"
+msgstr ""
+
+#: src/components/recap/slides/CoverSlide.tsx:324
+msgid "Couldn't copy"
+msgstr ""
+
+#: src/components/recap/slides/CoverSlide.tsx:308
+msgid "Couldn't make the image. Try again"
 msgstr ""
 
 #: src/components/recap/RecapApp/RecapApp.tsx:237
 msgid "Counting your sets"
 msgstr ""
 
-#: src/components/recap/slides/CoverSlide.tsx:129
+#: src/components/recap/slides/CoverSlide.tsx:136
 msgid "Cover star"
 msgstr ""
 
@@ -318,7 +326,7 @@ msgstr ""
 msgid "Recap {year}"
 msgstr ""
 
-#: src/components/recap/slides/CoverSlide.tsx:264
+#: src/components/recap/slides/CoverSlide.tsx:332
 msgid "Replay"
 msgstr ""
 
@@ -330,7 +338,7 @@ msgstr ""
 msgid "Rookie"
 msgstr ""
 
-#: src/components/recap/slides/CoverSlide.tsx:258
+#: src/components/recap/slides/CoverSlide.tsx:318
 msgid "Save"
 msgstr ""
 
@@ -338,11 +346,11 @@ msgstr ""
 msgid "seed {seed} beat seed {opponentSeed}"
 msgstr ""
 
-#: src/components/recap/slides/CoverSlide.tsx:114
+#: src/components/recap/slides/CoverSlide.tsx:121
 msgid "Seed {seed} beat seed {opponentSeed}"
 msgstr ""
 
-#: src/components/recap/slides/CoverSlide.tsx:100
+#: src/components/recap/slides/CoverSlide.tsx:107
 msgid "set wins in a row."
 msgstr ""
 
@@ -358,11 +366,11 @@ msgstr ""
 msgid "sets won in a row, your best streak"
 msgstr ""
 
-#: src/components/recap/slides/CoverSlide.tsx:69
+#: src/components/recap/slides/CoverSlide.tsx:76
 msgid "sets. {winPercent}% of them won."
 msgstr ""
 
-#: src/components/recap/slides/CoverSlide.tsx:249
+#: src/components/recap/slides/CoverSlide.tsx:298
 msgid "Share"
 msgstr ""
 
@@ -394,7 +402,7 @@ msgstr ""
 msgid "The Closer"
 msgstr ""
 
-#: src/components/recap/slides/CoverSlide.tsx:121
+#: src/components/recap/slides/CoverSlide.tsx:128
 msgid "The year-end issue · {year}"
 msgstr ""
 
@@ -410,15 +418,15 @@ msgstr ""
 msgid "top 8"
 msgstr ""
 
-#: src/components/recap/slides/CoverSlide.tsx:91
+#: src/components/recap/slides/CoverSlide.tsx:98
 msgid "top 8 finishes."
 msgstr ""
 
-#: src/components/recap/slides/CoverSlide.tsx:80
+#: src/components/recap/slides/CoverSlide.tsx:87
 msgid "tournaments, {cities} cities."
 msgstr ""
 
-#: src/components/recap/slides/CoverSlide.tsx:81
+#: src/components/recap/slides/CoverSlide.tsx:88
 msgid "tournaments."
 msgstr ""
 
@@ -486,7 +494,7 @@ msgstr ""
 msgid "Your most played"
 msgstr ""
 
-#: src/components/recap/slides/CoverSlide.tsx:236
+#: src/components/recap/slides/CoverSlide.tsx:285
 msgid "Your recap as a magazine cover"
 msgstr ""
 

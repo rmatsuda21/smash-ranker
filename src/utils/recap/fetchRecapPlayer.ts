@@ -1,6 +1,7 @@
 import { graphql } from "@/gql";
 import type { RecapPlayer } from "@/types/recap/Recap";
 import { startggClient } from "@/utils/startgg/client";
+import { startggLoadError } from "@/utils/startgg/describeError";
 
 const RecapPlayerQueryDoc = graphql(`
   query RecapPlayer($slug: String!) {
@@ -25,7 +26,7 @@ export const fetchRecapPlayer = async (slug: string): Promise<RecapPlayer> => {
     .toPromise();
   const user = result.data?.user;
   if (result.error || !user?.id || !user.player?.id) {
-    throw new Error(result.error?.message || "Could not find that player");
+    throw startggLoadError(result.error, "Could not find that player");
   }
   return {
     userId: String(user.id),

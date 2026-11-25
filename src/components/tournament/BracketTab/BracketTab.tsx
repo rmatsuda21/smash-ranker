@@ -8,6 +8,7 @@ import { FaTrophy } from "react-icons/fa6";
 import { DropDownSelect } from "@/components/shared/DropDownSelect/DropDownSelect";
 import { MatchBox } from "@/components/tournament/MatchBox/MatchBox";
 import { RoundRobin } from "@/components/tournament/RoundRobin/RoundRobin";
+import { LoadFailed } from "@/components/tournament/TournamentParts/TournamentParts";
 import { useEventPhases } from "@/hooks/tournament/useEventPhases";
 import { usePools } from "@/hooks/tournament/usePool";
 import type {
@@ -355,9 +356,13 @@ export const BracketTab = ({ event, overview, overviewSettled }: Props) => {
 
   if (phases.status === "error" || pools.status === "error") {
     return (
-      <p className={styles.message}>
-        <Trans>This didn't load. Reload to try again.</Trans>
-      </p>
+      <LoadFailed
+        className={styles.message}
+        onRetry={() => {
+          if (phases.status === "error") phases.retry();
+          if (pools.status === "error") pools.retry();
+        }}
+      />
     );
   }
   if (phases.data && list.length === 0) {

@@ -7,6 +7,8 @@ import { useAuthStore } from "@/store/authStore";
 import {
   completeLogin,
   isLoginAvailable,
+  LoginError,
+  type LoginFailureReason,
   startLogin,
 } from "@/utils/auth/oauth";
 import { fetchCurrentUser } from "@/utils/user/fetchCurrentUser";
@@ -50,11 +52,18 @@ const OAuthCallbackPage = () => {
           if (!cancelled) navigate("/", { replace: true });
           return;
         }
-        logWarning("start.gg login failed", {
-          area: "auth",
-          error: err instanceof Error ? err.message : String(err),
-        });
-        logEvent("user_login_fail", {});
+        const reason: LoginFailureReason =
+          err instanceof LoginError ? err.reason : "profile_failed";
+        // Backing out of start.gg's screen, or reopening an old callback
+        // address, is not a failure of ours: counted, not sent to Sentry.
+        if (reason !== "cancelled" && reason !== "stale_callback") {
+          logWarning("start.gg login failed", {
+            area: "auth",
+            reason,
+            error: err instanceof Error ? err.message : String(err),
+          });
+        }
+        logEvent("user_login_fail", { reason });
         if (!cancelled) setFailed(true);
       });
     return () => {
@@ -78,7 +87,10 @@ const OAuthCallbackPage = () => {
             <button
               type="button"
               className={styles.retry}
-              onClick={() => startLogin("/")}
+              onClick={() => {
+                logEvent("user_login_start", { source: "retry" });
+                startLogin("/");
+              }}
             >
               <Trans>Try again</Trans>
             </button>

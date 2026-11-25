@@ -13,6 +13,7 @@ import { useFontStore } from "@/store/fontStore";
 import { loadFamily } from "@/utils/fonts/fontLoader";
 import { collectDesignFontWeights } from "@/utils/fonts/designWeights";
 import { resizePlayerSlots } from "@/utils/top8/playerCount";
+import { safeLocalStorage } from "@/utils/safeStorage";
 
 const DEFAULT_FONT = "Dela Gothic One";
 
@@ -364,7 +365,7 @@ export const useCanvasStore = create<CanvasStore>()(
       {
         name: "canvas-store",
         version: 3,
-        storage: createJSONStorage(() => localStorage),
+        storage: createJSONStorage(() => safeLocalStorage),
         partialize: (state) => ({
           design: state.design,
           font: state.font,

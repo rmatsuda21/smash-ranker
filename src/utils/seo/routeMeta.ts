@@ -85,28 +85,62 @@ export const renderHeadTags = (meta: RouteMeta): string => {
   ].join("\n    ");
 };
 
-type FetchedTournament = { name: string };
+// `null`: the invite names no tournament we could find (the generic tags are
+// the right answer). `"failed"`: the lookup itself broke or timed out, so the
+// generic tags are a stand-in that must not be cached.
+type TournamentLookup = { name: string } | null | "failed";
+
+// The edge middleware waits on this before any HTML goes out.
+const LOOKUP_TIMEOUT_MS = 5000;
 
 const fetchTournamentName = async (
   origin: string,
   inviteCode: string,
-): Promise<FetchedTournament | null> => {
+): Promise<TournamentLookup> => {
   try {
     const res = await fetch(
       `${origin}/api/tournament-meta?d=${encodeURIComponent(inviteCode)}`,
-      { headers: { Accept: "application/json" } },
+      {
+        headers: { Accept: "application/json" },
+        signal: AbortSignal.timeout(LOOKUP_TIMEOUT_MS),
+      },
     );
-    if (!res.ok) return null;
+    if (res.status === 404) return null;
+    if (!res.ok) {
+      console.warn(
+        JSON.stringify({
+          fn: "route-meta",
+          lookup: "failed",
+          status: res.status,
+        }),
+      );
+      return "failed";
+    }
     const json = (await res.json()) as { name?: string };
     if (!json.name) return null;
     return { name: json.name };
-  } catch {
-    return null;
+  } catch (err) {
+    console.warn(
+      JSON.stringify({
+        fn: "route-meta",
+        lookup: "failed",
+        error: err instanceof Error ? err.name : "unknown",
+      }),
+    );
+    return "failed";
   }
 };
 
-export const getRouteMeta = async (url: URL): Promise<RouteMeta> => {
+export type RouteMetaResult = {
+  meta: RouteMeta;
+  // The page's own tags could not be worked out and these are the generic
+  // ones in their place.
+  lookupFailed: boolean;
+};
+
+export const getRouteMeta = async (url: URL): Promise<RouteMetaResult> => {
   const pathname = url.pathname;
+  let lookupFailed = false;
 
   if (pathname === "/predict") {
     const inviteCode = url.searchParams.get("d");
@@ -114,18 +148,26 @@ export const getRouteMeta = async (url: URL): Promise<RouteMeta> => {
       const invite = decodeInvite(inviteCode);
       if (invite) {
         const tournament = await fetchTournamentName(url.origin, inviteCode);
-        if (tournament) {
+        if (tournament === "failed") {
+          lookupFailed = true;
+        } else if (tournament) {
           return {
-            title: `Predict ${tournament.name} | Smash Ranker`,
-            description: `Make your Top 8 prediction for ${tournament.name} and share it.`,
-            image: `${SITE}/api/og-image?d=${encodeURIComponent(inviteCode)}`,
-            url: `${SITE}/predict?d=${encodeURIComponent(inviteCode)}`,
-            type: "article",
+            meta: {
+              title: `Predict ${tournament.name} | Smash Ranker`,
+              description: `Make your Top 8 prediction for ${tournament.name} and share it.`,
+              image: `${SITE}/api/og-image?d=${encodeURIComponent(inviteCode)}`,
+              url: `${SITE}/predict?d=${encodeURIComponent(inviteCode)}`,
+              type: "article",
+            },
+            lookupFailed: false,
           };
         }
       }
     }
   }
 
-  return STATIC_ROUTES[pathname] ?? STATIC_ROUTES["/"];
+  return {
+    meta: STATIC_ROUTES[pathname] ?? STATIC_ROUTES["/"],
+    lookupFailed,
+  };
 };

@@ -22,6 +22,7 @@ import { Spinner } from "@/components/shared/Spinner/Spinner";
 import { useEditorStore } from "@/store/editorStore";
 import { useFontStore } from "@/store/fontStore";
 import { loadFamily } from "@/utils/fonts/fontLoader";
+import { logWarning } from "@/utils/observability/log";
 import { collectDesignFontWeights } from "@/utils/fonts/designWeights";
 import { defaultPreviews } from "@assets/previews";
 
@@ -254,7 +255,11 @@ const RenderedPreview = (props: Props) => {
         0.5,
       );
     } catch (error) {
-      console.error("Failed to capture canvas:", error);
+      // Where a canvas tainted by an image without CORS headers shows up.
+      logWarning("template preview capture failed", {
+        template_id: template.id,
+        error: error instanceof Error ? error.message : String(error),
+      });
       setIsRendering(false);
       setStageCaptured(true);
       releaseRef.current?.();

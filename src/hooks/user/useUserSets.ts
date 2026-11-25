@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { useAuthUser } from "@/store/authStore";
 import type { UserSet } from "@/types/user/UserSet";
 import { fetchUserSets } from "@/utils/user/fetchUserSets";
-import { logWarning } from "@/utils/observability/log";
+import { reportLoadFailure } from "@/utils/loadError";
 
 type State = {
   key: string | null;
@@ -24,6 +24,9 @@ export const useUserSets = (maxPages: number, eventIds: string | null) => {
   const playerId = useAuthUser()?.playerId ?? null;
   const key = playerId && eventIds !== null ? `${playerId}:${eventIds}` : null;
   const [state, setState] = useState<State>(EMPTY);
+  // Bumped by `retry` to run a failed load again.
+  const [attempt, setAttempt] = useState(0);
+  const retry = useCallback(() => setAttempt((n) => n + 1), []);
 
   useEffect(() => {
     // No events means no sets, and nothing to ask start.gg for.
@@ -44,10 +47,7 @@ export const useUserSets = (maxPages: number, eventIds: string | null) => {
         setState(next);
       } catch (err) {
         if (cancelled) return;
-        logWarning("user sets fetch failed", {
-          area: "user",
-          error: err instanceof Error ? err.message : String(err),
-        });
+        reportLoadFailure("user sets fetch failed", err, { area: "user" });
         setState({ key, sets: [], status: "error" });
       }
     })();
@@ -55,16 +55,18 @@ export const useUserSets = (maxPages: number, eventIds: string | null) => {
     return () => {
       cancelled = true;
     };
-  }, [playerId, key, eventIds, maxPages]);
+  }, [playerId, key, eventIds, maxPages, attempt]);
 
   // The events the sets come from are still on their way.
   if (playerId && eventIds === null) {
-    return { ...EMPTY, status: "loading" as const };
+    return { ...EMPTY, status: "loading" as const, retry };
   }
-  if (!key) return EMPTY;
-  if (eventIds === "") return { ...EMPTY, key, status: "done" as const };
-  return (
+  if (!key) return { ...EMPTY, retry };
+  if (eventIds === "") {
+    return { ...EMPTY, key, status: "done" as const, retry };
+  }
+  const current =
     finished.get(key) ??
-    (state.key === key ? state : { ...EMPTY, status: "loading" as const })
-  );
+    (state.key === key ? state : { ...EMPTY, status: "loading" as const });
+  return { ...current, retry };
 };

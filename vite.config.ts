@@ -118,6 +118,7 @@ export default defineConfig(() => {
         "@vercel/flags-core",
         "flags",
         "@vercel/node",
+        "@vercel/functions",
         "@resvg/resvg-js",
         "satori",
         "@sentry/node",

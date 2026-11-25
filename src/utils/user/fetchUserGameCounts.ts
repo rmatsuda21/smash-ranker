@@ -1,6 +1,7 @@
 import { GAME_IDS, GAMES } from "@/consts/games";
 import type { GameId } from "@/types/Game";
 import { startggClient } from "@/utils/startgg/client";
+import { startggLoadError } from "@/utils/startgg/describeError";
 
 export type UserGameCounts = Record<GameId, number>;
 
@@ -31,7 +32,7 @@ export const fetchUserGameCounts = async (
 
   const user = result.data?.user;
   if (result.error || !user) {
-    throw new Error(result.error?.message || "Could not load game counts");
+    throw startggLoadError(result.error, "Could not load game counts");
   }
 
   return Object.fromEntries(

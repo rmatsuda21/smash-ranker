@@ -20,6 +20,8 @@ import {
 import type { ThumbnailEventMeta } from "@/utils/thumbnail/fetchEventSets";
 import { makeSide } from "@/utils/thumbnail/match";
 import { isKnownCharacter } from "@/utils/top8/characterCatalog";
+import { failureDetail, failureKindOf, LoadError } from "@/utils/loadError";
+import { logWarning } from "@/utils/observability/log";
 
 // The character a player used most in the match, in the costume entered
 // with it. Empty when none was entered.
@@ -51,12 +53,20 @@ export const fetchHiveeThumbnailEvent = async (
   const program = pickFinalProgram(event.programs, programId, {
     startedOnly: true,
   });
-  if (!program) throw new Error(t`This event has no bracket to load.`);
+  if (!program)
+    throw new LoadError(t`This event has no bracket to load.`, "unsupported");
 
   const [matches, standings] = await Promise.all([
     fetchHiveeCompletedMatches(eventId),
     // Only the top 8 marks need the placements.
-    fetchHiveeStandings(program.id).catch(() => null),
+    fetchHiveeStandings(program.id).catch((error) => {
+      logWarning("hivee standings fetch failed", {
+        area: "thumbnail",
+        failure_kind: failureKindOf(error),
+        error: failureDetail(error),
+      });
+      return null;
+    }),
   ]);
 
   // The bracket and the qualifiers that fed it; a side bracket's matches

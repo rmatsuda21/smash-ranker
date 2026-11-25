@@ -3,6 +3,7 @@ import { Trans } from "@lingui/react/macro";
 import {
   CharacterIcons,
   EntrantName,
+  LoadFailed,
   SeedDelta,
   SkeletonRows,
 } from "@/components/tournament/TournamentParts/TournamentParts";
@@ -24,11 +25,7 @@ export const StandingsTab = ({ event, characters }: Props) => {
   );
 
   if (status === "error" && standings.length === 0) {
-    return (
-      <p className={styles.message}>
-        <Trans>This didn't load. Reload to try again.</Trans>
-      </p>
-    );
+    return <LoadFailed className={styles.message} onRetry={loadMore} />;
   }
   if (status === "done" && standings.length === 0) {
     return (
@@ -70,6 +67,13 @@ export const StandingsTab = ({ event, characters }: Props) => {
         ))}
       </ol>
       {standings.length === 0 && <SkeletonRows count={12} />}
+      {/* A page after the first failed: what loaded stays, and the button
+          asks for the same page again. */}
+      {status === "error" && (
+        <p className={styles.moreFailed} role="status">
+          <Trans>The next placements didn't load.</Trans>
+        </p>
+      )}
       {hasMore && (
         <button
           type="button"
@@ -79,6 +83,8 @@ export const StandingsTab = ({ event, characters }: Props) => {
         >
           {status === "loading" ? (
             <Trans>Loading…</Trans>
+          ) : status === "error" ? (
+            <Trans>Try again</Trans>
           ) : (
             <Trans>
               Show more ({standings.length} of {total})

@@ -69,7 +69,7 @@ msgstr "オフ大会 {offline}%"
 msgid "{opponent} · seed"
 msgstr "{opponent} · シード"
 
-#: src/components/recap/slides/CoverSlide.tsx:109
+#: src/components/recap/slides/CoverSlide.tsx:116
 msgid "{place} of {entrants} at {name}"
 msgstr "{name} {entrants}人中{place}"
 
@@ -78,12 +78,12 @@ msgid "{tag}, your year in bracket is ready."
 msgstr "{tag}さん、今年の戦績がまとまりました。"
 
 #. Cover headline: the number of top 8 finishes
-#: src/components/recap/slides/CoverSlide.tsx:86
+#: src/components/recap/slides/CoverSlide.tsx:93
 msgid "{top8}"
 msgstr "{top8}回"
 
 #. Cover headline: the number of tournaments entered
-#: src/components/recap/slides/CoverSlide.tsx:73
+#: src/components/recap/slides/CoverSlide.tsx:80
 msgid "{tournaments}"
 msgstr "{tournaments}大会"
 
@@ -104,11 +104,11 @@ msgstr "勝率{winRate}%"
 #~ msgstr "勝率{winRate}%<0/>記録のある全ゲームの{share}%で使用（{games}ゲーム）"
 
 #. Cover headline: the longest set win streak
-#: src/components/recap/slides/CoverSlide.tsx:95
+#: src/components/recap/slides/CoverSlide.tsx:102
 msgid "{winStreak}"
 msgstr "{winStreak}連勝"
 
-#: src/components/recap/slides/CoverSlide.tsx:127
+#: src/components/recap/slides/CoverSlide.tsx:134
 msgid "{year} type"
 msgstr "{year}年のタイプ"
 
@@ -168,19 +168,27 @@ msgstr "優勝"
 msgid "Close"
 msgstr "閉じる"
 
-#: src/components/recap/slides/CoverSlide.tsx:261
+#: src/components/recap/slides/CoverSlide.tsx:322
 msgid "Copied!"
 msgstr "コピー完了"
 
-#: src/components/recap/slides/CoverSlide.tsx:261
+#: src/components/recap/slides/CoverSlide.tsx:326
 msgid "Copy"
 msgstr "コピー"
+
+#: src/components/recap/slides/CoverSlide.tsx:324
+msgid "Couldn't copy"
+msgstr "コピーできませんでした"
+
+#: src/components/recap/slides/CoverSlide.tsx:308
+msgid "Couldn't make the image. Try again"
+msgstr "画像を作成できませんでした。もう一度お試しください"
 
 #: src/components/recap/RecapApp/RecapApp.tsx:237
 msgid "Counting your sets"
 msgstr "集計中"
 
-#: src/components/recap/slides/CoverSlide.tsx:129
+#: src/components/recap/slides/CoverSlide.tsx:136
 msgid "Cover star"
 msgstr "表紙の人"
 
@@ -318,7 +326,7 @@ msgstr "{year}年に出た大会をぜんぶ読み込み中。"
 msgid "Recap {year}"
 msgstr "{year}年の振り返り"
 
-#: src/components/recap/slides/CoverSlide.tsx:264
+#: src/components/recap/slides/CoverSlide.tsx:332
 msgid "Replay"
 msgstr "もう一度"
 
@@ -330,7 +338,7 @@ msgstr "遠征勢"
 msgid "Rookie"
 msgstr "新星"
 
-#: src/components/recap/slides/CoverSlide.tsx:258
+#: src/components/recap/slides/CoverSlide.tsx:318
 msgid "Save"
 msgstr "保存"
 
@@ -338,11 +346,11 @@ msgstr "保存"
 msgid "seed {seed} beat seed {opponentSeed}"
 msgstr "シード{seed}でシード{opponentSeed}に勝利"
 
-#: src/components/recap/slides/CoverSlide.tsx:114
+#: src/components/recap/slides/CoverSlide.tsx:121
 msgid "Seed {seed} beat seed {opponentSeed}"
 msgstr "シード{seed}がシード{opponentSeed}を倒した日"
 
-#: src/components/recap/slides/CoverSlide.tsx:100
+#: src/components/recap/slides/CoverSlide.tsx:107
 msgid "set wins in a row."
 msgstr "誰にも止められなかった。"
 
@@ -358,11 +366,11 @@ msgstr "対戦セット"
 msgid "sets won in a row, your best streak"
 msgstr "連勝。今年の最長記録"
 
-#: src/components/recap/slides/CoverSlide.tsx:69
+#: src/components/recap/slides/CoverSlide.tsx:76
 msgid "sets. {winPercent}% of them won."
 msgstr "セット戦績。勝率{winPercent}%。"
 
-#: src/components/recap/slides/CoverSlide.tsx:249
+#: src/components/recap/slides/CoverSlide.tsx:298
 msgid "Share"
 msgstr "シェア"
 
@@ -394,7 +402,7 @@ msgstr "読み込めませんでした"
 msgid "The Closer"
 msgstr "勝負師"
 
-#: src/components/recap/slides/CoverSlide.tsx:121
+#: src/components/recap/slides/CoverSlide.tsx:128
 msgid "The year-end issue · {year}"
 msgstr "年間総集編 · {year}"
 
@@ -410,15 +418,15 @@ msgstr "TOP3"
 msgid "top 8"
 msgstr "TOP8"
 
-#: src/components/recap/slides/CoverSlide.tsx:91
+#: src/components/recap/slides/CoverSlide.tsx:98
 msgid "top 8 finishes."
 msgstr "TOP8入り。"
 
-#: src/components/recap/slides/CoverSlide.tsx:80
+#: src/components/recap/slides/CoverSlide.tsx:87
 msgid "tournaments, {cities} cities."
 msgstr "{cities}都市をめぐった一年。"
 
-#: src/components/recap/slides/CoverSlide.tsx:81
+#: src/components/recap/slides/CoverSlide.tsx:88
 msgid "tournaments."
 msgstr "今年の出場大会。"
 
@@ -486,7 +494,7 @@ msgstr "大会デビューの一年。まずは出場したことが大きい。
 msgid "Your most played"
 msgstr "いちばん使ったキャラ"
 
-#: src/components/recap/slides/CoverSlide.tsx:236
+#: src/components/recap/slides/CoverSlide.tsx:285
 msgid "Your recap as a magazine cover"
 msgstr "雑誌の表紙風の振り返り"
 

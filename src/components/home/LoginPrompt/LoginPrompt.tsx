@@ -2,6 +2,7 @@ import { Trans } from "@lingui/react/macro";
 import { FaArrowRight, FaRightToBracket } from "react-icons/fa6";
 
 import { isLoginAvailable, startLogin } from "@/utils/auth/oauth";
+import { logEvent } from "@/utils/observability/log";
 
 import styles from "./LoginPrompt.module.scss";
 
@@ -13,7 +14,10 @@ export const LoginPrompt = ({ returnTo = "/" }: { returnTo?: string }) => {
     <button
       type="button"
       className={styles.prompt}
-      onClick={() => startLogin(returnTo)}
+      onClick={() => {
+        logEvent("user_login_start", { source: "prompt" });
+        startLogin(returnTo);
+      }}
     >
       <span className={styles.mark}>
         <FaRightToBracket aria-hidden="true" />

@@ -2,6 +2,11 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
 import type { AuthUser } from "@/types/user/AuthUser";
+import {
+  safeLocalStorage,
+  mergePersisted,
+  isRecord,
+} from "@/utils/safeStorage";
 
 // start.gg login session. The access token lives here (localStorage) because
 // the browser calls the start.gg API directly with it; the refresh token is
@@ -27,7 +32,16 @@ export const useAuthStore = create<AuthState>()(
       setUser: (user) => set({ user }),
       clear: () => set({ accessToken: null, expiresAt: 0, user: null }),
     }),
-    { name: "auth-store", storage: createJSONStorage(() => localStorage) },
+    {
+      name: "auth-store",
+      storage: createJSONStorage(() => safeLocalStorage),
+      merge: mergePersisted<AuthState>({
+        guards: {
+          accessToken: (value) => value === null || typeof value === "string",
+          user: (value) => value === null || isRecord(value),
+        },
+      }),
+    },
   ),
 );
 

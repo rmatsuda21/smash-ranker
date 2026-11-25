@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
 import { getDeviceRenderProfile } from "@/utils/top8/renderProfile";
+import { safeLocalStorage } from "@/utils/safeStorage";
 
 export const PIXEL_RATIO_MIN = 0.5;
 export const PIXEL_RATIO_MAX = 4;
@@ -73,7 +74,7 @@ export const useExportSettingsStore = create<ExportSettingsState>()(
     {
       name: "export-settings",
       version: 1,
-      storage: createJSONStorage(() => localStorage),
+      storage: createJSONStorage(() => safeLocalStorage),
       // Defensive: localStorage values can be corrupted or come from older
       // builds where defaults were nonsense (e.g. quality=2). Re-clamp on
       // rehydrate so persisted state is always valid.

@@ -8,6 +8,7 @@ import type {
 } from "@/types/tournament/Tournament";
 import { getGameForStartggVideogame } from "@/utils/games";
 import { startggClient } from "@/utils/startgg/client";
+import { startggLoadError } from "@/utils/startgg/describeError";
 
 // About 70 objects for a major with 40 events and 7 streams.
 const TournamentPageQueryDoc = graphql(`
@@ -94,7 +95,7 @@ export const fetchTournament = async (
   const result = await startggClient
     .query(TournamentPageQueryDoc, { id })
     .toPromise();
-  if (result.error) throw new Error(result.error.message);
+  if (result.error) throw startggLoadError(result.error, "");
 
   const tournament = result.data?.tournament;
   if (!tournament?.id || !tournament.slug) return null;

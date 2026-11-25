@@ -16,6 +16,8 @@ import {
 } from "@/types/Repository";
 import { logError, logWarning } from "@/utils/observability/log";
 
+import { raiseDbNotice } from "./dbEvents";
+
 const DB_NAME = "top8-db";
 const DB_VERSION = 6;
 
@@ -142,8 +144,6 @@ const performUpgrade = (
   oldVersion: number,
   transaction: UpgradeTransaction,
 ) => {
-  console.log(`Upgrading database from version ${oldVersion} to ${DB_VERSION}`);
-
   if (oldVersion === 0) {
     createAllStores(db);
     return;
@@ -190,9 +190,14 @@ const openDatabase = async (): Promise<IDBPDatabase<Top8DB>> => {
         logWarning(
           "Database upgrade blocked. Please close other tabs using this app.",
         );
+        raiseDbNotice("blocked");
       },
-      blocking() {
+      blocking(_currentVersion, _blockedVersion, event) {
+        // A newer tab is waiting to upgrade. Let go, or it waits for as
+        // long as this tab stays open; this tab works again after a reload.
         logWarning("This connection is blocking a database upgrade.");
+        (event.target as IDBDatabase | null)?.close();
+        raiseDbNotice("outdated");
       },
     });
 
@@ -219,3 +224,7 @@ const openDatabase = async (): Promise<IDBPDatabase<Top8DB>> => {
 };
 
 export const initDB = openDatabase();
+// Already reported above; every caller that awaits it still gets the
+// rejection. This only keeps a failed open from also being an unhandled one
+// when nothing has asked for the database yet.
+initDB.catch(() => {});

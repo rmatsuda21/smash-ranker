@@ -117,3 +117,10 @@ $display: "Big Shoulders Display", var(--font-sans);
   font-size: var(--font-size-md);
   text-align: center;
 }
+
+.moreFailed {
+  margin: var(--space-3) 0 0;
+  color: var(--fg-3);
+  font-size: var(--font-size-md);
+  text-align: center;
+}

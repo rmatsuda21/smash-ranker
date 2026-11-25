@@ -13,6 +13,7 @@ import {
   type SetListLayout,
   type SetListStyle,
 } from "@/types/results/SetListDisplay";
+import { safeLocalStorage } from "@/utils/safeStorage";
 
 interface ResultsState {
   tournamentName: string;
@@ -251,7 +252,7 @@ export const useResultsStore = create<ResultsStore>()(
       {
         name: "results-store",
         version: RESULTS_STORE_VERSION,
-        storage: createJSONStorage(() => localStorage),
+        storage: createJSONStorage(() => safeLocalStorage),
         // Forward-compatible merge: persisted fields override defaults,
         // but any missing field falls back to whatever `initialState`
         // provides today. Returns the merged shape; zustand-persist

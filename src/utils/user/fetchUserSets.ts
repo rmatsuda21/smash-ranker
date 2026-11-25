@@ -2,6 +2,7 @@ import { graphql } from "@/gql";
 import type { UserSetsQuery } from "@/gql/graphql";
 import type { UserSet } from "@/types/user/UserSet";
 import { startggClient } from "@/utils/startgg/client";
+import { startggLoadError } from "@/utils/startgg/describeError";
 
 const UserSetsQueryDoc = graphql(`
   query UserSets($playerId: ID!, $page: Int!, $perPage: Int!, $eventIds: [ID]) {
@@ -140,7 +141,7 @@ const fetchSetsPage = async (
       ]);
       return halves.flat();
     }
-    throw new Error(result.error?.message || "Could not load sets");
+    throw startggLoadError(result.error, "Could not load sets");
   }
 
   return (connection.nodes ?? [])

@@ -24,6 +24,7 @@ import {
   findUpsets,
   toEventSet,
 } from "@/utils/tournament/sets";
+import { startggLoadError } from "@/utils/startgg/describeError";
 
 // The newest sets of an event are its top 8 (ten or eleven sets). A set with
 // per-game picks is about 30 objects in singles and about 50 in doubles, and
@@ -182,7 +183,7 @@ export const fetchEventOverview = async (
 
   const event = result.data?.event;
   if (result.error || !event) {
-    throw new Error(result.error?.message || "Could not load the event");
+    throw startggLoadError(result.error, "Could not load the event");
   }
 
   const rawSets = (event.sets?.nodes ?? []).filter(present);
@@ -273,7 +274,7 @@ export const fetchEventStandings = async (
 
   const connection = result.data?.event?.standings;
   if (result.error || !connection) {
-    throw new Error(result.error?.message || "Could not load the standings");
+    throw startggLoadError(result.error, "Could not load the standings");
   }
   return {
     standings: (connection.nodes ?? []).map(toStanding).filter(present),
@@ -363,7 +364,7 @@ export const fetchEventUpsets = async (
       perPage: UPSET_SEED_COUNT,
     })
     .toPromise();
-  if (seeds.error) throw new Error(seeds.error.message);
+  if (seeds.error) throw startggLoadError(seeds.error, "");
 
   const entrantIds = (seeds.data?.phase?.seeds?.nodes ?? [])
     .map((seed) => seed?.entrant?.id)
@@ -383,7 +384,7 @@ export const fetchEventUpsets = async (
       .toPromise();
     const connection = result.data?.event?.sets;
     if (result.error || !connection) {
-      throw new Error(result.error?.message || "Could not load the sets");
+      throw startggLoadError(result.error, "Could not load the sets");
     }
     return connection;
   };
@@ -485,7 +486,7 @@ export const fetchEventPhases = async (
     .toPromise();
   const event = result.data?.event;
   if (result.error || !event) {
-    throw new Error(result.error?.message || "Could not load the phases");
+    throw startggLoadError(result.error, "Could not load the phases");
   }
 
   const phases = (event.phases ?? [])
@@ -578,7 +579,7 @@ export const fetchPool = async (groupId: string): Promise<Pool> => {
       .toPromise();
     const group = result.data?.phaseGroup;
     if (result.error || !group?.sets) {
-      throw new Error(result.error?.message || "Could not load the bracket");
+      throw startggLoadError(result.error, "Could not load the bracket");
     }
     return group;
   };

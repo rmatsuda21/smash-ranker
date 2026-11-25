@@ -79,6 +79,4 @@ export const preloadCharacterImages = async (game: GameId): Promise<void> => {
       await preloadBatch(batch);
     });
   }
-
-  console.log(`[Preload] Cached ${urls.length} ${game} character stock images`);
 };

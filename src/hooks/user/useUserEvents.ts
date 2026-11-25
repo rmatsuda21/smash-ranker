@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { GAME_IDS } from "@/consts/games";
 import { useAuthUser } from "@/store/authStore";
@@ -8,7 +8,7 @@ import {
   fetchUserEventsPage,
   type UserEventsPage,
 } from "@/utils/user/fetchUserEvents";
-import { logWarning } from "@/utils/observability/log";
+import { reportLoadFailure } from "@/utils/loadError";
 
 type Status = "idle" | "loading" | "done" | "error";
 
@@ -48,6 +48,9 @@ export const useUserEvents = ({
   const userId = user?.id ?? null;
   const key = slug ? `${slug}:${game ?? "all"}` : null;
   const [state, setState] = useState<State>(EMPTY);
+  // Bumped by `retry` to run a failed load again.
+  const [attempt, setAttempt] = useState(0);
+  const retry = useCallback(() => setAttempt((n) => n + 1), []);
   // Read when a load starts; a count that arrives mid-load must not restart
   // it.
   const expectedTotalRef = useRef(expectedTotal);
@@ -105,10 +108,7 @@ export const useUserEvents = ({
         }
       } catch (err) {
         if (cancelled) return;
-        logWarning("user events fetch failed", {
-          area: "user",
-          error: err instanceof Error ? err.message : String(err),
-        });
+        reportLoadFailure("user events fetch failed", err, { area: "user" });
         setState((prev) => ({ ...prev, status: "error" }));
       }
     })();
@@ -116,13 +116,15 @@ export const useUserEvents = ({
     return () => {
       cancelled = true;
     };
-  }, [slug, userId, key, game, perPage, maxPages]);
+  }, [slug, userId, key, game, perPage, maxPages, attempt]);
 
   // Logged out.
-  if (!key) return EMPTY;
+  if (!key) return { ...EMPTY, retry };
   // A game just switched to has nothing yet: that is loading, not empty.
-  return (
+  const current =
     finished.get(key) ??
-    (state.key === key ? state : { ...EMPTY, status: "loading" as const })
-  );
+    (state.key === key ? state : { ...EMPTY, status: "loading" as const });
+  // After an error, `events` holds the pages that did arrive: `retry` loads
+  // the list again from the start.
+  return { ...current, retry };
 };

@@ -20,6 +20,15 @@ import { isKnownCharacter } from "@/utils/top8/characterCatalog";
 import { getGameForStartggVideogame } from "@/utils/games";
 import { useToast } from "@/components/Toast";
 import { logError, logEvent, logWarning } from "@/utils/observability/log";
+import { reportLoadFailure } from "@/utils/loadError";
+import {
+  describeStartggError,
+  startggLoadError,
+} from "@/utils/startgg/describeError";
+import {
+  beginTournamentLoad,
+  isCurrentTournamentLoad,
+} from "@/utils/top8/loadGuard";
 const IDB_IMAGES_BASE_URL = "/idb-images/";
 
 interface TournamentImage {
@@ -200,10 +209,20 @@ const storeTournamentImages = async (
         const src = await storeImage(result.value);
         storedImages.set(result.value.type, src);
       } catch (error) {
-        logError(error, { area: "tournament-image-store" });
+        logWarning("tournament image store failed", {
+          area: "tournament-image-store",
+          error: error instanceof Error ? error.message : String(error),
+        });
       }
     } else {
-      logError(result.reason, { area: "tournament-image-fetch" });
+      // The icon is a bonus: the graphic loads without it.
+      logWarning("tournament image fetch failed", {
+        area: "tournament-image-fetch",
+        error:
+          result.reason instanceof Error
+            ? result.reason.message
+            : String(result.reason),
+      });
     }
   }
 
@@ -362,6 +381,7 @@ const fetchEntrantCharacters = async (
         tournament_slug: slug,
         entrant_id: entrantId,
         step: "player-characters",
+        failure_kind: describeStartggError(result.error).kind,
         error: result.error.message,
       });
     }
@@ -573,24 +593,32 @@ export const useFetchResult = () => {
     playerCount: number = 8,
     visibleCount: number = playerCount,
   ) => {
+    const loadId = beginTournamentLoad();
     playerDispatch({ type: "FETCH_PLAYERS" });
 
     const result = await client
       .query(EventStandingsQueryDoc, { slug, playerCount })
       .toPromise();
+    // A newer load has taken over: its answer is the one to show.
+    if (!isCurrentTournamentLoad(loadId)) return;
 
     if (result.error || !result.data?.event) {
-      const errorMessage = result.error?.message || t`Tournament not found`;
-      playerDispatch({ type: "FETCH_PLAYERS_FAIL", payload: errorMessage });
-      showToast(errorMessage, { variant: "error" });
+      const failure = startggLoadError(result.error, t`Tournament not found`);
+      playerDispatch({ type: "FETCH_PLAYERS_FAIL", payload: failure.message });
+      showToast(failure.message, { variant: "error" });
+      // A bad slug or a deleted event is the user's input and stays out of
+      // Sentry. start.gg is called from the browser, so its own failures
+      // (rate limit, outage) are reported here: no server function sees them.
+      const failureKind = reportLoadFailure(
+        "startgg tournament fetch failed",
+        failure,
+        { area: "tournament-fetch", tournament_platform: "startgg" },
+      );
       logEvent("tournament_fetch_fail", {
         tournament_platform: "startgg",
-        failure_kind: result.error ? "query_error" : "not_found",
+        failure_kind: failureKind,
         tournament_slug: slug,
       });
-      // Don't Sentry-capture user-input failures (bad slug, deleted event).
-      // The PostHog rate is the right signal; bug investigation belongs to
-      // the api-side Sentry capture if a real upstream issue surfaces.
       return;
     }
 
@@ -636,6 +664,7 @@ export const useFetchResult = () => {
         validImages.length > 0 ? storeTournamentImages(validImages) : undefined,
         addCharactersToPlayers(client, slug, visiblePlayers, memberIds),
       ]);
+      if (!isCurrentTournamentLoad(loadId)) return;
 
       const tournamentInfo = buildTournamentInfo(event, storedImages);
       const game = getGameForStartggVideogame(event.videogame?.id);
@@ -657,6 +686,7 @@ export const useFetchResult = () => {
         void addCharactersInBackground(client, slug, laterPlayers, memberIds);
       }
     } catch (error) {
+      if (!isCurrentTournamentLoad(loadId)) return;
       // Post-process failure: image storage, character fetch, IndexedDB write.
       // These are likely real bugs, not user-input issues — keep Sentry capture.
       logError(error, {

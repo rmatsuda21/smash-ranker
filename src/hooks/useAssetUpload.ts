@@ -3,7 +3,7 @@ import { useLingui } from "@lingui/react";
 
 import { useToast } from "@/components/Toast";
 import { DBAsset } from "@/types/Repository";
-import { logEvent, setPerson } from "@/utils/observability/log";
+import { logEvent, logWarning, setPerson } from "@/utils/observability/log";
 
 const MAX_ASSET_BYTES = 2 * 1024 * 1024;
 
@@ -28,11 +28,23 @@ export const useAssetUpload = (uploadAsset: UploadAsset) => {
         continue;
       }
 
-      const src = await uploadAsset({
-        fileName: file.name,
-        data: new Blob([file], { type: file.type }),
-        date: new Date(),
-      });
+      let src: string;
+      try {
+        src = await uploadAsset({
+          fileName: file.name,
+          data: new Blob([file], { type: file.type }),
+          date: new Date(),
+        });
+      } catch (error) {
+        logWarning("image upload failed", {
+          error: error instanceof Error ? error.message : String(error),
+          size_kb: Math.round(file.size / 1024),
+        });
+        showToast(_(msg`Couldn't save ${file.name}. Try again.`), {
+          variant: "error",
+        });
+        continue;
+      }
       srcs.push(src);
 
       logEvent("custom_asset_upload", {

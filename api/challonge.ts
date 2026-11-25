@@ -5,9 +5,13 @@ import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { respondClientError } from "./_lib/errors.js";
 import { assertSameOrigin } from "./_lib/origin.js";
 import { parseSlug } from "./_lib/validate.js";
-import { withLogging } from "./_lib/withLogging.js";
+import { isTimeoutError } from "./_lib/fetchImage.js";
+import { captureFnException, withLogging } from "./_lib/withLogging.js";
 
 const CHALLONGE_API_BASE = "https://api.challonge.com/v1";
+// Under the function's 10s limit, so a hung upstream is answered (and
+// reported) by us instead of ending as a silent function timeout.
+const UPSTREAM_TIMEOUT_MS = 8000;
 
 const handler = async (req: VercelRequest, res: VercelResponse) => {
   if (req.method !== "GET") {
@@ -31,10 +35,27 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
 
   const url = `${CHALLONGE_API_BASE}/tournaments/${slug}.json?api_key=${encodeURIComponent(apiKey)}&include_participants=1`;
 
-  const response = await fetch(url);
+  let response: Response;
+  try {
+    response = await fetch(url, {
+      signal: AbortSignal.timeout(UPSTREAM_TIMEOUT_MS),
+    });
+  } catch (err) {
+    // The URL holds the API key, so report where it failed, not the error
+    // text (which can quote the URL).
+    const timedOut = isTimeoutError(err);
+    captureFnException(
+      new Error(
+        timedOut ? "Challonge request timed out" : "Challonge request failed",
+      ),
+      { fn: "challonge" },
+    );
+    return res
+      .status(timedOut ? 504 : 502)
+      .json({ error: "Challonge did not respond" });
+  }
 
   if (!response.ok) {
-    const text = await response.text();
     console.warn(
       JSON.stringify({
         fn: "challonge",
@@ -43,10 +64,15 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
         slug,
       }),
     );
-    return res.status(response.status).json({
-      error: `Challonge API error: ${response.status}`,
-      details: text,
+    // A slug that does not exist is the user's input; anything else (a bad
+    // key is a 401) is ours to know about.
+    if (response.status === 404) {
+      return res.status(404).json({ error: "Tournament not found" });
+    }
+    captureFnException(new Error(`Challonge API error: ${response.status}`), {
+      fn: "challonge",
     });
+    return res.status(502).json({ error: "Challonge API error" });
   }
 
   const data = await response.json();

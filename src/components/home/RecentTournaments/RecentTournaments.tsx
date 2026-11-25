@@ -158,14 +158,14 @@ export const RecentTournaments = () => {
               <TournamentIcon event={featured} size={56} />
               <div className={styles.featuredText}>
                 <h3 className={styles.featuredName}>
-                  <TournamentLink event={featured} />
+                  <TournamentLink event={featured} source="home" />
                 </h3>
                 <p className={styles.featuredMeta}>{eventMeta(featured)}</p>
               </div>
               <PlacementChip event={featured} className={styles.featuredChip} />
             </div>
             <FeaturedStats event={featured} />
-            <EventActions event={featured} size="lg" />
+            <EventActions event={featured} size="lg" source="home" />
           </article>
 
           {rest.length > 0 && (

@@ -4,6 +4,7 @@ import { Image as KonvaImage } from "konva/lib/shapes/Image";
 import { LRUCache } from "@/utils/LRUCache";
 import { getDeviceRenderProfile } from "@/utils/top8/renderProfile";
 import type { ImageTone } from "@/types/top8/Design";
+import { logWarning } from "@/utils/observability/log";
 
 // Decoded sources are kept so interactive edits (resize, crop, template
 // switch) re-bake instantly. Profiles that opt out keep none: character art
@@ -71,6 +72,33 @@ const applyToneToPixels = (
   ctx.putImageData(image, 0, 0);
 };
 
+// An image that fails to load is drawn as nothing, so a broken asset path
+// or an outage would otherwise go unseen. Each address is reported once, and
+// a page reports a handful at most: one outage fails every image at once.
+const MAX_FAILURE_REPORTS = 10;
+const reportedFailures = new Set<string>();
+
+const describeSource = (imageSrc: string): string => {
+  if (imageSrc.startsWith("data:")) return "data:";
+  if (imageSrc.startsWith("blob:")) return "blob:";
+  try {
+    const url = new URL(imageSrc, window.location.origin);
+    return url.host + url.pathname;
+  } catch {
+    return "invalid";
+  }
+};
+
+const reportLoadFailure = (imageSrc: string) => {
+  // Offline is the user's connection, not a broken image.
+  if (typeof navigator !== "undefined" && navigator.onLine === false) return;
+  const source = describeSource(imageSrc);
+  if (reportedFailures.has(source)) return;
+  if (reportedFailures.size >= MAX_FAILURE_REPORTS) return;
+  reportedFailures.add(source);
+  logWarning("canvas image failed to load", { source });
+};
+
 const fetchSource = (imageSrc: string): Promise<HTMLImageElement> =>
   new Promise((resolve, reject) => {
     const attemptLoad = (attempt: number) => {
@@ -83,7 +111,7 @@ const fetchSource = (imageSrc: string): Promise<HTMLImageElement> =>
         image.onerror = null;
         resolve(image);
       };
-      image.onerror = (error) => {
+      image.onerror = () => {
         image.onload = null;
         image.onerror = null;
         if (isIdbImageUrl(imageSrc) && attempt < MAX_RETRIES) {
@@ -93,9 +121,9 @@ const fetchSource = (imageSrc: string): Promise<HTMLImageElement> =>
           );
           return;
         }
-        reject(
-          new Error(error instanceof Error ? error.message : "Unknown error"),
-        );
+        // An <img> error event carries no reason: name the image instead.
+        reportLoadFailure(imageSrc);
+        reject(new Error(`Image failed to load: ${describeSource(imageSrc)}`));
       };
       image.src = imageSrc;
     };
@@ -285,7 +313,7 @@ export const useCustomImage = ({
         .catch((error: unknown) => {
           if (cancelled) return;
           onErrorRef.current?.(
-            error instanceof Error ? error : new Error("Unknown error"),
+            error instanceof Error ? error : new Error(String(error)),
           );
           setFinalImage(undefined);
         });

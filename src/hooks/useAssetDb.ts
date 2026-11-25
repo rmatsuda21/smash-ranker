@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 
 import { DBAsset, Store } from "@/types/Repository";
 import { assetRepository } from "@/db/repository";
+import { logWarning } from "@/utils/observability/log";
 
 const BASE_URL = "/idb-images/";
 
@@ -14,7 +15,13 @@ export const useAssetDB = (repository: Store<DBAsset> = assetRepository) => {
   }, [repository]);
 
   useEffect(() => {
-    refresh().finally(() => setLoading(false));
+    refresh()
+      .catch((error) =>
+        logWarning("image library failed to load", {
+          error: error instanceof Error ? error.message : String(error),
+        }),
+      )
+      .finally(() => setLoading(false));
   }, [refresh]);
 
   const uploadAsset = async (asset: Omit<DBAsset, "id" | "src">) => {

@@ -1,86 +1,148 @@
 import { Component, type ErrorInfo, type ReactNode } from "react";
+import { Trans } from "@lingui/react/macro";
+import cn from "classnames";
 
 import { captureException } from "@/utils/observability/sentry";
+import { isChunkLoadError, reloadForStaleChunk } from "@/utils/staleChunk";
+
+import styles from "./ErrorBoundary.module.scss";
 
 interface Props {
   children: ReactNode;
   fallback?: ReactNode;
+  // "app" covers the whole window (the root boundary); "page" sits inside the
+  // layout, so the header and navigation stay usable.
+  variant?: "app" | "page";
+  // The boundary clears its error when this changes (the current path), so
+  // navigating away from a broken page works.
+  resetKey?: string;
 }
 
 interface State {
-  hasError: boolean;
   error: Error | null;
+  // A page chunk failed to load: a stale tab or a dropped connection.
+  chunkError: boolean;
+  reloading: boolean;
+  resetStep: "idle" | "confirm" | "working";
 }
 
-export class ErrorBoundary extends Component<Props, State> {
-  state: State = { hasError: false, error: null };
+const INITIAL_STATE: State = {
+  error: null,
+  chunkError: false,
+  reloading: false,
+  resetStep: "idle",
+};
 
-  static getDerivedStateFromError(error: Error): State {
-    return { hasError: true, error };
+// Erases everything the app keeps on this device. Loaded on demand so the
+// boundary depends on as little as possible; if even that fails, clearing
+// localStorage still removes the persisted state that can break a render.
+const resetAppData = async () => {
+  try {
+    const { factoryReset } = await import("@/utils/debug/factoryReset");
+    await factoryReset();
+  } catch {
+    try {
+      localStorage.clear();
+    } catch {
+      // Nothing left to try.
+    }
+    window.location.reload();
+  }
+};
+
+export class ErrorBoundary extends Component<Props, State> {
+  state: State = INITIAL_STATE;
+
+  static getDerivedStateFromError(error: Error): Partial<State> {
+    return { error, chunkError: isChunkLoadError(error) };
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    if (isChunkLoadError(error)) {
+      // Not reported: Sentry drops these too (see sentry.ts).
+      if (reloadForStaleChunk()) this.setState({ reloading: true });
+      return;
+    }
     console.error("[ErrorBoundary]", error, errorInfo);
-    captureException(error, { componentStack: errorInfo.componentStack });
+    captureException(error, {
+      componentStack: errorInfo.componentStack,
+      boundary: this.props.variant ?? "app",
+    });
   }
 
-  render() {
-    if (this.state.hasError) {
-      if (this.props.fallback) {
-        return this.props.fallback;
-      }
-
-      return (
-        <div
-          style={{
-            padding: "2rem",
-            margin: "1rem",
-            backgroundColor: "#1a1a1a",
-            color: "#f5f5f5",
-            borderRadius: "8px",
-            border: "1px solid #ff4444",
-            fontFamily: "monospace",
-            overflow: "auto",
-          }}
-        >
-          <h2 style={{ color: "#ff4444", marginTop: 0 }}>
-            Something went wrong
-          </h2>
-          <p style={{ color: "#ccc" }}>{this.state.error?.message}</p>
-          <details>
-            <summary style={{ cursor: "pointer", color: "#888" }}>
-              Stack trace
-            </summary>
-            <pre
-              style={{
-                fontSize: "0.75rem",
-                whiteSpace: "pre-wrap",
-                wordBreak: "break-word",
-                color: "#aaa",
-                marginTop: "0.5rem",
-              }}
-            >
-              {this.state.error?.stack}
-            </pre>
-          </details>
-          <button
-            onClick={() => window.location.reload()}
-            style={{
-              marginTop: "1rem",
-              padding: "0.5rem 1rem",
-              backgroundColor: "#333",
-              color: "#f5f5f5",
-              border: "1px solid #555",
-              borderRadius: "4px",
-              cursor: "pointer",
-            }}
-          >
-            Reload page
-          </button>
-        </div>
-      );
+  componentDidUpdate(prevProps: Props) {
+    if (this.state.error && prevProps.resetKey !== this.props.resetKey) {
+      this.setState(INITIAL_STATE);
     }
+  }
 
-    return this.props.children;
+  handleReset = () => {
+    if (this.state.resetStep === "idle") {
+      this.setState({ resetStep: "confirm" });
+      return;
+    }
+    this.setState({ resetStep: "working" });
+    void resetAppData();
+  };
+
+  render() {
+    const { error, chunkError, reloading, resetStep } = this.state;
+    if (!error) return this.props.children;
+    if (reloading) return null;
+    if (this.props.fallback) return this.props.fallback;
+
+    return (
+      <div
+        className={cn(styles.root, this.props.variant !== "page" && styles.app)}
+        role="alert"
+      >
+        <h1 className={styles.title}>
+          {chunkError ? (
+            <Trans>Couldn't load this page</Trans>
+          ) : (
+            <Trans>Something went wrong</Trans>
+          )}
+        </h1>
+        <p className={styles.description}>
+          {chunkError ? (
+            <Trans>Check your connection, then reload the page.</Trans>
+          ) : (
+            <Trans>
+              Reload the page to try again. If it keeps happening, resetting the
+              app's data on this device usually fixes it.
+            </Trans>
+          )}
+        </p>
+        <div className={styles.actions}>
+          <button
+            type="button"
+            className={styles.primary}
+            onClick={() => window.location.reload()}
+          >
+            <Trans>Reload page</Trans>
+          </button>
+          {!chunkError && (
+            <button
+              type="button"
+              className={styles.secondary}
+              onClick={this.handleReset}
+              disabled={resetStep === "working"}
+            >
+              {resetStep === "idle" && <Trans>Reset app data</Trans>}
+              {resetStep === "confirm" && (
+                <Trans>Erase saved designs and settings?</Trans>
+              )}
+              {resetStep === "working" && <Trans>Resetting…</Trans>}
+            </button>
+          )}
+        </div>
+        {import.meta.env.DEV && (
+          <details className={styles.details}>
+            <summary>{error.message}</summary>
+            <pre>{error.stack}</pre>
+          </details>
+        )}
+      </div>
+    );
   }
 }

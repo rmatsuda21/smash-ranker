@@ -33,10 +33,18 @@ export const refreshSession = ({
       useAuthStore.getState().setSession(tokens.accessToken, tokens.expiresIn);
       return true;
     } catch (err) {
-      logWarning("session refresh failed", {
-        area: "auth",
-        error: err instanceof Error ? err.message : String(err),
-      });
+      // Being offline is not worth a report: the session is kept and the
+      // next visit tries again. (`fetch` rejects with a TypeError when the
+      // request never got an answer.)
+      const offline =
+        err instanceof TypeError ||
+        (typeof navigator !== "undefined" && !navigator.onLine);
+      if (!offline) {
+        logWarning("session refresh failed", {
+          area: "auth",
+          error: err instanceof Error ? err.message : String(err),
+        });
+      }
       if (force) {
         useAuthStore.setState({ accessToken: null, expiresAt: 0 });
         return false;

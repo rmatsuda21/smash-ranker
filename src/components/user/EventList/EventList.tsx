@@ -25,11 +25,20 @@ type Props = {
   // More events are still arriving from start.gg.
   loading: boolean;
   total: number;
+  // start.gg stopped answering part-way: `events` is not the whole list.
+  partial?: boolean;
+  onRetry?: () => void;
 };
 
 // Every tournament the user has entered, newest first, each with links
 // into the graphic tools. Search runs over what has loaded so far.
-export const EventList = ({ events, loading, total }: Props) => {
+export const EventList = ({
+  events,
+  loading,
+  total,
+  partial = false,
+  onRetry,
+}: Props) => {
   const { _ } = useLingui();
   // Search and "Show more" pick up where they were when the user comes
   // Back to the page, so the tournament they left from is still in the list.
@@ -110,6 +119,19 @@ export const EventList = ({ events, loading, total }: Props) => {
         <p className={styles.loading} role="status">
           <Trans>Loading more from start.gg...</Trans>
         </p>
+      )}
+      {/* At the end of the list, so it moves nothing above it. */}
+      {partial && !loading && (
+        <div className={styles.notice} role="status">
+          <p>
+            <Trans>Some tournaments didn't load.</Trans>
+          </p>
+          {onRetry && (
+            <Button variant="outline" size="sm" onClick={onRetry}>
+              <Trans>Try again</Trans>
+            </Button>
+          )}
+        </div>
       )}
     </section>
   );

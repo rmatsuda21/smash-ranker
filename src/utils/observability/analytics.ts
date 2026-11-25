@@ -9,23 +9,9 @@ import type {
   PersonProps,
 } from "@/utils/analytics/events";
 import { getClientId } from "./clientId";
+import { getAppEnvironment, scrubUrl } from "./scrubUrl";
 
 let initialized = false;
-
-// Tournament slugs in `?p=&s=` URLs and tournament names in deep-link URLs
-// can be user/organizer data. Strip query strings + the `slug` route segment
-// from any URL before it leaves the browser.
-const SENSITIVE_PARAMS = ["s", "slug"];
-const stripSensitiveUrl = (url: string | undefined): string | undefined => {
-  if (!url) return url;
-  try {
-    const u = new URL(url);
-    for (const param of SENSITIVE_PARAMS) u.searchParams.delete(param);
-    return u.toString();
-  } catch {
-    return url;
-  }
-};
 
 export const initAnalytics = () => {
   if (initialized) return;
@@ -50,15 +36,17 @@ export const initAnalytics = () => {
     // them; the slim bundle wouldn't load them anyway, but explicit is safer).
     disable_external_dependency_loading: true,
     disable_session_recording: true,
+    // Slugs, encoded payloads and the login code are taken out of every URL
+    // before it leaves the browser (see scrubUrl).
     before_send: (event) => {
       if (!event) return event;
       const props = event.properties;
       if (props) {
         if (typeof props.$current_url === "string") {
-          props.$current_url = stripSensitiveUrl(props.$current_url);
+          props.$current_url = scrubUrl(props.$current_url);
         }
         if (typeof props.$referrer === "string") {
-          props.$referrer = stripSensitiveUrl(props.$referrer);
+          props.$referrer = scrubUrl(props.$referrer);
         }
       }
       return event;
@@ -70,7 +58,7 @@ export const initAnalytics = () => {
   posthog.identify(getClientId());
 
   posthog.register({
-    app_environment: import.meta.env.MODE,
+    app_environment: getAppEnvironment(),
     commit_sha: import.meta.env.VITE_VERCEL_GIT_COMMIT_SHA || "local",
   });
 

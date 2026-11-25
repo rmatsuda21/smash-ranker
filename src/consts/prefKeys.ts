@@ -8,4 +8,7 @@ export const PREF_KEYS = {
   CUSTOM_ACCENT_COLOR: "custom-accent-color",
   // Which game the profile page shows.
   PROFILE_GAME: "profile-game",
+  // The feature flags the server last answered with (JSON), used when the
+  // flags request is slow or fails.
+  FEATURE_FLAGS: "feature-flags",
 };

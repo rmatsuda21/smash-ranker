@@ -8,6 +8,7 @@ import type {
 import { DBSocialTemplate } from "@/types/Repository";
 import { SocialTemplateStore } from "@/db/socialTemplate/store";
 import { DEFAULT_TEMPLATE_ID } from "@/utils/social/builtInTemplates";
+import { safeLocalStorage } from "@/utils/safeStorage";
 
 const dbStore = new SocialTemplateStore();
 
@@ -85,7 +86,7 @@ export const useSocialPostStore = create<SocialPostStore>()(
       }),
       {
         name: "social-post-store-v1",
-        storage: createJSONStorage(() => localStorage),
+        storage: createJSONStorage(() => safeLocalStorage),
         partialize: (state) => ({
           selectedPlatform: state.selectedPlatform,
           selectedTemplateId: state.selectedTemplateId,

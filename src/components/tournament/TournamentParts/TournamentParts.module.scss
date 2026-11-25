@@ -107,3 +107,19 @@
     }
   }
 }
+
+// A failed load: what went wrong and a button to run it again.
+.loadFailed {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  color: var(--fg-3);
+  font-size: var(--font-size-md);
+  text-align: center;
+
+  p {
+    margin: 0;
+  }
+}

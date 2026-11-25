@@ -11,6 +11,15 @@ import { EMPTY_CHARACTER_ID } from "@/consts/top8/characters";
 import { getGameForName } from "@/utils/games";
 import { useToast } from "@/components/Toast";
 import { logEvent } from "@/utils/observability/log";
+import {
+  failureKindForStatus,
+  failureKindOf,
+  LoadError,
+} from "@/utils/loadError";
+import {
+  beginTournamentLoad,
+  isCurrentTournamentLoad,
+} from "@/utils/top8/loadGuard";
 
 interface ChallongeParticipantWrapper {
   participant: {
@@ -40,7 +49,11 @@ const fetchChallongeTournament = async (
 
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
-    throw new Error(body.error || t`Challonge API error: ${res.status}`);
+    throw new LoadError(
+      body.error || t`Challonge API error: ${res.status}`,
+      failureKindForStatus(res.status),
+      `challonge ${res.status}`,
+    );
   }
 
   return res.json();
@@ -88,10 +101,12 @@ export const useFetchChallonge = () => {
   const { showToast } = useToast();
 
   const fetchChallonge = async (slug: string, playerCount: number = 8) => {
+    const loadId = beginTournamentLoad();
     playerDispatch({ type: "FETCH_PLAYERS" });
 
     try {
       const data = await fetchChallongeTournament(slug);
+      if (!isCurrentTournamentLoad(loadId)) return;
 
       const tournamentInfo = parseTournamentInfo(data.tournament);
       tournamentDispatch({
@@ -109,6 +124,7 @@ export const useFetchChallonge = () => {
         player_count: playerCount,
       });
     } catch (error) {
+      if (!isCurrentTournamentLoad(loadId)) return;
       const message =
         error instanceof Error
           ? error.message
@@ -121,6 +137,7 @@ export const useFetchChallonge = () => {
       logEvent("tournament_fetch_fail", {
         tournament_platform: "challonge",
         tournament_slug: slug,
+        failure_kind: failureKindOf(error),
       });
     }
   };

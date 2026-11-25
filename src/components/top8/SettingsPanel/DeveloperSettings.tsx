@@ -6,7 +6,6 @@ import { useLingui } from "@lingui/react";
 
 import { Button } from "@/components/shared/Button/Button";
 import { ConfirmationModal } from "@/components/shared/ConfirmationModal/ConfirmationModal";
-import { factoryReset } from "@/utils/debug/factoryReset";
 import pkg from "../../../../package.json";
 
 import settingsStyles from "./SettingsPanel.module.scss";
@@ -26,6 +25,7 @@ export const DeveloperSettings = () => {
 
   const handleConfirm = async () => {
     setResetting(true);
+    const { factoryReset } = await import("@/utils/debug/factoryReset");
     await factoryReset();
   };
 

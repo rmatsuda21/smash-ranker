@@ -140,6 +140,21 @@
   align-self: center;
 }
 
+// A load that stopped part-way, with a way to run it again.
+.notice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-md);
+  color: var(--fg-3);
+  font-size: var(--font-size-md);
+  text-align: center;
+}
+
 // Tabbed layout: the tab already says "Tournaments" and how many, so the
 // heading is just the search field.
 @media (max-width: 1023px) {

@@ -4,13 +4,17 @@ import type { VercelRequest, VercelResponse } from "@vercel/node";
 
 import { respondClientError } from "./_lib/errors.js";
 import { parseImageUrl } from "./_lib/validate.js";
-import { withLogging } from "./_lib/withLogging.js";
+import { isTimeoutError, readImageBody } from "./_lib/fetchImage.js";
+import { captureFnException, withLogging } from "./_lib/withLogging.js";
 
 const ALLOWED_HOSTS = [
   "assets.tonamel.com",
   "img.tonamel.com",
   "p1-c2db36b0.imageflux.jp",
 ] as const;
+
+// Under the function's 10s limit.
+const UPSTREAM_TIMEOUT_MS = 8000;
 
 const handler = async (req: VercelRequest, res: VercelResponse) => {
   if (req.method !== "GET") {
@@ -25,7 +29,18 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
     throw err;
   }
 
-  const response = await fetch(parsed.toString());
+  let response: Response;
+  try {
+    response = await fetch(parsed.toString(), {
+      signal: AbortSignal.timeout(UPSTREAM_TIMEOUT_MS),
+    });
+  } catch (err) {
+    const timedOut = isTimeoutError(err);
+    captureFnException(err, { fn: "tonamel-image" });
+    return res
+      .status(timedOut ? 504 : 502)
+      .json({ error: "Upstream did not respond" });
+  }
 
   if (!response.ok) {
     console.warn(
@@ -36,12 +51,15 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
       }),
     );
     return res
-      .status(response.status)
+      .status(response.status === 404 ? 404 : 502)
       .json({ error: `Upstream error: ${response.status}` });
   }
 
   const contentType = response.headers.get("content-type") || "image/jpeg";
-  const buffer = Buffer.from(await response.arrayBuffer());
+  const buffer = await readImageBody(response);
+  if (!buffer) {
+    return res.status(502).json({ error: "Image too large" });
+  }
 
   res.setHeader("Content-Type", contentType);
   // The URL is content-addressed (the upstream image at this exact URL

@@ -8,6 +8,7 @@ import type {
   HiveeResolvedUrl,
   HiveeStandings,
 } from "@/types/hivee/Hivee";
+import { LoadError } from "@/utils/loadError";
 
 // Hivee's API is read-only, needs no key for public events and allows
 // browsers (CORS), so it is called directly: there is no proxy function.
@@ -20,17 +21,36 @@ export const HIVEE_UUID =
 type Page<T> = { data: T; next_cursor?: string | null };
 
 const get = async <T>(path: string): Promise<Page<T>> => {
-  const res = await fetch(`${HIVEE_API}${path}`, {
-    headers: { Accept: "application/json" },
-  });
+  let res: Response;
+  try {
+    res = await fetch(`${HIVEE_API}${path}`, {
+      headers: { Accept: "application/json" },
+    });
+  } catch (error) {
+    throw new LoadError(
+      t`Couldn't reach Hivee. Check your connection and try again.`,
+      "network",
+      error instanceof Error ? error.message : String(error),
+    );
+  }
   if (res.ok) return res.json();
 
   // A private or draft event is answered as 404 too.
-  if (res.status === 404) throw new Error(t`Tournament not found`);
-  if (res.status === 429) {
-    throw new Error(t`Hivee is receiving too many requests. Try again soon.`);
+  if (res.status === 404) {
+    throw new LoadError(t`Tournament not found`, "not_found");
   }
-  throw new Error(t`Hivee API error: ${res.status}`);
+  if (res.status === 429) {
+    throw new LoadError(
+      t`Hivee is receiving too many requests. Try again soon.`,
+      "rate_limited",
+      "hivee 429",
+    );
+  }
+  throw new LoadError(
+    t`Hivee API error: ${res.status}`,
+    res.status >= 500 ? "upstream" : "query_error",
+    `hivee ${res.status}`,
+  );
 };
 
 // Every page of a list endpoint.
@@ -60,7 +80,9 @@ export const resolveHiveeSlug = async (slug: string): Promise<HiveeIds> => {
   const { data } = await get<HiveeResolvedUrl>(
     `/resolve?url=${encodeURIComponent(url)}`,
   );
-  if (data.type !== "event") throw new Error(t`Tournament not found`);
+  if (data.type !== "event") {
+    throw new LoadError(t`Tournament not found`, "not_found");
+  }
   return {
     eventId: data.event_id,
     programId: data.program_id ?? programId,

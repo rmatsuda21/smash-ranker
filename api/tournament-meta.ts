@@ -34,10 +34,15 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
     return res.status(400).json({ error: "Invalid invite" });
   }
 
-  const meta = await fetchTournamentMeta(invite.platform, invite.slug);
-  if (!meta || !meta.name) {
+  const result = await fetchTournamentMeta(invite.platform, invite.slug);
+  if (result.status === "failed") {
+    res.setHeader("Cache-Control", "no-store");
+    return res.status(502).json({ error: "Tournament lookup failed" });
+  }
+  if (result.status === "not_found") {
     return res.status(404).json({ error: "Tournament not found" });
   }
+  const meta = result.meta;
 
   // Tournament names rarely change. Cache aggressively at the CDN.
   res.setHeader(

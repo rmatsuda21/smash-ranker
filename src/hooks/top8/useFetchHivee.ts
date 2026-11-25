@@ -25,7 +25,17 @@ import {
   orderStandings,
   pickFinalProgram,
 } from "@/utils/hivee/programs";
+import {
+  failureDetail,
+  failureKindOf,
+  LoadError,
+  reportLoadFailure,
+} from "@/utils/loadError";
 import { logEvent, logWarning } from "@/utils/observability/log";
+import {
+  beginTournamentLoad,
+  isCurrentTournamentLoad,
+} from "@/utils/top8/loadGuard";
 import {
   getPlacements,
   padPlayersWithBlanks,
@@ -116,6 +126,7 @@ export const useFetchHivee = () => {
   const { showToast } = useToast();
 
   const fetchHivee = async (slug: string, playerCount: number = 8) => {
+    const loadId = beginTournamentLoad();
     playerDispatch({ type: "FETCH_PLAYERS" });
 
     try {
@@ -127,19 +138,33 @@ export const useFetchHivee = () => {
       const program = pickFinalProgram(event.programs, programId, {
         startedOnly: true,
       });
-      if (!program) throw new Error(t`This event has no bracket to load.`);
+      if (!program) {
+        throw new LoadError(
+          t`This event has no bracket to load.`,
+          "unsupported",
+        );
+      }
 
       const iconUrl = event.community.icon_url ?? event.cover_image_url;
       const [standings, matches, iconSrc] = await Promise.all([
         fetchHiveeStandings(program.id),
         // Characters are a bonus: the graphic loads without them.
-        fetchHiveeCompletedMatches(eventId).catch(() => []),
+        fetchHiveeCompletedMatches(eventId).catch((error) => {
+          logWarning("hivee matches fetch failed", {
+            area: "ranker",
+            tournament_platform: "hivee",
+            failure_kind: failureKindOf(error),
+            error: failureDetail(error),
+          });
+          return [];
+        }),
         iconUrl ? storeIcon(iconUrl) : undefined,
       ]);
 
       if (standings.rows.length === 0) {
-        throw new Error(t`This event has no standings yet.`);
+        throw new LoadError(t`This event has no standings yet.`, "unsupported");
       }
+      if (!isCurrentTournamentLoad(loadId)) return;
 
       // The placements cover every phase listed, so the characters do too.
       const phaseIds = new Set(
@@ -169,17 +194,25 @@ export const useFetchHivee = () => {
         player_count: playerCount,
       });
     } catch (error) {
+      if (!isCurrentTournamentLoad(loadId)) return;
       const message =
         error instanceof Error
           ? error.message
           : t`Failed to fetch Hivee tournament`;
-      // Don't Sentry-capture: most failures here are user-input errors (a
-      // private event, a mistyped link).
+      // A private event or a mistyped link is the user's input, not a bug.
+      // Hivee is called from the browser, so anything else is reported here:
+      // no server function would see it.
+      const failureKind = reportLoadFailure(
+        "hivee tournament fetch failed",
+        error,
+        { area: "ranker", tournament_platform: "hivee" },
+      );
       playerDispatch({ type: "FETCH_PLAYERS_FAIL", payload: message });
       showToast(message, { variant: "error" });
       logEvent("tournament_fetch_fail", {
         tournament_platform: "hivee",
         tournament_slug: slug,
+        failure_kind: failureKind,
       });
     }
   };
