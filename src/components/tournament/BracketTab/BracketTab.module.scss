@@ -5,6 +5,8 @@
 $match-w: 224px;
 $match-h: 64px;
 $column-gap: 40px;
+$pill-w: 168px;
+$pill-h: 22px;
 
 .root {
   display: flex;
@@ -136,9 +138,10 @@ $column-gap: 40px;
   }
 }
 
+// Each round's name sits over its column; BracketTab sets the space before
+// each, since a column with pills is moved over.
 .rounds {
   display: flex;
-  gap: $column-gap;
   margin-bottom: var(--space-4);
 }
 
@@ -170,6 +173,30 @@ $column-gap: 40px;
 // A match placed on the grid.
 .field .placed {
   position: absolute;
+}
+
+// Another phase's pool, beside a match: where a player came from or is sent
+// on to.
+.pill {
+  position: absolute;
+  width: $pill-w;
+  height: $pill-h;
+  padding: 0 var(--space-2);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  background: var(--bg-raised);
+  color: var(--fg-2);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  line-height: calc(#{$pill-h} - 2px);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lines .pillLinks {
+  stroke-dasharray: 3 3;
 }
 
 // ------------------------------------------

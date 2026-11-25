@@ -151,11 +151,34 @@ export type PoolStanding = {
   placement: number;
 };
 
+// A seed a player is sent on to: a pool of a later phase of the event, and
+// the seed number they take in it.
+export type ProgressionSeed = { groupId: string; seedNum: number | null };
+
+// How players move between phases around one pool: where they came in from
+// and where its sets send them.
+export type PoolProgression = {
+  // The pool of an earlier phase each player came from, by entrant id. Empty
+  // for a pool of the event's first phase.
+  arrivals: Record<string, string>;
+  // Where the winner and the loser of a set go on to, by set id, for the
+  // sets that send someone out of the pool.
+  departures: Record<
+    string,
+    { winner: ProgressionSeed | null; loser: ProgressionSeed | null }
+  >;
+  // Of the pools players are sent to that seed some players straight into
+  // their losers bracket: how many of the pool's seeds start in winners.
+  winnersSeeds: Record<string, number>;
+};
+
 // One bracket (pool) of a phase: its finished sets and, when start.gg has
 // them, the pool's own placements.
 export type Pool = {
   sets: EventSet[];
   standings: PoolStanding[];
+  // start.gg only.
+  progression?: PoolProgression;
 };
 
 export type StandingsPage = {

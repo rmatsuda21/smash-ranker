@@ -16,6 +16,10 @@ import type {
   EventPhase,
   TournamentEvent,
 } from "@/types/tournament/Tournament";
+import {
+  progressionPills,
+  type SetPills,
+} from "@/utils/tournament/progression";
 import { stageRounds } from "@/utils/tournament/roundRobin";
 import {
   layoutBracket,
@@ -39,14 +43,51 @@ const MATCH_W = 224;
 const MATCH_H = 64;
 const COLUMN_GAP = 40;
 const SLOT_H = 84;
-const COLUMN_W = MATCH_W + COLUMN_GAP;
+// A pill naming another phase's pool, and the dashed line joining it to its
+// match. A column with pills before or after its matches is moved over by
+// the room they take.
+const PILL_W = 168;
+const PILL_H = 22;
+const PILL_LINK = 20;
+const PILL_SPACE = PILL_W + PILL_LINK;
 
 const LANE_LABELS = {
   winners: msg`Winners bracket`,
   losers: msg`Losers bracket`,
 };
 
-type GridNode = { id: string; column: number; row: number; feeders: string[] };
+type GridNode = {
+  id: string;
+  column: number;
+  row: number;
+  feeders: string[];
+  pills?: SetPills;
+};
+
+// Where each column's matches start, left to right, and how wide the lane
+// is: a column whose matches have pills before them (players arriving from
+// another phase) or after them (players sent on) takes room for them.
+const columnPositions = (columns: number, nodes: GridNode[]) => {
+  const before = Array.from({ length: columns }, () => false);
+  const after = Array.from({ length: columns }, () => false);
+  for (const node of nodes) {
+    if (node.pills?.from.length) before[node.column] = true;
+    if (node.pills?.to.length) after[node.column] = true;
+  }
+  const lefts: number[] = [];
+  let x = 0;
+  for (let column = 0; column < columns; column++) {
+    if (column > 0) x += COLUMN_GAP;
+    if (before[column]) x += PILL_SPACE;
+    lefts.push(x);
+    x += MATCH_W + (after[column] ? PILL_SPACE : 0);
+  }
+  return { lefts, before, width: x };
+};
+
+// The middle of a slot of a match (or of the match), from its top.
+const pillY = (slot: 0 | 1 | null) =>
+  slot === null ? MATCH_H / 2 : slot === 0 ? MATCH_H / 4 : (MATCH_H * 3) / 4;
 
 // One side of a bracket on the grid: the round names, the connecting lines
 // and whatever `renderMatch` puts at each node. The real bracket and its
@@ -64,9 +105,9 @@ const LaneFrame = ({
   nodes: GridNode[];
   renderMatch: (node: GridNode, style: React.CSSProperties) => React.ReactNode;
 }) => {
-  const width = heads.length * COLUMN_W - COLUMN_GAP;
+  const { lefts, before, width } = columnPositions(heads.length, nodes);
   const height = (rows - 1) * SLOT_H + MATCH_H;
-  const left = (column: number) => column * COLUMN_W;
+  const left = (column: number) => lefts[column];
   const middle = (row: number) => row * SLOT_H + MATCH_H / 2;
 
   const byId = new Map(nodes.map((node) => [node.id, node]));
@@ -78,18 +119,52 @@ const LaneFrame = ({
       if (!from) return [];
       const startX = left(from.column) + MATCH_W;
       const endX = left(node.column);
-      const turnX = endX - COLUMN_GAP / 2;
+      // In the gap, before the room of any pills in front of the match.
+      const turnX =
+        endX - (before[node.column] ? PILL_SPACE : 0) - COLUMN_GAP / 2;
       return [
         `M${startX} ${middle(from.row)}H${turnX}V${middle(node.row)}H${endX}`,
       ];
     }),
   );
 
+  // Each pill: its box, and a dashed line from it to its match.
+  const pills = nodes.flatMap((node) => {
+    const top = node.row * SLOT_H;
+    const matchLeft = left(node.column);
+    return [
+      ...(node.pills?.from ?? []).map((pill, index) => ({
+        key: `${node.id}-from-${index}`,
+        label: pill.label,
+        x: matchLeft - PILL_SPACE,
+        y: top + pillY(pill.slot),
+        link: [matchLeft - PILL_LINK, matchLeft],
+      })),
+      ...(node.pills?.to ?? []).map((pill, index) => ({
+        key: `${node.id}-to-${index}`,
+        label: pill.label,
+        x: matchLeft + MATCH_W + PILL_LINK,
+        y: top + pillY(pill.slot),
+        link: [matchLeft + MATCH_W, matchLeft + MATCH_W + PILL_LINK],
+      })),
+    ];
+  });
+  const links = pills.map(
+    ({ link: [fromX, toX], y }) => `M${fromX} ${y}H${toX}`,
+  );
+
   return (
     <section className={styles.lane} aria-label={label}>
       <div className={styles.rounds} style={{ width }}>
         {heads.map((head, index) => (
-          <h3 key={index} className={styles.round}>
+          <h3
+            key={index}
+            className={styles.round}
+            style={{
+              marginLeft:
+                index === 0 ? left(0) : left(index) - left(index - 1) - MATCH_W,
+            }}
+          >
             {head}
           </h3>
         ))}
@@ -102,7 +177,20 @@ const LaneFrame = ({
           aria-hidden="true"
         >
           <path d={lines.join("")} />
+          {links.length > 0 && (
+            <path className={styles.pillLinks} d={links.join("")} />
+          )}
         </svg>
+        {pills.map((pill) => (
+          <span
+            key={pill.key}
+            className={styles.pill}
+            style={{ left: pill.x, top: pill.y - PILL_H / 2 }}
+            title={pill.label}
+          >
+            {pill.label}
+          </span>
+        ))}
         {nodes.map((node) =>
           renderMatch(node, {
             left: left(node.column),
@@ -118,10 +206,12 @@ const Lane = ({
   lane,
   event,
   characters,
+  pills,
 }: {
   lane: BracketLane;
   event: TournamentEvent;
   characters: Record<string, string[]>;
+  pills: Map<string, SetPills>;
 }) => {
   const { _ } = useLingui();
   const sets = new Map(lane.nodes.map((node) => [node.set.id, node.set]));
@@ -135,6 +225,7 @@ const Lane = ({
         column,
         row,
         feeders,
+        pills: pills.get(set.id),
       }))}
       renderMatch={(node, style) => (
         <MatchBox
@@ -300,6 +391,14 @@ export const BracketTab = ({ event, overview, overviewSettled }: Props) => {
   const lanes = useMemo(
     () => (isElimination ? layoutBracket(pools.data?.[0]?.sets ?? []) : []),
     [isElimination, pools.data],
+  );
+  // Where players came from and go on to, beside the matches.
+  const pills = useMemo(
+    () =>
+      isElimination && pools.data?.[0]
+        ? progressionPills(pools.data[0], list)
+        : new Map<string, SetPills>(),
+    [isElimination, pools.data, list],
   );
   const rounds = useMemo(
     () =>
@@ -484,6 +583,7 @@ export const BracketTab = ({ event, overview, overviewSettled }: Props) => {
               lane={lane}
               event={event}
               characters={characters}
+              pills={pills}
             />
           ))}
         </div>

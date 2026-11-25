@@ -11,7 +11,9 @@ import type {
   EventOverview,
   EventPhase,
   Pool,
+  PoolProgression,
   PoolStanding,
+  ProgressionSeed,
   EventSet,
   StandingEntry,
   StandingsPage,
@@ -531,10 +533,14 @@ export const fetchEventPhases = async (
   return mergeSwissRounds(phases);
 };
 
-// A set with two slots and their entrants is 8 objects. A 64-player double
-// elimination pool is about 126 sets: two pages.
-const POOL_SETS_PER_PAGE = 100;
-const POOL_MAX_PAGES = 8;
+// A set with two slots and their entrants is 8 objects, and asking where its
+// players go on to costs two more for every set (one a field, whether or not
+// it holds a seed) and one for each seed it does hold: 1009 for a page of 100
+// sets of Kagaribi's day 2. Pages of 64 stay under start.gg's 1000 even with
+// the pool's standings on the first page and both players of every set sent
+// on. A 128-player double elimination pool is about 250 sets: four pages.
+const POOL_SETS_PER_PAGE = 64;
+const POOL_MAX_PAGES = 12;
 
 const PoolSetsQueryDoc = graphql(`
   query TournamentPoolSets(
@@ -574,14 +580,165 @@ const PoolSetsQueryDoc = graphql(`
               initialSeedNum
             }
           }
+          winnerProgressionSeed {
+            groupSeedNum
+            phaseGroup {
+              id
+            }
+          }
+          loserProgressionSeed {
+            groupSeedNum
+            phaseGroup {
+              id
+            }
+          }
         }
       }
     }
   }
 `);
 
-// One bracket (pool): every finished set of it, and its placements. Sets
-// still to be played and byes are left out.
+// A seed with its entrant and where it came from is 3 objects.
+const POOL_SEEDS_PER_PAGE = 256;
+
+const PoolSeedsQueryDoc = graphql(`
+  query TournamentPoolSeeds($id: ID!, $page: Int!, $perPage: Int!) {
+    phaseGroup(id: $id) {
+      id
+      seeds(query: { page: $page, perPage: $perPage }) {
+        pageInfo {
+          totalPages
+        }
+        nodes {
+          entrant {
+            id
+          }
+          progressionSource {
+            originPhaseGroup {
+              id
+            }
+          }
+        }
+      }
+    }
+  }
+`);
+
+// The pool of an earlier phase each of the pool's players came from, by
+// entrant id. Players of an event's first phase came from nowhere.
+const fetchPoolArrivals = async (
+  groupId: string,
+): Promise<Record<string, string>> => {
+  const loadPage = async (page: number) => {
+    const result = await startggClient
+      .query(PoolSeedsQueryDoc, {
+        id: groupId,
+        page,
+        perPage: POOL_SEEDS_PER_PAGE,
+      })
+      .toPromise();
+    const seeds = result.data?.phaseGroup?.seeds;
+    if (result.error || !seeds) {
+      throw startggLoadError(result.error, "Could not load the seeds");
+    }
+    return seeds;
+  };
+
+  const first = await loadPage(1);
+  const rest = await Promise.all(
+    Array.from(
+      { length: Math.max((first.pageInfo?.totalPages ?? 1) - 1, 0) },
+      (_, index) => loadPage(index + 2),
+    ),
+  );
+  return Object.fromEntries(
+    [first, ...rest].flatMap((seeds) =>
+      (seeds.nodes ?? []).flatMap((seed) => {
+        const entrantId = seed?.entrant?.id;
+        const origin = seed?.progressionSource?.originPhaseGroup?.id;
+        return entrantId && origin ? [[String(entrantId), String(origin)]] : [];
+      }),
+    ),
+  );
+};
+
+// How many seeds of a double elimination pool start in its winners bracket,
+// by pool id, or null for a pool that seeds nobody into losers. start.gg's
+// `seedMap` lists the winners bracket's first-round seeds under "1" and, for
+// a pool that seeds players into losers (Kagaribi's top 48: seeds 1 to 16 in
+// winners, 17 to 48 in losers), those under "2". Every pool of a phase's day
+// 1 sends players to the same few pools, so the answers are kept.
+const winnersSeedsCache = new Map<string, number | null>();
+
+const readWinnersSeeds = (
+  bracketType: unknown,
+  seedMap: unknown,
+): number | null => {
+  if (bracketType !== "DOUBLE_ELIMINATION") return null;
+  if (!seedMap || typeof seedMap !== "object") return null;
+  const map = seedMap as Record<string, unknown>;
+  const winners = Array.isArray(map["1"]) ? map["1"] : [];
+  const losers = Array.isArray(map["2"]) ? map["2"] : [];
+  if (losers.length === 0) return null;
+  return winners.filter((seed) => typeof seed === "number").length;
+};
+
+const fetchWinnersSeeds = async (
+  groupIds: string[],
+): Promise<Record<string, number>> => {
+  // Aliased fields need the ids in the query text: numbers only.
+  const missing = groupIds.filter(
+    (id) => !winnersSeedsCache.has(id) && /^\d+$/.test(id),
+  );
+  if (missing.length > 0) {
+    const fields = missing
+      .map(
+        (id, index) =>
+          `g${index}: phaseGroup(id: ${id}) { id bracketType seedMap }`,
+      )
+      .join("\n");
+    const result = await startggClient
+      .query<
+        Record<
+          string,
+          { bracketType?: string | null; seedMap?: unknown } | null
+        >
+      >(`query TournamentPoolSides { ${fields} }`, {})
+      .toPromise();
+    if (result.error || !result.data) {
+      throw startggLoadError(result.error, "Could not load the next phase");
+    }
+    missing.forEach((id, index) => {
+      const group = result.data?.[`g${index}`];
+      winnersSeedsCache.set(
+        id,
+        readWinnersSeeds(group?.bracketType, group?.seedMap),
+      );
+    });
+  }
+  return Object.fromEntries(
+    groupIds.flatMap((id) => {
+      const count = winnersSeedsCache.get(id);
+      return count === null || count === undefined ? [] : [[id, count]];
+    }),
+  );
+};
+
+type RawProgressionSeed = {
+  groupSeedNum?: number | null;
+  phaseGroup?: { id?: string | number | null } | null;
+} | null;
+
+const toProgressionSeed = (
+  raw: RawProgressionSeed | undefined,
+): ProgressionSeed | null =>
+  raw?.phaseGroup?.id
+    ? { groupId: String(raw.phaseGroup.id), seedNum: raw.groupSeedNum ?? null }
+    : null;
+
+// One bracket (pool): every finished set of it, its placements, and where
+// its players came from and are sent on to. Sets still to be played and
+// byes are left out.
 export const fetchPool = async (groupId: string): Promise<Pool> => {
   if (isHiveeId(groupId)) return fetchHiveePool(groupId);
   const loadPage = async (page: number) => {
@@ -600,6 +757,8 @@ export const fetchPool = async (groupId: string): Promise<Pool> => {
     return group;
   };
 
+  // The seeds do not wait for the sets.
+  const arrivals = fetchPoolArrivals(groupId);
   const first = await loadPage(1);
   const lastPage = Math.min(
     first.sets?.pageInfo?.totalPages ?? 1,
@@ -611,11 +770,28 @@ export const fetchPool = async (groupId: string): Promise<Pool> => {
     ),
   );
 
+  const rawSets = [first, ...rest]
+    .flatMap((group) => group.sets?.nodes ?? [])
+    .filter(present);
+  const departures: PoolProgression["departures"] = {};
+  for (const raw of rawSets) {
+    const winner = toProgressionSeed(raw.winnerProgressionSeed);
+    const loser = toProgressionSeed(raw.loserProgressionSeed);
+    if (raw.id && (winner || loser)) {
+      departures[String(raw.id)] = { winner, loser };
+    }
+  }
+  const destinations = [
+    ...new Set(
+      Object.values(departures).flatMap(({ winner, loser }) =>
+        [winner, loser].flatMap((seed) => (seed ? [seed.groupId] : [])),
+      ),
+    ),
+  ];
+
   const standings = "standings" in first ? (first.standings?.nodes ?? []) : [];
   return {
-    sets: [first, ...rest]
-      .flatMap((group) => group.sets?.nodes ?? [])
-      .filter(present)
+    sets: rawSets
       .map(toEventSet)
       .filter((set): set is EventSet => set !== null),
     standings: standings.flatMap((standing): PoolStanding[] =>
@@ -629,5 +805,11 @@ export const fetchPool = async (groupId: string): Promise<Pool> => {
           ]
         : [],
     ),
+    progression: {
+      arrivals: await arrivals,
+      departures,
+      winnersSeeds:
+        destinations.length > 0 ? await fetchWinnersSeeds(destinations) : {},
+    },
   };
 };
