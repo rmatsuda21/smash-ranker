@@ -9,14 +9,6 @@
   background: var(--bg-surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  transition:
-    border-color var(--duration-slow) var(--ease-in-out),
-    background var(--duration-slow) var(--ease-in-out);
-
-  &:hover {
-    border-color: var(--brand-outline);
-    background: var(--bg-raised);
-  }
 }
 
 .icon {
