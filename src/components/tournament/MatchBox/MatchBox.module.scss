@@ -35,8 +35,12 @@ $display: "Big Shoulders Display", var(--font-sans);
   }
 }
 
+// A width, not only a flex basis: a flex item never gets narrower than its
+// content, so a seed wider than a basis would widen the column and push the
+// name right in that row alone.
 .seed {
-  flex: 0 0 18px;
+  flex: none;
+  width: calc(var(--seed-digits, 2) * 1ch);
   font-size: var(--font-size-xs);
   font-weight: 500;
   font-variant-numeric: tabular-nums;

@@ -28,9 +28,15 @@ export const MatchBox = ({
 }: Props) => {
   const sides =
     set.winnerSlot === 0 ? [set.winner, set.loser] : [set.loser, set.winner];
+  // The seed column fits the event's largest seed, so every box of the event
+  // puts its names at the same place whatever its own seeds are.
+  const seedDigits = Math.max(String(event.numEntrants).length, 2);
 
   return (
-    <article className={cn(styles.match, className)} style={style}>
+    <article
+      className={cn(styles.match, className)}
+      style={{ ...style, "--seed-digits": seedDigits } as React.CSSProperties}
+    >
       {sides.map((player) => {
         const won = player === set.winner;
         return (
