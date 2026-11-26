@@ -64,6 +64,50 @@ const TournamentPageQueryDoc = graphql(`
   }
 `);
 
+const TournamentAddressQueryDoc = graphql(`
+  query TournamentAddress($slug: String!) {
+    tournament(slug: $slug) {
+      id
+      events {
+        id
+        slug
+      }
+    }
+  }
+`);
+
+// The page's address holds start.gg's numeric tournament id or a Hivee
+// event's id. Anything else is start.gg's own slug for the tournament
+// ("genesis-9", as the browser extension links to it).
+export const isTournamentSlug = (id: string): boolean =>
+  !/^\d+$/.test(id) && !isHiveeId(id);
+
+export type TournamentAddress = {
+  id: string;
+  // Events by the last part of their slug ("ultimate-singles").
+  eventIds: Record<string, string>;
+};
+
+// The ids behind a start.gg tournament slug, or null when there is no such
+// tournament.
+export const resolveTournamentSlug = async (
+  slug: string,
+): Promise<TournamentAddress | null> => {
+  const result = await startggClient
+    .query(TournamentAddressQueryDoc, { slug })
+    .toPromise();
+  if (result.error) throw startggLoadError(result.error, "");
+
+  const tournament = result.data?.tournament;
+  if (!tournament?.id) return null;
+  const eventIds: Record<string, string> = {};
+  for (const event of tournament.events ?? []) {
+    const eventSlug = event?.slug?.split("/event/")[1];
+    if (event?.id && eventSlug) eventIds[eventSlug] = String(event.id);
+  }
+  return { id: String(tournament.id), eventIds };
+};
+
 const https = (url: string | null | undefined): string | null =>
   url ? url.replace("http://", "https://") : null;
 

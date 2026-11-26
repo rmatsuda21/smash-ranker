@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import cn from "classnames";
 import { msg } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
@@ -25,6 +25,11 @@ import { useThumbnailAssets } from "@/hooks/thumbnail/useThumbnailAssets";
 import { selectCurrentMatch, useThumbnailStore } from "@/store/thumbnailStore";
 import type { ThumbnailMatch } from "@/types/thumbnail/Thumbnail";
 import type { ThumbnailScene } from "@/utils/thumbnail/painter";
+import {
+  clearToolLink,
+  readToolLink,
+  toolLinkUrl,
+} from "@/utils/user/toolLinks";
 
 import styles from "./ThumbnailApp.module.scss";
 
@@ -66,6 +71,18 @@ export const ThumbnailApp = () => {
 
   const save = (matches: ThumbnailMatch[]) =>
     setExporting(matches.map((item) => ({ match: item, look, logoSrc })));
+
+  // Arriving from a tool link (`?s=`, which the browser extension hands out)
+  // loads that event.
+  const didReadLinkRef = useRef(false);
+  useEffect(() => {
+    if (didReadLinkRef.current) return;
+    didReadLinkRef.current = true;
+    const link = readToolLink();
+    if (!link) return;
+    clearToolLink();
+    void loadEvent(toolLinkUrl(link.slug));
+  }, [loadEvent]);
 
   // A freshly loaded event opens on its sets (the phone's first tab).
   const eventSlug = event?.slug;

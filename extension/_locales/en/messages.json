@@ -1,0 +1,97 @@
+{
+  "extName": {
+    "message": "Smash Ranker",
+    "description": "The extension's name. Not translated."
+  },
+  "extDescription": {
+    "message": "Open start.gg, Hivee, Challonge and Tonamel tournaments in Smash Ranker's tournament page and graphic tools."
+  },
+  "buttonOpen": {
+    "message": "Open in Smash Ranker",
+    "description": "The floating button's main part, on a page the site has a tournament page for."
+  },
+  "buttonTools": {
+    "message": "Smash Ranker",
+    "description": "The floating button on a page with no tournament page (Challonge, Tonamel): it opens the menu."
+  },
+  "buttonMore": {
+    "message": "More Smash Ranker tools",
+    "description": "Label of the button's arrow, which opens the menu."
+  },
+  "menuTitle": {
+    "message": "Open in Smash Ranker"
+  },
+  "menuHide": {
+    "message": "Hide this button"
+  },
+  "menuHideHint": {
+    "message": "Turn it back on from the Smash Ranker icon in the toolbar."
+  },
+  "needsEvent": {
+    "message": "Open one of the tournament's events to load it into a tool."
+  },
+  "unsupported": {
+    "message": "start.gg and Hivee only"
+  },
+  "toolTournament": {
+    "message": "Tournament page"
+  },
+  "toolTournamentDesc": {
+    "message": "Standings, bracket and upsets"
+  },
+  "toolRanker": {
+    "message": "Tournament Ranker"
+  },
+  "toolRankerDesc": {
+    "message": "Top 8 graphics"
+  },
+  "toolResults": {
+    "message": "Tournament Recap"
+  },
+  "toolResultsDesc": {
+    "message": "A player's run, set by set"
+  },
+  "toolPredict": {
+    "message": "Predictions"
+  },
+  "toolPredictDesc": {
+    "message": "Predict the placements and share them"
+  },
+  "toolThumbnail": {
+    "message": "Thumbnail Maker"
+  },
+  "toolThumbnailDesc": {
+    "message": "Video thumbnails"
+  },
+  "toolTier": {
+    "message": "Tier List Maker"
+  },
+  "toolTierDesc": {
+    "message": "Character tier lists"
+  },
+  "toolProfile": {
+    "message": "Profile"
+  },
+  "toolProfileDesc": {
+    "message": "Your tournaments and stats"
+  },
+  "popupThisTournament": {
+    "message": "This tournament",
+    "description": "Shown when the page's title gives no tournament name."
+  },
+  "popupNoPage": {
+    "message": "Open a tournament on start.gg, Hivee, Challonge or Tonamel to load it into a tool from here."
+  },
+  "popupAllTools": {
+    "message": "All tools"
+  },
+  "popupOtherTools": {
+    "message": "Other tools"
+  },
+  "popupShowButton": {
+    "message": "Show the button on tournament pages"
+  },
+  "popupOpenSite": {
+    "message": "Open Smash Ranker"
+  }
+}

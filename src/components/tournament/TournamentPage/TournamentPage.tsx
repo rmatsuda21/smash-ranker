@@ -25,11 +25,14 @@ import { OverviewTab } from "@/components/tournament/OverviewTab/OverviewTab";
 import { StandingsTab } from "@/components/tournament/StandingsTab/StandingsTab";
 import { useEventOverview } from "@/hooks/tournament/useEventOverview";
 import { useTournament } from "@/hooks/tournament/useTournament";
+import { useTournamentAddress } from "@/hooks/tournament/useTournamentAddress";
+import type { LoadStatus } from "@/hooks/useCachedLoad";
 import type {
   TournamentDetails,
   TournamentStatus,
 } from "@/types/tournament/Tournament";
 import { logEvent } from "@/utils/observability/log";
+import { isTournamentSlug } from "@/utils/tournament/fetchTournament";
 import {
   formatTournamentDates,
   formatTournamentPlace,
@@ -309,47 +312,86 @@ const Loaded = ({ tournament }: { tournament: TournamentDetails }) => {
   );
 };
 
-export const TournamentPage = ({ id }: { id: string }) => {
-  const { data: tournament, status, retry } = useTournament(id);
-
-  return (
-    <div className={styles.root}>
-      {tournament ? (
-        // Keyed so "more events" and scroll start fresh on another tournament.
-        <Loaded key={tournament.id} tournament={tournament} />
-      ) : status === "loading" || status === "idle" ? (
-        <div className={styles.state}>
-          <Spinner size={32} />
-        </div>
-      ) : (
-        <div className={styles.state}>
-          <h1 className={styles.stateTitle}>
-            {status === "error" ? (
-              <Trans>Couldn't load the tournament</Trans>
-            ) : (
-              <Trans>No tournament here</Trans>
-            )}
-          </h1>
-          <p>
-            {status === "error" ? (
-              <Trans>Check your connection and try again.</Trans>
-            ) : (
-              <Trans>
-                There is no tournament with this id. It may have been deleted or
-                made private.
-              </Trans>
-            )}
-          </p>
-          {status === "error" && (
-            <Button variant="solid" onClick={retry}>
-              <Trans>Try again</Trans>
-            </Button>
-          )}
-          <Link className={styles.action} href="/">
-            <Trans>Back to home</Trans>
-          </Link>
-        </div>
+// Loading, or what is shown when there is no tournament to show.
+const PageState = ({
+  status,
+  retry,
+}: {
+  status: LoadStatus;
+  retry: () => void;
+}) =>
+  status === "loading" || status === "idle" ? (
+    <div className={styles.state}>
+      <Spinner size={32} />
+    </div>
+  ) : (
+    <div className={styles.state}>
+      <h1 className={styles.stateTitle}>
+        {status === "error" ? (
+          <Trans>Couldn't load the tournament</Trans>
+        ) : (
+          <Trans>No tournament here</Trans>
+        )}
+      </h1>
+      <p>
+        {status === "error" ? (
+          <Trans>Check your connection and try again.</Trans>
+        ) : (
+          <Trans>
+            There is no tournament with this id. It may have been deleted or
+            made private.
+          </Trans>
+        )}
+      </p>
+      {status === "error" && (
+        <Button variant="solid" onClick={retry}>
+          <Trans>Try again</Trans>
+        </Button>
       )}
+      <Link className={styles.action} href="/">
+        <Trans>Back to home</Trans>
+      </Link>
     </div>
   );
+
+// start.gg's own address for a tournament ("/tournament/genesis-9", with
+// "?event=ultimate-singles"), which the browser extension links to, is
+// swapped for the page's own, with ids, before anything else loads.
+const SlugRedirect = ({ slug }: { slug: string }) => {
+  const search = useSearch();
+  const [, navigate] = useLocation();
+  const { data: address, status, retry } = useTournamentAddress(slug);
+
+  useEffect(() => {
+    if (!address) return;
+    const params = new URLSearchParams(search);
+    const event = params.get("event");
+    if (event && address.eventIds[event]) {
+      params.set("event", address.eventIds[event]);
+    } else if (event && !/^\d+$/.test(event)) {
+      params.delete("event");
+    }
+    const query = params.toString();
+    navigate(`/tournament/${address.id}${query ? `?${query}` : ""}`, {
+      replace: true,
+    });
+  }, [address, search, navigate]);
+
+  return <PageState status={address ? "loading" : status} retry={retry} />;
 };
+
+const ById = ({ id }: { id: string }) => {
+  const { data: tournament, status, retry } = useTournament(id);
+  return tournament ? (
+    // Keyed so "more events" and scroll start fresh on another tournament.
+    <Loaded key={tournament.id} tournament={tournament} />
+  ) : (
+    <PageState status={status} retry={retry} />
+  );
+};
+
+export const TournamentPage = ({ id }: { id: string }) => (
+  <div className={styles.root}>
+    {isTournamentSlug(id) ? <SlugRedirect slug={id} /> : <ById id={id} />}
+  </div>
+);

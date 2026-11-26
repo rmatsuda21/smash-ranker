@@ -52,6 +52,7 @@
         "@lingui/cli": "^5.7.0",
         "@parcel/watcher": "^2.5.1",
         "@types/bun": "^1.3.3",
+        "@types/chrome": "^0.3.8",
         "@types/d3-geo": "^3.1.1",
         "@types/geojson": "^7946.0.16",
         "@types/lodash": "^4.17.20",
@@ -684,6 +685,8 @@
 
     "@types/bun": ["@types/bun@1.3.3", "", { "dependencies": { "bun-types": "1.3.3" } }, "sha512-ogrKbJ2X5N0kWLLFKeytG0eHDleBYtngtlbu9cyBKFtNL3cnpDZkNdQj8flVf6WTZUX5ulI9AY1oa7ljhSrp+g=="],
 
+    "@types/chrome": ["@types/chrome@0.3.8", "", { "dependencies": { "@types/har-format": "*" } }, "sha512-7Bg57eOKkgJUMhwYKCvbsOgp+fKcpPBhDLHx90V8xxIKylhllUfvSjnsxAtri1jWB6rMpdSku95ohJ+aRSZFEQ=="],
+
     "@types/connect": ["@types/connect@3.4.38", "", { "dependencies": { "@types/node": "*" } }, "sha512-K6uROf1LD88uDQqJCktA4yzL1YYAK6NgfsI0v/mTgyPKWsX1CnJ0XPSDhViejru1GcRkLWb8RlzFYJRqGUbaug=="],
 
     "@types/country-list": ["@types/country-list@2.1.4", "", {}, "sha512-c4orjm0wT+BRt6Ynf2/QRRL+iMX4SdLT11jAjKqkJ7mQr/DLOmdz7qR8i04j9Y7wFSoP70cXJc18FN4YGNgGaA=="],
@@ -693,6 +696,8 @@
     "@types/estree": ["@types/estree@1.0.6", "", {}, "sha512-AYnb1nQyY49te+VRAVgmzfcgjYS91mY5P0TKUDCLEM+gNnA+3T6rWITXRLYCpahpqSQbN5cE+gHpnPyXjHWxcw=="],
 
     "@types/geojson": ["@types/geojson@7946.0.16", "", {}, "sha512-6C8nqWur3j98U6+lXDfTUWIfgvZU+EumvpHKcYjujKH7woYyLj2sUmff0tRhrqM7BohUw7Pz3ZB1jj2gW9Fvmg=="],
+
+    "@types/har-format": ["@types/har-format@1.2.16", "", {}, "sha512-fluxdy7ryD3MV6h8pTfTYpy/xQzCFC7m89nOH9y94cNqJ1mDIDPut7MnRHI3F6qRmh/cT2fUjG1MLdCNb4hE9A=="],
 
     "@types/istanbul-lib-coverage": ["@types/istanbul-lib-coverage@2.0.6", "", {}, "sha512-2QF/t/auWm0lsy8XtKVPG19v3sSOQlJe/YHZgfjb/KBBHOGSV+J2q/S671rcq9uTBrLAXmZpqJiaQbMT+zNU1w=="],
 

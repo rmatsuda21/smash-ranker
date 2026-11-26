@@ -1,0 +1,92 @@
+{
+  "extName": {
+    "message": "Smash Ranker"
+  },
+  "extDescription": {
+    "message": "start.gg・Hivee・Challonge・Tonamelの大会をSmash Rankerで開けます。大会ページ、TOP8画像、大会振り返り、順位予想、サムネ作成へすぐ移動。"
+  },
+  "buttonOpen": {
+    "message": "Smash Rankerで開く"
+  },
+  "buttonTools": {
+    "message": "Smash Ranker"
+  },
+  "buttonMore": {
+    "message": "Smash Rankerのほかのツール"
+  },
+  "menuTitle": {
+    "message": "Smash Rankerで開く"
+  },
+  "menuHide": {
+    "message": "ボタンを隠す"
+  },
+  "menuHideHint": {
+    "message": "ツールバーのSmash Rankerアイコンから再表示できます。"
+  },
+  "needsEvent": {
+    "message": "大会内のイベントを開くと、ツールに読み込めます。"
+  },
+  "unsupported": {
+    "message": "start.gg・Hiveeのみ対応"
+  },
+  "toolTournament": {
+    "message": "大会ページ"
+  },
+  "toolTournamentDesc": {
+    "message": "順位・トーナメント表・番狂わせ"
+  },
+  "toolRanker": {
+    "message": "リザルト作成"
+  },
+  "toolRankerDesc": {
+    "message": "TOP8画像"
+  },
+  "toolResults": {
+    "message": "大会振り返り"
+  },
+  "toolResultsDesc": {
+    "message": "選手の全試合を振り返り"
+  },
+  "toolPredict": {
+    "message": "順位予想"
+  },
+  "toolPredictDesc": {
+    "message": "順位を予想してシェア"
+  },
+  "toolThumbnail": {
+    "message": "サムネ作成"
+  },
+  "toolThumbnailDesc": {
+    "message": "動画サムネ"
+  },
+  "toolTier": {
+    "message": "キャラランク作成"
+  },
+  "toolTierDesc": {
+    "message": "キャラランク表"
+  },
+  "toolProfile": {
+    "message": "マイページ"
+  },
+  "toolProfileDesc": {
+    "message": "参加大会と戦績"
+  },
+  "popupThisTournament": {
+    "message": "この大会"
+  },
+  "popupNoPage": {
+    "message": "start.gg・Hivee・Challonge・Tonamelの大会ページを開くと、ここからツールに読み込めます。"
+  },
+  "popupAllTools": {
+    "message": "ツール一覧"
+  },
+  "popupOtherTools": {
+    "message": "ほかのツール"
+  },
+  "popupShowButton": {
+    "message": "大会ページにボタンを表示"
+  },
+  "popupOpenSite": {
+    "message": "Smash Rankerを開く"
+  }
+}

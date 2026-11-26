@@ -34,12 +34,8 @@ import { getCharImgUrl } from "@/utils/top8/getCharImgUrl";
 import { UPSET_SEED_COUNT } from "@/utils/tournament/fetchEvent";
 import { mapsLink } from "@/utils/tournament/format";
 import { formatOrdinal } from "@/utils/user/ordinal";
-import {
-  logToolLinkClick,
-  predictLink,
-  rankerLink,
-  recapLink,
-} from "@/utils/user/toolLinks";
+import { logToolLinkClick } from "@/utils/analytics/toolLinkClick";
+import { predictLink, rankerLink, recapLink } from "@/utils/user/toolLinks";
 
 import styles from "./OverviewTab.module.scss";
 

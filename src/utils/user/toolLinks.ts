@@ -1,25 +1,35 @@
-import { type Platform, slugToUrl } from "@/consts/platforms";
-import { logEvent } from "@/utils/observability/log";
+import {
+  detectPlatformAndSlug,
+  type Platform,
+  slugToUrl,
+} from "@/consts/platforms";
 import { encodeInvite } from "@/utils/predict/inviteCode";
 
-// Links that open a tool with a start.gg or Hivee event already loading.
-// `s` is the event slug; PostHog strips it from captured URLs.
+// Links that open a tool with an event already loading. `s` is the event
+// slug; PostHog strips it from captured URLs.
+//
+// The browser extension (`extension/`) bundles this module to build the same
+// links, so it imports nothing but pure helpers: no analytics, no stores.
+// Click logging lives in `utils/analytics/toolLinkClick.ts`.
 
-// The tournament page hands out slugs of two platforms: a start.gg one
-// starts with "tournament/", a Hivee one is ids.
-const platformOfSlug = (slug: string): Platform =>
-  slug.startsWith("tournament/") ? "startgg" : "hivee";
+// A slug says its platform: a start.gg one starts with "tournament/", a Hivee
+// one is ids. Challonge and Tonamel slugs say nothing, so a link to one of
+// them carries the whole URL instead (the extension's do).
+const parseToolLinkSlug = (
+  slug: string,
+): { platform: Platform; slug: string } | null => {
+  if (/^https?:\/\//.test(slug)) return detectPlatformAndSlug(slug);
+  return {
+    platform: slug.startsWith("tournament/") ? "startgg" : "hivee",
+    slug,
+  };
+};
 
 // The URL a tool loads for a tool link's slug.
-export const toolLinkUrl = (slug: string): string =>
-  slugToUrl(platformOfSlug(slug), slug);
-
-export type ToolLinkTool = "ranker" | "recap" | "predict" | "tournament";
-export type ToolLinkSource = "home" | "profile" | "tournament";
-
-// For a tool link's onClick: which tool was opened, and from where.
-export const logToolLinkClick = (tool: ToolLinkTool, source: ToolLinkSource) =>
-  logEvent("tool_link_click", { tool, source });
+export const toolLinkUrl = (slug: string): string => {
+  const parsed = parseToolLinkSlug(slug);
+  return parsed ? slugToUrl(parsed.platform, parsed.slug) : slug;
+};
 
 export const TOOL_LINK_PARAMS = { slug: "s", entrant: "e" } as const;
 
@@ -35,16 +45,23 @@ export const recapLink = (
   return `/results?${params}`;
 };
 
-export const predictLink = (eventSlug: string): string =>
-  `/predict?d=${encodeInvite({ platform: platformOfSlug(eventSlug), slug: eventSlug })}`;
+export const thumbnailLink = (eventSlug: string): string =>
+  `/thumbnail?${new URLSearchParams({ [TOOL_LINK_PARAMS.slug]: eventSlug })}`;
+
+export const predictLink = (eventSlug: string): string => {
+  const parsed = parseToolLinkSlug(eventSlug);
+  return parsed ? `/predict?d=${encodeInvite(parsed)}` : "/predict";
+};
 
 // The site's own page for a tournament (start.gg's tournament id, or a Hivee
-// event's id), opened on one of its events
-// when the caller knows which.
+// event's id), opened on one of its events when the caller knows which.
+// start.gg's tournament slug works in place of the id, with the event's slug
+// ("ultimate-singles") in place of its id: the page swaps both for ids.
 export const tournamentLink = (
   tournamentId: string,
   eventId?: string | null,
-): string => `/tournament/${tournamentId}${eventId ? `?event=${eventId}` : ""}`;
+): string =>
+  `/tournament/${tournamentId}${eventId ? `?event=${encodeURIComponent(eventId)}` : ""}`;
 
 export type ToolLink = { slug: string; entrantId: string | null };
 

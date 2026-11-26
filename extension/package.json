@@ -1,0 +1,16 @@
+{
+  "name": "smash-ranker-extension",
+  "private": true,
+  "type": "module",
+  "description": "Opens tournaments from start.gg, Hivee, Challonge and Tonamel in Smash Ranker. Its own package so it installs and builds without the site's dependencies; it still imports a few of the site's modules from ../src.",
+  "scripts": {
+    "build": "bun build.ts",
+    "typecheck": "tsc -p .",
+    "lint:firefox": "bunx web-ext lint --source-dir dist/firefox"
+  },
+  "devDependencies": {
+    "@resvg/resvg-js": "2.6.2",
+    "@types/chrome": "^0.3.8",
+    "typescript": "~5.7.2"
+  }
+}

@@ -11,10 +11,12 @@ import type { UserEvent } from "@/types/user/UserEvent";
 import { formatOrdinal } from "@/utils/user/ordinal";
 import {
   logToolLinkClick,
+  type ToolLinkSource,
+} from "@/utils/analytics/toolLinkClick";
+import {
   predictLink,
   rankerLink,
   recapLink,
-  type ToolLinkSource,
   tournamentLink,
 } from "@/utils/user/toolLinks";
 

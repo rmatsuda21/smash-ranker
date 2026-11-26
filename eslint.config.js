@@ -6,7 +6,7 @@ import tseslint from "typescript-eslint";
 import pluginLingui from "eslint-plugin-lingui";
 
 export default tseslint.config(
-  { ignores: ["dist", "src/locales/**"] },
+  { ignores: ["dist", "extension/dist", "src/locales/**"] },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
     files: ["**/*.{ts,tsx}"],
