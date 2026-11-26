@@ -117,6 +117,14 @@
   background-color: var(--gray-5);
   color: var(--fg-1);
 
+  // Like the shared tooltips on the light page: a raised panel, not a
+  // grey slab.
+  [data-theme="light"] & {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-strong);
+    box-shadow: var(--shadow-float);
+  }
+
   width: max-content;
   max-width: 90vw;
   margin: 0;

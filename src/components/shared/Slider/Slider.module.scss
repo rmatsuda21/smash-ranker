@@ -50,6 +50,20 @@
       border-radius: var(--radius-pill);
     }
 
+    // A white fill disappears on the light page: the filled part takes
+    // the accent there.
+    [data-theme="light"] & {
+      background: linear-gradient(
+        to right,
+        var(--accent-7) var(--fill-percent),
+        var(--gray-5) var(--fill-percent)
+      );
+
+      &::-moz-range-progress {
+        background: var(--accent-7);
+      }
+    }
+
     &::-webkit-slider-thumb {
       -webkit-appearance: none;
       appearance: none;

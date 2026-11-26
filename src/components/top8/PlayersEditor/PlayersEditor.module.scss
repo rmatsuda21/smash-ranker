@@ -158,6 +158,12 @@
   &.slotSelected {
     color: #fff;
     background-color: var(--accent-9);
+
+    // The light theme greys the "no character" icon (index.css); on the
+    // solid accent it stays white, as in the dark theme.
+    [data-theme="light"] & img {
+      filter: none;
+    }
   }
 }
 

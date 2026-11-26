@@ -167,6 +167,10 @@
 
 .deltaNegative {
   color: #ff8a99;
+
+  [data-theme="light"] & {
+    color: #c62f4b;
+  }
 }
 
 .deltaEven {

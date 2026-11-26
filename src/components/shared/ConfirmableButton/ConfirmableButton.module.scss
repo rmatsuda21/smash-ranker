@@ -40,6 +40,13 @@
   color: #34d399 !important;
   border-color: #34d399 !important;
   background-color: rgba(52, 211, 153, 0.1) !important;
+
+  // The mint green is too pale to read on white.
+  [data-theme="light"] & {
+    color: #047857 !important;
+    border-color: #059669 !important;
+    background-color: rgba(5, 150, 105, 0.08) !important;
+  }
 }
 
 .failed {

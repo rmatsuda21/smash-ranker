@@ -169,6 +169,20 @@
     outline: 1px solid var(--gray-11);
     outline-offset: -1px;
   }
+
+  // On the light page gray-8 and accent-7 are mid tones that swamp the
+  // label: hover takes a light fill, the chosen option a wash and an
+  // accent outline.
+  [data-theme="light"] & {
+    &:hover {
+      background-color: var(--gray-4);
+    }
+
+    &[data-state="checked"] {
+      background-color: var(--accent-3);
+      outline-color: var(--accent-7);
+    }
+  }
 }
 
 .error {

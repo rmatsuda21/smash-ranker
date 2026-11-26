@@ -45,6 +45,10 @@
   padding: var(--space-5);
   border-radius: var(--radius);
 
+  [data-theme="light"] & {
+    box-shadow: var(--shadow-float);
+  }
+
   @include mobile {
     width: calc(100vw - 32px);
     max-height: calc(100svh - 32px);

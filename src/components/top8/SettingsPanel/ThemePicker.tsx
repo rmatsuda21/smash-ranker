@@ -7,10 +7,9 @@ import { useLingui } from "@lingui/react";
 
 import { PREF_KEYS } from "@/consts/prefKeys";
 import { getPref, setPref } from "@/utils/prefs";
+import { applyTheme, type Theme } from "@/utils/theme";
 
 import styles from "./SettingsPanel.module.scss";
-
-type Theme = "dark" | "light";
 
 const THEMES: {
   value: Theme;
@@ -28,13 +27,13 @@ export const ThemePicker = () => {
   );
 
   useEffect(() => {
-    document.documentElement.setAttribute("data-theme", currentTheme);
+    applyTheme(currentTheme);
   }, [currentTheme]);
 
   const handleThemeChange = (theme: Theme) => {
     setCurrentTheme(theme);
     setPref(PREF_KEYS.THEME, theme);
-    document.documentElement.setAttribute("data-theme", theme);
+    applyTheme(theme);
   };
 
   return (

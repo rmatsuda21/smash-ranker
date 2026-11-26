@@ -81,6 +81,13 @@
     border-radius: var(--radius);
     background-color: var(--gray-5);
 
+    // gray-5 is a dull slab on the light page: a white bar that floats.
+    [data-theme="light"] & {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-float);
+    }
+
     display: flex;
     gap: var(--space-5);
     align-items: center;

@@ -13,4 +13,8 @@
   font-size: var(--font-size-xs);
   font-weight: 900;
   line-height: 1.5;
+
+  [data-theme="light"] & {
+    box-shadow: var(--shadow-float);
+  }
 }

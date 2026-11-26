@@ -12,6 +12,7 @@ import { registerServiceWorker } from "@/utils/waitForServiceWorker";
 import { loadCatalog } from "@/i18n";
 import { PREF_KEYS } from "@/consts/prefKeys";
 import { getPref } from "@/utils/prefs";
+import { applyTheme } from "@/utils/theme";
 import { initSentry, reactErrorHandler } from "@/utils/observability/sentry";
 import { initAnalytics } from "@/utils/observability/analytics";
 import { logError } from "@/utils/observability/log";
@@ -73,6 +74,20 @@ const showStartupFailure = () => {
   );
 }
 
+// Theme and accent first, before anything waits on the network: until
+// they are set the page shows the dark defaults, which a light-theme
+// visitor would see flash while the language catalog loads.
+{
+  applyTheme(getPref(PREF_KEYS.THEME) === "light" ? "light" : "dark");
+
+  const savedAccent = getPref(PREF_KEYS.ACCENT_COLOR) || "pink";
+  document.documentElement.setAttribute("data-accent", savedAccent);
+  if (savedAccent === "custom") {
+    const customHex = getPref(PREF_KEYS.CUSTOM_ACCENT_COLOR) || "#ff6600";
+    document.documentElement.style.setProperty("--accent-base", customHex);
+  }
+}
+
 (async () => {
   try {
     const supportedLanguages = ["en", "ja"];
@@ -88,16 +103,6 @@ const showStartupFailure = () => {
       // to load: English is better than no app.
       if (savedLanguage === "en") throw error;
       await loadCatalog("en");
-    }
-
-    const savedTheme = getPref(PREF_KEYS.THEME) || "dark";
-    document.documentElement.setAttribute("data-theme", savedTheme);
-
-    const savedAccent = getPref(PREF_KEYS.ACCENT_COLOR) || "pink";
-    document.documentElement.setAttribute("data-accent", savedAccent);
-    if (savedAccent === "custom") {
-      const customHex = getPref(PREF_KEYS.CUSTOM_ACCENT_COLOR) || "#ff6600";
-      document.documentElement.style.setProperty("--accent-base", customHex);
     }
 
     await registerServiceWorker();

@@ -80,16 +80,6 @@
     &:hover {
       background-color: var(--accent-4);
     }
-
-    // Light theme
-    [data-theme="light"] & {
-      background-color: var(--accent-11);
-      border-color: var(--accent-9);
-
-      &:hover {
-        background-color: var(--accent-10);
-      }
-    }
   }
 }
 
