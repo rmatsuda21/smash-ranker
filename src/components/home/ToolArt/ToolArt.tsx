@@ -9,8 +9,10 @@ import styles from "./ToolArt.module.scss";
 // Small drawings of what each tool makes, shown on the home page's tool
 // cards in place of a description. Each is its own plain SVG file in
 // `src/assets/home/tools/`, inlined (not an <img>) so the stylesheet can
-// recolour its `tool-*` classes for the theme and accent. Decorative: the
-// card's title and caption carry the meaning for assistive tech.
+// recolour its `tool-*` classes for the theme and accent and animate its
+// parts while the card around it is hovered or focused (the art must be a
+// direct child of that card). Decorative: the card's title and caption carry
+// the meaning for assistive tech.
 const ART = { ranker, tier, recap, thumbnail, predict };
 
 export type ToolArtKind = keyof typeof ART;

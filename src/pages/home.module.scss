@@ -330,14 +330,6 @@
   min-width: 0;
   gap: var(--space-3);
   animation: fadeSlideUp 0.5s ease-out backwards;
-
-  svg {
-    transition: transform var(--duration-slow) var(--ease-in-out);
-  }
-
-  &:hover svg {
-    transform: scale(1.03);
-  }
 }
 
 .cardBadge {

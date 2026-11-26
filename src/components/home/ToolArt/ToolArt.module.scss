@@ -2,18 +2,59 @@
 // open anywhere. Here their shapes are recoloured by class: mixed from the
 // theme's foreground and brand colours, the art follows the theme and accent
 // without a second set of tokens.
+//
+// Each drawing also acts out its tool while the card it sits in is hovered
+// or keyboard-focused (`played`). Parts that only appear then (the crown,
+// sparkles, confetti) carry `opacity="0"` in the file. Staggered parts set
+// their start time in the file as `--delay`; durations live here.
+
+// Overshoots its end a little, then settles: slides and pops.
+$spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+// Falls faster and faster, dips past where it lands and comes back up.
+$drop: cubic-bezier(0.5, 0, 0.6, 1.5);
+
+// The way back when the pointer leaves: plain, so nothing bounces twice.
+$return: var(--duration-slow) var(--ease-in-out);
+
+@mixin played {
+  @media (prefers-reduced-motion: no-preference) {
+    // Phones keep a hover after a tap, and a tap opens the tool anyway.
+    @media (hover: hover) {
+      :hover > & {
+        @content;
+      }
+    }
+
+    :focus-visible > & {
+      @content;
+    }
+  }
+}
 
 .art {
+  --tool-gold: #ffc94a;
+
   display: block;
   aspect-ratio: 16 / 9;
   overflow: hidden;
   border-radius: var(--radius);
   background: color-mix(in srgb, var(--fg-1) 4%, transparent);
 
+  [data-theme="light"] & {
+    --tool-gold: #f2a900;
+  }
+
   svg {
     display: block;
     width: 100%;
     height: 100%;
+  }
+
+  // Parts scale and turn about their own middle.
+  svg * {
+    transform-box: fill-box;
+    transform-origin: center;
   }
 
   :global {
@@ -50,5 +91,350 @@
     .tool-badge-ink {
       fill: var(--bg-surface);
     }
+
+    .tool-gold {
+      fill: var(--tool-gold);
+    }
+  }
+
+  // Shared by every drawing: sparkles twinkle for as long as the card is
+  // hovered.
+  @include played {
+    :global(.tool-sparkle) {
+      animation: twinkle 1.6s ease-in-out var(--delay, 0s) infinite both;
+    }
+  }
+
+  // Ranker: a crown drops onto the winner at a jaunty angle, and the rest
+  // of the top 8 hop in a wave.
+  :global(.tool-ranker-crown) {
+    opacity: 0;
+    transform: translateY(-18px) rotate(14deg);
+    transition:
+      transform $return,
+      opacity var(--duration-base) ease-in;
+
+    path {
+      stroke: var(--tool-gold);
+    }
+  }
+
+  @include played {
+    :global(.tool-ranker-crown) {
+      opacity: 1;
+      transform: translateY(0) rotate(-8deg);
+      transition:
+        transform 0.5s $drop,
+        opacity var(--duration-base) ease-out;
+    }
+
+    :global(.tool-hop) {
+      animation: hop 0.55s ease-out var(--delay, 0s);
+    }
+  }
+
+  // Tier list: a character from the bottom tier is lifted, carried up and
+  // dropped into the top tier. The straight line from its place to the
+  // empty slot runs between the other characters.
+  :global(.tool-tier-move) {
+    transition: transform $return;
+  }
+
+  :global(.tool-tier-mover) {
+    transition: fill $return;
+  }
+
+  :global(.tool-tier-ring) {
+    stroke: var(--brand);
+  }
+
+  @include played {
+    // Slow to pick up, quick across, a little past the slot and back.
+    :global(.tool-tier-move) {
+      transform: translate(32px, -58.5px);
+      transition: transform 0.6s cubic-bezier(0.45, 0, 0.25, 1.25);
+    }
+
+    :global(.tool-tier-mover) {
+      fill: var(--brand);
+      animation: carry 0.65s ease-in-out;
+    }
+
+    // No fill: hidden (as in the file) until the character lands.
+    :global(.tool-tier-ring) {
+      animation: ring 0.5s ease-out 0.38s;
+    }
+
+    :global(.tool-tier-top) {
+      animation: pop 0.4s ease-out 0.38s;
+    }
+  }
+
+  // Recap: the player jumps for joy and throws confetti, each win pops and
+  // the loss shakes its head.
+  :global(.tool-recap-avatar) {
+    transform-origin: 50% 100%;
+  }
+
+  @include played {
+    :global(.tool-recap-avatar) {
+      animation: jump 0.75s ease-in-out;
+    }
+
+    :global(.tool-confetti) {
+      animation: confetti 0.95s cubic-bezier(0.2, 0.7, 0.4, 1) 0.25s both;
+    }
+
+    :global(.tool-recap-win) {
+      animation: pop 0.4s ease-out var(--delay, 0s);
+    }
+
+    :global(.tool-recap-loss) {
+      animation: shake 0.45s ease-in-out var(--delay, 0s);
+    }
+  }
+
+  // Thumbnail: the two players step into a face-off and sway in their
+  // stance, and the play button pops and pings.
+  :global(.tool-thumb-left),
+  :global(.tool-thumb-right),
+  :global(.tool-thumb-play) {
+    transition: transform $return;
+  }
+
+  :global(.tool-thumb-ping) {
+    stroke: var(--fg-1);
+  }
+
+  @include played {
+    :global(.tool-thumb-left) {
+      transform: translateX(6px);
+      transition: transform 0.5s $spring;
+    }
+
+    :global(.tool-thumb-right) {
+      transform: translateX(-6px);
+      transition: transform 0.5s $spring;
+    }
+
+    :global(.tool-thumb-bob) {
+      animation: bob 0.9s ease-in-out var(--delay, 0s) infinite;
+    }
+
+    :global(.tool-thumb-play) {
+      transform: scale(1.15);
+      transition: transform 0.4s $spring 0.1s;
+    }
+
+    :global(.tool-thumb-ping) {
+      animation: ping 1.5s ease-out 0.3s infinite both;
+    }
+  }
+
+  // Predictions: the row being dragged wiggles, then takes first place and
+  // the old first moves down to make room.
+  :global(.tool-predict-lead),
+  :global(.tool-predict-first) {
+    transition: transform $return;
+  }
+
+  @include played {
+    :global(.tool-predict-wiggle) {
+      animation: wiggle 0.3s ease-in-out;
+    }
+
+    :global(.tool-predict-lead) {
+      transform: translate(-10px, -19px);
+      transition: transform 0.5s $spring 0.25s;
+    }
+
+    :global(.tool-predict-first) {
+      transform: translateY(19px);
+      transition: transform 0.5s $spring 0.3s;
+    }
+  }
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0) rotate(-45deg);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@keyframes hop {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  35% {
+    transform: translateY(-4px);
+  }
+
+  60% {
+    transform: translateY(0.5px);
+  }
+
+  78% {
+    transform: translateY(-1px);
+  }
+}
+
+// Swells while carried, squashes as it lands.
+@keyframes carry {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  20%,
+  45% {
+    transform: scale(1.3);
+  }
+
+  65% {
+    transform: scale(1.2, 0.82);
+  }
+
+  82% {
+    transform: scale(0.94, 1.06);
+  }
+}
+
+@keyframes ring {
+  from {
+    opacity: 0.9;
+    transform: scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(2.2);
+  }
+}
+
+@keyframes pop {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  45% {
+    transform: scale(1.22);
+  }
+
+  75% {
+    transform: scale(0.95);
+  }
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  20%,
+  60% {
+    transform: translateX(-1.5px);
+  }
+
+  40%,
+  80% {
+    transform: translateX(1.5px);
+  }
+}
+
+// Crouch, leap, land, settle (from the bottom of the circle).
+@keyframes jump {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+
+  18% {
+    transform: translateY(0) scale(1.12, 0.86);
+  }
+
+  45% {
+    transform: translateY(-7px) scale(0.92, 1.1);
+  }
+
+  70% {
+    transform: translateY(0) scale(1.1, 0.9);
+  }
+
+  85% {
+    transform: translateY(0) scale(0.97, 1.03);
+  }
+}
+
+// Each piece flies out to (--dx, --dy), spinning by --r degrees, then
+// drifts down and fades.
+@keyframes confetti {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0deg) scale(0.4);
+  }
+
+  60% {
+    opacity: 1;
+    transform: translate(calc(var(--dx) * 1px), calc(var(--dy) * 1px))
+      rotate(calc(var(--r) * 1deg)) scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(calc(var(--dx) * 1px), calc(var(--dy) * 1px + 6px))
+      rotate(calc(var(--r) * 2deg)) scale(0.8);
+  }
+}
+
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-1.5px);
+  }
+}
+
+@keyframes ping {
+  from {
+    opacity: 0.7;
+    transform: scale(1.1);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(2);
+  }
+}
+
+@keyframes wiggle {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+
+  25% {
+    transform: rotate(-2.5deg);
+  }
+
+  50% {
+    transform: rotate(2.5deg);
+  }
+
+  75% {
+    transform: rotate(-1.5deg);
   }
 }
