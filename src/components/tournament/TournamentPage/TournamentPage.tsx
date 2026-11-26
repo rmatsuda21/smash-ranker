@@ -16,7 +16,10 @@ import "@fontsource/big-shoulders-display/latin-900";
 
 import { Button } from "@/components/shared/Button/Button";
 import { Spinner } from "@/components/shared/Spinner/Spinner";
-import { BracketTab } from "@/components/tournament/BracketTab/BracketTab";
+import {
+  BracketTab,
+  type BracketPick,
+} from "@/components/tournament/BracketTab/BracketTab";
 import { InfoTab } from "@/components/tournament/InfoTab/InfoTab";
 import { OverviewTab } from "@/components/tournament/OverviewTab/OverviewTab";
 import { StandingsTab } from "@/components/tournament/StandingsTab/StandingsTab";
@@ -116,17 +119,25 @@ const Loaded = ({ tournament }: { tournament: TournamentDetails }) => {
       ? requestedTab
       : "overview";
 
-  // Tab and event live in the address, so a copied link opens the same view.
-  const setParams = (changes: Record<string, string | null>) => {
+  // Tab, event and the bracket's phase and pool live in the address, so a
+  // copied link opens the same view.
+  const hrefWith = (changes: Record<string, string | null>) => {
     const next = new URLSearchParams(search);
     for (const [key, value] of Object.entries(changes)) {
       if (value === null) next.delete(key);
       else next.set(key, value);
     }
     const query = next.toString();
-    navigate(`/tournament/${tournament.id}${query ? `?${query}` : ""}`, {
-      replace: true,
-    });
+    return `/tournament/${tournament.id}${query ? `?${query}` : ""}`;
+  };
+  const setParams = (changes: Record<string, string | null>) =>
+    navigate(hrefWith(changes), { replace: true });
+  // Another event's bracket starts where its grand final was played.
+  const selectEvent = (id: string, changes: Record<string, string | null>) =>
+    setParams({ event: id, phase: null, pool: null, ...changes });
+  const bracketPick: BracketPick = {
+    phaseId: params.get("phase"),
+    groupId: params.get("pool"),
   };
 
   const overview = useEventOverview(event);
@@ -208,7 +219,7 @@ const Loaded = ({ tournament }: { tournament: TournamentDetails }) => {
                 type="button"
                 className={cn(styles.event, e === event && styles.selected)}
                 aria-pressed={e === event}
-                onClick={() => setParams({ event: e.id })}
+                onClick={() => selectEvent(e.id, {})}
               >
                 {e.name}
                 {e.numEntrants > 0 && (
@@ -268,7 +279,7 @@ const Loaded = ({ tournament }: { tournament: TournamentDetails }) => {
             />
           )}
           {event && tab === "bracket" && (
-            // Keyed so a pick of phase and pool does not carry to another event.
+            // Keyed so another event's bracket starts afresh.
             <BracketTab
               key={event.id}
               event={event}
@@ -276,13 +287,20 @@ const Loaded = ({ tournament }: { tournament: TournamentDetails }) => {
               overviewSettled={
                 overview.status === "done" || overview.status === "error"
               }
+              pick={bracketPick}
+              onPick={({ phaseId, groupId }) =>
+                setParams({ phase: phaseId, pool: groupId })
+              }
+              pickHref={({ phaseId, groupId }) =>
+                hrefWith({ tab: "bracket", phase: phaseId, pool: groupId })
+              }
             />
           )}
           {tab === "info" && (
             <InfoTab
               tournament={tournament}
               selectedEventId={event?.id ?? null}
-              onSelectEvent={(id) => setParams({ event: id, tab: null })}
+              onSelectEvent={(id) => selectEvent(id, { tab: null })}
             />
           )}
         </div>

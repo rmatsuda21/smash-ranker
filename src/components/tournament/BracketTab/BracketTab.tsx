@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef } from "react";
+import { Link } from "wouter";
 import cn from "classnames";
 import { Trans } from "@lingui/react/macro";
 import { msg } from "@lingui/core/macro";
@@ -28,12 +29,21 @@ import {
 
 import styles from "./BracketTab.module.scss";
 
+// The phase and pool on screen, as the page's address holds them. Null for
+// the bracket the tab opens on.
+export type BracketPick = { phaseId: string | null; groupId: string | null };
+
 type Props = {
   event: TournamentEvent;
   // For the characters of the top 8 and the champion's name.
   overview: EventOverview | null;
   // The overview has loaded or failed: no longer worth waiting for.
   overviewSettled: boolean;
+  pick: BracketPick;
+  // A phase or pool picked from the menus.
+  onPick: (pick: BracketPick) => void;
+  // The page's address with this phase and pool, for the progression pills.
+  pickHref: (pick: BracketPick) => string;
 };
 
 // The bracket is drawn on a fixed grid, in pixels, so the connecting lines
@@ -98,12 +108,17 @@ const LaneFrame = ({
   rows,
   nodes,
   renderMatch,
+  pillHref,
+  onPillFollow,
 }: {
   label?: string;
   heads: React.ReactNode[];
   rows: number;
   nodes: GridNode[];
   renderMatch: (node: GridNode, style: React.CSSProperties) => React.ReactNode;
+  // Where a pill naming the given pool leads, or null for no link.
+  pillHref?: (groupId: string) => string | null;
+  onPillFollow?: (event: React.MouseEvent) => void;
 }) => {
   const { lefts, before, width } = columnPositions(heads.length, nodes);
   const height = (rows - 1) * SLOT_H + MATCH_H;
@@ -136,6 +151,7 @@ const LaneFrame = ({
       ...(node.pills?.from ?? []).map((pill, index) => ({
         key: `${node.id}-from-${index}`,
         label: pill.label,
+        href: pillHref?.(pill.groupId) ?? null,
         x: matchLeft - PILL_SPACE,
         y: top + pillY(pill.slot),
         link: [matchLeft - PILL_LINK, matchLeft],
@@ -143,6 +159,7 @@ const LaneFrame = ({
       ...(node.pills?.to ?? []).map((pill, index) => ({
         key: `${node.id}-to-${index}`,
         label: pill.label,
+        href: pillHref?.(pill.groupId) ?? null,
         x: matchLeft + MATCH_W + PILL_LINK,
         y: top + pillY(pill.slot),
         link: [matchLeft + MATCH_W, matchLeft + MATCH_W + PILL_LINK],
@@ -181,16 +198,31 @@ const LaneFrame = ({
             <path className={styles.pillLinks} d={links.join("")} />
           )}
         </svg>
-        {pills.map((pill) => (
-          <span
-            key={pill.key}
-            className={styles.pill}
-            style={{ left: pill.x, top: pill.y - PILL_H / 2 }}
-            title={pill.label}
-          >
-            {pill.label}
-          </span>
-        ))}
+        {pills.map((pill) => {
+          const style = { left: pill.x, top: pill.y - PILL_H / 2 };
+          // A link to that pool's bracket, when the event lists it.
+          return pill.href ? (
+            <Link
+              key={pill.key}
+              className={styles.pill}
+              style={style}
+              href={pill.href}
+              title={pill.label}
+              onClick={onPillFollow}
+            >
+              {pill.label}
+            </Link>
+          ) : (
+            <span
+              key={pill.key}
+              className={styles.pill}
+              style={style}
+              title={pill.label}
+            >
+              {pill.label}
+            </span>
+          );
+        })}
         {nodes.map((node) =>
           renderMatch(node, {
             left: left(node.column),
@@ -207,11 +239,15 @@ const Lane = ({
   event,
   characters,
   pills,
+  pillHref,
+  onPillFollow,
 }: {
   lane: BracketLane;
   event: TournamentEvent;
   characters: Record<string, string[]>;
   pills: Map<string, SetPills>;
+  pillHref: (groupId: string) => string | null;
+  onPillFollow: (event: React.MouseEvent) => void;
 }) => {
   const { _ } = useLingui();
   const sets = new Map(lane.nodes.map((node) => [node.set.id, node.set]));
@@ -227,6 +263,8 @@ const Lane = ({
         feeders,
         pills: pills.get(set.id),
       }))}
+      pillHref={pillHref}
+      onPillFollow={onPillFollow}
       renderMatch={(node, style) => (
         <MatchBox
           key={node.id}
@@ -336,6 +374,13 @@ const holdsPhase = (stage: EventPhase, phaseId: string | null | undefined) =>
   (stage.id === phaseId ||
     Boolean(stage.rounds?.some((round) => round.phaseId === phaseId)));
 
+// Whether a stage holds the given pool: one of its own, or as merged Swiss
+// rounds, a round's or the standings phase's.
+const holdsGroup = (stage: EventPhase, groupId: string) =>
+  stage.groups.some((group) => group.id === groupId) ||
+  Boolean(stage.rounds?.some((round) => round.groupId === groupId)) ||
+  stage.standingsGroupId === groupId;
+
 // Phases shown as buttons; an event with more gets a menu.
 const PHASE_BUTTONS = 6;
 
@@ -344,32 +389,58 @@ const PHASE_BUTTONS = 6;
 // column per round, each match joined to the one its winner played next), a
 // round robin as a cross table and its rounds. It opens where the grand
 // final was played; the other phases and their pools can be picked.
-export const BracketTab = ({ event, overview, overviewSettled }: Props) => {
+export const BracketTab = ({
+  event,
+  overview,
+  overviewSettled,
+  pick,
+  onPick,
+  pickHref,
+}: Props) => {
   const { _ } = useLingui();
   const phases = useEventPhases(event);
-  // What the user picked on this visit.
-  const [picked, setPicked] = useState<{
-    phaseId: string | null;
-    groupId: string | null;
-  }>({ phaseId: null, groupId: null });
+  const rootRef = useRef<HTMLDivElement>(null);
+  const scrollerRef = useRef<HTMLDivElement>(null);
+  // A pill was followed: show the next bracket from its top left corner.
+  const followedRef = useRef(false);
 
   const list = useMemo(() => phases.data ?? [], [phases.data]);
+  const picked =
+    (pick.phaseId !== null
+      ? list.find((p) => p.id === pick.phaseId)
+      : undefined) ??
+    (pick.groupId !== null
+      ? list.find((p) => holdsGroup(p, pick.groupId!))
+      : undefined);
   // Before a pick: the bracket the grand final was in, which only the
   // overview knows. Until it has answered, nothing is chosen, so the wrong
   // pool is not loaded first.
-  const waiting = picked.phaseId === null && !overviewSettled;
+  const waiting = !picked && !overviewSettled;
   const phase = waiting
     ? null
-    : (list.find((p) => p.id === picked.phaseId) ??
+    : (picked ??
       list.find((p) => holdsPhase(p, overview?.finalPhaseId)) ??
       list[list.length - 1] ??
       null);
   const group =
     phase?.groups.find(
-      (g) => g.id === (picked.groupId ?? overview?.finalGroupId),
+      (g) => g.id === (pick.groupId ?? overview?.finalGroupId),
     ) ??
     phase?.groups[0] ??
     null;
+
+  // A pill leads to the bracket of the pool it names, when the event lists
+  // it.
+  const pillHref = (groupId: string) => {
+    const target = list.find((p) => holdsGroup(p, groupId));
+    return target ? pickHref({ phaseId: target.id, groupId }) : null;
+  };
+  useEffect(() => {
+    if (!followedRef.current) return;
+    followedRef.current = false;
+    rootRef.current?.scrollIntoView({ block: "start" });
+    if (scrollerRef.current) scrollerRef.current.scrollLeft = 0;
+  }, [phase?.id, group?.id]);
 
   // A Swiss stage held as a phase per round is all of its rounds' pools,
   // then the pool that holds its final ranking; anything else is the one
@@ -482,7 +553,7 @@ export const BracketTab = ({ event, overview, overviewSettled }: Props) => {
   const characters = overview?.characters ?? {};
 
   return (
-    <div className={styles.root}>
+    <div className={styles.root} ref={rootRef}>
       {phase &&
         (list.length > 1 || (!phase.rounds && poolOptions.length > 1)) && (
           <div className={styles.pickers}>
@@ -496,7 +567,7 @@ export const BracketTab = ({ event, overview, overviewSettled }: Props) => {
                   options={phaseOptions}
                   selectedValue={phase.id}
                   searchable
-                  onChange={(phaseId) => setPicked({ phaseId, groupId: null })}
+                  onChange={(phaseId) => onPick({ phaseId, groupId: null })}
                 />
                 <span className={styles.phaseMeta}>{describe(phase)}</span>
               </div>
@@ -516,9 +587,7 @@ export const BracketTab = ({ event, overview, overviewSettled }: Props) => {
                         p === phase && styles.selected,
                       )}
                       aria-pressed={p === phase}
-                      onClick={() =>
-                        setPicked({ phaseId: p.id, groupId: null })
-                      }
+                      onClick={() => onPick({ phaseId: p.id, groupId: null })}
                     >
                       <strong>{nameOf(p)}</strong>
                       <small>{describe(p)}</small>
@@ -537,9 +606,7 @@ export const BracketTab = ({ event, overview, overviewSettled }: Props) => {
                   options={poolOptions}
                   selectedValue={group.id}
                   searchable={poolOptions.length > 12}
-                  onChange={(groupId) =>
-                    setPicked({ phaseId: phase.id, groupId })
-                  }
+                  onChange={(groupId) => onPick({ phaseId: phase.id, groupId })}
                 />
               </div>
             )}
@@ -576,7 +643,7 @@ export const BracketTab = ({ event, overview, overviewSettled }: Props) => {
           <Trans>No sets have been played in this bracket yet.</Trans>
         </p>
       ) : isElimination ? (
-        <div className={styles.scroller}>
+        <div className={styles.scroller} ref={scrollerRef}>
           {lanes.map((lane) => (
             <Lane
               key={lane.id}
@@ -584,6 +651,14 @@ export const BracketTab = ({ event, overview, overviewSettled }: Props) => {
               event={event}
               characters={characters}
               pills={pills}
+              pillHref={pillHref}
+              onPillFollow={(click) => {
+                // Not for a click that opens the link in another tab.
+                if (click.button !== 0 || click.metaKey || click.ctrlKey)
+                  return;
+                if (click.shiftKey || click.altKey) return;
+                followedRef.current = true;
+              }}
             />
           ))}
         </div>

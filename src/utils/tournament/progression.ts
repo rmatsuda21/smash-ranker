@@ -9,6 +9,8 @@ import type {
 // in from, or where they are sent on to.
 export type ProgressionPill = {
   label: string;
+  // The pool it names, which the pill links to.
+  groupId: string;
   // The slot (0 top, 1 bottom) the pill sits level with, or null for the
   // middle of the match.
   slot: 0 | 1 | null;
@@ -82,8 +84,11 @@ export const progressionPills = (
     if (!seed || !name) return null;
     // A pool that seeds players into its losers bracket: say which side.
     const winners = progression.winnersSeeds[seed.groupId];
-    if (winners === undefined || seed.seedNum === null) return name;
-    return `${name} ${seed.seedNum <= winners ? "[W]" : "[L]"}`;
+    const label =
+      winners === undefined || seed.seedNum === null
+        ? name
+        : `${name} ${seed.seedNum <= winners ? "[W]" : "[L]"}`;
+    return { label, groupId: seed.groupId };
   };
   const entry = (set: EventSet) => {
     const known = pills.get(set.id);
@@ -98,7 +103,13 @@ export const progressionPills = (
   for (const [entrantId, set] of firstSets(pool.sets)) {
     const origin = progression.arrivals[entrantId];
     const label = origin ? names.get(origin) : undefined;
-    if (label) entry(set).from.push({ label, slot: slotOf(set, entrantId) });
+    if (label) {
+      entry(set).from.push({
+        label,
+        groupId: origin,
+        slot: slotOf(set, entrantId),
+      });
+    }
   }
 
   for (const set of pool.sets) {
@@ -110,16 +121,16 @@ export const progressionPills = (
     const loserSlot = winnerSlot === 0 ? 1 : 0;
     const to: ProgressionPill[] =
       winner && loser
-        ? winner === loser
-          ? [{ label: winner, slot: null }]
+        ? winner.label === loser.label
+          ? [{ ...winner, slot: null }]
           : [
-              { label: winner, slot: winnerSlot },
-              { label: loser, slot: loserSlot },
+              { ...winner, slot: winnerSlot },
+              { ...loser, slot: loserSlot },
             ]
         : winner
-          ? [{ label: winner, slot: null }]
+          ? [{ ...winner, slot: null }]
           : loser
-            ? [{ label: loser, slot: loserSlot }]
+            ? [{ ...loser, slot: loserSlot }]
             : [];
     if (to.length > 0) entry(set).to = to;
   }
