@@ -7,8 +7,8 @@ import { useLazyCatalog } from "@/hooks/useLazyCatalog";
 
 import styles from "./tos.module.scss";
 
-const LAST_UPDATED = "2026-11-25";
-const CONTACT_EMAIL = "reo.matsuda@gmail.com";
+const LAST_UPDATED = "2026-11-26";
+const CONTACT_EMAIL = "contact@smash-ranker.app";
 
 // Nintendo publishes each guideline per region and language; readers get the
 // one written for them, English otherwise.

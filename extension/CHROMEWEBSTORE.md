@@ -134,7 +134,7 @@ Not created yet. The store does not require one for an extension that collects n
 (to fill in)
 
 **Contact Email**
-(to fill in: shown publicly on the listing)
+contact@smash-ranker.app (forwarded by Porkbun; shown publicly on the listing)
 
 **Support URL**
 https://github.com/rmatsuda21/smash-ranker/issues
