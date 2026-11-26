@@ -197,7 +197,7 @@ msgstr ""
 
 #: src/components/top8/SettingsPanel/AccentColorPicker.tsx:70
 msgid "Accent Color"
-msgstr "アクセントカラー"
+msgstr ""
 
 #: src/components/top8/PlayersEditor/PlayerCountControl.tsx:98
 #: src/components/top8/PlayersEditor/PlayerCountControl.tsx:99
@@ -250,7 +250,7 @@ msgstr ""
 
 #: src/components/top8/SettingsPanel/AccentColorPicker.tsx:26
 msgid "Amber"
-msgstr "アンバー"
+msgstr ""
 
 #: src/components/top8/TournamentLoader/TournamentLoader.tsx:94
 msgid "Any current player and tournament data will be overwritten."
@@ -358,7 +358,7 @@ msgstr ""
 
 #: src/components/top8/SettingsPanel/AccentColorPicker.tsx:27
 msgid "Blue"
-msgstr "ブルー"
+msgstr ""
 
 #: src/components/top8/SocialPostComposer/PlatformTabs.tsx:34
 msgid "Bluesky"
