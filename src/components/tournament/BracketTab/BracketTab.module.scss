@@ -2,11 +2,11 @@
 
 // The grid the bracket is drawn on. Keep these in step with the constants of
 // the same names in BracketTab.tsx, which places the matches and the lines.
-$match-w: 224px;
-$match-h: 64px;
+$match-w: 200px;
+$match-h: 52px;
 $column-gap: 40px;
 $pill-w: 168px;
-$pill-h: 22px;
+$pill-h: 20px;
 
 .root {
   display: flex;

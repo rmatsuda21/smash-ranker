@@ -17,7 +17,7 @@ type Props = {
 };
 
 // One set as a two-row box: both players in the order of the set's slots,
-// the winner in bold with their score on the accent. 224 by 64 pixels, the
+// the winner in bold with their score on the accent. 200 by 52 pixels, the
 // size the bracket's grid is built on.
 export const MatchBox = ({
   set,
@@ -48,7 +48,7 @@ export const MatchBox = ({
             <CharacterIcons
               characters={characters[player.entrantId]}
               event={event}
-              size={20}
+              size={16}
             />
             <span className={styles.name}>{player.name}</span>
             <span className={styles.score}>

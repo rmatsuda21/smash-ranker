@@ -49,15 +49,16 @@ type Props = {
 // The bracket is drawn on a fixed grid, in pixels, so the connecting lines
 // can be worked out without measuring anything. Keep these in step with the
 // SCSS variables of the same names.
-const MATCH_W = 224;
-const MATCH_H = 64;
+const MATCH_W = 200;
+const MATCH_H = 52;
 const COLUMN_GAP = 40;
-const SLOT_H = 84;
+// Leaves room under each match for its VOD link.
+const SLOT_H = 72;
 // A pill naming another phase's pool, and the dashed line joining it to its
 // match. A column with pills before or after its matches is moved over by
 // the room they take.
 const PILL_W = 168;
-const PILL_H = 22;
+const PILL_H = 20;
 const PILL_LINK = 20;
 const PILL_SPACE = PILL_W + PILL_LINK;
 
