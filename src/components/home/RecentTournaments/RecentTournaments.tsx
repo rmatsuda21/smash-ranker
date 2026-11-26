@@ -1,9 +1,11 @@
-import { Link } from "wouter";
 import cn from "classnames";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
-import { FaArrowRight } from "react-icons/fa6";
 
+import {
+  RecentTournamentsShell,
+  RecentTournamentsSkeleton,
+} from "@/components/home/RecentTournaments/RecentTournamentsShell";
 import {
   EventActions,
   EventRow,
@@ -12,8 +14,10 @@ import {
   TournamentLink,
 } from "@/components/user/EventRow/EventRow";
 import { useEventMeta } from "@/hooks/user/useEventMeta";
+import { RECENT_LIST_LENGTH } from "@/consts/home";
 import { useUserEvents } from "@/hooks/user/useUserEvents";
 import type { UserEvent } from "@/types/user/UserEvent";
+import { observeTournamentsHeight } from "@/utils/home/tournamentsHeight";
 import { expectedPlacement } from "@/utils/user/careerStats";
 import { formatOrdinal } from "@/utils/user/ordinal";
 
@@ -22,7 +26,6 @@ import styles from "./RecentTournaments.module.scss";
 // Enough to find the latest finished event past a few upcoming
 // registrations, and still show a short list under it.
 const RECENT_COUNT = 8;
-const LIST_LENGTH = 3;
 
 // The featured tournament's result in numbers. Desktop only: there the card
 // is as tall as the list beside it and has the room.
@@ -101,31 +104,18 @@ export const RecentTournaments = () => {
   const next = upcoming[upcoming.length - 1];
   const rest = [...(next ? [next] : []), ...past.slice(1)].slice(
     0,
-    LIST_LENGTH,
+    RECENT_LIST_LENGTH,
   );
 
+  if (status === "loading" && events.length === 0) {
+    return <RecentTournamentsSkeleton />;
+  }
+
   return (
-    <section className={styles.root} aria-busy={status === "loading"}>
-      <div className={styles.heading}>
-        <h2 className={styles.sectionTitle}>
-          <Trans>Your tournaments</Trans>
-        </h2>
-        {events.length > 0 && (
-          <Link className={styles.allLink} href="/me">
-            <Trans>All tournaments & stats</Trans>
-            <FaArrowRight aria-hidden="true" />
-          </Link>
-        )}
-      </div>
-
-      {status === "loading" && events.length === 0 && (
-        <div className={styles.skeletons} aria-hidden="true">
-          <div className={styles.skeletonFeatured} />
-          <div className={styles.skeletonRow} />
-          <div className={styles.skeletonRow} />
-        </div>
-      )}
-
+    <RecentTournamentsShell
+      busy={status === "loading"}
+      showAllLink={events.length > 0}
+    >
       {status === "error" && events.length === 0 && (
         <p className={styles.note}>
           <Trans>
@@ -144,7 +134,10 @@ export const RecentTournaments = () => {
       )}
 
       {featured && (
-        <div className={cn(styles.body, rest.length > 0 && styles.bodySplit)}>
+        <div
+          ref={observeTournamentsHeight}
+          className={cn(styles.body, rest.length > 0 && styles.bodySplit)}
+        >
           <article
             className={cn(
               styles.featured,
@@ -174,6 +167,7 @@ export const RecentTournaments = () => {
                 <EventRow
                   key={event.id}
                   event={event}
+                  source="home"
                   className={styles.listRow}
                   style={{ animationDelay: `${0.1 + i * 0.08}s` }}
                 />
@@ -182,6 +176,6 @@ export const RecentTournaments = () => {
           )}
         </div>
       )}
-    </section>
+    </RecentTournamentsShell>
   );
 };

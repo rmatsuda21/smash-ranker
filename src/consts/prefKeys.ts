@@ -11,4 +11,7 @@ export const PREF_KEYS = {
   // The feature flags the server last answered with (JSON), used when the
   // flags request is slow or fails.
   FEATURE_FLAGS: "feature-flags",
+  // How tall the home page's tournaments were last time, and at which window
+  // width (JSON), so their placeholder can be as tall.
+  HOME_TOURNAMENTS_HEIGHT: "home-tournaments-height",
 };

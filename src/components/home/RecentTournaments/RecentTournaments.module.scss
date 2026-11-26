@@ -195,14 +195,12 @@
   text-align: center;
 }
 
-.skeletons {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-}
-
+// The placeholder sits in the same `.body` and `.list` as the tournaments,
+// with blocks as tall as the cards usually are: a row whose meta line
+// (event, date, place) takes two lines, and on a phone a name that does too.
 .skeletonFeatured,
 .skeletonRow {
+  border: 1px solid var(--border);
   border-radius: var(--radius-md);
   background: linear-gradient(
     90deg,
@@ -215,12 +213,31 @@
 }
 
 .skeletonFeatured {
-  height: 148px;
+  height: 150px;
   border-radius: var(--radius-lg);
 }
 
 .skeletonRow {
-  height: 66px;
+  height: 78px;
+}
+
+// Given last time's height: the latest one keeps its size where the blocks
+// are stacked, and the rows share what is left.
+.skeletonSized {
+  .skeletonFeatured {
+    flex-shrink: 0;
+  }
+
+  .list {
+    flex: 1;
+    min-height: 0;
+  }
+
+  .skeletonRow {
+    flex: 1 1 0;
+    height: auto;
+    min-height: 0;
+  }
 }
 
 // Desktop: the latest tournament and the ones before it sit side by side.
@@ -251,16 +268,9 @@
     }
   }
 
-  .skeletons {
-    display: grid;
-    grid-template-columns: 2fr 3fr;
-    gap: var(--space-3);
-  }
-
+  // As tall as the list beside it, like the card it stands in for.
   .skeletonFeatured {
-    grid-row: span 2;
     height: auto;
-    min-height: 148px;
   }
 }
 
@@ -280,6 +290,15 @@
   .featuredText {
     // Icon + text on the first line, the chip wraps under them.
     flex-basis: calc(100% - 56px - var(--space-3));
+  }
+
+  // The chip on a line of its own, and buttons under every row.
+  .skeletonFeatured {
+    height: 210px;
+  }
+
+  .skeletonRow {
+    height: 139px;
   }
 }
 

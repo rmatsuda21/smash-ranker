@@ -12,6 +12,7 @@ import { Badge } from "@/components/shared/Badge/Badge";
 import { SiteFooter } from "@/components/shared/SiteFooter/SiteFooter";
 import { ToolArt, type ToolArtKind } from "@/components/home/ToolArt/ToolArt";
 import { LoginPrompt } from "@/components/home/LoginPrompt/LoginPrompt";
+import { RecentTournamentsSkeleton } from "@/components/home/RecentTournaments/RecentTournamentsShell";
 import { useAuthUser } from "@/store/authStore";
 
 import styles from "./home.module.scss";
@@ -131,7 +132,7 @@ export const Home = () => {
       </section>
 
       {user && (
-        <Suspense>
+        <Suspense fallback={<RecentTournamentsSkeleton />}>
           <RecentTournaments />
         </Suspense>
       )}
