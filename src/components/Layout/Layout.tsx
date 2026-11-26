@@ -1,6 +1,7 @@
 import { useCallback, useRef, useState } from "react";
 import { FaGear } from "react-icons/fa6";
 import { Link } from "wouter";
+import { useLingui } from "@lingui/react/macro";
 
 import { useDismissOnEscape } from "@/hooks/useDismiss";
 
@@ -10,6 +11,7 @@ import { SettingsModal } from "./SettingsModal/SettingsModal";
 import { StockConfetti } from "./StockConfetti/StockConfetti";
 import { useDateBasedEgg } from "@/hooks/useDateBasedEgg";
 import { useDbNotices } from "@/hooks/useDbNotices";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { UserAvatar } from "@/components/user/UserAvatar/UserAvatar";
 import { useAuthUser } from "@/store/authStore";
 
@@ -27,6 +29,7 @@ const BURST_THRESHOLD = 10;
 const BURST_COOLDOWN_MS = 8000;
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {
+  const { t } = useLingui();
   const user = useAuthUser();
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -49,6 +52,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
   useDateBasedEgg(triggerConfetti);
   // Every page can reach saved templates, images or fonts.
   useDbNotices();
+  useDocumentTitle();
 
   const handleLogoHover = useCallback(() => {
     setLogoEffect(LOGO_EFFECTS[logoEffectIndex.current]);
@@ -96,7 +100,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
         <div className={styles.brand}>
           <img
             src="/favicon.svg"
-            alt="Smash Ranker"
+            alt={t`Smash Ranker`}
             className={logoEffect ? styles[logoEffect] : undefined}
             onMouseEnter={handleLogoHover}
             onAnimationEnd={handleAnimationEnd}

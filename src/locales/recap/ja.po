@@ -380,7 +380,7 @@ msgstr "撃破"
 
 #: src/components/recap/slides/IntroSlide.tsx:33
 msgid "Smash Ranker Recap"
-msgstr "Smash Ranker 年間振り返り"
+msgstr "スマッシュランカー 年間振り返り"
 
 #: src/components/recap/RecapApp/RecapApp.tsx:222
 msgid "start.gg did not answer. Try again in a minute."

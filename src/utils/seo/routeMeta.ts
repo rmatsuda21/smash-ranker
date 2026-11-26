@@ -1,7 +1,11 @@
 import { decodeInvite } from "../predict/inviteCode.js";
 
 export type RouteMeta = {
+  // The title shared in link previews.
   title: string;
+  // The browser tab's title, when it is shorter than the shared one. The app
+  // sets the same one once it runs (`useDocumentTitle`).
+  tabTitle?: string;
   description: string;
   image: string;
   url: string;
@@ -14,6 +18,7 @@ const DEFAULT_IMAGE = `${SITE}/og-default.png`;
 const STATIC_ROUTES: Record<string, RouteMeta> = {
   "/": {
     title: "Smash Ranker — Tournament graphics for Super Smash Bros.",
+    tabTitle: "Smash Ranker",
     description: "Your one-stop shop for Super Smash Bros. graphics!",
     image: DEFAULT_IMAGE,
     url: `${SITE}/`,
@@ -28,7 +33,7 @@ const STATIC_ROUTES: Record<string, RouteMeta> = {
     type: "website",
   },
   "/tier": {
-    title: "Tierlist | Smash Ranker",
+    title: "Tier List | Smash Ranker",
     description:
       "Build and share Super Smash Bros. tier lists with customizable labels, layout, and image style.",
     image: DEFAULT_IMAGE,
@@ -44,7 +49,7 @@ const STATIC_ROUTES: Record<string, RouteMeta> = {
     type: "website",
   },
   "/thumbnail": {
-    title: "Thumbnail | Smash Ranker",
+    title: "Thumbnail Maker | Smash Ranker",
     description:
       "Make video thumbnails for Super Smash Bros. sets, filled in from start.gg.",
     image: DEFAULT_IMAGE,
@@ -62,12 +67,13 @@ const escapeAttr = (value: string): string =>
 
 export const renderHeadTags = (meta: RouteMeta): string => {
   const t = escapeAttr(meta.title);
+  const tab = escapeAttr(meta.tabTitle ?? meta.title);
   const d = escapeAttr(meta.description);
   const u = escapeAttr(meta.url);
   const i = escapeAttr(meta.image);
 
   return [
-    `<title>${t}</title>`,
+    `<title>${tab}</title>`,
     `<meta name="description" content="${d}" />`,
     `<link rel="canonical" href="${u}" />`,
     `<meta property="og:type" content="${meta.type}" />`,

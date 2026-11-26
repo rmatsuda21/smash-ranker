@@ -35,7 +35,7 @@ msgid "(https://tonamel.com/competition/[slug])"
 msgstr "(https://tonamel.com/competition/[スラッグ])"
 
 #. placeholder {0}: tournament.numAttendees
-#: src/components/tournament/TournamentPage/TournamentPage.tsx:180
+#: src/components/tournament/TournamentPage/TournamentPage.tsx:191
 msgid "{0, plural, one {# attendee} other {# attendees}}"
 msgstr "{0, plural, other {参加#人}}"
 
@@ -99,7 +99,7 @@ msgstr "{0}件選択中"
 msgid "{0} tournaments here, {1} cities in all"
 msgstr "ここで{0}大会、全部で{1}都市"
 
-#: src/components/tournament/TournamentPage/TournamentPage.tsx:225
+#: src/components/tournament/TournamentPage/TournamentPage.tsx:236
 msgid "{hiddenCount} more"
 msgstr "ほか{hiddenCount}件"
 
@@ -189,7 +189,7 @@ msgstr "7位"
 
 #: src/hooks/useDbNotices.ts:21
 msgid "A newer version of Smash Ranker is open in another tab. Reload this tab to keep saving."
-msgstr "別のタブで新しいバージョンのSmash Rankerが開いています。保存を続けるには、このタブを再読み込みしてください。"
+msgstr "別のタブで新しいバージョンのスマッシュランカーが開いています。保存を続けるには、このタブを再読み込みしてください。"
 
 #: src/consts/top8/colorLabels.ts:16
 msgid "Accent"
@@ -201,8 +201,8 @@ msgstr "アクセントカラー"
 
 #: src/components/top8/PlayersEditor/PlayerCountControl.tsx:98
 #: src/components/top8/PlayersEditor/PlayerCountControl.tsx:99
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:242
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:243
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:234
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:235
 msgid "Add player"
 msgstr "選手を追加"
 
@@ -240,7 +240,7 @@ msgstr "今の予想はすべて消えます。"
 msgid "All sets"
 msgstr "すべての試合"
 
-#: src/components/home/RecentTournaments/RecentTournaments.tsx:115
+#: src/components/home/RecentTournaments/RecentTournamentsShell.tsx:31
 msgid "All tournaments & stats"
 msgstr "すべての大会と戦績"
 
@@ -296,11 +296,11 @@ msgstr "参加者"
 msgid "Auto-fill by seed"
 msgstr "シード順で自動入力"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:380
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:372
 msgid "Avatar"
 msgstr "アイコン"
 
-#: src/components/tournament/TournamentPage/TournamentPage.tsx:331
+#: src/components/tournament/TournamentPage/TournamentPage.tsx:349
 #: src/pages/notFound.tsx:18
 #: src/pages/oauthCallback.tsx:100
 msgid "Back to home"
@@ -330,11 +330,11 @@ msgstr "バナー"
 msgid "Bars"
 msgstr "バー"
 
-#: src/components/home/RecentTournaments/RecentTournaments.tsx:61
+#: src/components/home/RecentTournaments/RecentTournaments.tsx:64
 msgid "Beat your seed"
 msgstr "シード超え"
 
-#: src/components/home/RecentTournaments/RecentTournaments.tsx:65
+#: src/components/home/RecentTournaments/RecentTournaments.tsx:68
 msgid "Below your seed"
 msgstr "シード届かず"
 
@@ -373,8 +373,8 @@ msgid "Bottom Text"
 msgstr "下部テキスト"
 
 #: src/components/results/SetListDisplaySettings/SetListDisplaySettings.tsx:42
-#: src/components/tournament/BracketTab/BracketTab.tsx:332
-#: src/components/tournament/TournamentPage/TournamentPage.tsx:43
+#: src/components/tournament/BracketTab/BracketTab.tsx:503
+#: src/components/tournament/TournamentPage/TournamentPage.tsx:46
 msgid "Bracket"
 msgstr "トーナメント表"
 
@@ -453,7 +453,7 @@ msgstr "優勝ラベル"
 msgid "Champion Note"
 msgstr "優勝者メモ"
 
-#: src/components/tournament/BracketTab/BracketTab.tsx:453
+#: src/components/tournament/BracketTab/BracketTab.tsx:620
 msgid "Champion: {champion}"
 msgstr "優勝: {champion}"
 
@@ -481,7 +481,7 @@ msgstr "キャラの影"
 #~ msgid "Check your connection and reload the page."
 #~ msgstr "通信状況を確認して、ページを再読み込みしてください。"
 
-#: src/components/tournament/TournamentPage/TournamentPage.tsx:317
+#: src/components/tournament/TournamentPage/TournamentPage.tsx:335
 msgid "Check your connection and try again."
 msgstr "接続を確認して、もう一度お試しください。"
 
@@ -512,11 +512,11 @@ msgstr "市区町村"
 msgid "Clear"
 msgstr "クリア"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:417
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:409
 msgid "Clear Player"
 msgstr "選手をリセット"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:195
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:194
 msgid "Clear Player?"
 msgstr "選手をリセットしますか？"
 
@@ -593,7 +593,7 @@ msgstr "確認"
 msgid "Consulting Master Hand..."
 msgstr "マスターハンドに相談中..."
 
-#: src/components/tournament/TournamentPage/TournamentPage.tsx:95
+#: src/components/tournament/TournamentPage/TournamentPage.tsx:98
 msgid "Copied"
 msgstr "コピー完了"
 
@@ -629,7 +629,7 @@ msgstr "コピー失敗"
 msgid "Copy image"
 msgstr "画像をコピー"
 
-#: src/components/tournament/TournamentPage/TournamentPage.tsx:95
+#: src/components/tournament/TournamentPage/TournamentPage.tsx:98
 msgid "Copy link"
 msgstr "リンクをコピー"
 
@@ -641,7 +641,7 @@ msgstr "テンプレートを削除できませんでした。もう一度お試
 msgid "Couldn't load the template. Try again."
 msgstr "テンプレートを読み込めませんでした。もう一度お試しください。"
 
-#: src/components/tournament/TournamentPage/TournamentPage.tsx:310
+#: src/components/tournament/TournamentPage/TournamentPage.tsx:328
 msgid "Couldn't load the tournament"
 msgstr "大会を取得できませんでした"
 
@@ -673,7 +673,7 @@ msgstr "Hiveeに接続できませんでした。接続を確認して、もう�
 #~ msgid "Couldn't reach start.gg"
 #~ msgstr "start.ggから大会を取得できませんでした"
 
-#: src/components/home/RecentTournaments/RecentTournaments.tsx:131
+#: src/components/home/RecentTournaments/RecentTournaments.tsx:121
 #: src/components/user/UserPage/UserPage.tsx:310
 msgid "Couldn't reach start.gg for your tournaments. Try again in a bit."
 msgstr "start.ggから大会を取得できませんでした。少し待ってからもう一度お試しください。"
@@ -720,7 +720,7 @@ msgstr "代わりにDQの数を数えています..."
 msgid "Counting the stocks. All of them..."
 msgstr "ストックを数えています。全部です..."
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:354
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:346
 #: src/components/top8/TournamentConfig/TournamentEditor.tsx:228
 msgid "Country"
 msgstr "国"
@@ -768,7 +768,7 @@ msgstr "星取表"
 msgid "Custom"
 msgstr "カスタム"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:388
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:380
 msgid "Custom Flag"
 msgstr "カスタム国旗"
 
@@ -776,7 +776,7 @@ msgstr "カスタム国旗"
 msgid "Custom Fonts"
 msgstr "カスタムフォント"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:370
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:362
 msgid "Custom images"
 msgstr "カスタム画像"
 
@@ -912,7 +912,7 @@ msgstr "ドット"
 msgid "Dotted"
 msgstr "ドット"
 
-#: src/components/tournament/BracketTab/BracketTab.tsx:237
+#: src/components/tournament/BracketTab/BracketTab.tsx:367
 msgid "Double elimination"
 msgstr "ダブルエリミネーション"
 
@@ -1072,11 +1072,11 @@ msgstr "イベント"
 msgid "Export"
 msgstr "エクスポート"
 
-#: src/hooks/top8/useFetchChallonge.ts:166
+#: src/hooks/top8/useFetchChallonge.ts:165
 msgid "Failed to fetch Challonge tournament"
 msgstr "Challongeの大会を取得できませんでした"
 
-#: src/hooks/top8/useFetchHivee.ts:214
+#: src/hooks/top8/useFetchHivee.ts:213
 msgid "Failed to fetch Hivee tournament"
 msgstr "Hiveeの大会を取得できませんでした"
 
@@ -1091,7 +1091,7 @@ msgstr "選手のリザルトを取得できませんでした"
 msgid "Failed to fetch seeds"
 msgstr "シード情報を取得できませんでした"
 
-#: src/hooks/top8/useFetchTonamel.ts:258
+#: src/hooks/top8/useFetchTonamel.ts:257
 msgid "Failed to fetch Tonamel tournament"
 msgstr "Tonamelの大会を取得できませんでした"
 
@@ -1102,8 +1102,8 @@ msgid "Failed to fetch tournament"
 msgstr "大会情報を取得できませんでした"
 
 #: src/hooks/top8/useFetchResult.ts:740
-#: src/hooks/top8/useFetchResult.ts:807
-#: src/hooks/top8/useFetchResult.ts:809
+#: src/hooks/top8/useFetchResult.ts:806
+#: src/hooks/top8/useFetchResult.ts:808
 msgid "Failed to fetch tournament data"
 msgstr "大会データを取得できませんでした"
 
@@ -1154,11 +1154,11 @@ msgstr "start.ggで大会を探す"
 msgid "Finding everyone who showed up..."
 msgstr "会場に来た人を全員探しています..."
 
-#: src/components/home/RecentTournaments/RecentTournaments.tsx:73
+#: src/components/home/RecentTournaments/RecentTournaments.tsx:76
 msgid "Finish"
 msgstr "成績"
 
-#: src/components/tournament/TournamentPage/TournamentPage.tsx:50
+#: src/components/tournament/TournamentPage/TournamentPage.tsx:53
 msgid "Finished"
 msgstr "終了"
 
@@ -1168,7 +1168,7 @@ msgstr "終了"
 msgid "Finished above your seed in <0>{0}</0> of {1} brackets"
 msgstr "{1}大会中<0>{0}</0>大会でシード超え"
 
-#: src/components/home/RecentTournaments/RecentTournaments.tsx:63
+#: src/components/home/RecentTournaments/RecentTournaments.tsx:66
 msgid "Finished on seed"
 msgstr "シード通り"
 
@@ -1201,8 +1201,8 @@ msgstr "フォーマット"
 msgid "Game"
 msgstr "ゲーム"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:297
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:298
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:289
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:290
 msgid "Gamer Tag"
 msgstr "選手名"
 
@@ -1324,7 +1324,7 @@ msgstr "使用中"
 msgid "Include {0} vs {1}"
 msgstr "{0} vs {1} を含める"
 
-#: src/components/tournament/TournamentPage/TournamentPage.tsx:44
+#: src/components/tournament/TournamentPage/TournamentPage.tsx:47
 msgid "Info"
 msgstr "大会情報"
 
@@ -1384,7 +1384,7 @@ msgstr "直近12か月"
 msgid "Last-game sets"
 msgstr "フルセット"
 
-#: src/components/home/RecentTournaments/RecentTournaments.tsx:155
+#: src/components/home/RecentTournaments/RecentTournaments.tsx:148
 msgid "Latest"
 msgstr "最新"
 
@@ -1422,7 +1422,7 @@ msgstr "リンク"
 msgid "Lit Tube"
 msgstr "点灯ネオン管"
 
-#: src/components/tournament/TournamentPage/TournamentPage.tsx:49
+#: src/components/tournament/TournamentPage/TournamentPage.tsx:52
 msgid "Live"
 msgstr "開催中"
 
@@ -1538,7 +1538,7 @@ msgstr "5戦目ラストストックの名場面を探しています..."
 msgid "Looking for the guy who entered as \"test\"..."
 msgstr "「test」で登録した人を探しています..."
 
-#: src/components/tournament/BracketTab/BracketTab.tsx:46
+#: src/components/tournament/BracketTab/BracketTab.tsx:67
 msgid "Losers bracket"
 msgstr "ルーザーズ側"
 
@@ -1741,7 +1741,7 @@ msgstr "見つかりませんでした"
 msgid "No results yet"
 msgstr "リザルトはまだありません"
 
-#: src/components/tournament/BracketTab/BracketTab.tsx:477
+#: src/components/tournament/BracketTab/BracketTab.tsx:644
 msgid "No sets have been played in this bracket yet."
 msgstr "このトーナメント表の試合はまだ行われていません。"
 
@@ -1753,7 +1753,7 @@ msgstr "該当する試合がありません。絞り込みを変えてみてく
 msgid "No text content defined in this design."
 msgstr "このデザインには編集できるテキストがありません。"
 
-#: src/components/tournament/TournamentPage/TournamentPage.tsx:312
+#: src/components/tournament/TournamentPage/TournamentPage.tsx:330
 msgid "No tournament here"
 msgstr "大会が見つかりませんでした"
 
@@ -1765,7 +1765,7 @@ msgstr "「{query}」に一致する大会はありません。"
 #~ msgid "No tournaments on your start.gg account yet."
 #~ msgstr "start.ggアカウントに大会がまだありません。"
 
-#: src/components/home/RecentTournaments/RecentTournaments.tsx:139
+#: src/components/home/RecentTournaments/RecentTournaments.tsx:129
 msgid "No tournaments on your start.gg account yet. Once you enter one it shows up here."
 msgstr "start.ggにまだ大会の記録がありません。出場するとここに出てきます。"
 
@@ -1783,11 +1783,11 @@ msgstr "まだ始まっていません"
 msgid "of {0}"
 msgstr "{0}人中"
 
-#: src/components/home/RecentTournaments/RecentTournaments.tsx:49
+#: src/components/home/RecentTournaments/RecentTournaments.tsx:52
 msgid "of {numEntrants} entrants"
 msgstr "{numEntrants}人中"
 
-#: src/components/home/RecentTournaments/RecentTournaments.tsx:79
+#: src/components/home/RecentTournaments/RecentTournaments.tsx:82
 msgid "of the bracket"
 msgstr "参加者全体のうち"
 
@@ -1812,7 +1812,7 @@ msgid "One-click graphics for every tournament"
 msgstr "どの大会もワンクリックで画像に"
 
 #: src/components/tournament/InfoTab/InfoTab.tsx:50
-#: src/components/tournament/TournamentPage/TournamentPage.tsx:153
+#: src/components/tournament/TournamentPage/TournamentPage.tsx:164
 #: src/components/user/StatsBoard/StatsBoard.tsx:216
 #: src/hooks/user/useEventMeta.ts:19
 msgid "Online"
@@ -1867,7 +1867,7 @@ msgstr "壁画イラストの切り抜き"
 msgid "Output: {outputWidth} × {outputHeight} px"
 msgstr "出力: {outputWidth} × {outputHeight} px"
 
-#: src/components/tournament/TournamentPage/TournamentPage.tsx:41
+#: src/components/tournament/TournamentPage/TournamentPage.tsx:44
 msgid "Overview"
 msgstr "概要"
 
@@ -1875,6 +1875,7 @@ msgstr "概要"
 msgid "Page"
 msgstr "ページ"
 
+#: src/hooks/useDocumentTitle.ts:33
 #: src/pages/notFound.tsx:9
 msgid "Page not found"
 msgstr "ページが見つかりません"
@@ -1930,8 +1931,8 @@ msgstr "勝ち上がり"
 msgid "Path has its own look, so card styles are off."
 msgstr "勝ち上がりは専用のデザインのため、カードスタイルは使えません。"
 
-#: src/components/tournament/BracketTab/BracketTab.tsx:393
-#: src/components/tournament/BracketTab/BracketTab.tsx:409
+#: src/components/tournament/BracketTab/BracketTab.tsx:564
+#: src/components/tournament/BracketTab/BracketTab.tsx:580
 msgid "Phase"
 msgstr "フェーズ"
 
@@ -1960,9 +1961,9 @@ msgstr "ピンク"
 msgid "Pixel Ratio"
 msgstr "ピクセル比"
 
-#: src/components/home/RecentTournaments/RecentTournaments.tsx:44
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:322
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:323
+#: src/components/home/RecentTournaments/RecentTournaments.tsx:47
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:314
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:315
 msgid "Placement"
 msgstr "順位"
 
@@ -1986,7 +1987,7 @@ msgstr "試合結果が入ると、順位・TOP8のトーナメント表・ア�
 msgid "Player"
 msgstr "選手"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:215
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:212
 #: src/components/top8/PlayersEditor/PlayerSelector.tsx:41
 msgid "Player {slot}"
 msgstr "選手{slot}"
@@ -2057,7 +2058,7 @@ msgstr "品質が効くのはJPEGとWebPだけ。PNGは劣化しません。"
 msgid "Polishing trophies..."
 msgstr "トロフィーを磨いています..."
 
-#: src/components/tournament/BracketTab/BracketTab.tsx:434
+#: src/components/tournament/BracketTab/BracketTab.tsx:603
 msgid "Pool"
 msgstr "プール"
 
@@ -2089,11 +2090,12 @@ msgstr "予想人数"
 #: src/components/predict/PredictApp/PredictApp.tsx:94
 #: src/components/predict/PredictionListPanel/PredictionListPanel.tsx:97
 #: src/components/predict/PredictionWorkspace/PredictionWorkspace.tsx:43
+#: src/hooks/useDocumentTitle.ts:25
 msgid "Predictions"
 msgstr "順位予想"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:309
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:310
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:301
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:302
 #: src/consts/top8/colorLabels.ts:54
 msgid "Prefix"
 msgstr "所属"
@@ -2112,6 +2114,10 @@ msgstr "プレビュー"
 #: src/consts/top8/colorLabels.ts:55
 msgid "Primary"
 msgstr "メイン"
+
+#: src/hooks/useDocumentTitle.ts:29
+msgid "Profile"
+msgstr "マイページ"
 
 #: src/components/predict/PredictApp/PredictApp.tsx:28
 msgid "Pulling entrants..."
@@ -2138,6 +2144,7 @@ msgid "Rank the entrants before it starts"
 msgstr "始まる前に順位を予想"
 
 #: src/components/Layout/NavOverlay/NavOverlay.tsx:25
+#: src/hooks/useDocumentTitle.ts:23
 msgid "Ranker"
 msgstr "リザルト作成"
 
@@ -2154,12 +2161,14 @@ msgid "Reading the tea leaves..."
 msgstr "占い中..."
 
 #: src/components/Layout/NavOverlay/NavOverlay.tsx:27
+#: src/hooks/useDocumentTitle.ts:26
 msgid "Recap"
 msgstr "大会振り返り"
 
 #: src/components/Layout/NavOverlay/NavOverlay.tsx:31
 #: src/components/user/UserPage/UserPage.tsx:272
 #: src/components/user/UserPage/UserPage.tsx:275
+#: src/hooks/useDocumentTitle.ts:27
 msgid "Recap {recapYear}"
 msgstr "{recapYear}年の振り返り"
 
@@ -2226,11 +2235,11 @@ msgstr "お気に入りから削除: {0}"
 msgid "Remove last player"
 msgstr "最後の選手を削除"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:408
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:400
 msgid "Remove Teammate"
 msgstr "相方を外す"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:203
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:202
 msgid "Remove Teammate?"
 msgstr "相方を外しますか？"
 
@@ -2288,7 +2297,7 @@ msgstr "ライバルとよく使うキャラ"
 msgid "Round"
 msgstr "ラウンド"
 
-#: src/components/tournament/BracketTab/BracketTab.tsx:238
+#: src/components/tournament/BracketTab/BracketTab.tsx:368
 msgid "Round robin"
 msgstr "総当たり"
 
@@ -2386,7 +2395,7 @@ msgstr "トーナメント表を見る"
 msgid "seed"
 msgstr "シード"
 
-#: src/components/home/RecentTournaments/RecentTournaments.tsx:56
+#: src/components/home/RecentTournaments/RecentTournaments.tsx:59
 #: src/components/tournament/OverviewTab/OverviewTab.tsx:375
 #: src/components/tournament/StandingsTab/StandingsTab.tsx:45
 msgid "Seed"
@@ -2505,7 +2514,7 @@ msgstr "プレビューを縮小"
 msgid "Signal"
 msgstr "シグナル"
 
-#: src/components/tournament/BracketTab/BracketTab.tsx:236
+#: src/components/tournament/BracketTab/BracketTab.tsx:366
 msgid "Single elimination"
 msgstr "シングルエリミネーション"
 
@@ -2534,9 +2543,15 @@ msgstr "スリーブ"
 msgid "Smash Ball"
 msgstr "スマッシュボール"
 
+#: src/components/Layout/Layout.tsx:103
+#: src/components/shared/SiteFooter/SiteFooter.tsx:18
+#: src/hooks/useDocumentTitle.ts:55
+msgid "Smash Ranker"
+msgstr "スマッシュランカー"
+
 #: src/hooks/useDbNotices.ts:20
 msgid "Smash Ranker is open in another tab with an older version. Close the other tabs to load your saved templates and images."
-msgstr "別のタブで古いバージョンのSmash Rankerが開いています。保存したテンプレートや画像を読み込むには、他のタブを閉じてください。"
+msgstr "別のタブで古いバージョンのスマッシュランカーが開いています。保存したテンプレートや画像を読み込むには、他のタブを閉じてください。"
 
 #: src/components/user/UserPage/UserPage.tsx:386
 msgid "Some of your results didn't load, so these stats are incomplete."
@@ -2578,7 +2593,7 @@ msgstr "正方形版"
 msgid "Standard"
 msgstr "標準"
 
-#: src/components/tournament/TournamentPage/TournamentPage.tsx:42
+#: src/components/tournament/TournamentPage/TournamentPage.tsx:45
 #: src/consts/top8/templateCatalog.ts:99
 msgid "Standings"
 msgstr "順位表"
@@ -2662,7 +2677,7 @@ msgstr "カラーを入れ替え"
 msgid "Swap sides"
 msgstr "左右を入れ替え"
 
-#: src/components/tournament/BracketTab/BracketTab.tsx:239
+#: src/components/tournament/BracketTab/BracketTab.tsx:369
 msgid "Swiss"
 msgstr "スイスドロー"
 
@@ -2753,6 +2768,7 @@ msgid "Templates"
 msgstr "テンプレ"
 
 #: src/components/shared/SiteFooter/SiteFooter.tsx:25
+#: src/hooks/useDocumentTitle.ts:30
 msgid "Terms of Service"
 msgstr "利用規約"
 
@@ -2825,7 +2841,7 @@ msgstr "テーマ"
 msgid "There are no tournaments on your start.gg account yet. Enter one and it shows up here, ready to turn into a graphic."
 msgstr "start.ggにまだ大会の記録がありません。出場するとここに出てきて、すぐ画像にできます。"
 
-#: src/components/tournament/TournamentPage/TournamentPage.tsx:319
+#: src/components/tournament/TournamentPage/TournamentPage.tsx:337
 msgid "There is no tournament with this id. It may have been deleted or made private."
 msgstr "このIDの大会は見つかりません。削除されたか、非公開になっているかもしれません。"
 
@@ -2850,7 +2866,7 @@ msgstr "読み込めませんでした。"
 msgid "This event has no bracket to load."
 msgstr "このイベントには読み込めるトーナメントがありません。"
 
-#: src/components/tournament/BracketTab/BracketTab.tsx:371
+#: src/components/tournament/BracketTab/BracketTab.tsx:542
 msgid "This event has no bracket yet."
 msgstr "このイベントのトーナメント表はまだありません。"
 
@@ -2891,11 +2907,11 @@ msgstr "この大会は複数グループ制で決勝トナメがないため、
 msgid "This will permanently delete all saved templates, custom fonts, uploaded assets, and design settings. The page will reload."
 msgstr "保存したテンプレ、カスタムフォント、素材、デザイン設定がすべて消えます。ページは再読み込みされます。"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:204
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:203
 msgid "This will remove the second player from this slot."
 msgstr "この枠から2人目の選手を外します。"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:196
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:195
 msgid "This will reset all player data for this slot."
 msgstr "この枠の選手情報がすべてリセットされます。"
 
@@ -2904,6 +2920,7 @@ msgid "Thumbnail"
 msgstr "サムネイル"
 
 #: src/components/Layout/NavOverlay/NavOverlay.tsx:34
+#: src/hooks/useDocumentTitle.ts:28
 msgid "Thumbnail Maker"
 msgstr "サムネ作成"
 
@@ -2930,6 +2947,7 @@ msgstr "試合の読み込みは現在start.ggとHiveeのみ対応していま�
 #~ msgstr "試合の読み込みは現在start.ggのみ対応しています。手入力でも作成できます。"
 
 #: src/components/Layout/NavOverlay/NavOverlay.tsx:32
+#: src/hooks/useDocumentTitle.ts:24
 msgid "Tier List"
 msgstr "キャラランク作成"
 
@@ -2948,7 +2966,7 @@ msgstr "開発者設定を切り替え"
 msgid "Tonamel API error: {0}"
 msgstr "Tonamel APIエラー: {0}"
 
-#: src/components/home/RecentTournaments/RecentTournaments.tsx:76
+#: src/components/home/RecentTournaments/RecentTournaments.tsx:79
 msgid "Top {topPercent}%"
 msgstr "上位{topPercent}%"
 
@@ -3023,6 +3041,7 @@ msgid "Top8er"
 msgstr "Top8er"
 
 #: src/components/top8/SidePanel/SidePanelNav.tsx:24
+#: src/hooks/useDocumentTitle.ts:39
 #: src/utils/social/templateTokens.ts:56
 msgid "Tournament"
 msgstr "大会情報"
@@ -3130,7 +3149,7 @@ msgid "Trophy spotlight"
 msgstr "優勝者スポットライト"
 
 #: src/components/tournament/StandingsTab/StandingsTab.tsx:88
-#: src/components/tournament/TournamentPage/TournamentPage.tsx:327
+#: src/components/tournament/TournamentPage/TournamentPage.tsx:345
 #: src/components/tournament/TournamentParts/TournamentParts.tsx:27
 #: src/components/user/EventList/EventList.tsx:131
 #: src/components/user/PlayerCardModal/PlayerCardModal.tsx:192
@@ -3161,7 +3180,7 @@ msgstr "SP"
 msgid "Undo"
 msgstr "元に戻す"
 
-#: src/components/tournament/TournamentPage/TournamentPage.tsx:48
+#: src/components/tournament/TournamentPage/TournamentPage.tsx:51
 #: src/components/user/EventRow/EventRow.tsx:86
 msgid "Upcoming"
 msgstr "開催予定"
@@ -3234,7 +3253,7 @@ msgstr "VS"
 msgid "Video title"
 msgstr "動画タイトル"
 
-#: src/components/tournament/MatchBox/MatchBox.tsx:65
+#: src/components/tournament/MatchBox/MatchBox.tsx:71
 msgid "VOD"
 msgstr "VOD"
 
@@ -3294,7 +3313,7 @@ msgstr "{placement}位の選手名"
 msgid "Winners"
 msgstr "上位選手"
 
-#: src/components/tournament/BracketTab/BracketTab.tsx:45
+#: src/components/tournament/BracketTab/BracketTab.tsx:66
 msgid "Winners bracket"
 msgstr "ウィナーズ側"
 
@@ -3311,7 +3330,7 @@ msgstr "優勝"
 msgid "X"
 msgstr "X"
 
-#: src/components/top8/PlayersEditor/PlayersEditor.tsx:348
+#: src/components/top8/PlayersEditor/PlayersEditor.tsx:340
 msgid "X Handle"
 msgstr "X ID"
 
@@ -3339,7 +3358,7 @@ msgstr "自分の戦績"
 msgid "Your stats"
 msgstr "戦績"
 
-#: src/components/home/RecentTournaments/RecentTournaments.tsx:111
+#: src/components/home/RecentTournaments/RecentTournamentsShell.tsx:27
 #: src/components/user/EventList/EventList.tsx:70
 msgid "Your tournaments"
 msgstr "出場した大会"

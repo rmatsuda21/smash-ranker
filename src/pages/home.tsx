@@ -112,7 +112,9 @@ export const Home = () => {
             <img src="/favicon.svg" alt="" className={styles.heroLogo} />
           </div>
           <h1 className={styles.title}>
-            Smash <span className={styles.accentText}>Ranker</span>
+            <Trans comment="The site's name on the home page; the tagged part is drawn in the accent colour">
+              Smash <span className={styles.accentText}>Ranker</span>
+            </Trans>
           </h1>
           {user ? (
             <p className={styles.tagline}>

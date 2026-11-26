@@ -15,7 +15,7 @@ export const SiteFooter = ({ onNavigate }: Props) => {
   return (
     <footer className={styles.footer}>
       <p className={styles.copyright}>
-        &copy; {new Date().getFullYear()} Smash Ranker
+        &copy; {new Date().getFullYear()} <Trans>Smash Ranker</Trans>
       </p>
       <span className={styles.divider}>&middot;</span>
       <LastUpdateTracker />

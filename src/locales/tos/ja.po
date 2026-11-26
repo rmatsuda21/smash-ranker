@@ -143,7 +143,7 @@ msgstr "本サービスのコード、デザインテンプレートおよび独
 
 #: src/pages/tos.tsx:62
 msgid "These terms apply to your use of Smash Ranker, a free, fan-made website for creating graphics for Super Smash Bros. tournaments and communities. By using any part of the site, you agree to these terms. If you do not agree, please do not use the site."
-msgstr "この利用規約（以下「本規約」といいます）は、大乱闘スマッシュブラザーズの大会やコミュニティ向けの画像を作成できる無料のファンメイドWebサイト「Smash Ranker（スマラン）」（以下「本サービス」といいます）の利用に適用されます。本サービスの一部でも利用した場合、ユーザーは本規約に同意したものとみなします。本規約に同意いただけない場合は、本サービスのご利用をお控えください。"
+msgstr "この利用規約（以下「本規約」といいます）は、大乱闘スマッシュブラザーズの大会やコミュニティ向けの画像を作成できる無料のファンメイドWebサイト「スマッシュランカー（Smash Ranker、スマラン）」（以下「本サービス」といいます）の利用に適用されます。本サービスの一部でも利用した場合、ユーザーは本規約に同意したものとみなします。本規約に同意いただけない場合は、本サービスのご利用をお控えください。"
 
 #: src/pages/tos.tsx:325
 msgid "These terms may be updated from time to time. The date at the top of this page shows when they were last revised. Continuing to use the site after an update means you accept the revised terms."

@@ -34,7 +34,7 @@ const showStartupFailure = () => {
   if (!root) return;
   root.innerHTML = `
     <div style="min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:24px;text-align:center;font-family:system-ui,sans-serif;color:#e8e8ea;background:#0e0e10">
-      <h1 style="font-size:20px;margin:0">Smash Ranker couldn't start</h1>
+      <h1 style="font-size:20px;margin:0">Smash Ranker couldn't start<br />スマッシュランカーを起動できませんでした</h1>
       <p style="margin:0;max-width:360px;line-height:1.5;color:#a0a0a8">Check your connection and reload the page.<br />接続を確認して、ページを再読み込みしてください。</p>
       <button id="startup-reload" style="padding:12px 24px;border:none;border-radius:999px;background:#ff3e7f;color:#fff;font:inherit;font-weight:600;cursor:pointer">Reload / 再読み込み</button>
     </div>`;
