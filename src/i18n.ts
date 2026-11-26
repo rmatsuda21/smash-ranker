@@ -12,3 +12,10 @@ export async function loadRecapCatalog(locale: string) {
   const { messages } = await import(`./locales/recap/${locale}.ts`);
   i18n.load(locale, messages);
 }
+
+// The terms of service's strings (lingui.tos.config.ts), added the same way
+// when the page opens.
+export async function loadTosCatalog(locale: string) {
+  const { messages } = await import(`./locales/tos/${locale}.ts`);
+  i18n.load(locale, messages);
+}

@@ -1,0 +1,182 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2026-11-25 23:04-0500\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: en\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
+
+#: src/pages/tos.tsx:59
+msgid "1. Agreement"
+msgstr ""
+
+#: src/pages/tos.tsx:300
+msgid "10. Reporting infringement or abuse"
+msgstr ""
+
+#: src/pages/tos.tsx:322
+msgid "11. Changes to these terms"
+msgstr ""
+
+#: src/pages/tos.tsx:73
+msgid "2. About Smash Ranker"
+msgstr ""
+
+#: src/pages/tos.tsx:95
+msgid "3. Intellectual property"
+msgstr ""
+
+#: src/pages/tos.tsx:118
+msgid "4. Sharing graphics"
+msgstr ""
+
+#: src/pages/tos.tsx:177
+msgid "5. Acceptable use"
+msgstr ""
+
+#: src/pages/tos.tsx:231
+msgid "6. Uploaded content"
+msgstr ""
+
+#: src/pages/tos.tsx:252
+msgid "7. Third-party data"
+msgstr ""
+
+#: src/pages/tos.tsx:267
+msgid "8. Disclaimer of warranties"
+msgstr ""
+
+#: src/pages/tos.tsx:283
+msgid "9. Limitation of liability"
+msgstr ""
+
+#: src/pages/tos.tsx:45
+msgid "Back to home"
+msgstr ""
+
+#: src/pages/tos.tsx:286
+msgid "Except in cases of intentional misconduct or gross negligence on their part, the developer of Smash Ranker is not liable for any indirect, incidental, special, consequential, or punitive damages, or for any loss of profits, data, or goodwill, arising from your use of the site or any graphic created with it. If you are dissatisfied with Smash Ranker, your only remedy is to stop using it."
+msgstr ""
+
+#: src/pages/tos.tsx:152
+msgid "Graphics made with Smash Ranker may not be:"
+msgstr ""
+
+#: src/pages/tos.tsx:186
+msgid "harasses, threatens, defames, or doxxes any person or group;"
+msgstr ""
+
+#: src/pages/tos.tsx:303
+msgid "If you believe content created, hosted, or cached by Smash Ranker infringes your rights, or you would like to report abuse, please email <0>{CONTACT_EMAIL}</0>. Include a description of the content, where it appears (a URL if possible), the reason for your report, and your contact information. Reports will be reviewed and content removed where appropriate."
+msgstr ""
+
+#: src/pages/tos.tsx:198
+msgid "impersonates a real person, event, or organization in a misleading way;"
+msgstr ""
+
+#: src/pages/tos.tsx:204
+msgid "is sexually explicit, sexualizes minors, or is otherwise illegal;"
+msgstr ""
+
+#: src/pages/tos.tsx:53
+msgid "Last updated: {updated}"
+msgstr ""
+
+#: src/pages/tos.tsx:147
+msgid "Nintendo Community Tournament Guidelines"
+msgstr ""
+
+#: src/pages/tos.tsx:135
+msgid "Nintendo Game Content Guidelines for Online Video & Image Sharing Platforms"
+msgstr ""
+
+#: src/pages/tos.tsx:314
+msgid "Other questions about these terms can be sent to the same address."
+msgstr ""
+
+#: src/pages/tos.tsx:191
+msgid "promotes hatred or discrimination based on race, ethnicity, nationality, religion, gender, sexual orientation, disability, or any other protected characteristic;"
+msgstr ""
+
+#: src/pages/tos.tsx:234
+msgid "Smash Ranker allows you to upload your own images, fonts, and backgrounds. You may only upload content that you own or have permission to use, including any logos or artwork it contains. You keep all rights to your uploads."
+msgstr ""
+
+#: src/pages/tos.tsx:76
+msgid "Smash Ranker is an independent, non-commercial project run by a single developer. It is free to use, does not display advertising, and generates most graphics directly in your browser."
+msgstr ""
+
+#: src/pages/tos.tsx:83
+msgid "Smash Ranker is not affiliated with or endorsed by Nintendo Co., Ltd., HAL Laboratory, Sora Ltd., Bandai Namco, or any other rights holder of the Super Smash Bros. series. It is also not affiliated with start.gg, Challonge, Tonamel, Hivee, or any tournament organizer whose data appears on the site."
+msgstr ""
+
+#: src/pages/tos.tsx:270
+msgid "Smash Ranker is provided “as is” and “as available”, without warranties of any kind, express or implied, including warranties of merchantability, fitness for a particular purpose, non-infringement, accuracy, or availability. Features may change or be removed, and the site may be discontinued at any time without notice."
+msgstr ""
+
+#: src/pages/tos.tsx:156
+msgid "sold as merchandise or used on commercial products, except where Nintendo expressly permits that kind of monetization;"
+msgstr ""
+
+#: src/pages/tos.tsx:98
+msgid "Super Smash Bros. and its characters, stock icons, character art, logos, and related trademarks are the property of Nintendo Co., Ltd. and its licensors. Smash Ranker uses these assets only to help the community create non-commercial tournament, ranking, and prediction graphics. The site does not host or distribute any game software, ROMs, or game files."
+msgstr ""
+
+#: src/pages/tos.tsx:210
+msgid "supports fraud, scams, or betting manipulation."
+msgstr ""
+
+#: src/pages/tos.tsx:50
+msgid "Terms of Service"
+msgstr ""
+
+#: src/pages/tos.tsx:108
+msgid "The site’s code, design templates, and original artwork belong to its developer and may be used for personal, non-commercial purposes."
+msgstr ""
+
+#: src/pages/tos.tsx:62
+msgid "These terms apply to your use of Smash Ranker, a free, fan-made website for creating graphics for Super Smash Bros. tournaments and communities. By using any part of the site, you agree to these terms. If you do not agree, please do not use the site."
+msgstr ""
+
+#: src/pages/tos.tsx:325
+msgid "These terms may be updated from time to time. The date at the top of this page shows when they were last revised. Continuing to use the site after an update means you accept the revised terms."
+msgstr ""
+
+#: src/pages/tos.tsx:255
+msgid "Tournament information such as entrants, brackets, placements, and icons is retrieved from start.gg, Challonge, Tonamel, and Hivee through their public APIs. Smash Ranker does not guarantee that this data is accurate, complete, or available. Your use of it is also subject to each platform’s own terms."
+msgstr ""
+
+#: src/pages/tos.tsx:242
+msgid "Uploads are stored locally in your browser (IndexedDB) and are not sent to Smash Ranker’s servers. Clearing your browser data will delete them."
+msgstr ""
+
+#: src/pages/tos.tsx:168
+msgid "used to misrepresent the results of a real tournament."
+msgstr ""
+
+#: src/pages/tos.tsx:162
+msgid "used to suggest that Nintendo or its partners endorse or sponsor you or your event;"
+msgstr ""
+
+#: src/pages/tos.tsx:221
+msgid "Users who violate these terms may be blocked, and related cached content (such as prediction images served from <0>/api</0>) may be removed without notice."
+msgstr ""
+
+#: src/pages/tos.tsx:214
+msgid "You also may not attempt to overload, scrape, or otherwise disrupt the site or the services it relies on, such as start.gg, Challonge, Tonamel, and Hivee."
+msgstr ""
+
+#: src/pages/tos.tsx:121
+msgid "You are responsible for how you use any graphic you download or share from Smash Ranker, including on social media and streams. Your use must comply with applicable law and with Nintendo’s published guidelines:"
+msgstr ""
+
+#: src/pages/tos.tsx:180
+msgid "You may not use Smash Ranker to create or share content that:"
+msgstr ""

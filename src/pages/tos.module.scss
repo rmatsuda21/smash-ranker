@@ -18,6 +18,8 @@
   flex-direction: column;
   gap: var(--space-6);
   line-height: 1.65;
+  // Breaks Japanese lines between phrases, not inside words.
+  word-break: auto-phrase;
 }
 
 .backLink {

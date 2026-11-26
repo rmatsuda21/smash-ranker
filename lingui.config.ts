@@ -13,6 +13,8 @@ const config: LinguiConfig = {
         // The recap has a catalog of its own: see lingui.recap.config.ts.
         "src/components/recap/**",
         "src/consts/recap/**",
+        // So does the terms of service: see lingui.tos.config.ts.
+        "src/pages/tos.tsx",
       ],
     },
     {
