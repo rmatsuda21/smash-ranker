@@ -1,6 +1,5 @@
 import {
   openDB,
-  deleteDB,
   DBSchema,
   IDBPDatabase,
   IDBPTransaction,
@@ -152,85 +151,95 @@ const performUpgrade = (
   validateAllStores(db, transaction);
 };
 
-const validateDatabase = (db: IDBPDatabase<Top8DB>): boolean => {
-  for (const storeName of EXPECTED_STORES) {
-    if (!db.objectStoreNames.contains(storeName)) {
-      logWarning("Missing object store", { area: "storage", storeName });
-      return false;
-    }
-  }
-  return true;
+// Stores are only ever created in an upgrade, so one missing here means a
+// store was added to STORE_CONFIGS without a new DB_VERSION. The database is
+// kept as it is: the other stores work, and calls to the missing one fail
+// until a version that adds it ships.
+const reportMissingStores = (db: IDBPDatabase<Top8DB>) => {
+  const missing = EXPECTED_STORES.filter(
+    (name) => !db.objectStoreNames.contains(name),
+  );
+  if (missing.length === 0) return;
+  logError(new Error(`Missing object stores: ${missing.join(", ")}`), {
+    area: "indexdb-open",
+    dbVersion: db.version,
+  });
 };
 
-const deleteAndRecreateDatabase = async (): Promise<IDBPDatabase<Top8DB>> => {
-  logWarning("Database is corrupted. Deleting and recreating...", {
-    area: "storage",
-  });
+let connection: Promise<IDBPDatabase<Top8DB>> | null = null;
+// A browser with storage turned off fails every open: report the first.
+let openFailureReported = false;
 
-  await deleteDB(DB_NAME, {
-    blocked() {
-      logWarning(
-        "Database deletion blocked. Please close other tabs using this app.",
-        { area: "storage" },
-      );
+// Drops a connection that has been closed, so the next call opens another.
+const forget = (closed: IDBPDatabase<Top8DB>) => {
+  const current = connection;
+  if (!current) return;
+  void current.then(
+    (open) => {
+      if (open === closed && connection === current) connection = null;
     },
-  });
-
-  return openDB<Top8DB>(DB_NAME, DB_VERSION, {
-    upgrade(db) {
-      createAllStores(db);
-    },
-  });
+    () => {},
+  );
 };
 
 const openDatabase = async (): Promise<IDBPDatabase<Top8DB>> => {
-  try {
-    const db = await openDB<Top8DB>(DB_NAME, DB_VERSION, {
-      upgrade(db, oldVersion, _newVersion, transaction) {
-        performUpgrade(db, oldVersion, transaction);
-      },
-      blocked() {
-        logWarning(
-          "Database upgrade blocked. Please close other tabs using this app.",
-          { area: "storage" },
-        );
-        raiseDbNotice("blocked");
-      },
-      blocking(_currentVersion, _blockedVersion, event) {
-        // A newer tab is waiting to upgrade. Let go, or it waits for as
-        // long as this tab stays open; this tab works again after a reload.
-        logWarning("This connection is blocking a database upgrade.", {
-          area: "storage",
-        });
-        (event.target as IDBDatabase | null)?.close();
-        raiseDbNotice("outdated");
-      },
-    });
-
-    if (!validateDatabase(db)) {
+  const db: IDBPDatabase<Top8DB> = await openDB<Top8DB>(DB_NAME, DB_VERSION, {
+    upgrade(db, oldVersion, _newVersion, transaction) {
+      performUpgrade(db, oldVersion, transaction);
+    },
+    blocked() {
+      logWarning(
+        "Database upgrade blocked. Please close other tabs using this app.",
+        { area: "storage" },
+      );
+      raiseDbNotice("blocked");
+    },
+    blocking(_currentVersion, blockedVersion) {
+      // Another tab is waiting on this connection. Let go, or it waits for
+      // as long as this tab stays open.
       db.close();
-      return deleteAndRecreateDatabase();
-    }
+      forget(db);
 
-    return db;
-  } catch (error) {
-    logError(error, { area: "indexdb-open" });
+      // No version: the other tab is deleting the database (a reset), and
+      // this tab opens a fresh one on its next read or write.
+      if (blockedVersion === null) return;
 
-    if (
-      error instanceof Error &&
-      (error.name === "NotFoundError" ||
-        error.name === "InvalidStateError" ||
-        error.name === "AbortError")
-    ) {
-      return deleteAndRecreateDatabase();
-    }
+      // A newer build upgraded it. This build cannot open that version, so
+      // the tab works again only after a reload.
+      logWarning("This connection is blocking a database upgrade.", {
+        area: "storage",
+      });
+      raiseDbNotice("outdated");
+    },
+    terminated() {
+      // The browser closed the connection itself (storage cleared, a
+      // backgrounded tab on iOS). The next read or write opens another.
+      logWarning("Database connection closed by the browser.", {
+        area: "storage",
+      });
+      forget(db);
+    },
+  });
 
-    throw error;
-  }
+  reportMissingStores(db);
+  return db;
 };
 
-export const initDB = openDatabase();
-// Already reported above; every caller that awaits it still gets the
-// rejection. This only keeps a failed open from also being an unhandled one
-// when nothing has asked for the database yet.
-initDB.catch(() => {});
+// The database, opened on first use and again whenever the connection has
+// been closed or an open has failed. Nothing here ever deletes it: a failed
+// open can be passing (storage full, a connection the browser dropped), and
+// what is stored is the user's templates, images and fonts. Only a factory
+// reset erases it.
+export const getDb = (): Promise<IDBPDatabase<Top8DB>> => {
+  if (connection) return connection;
+
+  const opening = openDatabase();
+  connection = opening;
+  opening.catch((error) => {
+    if (connection === opening) connection = null;
+    if (openFailureReported) return;
+    openFailureReported = true;
+    logError(error, { area: "indexdb-open" });
+  });
+  return opening;
+};

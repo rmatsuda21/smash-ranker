@@ -1,19 +1,19 @@
 import { Store, DBTemplate } from "@/types/Repository";
-import { initDB } from "../indexDB";
+import { getDb } from "../indexDB";
 
 export class TemplateStore implements Store<DBTemplate> {
   async get(id: string) {
-    const db = await initDB;
+    const db = await getDb();
     return db.get("templates", id);
   }
 
   async getAll() {
-    const db = await initDB;
+    const db = await getDb();
     return db.getAll("templates");
   }
 
   async put(template: DBTemplate) {
-    const db = await initDB;
+    const db = await getDb();
     return new Promise<DBTemplate>((resolve, reject) => {
       db.put("templates", template)
         .then(() => resolve(template))
@@ -22,12 +22,12 @@ export class TemplateStore implements Store<DBTemplate> {
   }
 
   async delete(id: string) {
-    const db = await initDB;
+    const db = await getDb();
     return db.delete("templates", id);
   }
 
   async clear() {
-    const db = await initDB;
+    const db = await getDb();
     return db.clear("templates");
   }
 }

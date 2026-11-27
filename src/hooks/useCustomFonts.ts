@@ -15,6 +15,7 @@ import {
   unregisterCustomFamily,
 } from "@/utils/fonts/fontLoader";
 import { logEvent, logWarning, setPerson } from "@/utils/observability/log";
+import { requestPersistentStorage } from "@/utils/persistentStorage";
 
 export const useCustomFonts = () => {
   const [customFonts, setCustomFonts] = useState<DBCustomFont[]>([]);
@@ -101,6 +102,7 @@ export const useCustomFonts = () => {
         });
         return null;
       }
+      requestPersistentStorage();
 
       const font: Font = {
         fontFamily,

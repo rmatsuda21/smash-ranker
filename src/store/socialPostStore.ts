@@ -9,6 +9,7 @@ import { DBSocialTemplate } from "@/types/Repository";
 import { SocialTemplateStore } from "@/db/socialTemplate/store";
 import { DEFAULT_TEMPLATE_ID } from "@/utils/social/builtInTemplates";
 import { safeLocalStorage } from "@/utils/safeStorage";
+import { requestPersistentStorage } from "@/utils/persistentStorage";
 
 const dbStore = new SocialTemplateStore();
 
@@ -133,6 +134,7 @@ export const saveCustomTemplate = async (
     isBuiltIn: false,
   };
   await dbStore.put(toDB(template));
+  requestPersistentStorage();
   useSocialPostStore.getState().dispatch({
     type: "ADD_CUSTOM_TEMPLATE",
     payload: template,

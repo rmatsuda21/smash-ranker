@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback } from "react";
 import { DBTemplate } from "@/types/Repository";
 import { templateRepository } from "@/db/repository";
 import { logWarning } from "@/utils/observability/log";
+import { requestPersistentStorage } from "@/utils/persistentStorage";
 
 export const useTemplateDB = () => {
   const [templates, setTemplates] = useState<{ id: string; name: string }[]>(
@@ -39,6 +40,7 @@ export const useTemplateDB = () => {
       id,
       ...config,
     });
+    requestPersistentStorage();
     await refresh();
     return id;
   }, []);
