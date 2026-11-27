@@ -13,10 +13,21 @@ import { getRenderSet, resolveRenderAlt } from "@/utils/top8/characterCatalog";
 export const DEFAULT_ASSET_BASE =
   "https://smashrankerassets.reo-matsuda-bfa.workers.dev";
 
+// A host given without "https://" would be read as a path on this site
+// ("smash-ranker.app/<host>/stock/…"), so it is given one. An address with a
+// scheme, and a path on this site ("/art"), are used as they are.
+const normalizeAssetBase = (raw: string | undefined): string | null => {
+  const value = raw?.trim().replace(/\/+$/, "");
+  if (!value) return null;
+  return /^([a-z][a-z0-9+.-]*:)?\/\//i.test(value) || value.startsWith("/")
+    ? value
+    : `https://${value}`;
+};
+
 // VITE_ASSET_BASE points the app at another copy, such as a local clone of
 // the asset repo to check art before it is pushed.
 const ASSET_BASE =
-  import.meta.env.VITE_ASSET_BASE?.replace(/\/+$/, "") || DEFAULT_ASSET_BASE;
+  normalizeAssetBase(import.meta.env.VITE_ASSET_BASE) ?? DEFAULT_ASSET_BASE;
 
 export const getCharImgUrl = ({
   characterId,
