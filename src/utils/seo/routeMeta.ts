@@ -13,7 +13,7 @@ export type RouteMeta = {
 };
 
 const SITE = "https://smash-ranker.app";
-const DEFAULT_IMAGE = `${SITE}/og-default.png`;
+const DEFAULT_IMAGE = `${SITE}/og-image.png`;
 
 const STATIC_ROUTES: Record<string, RouteMeta> = {
   "/": {
