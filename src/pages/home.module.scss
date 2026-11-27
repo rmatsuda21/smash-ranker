@@ -332,12 +332,6 @@
   animation: fadeSlideUp 0.5s ease-out backwards;
 }
 
-.cardBadge {
-  position: absolute;
-  top: var(--space-5);
-  right: var(--space-5);
-}
-
 .cardText {
   display: flex;
   flex-direction: column;

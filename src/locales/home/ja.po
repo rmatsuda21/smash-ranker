@@ -13,11 +13,11 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/pages/home.tsx:69
+#: src/pages/home.tsx:67
 msgid "Bracket predictions"
 msgstr "順位予想"
 
-#: src/pages/home.tsx:48
+#: src/pages/home.tsx:47
 msgid "Character tier lists"
 msgstr "キャラランク表"
 
@@ -33,11 +33,11 @@ msgstr "キャラランク表"
 #~ msgid "Easily generate your own tournament graphics with full customization."
 #~ msgstr "大会リザルト画像作成を極限まで楽にしました。"
 
-#: src/pages/home.tsx:183
+#: src/pages/home.tsx:176
 msgid "I have many exiciting tools on the way 🔧 Stay tuned!"
 msgstr "色々な新ツールを開発中です 🔧 お楽しみに！"
 
-#: src/pages/home.tsx:177
+#: src/pages/home.tsx:170
 msgid "In Development"
 msgstr "開発中"
 
@@ -45,15 +45,15 @@ msgstr "開発中"
 #~ msgid "Like making bracket predictions? Why not share yours with your friends with a cool graphic!"
 #~ msgstr "みんなで大会予想を画像で共有しあおう。"
 
-#: src/pages/home.tsx:180
+#: src/pages/home.tsx:173
 msgid "More tools on the way"
 msgstr "まだまだ新機能製作中"
 
 #: src/pages/home.tsx:162
-msgid "New"
-msgstr "新着"
+#~ msgid "New"
+#~ msgstr "新着"
 
-#: src/pages/home.tsx:68
+#: src/pages/home.tsx:66
 msgid "Predictions"
 msgstr "順位予想"
 
@@ -62,46 +62,46 @@ msgstr "順位予想"
 #~ msgstr "自分の戦績をきれいな画像で共有しよう。"
 
 #. The site's name on the home page; the tagged part is drawn in the accent colour
-#: src/pages/home.tsx:115
+#: src/pages/home.tsx:113
 msgid "Smash <0>Ranker</0>"
 msgstr "スマッシュ<0>ランカー</0>"
 
-#: src/pages/home.tsx:60
+#: src/pages/home.tsx:59
 msgid "Thumbnail Maker"
 msgstr "サムネ作成"
 
-#: src/pages/home.tsx:47
+#: src/pages/home.tsx:46
 msgid "Tier List Maker"
 msgstr "キャラランク作成"
 
-#: src/pages/home.tsx:144
+#: src/pages/home.tsx:142
 msgid "Tools"
 msgstr "ツール一覧"
 
-#: src/pages/home.tsx:42
+#: src/pages/home.tsx:41
 msgid "Top 8 graphics"
 msgstr "TOP8画像"
 
-#: src/pages/home.tsx:41
+#: src/pages/home.tsx:40
 msgid "Tournament Ranker"
 msgstr "リザルト作成"
 
-#: src/pages/home.tsx:53
+#: src/pages/home.tsx:52
 msgid "Tournament Recap"
 msgstr "大会振り返り"
 
-#: src/pages/home.tsx:61
+#: src/pages/home.tsx:60
 msgid "Video thumbnails"
 msgstr "動画サムネ"
 
-#: src/pages/home.tsx:121
+#: src/pages/home.tsx:119
 msgid "Welcome back, <0>{gamerTag}</0>"
 msgstr "おかえりなさい、<0>{gamerTag}</0>さん"
 
-#: src/pages/home.tsx:128
+#: src/pages/home.tsx:126
 msgid "Your one-stop site for Smash Bros graphics!"
 msgstr "スマブラの画像作成ならスマラン！"
 
-#: src/pages/home.tsx:54
+#: src/pages/home.tsx:53
 msgid "Your run, set by set"
 msgstr "全試合をまとめて振り返り"

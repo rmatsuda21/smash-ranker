@@ -31,7 +31,6 @@ type Tool = {
   // A few words at most: the drawing does the explaining.
   caption: MessageDescriptor;
   flag?: "thumbnail-enabled" | "results-enabled";
-  isNew?: boolean;
 };
 
 const TOOLS: Tool[] = [
@@ -60,7 +59,6 @@ const TOOLS: Tool[] = [
     title: msg`Thumbnail Maker`,
     caption: msg`Video thumbnails`,
     flag: "thumbnail-enabled",
-    isNew: true,
   },
   {
     to: "/predict",
@@ -157,11 +155,6 @@ export const Home = () => {
               style={{ animationDelay: `${0.1 + i * 0.1}s` }}
             >
               <ToolArt kind={tool.art} />
-              {tool.isNew && (
-                <Badge variant="new" className={styles.cardBadge}>
-                  <Trans>New</Trans>
-                </Badge>
-              )}
               <div className={styles.cardText}>
                 <h3 className={styles.cardTitle}>{_(tool.title)}</h3>
                 <p className={styles.cardCaption}>{_(tool.caption)}</p>
