@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Image as KonvaImage } from "konva/lib/shapes/Image";
 
+import { isIdbImageSrc } from "@/utils/assetSrc";
 import { LRUCache } from "@/utils/LRUCache";
 import { getDeviceRenderProfile } from "@/utils/top8/renderProfile";
 import type { ImageTone } from "@/types/top8/Design";
@@ -21,11 +22,8 @@ const sourceCache = !getDeviceRenderProfile().keepSourceImages
 
 const inflight = new Map<string, Promise<HTMLImageElement>>();
 
-const IDB_IMAGE_PREFIX = "/idb-images/";
 const MAX_RETRIES = 3;
 const RETRY_BACKOFF_MS = [500, 1000, 2000];
-
-const isIdbImageUrl = (src: string) => src.startsWith(IDB_IMAGE_PREFIX);
 
 const releaseCanvas = (canvas: HTMLCanvasElement) => {
   canvas.width = 0;
@@ -114,7 +112,7 @@ const fetchSource = (imageSrc: string): Promise<HTMLImageElement> =>
       image.onerror = () => {
         image.onload = null;
         image.onerror = null;
-        if (isIdbImageUrl(imageSrc) && attempt < MAX_RETRIES) {
+        if (isIdbImageSrc(imageSrc) && attempt < MAX_RETRIES) {
           setTimeout(
             () => attemptLoad(attempt + 1),
             RETRY_BACKOFF_MS[attempt] ?? 2000,

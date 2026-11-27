@@ -6,12 +6,10 @@ import type {
   SocialTemplate,
 } from "@/types/social/SocialTemplate";
 import { DBSocialTemplate } from "@/types/Repository";
-import { SocialTemplateStore } from "@/db/socialTemplate/store";
+import { socialTemplateRepository as dbStore } from "@/db/repository";
 import { DEFAULT_TEMPLATE_ID } from "@/utils/social/builtInTemplates";
 import { safeLocalStorage } from "@/utils/safeStorage";
 import { requestPersistentStorage } from "@/utils/persistentStorage";
-
-const dbStore = new SocialTemplateStore();
 
 interface SocialPostState {
   selectedPlatform: SocialPlatform;

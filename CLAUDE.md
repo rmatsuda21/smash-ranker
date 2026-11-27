@@ -365,11 +365,15 @@ Every tool hands its finished image to the same two helpers, from a tap, with th
 
 ### Persistence (IndexedDB)
 
-`src/db/indexDB.ts` initializes the DB. Separate modules handle:
+`src/db/indexDB.ts` owns the `top8-db` database: `getDb()` opens it on first use and again after the connection is closed (another tab upgrading, the browser dropping it) or an open fails. **Never open it any other way, and never delete it outside the factory reset**: a failed open can be passing, and what is stored is the user's templates, images and fonts.
 
-- `src/db/template/` — saved design templates (`DBTemplate`)
-- `src/db/asset/` — custom images/graphics (`DBAsset`, stored as Blobs)
-- `src/db/customFont/` — custom font files (`DBCustomFont`, stored as Blobs)
+- **Stores** — `src/db/repository.ts` builds one repository per store with `createRepository` (`get` by id, `getAll`, `put`, `delete`, `clear`): `templateRepository` (`DBTemplate`), `assetRepository` (`DBAsset`, Blobs), `customFontRepository` (`DBCustomFont`, Blobs), `socialTemplateRepository`.
+- **Schema changes** — a new step in `performUpgrade` (`if (oldVersion < n)`) with a new `DB_VERSION`. A store added to `STORE_CONFIGS` without one is missing for everyone who already has the database. A version bump cannot be rolled back: a build with the lower version can no longer open the database.
+- **Stored images** are shown at `/idb-images/<asset id>`, answered by the service worker `public/idb-image-sw.js`, which opens the database without a version and never creates it. `src/utils/assetSrc.ts` turns an id into that address and back; look an asset up by id, not by address.
+- **Tournament images** — every tournament load saves its images to the image library (`saveTournamentImage`, ids starting `tournament-`). Only the 30 used most recently are kept; one that the graphic, its undo history, the loaded tournament or a saved template still shows is never removed (`referencedText` in `src/utils/top8/tournamentImages.ts`). **Something new that can hold a stored image's address has to be added there.** Uploaded images are never removed.
+- **Persistence** — `requestPersistentStorage()` (`src/utils/persistentStorage.ts`) asks the browser to keep the site's storage. Call it after something the user chose to save is stored, not after a background save: Firefox shows a prompt.
+- **Storage full** — a write rejected for quota passes `isQuotaError` (`src/utils/safeStorage.ts`); show the "storage is full" message for it, not "try again".
+- **Factory reset** (`src/utils/debug/factoryReset.ts`) empties each database and deletes it only if that fails: a delete held up by another tab keeps every later open waiting.
 - `src/db/previewCache.ts` — separate IndexedDB store for rendered template preview thumbnails (Blobs). Cleared via Settings → "Regenerate Thumbnails" which dispatches `INVALIDATE_PREVIEW_CACHE` to `editorStore`, causing `UserTemplatePreview` components to re-render sequentially.
 
 ### Events not started or still being played

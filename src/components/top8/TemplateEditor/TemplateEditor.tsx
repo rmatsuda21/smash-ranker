@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import cn from "classnames";
 import { FaPlus, FaStar } from "react-icons/fa6";
 import { msg } from "@lingui/core/macro";
@@ -60,9 +60,13 @@ const modeOf = (template: DBTemplate): TemplateMode =>
 export const TemplateEditor = ({ className }: Props) => {
   const { _ } = useLingui();
   const { showToast } = useToast();
-  const { templates, loading, getTemplateWithId, addTemplate, deleteTemplate } =
-    useTemplateDB();
-  const [userTemplates, setUserTemplates] = useState<DBTemplate[]>([]);
+  const {
+    templates: userTemplates,
+    loading,
+    getTemplateWithId,
+    addTemplate,
+    deleteTemplate,
+  } = useTemplateDB();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [loadingTemplateId, setLoadingTemplateId] = useState<string | null>(
     null,
@@ -87,26 +91,6 @@ export const TemplateEditor = ({ className }: Props) => {
     (state) => state.setActiveTemplateId,
   );
   const designName = useCanvasStore((state) => state.design.name);
-
-  useEffect(() => {
-    const fetchTemplates = async () => {
-      const _templates = await Promise.all(
-        templates.map((template) => getTemplateWithId(template.id)),
-      );
-      setUserTemplates(
-        _templates
-          .map((template) => template)
-          .filter((template) => template !== undefined) as DBTemplate[],
-      );
-    };
-
-    fetchTemplates().catch((error) =>
-      logWarning("saved templates failed to load", {
-        area: "storage",
-        error: error instanceof Error ? error.message : String(error),
-      }),
-    );
-  }, [templates, getTemplateWithId]);
 
   const families = useMemo<Family[]>(
     () =>

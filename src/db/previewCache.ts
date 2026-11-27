@@ -58,6 +58,16 @@ export const previewCache = {
     }
   },
 
+  // A template that is gone needs no preview.
+  async delete(templateId: string): Promise<void> {
+    try {
+      const db = await getDb();
+      await db.delete(STORE_NAME, templateId);
+    } catch {
+      // Left behind; "Regenerate Thumbnails" clears the whole cache.
+    }
+  },
+
   async clear(): Promise<void> {
     const db = await getDb();
     await db.clear(STORE_NAME);

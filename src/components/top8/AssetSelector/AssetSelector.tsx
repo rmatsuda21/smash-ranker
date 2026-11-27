@@ -11,6 +11,7 @@ import { assetRepository } from "@/db/repository";
 import { useAssetDB } from "@/hooks/useAssetDb";
 import { useBlobUrl } from "@/hooks/useBlobUrl";
 import { DBAsset } from "@/types/Repository";
+import { assetIdFromSrc } from "@/utils/assetSrc";
 
 import { AssetPicker } from "./AssetPicker";
 import styles from "./AssetSelector.module.scss";
@@ -67,8 +68,8 @@ export const AssetSelector = ({
     }
 
     let cancelled = false;
-    assetRepository
-      .get(selectedSrc)
+    const id = assetIdFromSrc(selectedSrc);
+    (id ? assetRepository.get(id) : Promise.resolve(undefined))
       .catch(() => undefined)
       .then((found) => {
         if (cancelled) return;

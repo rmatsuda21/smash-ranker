@@ -54,7 +54,7 @@ const STORE_CONFIGS = {
 } as const satisfies Record<string, StoreConfig>;
 
 type StoreConfigMap = typeof STORE_CONFIGS;
-type StoreName = keyof StoreConfigMap;
+export type StoreName = keyof StoreConfigMap;
 
 const EXPECTED_STORES = Object.keys(STORE_CONFIGS) as StoreName[];
 interface Top8DB extends DBSchema {
@@ -105,7 +105,7 @@ const createStore = (db: IDBPDatabase<Top8DB>, name: StoreName) => {
   }
 };
 
-const validateStore = (
+const ensureStore = (
   db: IDBPDatabase<Top8DB>,
   transaction: UpgradeTransaction,
   name: StoreName,
@@ -124,32 +124,28 @@ const validateStore = (
   }
 };
 
-const createAllStores = (db: IDBPDatabase<Top8DB>) => {
-  for (const name of EXPECTED_STORES) {
-    createStore(db, name);
-  }
-};
-
-const validateAllStores = (
-  db: IDBPDatabase<Top8DB>,
-  transaction: UpgradeTransaction,
-) => {
-  for (const name of EXPECTED_STORES) {
-    validateStore(db, transaction, name);
-  }
-};
-
+// Upgrades run as steps, one per version, each applied to a database older
+// than it. A schema change is a new step and a new DB_VERSION, never an edit
+// to a step that has shipped: browsers that already ran it will not run it
+// again.
 const performUpgrade = (
   db: IDBPDatabase<Top8DB>,
   oldVersion: number,
   transaction: UpgradeTransaction,
 ) => {
-  if (oldVersion === 0) {
-    createAllStores(db);
-    return;
+  // Versions 1 to 6 only ever added stores and indexes, and were not kept
+  // as steps. Whatever the database has (nothing at all, or the empty one an
+  // old image service worker could create), bringing it to version 6 is the
+  // same: add what STORE_CONFIGS lists and it lacks.
+  if (oldVersion < 6) {
+    for (const name of EXPECTED_STORES) {
+      ensureStore(db, transaction, name);
+    }
   }
 
-  validateAllStores(db, transaction);
+  // Next: `if (oldVersion < 7) { … }`, with DB_VERSION = 7. From there on a
+  // step spells out its own stores and indexes, so that a later edit to
+  // STORE_CONFIGS cannot change what an old step does.
 };
 
 // Stores are only ever created in an upgrade, so one missing here means a

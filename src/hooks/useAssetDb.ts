@@ -3,9 +3,8 @@ import { useState, useEffect, useCallback } from "react";
 import { DBAsset, Store } from "@/types/Repository";
 import { assetRepository } from "@/db/repository";
 import { logWarning } from "@/utils/observability/log";
+import { assetSrc } from "@/utils/assetSrc";
 import { requestPersistentStorage } from "@/utils/persistentStorage";
-
-const BASE_URL = "/idb-images/";
 
 export const useAssetDB = (repository: Store<DBAsset> = assetRepository) => {
   const [assets, setAssets] = useState<DBAsset[]>([]);
@@ -28,7 +27,7 @@ export const useAssetDB = (repository: Store<DBAsset> = assetRepository) => {
 
   const uploadAsset = async (asset: Omit<DBAsset, "id" | "src">) => {
     const id = crypto.randomUUID();
-    const src = `${BASE_URL}${id}`;
+    const src = assetSrc(id);
     await repository.put({ id, src, ...asset });
     requestPersistentStorage();
     await refresh();

@@ -1,24 +1,17 @@
 import { useState, useEffect, useCallback } from "react";
 
 import { DBTemplate } from "@/types/Repository";
+import { previewCache } from "@/db/previewCache";
 import { templateRepository } from "@/db/repository";
 import { logWarning } from "@/utils/observability/log";
 import { requestPersistentStorage } from "@/utils/persistentStorage";
 
 export const useTemplateDB = () => {
-  const [templates, setTemplates] = useState<{ id: string; name: string }[]>(
-    [],
-  );
+  const [templates, setTemplates] = useState<DBTemplate[]>([]);
   const [loading, setLoading] = useState(true);
 
   const refresh = async () => {
-    setTemplates(
-      await templateRepository
-        .getAll()
-        .then((configs) =>
-          configs.map((config) => ({ id: config.id, name: config.name })),
-        ),
-    );
+    setTemplates(await templateRepository.getAll());
   };
 
   useEffect(() => {
@@ -47,11 +40,13 @@ export const useTemplateDB = () => {
 
   const deleteTemplate = useCallback(async (id: string) => {
     await templateRepository.delete(id);
+    void previewCache.delete(id);
     await refresh();
   }, []);
 
   const clearAll = useCallback(async () => {
     await templateRepository.clear();
+    void previewCache.clear().catch(() => {});
     await refresh();
   }, []);
 
