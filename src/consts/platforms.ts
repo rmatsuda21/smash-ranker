@@ -24,9 +24,24 @@ export const startggTournamentOnlySlug = (url: string): string | null => {
   return match ? match[1] : null;
 };
 
+// A community's tournaments live on its own subdomain
+// ("https://<community>.challonge.com/<slug>"), and Challonge's API names
+// them "<community>-<slug>". A tournament's own slug never has a hyphen
+// (letters, numbers and underscores only), so the last hyphen of such a slug
+// is where the community ends.
+const CHALLONGE_SITE_HOSTS = ["www", "api"];
+
 export const challongeUrlToSlug = (url: string): string | null => {
-  const match = url.trim().match(/challonge\.com\/(?:[a-z]{2}\/)?([^/?#]+)/);
-  return match ? match[1] : null;
+  const match = url
+    .trim()
+    .match(
+      /(?:^|[/.@\s])(?:([a-z0-9-]+)\.)?challonge\.com\/(?:[a-z]{2}\/)?([^/?#\s]+)/i,
+    );
+  if (!match) return null;
+  const community = match[1]?.toLowerCase();
+  return community && !CHALLONGE_SITE_HOSTS.includes(community)
+    ? `${community}-${match[2]}`
+    : match[2];
 };
 
 export const tonamelUrlToSlug = (url: string): string | null => {
@@ -66,8 +81,12 @@ export const slugToUrl = (platform: Platform, slug: string): string => {
   switch (platform) {
     case "startgg":
       return `https://start.gg/${slug}`;
-    case "challonge":
-      return `https://challonge.com/${slug}`;
+    case "challonge": {
+      const split = slug.lastIndexOf("-");
+      return split > 0
+        ? `https://${slug.slice(0, split)}.challonge.com/${slug.slice(split + 1)}`
+        : `https://challonge.com/${slug}`;
+    }
     case "tonamel":
       return `https://tonamel.com/competition/${slug}`;
     case "hivee": {

@@ -31,6 +31,24 @@ customLogger.warn = (msg, options) => {
   originalWarn(msg, options);
 };
 
+// zustand's devtools middleware reads `import.meta.env` as a whole object
+// (`import.meta.env ? import.meta.env.MODE : void 0`). Vite answers that by
+// writing every VITE_ variable of the build into the bundle, used or not:
+// Vercel's git details and any variable left over in the project settings.
+// Reading the one field keeps the bundle to the variables the code names.
+const ZUSTAND_ENV_READ = "import.meta.env ? import.meta.env.MODE : void 0";
+const zustandEnvRead = () => ({
+  name: "zustand-env-read",
+  enforce: "pre" as const,
+  transform(code: string, id: string) {
+    if (!id.includes("/zustand/") || !code.includes(ZUSTAND_ENV_READ)) return;
+    return {
+      code: code.replaceAll(ZUSTAND_ENV_READ, "import.meta.env.MODE"),
+      map: null,
+    };
+  },
+});
+
 // https://vite.dev/config/
 export default defineConfig(() => {
   const shouldAnalyze = process.env.ANALYZE === "true";
@@ -80,6 +98,7 @@ export default defineConfig(() => {
         plugins: [["@lingui/swc-plugin", {}]],
       }),
       lingui(),
+      zustandEnvRead(),
       challongeDevProxy(),
       tonamelDevProxy(),
       tonamelImageProxy(),
