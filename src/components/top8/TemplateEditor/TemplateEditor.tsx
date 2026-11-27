@@ -20,6 +20,7 @@ import {
   useTemplateFavoritesStore,
 } from "@/store/templateFavoritesStore";
 import { logEvent, logWarning } from "@/utils/observability/log";
+import { isQuotaError } from "@/utils/safeStorage";
 import { useToast } from "@/components/Toast";
 import { loadFamily } from "@/utils/fonts/fontLoader";
 import { collectDesignFontWeights } from "@/utils/fonts/designWeights";
@@ -261,10 +262,16 @@ export const TemplateEditor = ({ className }: Props) => {
       logWarning("template save failed", {
         area: "storage",
         error: error instanceof Error ? error.message : String(error),
+        ...(isQuotaError(error) && { failure_kind: "quota" }),
       });
-      showToast(_(msg`Couldn't save the template. Try again.`), {
-        variant: "error",
-      });
+      showToast(
+        isQuotaError(error)
+          ? _(
+              msg`Storage for Smash Ranker is full in this browser. Remove some saved images, fonts or templates and try again.`,
+            )
+          : _(msg`Couldn't save the template. Try again.`),
+        { variant: "error" },
+      );
       return;
     }
     logEvent("template_save", {

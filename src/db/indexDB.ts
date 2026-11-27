@@ -1,5 +1,6 @@
 import {
   openDB,
+  deleteDB,
   DBSchema,
   IDBPDatabase,
   IDBPTransaction,
@@ -242,4 +243,41 @@ export const getDb = (): Promise<IDBPDatabase<Top8DB>> => {
     logError(error, { area: "indexdb-open" });
   });
   return opening;
+};
+
+// For the factory reset only. Deleting works where clearing does not: it
+// needs no working connection, so it also gets rid of a database that can
+// no longer be opened. Another tab that will not let go holds it up; the
+// caller decides how long to wait.
+export const deleteDatabase = async (): Promise<void> => {
+  const current = connection;
+  connection = null;
+  // Not awaited: an open that is itself waiting on another tab would never
+  // get here, and the delete queues behind it either way.
+  void current?.then(
+    (db) => db.close(),
+    () => {},
+  );
+  await deleteDB(DB_NAME);
+};
+
+// For the factory reset only: empties every store, for when another tab
+// keeps the database from being deleted.
+export const clearAllStores = async (): Promise<void> => {
+  const db = await getDb();
+  const names = EXPECTED_STORES.filter((name) =>
+    db.objectStoreNames.contains(name),
+  );
+  if (names.length > 0) {
+    const transaction = db.transaction(names, "readwrite");
+    await Promise.all([
+      ...names.map((name) => transaction.objectStore(name).clear()),
+      transaction.done,
+    ]);
+  }
+  // Emptied, but still not a database the app can use: the caller deletes
+  // it instead.
+  if (names.length < EXPECTED_STORES.length) {
+    throw new Error("Database is missing object stores");
+  }
 };

@@ -16,6 +16,7 @@ import {
 } from "@/utils/fonts/fontLoader";
 import { logEvent, logWarning, setPerson } from "@/utils/observability/log";
 import { requestPersistentStorage } from "@/utils/persistentStorage";
+import { isQuotaError } from "@/utils/safeStorage";
 
 export const useCustomFonts = () => {
   const [customFonts, setCustomFonts] = useState<DBCustomFont[]>([]);
@@ -96,10 +97,14 @@ export const useCustomFonts = () => {
           area: "fonts",
           error: error instanceof Error ? error.message : String(error),
           size_kb: sizeKb,
+          ...(isQuotaError(error) && { failure_kind: "quota" }),
         });
-        showToast(t`Couldn't save "${fontFamily}". Try again.`, {
-          variant: "error",
-        });
+        showToast(
+          isQuotaError(error)
+            ? t`Storage for Smash Ranker is full in this browser. Remove some saved images, fonts or templates and try again.`
+            : t`Couldn't save "${fontFamily}". Try again.`,
+          { variant: "error" },
+        );
         return null;
       }
       requestPersistentStorage();

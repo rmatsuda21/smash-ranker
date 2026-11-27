@@ -4,6 +4,7 @@ import { useLingui } from "@lingui/react";
 import { useToast } from "@/components/Toast";
 import { DBAsset } from "@/types/Repository";
 import { logEvent, logWarning, setPerson } from "@/utils/observability/log";
+import { isQuotaError } from "@/utils/safeStorage";
 
 const MAX_ASSET_BYTES = 2 * 1024 * 1024;
 
@@ -40,10 +41,18 @@ export const useAssetUpload = (uploadAsset: UploadAsset) => {
           area: "storage",
           error: error instanceof Error ? error.message : String(error),
           size_kb: Math.round(file.size / 1024),
+          ...(isQuotaError(error) && { failure_kind: "quota" }),
         });
-        showToast(_(msg`Couldn't save ${file.name}. Try again.`), {
-          variant: "error",
-        });
+        showToast(
+          isQuotaError(error)
+            ? _(
+                msg`Storage for Smash Ranker is full in this browser. Remove some saved images, fonts or templates and try again.`,
+              )
+            : _(msg`Couldn't save ${file.name}. Try again.`),
+          { variant: "error" },
+        );
+        // Nothing after this one would fit either.
+        if (isQuotaError(error)) break;
         continue;
       }
       srcs.push(src);

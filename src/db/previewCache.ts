@@ -1,4 +1,4 @@
-import { openDB, type IDBPDatabase } from "idb";
+import { deleteDB, openDB, type IDBPDatabase } from "idb";
 
 const DB_NAME = "top8-preview-cache";
 const DB_VERSION = 1;
@@ -11,14 +11,27 @@ let dbPromise: Promise<IDBPDatabase> | null = null;
 
 const getDb = (): Promise<IDBPDatabase> => {
   if (!dbPromise) {
-    dbPromise = (async () =>
-      openDB(DB_NAME, DB_VERSION, {
+    const opening: Promise<IDBPDatabase> = (async () => {
+      const forget = () => {
+        if (dbPromise === opening) dbPromise = null;
+      };
+      const db: IDBPDatabase = await openDB(DB_NAME, DB_VERSION, {
         upgrade(db) {
           db.createObjectStore(STORE_NAME);
         },
-      }))();
-    dbPromise.catch(() => {
-      dbPromise = null;
+        // Another tab is deleting or upgrading the cache: let go, and open
+        // again on the next read or write.
+        blocking() {
+          db.close();
+          forget();
+        },
+        terminated: forget,
+      });
+      return db;
+    })();
+    dbPromise = opening;
+    opening.catch(() => {
+      if (dbPromise === opening) dbPromise = null;
     });
   }
   return dbPromise;
@@ -48,5 +61,17 @@ export const previewCache = {
   async clear(): Promise<void> {
     const db = await getDb();
     await db.clear(STORE_NAME);
+  },
+
+  // For the factory reset: removes the cache's database, whether or not it
+  // can still be opened.
+  async destroy(): Promise<void> {
+    const current = dbPromise;
+    dbPromise = null;
+    void current?.then(
+      (db) => db.close(),
+      () => {},
+    );
+    await deleteDB(DB_NAME);
   },
 };

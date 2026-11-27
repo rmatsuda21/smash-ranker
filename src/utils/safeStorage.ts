@@ -10,7 +10,8 @@ type FailureKind = "quota" | "unavailable";
 
 const reported = new Set<FailureKind>();
 
-const isQuotaError = (error: unknown): boolean =>
+// Also what IndexedDB rejects a write with when the site's storage is full.
+export const isQuotaError = (error: unknown): boolean =>
   error instanceof DOMException &&
   (error.name === "QuotaExceededError" ||
     error.name === "NS_ERROR_DOM_QUOTA_REACHED" ||
