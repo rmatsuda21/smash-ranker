@@ -1,6 +1,6 @@
 import { Link } from "wouter";
 import { Trans } from "@lingui/react/macro";
-import { FaFileLines } from "react-icons/fa6";
+import { FaDiscord, FaFileLines } from "react-icons/fa6";
 import { SiBuymeacoffee } from "react-icons/si";
 
 import { LastUpdateTracker } from "@/components/home/LastUpdateTracker";
@@ -26,6 +26,16 @@ export const SiteFooter = ({ onNavigate }: Props) => {
       </Link>
       <span className={styles.divider}>&middot;</span>
       <a
+        href="https://discord.gg/ZR5KxeysTH"
+        target="_blank"
+        rel="noopener noreferrer"
+        className={styles.link}
+      >
+        <FaDiscord />
+        <Trans>Help & feedback</Trans>
+      </a>
+      <span className={styles.divider}>&middot;</span>
+      <a
         href="https://buymeacoffee.com/chikyunojin"
         target="_blank"
         rel="noopener noreferrer"
@@ -34,6 +44,12 @@ export const SiteFooter = ({ onNavigate }: Props) => {
         <SiBuymeacoffee />
         <Trans>Buy me a coffee</Trans>
       </a>
+      <p className={styles.disclaimer}>
+        <Trans>
+          A fan-made site, not affiliated with Nintendo or any tournament
+          platform.
+        </Trans>
+      </p>
     </footer>
   );
 };

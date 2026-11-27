@@ -2,11 +2,18 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { LIVE_MAX_AGE_MS } from "@/consts/live";
 import { logEvent } from "@/utils/observability/log";
-import { reportLoadFailure } from "@/utils/loadError";
+import { LoadError, reportLoadFailure } from "@/utils/loadError";
 
 export type LoadStatus = "idle" | "loading" | "done" | "error";
 
-type State<T> = { key: string | null; data: T | null; status: LoadStatus };
+type State<T> = {
+  key: string | null;
+  data: T | null;
+  status: LoadStatus;
+  // Why the load failed, in words for the user, when the failure knows
+  // (start.gg over its request limit, an outage). Null otherwise.
+  message: string | null;
+};
 
 // Finished loads by key, kept for the page's lifetime: coming back to
 // something already loaded (another event, a tab, the Back button) is instant.
@@ -26,11 +33,17 @@ export const useCachedLoad = <T>(
     label,
     mayChange,
   }: { label?: string; mayChange?: (data: T) => boolean } = {},
-): { data: T | null; status: LoadStatus; retry: () => void } => {
+): {
+  data: T | null;
+  status: LoadStatus;
+  message: string | null;
+  retry: () => void;
+} => {
   const [state, setState] = useState<State<T>>({
     key: null,
     data: null,
     status: "idle",
+    message: null,
   });
   // The loader closes over whatever the key was built from; only a new key
   // starts a load.
@@ -75,11 +88,11 @@ export const useCachedLoad = <T>(
       if (!isStale) return;
     }
     let cancelled = false;
-    if (!held) setState({ key, data: null, status: "loading" });
+    if (!held) setState({ key, data: null, status: "loading", message: null });
     loadRef.current().then(
       (data) => {
         finished.set(key, { data, at: Date.now() });
-        if (!cancelled) setState({ key, data, status: "done" });
+        if (!cancelled) setState({ key, data, status: "done", message: null });
       },
       (error: unknown) => {
         // Reported whether or not anyone is still looking: a failure is a
@@ -92,7 +105,12 @@ export const useCachedLoad = <T>(
         logEvent("tournament_page_fail", { stage, failure_kind: failureKind });
         // A refresh that failed leaves what was there.
         if (!cancelled && !held) {
-          setState({ key, data: null, status: "error" });
+          setState({
+            key,
+            data: null,
+            status: "error",
+            message: error instanceof LoadError ? error.message : null,
+          });
         }
       },
     );
@@ -101,11 +119,20 @@ export const useCachedLoad = <T>(
     };
   }, [key, attempt, visit]);
 
-  if (key === null) return { data: null, status: "idle", retry };
+  if (key === null) {
+    return { data: null, status: "idle", message: null, retry };
+  }
   const held = finished.get(key);
-  if (held) return { data: held.data as T, status: "done", retry };
+  if (held) {
+    return { data: held.data as T, status: "done", message: null, retry };
+  }
   // A key just switched to has nothing yet: that is loading, not idle.
   return state.key === key
-    ? { data: state.data, status: state.status, retry }
-    : { data: null, status: "loading", retry };
+    ? {
+        data: state.data,
+        status: state.status,
+        message: state.message,
+        retry,
+      }
+    : { data: null, status: "loading", message: null, retry };
 };

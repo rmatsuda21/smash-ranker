@@ -18,11 +18,23 @@ msgid "1. Agreement"
 msgstr ""
 
 #: src/pages/tos.tsx:300
-msgid "10. Reporting infringement or abuse"
+msgid "10. Privacy and data"
 msgstr ""
 
+#: src/pages/tos.tsx:300
+#~ msgid "10. Reporting infringement or abuse"
+#~ msgstr ""
+
 #: src/pages/tos.tsx:322
-msgid "11. Changes to these terms"
+#~ msgid "11. Changes to these terms"
+#~ msgstr ""
+
+#: src/pages/tos.tsx:346
+msgid "11. Reporting infringement or abuse"
+msgstr ""
+
+#: src/pages/tos.tsx:368
+msgid "12. Changes to these terms"
 msgstr ""
 
 #: src/pages/tos.tsx:73
@@ -61,6 +73,14 @@ msgstr ""
 msgid "Back to home"
 msgstr ""
 
+#: src/pages/tos.tsx:337
+msgid "Clearing this site's data in your browser removes everything stored on your device."
+msgstr ""
+
+#: src/pages/tos.tsx:337
+#~ msgid "Clearing this site's data in your browser, or using Reset app data in the settings, removes everything stored on your device."
+#~ msgstr ""
+
 #: src/pages/tos.tsx:286
 msgid "Except in cases of intentional misconduct or gross negligence on their part, the developer of Smash Ranker is not liable for any indirect, incidental, special, consequential, or punitive damages, or for any loss of profits, data, or goodwill, arising from your use of the site or any graphic created with it. If you are dissatisfied with Smash Ranker, your only remedy is to stop using it."
 msgstr ""
@@ -73,8 +93,12 @@ msgstr ""
 msgid "harasses, threatens, defames, or doxxes any person or group;"
 msgstr ""
 
-#: src/pages/tos.tsx:303
+#: src/pages/tos.tsx:349
 msgid "If you believe content created, hosted, or cached by Smash Ranker infringes your rights, or you would like to report abuse, please email <0>{CONTACT_EMAIL}</0>. Include a description of the content, where it appears (a URL if possible), the reason for your report, and your contact information. Reports will be reviewed and content removed where appropriate."
+msgstr ""
+
+#: src/pages/tos.tsx:322
+msgid "If you log in with start.gg, the site receives your public start.gg profile and an access token, which is kept in your browser and used to load your tournaments from start.gg. A cookie keeps you logged in. Logging out removes both."
 msgstr ""
 
 #: src/pages/tos.tsx:198
@@ -97,8 +121,12 @@ msgstr ""
 msgid "Nintendo Game Content Guidelines for Online Video & Image Sharing Platforms"
 msgstr ""
 
-#: src/pages/tos.tsx:314
+#: src/pages/tos.tsx:360
 msgid "Other questions about these terms can be sent to the same address."
+msgstr ""
+
+#: src/pages/tos.tsx:330
+msgid "Prediction and recap graphics are drawn on the site's server: the names and results shown in the graphic are sent there to make the image, and the image may be cached."
 msgstr ""
 
 #: src/pages/tos.tsx:191
@@ -107,6 +135,10 @@ msgstr ""
 
 #: src/pages/tos.tsx:234
 msgid "Smash Ranker allows you to upload your own images, fonts, and backgrounds. You may only upload content that you own or have permission to use, including any logos or artwork it contains. You keep all rights to your uploads."
+msgstr ""
+
+#: src/pages/tos.tsx:303
+msgid "Smash Ranker has no accounts of its own and no database of its users. Your designs, saved templates, uploaded images and fonts are stored in your own browser and are not uploaded."
 msgstr ""
 
 #: src/pages/tos.tsx:76
@@ -145,8 +177,12 @@ msgstr ""
 msgid "These terms apply to your use of Smash Ranker, a free, fan-made website for creating graphics for Super Smash Bros. tournaments and communities. By using any part of the site, you agree to these terms. If you do not agree, please do not use the site."
 msgstr ""
 
-#: src/pages/tos.tsx:325
+#: src/pages/tos.tsx:371
 msgid "These terms may be updated from time to time. The date at the top of this page shows when they were last revised. Continuing to use the site after an update means you accept the revised terms."
+msgstr ""
+
+#: src/pages/tos.tsx:310
+msgid "To see how the site is used and to find bugs, it records usage events (such as a tournament being loaded or a graphic being exported) and error reports. These are tied to a random identifier kept in your browser, not to your name, email or IP address, and tournament links are removed from them. Error reports include the page, your browser and an approximate region. This data is processed by PostHog, Sentry and Vercel, and is not sold or used for advertising."
 msgstr ""
 
 #: src/pages/tos.tsx:255

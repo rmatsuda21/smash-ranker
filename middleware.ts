@@ -13,7 +13,16 @@
 import { getRouteMeta, renderHeadTags } from "./src/utils/seo/routeMeta.js";
 
 export const config = {
-  matcher: ["/", "/ranker", "/tier", "/predict", "/thumbnail"],
+  matcher: [
+    "/",
+    "/ranker",
+    "/tier",
+    "/predict",
+    "/thumbnail",
+    "/results",
+    "/tos",
+    "/tournament/:id",
+  ],
 };
 
 const SHELL_TIMEOUT_MS = 5000;

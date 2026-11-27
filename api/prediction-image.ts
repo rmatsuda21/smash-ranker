@@ -10,18 +10,28 @@ import sharp from "sharp";
 import React from "react";
 
 import { BadRequestError, respondClientError } from "./_lib/errors.js";
-import { parseBase64UrlPayload, parseImageUrl } from "./_lib/validate.js";
+import {
+  PALETTE_KEYS,
+  parseBase64UrlPayload,
+  parseImageUrl,
+  parsePalette,
+} from "./_lib/validate.js";
 import { addBreadcrumb, withLogging } from "./_lib/withLogging.js";
 import { getSatoriFonts } from "./_lib/fonts.js";
 import {
+  fetchExternalImage,
   isTransientStatus,
   readImageBody,
   type AssetTracker,
 } from "./_lib/fetchImage.js";
 import { toSatoriImage } from "./_lib/satoriImage.js";
 
-const MAX_PAYLOAD_BYTES = 8 * 1024;
-const MAX_PREDICTIONS = 16;
+// Sized for MAX_PREDICTIONS rows with long names.
+const MAX_PAYLOAD_BYTES = 24 * 1024;
+// Matches the largest custom count the page allows (SET_CUSTOM_COUNT in
+// src/store/predictionStore.ts): a list the page lets someone build has to
+// be one the image can be made from.
+const MAX_PREDICTIONS = 64;
 const MAX_FIELD_LENGTH = 256;
 
 const WIDTH = 275;
@@ -106,7 +116,7 @@ type RequestBody = {
   tournamentDate: string;
   tournamentIconUrl: string;
   predictions: PredictionPlayer[];
-  palette?: PredictionPalette;
+  palette?: Partial<PredictionPalette>;
   locale?: string;
 };
 
@@ -145,7 +155,7 @@ async function fetchImageAsDataUrl(
     const ctrl = new AbortController();
     const t = setTimeout(() => ctrl.abort(), FETCH_TIMEOUT_MS);
     try {
-      const res = await fetch(url, { signal: ctrl.signal });
+      const res = await fetchExternalImage(url, ctrl.signal);
       if (!res.ok) {
         transient = isTransientStatus(res.status);
         if (!transient) break;
@@ -683,7 +693,7 @@ function decodePayload(encoded: unknown): RequestBody {
       asOptionalBoundedString(obj.tournamentDate, "tournamentDate") ?? "",
     tournamentIconUrl,
     predictions,
-    palette: obj.palette as PredictionPalette | undefined,
+    palette: parsePalette(obj.palette, PALETTE_KEYS),
     locale: asOptionalBoundedString(obj.locale, "locale"),
   };
 }

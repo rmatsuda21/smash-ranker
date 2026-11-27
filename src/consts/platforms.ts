@@ -8,9 +8,20 @@ export const PLATFORM_LABELS: Record<Platform, string> = {
   hivee: "Hivee",
 };
 
+// A slug ends at a query, a fragment or a space, so a link copied with
+// "?utm=…" or with words after it still names its event.
 export const startggUrlToSlug = (url: string): string | null => {
-  const match = url.trim().match(/tournament\/([^/]+)\/event\/([^/]+)/);
+  const match = url.trim().match(/tournament\/([^/?#\s]+)\/event\/([^/?#\s]+)/);
   return match ? `tournament/${match[1]}/event/${match[2]}` : null;
+};
+
+// The tournament's slug when the link is a start.gg tournament and names no
+// event ("start.gg/tournament/genesis-9", ".../details"): the tools load an
+// event, so such a link is sent to the tournament's page to pick one.
+export const startggTournamentOnlySlug = (url: string): string | null => {
+  if (startggUrlToSlug(url)) return null;
+  const match = url.trim().match(/start\.gg\/tournament\/([^/?#\s]+)/);
+  return match ? match[1] : null;
 };
 
 export const challongeUrlToSlug = (url: string): string | null => {

@@ -86,7 +86,7 @@ export type RequestBody = {
   tournamentIconUrl: string;
   tournamentCountry?: string | null;
   numEntrants: number;
-  palette?: PredictionPalette;
+  palette?: Partial<PredictionPalette>;
   locale?: string;
   player: PlayerInfo;
   fallbackCharacterId?: string | null;

@@ -10,10 +10,16 @@ import sharp from "sharp";
 import React from "react";
 
 import { BadRequestError, respondClientError } from "./_lib/errors.js";
-import { parseBase64UrlPayload, parseImageUrl } from "./_lib/validate.js";
+import {
+  PALETTE_KEYS,
+  parseBase64UrlPayload,
+  parseImageUrl,
+  parsePalette,
+} from "./_lib/validate.js";
 import { addBreadcrumb, withLogging } from "./_lib/withLogging.js";
 import { getPathFonts, getSatoriFonts } from "./_lib/fonts.js";
 import {
+  fetchExternalImage,
   isTransientStatus,
   readImageBody,
   type AssetTracker,
@@ -124,7 +130,7 @@ async function fetchImageAsDataUrl(
     const ctrl = new AbortController();
     const t = setTimeout(() => ctrl.abort(), FETCH_TIMEOUT_MS);
     try {
-      const res = await fetch(url, { signal: ctrl.signal });
+      const res = await fetchExternalImage(url, ctrl.signal);
       if (!res.ok) {
         transient = isTransientStatus(res.status);
         if (!transient) break;
@@ -169,8 +175,15 @@ async function fetchTournamentIcon(
   return fetched;
 }
 
-const CHARACTER_ASSET_BASE =
-  "https://raw.githubusercontent.com/rmatsuda21/SmashRankerAssets/main/stock";
+// The same host the browser loads art from (DEFAULT_ASSET_BASE in
+// src/utils/top8/getCharImgUrl.ts), or the deployment's VITE_ASSET_BASE when
+// it is an https address.
+const ASSET_BASE_ENV = process.env.VITE_ASSET_BASE?.replace(/\/+$/, "");
+const CHARACTER_ASSET_BASE = `${
+  ASSET_BASE_ENV?.startsWith("https://")
+    ? ASSET_BASE_ENV
+    : "https://smashrankerassets.reo-matsuda-bfa.workers.dev"
+}/stock`;
 
 // satori v0.26 throws "Spread syntax requires ...iterable" when handed a WebP
 // — its internal image decoder hits an unguarded null path. The asset repo
@@ -2186,7 +2199,7 @@ function decodePayload(encoded: unknown): RequestBody {
     tournamentIconUrl,
     tournamentCountry,
     numEntrants: asNonNegInt(obj.numEntrants ?? 0, "numEntrants"),
-    palette: obj.palette as PredictionPalette | undefined,
+    palette: parsePalette(obj.palette, PALETTE_KEYS),
     locale: asOptionalBoundedString(obj.locale, "locale"),
     display: parseDisplay(obj.display),
     player: {

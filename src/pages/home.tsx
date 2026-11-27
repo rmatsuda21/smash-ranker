@@ -173,7 +173,7 @@ export const Home = () => {
             <Trans>More tools on the way</Trans>
           </h2>
           <p className={styles.roadmapDescription}>
-            <Trans>I have many exiciting tools on the way 🔧 Stay tuned!</Trans>
+            <Trans>I have many exciting tools on the way 🔧 Stay tuned!</Trans>
           </p>
         </div>
       </section>

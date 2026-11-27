@@ -18,12 +18,24 @@ msgid "1. Agreement"
 msgstr "第1条（本規約への同意）"
 
 #: src/pages/tos.tsx:300
-msgid "10. Reporting infringement or abuse"
-msgstr "第10条（権利侵害・不正利用の報告）"
+msgid "10. Privacy and data"
+msgstr "第10条（プライバシーとデータ）"
+
+#: src/pages/tos.tsx:300
+#~ msgid "10. Reporting infringement or abuse"
+#~ msgstr "第10条（権利侵害・不正利用の報告）"
 
 #: src/pages/tos.tsx:322
-msgid "11. Changes to these terms"
-msgstr "第11条（本規約の変更）"
+#~ msgid "11. Changes to these terms"
+#~ msgstr "第11条（本規約の変更）"
+
+#: src/pages/tos.tsx:346
+msgid "11. Reporting infringement or abuse"
+msgstr "第11条（権利侵害・不正利用の報告）"
+
+#: src/pages/tos.tsx:368
+msgid "12. Changes to these terms"
+msgstr "第12条（本規約の変更）"
 
 #: src/pages/tos.tsx:73
 msgid "2. About Smash Ranker"
@@ -61,6 +73,14 @@ msgstr "第9条（責任の制限）"
 msgid "Back to home"
 msgstr "ホームに戻る"
 
+#: src/pages/tos.tsx:337
+msgid "Clearing this site's data in your browser removes everything stored on your device."
+msgstr "ブラウザで本サービスのサイトデータを削除すると、お使いの端末に保存された情報はすべて削除されます。"
+
+#: src/pages/tos.tsx:337
+#~ msgid "Clearing this site's data in your browser, or using Reset app data in the settings, removes everything stored on your device."
+#~ msgstr ""
+
 #: src/pages/tos.tsx:286
 msgid "Except in cases of intentional misconduct or gross negligence on their part, the developer of Smash Ranker is not liable for any indirect, incidental, special, consequential, or punitive damages, or for any loss of profits, data, or goodwill, arising from your use of the site or any graphic created with it. If you are dissatisfied with Smash Ranker, your only remedy is to stop using it."
 msgstr "運営者は、運営者の故意または重大な過失による場合を除き、本サービスまたは本サービスで作成した画像の利用に起因して生じた間接損害、付随的損害、特別損害、結果的損害、懲罰的損害、ならびに逸失利益、データの消失および信用の毀損について、責任を負いません。本サービスにご満足いただけない場合の唯一の対処方法は、本サービスの利用を中止することです。"
@@ -73,9 +93,13 @@ msgstr "本サービスで作成した画像について、以下の行為をし
 msgid "harasses, threatens, defames, or doxxes any person or group;"
 msgstr "個人または団体に対する嫌がらせ、脅迫、誹謗中傷にあたるもの、または本人の同意なく個人情報を公開するもの"
 
-#: src/pages/tos.tsx:303
+#: src/pages/tos.tsx:349
 msgid "If you believe content created, hosted, or cached by Smash Ranker infringes your rights, or you would like to report abuse, please email <0>{CONTACT_EMAIL}</0>. Include a description of the content, where it appears (a URL if possible), the reason for your report, and your contact information. Reports will be reviewed and content removed where appropriate."
 msgstr "本サービスで作成、掲載またはキャッシュされたコンテンツがご自身の権利を侵害していると思われる場合や、不正利用を報告したい場合は、<0>{CONTACT_EMAIL}</0>までメールでご連絡ください。その際は、対象となるコンテンツの説明、掲載場所（可能であればURL）、報告の理由およびご連絡先を記載してください。いただいた報告は運営者が確認し、必要に応じてコンテンツを削除します。"
+
+#: src/pages/tos.tsx:322
+msgid "If you log in with start.gg, the site receives your public start.gg profile and an access token, which is kept in your browser and used to load your tournaments from start.gg. A cookie keeps you logged in. Logging out removes both."
+msgstr "start.ggでログインした場合、本サービスはstart.ggの公開プロフィールとアクセストークンを受け取ります。アクセストークンはお使いのブラウザに保存され、start.ggから参加大会を読み込むために使用されます。ログイン状態の維持にはCookieを使用します。ログアウトすると、いずれも削除されます。"
 
 #: src/pages/tos.tsx:198
 msgid "impersonates a real person, event, or organization in a misleading way;"
@@ -97,9 +121,13 @@ msgstr "ゲーム大会における任天堂の著作物の利用に関するガ
 msgid "Nintendo Game Content Guidelines for Online Video & Image Sharing Platforms"
 msgstr "ネットワークサービスにおける任天堂の著作物の利用に関するガイドライン"
 
-#: src/pages/tos.tsx:314
+#: src/pages/tos.tsx:360
 msgid "Other questions about these terms can be sent to the same address."
 msgstr "本規約に関するその他のお問い合わせも、同じアドレスで受け付けています。"
+
+#: src/pages/tos.tsx:330
+msgid "Prediction and recap graphics are drawn on the site's server: the names and results shown in the graphic are sent there to make the image, and the image may be cached."
+msgstr "順位予想および大会振り返りの画像は、本サービスのサーバーで生成されます。画像に表示される名前や結果は、画像を生成するためにサーバーへ送信され、生成された画像はキャッシュされることがあります。"
 
 #: src/pages/tos.tsx:191
 msgid "promotes hatred or discrimination based on race, ethnicity, nationality, religion, gender, sexual orientation, disability, or any other protected characteristic;"
@@ -108,6 +136,10 @@ msgstr "人種、民族、国籍、宗教、性別、性的指向、障害その
 #: src/pages/tos.tsx:234
 msgid "Smash Ranker allows you to upload your own images, fonts, and backgrounds. You may only upload content that you own or have permission to use, including any logos or artwork it contains. You keep all rights to your uploads."
 msgstr "本サービスでは、ユーザー自身の画像、フォント、背景をアップロードできます。アップロードできるのは、含まれるロゴやイラストも含め、ユーザーが権利を有するもの、または権利者から利用の許諾を得ているものに限ります。アップロードしたコンテンツに関する権利は、すべてユーザーに帰属します。"
+
+#: src/pages/tos.tsx:303
+msgid "Smash Ranker has no accounts of its own and no database of its users. Your designs, saved templates, uploaded images and fonts are stored in your own browser and are not uploaded."
+msgstr "本サービスには独自のアカウントも、利用者のデータベースもありません。デザイン、保存したテンプレート、アップロードした画像およびフォントは、お使いのブラウザに保存され、サーバーには送信されません。"
 
 #: src/pages/tos.tsx:76
 msgid "Smash Ranker is an independent, non-commercial project run by a single developer. It is free to use, does not display advertising, and generates most graphics directly in your browser."
@@ -145,9 +177,13 @@ msgstr "本サービスのコード、デザインテンプレートおよび独
 msgid "These terms apply to your use of Smash Ranker, a free, fan-made website for creating graphics for Super Smash Bros. tournaments and communities. By using any part of the site, you agree to these terms. If you do not agree, please do not use the site."
 msgstr "この利用規約（以下「本規約」といいます）は、大乱闘スマッシュブラザーズの大会やコミュニティ向けの画像を作成できる無料のファンメイドWebサイト「スマッシュランカー（Smash Ranker、スマラン）」（以下「本サービス」といいます）の利用に適用されます。本サービスの一部でも利用した場合、ユーザーは本規約に同意したものとみなします。本規約に同意いただけない場合は、本サービスのご利用をお控えください。"
 
-#: src/pages/tos.tsx:325
+#: src/pages/tos.tsx:371
 msgid "These terms may be updated from time to time. The date at the top of this page shows when they were last revised. Continuing to use the site after an update means you accept the revised terms."
 msgstr "運営者は、必要に応じて本規約を変更することがあります。本ページ上部の日付は、本規約の最終更新日を示します。変更後に本サービスを引き続き利用した場合、ユーザーは変更後の本規約に同意したものとみなします。"
+
+#: src/pages/tos.tsx:310
+msgid "To see how the site is used and to find bugs, it records usage events (such as a tournament being loaded or a graphic being exported) and error reports. These are tied to a random identifier kept in your browser, not to your name, email or IP address, and tournament links are removed from them. Error reports include the page, your browser and an approximate region. This data is processed by PostHog, Sentry and Vercel, and is not sold or used for advertising."
+msgstr "本サービスは、利用状況の把握と不具合の発見のために、利用イベント（大会の読み込み、画像の書き出しなど）およびエラーレポートを記録します。これらは、お使いのブラウザに保存されるランダムな識別子に紐づけられ、氏名、メールアドレスおよびIPアドレスには紐づけられません。また、大会のリンクは記録から除かれます。エラーレポートには、表示していたページ、ブラウザの種類およびおおよその地域が含まれます。これらのデータはPostHog、SentryおよびVercelによって処理され、販売されることも、広告に利用されることもありません。"
 
 #: src/pages/tos.tsx:255
 msgid "Tournament information such as entrants, brackets, placements, and icons is retrieved from start.gg, Challonge, Tonamel, and Hivee through their public APIs. Smash Ranker does not guarantee that this data is accurate, complete, or available. Your use of it is also subject to each platform’s own terms."

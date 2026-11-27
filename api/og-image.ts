@@ -8,6 +8,7 @@ import React from "react";
 
 import { addBreadcrumb, withLogging } from "./_lib/withLogging.js";
 import {
+  fetchExternalImage,
   isTransientStatus,
   readImageBody,
   type AssetTracker,
@@ -68,7 +69,7 @@ const fetchImageAsDataUrl = async (
     const ctrl = new AbortController();
     const timer = setTimeout(() => ctrl.abort(), FETCH_TIMEOUT_MS);
     try {
-      const res = await fetch(url, { signal: ctrl.signal });
+      const res = await fetchExternalImage(url, ctrl.signal);
       if (!res.ok) {
         if (isTransientStatus(res.status)) tracker.degraded = true;
         return null;

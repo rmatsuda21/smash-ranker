@@ -4,11 +4,19 @@ import { EMPTY_CHARACTER_ID } from "@/consts/top8/characters";
 import { RENDER_STYLES } from "@/consts/games";
 import { getRenderSet, resolveRenderAlt } from "@/utils/top8/characterCatalog";
 
-// VITE_ASSET_BASE points the app at a local clone of the asset repo, to check
-// art before it is pushed.
+// The asset repo as Cloudflare serves it: every push to its `main` is
+// deployed as static files, with CORS and a one-day cache (the repo's
+// `_headers`). Straight from GitHub the files are kept five minutes and an
+// address that asks for many is throttled; jsDelivr's mirror answers 403 for
+// some files because the repo is over its 50 MB limit.
+// `api/results-image.ts` has the same address.
+export const DEFAULT_ASSET_BASE =
+  "https://smashrankerassets.reo-matsuda-bfa.workers.dev";
+
+// VITE_ASSET_BASE points the app at another copy, such as a local clone of
+// the asset repo to check art before it is pushed.
 const ASSET_BASE =
-  import.meta.env.VITE_ASSET_BASE ||
-  "https://raw.githubusercontent.com/rmatsuda21/SmashRankerAssets/main";
+  import.meta.env.VITE_ASSET_BASE?.replace(/\/+$/, "") || DEFAULT_ASSET_BASE;
 
 export const getCharImgUrl = ({
   characterId,

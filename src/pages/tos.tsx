@@ -7,7 +7,7 @@ import { useLazyCatalog } from "@/hooks/useLazyCatalog";
 
 import styles from "./tos.module.scss";
 
-const LAST_UPDATED = "2026-11-26";
+const LAST_UPDATED = "2026-11-27";
 const CONTACT_EMAIL = "contact@smash-ranker.app";
 
 // Nintendo publishes each guideline per region and language; readers get the
@@ -297,7 +297,53 @@ const TosPage = () => {
 
         <section className={styles.section}>
           <h2>
-            <Trans>10. Reporting infringement or abuse</Trans>
+            <Trans>10. Privacy and data</Trans>
+          </h2>
+          <p>
+            <Trans>
+              Smash Ranker has no accounts of its own and no database of its
+              users. Your designs, saved templates, uploaded images and fonts
+              are stored in your own browser and are not uploaded.
+            </Trans>
+          </p>
+          <p>
+            <Trans>
+              To see how the site is used and to find bugs, it records usage
+              events (such as a tournament being loaded or a graphic being
+              exported) and error reports. These are tied to a random identifier
+              kept in your browser, not to your name, email or IP address, and
+              tournament links are removed from them. Error reports include the
+              page, your browser and an approximate region. This data is
+              processed by PostHog, Sentry and Vercel, and is not sold or used
+              for advertising.
+            </Trans>
+          </p>
+          <p>
+            <Trans>
+              If you log in with start.gg, the site receives your public
+              start.gg profile and an access token, which is kept in your
+              browser and used to load your tournaments from start.gg. A cookie
+              keeps you logged in. Logging out removes both.
+            </Trans>
+          </p>
+          <p>
+            <Trans>
+              Prediction and recap graphics are drawn on the site's server: the
+              names and results shown in the graphic are sent there to make the
+              image, and the image may be cached.
+            </Trans>
+          </p>
+          <p>
+            <Trans>
+              Clearing this site's data in your browser removes everything
+              stored on your device.
+            </Trans>
+          </p>
+        </section>
+
+        <section className={styles.section}>
+          <h2>
+            <Trans>11. Reporting infringement or abuse</Trans>
           </h2>
           <p>
             <Trans>
@@ -319,7 +365,7 @@ const TosPage = () => {
 
         <section className={styles.section}>
           <h2>
-            <Trans>11. Changes to these terms</Trans>
+            <Trans>12. Changes to these terms</Trans>
           </h2>
           <p>
             <Trans>

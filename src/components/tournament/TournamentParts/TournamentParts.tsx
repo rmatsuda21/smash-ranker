@@ -14,15 +14,16 @@ import styles from "./TournamentParts.module.scss";
 // it again.
 export const LoadFailed = ({
   onRetry,
+  message,
   className,
 }: {
   onRetry: () => void;
+  // The failure in its own words, when it has some (start.gg busy or down).
+  message?: string | null;
   className?: string;
 }) => (
   <div className={cn(styles.loadFailed, className)} role="status">
-    <p>
-      <Trans>This didn't load.</Trans>
-    </p>
+    <p>{message ?? <Trans>This didn't load.</Trans>}</p>
     <Button variant="outline" size="sm" onClick={onRetry}>
       <Trans>Try again</Trans>
     </Button>

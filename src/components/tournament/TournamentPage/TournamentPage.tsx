@@ -315,9 +315,12 @@ const Loaded = ({ tournament }: { tournament: TournamentDetails }) => {
 // Loading, or what is shown when there is no tournament to show.
 const PageState = ({
   status,
+  message,
   retry,
 }: {
   status: LoadStatus;
+  // The failure in its own words, when it has some (start.gg busy or down).
+  message: string | null;
   retry: () => void;
 }) =>
   status === "loading" || status === "idle" ? (
@@ -335,7 +338,7 @@ const PageState = ({
       </h1>
       <p>
         {status === "error" ? (
-          <Trans>Check your connection and try again.</Trans>
+          (message ?? <Trans>Check your connection and try again.</Trans>)
         ) : (
           <Trans>
             There is no tournament with this id. It may have been deleted or
@@ -360,7 +363,7 @@ const PageState = ({
 const SlugRedirect = ({ slug }: { slug: string }) => {
   const search = useSearch();
   const [, navigate] = useLocation();
-  const { data: address, status, retry } = useTournamentAddress(slug);
+  const { data: address, status, message, retry } = useTournamentAddress(slug);
 
   useEffect(() => {
     if (!address) return;
@@ -377,16 +380,22 @@ const SlugRedirect = ({ slug }: { slug: string }) => {
     });
   }, [address, search, navigate]);
 
-  return <PageState status={address ? "loading" : status} retry={retry} />;
+  return (
+    <PageState
+      status={address ? "loading" : status}
+      message={message}
+      retry={retry}
+    />
+  );
 };
 
 const ById = ({ id }: { id: string }) => {
-  const { data: tournament, status, retry } = useTournament(id);
+  const { data: tournament, status, message, retry } = useTournament(id);
   return tournament ? (
     // Keyed so "more events" and scroll start fresh on another tournament.
     <Loaded key={tournament.id} tournament={tournament} />
   ) : (
-    <PageState status={status} retry={retry} />
+    <PageState status={status} message={message} retry={retry} />
   );
 };
 

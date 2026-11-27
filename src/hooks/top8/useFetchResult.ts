@@ -12,6 +12,7 @@ import {
   TeammateInfo,
 } from "@/types/top8/Player";
 import { TournamentInfo } from "@/types/top8/Tournament";
+import { useCanvasStore } from "@/store/canvasStore";
 import { usePlayerStore } from "@/store/playerStore";
 import { useTournamentStore } from "@/store/tournamentStore";
 import {
@@ -37,7 +38,9 @@ import {
 import { fetchTopSeeds, type TopSeed } from "@/utils/startgg/fetchTopSeeds";
 import { isEventCompleted } from "@/utils/startgg/placement";
 import { getLineupNotice } from "@/utils/top8/lineupNotice";
+import { getUserAccessToken } from "@/utils/auth/session";
 import {
+  canLogInForOwnLimit,
   describeStartggError,
   startggLoadError,
 } from "@/utils/startgg/describeError";
@@ -431,6 +434,11 @@ const getLineup = async (
   };
 };
 
+// What a batch of character lookups ran into. start.gg turning lookups down
+// for its request limit leaves players without characters, which the user
+// has to be told: it looks the same as nobody having reported any.
+type LookupReport = { rateLimited: boolean };
+
 // The characters an entrant used, most used first: one list for a single
 // player, one per member (in the order of `memberIds`) for a team.
 const fetchEntrantCharacters = async (
@@ -438,6 +446,7 @@ const fetchEntrantCharacters = async (
   slug: string,
   entrantId: string,
   memberIds: string[] = [],
+  report?: LookupReport,
 ): Promise<string[][]> => {
   const memberCount = Math.max(memberIds.length, 1);
   const result = await client
@@ -448,18 +457,25 @@ const fetchEntrantCharacters = async (
 
   if (result.error || !nodes) {
     if (result.error) {
-      // Per-entrant character fetches are best-effort; transient start.gg
-      // flakes shouldn't inflate Sentry exception counts. Warning level keeps
-      // the trail without a noisy alert.
-      logWarning("player characters fetch failed", {
-        area: "tournament-fetch",
-        tournament_platform: "startgg",
-        tournament_slug: slug,
-        entrant_id: entrantId,
-        step: "player-characters",
-        failure_kind: describeStartggError(result.error).kind,
-        error: result.error.message,
-      });
+      const { kind } = describeStartggError(result.error);
+      if (kind === "rate_limited") {
+        // Reported once for the whole batch by the caller: a load over the
+        // limit fails every lookup at once.
+        if (report) report.rateLimited = true;
+      } else {
+        // Per-entrant character fetches are best-effort; transient start.gg
+        // flakes shouldn't inflate Sentry exception counts. Warning level
+        // keeps the trail without a noisy alert.
+        logWarning("player characters fetch failed", {
+          area: "tournament-fetch",
+          tournament_platform: "startgg",
+          tournament_slug: slug,
+          entrant_id: entrantId,
+          step: "player-characters",
+          failure_kind: kind,
+          error: result.error.message,
+        });
+      }
     }
     return Array.from({ length: memberCount }, () => []);
   }
@@ -542,12 +558,14 @@ const fetchMemberCharacters = async (
   slug: string,
   player: PlayerInfo,
   memberIds: Map<string, string[]>,
+  report?: LookupReport,
 ): Promise<MemberCharacters> => {
   const [first, second] = await fetchEntrantCharacters(
     client,
     slug,
     player.entrantId,
     memberIds.get(player.entrantId),
+    report,
   );
   return {
     player: toCharacters(first),
@@ -560,6 +578,7 @@ const addCharactersToPlayers = async (
   slug: string,
   players: PlayerInfo[],
   memberIds: Map<string, string[]>,
+  report: LookupReport,
 ): Promise<void> => {
   await Promise.all(
     players.map(async (player) => {
@@ -568,6 +587,7 @@ const addCharactersToPlayers = async (
         slug,
         player,
         memberIds,
+        report,
       );
       player.characters = characters.player;
       if (player.teammate && characters.teammate) {
@@ -597,15 +617,17 @@ const addCharactersInBackground = async (
     if (state.fetching) cancelled = true;
   });
 
+  const report: LookupReport = { rateLimited: false };
   try {
     for (let i = 0; i < players.length; i += BACKGROUND_CHUNK_SIZE) {
       const chunk = players.slice(i, i + BACKGROUND_CHUNK_SIZE);
       const characters = await Promise.all(
         chunk.map((player) =>
-          fetchMemberCharacters(client, slug, player, memberIds),
+          fetchMemberCharacters(client, slug, player, memberIds, report),
         ),
       );
-      if (cancelled) return;
+      // Over the limit: more requests would only keep it there.
+      if (cancelled || report.rateLimited) return;
 
       usePlayerStore.getState().dispatch({
         type: "FILL_PLAYER_CHARACTERS",
@@ -617,6 +639,75 @@ const addCharactersInBackground = async (
   } finally {
     unsubscribe();
   }
+};
+
+// Players whose characters have not been looked up, for a visitor who is not
+// logged in. Everyone without a login shares the app's start.gg token and its
+// 80 requests a minute, so they are looked up only when the design grows to
+// show them (a bigger template, a higher player count), not after every load.
+type DeferredLookups = {
+  loadId: number;
+  client: Client;
+  slug: string;
+  // In standings order; `firstSlot` is the slot of the first one.
+  players: PlayerInfo[];
+  firstSlot: number;
+  memberIds: Map<string, string[]>;
+};
+let deferred: DeferredLookups | null = null;
+let stopWatchingSlots: (() => void) | null = null;
+
+const setDeferred = (next: DeferredLookups | null) => {
+  deferred = next;
+  stopWatchingSlots?.();
+  stopWatchingSlots = null;
+  if (!next) return;
+  // The slot count is watched on the store, not from a component: a template
+  // can be loaded while the Players tab, which shows the count, is closed.
+  let slots = useCanvasStore.getState().design.players.length;
+  stopWatchingSlots = useCanvasStore.subscribe((state) => {
+    const count = state.design.players.length;
+    if (count === slots) return;
+    slots = count;
+    void fillCharactersForSlots(count);
+  });
+};
+
+// Looks up the characters of players the design now has slots for and did
+// not when their tournament loaded. Does nothing when there are none.
+const fillCharactersForSlots = async (slotCount: number): Promise<void> => {
+  if (!deferred) return;
+  if (!isCurrentTournamentLoad(deferred.loadId)) {
+    setDeferred(null);
+    return;
+  }
+  const take = slotCount - deferred.firstSlot;
+  if (take <= 0) return;
+
+  const { client, slug, memberIds, loadId } = deferred;
+  // Taken off the list before the requests go out, so a second change of
+  // the count does not ask for them again.
+  const players = deferred.players.slice(0, take);
+  if (players.length === 0) return;
+  deferred = {
+    ...deferred,
+    players: deferred.players.slice(take),
+    firstSlot: deferred.firstSlot + players.length,
+  };
+  if (deferred.players.length === 0) setDeferred(null);
+
+  const characters = await Promise.all(
+    players.map((player) =>
+      fetchMemberCharacters(client, slug, player, memberIds),
+    ),
+  );
+  if (!isCurrentTournamentLoad(loadId)) return;
+  usePlayerStore.getState().dispatch({
+    type: "FILL_PLAYER_CHARACTERS",
+    payload: Object.fromEntries(
+      players.map((player, index) => [player.entrantId, characters[index]]),
+    ),
+  });
 };
 
 const filterValidImages = (
@@ -670,6 +761,7 @@ export const useFetchResult = () => {
     visibleCount: number = playerCount,
   ) => {
     const loadId = beginTournamentLoad();
+    setDeferred(null);
     playerDispatch({ type: "FETCH_PLAYERS" });
 
     const failLoad = (failure: LoadError) => {
@@ -757,12 +849,13 @@ export const useFetchResult = () => {
       if (player.teammate) player.teammate.characters = toCharacters([]);
     }
 
+    const report: LookupReport = { rateLimited: false };
     try {
       const [storedImages] = await Promise.all([
         validImages.length > 0
           ? storeTournamentImages(validImages, event.tournament?.name ?? "")
           : undefined,
-        addCharactersToPlayers(client, slug, visiblePlayers, memberIds),
+        addCharactersToPlayers(client, slug, visiblePlayers, memberIds, report),
       ]);
       if (!isCurrentTournamentLoad(loadId)) return;
 
@@ -781,15 +874,41 @@ export const useFetchResult = () => {
       });
       const notice = getLineupNotice(lineup);
       if (notice) showToast(notice, { variant: "info" });
+      if (report.rateLimited) {
+        showToast(
+          canLogInForOwnLimit()
+            ? t`start.gg is receiving too many requests, so some characters are missing. Wait a minute and load the tournament again, or log in with start.gg.`
+            : t`start.gg is receiving too many requests, so some characters are missing. Wait a minute and load the tournament again.`,
+          { variant: "error" },
+        );
+        logWarning("player characters rate limited", {
+          area: "tournament-fetch",
+          tournament_platform: "startgg",
+          step: "player-characters",
+          failure_kind: "rate_limited",
+        });
+      }
       logEvent("tournament_load", {
         tournament_platform: "startgg",
         player_count: playerCount,
         lineup_source: lineup,
       });
 
-      if (laterPlayers.length > 0) {
-        // fetchPlayerCharacters reports its own failures and never throws.
-        void addCharactersInBackground(client, slug, laterPlayers, memberIds);
+      if (laterPlayers.length > 0 && !report.rateLimited) {
+        if (getUserAccessToken()) {
+          // The user's own token and its own limit. fetchPlayerCharacters
+          // reports its own failures and never throws.
+          void addCharactersInBackground(client, slug, laterPlayers, memberIds);
+        } else {
+          setDeferred({
+            loadId,
+            client,
+            slug,
+            players: laterPlayers,
+            firstSlot: visibleCount,
+            memberIds,
+          });
+        }
       }
     } catch (error) {
       if (!isCurrentTournamentLoad(loadId)) return;

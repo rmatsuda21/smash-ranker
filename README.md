@@ -4,16 +4,18 @@
 
 A free, browser-based graphic generator for Super Smash Bros. tournaments. Paste a tournament URL, pick a template, smash a few buttons, and export polished Top 8 cards, tier lists, and prediction graphics ready for Twitter/X, Bluesky, and Discord. 📸
 
-🎮 No account. 🔒 No tracking*. 💾 Your designs live in your browser, not our database (because there isn't one, yet).
+**[www.smash-ranker.app](https://www.smash-ranker.app)**
 
-*\*Error and event logging is performed for development purposes but data is not used for advertisement or distributed*
+🎮 No account needed. 🚫 No ads. 💾 Your designs live in your browser, not our database (because there isn't one, yet).
+
+Anonymous usage events and error reports are collected to find bugs and see what gets used; they are not sold or used for advertising. Logging in with start.gg is optional. The site's [terms](https://www.smash-ranker.app/tos) say what is stored.
 
 ## ✨ Features
 
 - 🥇 **Top 8 graphics**: auto-fill placements from a tournament URL, swap templates, customize colors, fonts, characters, and backgrounds, then export as PNG.
 - 📊 **Tier list maker**: drag-and-drop ranking tool for the entire Smash Ultimate roster, with multiple layout variants and font controls. Yes, you can finally rank Steve in S-tier with confidence.
 - 🔮 **Prediction graphics**: paste a tournament URL, drag entrants into your predicted ordering, and share a graphic of your galaxy-brain bracket predictions. (No refunds when MKLeo wins anyway.)
-- 🌐 **Multi-platform support**: pulls data from [start.gg](https://start.gg), [Challonge](https://challonge.com), and [Tonamel](https://tonamel.com). Paste any URL, we'll figure it out.
+- 🌐 **Multi-platform support**: pulls data from [start.gg](https://start.gg), [Challonge](https://challonge.com), [Tonamel](https://tonamel.com), and [Hivee](https://hivee.jp). Paste any URL, we'll figure it out.
 - 🎨 **Custom assets**: upload your own background images, character art, fonts, and logos. Saved locally via IndexedDB so nothing leaves your machine.
 - 🌏 **Localized**: English and Japanese (日本語) UI. Looking for contributors to add more languages!
 

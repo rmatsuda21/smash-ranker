@@ -1,6 +1,7 @@
 @use "@/_theme" as *;
 
 .root {
+  position: relative;
   width: 100%;
   flex-shrink: 0;
   text-align: left;
@@ -37,6 +38,7 @@
 
 // Same control as the URL bar in the /ranker toolbar (TournamentLoader).
 .pill {
+  position: relative;
   flex: 1;
   min-width: 0;
   height: var(--toolbar-h, 34px);

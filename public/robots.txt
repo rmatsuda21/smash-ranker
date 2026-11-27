@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
-Sitemap: https://smash-ranker.app/sitemap.xml
+Sitemap: https://www.smash-ranker.app/sitemap.xml

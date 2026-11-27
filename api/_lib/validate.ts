@@ -98,3 +98,37 @@ export const parseBase64UrlPayload = (
   }
   return decoded;
 };
+
+// A colour as the client's palette builder writes them: hex, or rgb()/rgba()
+// /hsl()/hsla() of plain numbers. Palette values are put into CSS strings
+// (gradients) for satori, so anything else could close the gradient and add
+// to it.
+const COLOR_RE = /^(#[0-9a-fA-F]{3,8}|(?:rgb|hsl)a?\([0-9.,%\s]{1,40}\))$/;
+
+// The entries of a payload's palette that are known keys holding a colour.
+// Anything else is dropped, and the caller's defaults stand in for it.
+export const parsePalette = <K extends string>(
+  raw: unknown,
+  keys: readonly K[],
+): Partial<Record<K, string>> | undefined => {
+  if (typeof raw !== "object" || raw === null) return undefined;
+  const source = raw as Record<string, unknown>;
+  const palette: Partial<Record<K, string>> = {};
+  for (const key of keys) {
+    const value = source[key];
+    if (typeof value === "string" && COLOR_RE.test(value)) palette[key] = value;
+  }
+  return palette;
+};
+
+export const PALETTE_KEYS = [
+  "bgGradientStart",
+  "bgGradientEnd",
+  "accent",
+  "accentRowBg",
+  "textPrimary",
+  "textSecondary",
+  "textMuted",
+  "textFooter",
+  "borderSubtle",
+] as const;

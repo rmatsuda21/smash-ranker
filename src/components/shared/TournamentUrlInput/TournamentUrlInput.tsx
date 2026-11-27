@@ -7,6 +7,7 @@ import { FaLink } from "react-icons/fa6";
 
 import { Button } from "@/components/shared/Button/Button";
 import { Input } from "@/components/shared/Input/Input";
+import { UrlHint } from "@/components/shared/UrlHint/UrlHint";
 import { detectPlatformAndSlug } from "@/consts/platforms";
 
 import styles from "./TournamentUrlInput.module.scss";
@@ -86,6 +87,7 @@ export const TournamentUrlInput = ({
         >
           <Trans>Load</Trans>
         </Button>
+        {hasInput && !isValid && <UrlHint url={url} />}
       </div>
     );
   }
@@ -111,6 +113,7 @@ export const TournamentUrlInput = ({
           <Trans>Load</Trans>
         </Button>
       </div>
+      {hasInput && !isValid && <UrlHint url={url} />}
     </div>
   );
 };

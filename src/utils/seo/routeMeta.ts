@@ -12,14 +12,17 @@ export type RouteMeta = {
   type: "website" | "article";
 };
 
-const SITE = "https://smash-ranker.app";
+// The address the site is served at: the bare domain redirects here, so
+// canonical links and share tags name this one.
+const SITE = "https://www.smash-ranker.app";
 const DEFAULT_IMAGE = `${SITE}/og-image.png`;
 
 const STATIC_ROUTES: Record<string, RouteMeta> = {
   "/": {
     title: "Smash Ranker — Tournament graphics for Super Smash Bros.",
     tabTitle: "Smash Ranker",
-    description: "Your one-stop shop for Super Smash Bros. graphics!",
+    description:
+      "Free online tools for Super Smash Bros. tournaments: Top 8 graphics, tier lists, predictions, player recaps and thumbnails. No signup required.",
     image: DEFAULT_IMAGE,
     url: `${SITE}/`,
     type: "website",
@@ -56,7 +59,36 @@ const STATIC_ROUTES: Record<string, RouteMeta> = {
     url: `${SITE}/thumbnail`,
     type: "website",
   },
+  "/results": {
+    title: "Tournament Recap | Smash Ranker",
+    tabTitle: "Recap | Smash Ranker",
+    description:
+      "Turn a player's tournament run into a shareable graphic: placement, record and every set.",
+    image: DEFAULT_IMAGE,
+    url: `${SITE}/results`,
+    type: "website",
+  },
+  "/tos": {
+    title: "Terms of Service | Smash Ranker",
+    description: "Smash Ranker's terms of use and how it handles data.",
+    image: DEFAULT_IMAGE,
+    url: `${SITE}/tos`,
+    type: "website",
+  },
 };
+
+// A tournament's page: its own address as the canonical one (not the home
+// page's), with the id only, since the event and tab are views of it.
+const TOURNAMENT_PATH = /^\/tournament\/[A-Za-z0-9_-]+$/;
+const tournamentMeta = (pathname: string): RouteMeta => ({
+  title: "Tournament results | Smash Ranker",
+  tabTitle: "Tournament | Smash Ranker",
+  description:
+    "Results, top 8, bracket and upsets for this tournament, with graphics made from them in a click.",
+  image: DEFAULT_IMAGE,
+  url: `${SITE}${pathname}`,
+  type: "website",
+});
 
 const escapeAttr = (value: string): string =>
   value
@@ -173,7 +205,11 @@ export const getRouteMeta = async (url: URL): Promise<RouteMetaResult> => {
   }
 
   return {
-    meta: STATIC_ROUTES[pathname] ?? STATIC_ROUTES["/"],
+    meta:
+      STATIC_ROUTES[pathname] ??
+      (TOURNAMENT_PATH.test(pathname)
+        ? tournamentMeta(pathname)
+        : STATIC_ROUTES["/"]),
     lookupFailed,
   };
 };

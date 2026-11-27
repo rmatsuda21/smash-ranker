@@ -1,0 +1,29 @@
+@use "@/_theme" as *;
+
+.hint {
+  position: absolute;
+  top: calc(100% + var(--space-2));
+  left: 0;
+  z-index: var(--z-popover);
+  width: max-content;
+  max-width: min(100%, 90vw);
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
+
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-float);
+
+  color: var(--fg-1);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  line-height: 1.4;
+  text-align: left;
+  overflow-wrap: anywhere;
+
+  a {
+    color: var(--brand);
+    text-decoration: underline;
+  }
+}

@@ -15,6 +15,7 @@ import { usePlayerStore } from "@/store/playerStore";
 import { useTournamentStore } from "@/store/tournamentStore";
 import { PREF_KEYS } from "@/consts/prefKeys";
 import { useConfirmation } from "@/hooks/useConfirmation";
+import { UrlHint } from "@/components/shared/UrlHint/UrlHint";
 import { detectPlatformAndSlug } from "@/consts/platforms";
 import {
   clearToolLink,
@@ -188,6 +189,10 @@ export const TournamentLoader = ({ className }: Props) => {
         >
           {_(msg`Load`)}
         </Button>
+        {/* On a phone the field is a short pill until it is focused. */}
+        {hasInput && !isValid && (!isNarrow || isFocused) && (
+          <UrlHint url={url} />
+        )}
       </div>
       {startggId && (
         <Link

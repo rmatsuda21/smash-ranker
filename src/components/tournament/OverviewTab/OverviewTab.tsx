@@ -117,7 +117,12 @@ const Upsets = ({
   event: TournamentEvent;
   seedPhaseId: string | null;
 }) => {
-  const { data: upsets, status, retry } = useEventUpsets(event, seedPhaseId);
+  const {
+    data: upsets,
+    status,
+    message,
+    retry,
+  } = useEventUpsets(event, seedPhaseId);
   const [expanded, setExpanded] = useState(false);
 
   // No upsets is nothing to show; a failed load is not the same thing.
@@ -125,7 +130,11 @@ const Upsets = ({
   if (status === "error") {
     return (
       <Panel className={styles.upsets} title={<Trans>Biggest upsets</Trans>}>
-        <LoadFailed className={styles.panelFailed} onRetry={retry} />
+        <LoadFailed
+          className={styles.panelFailed}
+          message={message}
+          onRetry={retry}
+        />
       </Panel>
     );
   }

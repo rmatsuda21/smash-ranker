@@ -529,6 +529,7 @@ export const BracketTab = ({
     return (
       <LoadFailed
         className={styles.message}
+        message={phases.message ?? pools.message}
         onRetry={() => {
           if (phases.status === "error") phases.retry();
           if (pools.status === "error") pools.retry();

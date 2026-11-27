@@ -38,6 +38,15 @@
   margin: 0;
 }
 
+// Its own line under the links.
+.disclaimer {
+  flex-basis: 100%;
+  margin: 0;
+  font-size: var(--font-size-xs);
+  color: var(--fg-muted);
+  text-align: center;
+}
+
 @include mobile {
   .footer {
     padding: 0 var(--space-4);

@@ -3,8 +3,15 @@ import type { CombinedError } from "urql";
 
 import type { FetchFailureKind } from "@/utils/analytics/events";
 import { LoadError } from "@/utils/loadError";
+import { isLoginAvailable } from "@/utils/auth/oauth";
+import { getUserAccessToken } from "@/utils/auth/session";
 
 type Described = { kind: FetchFailureKind; message: string };
+
+// Someone logged in is on their own token and limit; anyone else shares the
+// app's, and logging in is their way out of a busy minute.
+export const canLogInForOwnLimit = (): boolean =>
+  isLoginAvailable() && !getUserAccessToken();
 
 // start.gg answers a request over its limit (80 a minute) with HTTP 429 and
 // `{ success: false, message: "Rate limit exceeded - api-token" }`.
@@ -23,7 +30,9 @@ export const describeStartggError = (
   if (status === 429 || RATE_LIMIT.test(raw)) {
     return {
       kind: "rate_limited",
-      message: t`start.gg is receiving too many requests. Wait a minute and try again.`,
+      message: canLogInForOwnLimit()
+        ? t`start.gg is receiving too many requests. Wait a minute and try again, or log in with start.gg.`
+        : t`start.gg is receiving too many requests. Wait a minute and try again.`,
     };
   }
   if (COMPLEXITY.test(raw)) {

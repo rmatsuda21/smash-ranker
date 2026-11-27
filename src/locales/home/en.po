@@ -34,8 +34,12 @@ msgstr ""
 #~ msgstr ""
 
 #: src/pages/home.tsx:176
-msgid "I have many exiciting tools on the way 🔧 Stay tuned!"
+msgid "I have many exciting tools on the way 🔧 Stay tuned!"
 msgstr ""
+
+#: src/pages/home.tsx:176
+#~ msgid "I have many exiciting tools on the way 🔧 Stay tuned!"
+#~ msgstr ""
 
 #: src/pages/home.tsx:170
 msgid "In Development"
