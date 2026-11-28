@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import { Route, Switch, useLocation } from "wouter";
 
 import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { LoginGate } from "@/components/shared/LoginGate/LoginGate";
 import { Home } from "@/pages/home";
 import { NotFoundPage } from "@/pages/notFound";
 import { useFeatureFlag } from "@/hooks/useFeatureFlags";
@@ -27,38 +28,50 @@ export const PageRouter = () => {
   const [location] = useLocation();
 
   // A page that fails to render or load is contained here, under the header,
-  // and cleared when the user navigates somewhere else.
+  // and cleared when the user navigates somewhere else. The tools and
+  // the tournament page sit behind `LoginGate`; the profile and the recap ask
+  // for a login themselves.
   return (
     <ErrorBoundary variant="page" resetKey={location}>
       <Switch>
         <Route path="/" component={Home} />
         <Route path="/ranker">
-          <Suspense>
-            <RankerPage />
-          </Suspense>
+          <LoginGate>
+            <Suspense>
+              <RankerPage />
+            </Suspense>
+          </LoginGate>
         </Route>
         <Route path="/tier">
-          <Suspense>
-            <TierPage />
-          </Suspense>
+          <LoginGate>
+            <Suspense>
+              <TierPage />
+            </Suspense>
+          </LoginGate>
         </Route>
         <Route path="/predict">
-          <Suspense>
-            <PredictPage />
-          </Suspense>
+          <LoginGate>
+            <Suspense>
+              <PredictPage />
+            </Suspense>
+          </LoginGate>
         </Route>
         {resultsEnabled && (
           <Route path="/results">
-            <Suspense>
-              <ResultsPage />
-            </Suspense>
+            <LoginGate>
+              <Suspense>
+                <ResultsPage />
+              </Suspense>
+            </LoginGate>
           </Route>
         )}
         {thumbnailEnabled && (
           <Route path="/thumbnail">
-            <Suspense>
-              <ThumbnailPage />
-            </Suspense>
+            <LoginGate>
+              <Suspense>
+                <ThumbnailPage />
+              </Suspense>
+            </LoginGate>
           </Route>
         )}
         {recapEnabled && (
@@ -75,9 +88,11 @@ export const PageRouter = () => {
         </Route>
         <Route path="/tournament/:id">
           {(params) => (
-            <Suspense>
-              <TournamentPage id={params.id} />
-            </Suspense>
+            <LoginGate page="tournament">
+              <Suspense>
+                <TournamentPage id={params.id} />
+              </Suspense>
+            </LoginGate>
           )}
         </Route>
         <Route path="/oauth/callback">

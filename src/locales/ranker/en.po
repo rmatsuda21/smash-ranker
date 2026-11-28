@@ -1105,9 +1105,9 @@ msgstr ""
 msgid "Failed to fetch tournament"
 msgstr ""
 
-#: src/hooks/top8/useFetchResult.ts:815
-#: src/hooks/top8/useFetchResult.ts:908
-#: src/hooks/top8/useFetchResult.ts:910
+#: src/hooks/top8/useFetchResult.ts:836
+#: src/hooks/top8/useFetchResult.ts:929
+#: src/hooks/top8/useFetchResult.ts:931
 msgid "Failed to fetch tournament data"
 msgstr ""
 
@@ -1356,7 +1356,7 @@ msgstr ""
 msgid "Join the official server for help, feedback, and updates!"
 msgstr ""
 
-#: src/components/home/LoginPrompt/LoginPrompt.tsx:30
+#: src/components/home/LoginPrompt/LoginPrompt.tsx:37
 msgid "Jump straight to graphics for your own tournaments"
 msgstr ""
 
@@ -1509,7 +1509,15 @@ msgstr ""
 #~ msgid "Locking in the recap..."
 #~ msgstr ""
 
-#: src/components/home/LoginPrompt/LoginPrompt.tsx:27
+#: src/components/shared/LoginGate/LoginGate.tsx:28
+msgid "Log in to see this tournament"
+msgstr ""
+
+#: src/components/shared/LoginGate/LoginGate.tsx:30
+msgid "Log in to use this tool"
+msgstr ""
+
+#: src/components/home/LoginPrompt/LoginPrompt.tsx:34
 msgid "Log in with start.gg"
 msgstr ""
 
@@ -2565,6 +2573,10 @@ msgstr ""
 msgid "Smash Ranker is open in another tab with an older version. Close the other tabs to load your saved templates and images."
 msgstr ""
 
+#: src/components/shared/LoginGate/LoginGate.tsx:34
+msgid "Smash Ranker needs a start.gg login for now. It takes a few seconds, and you come straight back to this page."
+msgstr ""
+
 #: src/components/user/UserPage/UserPage.tsx:386
 msgid "Some of your results didn't load, so these stats are incomplete."
 msgstr ""
@@ -2632,11 +2644,11 @@ msgstr ""
 msgid "start.gg is having trouble right now. Try again in a moment."
 msgstr ""
 
-#: src/hooks/top8/useFetchResult.ts:863
+#: src/hooks/top8/useFetchResult.ts:884
 msgid "start.gg is receiving too many requests, so some characters are missing. Wait a minute and load the tournament again, or log in with start.gg."
 msgstr ""
 
-#: src/hooks/top8/useFetchResult.ts:864
+#: src/hooks/top8/useFetchResult.ts:885
 msgid "start.gg is receiving too many requests, so some characters are missing. Wait a minute and load the tournament again."
 msgstr ""
 
@@ -3132,7 +3144,7 @@ msgstr ""
 #: src/hooks/predict/useFetchPredictionEntrants.ts:118
 #: src/hooks/results/useFetchResultsEntrantPool.ts:74
 #: src/hooks/thumbnail/useLoadThumbnailEvent.ts:62
-#: src/hooks/top8/useFetchResult.ts:775
+#: src/hooks/top8/useFetchResult.ts:796
 #: src/utils/hivee/api.ts:40
 #: src/utils/hivee/api.ts:84
 msgid "Tournament not found"

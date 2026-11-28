@@ -7,7 +7,14 @@ import { logEvent } from "@/utils/observability/log";
 import styles from "./LoginPrompt.module.scss";
 
 // Logged-out home page: one quiet line under the hero that offers the login.
-export const LoginPrompt = ({ returnTo = "/" }: { returnTo?: string }) => {
+// `source` says where it was shown, for analytics.
+export const LoginPrompt = ({
+  returnTo = "/",
+  source = "prompt",
+}: {
+  returnTo?: string;
+  source?: "prompt" | "gate";
+}) => {
   if (!isLoginAvailable()) return null;
 
   return (
@@ -15,7 +22,7 @@ export const LoginPrompt = ({ returnTo = "/" }: { returnTo?: string }) => {
       type="button"
       className={styles.prompt}
       onClick={() => {
-        logEvent("user_login_start", { source: "prompt" });
+        logEvent("user_login_start", { source });
         startLogin(returnTo);
       }}
     >

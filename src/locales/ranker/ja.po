@@ -1105,9 +1105,9 @@ msgstr "Tonamelの大会を取得できませんでした"
 msgid "Failed to fetch tournament"
 msgstr "大会情報を取得できませんでした"
 
-#: src/hooks/top8/useFetchResult.ts:815
-#: src/hooks/top8/useFetchResult.ts:908
-#: src/hooks/top8/useFetchResult.ts:910
+#: src/hooks/top8/useFetchResult.ts:836
+#: src/hooks/top8/useFetchResult.ts:929
+#: src/hooks/top8/useFetchResult.ts:931
 msgid "Failed to fetch tournament data"
 msgstr "大会データを取得できませんでした"
 
@@ -1356,7 +1356,7 @@ msgstr "参加"
 msgid "Join the official server for help, feedback, and updates!"
 msgstr "公式サーバーで情報発信を行なってます！"
 
-#: src/components/home/LoginPrompt/LoginPrompt.tsx:30
+#: src/components/home/LoginPrompt/LoginPrompt.tsx:37
 msgid "Jump straight to graphics for your own tournaments"
 msgstr "自分が出た大会の画像をすぐに作れます"
 
@@ -1509,7 +1509,15 @@ msgstr "予想を確定中..."
 #~ msgid "Locking in the recap..."
 #~ msgstr "リザルトを確定中..."
 
-#: src/components/home/LoginPrompt/LoginPrompt.tsx:27
+#: src/components/shared/LoginGate/LoginGate.tsx:28
+msgid "Log in to see this tournament"
+msgstr "この大会を見るにはログインが必要です"
+
+#: src/components/shared/LoginGate/LoginGate.tsx:30
+msgid "Log in to use this tool"
+msgstr "このツールを使うにはログインが必要です"
+
+#: src/components/home/LoginPrompt/LoginPrompt.tsx:34
 msgid "Log in with start.gg"
 msgstr "start.ggでログイン"
 
@@ -2565,6 +2573,10 @@ msgstr "スマッシュランカー"
 msgid "Smash Ranker is open in another tab with an older version. Close the other tabs to load your saved templates and images."
 msgstr "別のタブで古いバージョンのスマッシュランカーが開いています。保存したテンプレートや画像を読み込むには、他のタブを閉じてください。"
 
+#: src/components/shared/LoginGate/LoginGate.tsx:34
+msgid "Smash Ranker needs a start.gg login for now. It takes a few seconds, and you come straight back to this page."
+msgstr "現在、スマッシュランカーを使うにはstart.ggでのログインが必要です。数秒で終わり、ログイン後はこのページに戻ります。"
+
 #: src/components/user/UserPage/UserPage.tsx:386
 msgid "Some of your results didn't load, so these stats are incomplete."
 msgstr "一部の結果を読み込めなかったため、この統計は不完全です。"
@@ -2632,11 +2644,11 @@ msgstr "start.gg・Hivee に対応"
 msgid "start.gg is having trouble right now. Try again in a moment."
 msgstr "start.ggで現在問題が発生しています。しばらくしてからもう一度お試しください。"
 
-#: src/hooks/top8/useFetchResult.ts:863
+#: src/hooks/top8/useFetchResult.ts:884
 msgid "start.gg is receiving too many requests, so some characters are missing. Wait a minute and load the tournament again, or log in with start.gg."
 msgstr "start.ggへのリクエストが多すぎるため、一部のキャラクターを取得できませんでした。1分ほど待ってから大会を読み込み直すか、start.ggでログインしてください。"
 
-#: src/hooks/top8/useFetchResult.ts:864
+#: src/hooks/top8/useFetchResult.ts:885
 msgid "start.gg is receiving too many requests, so some characters are missing. Wait a minute and load the tournament again."
 msgstr "start.ggへのリクエストが多すぎるため、一部のキャラクターを取得できませんでした。1分ほど待ってから大会を読み込み直してください。"
 
@@ -3132,7 +3144,7 @@ msgstr "大会名"
 #: src/hooks/predict/useFetchPredictionEntrants.ts:118
 #: src/hooks/results/useFetchResultsEntrantPool.ts:74
 #: src/hooks/thumbnail/useLoadThumbnailEvent.ts:62
-#: src/hooks/top8/useFetchResult.ts:775
+#: src/hooks/top8/useFetchResult.ts:796
 #: src/utils/hivee/api.ts:40
 #: src/utils/hivee/api.ts:84
 msgid "Tournament not found"
